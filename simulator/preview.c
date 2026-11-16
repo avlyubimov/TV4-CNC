@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "strings.h"
+#include "wifi_service.h"
 #include "layout_checks.h"
 static uint32_t pixels[800*480];
 _Alignas(4) static uint8_t drawbuf[800*40*4];
@@ -33,6 +34,13 @@ static void press_text(lv_obj_t *root,const char *text) {
     lv_obj_send_event(button,LV_EVENT_CLICKED,NULL);dashboard_update();check_dashboard_layout(root);
 }
 static void press(lv_obj_t *root,string_id id) { press_text(root,tr(NULL,id)); }
+static lv_obj_t *find_class(lv_obj_t *root,const lv_obj_class_t *type,unsigned *skip) {
+    if(lv_obj_check_type(root,type)) { if(!*skip)return root;--*skip; }
+    for(unsigned i=0;i<lv_obj_get_child_count(root);i++) {
+        lv_obj_t *found=find_class(lv_obj_get_child(root,i),type,skip);if(found)return found;
+    }
+    return NULL;
+}
 static bool has_label(lv_obj_t *root,const char *text) {
     if(lv_obj_has_flag(root,LV_OBJ_FLAG_HIDDEN))return false;
     if(lv_obj_check_type(root,&lv_label_class) && !strcmp(lv_label_get_text(root),text))return true;
@@ -51,6 +59,17 @@ static void save_frame(const char *name) {
 LV_FONT_DECLARE(tv4_ru_20);
 LV_FONT_DECLARE(tv4_ru_12);
 int main(int argc,char **argv) {
+    assert(wifi_credentials_valid("bench","12345678"));
+    assert(wifi_credentials_valid("open",""));
+    assert(!wifi_credentials_valid("","12345678"));
+    assert(!wifi_credentials_valid(NULL,"12345678"));
+    assert(!wifi_credentials_valid("bench","short"));
+    char long_ssid[34];memset(long_ssid,'a',33);long_ssid[33]=0;
+    assert(!wifi_credentials_valid(long_ssid,"12345678"));
+    char long_password[65];memset(long_password,'a',64);long_password[64]=0;
+    assert(!wifi_credentials_valid("bench",long_password));
+    long_password[63]=0;long_ssid[32]=0;
+    assert(wifi_credentials_valid(long_ssid,long_password));
     rgb565=argc==2 && !strcmp(argv[1],"--rgb565");
     lv_init();
     /* Verify full RU alphabet, Ё/ё and required symbols are present in the real font. */
@@ -106,6 +125,21 @@ int main(int argc,char **argv) {
     lv_slider_set_value(override,100,LV_ANIM_OFF);
     lv_obj_send_event(override,LV_EVENT_VALUE_CHANGED,NULL);dashboard_update();
     assert(dashboard_snapshot().feed==180);
+    assert(dashboard_set_view(VIEW_WIFI));dashboard_update();
+    check_dashboard_layout(root);save_frame("wifi");
+    press(root,S_WIFI_SCAN); /* Host backend cannot scan or connect. */
+    assert(has_label(root,tr(NULL,S_WIFI_REJECTED)));
+    unsigned skip=0;lv_obj_t *wifi_keyboard=find_class(root,&lv_keyboard_class,&skip);
+    assert(wifi_keyboard);
+    lv_obj_t *wifi_parent=lv_obj_get_parent(wifi_keyboard);skip=1;
+    lv_obj_t *wifi_password=find_class(wifi_parent,&lv_textarea_class,&skip);assert(wifi_password);
+    lv_textarea_set_text(wifi_password,"testonly123");
+    lv_obj_send_event(wifi_password,LV_EVENT_FOCUSED,NULL);
+    assert(!lv_obj_has_flag(wifi_keyboard,LV_OBJ_FLAG_HIDDEN));
+    save_frame("wifi-keyboard");
+    assert(dashboard_set_view(VIEW_HOME));dashboard_update();
+    assert(!*lv_textarea_get_text(wifi_password));
+    assert(lv_obj_has_flag(wifi_keyboard,LV_OBJ_FLAG_HIDDEN));
     lv_obj_t *step=NULL, *ack=NULL;
     for(unsigned i=0;i<lv_obj_get_child_count(root);i++) {
         lv_obj_t *child=lv_obj_get_child(root,i);

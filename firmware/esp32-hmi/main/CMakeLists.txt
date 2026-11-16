@@ -5,8 +5,8 @@ if(CONFIG_TV4_BOARD_REV12)
     endif()
     list(APPEND board_sources "../board/rev12.c")
 endif()
-idf_component_register(SRCS ${board_sources} "main.c" "../core/model.c" "../core/journal.c" "../core/tools.c" "../core/strings.c"
+idf_component_register(SRCS ${board_sources} "main.c" "../network/wifi_service.c" "../ui/wifi_view.c" "../core/model.c" "../core/journal.c" "../core/tools.c" "../core/strings.c"
  "../ui/dashboard.c" "../ui/tools_view.c" "../assets/tv4_icons.c" "../assets/tv4_lathe.c" "../assets/tv4_button_12.c" "../assets/tv4_bold_24.c" "../assets/tv4_ru_12.c" "../assets/tv4_ru_14.c" "../assets/tv4_ru_20.c" "../assets/tv4_digits_36.c"
- INCLUDE_DIRS "." "../core" "../ui" "../board" REQUIRES lvgl esp_timer esp_lcd esp_driver_gpio esp_driver_i2c)
+ INCLUDE_DIRS "." "../core" "../ui" "../board" "../network" REQUIRES lvgl esp_timer esp_lcd esp_driver_gpio esp_driver_i2c esp_wifi esp_netif esp_event nvs_flash)
 # lv_font_conv resources use the short LVGL include with managed IDF components.
 target_compile_definitions(${COMPONENT_LIB} PRIVATE LV_LVGL_H_INCLUDE_SIMPLE=1)

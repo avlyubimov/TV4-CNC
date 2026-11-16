@@ -1,6 +1,7 @@
 #include "sdkconfig.h"
 #include <inttypes.h>
 #include "dashboard.h"
+#include "wifi_service.h"
 #include "esp_log.h"
 #include "esp_timer.h"
 #include "freertos/FreeRTOS.h"
@@ -63,6 +64,9 @@ void app_main(void) {
     lv_indev_set_display(input,display);
 #endif
     dashboard_create();
+#if CONFIG_TV4_BOARD_REV12
+    if(!wifi_service_start()) ESP_LOGE(TAG,"Wi-Fi task creation failed");
+#endif
 #if CONFIG_TV4_BOARD_REV12
     /* First complete frame precedes backlight activation. */
     lv_refr_now(display);

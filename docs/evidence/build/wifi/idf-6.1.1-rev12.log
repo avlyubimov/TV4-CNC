@@ -1,0 +1,93 @@
+Checking "python3" ...
+Python 3.14.4
+"python3" has been detected
+Activating ESP-IDF 6.1
+Setting IDF_PATH to '/home/avlyubimov/.espressif/v6.1.1/esp-idf'.
+* Checking python version ... 3.14.4
+* Checking python dependencies ... OK
+* Deactivating the current ESP-IDF environment (if any) ... OK
+* Establishing a new ESP-IDF environment ... OK
+* Identifying shell ... bash
+* Detecting outdated tools in system ... Found tools that are not used by active ESP-IDF version.
+For removing old versions of shims, python, components use command 'python /home/avlyubimov/.espressif/v6.1.1/esp-idf/tools/idf_tools.py uninstall'
+To free up even more space, remove installation packages of those tools.
+Use option python /home/avlyubimov/.espressif/v6.1.1/esp-idf/tools/idf_tools.py uninstall --remove-archives.
+* Shell completion ... Autocompletion code generated
+
+Done! You can now compile ESP-IDF projects.
+Go to the project directory and run:
+
+  idf.py build
+[1/10] Performing build step for 'bootloader'
+[1/1] cd /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/idf611-compat/build-idf-6.1.1-rev12/bootloader && /home/avlyubimov/.espressif/python_env/idf6.1_py3.14_env/bin/python /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/partition_table/check_sizes.py --offset 0x8000 bootloader 0x0 /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/idf611-compat/build-idf-6.1.1-rev12/bootloader/bootloader.bin
+Bootloader binary size 0x50b0 bytes. 0x2f50 bytes (37%) free.
+[2/10] No install step for 'bootloader'
+[3/10] Completed 'bootloader'
+[4/10] Building C object esp-idf/main/CMakeFiles/__idf_main.dir/__/network/wifi_service.c.obj
+[5/10] Building C object esp-idf/main/CMakeFiles/__idf_main.dir/__/ui/wifi_view.c.obj
+[6/10] Linking C static library esp-idf/main/libmain.a
+[7/10] Generating esp-idf/esp_system/ld/sections.ld
+Skipping linker script generation, section names unchanged
+[8/10] Linking CXX executable tv4_hmi.elf
+[9/10] Generating binary image from built executable
+esptool v5.6.0
+Creating ESP32-S3 image...
+Merged 3 ELF sections.
+Successfully created ESP32-S3 image.
+Generated /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/idf611-compat/build-idf-6.1.1-rev12/tv4_hmi.bin
+[10/10] cd /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/idf611-compat/build-idf-6.1.1-rev12 && /home/avlyubimov/.espressif/python_env/idf6.1_py3.14_env/bin/python /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/partition_table/check_sizes.py --offset 0x8000 partition --type app /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/idf611-compat/build-idf-6.1.1-rev12/partition_table/partition-table.bin /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/idf611-compat/build-idf-6.1.1-rev12/tv4_hmi.bin
+tv4_hmi.bin binary size 0x145010 bytes. Smallest app partition is 0x200000 bytes. 0xbaff0 bytes (37%) free.
+Executing action: all (aliases: build)
+Running ninja in directory /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/idf611-compat/build-idf-6.1.1-rev12
+Executing "ninja all"...
+
+Project build complete. To flash, run:
+ idf.py flash
+or
+ idf.py -p PORT flash
+or
+ python -m esptool --chip esp32s3 -b 460800 --before default-reset --after hard-reset write-flash --flash-mode dio --flash-size 16MB --flash-freq 80m 0x0 build-idf-6.1.1-rev12/bootloader/bootloader.bin 0x8000 build-idf-6.1.1-rev12/partition_table/partition-table.bin 0x10000 build-idf-6.1.1-rev12/tv4_hmi.bin
+or from the "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/idf611-compat/build-idf-6.1.1-rev12" directory
+ python -m esptool --chip esp32s3 -b 460800 --before default-reset --after hard-reset write-flash "@flash_args"
+{
+  "profile": "rev12",
+  "sdk": "6.1.1",
+  "target": "esp32s3",
+  "flash_bytes": 16777216,
+  "psram": "octal 80MHz",
+  "images": {
+    "tv4_hmi.bin": {
+      "bytes": 1331216,
+      "sha256": "f2cb1a0d0fc69547959519f79f008d9022afe02e28b84a95aabe9b9b93e01f0f"
+    },
+    "bootloader/bootloader.bin": {
+      "bytes": 20656,
+      "sha256": "65c5812b6c05f63e442da2cd8115fe2e80e2c44207c72516f4416ccc5a18276f"
+    }
+  },
+  "partitions": [
+    {
+      "kind": 1,
+      "subtype": 2,
+      "address": 36864,
+      "size": 24576,
+      "label": "nvs"
+    },
+    {
+      "kind": 1,
+      "subtype": 1,
+      "address": 61440,
+      "size": 4096,
+      "label": "phy_init"
+    },
+    {
+      "kind": 0,
+      "subtype": 0,
+      "address": 65536,
+      "size": 2097152,
+      "label": "factory"
+    }
+  ],
+  "device_access": false,
+  "physical_performance": "not measured"
+}

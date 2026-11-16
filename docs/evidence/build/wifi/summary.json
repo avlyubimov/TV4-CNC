@@ -1,0 +1,170 @@
+[
+  {
+    "profile": "rev12",
+    "sdk": "6.1.1",
+    "target": "esp32s3",
+    "flash_bytes": 16777216,
+    "psram": "octal 80MHz",
+    "images": {
+      "tv4_hmi.bin": {
+        "bytes": 1331216,
+        "sha256": "f2cb1a0d0fc69547959519f79f008d9022afe02e28b84a95aabe9b9b93e01f0f"
+      },
+      "bootloader/bootloader.bin": {
+        "bytes": 20656,
+        "sha256": "65c5812b6c05f63e442da2cd8115fe2e80e2c44207c72516f4416ccc5a18276f"
+      }
+    },
+    "partitions": [
+      {
+        "kind": 1,
+        "subtype": 2,
+        "address": 36864,
+        "size": 24576,
+        "label": "nvs"
+      },
+      {
+        "kind": 1,
+        "subtype": 1,
+        "address": 61440,
+        "size": 4096,
+        "label": "phy_init"
+      },
+      {
+        "kind": 0,
+        "subtype": 0,
+        "address": 65536,
+        "size": 2097152,
+        "label": "factory"
+      }
+    ],
+    "device_access": false,
+    "physical_performance": "not measured"
+  },
+  {
+    "profile": "headless",
+    "sdk": "6.1.1",
+    "target": "esp32s3",
+    "flash_bytes": 16777216,
+    "psram": "disabled",
+    "images": {
+      "tv4_hmi.bin": {
+        "bytes": 626512,
+        "sha256": "5ea93cb0124c826eef03f1a88c964828663af3583a004efe11f62fbe0581c616"
+      },
+      "bootloader/bootloader.bin": {
+        "bytes": 20656,
+        "sha256": "65c7590e70cf9b65b0bafd11acf26ebaaa8b75deb690b7b073dbc34f855e48f0"
+      }
+    },
+    "partitions": [
+      {
+        "kind": 1,
+        "subtype": 2,
+        "address": 36864,
+        "size": 24576,
+        "label": "nvs"
+      },
+      {
+        "kind": 1,
+        "subtype": 1,
+        "address": 61440,
+        "size": 4096,
+        "label": "phy_init"
+      },
+      {
+        "kind": 0,
+        "subtype": 0,
+        "address": 65536,
+        "size": 2097152,
+        "label": "factory"
+      }
+    ],
+    "device_access": false,
+    "physical_performance": "not measured"
+  },
+  {
+    "profile": "rev12",
+    "sdk": "5.3.2",
+    "target": "esp32s3",
+    "flash_bytes": 16777216,
+    "psram": "octal 80MHz",
+    "images": {
+      "tv4_hmi.bin": {
+        "bytes": 1278448,
+        "sha256": "e1fdaca21deb4fe99844c43d3148c37e1c93c9a35fc2392668864194fc0e2b41"
+      },
+      "bootloader/bootloader.bin": {
+        "bytes": 21648,
+        "sha256": "175e267b360e2b2dd38817e45d6b454978cadbb65076d25899da02789066a7d6"
+      }
+    },
+    "partitions": [
+      {
+        "kind": 1,
+        "subtype": 2,
+        "address": 36864,
+        "size": 24576,
+        "label": "nvs"
+      },
+      {
+        "kind": 1,
+        "subtype": 1,
+        "address": 61440,
+        "size": 4096,
+        "label": "phy_init"
+      },
+      {
+        "kind": 0,
+        "subtype": 0,
+        "address": 65536,
+        "size": 2097152,
+        "label": "factory"
+      }
+    ],
+    "device_access": false,
+    "physical_performance": "not measured"
+  },
+  {
+    "profile": "headless",
+    "sdk": "5.3.2",
+    "target": "esp32s3",
+    "flash_bytes": 16777216,
+    "psram": "disabled",
+    "images": {
+      "tv4_hmi.bin": {
+        "bytes": 676336,
+        "sha256": "f748f68b8547bb823fec14c739e73701054ab24d68aca7ebf8767a8486a9d1b6"
+      },
+      "bootloader/bootloader.bin": {
+        "bytes": 21648,
+        "sha256": "4d41bb22d22f646ba3956048bddc4adf603e2c43191d7c0d26cd02cb6fe818ce"
+      }
+    },
+    "partitions": [
+      {
+        "kind": 1,
+        "subtype": 2,
+        "address": 36864,
+        "size": 24576,
+        "label": "nvs"
+      },
+      {
+        "kind": 1,
+        "subtype": 1,
+        "address": 61440,
+        "size": 4096,
+        "label": "phy_init"
+      },
+      {
+        "kind": 0,
+        "subtype": 0,
+        "address": 65536,
+        "size": 2097152,
+        "label": "factory"
+      }
+    ],
+    "device_access": false,
+    "physical_performance": "not measured"
+  }
+]

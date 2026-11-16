@@ -2,6 +2,7 @@
 #include "model.h"
 #include "strings.h"
 #include "tools_view.h"
+#include "wifi_view.h"
 #include <stdint.h>
 #include <stdio.h>
 #ifdef ESP_PLATFORM
@@ -13,7 +14,7 @@ static model_t model, rendered;
 static bool view_valid;
 static dashboard_view_t view, pending_view;
 static bool view_requested;
-static lv_obj_t *home_objects[96], *navigation[6], *diag_panel, *log_panel, *tools_panel;
+static lv_obj_t *home_objects[96], *navigation[6], *diag_panel, *log_panel, *tools_panel, *wifi_panel;
 static lv_obj_t *home_tool_id,*home_tool_name,*home_tool_code,*home_tool_radius;
 static unsigned home_count, log_page;
 static lv_obj_t *diag_state, *diag_fault, *diag_channel, *diag_frames, *diag_heap, *diag_latency;
@@ -157,7 +158,7 @@ static void nav_event(lv_event_t *event) {
     dashboard_set_view((dashboard_view_t)(uintptr_t)lv_event_get_user_data(event));
 }
 bool dashboard_set_view(dashboard_view_t requested) {
-    if(requested<VIEW_HOME || requested>VIEW_TOOLS) return false;
+    if(requested<VIEW_HOME || requested>VIEW_WIFI) return false;
     pending_view=requested; view_requested=true; return true;
 }
 dashboard_view_t dashboard_get_view(void) { return view; }
@@ -177,8 +178,11 @@ static void apply_view(void) {
     if(view==VIEW_DIAGNOSTICS) lv_obj_remove_flag(diag_panel,LV_OBJ_FLAG_HIDDEN);
     if(view==VIEW_LOG) lv_obj_remove_flag(log_panel,LV_OBJ_FLAG_HIDDEN);
     if(view==VIEW_TOOLS) lv_obj_remove_flag(tools_panel,LV_OBJ_FLAG_HIDDEN);
+    lv_obj_add_flag(wifi_panel,LV_OBJ_FLAG_HIDDEN);
+    if(view==VIEW_WIFI) lv_obj_remove_flag(wifi_panel,LV_OBJ_FLAG_HIDDEN);
+    else wifi_view_hide();
     for(unsigned i=0;i<6;i++) {
-        bool selected=(i==0 && view==VIEW_HOME)||(i==4 && view==VIEW_DIAGNOSTICS)||(i==5 && view==VIEW_LOG)||(i==2 && view==VIEW_TOOLS);
+        bool selected=(i==0 && view==VIEW_HOME)||(i==4 && view==VIEW_DIAGNOSTICS)||(i==5 && view==VIEW_LOG)||(i==2 && view==VIEW_TOOLS)||(i==3 && view==VIEW_WIFI);
         lv_obj_set_style_bg_opa(navigation[i],selected?LV_OPA_COVER:LV_OPA_TRANSP,0);
         lv_obj_set_style_border_opa(navigation[i],selected?LV_OPA_COVER:LV_OPA_TRANSP,0);
         lv_obj_set_style_shadow_opa(navigation[i],selected?LV_OPA_50:LV_OPA_TRANSP,0);
@@ -230,6 +234,7 @@ static void create_views(lv_obj_t *root) {
     lv_obj_t *next=button(log_panel,S_NEXT,-1,577,298,112,36,false);
     lv_obj_add_flag(next,LV_OBJ_FLAG_CLICKABLE);lv_obj_add_event_cb(next,page_event,LV_EVENT_CLICKED,(void *)1);
     log_page_label=label(log_panel,"",170,309,364);lv_obj_set_style_text_align(log_page_label,LV_TEXT_ALIGN_CENTER,0);
+    wifi_panel=wifi_view_create(root);lv_obj_add_flag(wifi_panel,LV_OBJ_FLAG_HIDDEN);
     tools_panel=tools_view_create(root);lv_obj_add_flag(tools_panel,LV_OBJ_FLAG_HIDDEN);
     lv_obj_add_flag(diag_panel,LV_OBJ_FLAG_HIDDEN);lv_obj_add_flag(log_panel,LV_OBJ_FLAG_HIDDEN);
 }
@@ -297,6 +302,8 @@ void dashboard_create(void) {
     lv_obj_t *can=panel(s,711,8,37,30,0x0b231c);
     muted(label(can,"CAN",5,8,32));
     lv_obj_t *gear=panel(s,760,7,32,32,0x23303c); icon(gear,&tv4_icon_gear,5,5,22);
+    lv_obj_add_flag(gear,LV_OBJ_FLAG_CLICKABLE);
+    lv_obj_add_event_cb(gear,nav_event,LV_EVENT_CLICKED,(void *)(uintptr_t)VIEW_WIFI);
     panel(s,0,48,79,355,0x121e28);
     string_id nav[]={S_HOME,S_PROGRAM,S_TOOLS,S_SETTINGS,S_DIAG,S_LOG};
     const lv_image_dsc_t *icons[]={&tv4_icon_home,&tv4_icon_code,&tv4_icon_tool,&tv4_icon_sliders,&tv4_icon_pulse,&tv4_icon_file};
@@ -309,9 +316,9 @@ void dashboard_create(void) {
         lv_obj_set_style_shadow_color(n,lv_color_hex(0x009fff),0);
         lv_obj_t *t=lv_obj_get_child(n,0);lv_obj_align(t,LV_ALIGN_BOTTOM_MID,0,-4);
         icon(n,icons[i],27,6,21);
-        if(i==0 || i==2 || i==4 || i==5) {
+        if(i==0 || i==2 || i==3 || i==4 || i==5) {
             lv_obj_add_flag(n,LV_OBJ_FLAG_CLICKABLE);
-            lv_obj_add_event_cb(n,nav_event,LV_EVENT_CLICKED,(void *)(uintptr_t)(i==0?VIEW_HOME:i==2?VIEW_TOOLS:i==4?VIEW_DIAGNOSTICS:VIEW_LOG));
+            lv_obj_add_event_cb(n,nav_event,LV_EVENT_CLICKED,(void *)(uintptr_t)(i==0?VIEW_HOME:i==2?VIEW_TOOLS:i==3?VIEW_WIFI:i==4?VIEW_DIAGNOSTICS:VIEW_LOG));
         }
         if(i) {
             lv_obj_set_style_bg_opa(n,LV_OPA_TRANSP,0);lv_obj_set_style_border_opa(n,LV_OPA_TRANSP,0);
@@ -446,6 +453,7 @@ void dashboard_update(void) {
     if(pending_fault!=EV_STEP) { model_event(&model,pending_fault); pending_fault=EV_STEP; }
     if(override_pending) { model_set_feed_override(&model,pending_override); override_pending=false; view_valid=false; }
     tools_view_update(&model);
+    wifi_view_update();
     uint32_t elapsed=lv_tick_elaps(log_ms);
     if(elapsed>=1000) {
         free_bytes=0;
