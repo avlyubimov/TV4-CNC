@@ -26,8 +26,19 @@ static void check_glyphs(const char *text,const lv_font_t *font) {
         assert(found && !glyph.is_placeholder);
     }
 }
+/* Compare visible ink inside scroll containers, without transform rounding. */
+static bool clip_to_parents(lv_obj_t *obj,lv_area_t *area) {
+    for(lv_obj_t *p=lv_obj_get_parent(obj);p;p=lv_obj_get_parent(p)) {
+        lv_area_t clip;lv_obj_get_coords(p,&clip);
+        if(area->x1<clip.x1)area->x1=clip.x1;
+        if(area->y1<clip.y1)area->y1=clip.y1;
+        if(area->x2>clip.x2)area->x2=clip.x2;
+        if(area->y2>clip.y2)area->y2=clip.y2;
+    }
+    return area->x1<=area->x2 && area->y1<=area->y2;
+}
 static void collect(lv_obj_t *obj) {
-    if(lv_obj_has_flag(obj,LV_OBJ_FLAG_HIDDEN)) return;
+    if(!lv_obj_is_visible(obj)) return;
     if(lv_obj_check_type(obj,&lv_label_class)) {
         const char *text=lv_label_get_text(obj);
         if(*text) {
@@ -37,6 +48,7 @@ static void collect(lv_obj_t *obj) {
                 lv_obj_get_style_text_letter_space(obj,0),lv_obj_get_style_text_line_space(obj,0),
                 LV_COORD_MAX,LV_TEXT_FLAG_NONE);
             lv_area_t box,parent; lv_obj_get_coords(obj,&box);
+            if(lv_label_get_long_mode(obj)==LV_LABEL_LONG_DOT && size.x>lv_obj_get_width(obj))size.x=lv_obj_get_width(obj);
             if(size.x>lv_obj_get_width(obj)) fprintf(stderr,"Wrapped/clipped label: %s\n",text);
             assert(size.x<=lv_obj_get_width(obj));
             lv_text_align_t align=lv_obj_get_style_text_align(obj,0);
@@ -48,6 +60,7 @@ static void collect(lv_obj_t *obj) {
                 fprintf(stderr,"Label outside parent: %s\n",text);
             assert(box.x1>=parent.x1 && box.y1>=parent.y1 && box.x2<=parent.x2 && box.y2<=parent.y2);
             assert(label_count<128);
+            if(!clip_to_parents(obj,&box))return;
             labels[label_count].obj=obj; labels[label_count].ink=box;
             labels[label_count++].text=text;
         }
@@ -62,6 +75,7 @@ void check_dashboard_layout(lv_obj_t *root) {
     for(unsigned i=0;i<button_count;i++) for(unsigned j=i+1;j<button_count;j++) {
         if(ancestor(buttons[i],buttons[j]) || ancestor(buttons[j],buttons[i])) continue;
         lv_area_t a,b; lv_obj_get_coords(buttons[i],&a); lv_obj_get_coords(buttons[j],&b);
+        if(!clip_to_parents(buttons[i],&a) || !clip_to_parents(buttons[j],&b))continue;
         if(intersects(a,b)) { fputs("Overlapping buttons\n",stderr); assert(false); }
     }
     for(unsigned i=0;i<label_count;i++) {
@@ -74,6 +88,7 @@ void check_dashboard_layout(lv_obj_t *root) {
         for(unsigned j=0;j<button_count;j++) {
             if(ancestor(buttons[j],labels[i].obj)) continue;
             lv_area_t box; lv_obj_get_coords(buttons[j],&box);
+            if(!clip_to_parents(buttons[j],&box))continue;
             if(intersects(labels[i].ink,box)) {
                 fprintf(stderr,"Button covers text: %s\n",labels[i].text); assert(false);
             }

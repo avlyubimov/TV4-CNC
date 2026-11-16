@@ -125,10 +125,23 @@ int main(int argc,char **argv) {
     lv_slider_set_value(override,100,LV_ANIM_OFF);
     lv_obj_send_event(override,LV_EVENT_VALUE_CHANGED,NULL);dashboard_update();
     assert(dashboard_snapshot().feed==180);
+    wifi_snapshot_t fixture={.state=NET_ONLINE,.revision=1,.count=8,.saved_count=2};
+    strcpy(fixture.active_ssid,"TEST_HOME");strcpy(fixture.ip,"192.0.2.10");
+    strcpy(fixture.saved_ssids[0],"TEST_HOME");strcpy(fixture.saved_ssids[1],"TEST_OFFLINE");
+    for(unsigned i=0;i<fixture.count;i++) {
+        snprintf(fixture.ssids[i],33,"TEST_NETWORK_%u",i);fixture.rssi[i]=(int8_t)(-35-(int)i*5);fixture.secured[i]=true;
+    }
+    strcpy(fixture.ssids[0],"TEST_HOME");wifi_service_host_fixture(&fixture);
     assert(dashboard_set_view(VIEW_WIFI));dashboard_update();
     check_dashboard_layout(root);save_frame("wifi");
     press(root,S_WIFI_SCAN); /* Host backend cannot scan or connect. */
     assert(has_label(root,tr(NULL,S_WIFI_REJECTED)));
+    /* Saved entries are selectable; host still refuses real network activity. */
+    assert(has_label(root,"TEST_HOME\nПодключено · -35 dBm"));
+    lv_obj_t *saved_row=find_button(root,"TEST_OFFLINE\nВне зоны сети");assert(saved_row);
+    lv_obj_scroll_to_view(saved_row,LV_ANIM_OFF);check_dashboard_layout(root);
+    save_frame("wifi-list-bottom");
+    press_text(root,"TEST_OFFLINE\nВне зоны сети");
     unsigned skip=0;lv_obj_t *wifi_keyboard=find_class(root,&lv_keyboard_class,&skip);
     assert(wifi_keyboard);
     lv_obj_t *wifi_parent=lv_obj_get_parent(wifi_keyboard);skip=1;
@@ -140,6 +153,7 @@ int main(int argc,char **argv) {
     assert(dashboard_set_view(VIEW_HOME));dashboard_update();
     assert(!*lv_textarea_get_text(wifi_password));
     assert(lv_obj_has_flag(wifi_keyboard,LV_OBJ_FLAG_HIDDEN));
+    wifi_service_host_fixture(NULL);
     lv_obj_t *step=NULL, *ack=NULL;
     for(unsigned i=0;i<lv_obj_get_child_count(root);i++) {
         lv_obj_t *child=lv_obj_get_child(root,i);
