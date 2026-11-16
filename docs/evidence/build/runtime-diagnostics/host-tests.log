@@ -1,0 +1,13 @@
+Test project /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/idf611-compat/build-host
+    Start 1: build_validation
+1/4 Test #1: build_validation .................   Passed    0.03 sec
+    Start 2: core
+2/4 Test #2: core .............................   Passed    0.00 sec
+    Start 3: render
+3/4 Test #3: render ...........................   Passed    0.05 sec
+    Start 4: render_rgb565
+4/4 Test #4: render_rgb565 ....................   Passed    0.05 sec
+
+100% tests passed, 0 tests failed out of 4
+
+Total Test time (real) =   0.13 sec

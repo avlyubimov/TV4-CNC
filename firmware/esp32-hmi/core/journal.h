@@ -3,7 +3,7 @@
 #include <stdint.h>
 #define JOURNAL_CAPACITY 32u
 typedef enum { F_NONE, F_EMERGENCY, F_PROTOCOL, F_QUEUE, F_TOUCH, F_DISPLAY, F_INVALID } fault_t;
-typedef enum { J_BOOT, J_STEP, J_STOP, J_DISCONNECT, J_CONNECT, J_FAULT, J_ACK, J_INCREMENT, J_REJECTED, J_TIMEOUT, J_RESTART, J_TOOL_SAVE, J_TOOL_SELECT } journal_kind_t;
+typedef enum { J_BOOT, J_STEP, J_STOP, J_DISCONNECT, J_CONNECT, J_FAULT, J_ACK, J_INCREMENT, J_REJECTED, J_TIMEOUT, J_RESTART, J_TOOL_SAVE, J_TOOL_SELECT, J_RPM, J_OVERRIDE } journal_kind_t;
 typedef struct { uint32_t number, ms; journal_kind_t kind; fault_t fault; } journal_entry_t;
 typedef struct {
     journal_entry_t entries[JOURNAL_CAPACITY];

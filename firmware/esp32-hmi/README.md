@@ -36,7 +36,7 @@ SDK из locks/. Каждый профиль имеет собственный s
 ## Память и устройства
 
 Все новые сборки нацелены на Flash **16 МБ**, соответствующую сохранённому
-заводскому бэкапу. Сохранена single factory app 1 МиБ; остальная flash пока не
+заводскому бэкапу. Для Wi-Fi single factory app увеличен до 2 МиБ по адресу 0x10000; остальная flash пока не
 размечена под программы/файлы. Инспектор проверяет sdkconfig, заголовки app и
 bootloader, ESP32-S3 chip id, размеры разделов и заполнение app partition.
 Rev12 требует octal PSRAM 80 MHz; headless не инициализирует PSRAM.
@@ -82,3 +82,6 @@ UI читает статическую очередь длиной 1 без I²C
 Шрифты DejaVu с Ё/ё, лицензия в assets/FONT-LICENSE.txt. Процедурные значки:
 tools/generate_icons.py; RGB565 иллюстрация: tools/prepare_photo.py и
 assets/IMAGE-PROVENANCE.md. Исходный PNG не включается в бинарник.
+
+Настройка сети: [Wi-Fi](../../docs/WIFI.md). Новый Wi-Fi build требует таблицу
+разделов с app 2 МиБ. Старый sdkconfig с app 1 МиБ нужно перегенерировать.

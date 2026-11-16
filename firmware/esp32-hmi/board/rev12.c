@@ -96,6 +96,7 @@ esp_err_t board_rev12_init(esp_lcd_panel_handle_t *panel) {
         .flags.fb_in_psram=1};
     ESP_RETURN_ON_ERROR(esp_lcd_new_rgb_panel(&rgb,panel),TAG,"RGB create");
     ESP_RETURN_ON_ERROR(esp_lcd_panel_init(*panel),TAG,"RGB init");
+    ESP_LOGI(TAG,"RGB initialized: 800x480 RGB565, PCLK=16MHz, one PSRAM framebuffer");
     esp_lcd_panel_io_i2c_config_t io_cfg=ESP_LCD_TOUCH_IO_I2C_GT911_CONFIG();
     io_cfg.scl_speed_hz=400000;
 #if ESP_IDF_VERSION >= ESP_IDF_VERSION_VAL(6, 0, 0)
@@ -106,6 +107,7 @@ esp_err_t board_rev12_init(esp_lcd_panel_handle_t *panel) {
     static esp_lcd_touch_io_gt911_config_t gt911; gt911.dev_addr=io_cfg.dev_addr;
     esp_lcd_touch_config_t config={.x_max=800,.y_max=480,.rst_gpio_num=-1,.int_gpio_num=-1,.driver_data=&gt911};
     ESP_RETURN_ON_ERROR(esp_lcd_touch_new_i2c_gt911(io,&config,&touch),TAG,"GT911 create");
+    ESP_LOGI(TAG,"GT911 initialized: address=0x%02x, poll=20ms",(unsigned)io_cfg.dev_addr);
     samples=xQueueCreateStatic(1,sizeof(board_touch_t),queue_storage,&queue_state);
     if(!samples || xTaskCreate(poll_touch,"tv4_touch",4096,NULL,3,NULL)!=pdPASS) return ESP_ERR_NO_MEM;
     return ESP_OK;
