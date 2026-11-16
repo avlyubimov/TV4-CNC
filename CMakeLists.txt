@@ -7,6 +7,8 @@ add_library(tv4_core ${HMI}/core/model.c ${HMI}/core/journal.c ${HMI}/core/tools
 target_include_directories(tv4_core PUBLIC ${HMI}/core)
 target_compile_options(tv4_core PRIVATE -Wall -Wextra -Werror)
 enable_testing()
+find_package(Python3 REQUIRED COMPONENTS Interpreter)
+add_test(NAME build_validation COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/tests/build_validation_tests.py)
 add_executable(core_tests tests/core_tests.c)
 target_link_libraries(core_tests PRIVATE tv4_core)
 target_compile_options(core_tests PRIVATE -Wall -Wextra -Werror -UNDEBUG)
