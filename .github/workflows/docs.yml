@@ -1,0 +1,17 @@
+name: Documentation checks
+on:
+  push:
+  pull_request:
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify mandatory project documents
+        run: |
+          set -eu
+          test -s AGENTS.md
+          test -s README.md
+          test -s docs/CODEX_TASK_001.md
+          test -s docs/ARCHITECTURE.md
+          echo 'Documentation scaffold present'

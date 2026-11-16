@@ -1,0 +1,9 @@
+menu "TV4 simulation HMI"
+config TV4_BOARD_REV12
+    bool "Enable Waveshare ESP32-S3 Touch LCD 7 Rev 1.2 display/touch (bench only)"
+    default n
+    help
+        Initializes display/touch only, never CAN or machine outputs.
+        Enable only after verifying PCB revision and backing up factory firmware.
+        The default build is a headless simulation and initializes no peripherals.
+endmenu

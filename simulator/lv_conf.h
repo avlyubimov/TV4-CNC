@@ -1,0 +1,12 @@
+#pragma once
+#define LV_COLOR_DEPTH 32
+#define LV_USE_OS LV_OS_NONE
+#define LV_USE_LOG 1
+#define LV_LOG_LEVEL LV_LOG_LEVEL_WARN
+#define LV_FONT_MONTSERRAT_14 1
+#define LV_USE_SYSMON 0
+#define LV_USE_DEMO_WIDGETS 0
+
+#define LV_CONF_H
+#define LV_MEM_SIZE (256 * 1024U)
+#define LV_LOG_PRINTF 1

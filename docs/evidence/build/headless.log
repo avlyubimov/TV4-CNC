@@ -1,0 +1,75 @@
+Detecting the Python interpreter
+Checking "python3" ...
+Python 3.10.12
+"python3" has been detected
+Checking Python compatibility
+Checking other ESP-IDF version.
+Adding ESP-IDF tools to PATH...
+Checking if Python packages are up to date...
+Python requirements are satisfied.
+Requirement files:
+ - /opt/esp/idf/tools/requirements/requirements.core.txt
+Python being checked: /opt/esp/python_env/idf5.3_py3.10_env/bin/python
+Added the following directories to PATH:
+  /opt/esp/idf/components/espcoredump
+  /opt/esp/idf/components/partition_table
+  /opt/esp/idf/components/app_update
+  /opt/esp/tools/xtensa-esp-elf-gdb/14.2_20240403/xtensa-esp-elf-gdb/bin
+  /opt/esp/tools/riscv32-esp-elf-gdb/14.2_20240403/riscv32-esp-elf-gdb/bin
+  /opt/esp/tools/xtensa-esp-elf/esp-13.2.0_20240530/xtensa-esp-elf/bin
+  /opt/esp/tools/riscv32-esp-elf/esp-13.2.0_20240530/riscv32-esp-elf/bin
+  /opt/esp/tools/esp32ulp-elf/2.38_20240113/esp32ulp-elf/bin
+  /opt/esp/tools/cmake/3.30.2/bin
+  /opt/esp/tools/openocd-esp32/v0.12.0-esp32-20241016/openocd-esp32/bin
+  /opt/esp/tools/qemu-xtensa/esp_develop_9.0.0_20240606/qemu/bin
+  /opt/esp/tools/qemu-riscv32/esp_develop_9.0.0_20240606/qemu/bin
+  /opt/esp/tools/xtensa-esp-elf-gdb/14.2_20240403/xtensa-esp-elf-gdb/bin
+  /opt/esp/tools/riscv32-esp-elf-gdb/14.2_20240403/riscv32-esp-elf-gdb/bin
+  /opt/esp/tools/xtensa-esp-elf/esp-13.2.0_20240530/xtensa-esp-elf/bin
+  /opt/esp/tools/riscv32-esp-elf/esp-13.2.0_20240530/riscv32-esp-elf/bin
+  /opt/esp/tools/esp32ulp-elf/2.38_20240113/esp32ulp-elf/bin
+  /opt/esp/tools/cmake/3.30.2/bin
+  /opt/esp/tools/openocd-esp32/v0.12.0-esp32-20241016/openocd-esp32/bin
+  /opt/esp/tools/qemu-xtensa/esp_develop_9.0.0_20240606/qemu/bin
+  /opt/esp/tools/qemu-riscv32/esp_develop_9.0.0_20240606/qemu/bin
+  /opt/esp/python_env/idf5.3_py3.10_env/bin
+  /opt/esp/idf/tools
+Done! You can now compile ESP-IDF projects.
+Go to the project directory and run:
+
+  idf.py build
+
+Executing action: all (aliases: build)
+Running ninja in directory /project/build-idf-headless
+Executing "ninja all"...
+[1/14] Performing build step for 'bootloader'
+[1/1] cd /project/build-idf-headless/bootloader/esp-idf/esptool_py && /opt/esp/python_env/idf5.3_py3.10_env/bin/python /opt/esp/idf/components/partition_table/check_sizes.py --offset 0x8000 bootloader 0x0 /project/build-idf-headless/bootloader/bootloader.bin
+Bootloader binary size 0x5490 bytes. 0x2b70 bytes (34%) free.
+[2/14] No install step for 'bootloader'
+[3/14] Completed 'bootloader'
+[4/14] Building C object esp-idf/main/CMakeFiles/__idf_main.dir/__/core/strings.c.obj
+[5/14] Building C object esp-idf/main/CMakeFiles/__idf_main.dir/__/core/journal.c.obj
+[6/14] Building C object esp-idf/main/CMakeFiles/__idf_main.dir/__/core/tools.c.obj
+[7/14] Building C object esp-idf/main/CMakeFiles/__idf_main.dir/__/core/model.c.obj
+[8/14] Building C object esp-idf/main/CMakeFiles/__idf_main.dir/__/ui/tools_view.c.obj
+[9/14] Building C object esp-idf/main/CMakeFiles/__idf_main.dir/__/ui/dashboard.c.obj
+[10/14] Linking C static library esp-idf/main/libmain.a
+[11/14] Generating ld/sections.ld
+[12/14] Linking CXX executable tv4_hmi.elf
+[13/14] Generating binary image from built executable
+esptool.py v4.8.1
+Creating esp32s3 image...
+Merged 2 ELF sections
+Successfully created esp32s3 image.
+Generated /project/build-idf-headless/tv4_hmi.bin
+[14/14] cd /project/build-idf-headless/esp-idf/esptool_py && /opt/esp/python_env/idf5.3_py3.10_env/bin/python /opt/esp/idf/components/partition_table/check_sizes.py --offset 0x8000 partition --type app /project/build-idf-headless/partition_table/partition-table.bin /project/build-idf-headless/tv4_hmi.bin
+tv4_hmi.bin binary size 0xa3670 bytes. Smallest app partition is 0x100000 bytes. 0x5c990 bytes (36%) free.
+
+Project build complete. To flash, run:
+ idf.py flash
+or
+ idf.py -p PORT flash
+or
+ python -m esptool --chip esp32s3 -b 460800 --before default_reset --after hard_reset write_flash --flash_mode dio --flash_size 2MB --flash_freq 80m 0x0 ../../build-idf-headless/bootloader/bootloader.bin 0x8000 ../../build-idf-headless/partition_table/partition-table.bin 0x10000 ../../build-idf-headless/tv4_hmi.bin
+or from the "/project/build-idf-headless" directory
+ python -m esptool --chip esp32s3 -b 460800 --before default_reset --after hard_reset write_flash "@flash_args"
