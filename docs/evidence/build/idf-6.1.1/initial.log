@@ -1,0 +1,40 @@
+-- IDF_TARGET is not set, guessed 'esp32s3' from sdkconfig '/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/idf611-compat/firmware/esp32-hmi/sdkconfig.defaults'
+-- Found Git: /usr/bin/git (found version "2.53.0")
+-- Minimal build - OFF
+-- The C compiler identification is GNU 15.2.0
+-- The CXX compiler identification is GNU 15.2.0
+-- The ASM compiler identification is GNU
+-- Found assembler: /home/avlyubimov/.espressif/tools/xtensa-esp-elf/esp-15.2.0_20251204/xtensa-esp-elf/bin/xtensa-esp32s3-elf-gcc
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /home/avlyubimov/.espressif/tools/xtensa-esp-elf/esp-15.2.0_20251204/xtensa-esp-elf/bin/xtensa-esp32s3-elf-gcc - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /home/avlyubimov/.espressif/tools/xtensa-esp-elf/esp-15.2.0_20251204/xtensa-esp-elf/bin/xtensa-esp32s3-elf-g++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Building ESP-IDF components for target esp32s3
+NOTE: Current idf-component-manager default lock file version is 3.0.0, but found 2.0.0 in /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/idf611-compat/firmware/esp32-hmi/dependencies.lock. Recreating lock file with the current version.
+NOTE: Cannot establish a connection to the component registry. Skipping checks of dependency changes.
+NOTE: Updating lock file at /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/idf611-compat/firmware/esp32-hmi/dependencies.lock
+NOTE: Processing 4 dependencies:
+NOTE: [1/4] espressif/esp_lcd_touch (1.2.1)
+CMake Error at /home/avlyubimov/.espressif/v6.1.1/esp-idf/tools/cmake/build.cmake:707 (message):
+  ERROR: Cannot establish a connection to the component registry.  Are you
+  connected to the internet?
+
+  URL:
+  https://components-file.espressif.com/components/espressif/esp_lcd_touch.json
+
+Call Stack (most recent call first):
+  /home/avlyubimov/.espressif/v6.1.1/esp-idf/tools/cmake/project.cmake:868 (idf_build_process)
+  CMakeLists.txt:3 (project)
+
+
+-- Configuring incomplete, errors occurred!
+cmake failed with exit code 1, output of the command is in the /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/idf611-compat/firmware/esp32-hmi/build-idf-6.1.1-initial/log/idf_py_stderr_output_203 and /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/idf611-compat/firmware/esp32-hmi/build-idf-6.1.1-initial/log/idf_py_stdout_output_203
+Executing action: all (aliases: build)
+Running cmake in directory /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/idf611-compat/firmware/esp32-hmi/build-idf-6.1.1-initial
+Executing "cmake -G Ninja -B /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/idf611-compat/firmware/esp32-hmi/build-idf-6.1.1-initial -DPYTHON_DEPS_CHECKED=1 -DPYTHON=/home/avlyubimov/.espressif/python_env/idf6.1_py3.14_env/bin/python -DESP_PLATFORM=1 -DSDKCONFIG=/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/idf611-compat/firmware/esp32-hmi/build-idf-6.1.1-initial/sdkconfig -DCCACHE_ENABLE=False /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/idf611-compat/firmware/esp32-hmi"...

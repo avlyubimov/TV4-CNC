@@ -11,3 +11,6 @@ CONFIG_LV_USE_CLIB_SPRINTF=y
 # CONFIG_TV4_BOARD_REV12 is not set
 # Flash geometry and PSRAM are selected only by the bench board profile.
 CONFIG_ESP_MAIN_TASK_STACK_SIZE=16384
+
+# Verified local backup is 16 MiB; image/layout target requested for this board.
+CONFIG_ESPTOOLPY_FLASHSIZE_16MB=y

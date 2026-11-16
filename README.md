@@ -20,8 +20,9 @@ See [AGENTS.md](AGENTS.md), [architecture](docs/ARCHITECTURE.md), [roadmap](docs
 
 ## Status
 Simulation core and LVGL 9 host renderer implemented. Host tests are available.
-ESP-IDF 5.3.2 builds are now verified for headless and Rev 1.2 bench profiles.
-Physical device testing and flash backup remain unverified. See docs/BUILD_VALIDATION.md.
+ESP-IDF 6.1.1 (installed Ubuntu SDK) and 5.3.2 (fallback) build both headless and Rev 1.2 profiles with Flash 16 MB.
+The 16 MiB factory backup is complete and its SHA-256 has been verified. Physical testing of this HMI firmware is still pending.
+See [SDK compatibility](docs/IDF_611_COMPATIBILITY.md) and [backup status](docs/BACKUP_STATUS.md).
 See [implementation status](docs/IMPLEMENTATION.md) and [build instructions](firmware/esp32-hmi/README.md).
 
 ## Язык интерфейса

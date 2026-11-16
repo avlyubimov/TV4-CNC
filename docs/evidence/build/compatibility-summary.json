@@ -1,0 +1,178 @@
+{
+  "device_access": false,
+  "firmware_flashed": false,
+  "host_tests": {
+    "normal": "4/4 passed",
+    "asan_ubsan_lsan": "4/4 passed"
+  },
+  "builds": [
+    {
+      "profile": "headless",
+      "sdk": "5.3.2",
+      "target": "esp32s3",
+      "flash_bytes": 16777216,
+      "psram": "disabled",
+      "images": {
+        "tv4_hmi.bin": {
+          "bytes": 669296,
+          "sha256": "51eef19080b5426d435cb1b18bd733b44abced5e6d869c11efb780164bb2342b"
+        },
+        "bootloader/bootloader.bin": {
+          "bytes": 21648,
+          "sha256": "ed9c6f02fc7b819a996fa0d016506e80b77f9a20c232f7625f5e23a519f0fbd8"
+        }
+      },
+      "partitions": [
+        {
+          "kind": 1,
+          "subtype": 2,
+          "address": 36864,
+          "size": 24576,
+          "label": "nvs"
+        },
+        {
+          "kind": 1,
+          "subtype": 1,
+          "address": 61440,
+          "size": 4096,
+          "label": "phy_init"
+        },
+        {
+          "kind": 0,
+          "subtype": 0,
+          "address": 65536,
+          "size": 1048576,
+          "label": "factory"
+        }
+      ],
+      "device_access": false,
+      "physical_performance": "not measured"
+    },
+    {
+      "profile": "rev12",
+      "sdk": "5.3.2",
+      "target": "esp32s3",
+      "flash_bytes": 16777216,
+      "psram": "octal 80MHz",
+      "images": {
+        "tv4_hmi.bin": {
+          "bytes": 749088,
+          "sha256": "4f6b373ba7ba10012dc5dfa1cd30489fbe45f8a7ee1dfa07a8f7c75ce7595eef"
+        },
+        "bootloader/bootloader.bin": {
+          "bytes": 21648,
+          "sha256": "ed9c6f02fc7b819a996fa0d016506e80b77f9a20c232f7625f5e23a519f0fbd8"
+        }
+      },
+      "partitions": [
+        {
+          "kind": 1,
+          "subtype": 2,
+          "address": 36864,
+          "size": 24576,
+          "label": "nvs"
+        },
+        {
+          "kind": 1,
+          "subtype": 1,
+          "address": 61440,
+          "size": 4096,
+          "label": "phy_init"
+        },
+        {
+          "kind": 0,
+          "subtype": 0,
+          "address": 65536,
+          "size": 1048576,
+          "label": "factory"
+        }
+      ],
+      "device_access": false,
+      "physical_performance": "not measured"
+    },
+    {
+      "profile": "headless",
+      "sdk": "6.1.1",
+      "target": "esp32s3",
+      "flash_bytes": 16777216,
+      "psram": "disabled",
+      "images": {
+        "tv4_hmi.bin": {
+          "bytes": 619616,
+          "sha256": "fd29a0c5d31a17177443ebcc16aa6cfda2e43c8722b076b8fc579c7c787e42ed"
+        },
+        "bootloader/bootloader.bin": {
+          "bytes": 20656,
+          "sha256": "4c4ec7d4b659548d85a61361ee64a2889866c0aa84e059c4343ccb3e42757ff2"
+        }
+      },
+      "partitions": [
+        {
+          "kind": 1,
+          "subtype": 2,
+          "address": 36864,
+          "size": 24576,
+          "label": "nvs"
+        },
+        {
+          "kind": 1,
+          "subtype": 1,
+          "address": 61440,
+          "size": 4096,
+          "label": "phy_init"
+        },
+        {
+          "kind": 0,
+          "subtype": 0,
+          "address": 65536,
+          "size": 1048576,
+          "label": "factory"
+        }
+      ],
+      "device_access": false,
+      "physical_performance": "not measured"
+    },
+    {
+      "profile": "rev12",
+      "sdk": "6.1.1",
+      "target": "esp32s3",
+      "flash_bytes": 16777216,
+      "psram": "octal 80MHz",
+      "images": {
+        "tv4_hmi.bin": {
+          "bytes": 708592,
+          "sha256": "bd9ad3cc02caf56aae3e876327b96afda63ead7ccdc951a769429cdea7d803ca"
+        },
+        "bootloader/bootloader.bin": {
+          "bytes": 20656,
+          "sha256": "dc134e1e7f680b102a4c1c39367625456cb9736f7eb901d5b9b59b4a85b8b34e"
+        }
+      },
+      "partitions": [
+        {
+          "kind": 1,
+          "subtype": 2,
+          "address": 36864,
+          "size": 24576,
+          "label": "nvs"
+        },
+        {
+          "kind": 1,
+          "subtype": 1,
+          "address": 61440,
+          "size": 4096,
+          "label": "phy_init"
+        },
+        {
+          "kind": 0,
+          "subtype": 0,
+          "address": 65536,
+          "size": 1048576,
+          "label": "factory"
+        }
+      ],
+      "device_access": false,
+      "physical_performance": "not measured"
+    }
+  ]
+}
