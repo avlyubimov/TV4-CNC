@@ -1,4 +1,5 @@
 #include "sdkconfig.h"
+#include <inttypes.h>
 #include "dashboard.h"
 #include "esp_log.h"
 #include "esp_timer.h"
@@ -43,6 +44,9 @@ void app_main(void) {
 #else
     ESP_LOGW(TAG,"Headless simulation: no GPIO, display, touch or CAN initialized");
 #endif
+    ESP_LOGI(TAG,"Memory before UI: internal=%u PSRAM=%u bytes",
+        (unsigned)heap_caps_get_free_size(MALLOC_CAP_INTERNAL|MALLOC_CAP_8BIT),
+        (unsigned)heap_caps_get_total_size(MALLOC_CAP_SPIRAM));
     /* app_main is the sole LVGL owner for its entire lifetime. */
     lv_init(); lv_tick_set_cb(tick_ms);
     lv_display_t *display=lv_display_create(800,480);
@@ -68,17 +72,43 @@ void app_main(void) {
     uint32_t last_good_touch=tick_ms();
     bool touch_fault_logged=false;
 #endif
+    ESP_LOGI(TAG,"UI ready: LVGL %d.%d.%d, 800x480 RGB565, draw buffer=%u bytes",
+        LVGL_VERSION_MAJOR,LVGL_VERSION_MINOR,LVGL_VERSION_PATCH,(unsigned)bytes);
+    uint32_t last_report=tick_ms(),iterations=0;
+    int64_t max_work_us=0;
     for(;;) {
+        int64_t work_started=esp_timer_get_time();
 #if CONFIG_TV4_BOARD_REV12
         board_touch_t sample;
         uint32_t now=tick_ms();
         if(board_rev12_touch(&sample) && sample.valid && (uint32_t)(now-sample.ms)<100) last_good_touch=now;
         if((uint32_t)(now-last_good_touch)>=500) {
-            dashboard_post_event(EV_TOUCH_FAULT); /* Latches FAULT, never auto-acks. */
+            dashboard_post_event(EV_TOUCH_FAULT); /* Keep fault active until valid data resumes; never auto-ack. */
             if(!touch_fault_logged) { ESP_LOGE(TAG,"Touch data invalid/stale; UI fault latched"); touch_fault_logged=true; }
         }
 #endif
         dashboard_update(); lv_timer_handler();
+        int64_t work_us=esp_timer_get_time()-work_started;
+        if(work_us>max_work_us) max_work_us=work_us;
+        ++iterations;
+        uint32_t report_now=tick_ms();
+        if((uint32_t)(report_now-last_report)>=5000) {
+            /* Owner-task work duration excludes sleep and this infrequent log.
+               This is not scanout FPS or end-to-end touch latency. */
+            ESP_LOGI(TAG,"UI health: loops=%" PRIu32 " window_ms=%" PRIu32
+                " max_work_us=%" PRId64 " internal_free=%u internal_min=%u largest=%u PSRAM_free=%u stack_watermark=%u",
+                iterations,(uint32_t)(report_now-last_report),max_work_us,
+                (unsigned)heap_caps_get_free_size(MALLOC_CAP_INTERNAL|MALLOC_CAP_8BIT),
+                (unsigned)heap_caps_get_minimum_free_size(MALLOC_CAP_INTERNAL|MALLOC_CAP_8BIT),
+                (unsigned)heap_caps_get_largest_free_block(MALLOC_CAP_INTERNAL|MALLOC_CAP_8BIT),
+                (unsigned)heap_caps_get_free_size(MALLOC_CAP_SPIRAM),
+                (unsigned)uxTaskGetStackHighWaterMark(NULL));
+#if CONFIG_TV4_BOARD_REV12
+            ESP_LOGI(TAG,"Touch health: last_valid_age_ms=%" PRIu32 " fault_latched=%d",
+                (uint32_t)(report_now-last_good_touch),touch_fault_logged);
+#endif
+            last_report=report_now; iterations=0; max_work_us=0;
+        }
         vTaskDelay(pdMS_TO_TICKS(10));
     }
 }
