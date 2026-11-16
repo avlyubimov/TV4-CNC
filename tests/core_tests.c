@@ -84,5 +84,19 @@ int main(void) {
  assert(m.tools.revision==revision && m.tool==2);
  model_event(&m,EV_ACK);model_event(&m,EV_CONNECT);
  assert(!model_activate_tool(&m,0));
+ model_init(&m); assert(m.feed_override==100);
+ assert(model_set_feed_override(&m,0) && m.feed==0);
+ assert(model_set_feed_override(&m,150) && m.feed==270);
+ assert(!model_set_feed_override(&m,151) && m.feed_override==150);
+ for(unsigned i=0;i<100;i++) model_event(&m,EV_RPM_PLUS);
+ assert(m.rpm==3000);
+ for(unsigned i=0;i<100;i++) model_event(&m,EV_RPM_MINUS);
+ assert(m.rpm==0);
+ model_event(&m,EV_STOP);model_event(&m,EV_RPM_PLUS);
+ assert(m.rpm==0 && !model_set_feed_override(&m,100) && m.feed==0);
+ model_event(&m,EV_NEW_SIM);assert(m.rpm==1250 && m.feed==270);
+ model_event(&m,EV_TOUCH_FAULT);model_event(&m,EV_RPM_PLUS);
+ assert(m.rpm==0 && !model_set_feed_override(&m,50) && m.feed==0);
+ model_event(&m,EV_ACK);assert(m.rpm==0 && m.mode==HOLD);
  assert(!transport_send(b,4)); puts("State, timeout, invalid frames, RU fallback and inert transport passed");
 }

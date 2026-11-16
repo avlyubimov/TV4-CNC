@@ -18,6 +18,10 @@
 Адаптер: [BOARD_ADAPTER.md](BOARD_ADAPTER.md).
 Текущий состав интерфейса: [UI_REFERENCE.md](UI_REFERENCE.md).
 
+- Регуляторы виртуальных оборотов и ограничения подачи на главном экране;
+  расчёт мм/об, проверки границ и блокировка вне симуляции:
+  [SIMULATION_CONTROLS.md](SIMULATION_CONTROLS.md).
+
 ## До завершения испытаний
 Заводской backup 16 МиБ завершён, размер и SHA-256 подтверждены:
 [BACKUP_STATUS.md](BACKUP_STATUS.md). Нужны физические проверки PSRAM,

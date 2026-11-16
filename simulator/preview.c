@@ -87,6 +87,25 @@ int main(int argc,char **argv) {
     }
     fclose(f);
     lv_obj_t *root=lv_screen_active();
+    press_text(root,"+"); assert(dashboard_snapshot().rpm==1300);
+    press_text(root,"−"); assert(dashboard_snapshot().rpm==1250);
+    lv_obj_t *override=NULL;
+    for(unsigned i=0;i<lv_obj_get_child_count(root);i++) {
+        lv_obj_t *child=lv_obj_get_child(root,i);
+        if(lv_obj_check_type(child,&lv_slider_class)) override=child;
+    }
+    assert(override);
+    /* A burst of drag updates is coalesced rather than overflowing the event queue. */
+    for(int i=0;i<=150;i++) {
+        lv_slider_set_value(override,i,LV_ANIM_OFF);
+        lv_obj_send_event(override,LV_EVENT_VALUE_CHANGED,NULL);
+    }
+    dashboard_update();
+    assert(dashboard_snapshot().mode==SIMULATION && dashboard_snapshot().feed==270);
+    check_dashboard_layout(root);save_frame("controls");
+    lv_slider_set_value(override,100,LV_ANIM_OFF);
+    lv_obj_send_event(override,LV_EVENT_VALUE_CHANGED,NULL);dashboard_update();
+    assert(dashboard_snapshot().feed==180);
     lv_obj_t *step=NULL, *ack=NULL;
     for(unsigned i=0;i<lv_obj_get_child_count(root);i++) {
         lv_obj_t *child=lv_obj_get_child(root,i);

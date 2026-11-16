@@ -4,7 +4,7 @@ void model_init(model_t *m) {
     memset(m, 0, sizeof(*m)); m->mode=SIMULATION;
     tools_init(&m->tools);
     journal_init(&m->journal); journal_push(&m->journal,0,J_BOOT,F_NONE);
-    m->step_um=100; m->x_um=12500; m->z_um=-42500; m->tool=1;
+    m->feed_override=100; m->step_um=100; m->x_um=12500; m->z_um=-42500; m->tool=1;
 }
 static void fault(model_t *m,fault_t cause) {
     if(m->mode==FAULT && m->fault==cause) return;
@@ -24,7 +24,7 @@ void model_event(model_t *m, event_t e) {
         /* Explicit reset of this simulation provider, not machine authorization. */
         if(m->mode!=HOLD || m->fault!=F_NONE) { m->rejected++; journal_push(&m->journal,m->clock_ms,J_REJECTED,m->fault); return; }
         m->mode=SIMULATION; m->connected=m->heartbeat_seen=false;
-        m->x_um=25430; m->z_um=-142850; m->rpm=1250; m->feed=180;
+        m->x_um=25430; m->z_um=-142850; m->rpm=1250; m->feed=(uint16_t)(180u*m->feed_override/100u);
         journal_push(&m->journal,m->clock_ms,J_RESTART,F_NONE); return;
     case EV_STOP: if(m->mode!=FAULT) m->mode=HOLD; kind=J_STOP; break;
     case EV_DISCONNECT: m->connected=false; m->heartbeat_seen=false;
@@ -37,13 +37,17 @@ void model_event(model_t *m, event_t e) {
     case EV_ACK:
         journal_push(&m->journal,m->clock_ms,J_ACK,m->fault);
         m->emergency=false; m->fault=F_NONE; m->mode=HOLD; m->rpm=m->feed=0; return;
+    case EV_RPM_MINUS:
+        if(m->mode==SIMULATION && !m->connected && m->rpm>=50) { m->rpm-=50; kind=J_RPM; } break;
+    case EV_RPM_PLUS:
+        if(m->mode==SIMULATION && !m->connected && m->rpm<=2950) { m->rpm+=50; kind=J_RPM; } break;
     case EV_STEP: if(m->mode==SIMULATION && m->x_um<=1000000-m->step_um) { m->x_um+=m->step_um; kind=J_STEP; } break;
     case EV_X_MINUS: if(m->mode==SIMULATION && m->x_um>=-1000000+m->step_um) { m->x_um-=m->step_um; kind=J_STEP; } break;
     case EV_Z_MINUS: if(m->mode==SIMULATION && m->z_um>=-1000000+m->step_um) { m->z_um-=m->step_um; kind=J_STEP; } break;
     case EV_Z_PLUS: if(m->mode==SIMULATION && m->z_um<=1000000-m->step_um) { m->z_um+=m->step_um; kind=J_STEP; } break;
     case EV_INC_1: m->step_um=1; kind=J_INCREMENT; break;
     case EV_INC_10: m->step_um=10; kind=J_INCREMENT; break;
-    case EV_INC_100: m->step_um=100; kind=J_INCREMENT; break;
+    case EV_INC_100: m->feed_override=100; m->step_um=100; kind=J_INCREMENT; break;
     case EV_INC_1000: m->step_um=1000; kind=J_INCREMENT; break;
     default: fault(m,F_INVALID); m->rejected++; return;
     }
@@ -82,4 +86,13 @@ bool model_save_tool(model_t *m,unsigned index,const tool_geometry_t *g) {
 bool model_activate_tool(model_t *m,unsigned index) {
     if(m->mode==FAULT || m->connected || !tools_activate(&m->tools,index))return tool_reject(m);
     m->tool=(uint16_t)(index+1);journal_push(&m->journal,m->clock_ms,J_TOOL_SELECT,F_NONE);return true;
+}
+
+bool model_set_feed_override(model_t *m,unsigned percent) {
+    if(percent>150 || m->mode!=SIMULATION || m->connected) return tool_reject(m);
+    if(m->feed_override==percent) return true;
+    m->feed_override=(uint16_t)percent;
+    m->feed=(uint16_t)(180u*percent/100u);
+    journal_push(&m->journal,m->clock_ms,J_OVERRIDE,F_NONE);
+    return true;
 }
