@@ -1,0 +1,4 @@
+[1/4] Building C object CMakeFiles/preview.dir/firmware/esp32-hmi/network/wifi_service.c.o
+[2/4] Building C object CMakeFiles/wifi_profiles_tests.dir/firmware/esp32-hmi/network/wifi_service.c.o
+[3/4] Linking C executable wifi_profiles_tests
+[4/4] Linking C executable preview

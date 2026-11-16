@@ -1,5 +1,6 @@
 #include "lvgl.h"
 #include "dashboard.h"
+#include "boot_view.h"
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -83,7 +84,21 @@ int main(int argc,char **argv) {
     lv_display_set_color_format(d,rgb565?LV_COLOR_FORMAT_RGB565:LV_COLOR_FORMAT_XRGB8888);
     lv_display_set_buffers(d,drawbuf,NULL,sizeof(drawbuf),LV_DISPLAY_RENDER_MODE_PARTIAL);
     lv_display_set_flush_cb(d,flush);
-    dashboard_create();
+    boot_view_create();check_dashboard_layout(lv_screen_active());save_frame("boot-start");
+    assert(!boot_view_finish());
+    boot_view_stage(BOOT_TOUCH);check_dashboard_layout(lv_screen_active());save_frame("boot-touch");
+    boot_view_fail(S_BOOT_TOUCH_FAILED,"ESP_ERR_TIMEOUT");
+    boot_view_stage(BOOT_READY);assert(!boot_view_finish());
+    check_dashboard_layout(lv_screen_active());save_frame("boot-error");
+    assert(has_label(lv_screen_active(),tr(NULL,S_BOOT_FAILED)));
+    /* A reboot creates a fresh screen; a failed startup cannot dismiss itself. */
+    lv_obj_clean(lv_screen_active());boot_view_create();
+    boot_view_stage(BOOT_TOUCH);boot_view_stage(BOOT_NETWORK);boot_view_stage(BOOT_INTERFACE);
+    boot_view_stage(BOOT_READY);check_dashboard_layout(lv_screen_active());save_frame("boot-ready");
+    /* Match app_main: create the dashboard behind the splash, then remove it. */
+    dashboard_create();boot_view_stage(BOOT_READY);lv_refr_now(d);
+    assert(boot_view_finish());
+    check_dashboard_layout(lv_screen_active());
     for(int i=0;i<10;i++) { lv_tick_inc(20); dashboard_update(); lv_timer_handler(); }
     check_dashboard_layout(lv_screen_active());
     /* Long status variants must fit the same header slot as the initial label. */
@@ -125,10 +140,23 @@ int main(int argc,char **argv) {
     lv_slider_set_value(override,100,LV_ANIM_OFF);
     lv_obj_send_event(override,LV_EVENT_VALUE_CHANGED,NULL);dashboard_update();
     assert(dashboard_snapshot().feed==180);
+    wifi_snapshot_t fixture={.state=NET_ONLINE,.revision=1,.count=8,.saved_count=2};
+    strcpy(fixture.active_ssid,"TEST_HOME");strcpy(fixture.ip,"192.0.2.10");
+    strcpy(fixture.saved_ssids[0],"TEST_HOME");strcpy(fixture.saved_ssids[1],"TEST_OFFLINE");
+    for(unsigned i=0;i<fixture.count;i++) {
+        snprintf(fixture.ssids[i],33,"TEST_NETWORK_%u",i);fixture.rssi[i]=(int8_t)(-35-(int)i*5);fixture.secured[i]=true;
+    }
+    strcpy(fixture.ssids[0],"TEST_HOME");wifi_service_host_fixture(&fixture);
     assert(dashboard_set_view(VIEW_WIFI));dashboard_update();
     check_dashboard_layout(root);save_frame("wifi");
     press(root,S_WIFI_SCAN); /* Host backend cannot scan or connect. */
     assert(has_label(root,tr(NULL,S_WIFI_REJECTED)));
+    /* Saved entries are selectable; host still refuses real network activity. */
+    assert(has_label(root,"TEST_HOME\nПодключено · -35 dBm"));
+    lv_obj_t *saved_row=find_button(root,"TEST_OFFLINE\nВне зоны сети");assert(saved_row);
+    lv_obj_scroll_to_view(saved_row,LV_ANIM_OFF);check_dashboard_layout(root);
+    save_frame("wifi-list-bottom");
+    press_text(root,"TEST_OFFLINE\nВне зоны сети");
     unsigned skip=0;lv_obj_t *wifi_keyboard=find_class(root,&lv_keyboard_class,&skip);
     assert(wifi_keyboard);
     lv_obj_t *wifi_parent=lv_obj_get_parent(wifi_keyboard);skip=1;
@@ -140,6 +168,7 @@ int main(int argc,char **argv) {
     assert(dashboard_set_view(VIEW_HOME));dashboard_update();
     assert(!*lv_textarea_get_text(wifi_password));
     assert(lv_obj_has_flag(wifi_keyboard,LV_OBJ_FLAG_HIDDEN));
+    wifi_service_host_fixture(NULL);
     lv_obj_t *step=NULL, *ack=NULL;
     for(unsigned i=0;i<lv_obj_get_child_count(root);i++) {
         lv_obj_t *child=lv_obj_get_child(root,i);

@@ -179,7 +179,7 @@ static void apply_view(void) {
     if(view==VIEW_LOG) lv_obj_remove_flag(log_panel,LV_OBJ_FLAG_HIDDEN);
     if(view==VIEW_TOOLS) lv_obj_remove_flag(tools_panel,LV_OBJ_FLAG_HIDDEN);
     lv_obj_add_flag(wifi_panel,LV_OBJ_FLAG_HIDDEN);
-    if(view==VIEW_WIFI) lv_obj_remove_flag(wifi_panel,LV_OBJ_FLAG_HIDDEN);
+    if(view==VIEW_WIFI) { lv_obj_remove_flag(wifi_panel,LV_OBJ_FLAG_HIDDEN);wifi_view_show(); }
     else wifi_view_hide();
     for(unsigned i=0;i<6;i++) {
         bool selected=(i==0 && view==VIEW_HOME)||(i==4 && view==VIEW_DIAGNOSTICS)||(i==5 && view==VIEW_LOG)||(i==2 && view==VIEW_TOOLS)||(i==3 && view==VIEW_WIFI);
@@ -299,6 +299,9 @@ void dashboard_create(void) {
     lv_obj_set_style_text_font(time,&tv4_ru_14,0);
     muted(label(s,tr(0,S_DATE),603,26,78));
     icon(s,&tv4_icon_wifi,685,15,20);
+    lv_obj_t *wifi_icon=lv_obj_get_child(s,-1);wifi_view_set_indicator(wifi_icon);
+    lv_obj_add_flag(wifi_icon,LV_OBJ_FLAG_CLICKABLE);lv_obj_set_ext_click_area(wifi_icon,10);
+    lv_obj_add_event_cb(wifi_icon,nav_event,LV_EVENT_CLICKED,(void *)(uintptr_t)VIEW_WIFI);
     lv_obj_t *can=panel(s,711,8,37,30,0x0b231c);
     muted(label(can,"CAN",5,8,32));
     lv_obj_t *gear=panel(s,760,7,32,32,0x23303c); icon(gear,&tv4_icon_gear,5,5,22);

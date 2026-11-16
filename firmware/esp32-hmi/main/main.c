@@ -1,6 +1,7 @@
 #include "sdkconfig.h"
 #include <inttypes.h>
 #include "dashboard.h"
+#include "boot_view.h"
 #include "wifi_service.h"
 #include "esp_log.h"
 #include "esp_timer.h"
@@ -12,6 +13,7 @@
 static esp_lcd_panel_handle_t panel;
 #endif
 static const char *TAG="tv4";
+static bool booting=true,display_failed;
 static uint32_t tick_ms(void) { return (uint32_t)(esp_timer_get_time()/1000); }
 static void flush(lv_display_t *display,const lv_area_t *area,uint8_t *pixels) {
 #if CONFIG_TV4_BOARD_REV12
@@ -19,7 +21,8 @@ static void flush(lv_display_t *display,const lv_area_t *area,uint8_t *pixels) {
        Single framebuffer can tear; no anti-tearing/FPS claim before board tests. */
     esp_err_t err=esp_lcd_panel_draw_bitmap(panel,area->x1,area->y1,area->x2+1,area->y2+1,pixels);
     if(err!=ESP_OK) {
-        dashboard_post_event(EV_DISPLAY_FAULT);
+        display_failed=true;
+        if(!booting)dashboard_post_event(EV_DISPLAY_FAULT);
         static bool logged;
         if(!logged) { ESP_LOGE(TAG,"RGB flush failed: %s",esp_err_to_name(err)); logged=true; }
     }
@@ -38,6 +41,11 @@ static void read_touch(lv_indev_t *input,lv_indev_data_t *data) {
     }
 }
 #endif
+static void boot_error(lv_display_t *display,string_id reason,esp_err_t error) {
+    ESP_LOGE(TAG,"Startup stopped: %s",esp_err_to_name(error));
+    boot_view_fail(reason,esp_err_to_name(error));lv_refr_now(display);
+    for(;;) { lv_timer_handler();vTaskDelay(pdMS_TO_TICKS(20)); }
+}
 void app_main(void) {
 #if CONFIG_TV4_BOARD_REV12
     ESP_LOGW(TAG,"Uncommissioned Rev 1.2 display bench profile; CAN and motion absent");
@@ -57,21 +65,47 @@ void app_main(void) {
     lv_display_set_color_format(display,LV_COLOR_FORMAT_RGB565);
     lv_display_set_buffers(display,buffer,NULL,bytes,LV_DISPLAY_RENDER_MODE_PARTIAL);
     lv_display_set_flush_cb(display,flush);
+    boot_view_create();lv_refr_now(display);
 #if CONFIG_TV4_BOARD_REV12
-    lv_indev_t *input=lv_indev_create();
-    if(!input) { ESP_LOGE(TAG,"Touch input allocation failed"); return; }
-    lv_indev_set_type(input,LV_INDEV_TYPE_POINTER); lv_indev_set_read_cb(input,read_touch);
-    lv_indev_set_display(input,display);
+    /* The boot screen is visible before GT911 initialization. */
+    if(board_rev12_backlight(true)!=ESP_OK) { ESP_LOGE(TAG,"Backlight initialization failed");return; }
 #endif
-    dashboard_create();
+    uint32_t boot_started=tick_ms();
+    boot_view_stage(BOOT_TOUCH);lv_refr_now(display);
 #if CONFIG_TV4_BOARD_REV12
+    esp_err_t touch_error=board_rev12_touch_init();
+    if(touch_error!=ESP_OK)boot_error(display,S_BOOT_TOUCH_FAILED,touch_error);
+    bool touch_ready=false;
+    while((uint32_t)(tick_ms()-boot_started)<1000) {
+        board_touch_t sample;
+        if(board_rev12_touch(&sample) && sample.valid && (uint32_t)(tick_ms()-sample.ms)<100) { touch_ready=true;break; }
+        lv_timer_handler();vTaskDelay(pdMS_TO_TICKS(10));
+    }
+    if(!touch_ready)boot_error(display,S_BOOT_TOUCH_FAILED,ESP_ERR_TIMEOUT);
+    lv_indev_t *input=lv_indev_create();
+    if(!input)boot_error(display,S_BOOT_INPUT_FAILED,ESP_ERR_NO_MEM);
+    lv_indev_set_type(input,LV_INDEV_TYPE_POINTER);lv_indev_set_read_cb(input,read_touch);
+    lv_indev_set_display(input,display);lv_indev_wait_release(input);
+#endif
+    boot_view_stage(BOOT_NETWORK);lv_refr_now(display);
+#if CONFIG_TV4_BOARD_REV12
+    /* Networking is optional; connection/DHCP never holds up the HMI boot. */
     if(!wifi_service_start()) ESP_LOGE(TAG,"Wi-Fi task creation failed");
 #endif
+    boot_view_stage(BOOT_INTERFACE);lv_refr_now(display);
+    dashboard_create();
+    boot_view_stage(BOOT_READY);lv_refr_now(display);
+    /* Keep the splash readable without blocking LVGL or waiting for Wi-Fi. */
+    while((uint32_t)(tick_ms()-boot_started)<1200) {
+        if(display_failed)boot_error(display,S_FAULT_DISPLAY,ESP_FAIL);
+        lv_timer_handler();vTaskDelay(pdMS_TO_TICKS(10));
+    }
+    if(display_failed)boot_error(display,S_FAULT_DISPLAY,ESP_FAIL);
+    boot_view_finish();booting=false;
 #if CONFIG_TV4_BOARD_REV12
-    /* First complete frame precedes backlight activation. */
-    lv_refr_now(display);
-    if(board_rev12_backlight(true)!=ESP_OK) { ESP_LOGE(TAG,"Backlight initialization failed"); return; }
+    lv_indev_wait_release(input); /* Never carry a held boot-time touch into JOG. */
 #endif
+    lv_refr_now(display);
 #if CONFIG_TV4_BOARD_REV12
     uint32_t last_good_touch=tick_ms();
     bool touch_fault_logged=false;
