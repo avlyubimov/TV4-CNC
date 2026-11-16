@@ -140,6 +140,47 @@ int main(int argc,char **argv) {
     lv_slider_set_value(override,100,LV_ANIM_OFF);
     lv_obj_send_event(override,LV_EVENT_VALUE_CHANGED,NULL);dashboard_update();
     assert(dashboard_snapshot().feed==180);
+    /* The per-axis target also requires an explicit confirmation. */
+    lv_obj_t *x_target=NULL;
+    for(unsigned i=0;i<lv_obj_get_child_count(root);i++) {
+        lv_obj_t *o=lv_obj_get_child(root,i);
+        if(lv_obj_get_width(o)==343 && lv_obj_get_height(o)==59 && has_label(o,tr(NULL,S_X)))x_target=lv_obj_get_child(o,-1);
+    }
+    assert(x_target);lv_obj_send_event(x_target,LV_EVENT_CLICKED,NULL);dashboard_update();
+    assert(has_label(lv_layer_top(),tr(NULL,S_ZERO_WORK_X)));
+    press(lv_layer_top(),S_CANCEL);
+    int32_t machine_x=dashboard_snapshot().x_um,machine_z=dashboard_snapshot().z_um;
+    press(root,S_WORK_ZERO);
+    check_dashboard_layout(lv_layer_top());save_frame("coordinate-confirm");
+    assert(!dashboard_snapshot().work_frame);press(lv_layer_top(),S_CANCEL);
+    assert(!dashboard_snapshot().work_frame && !lv_obj_get_child_count(lv_layer_top()));
+    press(root,S_WORK_ZERO);press(lv_layer_top(),S_ACCEPT);
+    model_t datum=dashboard_snapshot();assert(datum.work_frame);
+    assert(datum.x_um==machine_x && datum.z_um==machine_z && model_display_x(&datum)==0 && model_display_z(&datum)==0);
+    save_frame("coordinates-work");
+    /* Switch readout without moving the virtual axes or changing the datum. */
+    lv_obj_t *frame_label=NULL;
+    for(unsigned i=0;i<lv_obj_get_child_count(root);i++) {
+        lv_obj_t *o=lv_obj_get_child(root,i);
+        if(lv_obj_check_type(o,&lv_label_class) && !strcmp(lv_label_get_text(o),tr(NULL,S_WORK_FRAME)))frame_label=o;
+    }
+    assert(frame_label);lv_obj_send_event(frame_label,LV_EVENT_CLICKED,NULL);dashboard_update();
+    assert(!dashboard_snapshot().work_frame && dashboard_snapshot().x_um==machine_x);
+    press(root,S_MACHINE_TAG);assert(dashboard_snapshot().work_frame);
+    press(root,S_WORK_TAG);assert(!dashboard_snapshot().work_frame);
+    /* A stop while the confirmation is open closes it and keeps the datum. */
+    press(root,S_WORK_ZERO);assert(lv_obj_get_child_count(lv_layer_top())==1);
+    press(root,S_STOP);assert(!lv_obj_get_child_count(lv_layer_top()));
+    assert(dashboard_snapshot().mode==HOLD && dashboard_snapshot().work_x_um==datum.work_x_um);
+    assert(dashboard_post_event(EV_NEW_SIM));dashboard_update();
+    assert(dashboard_post_event(EV_INC_1000));dashboard_update();
+    for(unsigned i=0;i<974;i++) { assert(dashboard_post_event(EV_STEP));dashboard_update(); }
+    press(root,S_WORK_ZERO);press(lv_layer_top(),S_ACCEPT);
+    for(unsigned i=0;i<1999;i++) { assert(dashboard_post_event(EV_X_MINUS));dashboard_update(); }
+    model_t wide=dashboard_snapshot();assert(model_display_x(&wide)==-1999000);
+    check_dashboard_layout(root);save_frame("coordinates-range");
+    assert(dashboard_post_event(EV_STOP));dashboard_update();
+    assert(dashboard_post_event(EV_NEW_SIM));assert(dashboard_post_event(EV_INC_10));dashboard_update();
     wifi_snapshot_t fixture={.state=NET_ONLINE,.revision=1,.count=8,.saved_count=2};
     strcpy(fixture.active_ssid,"TEST_HOME");strcpy(fixture.ip,"192.0.2.10");
     strcpy(fixture.saved_ssids[0],"TEST_HOME");strcpy(fixture.saved_ssids[1],"TEST_OFFLINE");

@@ -10,6 +10,7 @@
 #endif
 LV_FONT_DECLARE(tv4_ru_20);
 LV_FONT_DECLARE(tv4_digits_36);
+LV_FONT_DECLARE(tv4_digits_32);
 static model_t model, rendered;
 static bool view_valid;
 static dashboard_view_t view, pending_view;
@@ -25,6 +26,9 @@ static bool metrics_valid;
 static lv_obj_t *override_slider, *override_value;
 static bool override_pending;
 static unsigned pending_override;
+static lv_obj_t *frame_control,*coordinate_frame,*zero_targets[2],*zero_all_button,*zero_dialog;
+static bool zero_requested,zero_close;
+static event_t zero_action;
 static lv_obj_t *status, *x_value, *z_value;
 static lv_obj_t *increments[4], *rpm_value, *speed_value, *rpm_set_value, *feed_rev_value, *rpm_arc;
 LV_FONT_DECLARE(tv4_ru_14);
@@ -66,7 +70,7 @@ static void render_event(lv_event_t *ev) {
     }
 }
 bool dashboard_post_event(event_t event) {
-    if(event<EV_STEP || event>EV_RPM_PLUS) { pending_fault=EV_INVALID_FAULT; dropped_events++; return false; }
+    if(event<EV_STEP || event>EV_ZERO_WORK_ALL) { pending_fault=EV_INVALID_FAULT; dropped_events++; return false; }
     if(used==8) { pending_fault=EV_QUEUE_FAULT; dropped_events++; return false; }
     queue[write_pos]=event; event_ms[write_pos]=lv_tick_get();
     write_pos=(write_pos+1)%8; used++; return true;
@@ -75,6 +79,13 @@ bool dashboard_post_event(event_t event) {
 static void override_changed(lv_event_t *ev) {
     pending_override=(unsigned)lv_slider_get_value(lv_event_get_target(ev));
     override_pending=true;
+}
+static void request_zero(lv_event_t *ev) {
+    zero_action=(event_t)(uintptr_t)lv_event_get_user_data(ev);zero_requested=true;
+}
+static void zero_decision(lv_event_t *ev) {
+    if((uintptr_t)lv_event_get_user_data(ev))dashboard_post_event(zero_action);
+    zero_close=true;
 }
 static void click(lv_event_t *ev) {
     dashboard_post_event((event_t)(uintptr_t)lv_event_get_user_data(ev));
@@ -136,10 +147,31 @@ static lv_obj_t *button(lv_obj_t *root,string_id id,int e,int x,int y,int w,int 
     else lv_obj_remove_flag(b,LV_OBJ_FLAG_CLICKABLE);
     return b;
 }
-static void icon_button(lv_obj_t *p,string_id id,const lv_image_dsc_t *img,int x,int y,int w,int h,int e) {
+static lv_obj_t *icon_button(lv_obj_t *p,string_id id,const lv_image_dsc_t *img,int x,int y,int w,int h,int e) {
     lv_obj_t *b=button(p,id,e,x,y,w,h,false);
     lv_obj_t *t=lv_obj_get_child(b,0); lv_obj_align(t,LV_ALIGN_BOTTOM_MID,0,-4);
-    icon(b,img,w/2-10,5,20);
+    icon(b,img,w/2-10,5,20);return b;
+}
+static void update_zero_dialog(void) {
+    if(zero_close || view!=VIEW_HOME || model.mode!=SIMULATION || model.connected) {
+        if(zero_dialog) { lv_obj_delete(zero_dialog);zero_dialog=NULL; }
+        zero_requested=false;zero_close=false;return;
+    }
+    if(!zero_requested || zero_dialog)return;
+    zero_requested=false;
+    zero_dialog=panel(lv_layer_top(),89,56,705,347,0x101f2d);
+    lv_obj_set_style_text_font(zero_dialog,&tv4_ru_12,0);
+    lv_obj_set_style_text_color(zero_dialog,lv_color_hex(0xf1f7ff),0);
+    string_id id=zero_action==EV_ZERO_WORK_X?S_ZERO_WORK_X:zero_action==EV_ZERO_WORK_Z?S_ZERO_WORK_Z:S_ZERO_WORK_ALL;
+    lv_obj_t *title=label(zero_dialog,tr(NULL,id),24,80,657);
+    lv_obj_set_style_text_font(title,&tv4_ru_20,0);lv_obj_set_style_text_align(title,LV_TEXT_ALIGN_CENTER,0);
+    lv_obj_t *note=label(zero_dialog,tr(NULL,S_WORK_ZERO_NOTE),24,140,657);
+    lv_obj_set_style_text_align(note,LV_TEXT_ALIGN_CENTER,0);
+    string_id ids[]={S_CANCEL,S_ACCEPT};
+    for(unsigned i=0;i<2;i++) {
+        lv_obj_t *b=button(zero_dialog,ids[i],-1,105+(int)i*275,230,220,44,i==1);
+        lv_obj_add_flag(b,LV_OBJ_FLAG_CLICKABLE);lv_obj_add_event_cb(b,zero_decision,LV_EVENT_CLICKED,(void *)(uintptr_t)i);
+    }
 }
 static const char *fault_text(fault_t fault) {
     static const string_id ids[]={S_FAULT_NONE,S_FAULT_EMERGENCY,S_FAULT_PROTOCOL,S_FAULT_QUEUE,S_FAULT_TOUCH,S_FAULT_DISPLAY,S_FAULT_INVALID};
@@ -253,7 +285,7 @@ static void refresh_views(void) {
     lv_label_set_text_fmt(log_summary,tr(0,S_FMT_JOURNAL_SUMMARY),model.journal.count,(unsigned long)model.journal.overwritten);
     unsigned pages=(model.journal.count+7)/8;if(!pages)pages=1;if(log_page>=pages)log_page=pages-1;
     lv_label_set_text_fmt(log_page_label,tr(0,S_FMT_PAGE),log_page+1,pages);
-    static const string_id kinds[]={S_J_BOOT,S_J_STEP,S_J_STOP,S_J_DISCONNECT,S_J_CONNECT,S_J_FAULT,S_J_ACK,S_J_INCREMENT,S_J_REJECTED,S_J_TIMEOUT,S_J_RESTART,S_J_TOOL_SAVE,S_J_TOOL_SELECT,S_SPINDLE_SET,S_OVERRIDE};
+    static const string_id kinds[]={S_J_BOOT,S_J_STEP,S_J_STOP,S_J_DISCONNECT,S_J_CONNECT,S_J_FAULT,S_J_ACK,S_J_INCREMENT,S_J_REJECTED,S_J_TIMEOUT,S_J_RESTART,S_J_TOOL_SAVE,S_J_TOOL_SELECT,S_SPINDLE_SET,S_OVERRIDE,S_J_FRAME,S_J_ZERO_X,S_J_ZERO_Z,S_J_ZERO_ALL};
     for(unsigned i=0;i<8;i++) {
         journal_entry_t entry;
         if(journal_get(&model.journal,log_page*8+i,&entry)) {
@@ -266,6 +298,7 @@ static void refresh_views(void) {
     }
 }
 void dashboard_create(void) {
+    zero_requested=zero_close=false;zero_dialog=NULL;
     override_pending=false;
     model_init(&model); read_pos=write_pos=used=0; pending_fault=EV_STEP; dropped_events=0; view_valid=false; view=VIEW_HOME; view_requested=false; home_count=log_page=0; metrics_valid=false; metrics_revision=rendered_metrics=0;
     /* Reference-matching deterministic demo readings, never live machine data. */
@@ -291,9 +324,7 @@ void dashboard_create(void) {
     tab=button(s,S_PROGRAM,-1,350,6,124,34,false);
     icon(tab,&tv4_icon_code,9,7,20);
     lv_obj_align(lv_obj_get_child(tab,0),LV_ALIGN_RIGHT_MID,-9,0);
-    tab=button(s,S_MODES,-1,480,6,98,34,false);
-    icon(tab,&tv4_icon_layers,9,7,20);
-    lv_obj_align(lv_obj_get_child(tab,0),LV_ALIGN_RIGHT_MID,-8,0);
+    frame_control=button(s,S_MACHINE_TAG,EV_FRAME_TOGGLE,480,6,98,34,false);
     line(s,590,8,1,29);
     lv_obj_t *time=label(s,"18:24",603,5,66);
     lv_obj_set_style_text_font(time,&tv4_ru_14,0);
@@ -340,7 +371,9 @@ void dashboard_create(void) {
         lv_obj_set_style_text_font(v,&tv4_digits_36,0);
         lv_obj_set_style_text_align(v,LV_TEXT_ALIGN_RIGHT,0);
         if(i) z_value=v; else x_value=v;
-        lv_obj_t *target=panel(p,296,11,36,36,0x1d2b36); icon(target,&tv4_icon_target,7,7,22);
+        lv_obj_t *target=panel(p,296,11,36,36,0x1d2b36);zero_targets[i]=target;
+        icon(target,&tv4_icon_target,7,7,22);lv_obj_add_flag(target,LV_OBJ_FLAG_CLICKABLE);lv_obj_set_ext_click_area(target,6);
+        lv_obj_add_event_cb(target,request_zero,LV_EVENT_CLICKED,(void *)(uintptr_t)(i?EV_ZERO_WORK_Z:EV_ZERO_WORK_X));
     }
     /* Three metric cards share an 8 px gutter and separate text/indicator lanes. */
     lv_obj_t *p=panel(s,89,188,142,66,0x17262f);
@@ -416,7 +449,9 @@ void dashboard_create(void) {
     }
     line(s,270,352,1,42);line(s,459,352,1,42);
     icon_button(s,S_ZERO,&tv4_icon_target,472,347,95,48,-1);
-    icon_button(s,S_WORK_ZERO,&tv4_icon_target,575,347,103,48,-1);
+    zero_all_button=icon_button(s,S_WORK_ZERO,&tv4_icon_target,575,347,103,48,-1);
+    lv_obj_add_flag(zero_all_button,LV_OBJ_FLAG_CLICKABLE);
+    lv_obj_add_event_cb(zero_all_button,request_zero,LV_EVENT_CLICKED,(void *)(uintptr_t)EV_ZERO_WORK_ALL);
     icon_button(s,S_RESET,&tv4_icon_reset,687,347,99,48,EV_ACK);
     for(unsigned i=home_start;i<lv_obj_get_child_count(s);i++) {
         if(home_count<96) home_objects[home_count++]=lv_obj_get_child(s,i);
@@ -439,7 +474,9 @@ void dashboard_create(void) {
     icon(stop,&tv4_icon_alert,10,5,23);
     v=lv_obj_get_child(stop,0); lv_obj_set_style_text_font(v,&tv4_ru_20,0); lv_obj_align(v,LV_ALIGN_TOP_MID,14,3);
     v=label(stop,tr(0,S_STOP_NOTE),6,31,153);lv_obj_set_style_text_align(v,LV_TEXT_ALIGN_CENTER,0);
-    muted(label(s,tr(0,S_AXIS_MODE),91,465,220));
+    coordinate_frame=label(s,"",91,465,340);muted(coordinate_frame);
+    lv_obj_add_flag(coordinate_frame,LV_OBJ_FLAG_CLICKABLE);lv_obj_set_ext_click_area(coordinate_frame,5);
+    lv_obj_add_event_cb(coordinate_frame,click,LV_EVENT_CLICKED,(void *)(uintptr_t)EV_FRAME_TOGGLE);
     v=label(s,tr(0,S_SIM),470,465,126); lv_obj_set_style_text_color(v,lv_color_hex(0xffcb61),0);
     frames=0; log_ms=lv_tick_get();
     lv_display_add_event_cb(lv_display_get_default(),render_event,LV_EVENT_ALL,NULL);
@@ -455,6 +492,7 @@ void dashboard_update(void) {
     model.rejected+=dropped_events; dropped_events=0;
     if(pending_fault!=EV_STEP) { model_event(&model,pending_fault); pending_fault=EV_STEP; }
     if(override_pending) { model_set_feed_override(&model,pending_override); override_pending=false; view_valid=false; }
+    update_zero_dialog();
     tools_view_update(&model);
     wifi_view_update();
     uint32_t elapsed=lv_tick_elaps(log_ms);
@@ -480,7 +518,8 @@ void dashboard_update(void) {
     }
     /* Do not allocate/repaint unchanged text on every owner-loop iteration. */
     if(view_valid && rendered.mode==model.mode && rendered.x_um==model.x_um &&
-       rendered.z_um==model.z_um && rendered.rpm==model.rpm &&
+       rendered.z_um==model.z_um && rendered.work_x_um==model.work_x_um &&
+       rendered.work_z_um==model.work_z_um && rendered.work_frame==model.work_frame && rendered.rpm==model.rpm &&
        rendered.feed==model.feed && rendered.feed_override==model.feed_override && rendered.step_um==model.step_um && rendered.fault==model.fault &&
        rendered.tools.revision==model.tools.revision && rendered.tool==model.tool &&
        rendered.connected==model.connected && rendered.rejected==model.rejected &&
@@ -504,7 +543,20 @@ void dashboard_update(void) {
     default:break;
     }
     lv_label_set_text(status,tr(0,id));
-    long x=model.x_um, z=model.z_um;
+    lv_label_set_text(coordinate_frame,tr(NULL,model.work_frame?S_WORK_FRAME:S_MACHINE_FRAME));
+    lv_label_set_text(lv_obj_get_child(frame_control,0),tr(NULL,model.work_frame?S_WORK_TAG:S_MACHINE_TAG));
+    lv_obj_set_style_text_color(coordinate_frame,lv_color_hex(model.work_frame?0x46c5ff:0xc1d6e8),0);
+    bool zero_allowed=model.mode==SIMULATION && !model.connected;
+    for(unsigned i=0;i<3;i++) {
+        lv_obj_t *o=i==2?zero_all_button:zero_targets[i];
+        if(zero_allowed)lv_obj_remove_state(o,LV_STATE_DISABLED);else lv_obj_add_state(o,LV_STATE_DISABLED);
+        lv_obj_set_style_opa(o,zero_allowed?LV_OPA_COVER:LV_OPA_40,0);
+    }
+    long x=model_display_x(&model), z=model_display_z(&model);
+    bool wide=x<=-1000000 || x>=1000000 || z<=-1000000 || z>=1000000;
+    lv_obj_set_style_text_font(x_value,wide?&tv4_digits_32:&tv4_digits_36,0);
+    lv_obj_set_style_text_font(z_value,wide?&tv4_digits_32:&tv4_digits_36,0);
+    lv_obj_set_y(x_value,wide?10:6);lv_obj_set_y(z_value,wide?10:6);
     lv_label_set_text_fmt(x_value,"%s%03ld.%03ld", x<0?"-":"+", (x<0?-x:x)/1000, (x<0?-x:x)%1000);
     lv_label_set_text_fmt(z_value,"%s%03ld.%03ld", z<0?"-":"+", (z<0?-z:z)/1000, (z<0?-z:z)%1000);
     lv_arc_set_value(rpm_arc,model.rpm?72:0);
