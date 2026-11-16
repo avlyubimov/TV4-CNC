@@ -97,6 +97,10 @@ esp_err_t board_rev12_init(esp_lcd_panel_handle_t *panel) {
     ESP_RETURN_ON_ERROR(esp_lcd_new_rgb_panel(&rgb,panel),TAG,"RGB create");
     ESP_RETURN_ON_ERROR(esp_lcd_panel_init(*panel),TAG,"RGB init");
     ESP_LOGI(TAG,"RGB initialized: 800x480 RGB565, PCLK=16MHz, one PSRAM framebuffer");
+    return ESP_OK;
+}
+esp_err_t board_rev12_touch_init(void) {
+    if(!bus || samples)return ESP_ERR_INVALID_STATE;
     esp_lcd_panel_io_i2c_config_t io_cfg=ESP_LCD_TOUCH_IO_I2C_GT911_CONFIG();
     io_cfg.scl_speed_hz=400000;
 #if ESP_IDF_VERSION >= ESP_IDF_VERSION_VAL(6, 0, 0)

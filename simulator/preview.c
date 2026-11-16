@@ -1,5 +1,6 @@
 #include "lvgl.h"
 #include "dashboard.h"
+#include "boot_view.h"
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -83,7 +84,21 @@ int main(int argc,char **argv) {
     lv_display_set_color_format(d,rgb565?LV_COLOR_FORMAT_RGB565:LV_COLOR_FORMAT_XRGB8888);
     lv_display_set_buffers(d,drawbuf,NULL,sizeof(drawbuf),LV_DISPLAY_RENDER_MODE_PARTIAL);
     lv_display_set_flush_cb(d,flush);
-    dashboard_create();
+    boot_view_create();check_dashboard_layout(lv_screen_active());save_frame("boot-start");
+    assert(!boot_view_finish());
+    boot_view_stage(BOOT_TOUCH);check_dashboard_layout(lv_screen_active());save_frame("boot-touch");
+    boot_view_fail(S_BOOT_TOUCH_FAILED,"ESP_ERR_TIMEOUT");
+    boot_view_stage(BOOT_READY);assert(!boot_view_finish());
+    check_dashboard_layout(lv_screen_active());save_frame("boot-error");
+    assert(has_label(lv_screen_active(),tr(NULL,S_BOOT_FAILED)));
+    /* A reboot creates a fresh screen; a failed startup cannot dismiss itself. */
+    lv_obj_clean(lv_screen_active());boot_view_create();
+    boot_view_stage(BOOT_TOUCH);boot_view_stage(BOOT_NETWORK);boot_view_stage(BOOT_INTERFACE);
+    boot_view_stage(BOOT_READY);check_dashboard_layout(lv_screen_active());save_frame("boot-ready");
+    /* Match app_main: create the dashboard behind the splash, then remove it. */
+    dashboard_create();boot_view_stage(BOOT_READY);lv_refr_now(d);
+    assert(boot_view_finish());
+    check_dashboard_layout(lv_screen_active());
     for(int i=0;i<10;i++) { lv_tick_inc(20); dashboard_update(); lv_timer_handler(); }
     check_dashboard_layout(lv_screen_active());
     /* Long status variants must fit the same header slot as the initial label. */
