@@ -1,0 +1,13 @@
+2026-11-16T19:21:19.4067512Z       "label": "factory"
+2026-11-16T19:21:19.4067667Z     }
+2026-11-16T19:21:19.4067796Z   ],
+2026-11-16T19:21:19.4067935Z   "device_access": false,
+2026-11-16T19:21:19.4068117Z   "physical_performance": "not measured"
+2026-11-16T19:21:19.4068303Z }
+2026-11-16T19:21:19.4109677Z warning: Not a git repository. Use --no-index to compare two paths outside a working tree
+2026-11-16T19:21:19.4110398Z usage: git diff --no-index [<options>] <path> <path>
+2026-11-16T19:21:19.4110700Z
+
+Source: https://github.com/avlyubimov/TV4-CNC/actions/runs/43938015407/job/133547657454
+Local regression checks: unchanged locks accepted; modified, added and deleted locks rejected.
+CTest: 4/4 passed (build_validation, core, render, render_rgb565).

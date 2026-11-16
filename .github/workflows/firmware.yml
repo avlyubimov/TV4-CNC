@@ -24,9 +24,12 @@ jobs:
         run: |
           set -o pipefail
           mkdir -p evidence
+          # Compare file contents without relying on Git discovery inside the SDK container.
+          lock_snapshot="$(mktemp -d)"
+          cp -a firmware/esp32-hmi/locks/. "$lock_snapshot/"
           ./tools/build_idf.sh '${{ matrix.profile }}' '${{ matrix.sdk }}' local 2>&1 | tee evidence/build.log
           cp 'build-idf-${{ matrix.sdk }}-${{ matrix.profile }}/validation.json' evidence/
-          git diff --exit-code -- firmware/esp32-hmi/locks/
+          diff -ru "$lock_snapshot/" firmware/esp32-hmi/locks/
       - uses: actions/upload-artifact@v4
         if: always()
         with:
