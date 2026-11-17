@@ -7,6 +7,8 @@
 #include <string.h>
 #include "strings.h"
 #include "wifi_service.h"
+#include "wifi_editor.h"
+#include "src/widgets/buttonmatrix/lv_buttonmatrix_private.h"
 #include "layout_checks.h"
 static uint32_t pixels[800*480];
 _Alignas(4) static uint8_t drawbuf[800*40*4];
@@ -47,6 +49,13 @@ static bool has_label(lv_obj_t *root,const char *text) {
     if(lv_obj_check_type(root,&lv_label_class) && !strcmp(lv_label_get_text(root),text))return true;
     for(unsigned i=0;i<lv_obj_get_child_count(root);i++)if(has_label(lv_obj_get_child(root,i),text))return true;
     return false;
+}
+static void keyboard_press(lv_obj_t *keyboard,const char *key) {
+    for(unsigned i=0;i<80;i++) {
+        const char *text=lv_keyboard_get_button_text(keyboard,i);if(!text)break;
+        if(!strcmp(text,key)) { lv_buttonmatrix_set_selected_button(keyboard,i);lv_obj_send_event(keyboard,LV_EVENT_VALUE_CHANGED,NULL);return; }
+    }
+    assert(false);
 }
 static void save_frame(const char *name) {
     char path[80];snprintf(path,sizeof(path),"%s%s.ppm",name,rgb565?"-rgb565":"");
@@ -198,17 +207,40 @@ int main(int argc,char **argv) {
     lv_obj_scroll_to_view(saved_row,LV_ANIM_OFF);check_dashboard_layout(root);
     save_frame("wifi-list-bottom");
     press_text(root,"TEST_OFFLINE\nВне зоны сети");
-    unsigned skip=0;lv_obj_t *wifi_keyboard=find_class(root,&lv_keyboard_class,&skip);
-    assert(wifi_keyboard);
-    lv_obj_t *wifi_parent=lv_obj_get_parent(wifi_keyboard);skip=1;
+    lv_obj_t *wifi_parent=lv_obj_get_parent(lv_obj_get_parent(saved_row));unsigned skip=1;
     lv_obj_t *wifi_password=find_class(wifi_parent,&lv_textarea_class,&skip);assert(wifi_password);
-    lv_textarea_set_text(wifi_password,"testonly123");
-    lv_obj_send_event(wifi_password,LV_EVENT_FOCUSED,NULL);
-    assert(!lv_obj_has_flag(wifi_keyboard,LV_OBJ_FLAG_HIDDEN));
+    lv_textarea_set_text(wifi_password,"testonly123");lv_obj_send_event(wifi_password,LV_EVENT_FOCUSED,NULL);
+    assert(wifi_editor_is_open());skip=0;
+    lv_obj_t *wifi_keyboard=find_class(lv_layer_top(),&lv_keyboard_class,&skip);assert(wifi_keyboard);
+    skip=0;lv_obj_t *editor_input=find_class(lv_layer_top(),&lv_textarea_class,&skip);assert(editor_input);
+    assert(lv_textarea_get_password_mode(editor_input));
+    lv_obj_update_layout(lv_layer_top());lv_buttonmatrix_t *matrix=(lv_buttonmatrix_t *)wifi_keyboard;
+    for(unsigned i=0;i<matrix->btn_cnt;i++) {
+        assert(matrix->button_areas[i].x2-matrix->button_areas[i].x1+1>=44);
+        assert(matrix->button_areas[i].y2-matrix->button_areas[i].y1+1>=44);
+    }
     save_frame("wifi-keyboard");
-    assert(dashboard_set_view(VIEW_HOME));dashboard_update();
-    assert(!*lv_textarea_get_text(wifi_password));
-    assert(lv_obj_has_flag(wifi_keyboard,LV_OBJ_FLAG_HIDDEN));
+    press(lv_layer_top(),S_INPUT_SHOW);assert(!lv_textarea_get_password_mode(editor_input));
+    save_frame("wifi-password-visible");
+    press(lv_layer_top(),S_INPUT_HIDE);assert(lv_textarea_get_password_mode(editor_input));
+    lv_textarea_set_text(editor_input,"");
+    keyboard_press(wifi_keyboard,"1");keyboard_press(wifi_keyboard,"ABC");keyboard_press(wifi_keyboard,"A");
+    keyboard_press(wifi_keyboard,"abc");keyboard_press(wifi_keyboard,"a");keyboard_press(wifi_keyboard,"1#");
+    keyboard_press(wifi_keyboard,"@");keyboard_press(wifi_keyboard,"2");keyboard_press(wifi_keyboard,"3");
+    keyboard_press(wifi_keyboard,"4");keyboard_press(wifi_keyboard,"5");
+    assert(!strcmp(lv_textarea_get_text(editor_input),"1Aa@2345"));
+    press(lv_layer_top(),S_CANCEL);assert(!wifi_editor_is_open());assert(!strcmp(lv_textarea_get_text(wifi_password),"testonly123"));
+    lv_obj_send_event(wifi_password,LV_EVENT_FOCUSED,NULL);skip=0;
+    editor_input=find_class(lv_layer_top(),&lv_textarea_class,&skip);
+    lv_textarea_set_text(editor_input,"1Aa@2345");press(lv_layer_top(),S_INPUT_DONE);
+    assert(!wifi_editor_is_open() && !strcmp(lv_textarea_get_text(wifi_password),"1Aa@2345"));
+    press(root,S_CONNECT);assert(!strcmp(lv_textarea_get_text(wifi_password),"1Aa@2345"));
+    fixture.revision++;fixture.state=NET_FAILED;fixture.error=263;fixture.ip[0]=0;
+    wifi_service_host_fixture(&fixture);dashboard_update();
+    char timeout_text[256];snprintf(timeout_text,sizeof(timeout_text),tr(NULL,S_WIFI_CODE),tr(NULL,S_WIFI_ERR_TIMEOUT),263);
+    assert(has_label(root,timeout_text));save_frame("wifi-timeout");
+    assert(dashboard_set_view(VIEW_HOME));dashboard_update();assert(!*lv_textarea_get_text(wifi_password));
+    assert(!wifi_editor_is_open());
     wifi_service_host_fixture(NULL);
     lv_obj_t *step=NULL, *ack=NULL;
     for(unsigned i=0;i<lv_obj_get_child_count(root);i++) {

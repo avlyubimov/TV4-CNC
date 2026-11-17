@@ -1,11 +1,13 @@
 #include "wifi_view.h"
+#include "wifi_editor.h"
+#include "wifi_link.h"
 #include "wifi_service.h"
 #include "strings.h"
 #include <stdio.h>
 #include <string.h>
 LV_FONT_DECLARE(tv4_ru_12);
 #define WIFI_ROWS (WIFI_UI_NETWORKS+WIFI_SAVED_MAX)
-static lv_obj_t *panel,*status,*ssid,*password,*keyboard,*list,*networks[WIFI_ROWS];
+static lv_obj_t *panel,*status,*ssid,*password,*list,*networks[WIFI_ROWS];
 static wifi_snapshot_t displayed;
 static lv_obj_t *indicator;
 void wifi_view_set_indicator(lv_obj_t *icon) { indicator=icon; }
@@ -19,19 +21,13 @@ static bool saved_name(const char *name) {
 static lv_obj_t *text(lv_obj_t *p,const char *s,int x,int y,int w) {
     lv_obj_t *o=lv_label_create(p);lv_label_set_text(o,s);lv_obj_set_pos(o,x,y);lv_obj_set_width(o,w);return o;
 }
-static void focus(lv_event_t *e) { lv_keyboard_set_textarea(keyboard,lv_event_get_target(e));lv_obj_remove_flag(keyboard,LV_OBJ_FLAG_HIDDEN); }
-static void key_event(lv_event_t *e) {
-    if(lv_event_get_code(e)==LV_EVENT_READY || lv_event_get_code(e)==LV_EVENT_CANCEL) {
-        lv_keyboard_set_textarea(keyboard,NULL);lv_obj_add_flag(keyboard,LV_OBJ_FLAG_HIDDEN);
-    }
-}
+static void focus(lv_event_t *e) { wifi_editor_open(lv_event_get_target(e),lv_event_get_target(e)==password); }
 static void action(lv_event_t *e) {
     unsigned kind=(unsigned)(uintptr_t)lv_event_get_user_data(e);bool ok=false;
     const char *name=lv_textarea_get_text(ssid),*secret=lv_textarea_get_text(password);
     if(kind==1) { ok=wifi_service_scan();if(ok)last_scan=lv_tick_get(); }
     if(kind==2) {
         ok=!*secret && saved_name(name)?wifi_service_connect_saved(name):wifi_service_connect(name,secret);
-        lv_textarea_set_text(password,"");
     }
     if(kind==3)ok=wifi_service_disconnect();
     if(kind==4) { ok=wifi_service_forget(name);lv_textarea_set_text(password,""); }
@@ -48,7 +44,7 @@ static void select_network(lv_event_t *e) {
     bool ok=false;
     if(saved_name(row_names[i]))ok=wifi_service_connect_saved(row_names[i]);
     else if(i<displayed.count && !displayed.secured[i])ok=wifi_service_connect(row_names[i],"");
-    else { lv_keyboard_set_textarea(keyboard,password);lv_obj_remove_flag(keyboard,LV_OBJ_FLAG_HIDDEN);return; }
+    else { wifi_editor_open(password,true);return; }
     lv_label_set_text(status,tr(NULL,ok?S_WIFI_PENDING:S_WIFI_REJECTED));
 }
 lv_obj_t *wifi_view_create(lv_obj_t *root) {
@@ -85,8 +81,6 @@ lv_obj_t *wifi_view_create(lv_obj_t *root) {
         lv_obj_t *label=lv_obj_get_child(networks[i],0);lv_obj_set_size(label,282,32);
         lv_label_set_long_mode(label,LV_LABEL_LONG_DOT);lv_obj_set_style_text_align(label,LV_TEXT_ALIGN_LEFT,0);
     }
-    keyboard=lv_keyboard_create(panel);lv_obj_set_align(keyboard,LV_ALIGN_TOP_LEFT);lv_obj_set_pos(keyboard,0,180);lv_obj_set_size(keyboard,680,145);
-    lv_obj_add_event_cb(keyboard,key_event,LV_EVENT_ALL,NULL);lv_obj_add_flag(keyboard,LV_OBJ_FLAG_HIDDEN);
     return panel;
 }
 static void set_row(unsigned i,const char *name,const char *detail) {
@@ -95,6 +89,7 @@ static void set_row(unsigned i,const char *name,const char *detail) {
     lv_obj_remove_flag(networks[i],LV_OBJ_FLAG_HIDDEN);
 }
 void wifi_view_update(void) {
+    wifi_editor_update();
     wifi_snapshot_t snapshot;if(!wifi_service_snapshot(&snapshot))return;
     if(!lv_obj_has_flag(panel,LV_OBJ_FLAG_HIDDEN) && snapshot.state!=NET_OFF &&
        snapshot.state!=NET_SCANNING && snapshot.state!=NET_CONNECTING && lv_tick_elaps(last_scan)>=30000) {
@@ -108,9 +103,13 @@ void wifi_view_update(void) {
         lv_obj_set_style_image_recolor_opa(indicator,LV_OPA_COVER,0);
     }
     static const string_id states[]={S_WIFI_OFF,S_WIFI_IDLE,S_WIFI_SCANNING,S_WIFI_CONNECTING,S_WIFI_ONLINE,S_WIFI_FAILED};
-    char line[192];snprintf(line,sizeof(line),"%s · %s %s (%d)",
-        tr(NULL,snapshot.storage_error?S_WIFI_SAVE_FAILED:states[snapshot.state]),snapshot.active_ssid,snapshot.ip,
-        snapshot.storage_error?snapshot.storage_error:snapshot.error);
+    char line[256];
+    static const string_id problems[]={S_WIFI_IDLE,S_WIFI_ERR_TIMEOUT,S_WIFI_ERR_AUTH,S_WIFI_ERR_NOT_FOUND,S_WIFI_ERR_SIGNAL,S_WIFI_ERR_SECURITY,S_WIFI_ERR_REJECTED,S_WIFI_ERR_OTHER};
+    if(snapshot.storage_error)snprintf(line,sizeof(line),tr(NULL,S_WIFI_CODE),tr(NULL,S_WIFI_SAVE_FAILED),snapshot.storage_error);
+    else if(snapshot.error && snapshot.state!=NET_CONNECTING && snapshot.state!=NET_ONLINE)
+        snprintf(line,sizeof(line),tr(NULL,S_WIFI_CODE),tr(NULL,problems[wifi_problem_from_code(snapshot.error)]),snapshot.error);
+    else snprintf(line,sizeof(line),"%s · %s %s",tr(NULL,states[snapshot.state]),snapshot.active_ssid,snapshot.ip);
+    if(snapshot.state==NET_ONLINE && !strcmp(lv_textarea_get_text(ssid),snapshot.active_ssid))lv_textarea_set_text(password,"");
     lv_label_set_text(status,line);
     if(!*lv_textarea_get_text(ssid) && *snapshot.active_ssid)lv_textarea_set_text(ssid,snapshot.active_ssid);
     row_count=0;
@@ -127,6 +126,6 @@ void wifi_view_update(void) {
     for(unsigned i=row_count;i<WIFI_ROWS;i++)lv_obj_add_flag(networks[i],LV_OBJ_FLAG_HIDDEN);
 }
 void wifi_view_hide(void) {
-    lv_textarea_set_text(password,"");lv_keyboard_set_textarea(keyboard,NULL);lv_obj_add_flag(keyboard,LV_OBJ_FLAG_HIDDEN);
+    lv_textarea_set_text(password,"");wifi_editor_hide();
 }
 void wifi_view_show(void) { last_scan=lv_tick_get()-30000;revision=~0u; }

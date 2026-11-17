@@ -1,4 +1,5 @@
 #include "wifi_service.h"
+#include "wifi_link.h"
 #include <stdio.h>
 #include <string.h>
 bool wifi_credentials_valid(const char *ssid,const char *password) {
@@ -13,6 +14,7 @@ bool wifi_credentials_valid(const char *ssid,const char *password) {
 #include "nvs_flash.h"
 #include "nvs.h"
 #include "esp_timer.h"
+_Static_assert(ESP_ERR_TIMEOUT==263,"Update the timeout diagnostic mapping");
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include "freertos/queue.h"
@@ -91,14 +93,29 @@ static esp_err_t initialize(void) {
     if((err=esp_wifi_set_mode(WIFI_MODE_STA))!=ESP_OK)return err;
     return esp_wifi_start();
 }
+typedef struct { esp_err_t error; } link_context_t;
+static bool link_associated(void *context) {
+    (void)context;wifi_ap_record_t info;return esp_wifi_sta_get_ap_info(&info)==ESP_OK;
+}
+static bool link_disconnect(void *context) {
+    link_context_t *link=context;link->error=esp_wifi_disconnect();
+    return link->error==ESP_OK || link->error==ESP_ERR_WIFI_NOT_CONNECT;
+}
+static bool link_wait(void *context) {
+    bool received=(xEventGroupWaitBits(events,1,pdTRUE,pdFALSE,pdMS_TO_TICKS(2000))&1)!=0;
+    if(!received)((link_context_t *)context)->error=ESP_ERR_TIMEOUT;
+    return received;
+}
+static bool link_clear(void *context) {
+    wifi_config_t empty={0};link_context_t *link=context;
+    link->error=esp_wifi_set_config(WIFI_IF_STA,&empty);return link->error==ESP_OK;
+}
 static esp_err_t disconnect_current(void) {
     pending_valid=false;memset(&pending,0,sizeof(pending));
-    /* Query the driver by disconnecting even after a lost-IP event: association
-       may still exist while the UI already reports offline. */
-    xEventGroupClearBits(events,1);esp_err_t err=esp_wifi_disconnect();
-    if(err!=ESP_OK && err!=ESP_ERR_WIFI_NOT_CONNECT)return err;
-    if(err==ESP_OK && !(xEventGroupWaitBits(events,1,pdTRUE,pdFALSE,pdMS_TO_TICKS(2000))&1))return ESP_ERR_TIMEOUT;
-    wifi_config_t empty={0};return esp_wifi_set_config(WIFI_IF_STA,&empty);
+    wifi_snapshot_t current=read_state();link_context_t context={.error=ESP_OK};
+    wifi_link_ops_t ops={&context,link_associated,link_disconnect,link_wait,link_clear};
+    xEventGroupClearBits(events,1);
+    return wifi_link_prepare(&ops,current.state==NET_CONNECTING)?ESP_OK:context.error;
 }
 static void connect_profile(const wifi_profile_t *profile) {
     wifi_profile_t selected=*profile; /* May alias pending. */
@@ -107,6 +124,7 @@ static void connect_profile(const wifi_profile_t *profile) {
         wifi_config_t config={0};memcpy(config.sta.ssid,selected.ssid,strlen(selected.ssid));
         memcpy(config.sta.password,selected.password,strlen(selected.password));
         config.sta.pmf_cfg.capable=true;config.sta.pmf_cfg.required=false;
+        config.sta.sae_pwe_h2e=WPA3_SAE_PWE_BOTH;
         err=esp_wifi_set_config(WIFI_IF_STA,&config);memset(&config,0,sizeof(config));
     }
     if(err==ESP_OK) {
@@ -120,7 +138,7 @@ static void connect_profile(const wifi_profile_t *profile) {
 static void scan_networks(void) {
     wifi_snapshot_t current=read_state();if(current.state==NET_CONNECTING)return;
     bool online=current.state==NET_ONLINE;
-    publish(NET_SCANNING,0);wifi_scan_config_t scan={0};scan.show_hidden=false;
+    publish(NET_SCANNING,current.error);wifi_scan_config_t scan={0};scan.show_hidden=false;
     esp_err_t err=esp_wifi_scan_start(&scan,true);uint16_t count=WIFI_UI_NETWORKS;
     if(err==ESP_OK)err=esp_wifi_scan_get_ap_records(&count,records);
     if(err==ESP_OK) {
@@ -133,7 +151,7 @@ static void scan_networks(void) {
             unsigned n=state.count++;memcpy(state.ssids[n],records[i].ssid,32);state.ssids[n][32]=0;
             state.rssi[n]=records[i].rssi;state.secured[n]=records[i].authmode!=WIFI_AUTH_OPEN;
         }
-        if(state.state==NET_SCANNING)state.state=online?NET_ONLINE:NET_IDLE;
+        if(state.state==NET_SCANNING) { state.state=online?NET_ONLINE:NET_IDLE;state.error=current.error; }
         state.revision++;xSemaphoreGive(lock);
     } else publish(online?NET_ONLINE:NET_FAILED,err);
     next_scan=esp_timer_get_time()+30000000;
