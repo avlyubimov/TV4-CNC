@@ -31,7 +31,7 @@
 проверен; restore не испытан. Бэкапы/пароли/окружения не включены в Git.
 
 В main слиты PR #5 (координаты/Wi-Fi), #6 (архитектура), #7 (STM32 foundation),
-#8 (HMI диагностика) и #9 (OTA verification). Их слияние не подтверждает
+#8 (HMI диагностика), #9 (OTA verification) и #10 (native manifest policy). Их слияние не подтверждает
 аппаратные испытания или готовность установки OTA.
 
 ## Продолжение разработки
@@ -43,9 +43,9 @@
    Merge, прошивка, релиз и необратимые настройки — только с соответствующим
    отдельным разрешением владельца.
 
-Текущее задание **PR-04b — native manifest policy**: перенос проверки подписанного
-манифеста в C-код ESP32/host. [Контракт и проверки](docs/OTA_MANIFEST_POLICY.md).
-PR #9 слит. Installer, production trust store и USB migration ещё не включены.
+Текущее задание **PR-04c — потоковая проверка OTA-образа**: chunks/hash/format,
+обрывы и deadlines. [Контракт и результаты](docs/OTA_IMAGE_STREAM.md).
+PR #10 слит; installer/HTTP/production trust store/USB migration ещё не включены.
 
 ## Обязательные следующие подсистемы
 

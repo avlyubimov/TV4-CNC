@@ -1,0 +1,27 @@
+Test project /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/ota-stream/build-sanitized
+      Start  1: build_validation
+ 1/11 Test  #1: build_validation .................   Passed    0.03 sec
+      Start  2: core
+ 2/11 Test  #2: core .............................   Passed    0.00 sec
+      Start  3: wifi_profiles
+ 3/11 Test  #3: wifi_profiles ....................   Passed    0.00 sec
+      Start  4: render
+ 4/11 Test  #4: render ...........................   Passed    1.39 sec
+      Start  5: render_rgb565
+ 5/11 Test  #5: render_rgb565 ....................   Passed    1.34 sec
+      Start  6: diagnostics
+ 6/11 Test  #6: diagnostics ......................   Passed    0.00 sec
+      Start  7: ota_crypto
+ 7/11 Test  #7: ota_crypto .......................   Passed    0.01 sec
+      Start  8: ota_candidate
+ 8/11 Test  #8: ota_candidate ....................   Passed    0.19 sec
+      Start  9: ota_manifest
+ 9/11 Test  #9: ota_manifest .....................   Passed    0.13 sec
+      Start 10: ota_stream
+10/11 Test #10: ota_stream .......................   Passed    0.01 sec
+      Start 11: motion_supervisor
+11/11 Test #11: motion_supervisor ................   Passed    0.01 sec
+
+100% tests passed, 0 tests failed out of 11
+
+Total Test time (real) =   3.13 sec

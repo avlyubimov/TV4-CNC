@@ -1,0 +1,12 @@
+6.1.1 headless: 750928 bytes
+Actual SDK app streamed format/digest check PASS (not install approval)
+Stream chunks, descriptor/checksum/dual-SHA, 480 truncation points, cancellation/deadlines/wrap PASS; verifier struct=504 bytes
+6.1.1 rev12: 1365648 bytes
+Actual SDK app streamed format/digest check PASS (not install approval)
+Stream chunks, descriptor/checksum/dual-SHA, 480 truncation points, cancellation/deadlines/wrap PASS; verifier struct=504 bytes
+5.3.2 headless: 774736 bytes
+Actual SDK app streamed format/digest check PASS (not install approval)
+Stream chunks, descriptor/checksum/dual-SHA, 480 truncation points, cancellation/deadlines/wrap PASS; verifier struct=504 bytes
+5.3.2 rev12: 1317088 bytes
+Actual SDK app streamed format/digest check PASS (not install approval)
+Stream chunks, descriptor/checksum/dual-SHA, 480 truncation points, cancellation/deadlines/wrap PASS; verifier struct=504 bytes

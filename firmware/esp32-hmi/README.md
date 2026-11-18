@@ -61,8 +61,8 @@ cmake --build build-host -j 4
 ctest --test-dir build-host --output-on-failure
 ```
 
-Десять тестов: ядро, инспектор сборок, Wi-Fi profiles, LVGL 32-bit/RGB565,
-диагностические окна/экспорт, OTA crypto/candidate/native manifest и STM32 supervisor.
+Одиннадцать тестов: ядро, инспектор сборок, Wi-Fi profiles, LVGL 32-bit/RGB565,
+диагностические окна/экспорт, OTA crypto/candidate/native manifest/image stream и STM32 supervisor.
 Есть проверки кириллицы/глифов, границ надписей/кнопок, отказов, локализации,
 журнала и редактирования инструмента. CI повторяет тесты с ASan/UBSan/LSan.
 Кадры PPM в build-host/ являются рендером ПК, не фото работающей платы.
@@ -105,3 +105,6 @@ OpenSSL development library >=3.0 и CLI для crypto/candidate тестов.
 PR-04b: [native signed manifest policy](../../docs/OTA_MANIFEST_POLICY.md).
 Новый cJSON v1.7.19 vendored с MIT/license/SHA checks и изоляцией символов;
 installer и runtime calls в UI/сети не добавлены.
+
+PR-04c: [read-only image stream](../../docs/OTA_IMAGE_STREAM.md). Полный образ
+не хранится firmware verifier в RAM; storage/HTTP/installer не добавлены.

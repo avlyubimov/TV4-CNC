@@ -107,9 +107,9 @@ PR и Actions; не копировать код уже открытого PR. Д
 
 ## Текущее задание
 
-PR #9 (PR-04a) слит. По заданию «Дальше» выполняется PR-04b: native signed
-manifest parser/policy и тесты. См. docs/OTA_MANIFEST_POLICY.md. Context только
-локальный доверенный, не из network manifest. Не включать installer, не менять
-active partitions/sdkconfig, не подключаться/не прошивать устройство,
+PR #10 (native manifest policy) слит. По заданию «Дальше» выполняется PR-04c:
+read-only streaming image integrity/format checks и interruption tests.
+См. docs/OTA_IMAGE_STREAM.md. Не включать HTTP/installer/storage sink,
+не менять active partitions/sdkconfig, не подключаться/не прошивать устройство,
 не создавать production keys и не merge свой PR.
 CPU/hardware baseline/soak часть PR-03 остаётся открытой.

@@ -165,6 +165,14 @@ class CandidateTests(unittest.TestCase):
         self.args.signature.write_text(json.dumps(envelope))
         with self.assertRaises(ota.Rejected): ota.verify(self.args)
 
+    def test_app_descriptor_version_bound(self):
+        version = '1.2.3-' + 'a' * 32
+        self.manifest['components'][0]['version'] = version
+        self.manifest['components'][0]['url'] = 'https://github.com/avlyubimov/TV4-CNC/releases/download/v0.2.0/tv4-hmi-esp32s3-v' + version + '.bin'
+        self.sign()
+        with self.assertRaisesRegex(ota.Rejected, 'app descriptor version too long'):
+            ota.verify(self.args)
+
     def test_semver(self):
         for a, b in [('1.0.0-alpha', '1.0.0-alpha.1'), ('1.0.0-2', '1.0.0-11'),
                      ('1.0.0-rc.1', '1.0.0'), ('1.9.0', '1.10.0')]:

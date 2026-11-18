@@ -126,6 +126,7 @@ def verify(args):
     require(args.layout_id == 'tv4-16m-ab-v1' and app['layout_id'] == args.layout_id,
             'layout incompatible: factory layout cannot use app OTA')
     app_version = version(app['version'])
+    require(len(app['version']) <= 31, 'app descriptor version too long')
     require(args.channel != 'stable' or app_version[1] == 1, 'prerelease app in stable channel')
     current = version(args.installed_version)
     require(version(app['minimum_installed_version']) <= current < app_version, 'update version/replay/downgrade rejected')

@@ -1,5 +1,9 @@
 # PR-04b — native manifest parser и policy
 
+Продолжение PR-04c: [read-only stream verifier](OTA_IMAGE_STREAM.md).
+HMI app version теперь ограничена 31 байтом по размеру ESP app descriptor;
+остальные SemVer/release/key limits ниже сохраняются.
+
 База main 6d63410 после слияния PR #9. Продолжение PR-04a: проверка совместимости
 теперь реализована в C-коде, который собирается для ESP32 и host.
 **Installer, HTTPS worker и USB migration не включаются.** Разметка/ключи

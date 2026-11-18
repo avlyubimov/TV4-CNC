@@ -164,7 +164,7 @@ static tv4_ota_result policy(const cJSON *root,const tv4_ota_context *ctx,tv4_ot
        !equal(text(app,"hardware_revision",8),"1.2") || !equal(text(app,"chip",16),"esp32s3") ||
        !equal(text(app,"profile",16),"rev12"))return TV4_OTA_WRONG_TARGET;
     if(!equal(ctx->layout_id,"tv4-16m-ab-v1") || !equal(text(app,"layout_id",32),ctx->layout_id))return TV4_OTA_WRONG_LAYOUT;
-    const char *version=text(app,"version",64);version_t app_version;int c;
+    const char *version=text(app,"version",31);version_t app_version;int c;
     if(!parse_version(version,&app_version) || (!ctx->prerelease && app_version.pre) ||
        !at_least(ctx->installed_version,text(app,"minimum_installed_version",64)) ||
        !at_least(ctx->bootloader_version,text(app,"minimum_bootloader_version",64)) ||

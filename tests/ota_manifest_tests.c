@@ -80,6 +80,7 @@ int main(void) {
     replace("releases/download/v0.2.0/","releases/download/v0.1.0/",TV4_OTA_BAD_URL);
     replace("\"key_id\":\"test-only\"","\"key_id\":\"downloaded\"",TV4_OTA_NO_TRUST);
     context.board_rev12=false;reject(valid,TV4_OTA_WRONG_TARGET);context.board_rev12=true;
+    replace("\"version\":\"0.2.0\"","\"version\":\"1.2.3-abcdefghijklmnopqrstuvwxyzabcdef\"",TV4_OTA_WRONG_VERSION);
     context.layout_id="factory";reject(valid,TV4_OTA_WRONG_LAYOUT);context.layout_id="tv4-16m-ab-v1";
     context.installed_version="0.2.0";reject(valid,TV4_OTA_WRONG_VERSION);context.installed_version="0.1.0";
     context.bootloader_version=NULL;reject(valid,TV4_OTA_WRONG_VERSION);context.bootloader_version="0.1.0";
