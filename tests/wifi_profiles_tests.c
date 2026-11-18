@@ -1,9 +1,37 @@
 #include "wifi_profiles.h"
 #include "wifi_service.h"
+#include "wifi_link.h"
 #include <assert.h>
 #include <stdio.h>
 #include <string.h>
+typedef struct { bool associated,disconnected_event,disconnect_ok,config_ok;unsigned disconnects,waits,clears; } fake_link_t;
+static bool associated(void *p) { return ((fake_link_t *)p)->associated; }
+static bool disconnect(void *p) { fake_link_t *f=p;f->disconnects++;return f->disconnect_ok; }
+static bool wait_disconnect(void *p) { fake_link_t *f=p;f->waits++;if(f->disconnected_event)f->associated=false;return f->disconnected_event; }
+static bool clear_config(void *p) { fake_link_t *f=p;f->clears++;return f->config_ok; }
+static void link_regressions(void) {
+    fake_link_t f={.disconnect_ok=true,.config_ok=true};
+    wifi_link_ops_t ops={&f,associated,disconnect,wait_disconnect,clear_config};
+    /* Driver can return success for an idle disconnect without sending an event.
+       First connection must still reach configuration without an invented timeout. */
+    assert(wifi_link_prepare(&ops,false));assert(!f.disconnects && !f.waits && f.clears==1);
+    f=(fake_link_t){.associated=true,.disconnect_ok=true,.config_ok=true,.disconnected_event=true};
+    assert(wifi_link_prepare(&ops,false) && f.disconnects==1 && f.waits==1 && f.clears==1);
+    f=(fake_link_t){.associated=true,.disconnect_ok=true,.config_ok=true};
+    assert(!wifi_link_prepare(&ops,false) && f.waits==1 && !f.clears);
+    f=(fake_link_t){.disconnect_ok=true,.config_ok=true};
+    assert(wifi_link_prepare(&ops,true) && f.waits==1 && f.clears==1);
+    f=(fake_link_t){.associated=true,.config_ok=true};assert(!wifi_link_prepare(&ops,false) && !f.clears);
+    assert(wifi_problem_from_code(263)==WIFI_PROBLEM_TIMEOUT);
+    assert(wifi_problem_from_code(202)==WIFI_PROBLEM_AUTH);
+    assert(wifi_problem_from_code(201)==WIFI_PROBLEM_NOT_FOUND);
+    assert(wifi_problem_from_code(200)==WIFI_PROBLEM_SIGNAL);
+    assert(wifi_problem_from_code(210)==WIFI_PROBLEM_SECURITY);
+    assert(wifi_problem_from_code(0)==WIFI_PROBLEM_NONE);
+    assert(wifi_problem_from_code(-1)==WIFI_PROBLEM_OTHER);
+}
 int main(void) {
+    link_regressions();
     wifi_profiles_t p;wifi_profiles_init(&p);assert(wifi_profiles_valid(&p));
     assert(!wifi_profiles_remember(&p,"","12345678"));
     assert(!wifi_profiles_remember(&p,"test","short"));

@@ -7,6 +7,8 @@
 #include <string.h>
 #include "strings.h"
 #include "wifi_service.h"
+#include "wifi_editor.h"
+#include "src/widgets/buttonmatrix/lv_buttonmatrix_private.h"
 #include "layout_checks.h"
 static uint32_t pixels[800*480];
 _Alignas(4) static uint8_t drawbuf[800*40*4];
@@ -47,6 +49,13 @@ static bool has_label(lv_obj_t *root,const char *text) {
     if(lv_obj_check_type(root,&lv_label_class) && !strcmp(lv_label_get_text(root),text))return true;
     for(unsigned i=0;i<lv_obj_get_child_count(root);i++)if(has_label(lv_obj_get_child(root,i),text))return true;
     return false;
+}
+static void keyboard_press(lv_obj_t *keyboard,const char *key) {
+    for(unsigned i=0;i<80;i++) {
+        const char *text=lv_keyboard_get_button_text(keyboard,i);if(!text)break;
+        if(!strcmp(text,key)) { lv_buttonmatrix_set_selected_button(keyboard,i);lv_obj_send_event(keyboard,LV_EVENT_VALUE_CHANGED,NULL);return; }
+    }
+    assert(false);
 }
 static void save_frame(const char *name) {
     char path[80];snprintf(path,sizeof(path),"%s%s.ppm",name,rgb565?"-rgb565":"");
@@ -140,6 +149,47 @@ int main(int argc,char **argv) {
     lv_slider_set_value(override,100,LV_ANIM_OFF);
     lv_obj_send_event(override,LV_EVENT_VALUE_CHANGED,NULL);dashboard_update();
     assert(dashboard_snapshot().feed==180);
+    /* The per-axis target also requires an explicit confirmation. */
+    lv_obj_t *x_target=NULL;
+    for(unsigned i=0;i<lv_obj_get_child_count(root);i++) {
+        lv_obj_t *o=lv_obj_get_child(root,i);
+        if(lv_obj_get_width(o)==343 && lv_obj_get_height(o)==59 && has_label(o,tr(NULL,S_X)))x_target=lv_obj_get_child(o,-1);
+    }
+    assert(x_target);lv_obj_send_event(x_target,LV_EVENT_CLICKED,NULL);dashboard_update();
+    assert(has_label(lv_layer_top(),tr(NULL,S_ZERO_WORK_X)));
+    press(lv_layer_top(),S_CANCEL);
+    int32_t machine_x=dashboard_snapshot().x_um,machine_z=dashboard_snapshot().z_um;
+    press(root,S_WORK_ZERO);
+    check_dashboard_layout(lv_layer_top());save_frame("coordinate-confirm");
+    assert(!dashboard_snapshot().work_frame);press(lv_layer_top(),S_CANCEL);
+    assert(!dashboard_snapshot().work_frame && !lv_obj_get_child_count(lv_layer_top()));
+    press(root,S_WORK_ZERO);press(lv_layer_top(),S_ACCEPT);
+    model_t datum=dashboard_snapshot();assert(datum.work_frame);
+    assert(datum.x_um==machine_x && datum.z_um==machine_z && model_display_x(&datum)==0 && model_display_z(&datum)==0);
+    save_frame("coordinates-work");
+    /* Switch readout without moving the virtual axes or changing the datum. */
+    lv_obj_t *frame_label=NULL;
+    for(unsigned i=0;i<lv_obj_get_child_count(root);i++) {
+        lv_obj_t *o=lv_obj_get_child(root,i);
+        if(lv_obj_check_type(o,&lv_label_class) && !strcmp(lv_label_get_text(o),tr(NULL,S_WORK_FRAME)))frame_label=o;
+    }
+    assert(frame_label);lv_obj_send_event(frame_label,LV_EVENT_CLICKED,NULL);dashboard_update();
+    assert(!dashboard_snapshot().work_frame && dashboard_snapshot().x_um==machine_x);
+    press(root,S_MACHINE_TAG);assert(dashboard_snapshot().work_frame);
+    press(root,S_WORK_TAG);assert(!dashboard_snapshot().work_frame);
+    /* A stop while the confirmation is open closes it and keeps the datum. */
+    press(root,S_WORK_ZERO);assert(lv_obj_get_child_count(lv_layer_top())==1);
+    press(root,S_STOP);assert(!lv_obj_get_child_count(lv_layer_top()));
+    assert(dashboard_snapshot().mode==HOLD && dashboard_snapshot().work_x_um==datum.work_x_um);
+    assert(dashboard_post_event(EV_NEW_SIM));dashboard_update();
+    assert(dashboard_post_event(EV_INC_1000));dashboard_update();
+    for(unsigned i=0;i<974;i++) { assert(dashboard_post_event(EV_STEP));dashboard_update(); }
+    press(root,S_WORK_ZERO);press(lv_layer_top(),S_ACCEPT);
+    for(unsigned i=0;i<1999;i++) { assert(dashboard_post_event(EV_X_MINUS));dashboard_update(); }
+    model_t wide=dashboard_snapshot();assert(model_display_x(&wide)==-1999000);
+    check_dashboard_layout(root);save_frame("coordinates-range");
+    assert(dashboard_post_event(EV_STOP));dashboard_update();
+    assert(dashboard_post_event(EV_NEW_SIM));assert(dashboard_post_event(EV_INC_10));dashboard_update();
     wifi_snapshot_t fixture={.state=NET_ONLINE,.revision=1,.count=8,.saved_count=2};
     strcpy(fixture.active_ssid,"TEST_HOME");strcpy(fixture.ip,"192.0.2.10");
     strcpy(fixture.saved_ssids[0],"TEST_HOME");strcpy(fixture.saved_ssids[1],"TEST_OFFLINE");
@@ -157,17 +207,40 @@ int main(int argc,char **argv) {
     lv_obj_scroll_to_view(saved_row,LV_ANIM_OFF);check_dashboard_layout(root);
     save_frame("wifi-list-bottom");
     press_text(root,"TEST_OFFLINE\nВне зоны сети");
-    unsigned skip=0;lv_obj_t *wifi_keyboard=find_class(root,&lv_keyboard_class,&skip);
-    assert(wifi_keyboard);
-    lv_obj_t *wifi_parent=lv_obj_get_parent(wifi_keyboard);skip=1;
+    lv_obj_t *wifi_parent=lv_obj_get_parent(lv_obj_get_parent(saved_row));unsigned skip=1;
     lv_obj_t *wifi_password=find_class(wifi_parent,&lv_textarea_class,&skip);assert(wifi_password);
-    lv_textarea_set_text(wifi_password,"testonly123");
-    lv_obj_send_event(wifi_password,LV_EVENT_FOCUSED,NULL);
-    assert(!lv_obj_has_flag(wifi_keyboard,LV_OBJ_FLAG_HIDDEN));
+    lv_textarea_set_text(wifi_password,"testonly123");lv_obj_send_event(wifi_password,LV_EVENT_FOCUSED,NULL);
+    assert(wifi_editor_is_open());skip=0;
+    lv_obj_t *wifi_keyboard=find_class(lv_layer_top(),&lv_keyboard_class,&skip);assert(wifi_keyboard);
+    skip=0;lv_obj_t *editor_input=find_class(lv_layer_top(),&lv_textarea_class,&skip);assert(editor_input);
+    assert(lv_textarea_get_password_mode(editor_input));
+    lv_obj_update_layout(lv_layer_top());lv_buttonmatrix_t *matrix=(lv_buttonmatrix_t *)wifi_keyboard;
+    for(unsigned i=0;i<matrix->btn_cnt;i++) {
+        assert(matrix->button_areas[i].x2-matrix->button_areas[i].x1+1>=44);
+        assert(matrix->button_areas[i].y2-matrix->button_areas[i].y1+1>=44);
+    }
     save_frame("wifi-keyboard");
-    assert(dashboard_set_view(VIEW_HOME));dashboard_update();
-    assert(!*lv_textarea_get_text(wifi_password));
-    assert(lv_obj_has_flag(wifi_keyboard,LV_OBJ_FLAG_HIDDEN));
+    press(lv_layer_top(),S_INPUT_SHOW);assert(!lv_textarea_get_password_mode(editor_input));
+    save_frame("wifi-password-visible");
+    press(lv_layer_top(),S_INPUT_HIDE);assert(lv_textarea_get_password_mode(editor_input));
+    lv_textarea_set_text(editor_input,"");
+    keyboard_press(wifi_keyboard,"1");keyboard_press(wifi_keyboard,"ABC");keyboard_press(wifi_keyboard,"A");
+    keyboard_press(wifi_keyboard,"abc");keyboard_press(wifi_keyboard,"a");keyboard_press(wifi_keyboard,"1#");
+    keyboard_press(wifi_keyboard,"@");keyboard_press(wifi_keyboard,"2");keyboard_press(wifi_keyboard,"3");
+    keyboard_press(wifi_keyboard,"4");keyboard_press(wifi_keyboard,"5");
+    assert(!strcmp(lv_textarea_get_text(editor_input),"1Aa@2345"));
+    press(lv_layer_top(),S_CANCEL);assert(!wifi_editor_is_open());assert(!strcmp(lv_textarea_get_text(wifi_password),"testonly123"));
+    lv_obj_send_event(wifi_password,LV_EVENT_FOCUSED,NULL);skip=0;
+    editor_input=find_class(lv_layer_top(),&lv_textarea_class,&skip);
+    lv_textarea_set_text(editor_input,"1Aa@2345");press(lv_layer_top(),S_INPUT_DONE);
+    assert(!wifi_editor_is_open() && !strcmp(lv_textarea_get_text(wifi_password),"1Aa@2345"));
+    press(root,S_CONNECT);assert(!strcmp(lv_textarea_get_text(wifi_password),"1Aa@2345"));
+    fixture.revision++;fixture.state=NET_FAILED;fixture.error=263;fixture.ip[0]=0;
+    wifi_service_host_fixture(&fixture);dashboard_update();
+    char timeout_text[256];snprintf(timeout_text,sizeof(timeout_text),tr(NULL,S_WIFI_CODE),tr(NULL,S_WIFI_ERR_TIMEOUT),263);
+    assert(has_label(root,timeout_text));save_frame("wifi-timeout");
+    assert(dashboard_set_view(VIEW_HOME));dashboard_update();assert(!*lv_textarea_get_text(wifi_password));
+    assert(!wifi_editor_is_open());
     wifi_service_host_fixture(NULL);
     lv_obj_t *step=NULL, *ack=NULL;
     for(unsigned i=0;i<lv_obj_get_child_count(root);i++) {

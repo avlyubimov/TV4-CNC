@@ -1,7 +1,7 @@
 # PR-01 — Architecture & Codex Rules: отчёт для review
 
 Дата: 18 ноября 2026. Ветка: `docs/pr01-architecture-rules`.
-База main: `323ab364bde301582f1b9ec8c8bc14e53396cc0c`.
+Исходная база main: `323ab364bde301582f1b9ec8c8bc14e53396cc0c`.
 
 ## План и критерии приёмки
 
@@ -21,10 +21,11 @@ backup завершён, F407 получена, привод ожидается,
 | Ветка / SHA | Docs | Host / sanitizers | ESP-IDF 6.1.1/5.3.2 × headless/rev12 |
 |---|---|---|---|
 | main `323ab364` | [success](https://github.com/avlyubimov/TV4-CNC/actions/runs/43960949299) | [success](https://github.com/avlyubimov/TV4-CNC/actions/runs/43960949184) | [все 4 success](https://github.com/avlyubimov/TV4-CNC/actions/runs/43960949071) |
-| Открытый PR #5 `b92c559c` | [success](https://github.com/avlyubimov/TV4-CNC/actions/runs/44322100475) | [success](https://github.com/avlyubimov/TV4-CNC/actions/runs/44322100321) | [все 4 success](https://github.com/avlyubimov/TV4-CNC/actions/runs/44322100795) |
+| PR #5 до слияния `b92c559c` | [success](https://github.com/avlyubimov/TV4-CNC/actions/runs/44322100475) | [success](https://github.com/avlyubimov/TV4-CNC/actions/runs/44322100321) | [все 4 success](https://github.com/avlyubimov/TV4-CNC/actions/runs/44322100795) |
 
 Это аудит существующих Actions, а не новая локальная сборка PR-01.
-PR #5 не слит и не скопирован в эту ветку. Публичных Releases на момент аудита нет.
+На исходном аудите PR #5 был открыт; затем он слит в main.
+Конфликт IMPLEMENTATION.md разрешён с сохранением обоих наборов сведений. Публичных Releases на момент аудита нет.
 Новые push/PR проверки отображаются в Actions/Checks соответствующего коммита;
 результаты этого снимка не подменяют их.
 
@@ -66,9 +67,22 @@ Firmware/host tests локально повторно не запускалис�
   миграция только отдельным USB этапом. Никаких ключей или eFuse сейчас.
 - Фото подтверждает изображение HMI, не полный GT911/performance/Wi-Fi тест.
   Код исправления 263 и крупной клавиатуры находится в отдельном PR #5.
-- Пересечение документации с PR #5 потребует согласования при merge, без потери
-  его изменений; результаты hardware/CI необходимо обновлять с точным SHA.
+- Документация согласована с уже слитым PR #5; его код сохранён.
+  Результаты hardware/CI необходимо обновлять с точным SHA.
 - Откат: revert документационного коммита. Устройство и Flash не изменяются.
 
 После создания PR-01 работа остановлена для owner review. Следующие PR,
 merge, прошивка и публикация не входят в это задание.
+
+## Согласование с обновлённым main
+
+После слияния PR #5 ветка PR-01 объединена с main `0c4168e864d4c867ba0f49a86eba72c0d59205a1`.
+Конфликт был только в IMPLEMENTATION.md; описание координат и Wi-Fi сохранено,
+статус PR #5 исправлен во всех актуальных обзорах. Первоначальные числа проверок
+выше относятся к исходной базе; повторная проверка выполняется относительно
+нового main. Исполняемый код, конфигурация, зависимости и workflows main
+сохранены побайтово. Новые сборки запускает существующий CI после push.
+
+Повторная локальная проверка: 25 Markdown-файлов в diff; 165 остальных
+Git blobs совпадают с новым main; 75 относительных ссылок корректны;
+10 областей проекта OTA и git diff --check — PASS.
