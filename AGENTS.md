@@ -107,9 +107,10 @@ PR и Actions; не копировать код уже открытого PR. Д
 
 ## Текущее задание
 
-PR #11 (read-only image stream) слит. По заданию «Дальше» выполняется PR-04d:
-bounded signature envelope и read-only HTTPS transport primitives.
-См. docs/OTA_HTTPS.md. Не подключать транспорт к app_main/UI и не включать
-installer/storage sink; не менять active partitions/sdkconfig, не обращаться
-к устройству, не создавать production keys и не merge свой PR.
-CPU/hardware baseline/soak часть PR-03 остаётся открытой.
+PR #12 (signature envelope/read-only HTTPS primitives) слит, CI success.
+По заданию «Дальше» выполняется PR-04e: single-owner read-only session
+metadata → envelope → authenticated policy → optional image stream.
+См. docs/OTA_SESSION.md. Не подключать к app_main/UI и не включать installer,
+не менять active partitions/sdkconfig, не обращаться к устройству, не создавать
+production keys и не merge свой PR. Сообщить владельцу перед этапом board checks;
+см. docs/HMI_BENCH_GATE.md. PR-03 hardware/CPU/soak остаётся открытым.

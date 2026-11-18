@@ -29,7 +29,8 @@ docs/BOARD_ADAPTER.md, docs/RUNTIME_DIAGNOSTICS.md и docs/OTA_ARCHITECTURE.md.
 - Не включать eFuse/Secure Boot/Flash Encryption в рамках настройки OTA.
   Текущий factory 2 МиБ не менять до отдельно проверенной USB-миграции.
 - PR-04a/04b/04c добавляют verification/native policy/read-only stream;
-  PR-04d добавляет envelope/read-only HTTPS primitives, не installer.
+  PR-04d добавляет envelope/read-only HTTPS primitives; PR-04e — bounded
+  read-only session coordinator. Нет app_main/UI wiring или installer.
   Неактивный candidate CSV не подключать к sdkconfig/build/flash. Никаких
   production ключей, сетевого OTA/write/boot partition activation без review.
   Для вызовов verifier нужен reviewed local trust store, не downloaded key.
