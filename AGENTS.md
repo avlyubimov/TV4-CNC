@@ -1,51 +1,114 @@
-# Codex operating rules — TV4 CNC
+# TV4-CNC — правила разработки Codex
 
-These rules apply to the entire repository. More specific AGENTS.md files may add constraints but may not weaken safety requirements.
+Правила действуют на весь репозиторий. Вложенные AGENTS.md уточняют область,
+но не ослабляют безопасность. Продолжать существующий проект, не создавать
+новый каркас вместо работающей реализации.
 
-## Mission
-Build a reversible, safe-to-test CNC retrofit for a TV-4-07-20 KA lathe. Prioritize deterministic motion, operator safety, maintainability, and a fast, legible HMI. Do not claim a feature works on hardware without measured evidence.
+## Перед изменениями
 
-## Fixed architecture
-- ESP32-S3 HMI: ESP-IDF, LVGL **9**, C/C++, FreeRTOS; 800×480 landscape. Actual board: Waveshare ESP32-S3-Touch-LCD-7 **Rev 1.2**. Vendor factory demo is LVGL 8; LVGL 9 integration requires verification against matching BSP, drivers and revision.
-- STM32F407: motion planning, hardware timer-based STEP/DIR, encoders, machine state, interlocks. Do not generate real-time motion from ESP32 or CAN callbacks.
-- CAN is a non-safety HMI↔motion transport. Verify actual CAN transceiver, termination, and USB/CAN pin multiplexing against Rev 1.2 schematic. No guessed GPIO mapping.
-- STM32F103 Blue Pill: optional **bench-only** protocol test target; not a substitute for production motion firmware.
+Прочитать README.md, docs/ARCHITECTURE.md, docs/ROADMAP.md,
+docs/IMPLEMENTATION.md, docs/HARDWARE_STATUS.md, docs/OPEN_QUESTIONS.md,
+docs/BOARD_ADAPTER.md, docs/RUNTIME_DIAGNOSTICS.md, docs/OTA_ARCHITECTURE.md,
+docs/RELEASE_PROCESS.md и правила изменяемого модуля. Проверить main, открытые
+PR и Actions; не копировать код уже открытого PR. Данные о наличии оборудования
+брать из HARDWARE_STATUS, а не из старых планов или имени USB-устройства.
 
-## Non-negotiable safety
-1. Physical hardwired normally-closed E-stop and independent removal of hazardous drive power/torque (appropriate contactor/STO architecture after hardware review). A touchscreen STOP is **not** an E-stop.
-2. Manual/CNC changeover must be mechanically and electrically interlocked; never permit competing drive engagement. Machine cannot move merely because HMI boots, resets, reconnects or loses CAN.
-3. Default state on power-up, watchdog reset, CAN timeout, sensor fault, or invalid command: **motion disabled / safe state**. Fault acknowledgement does not automatically restart motion.
-4. Never infer machine readiness from a UI mock, firmware simulation, or driver ENABLE alone. All real outputs remain disabled by default behind explicit hardware-enable configuration and commissioning procedure.
-5. No automatic spindle starts or axis motion on boot. Limit switches, homing, soft limits and travel direction must be verified before any hardware movement.
-6. Do not implement or suggest bypassing E-stop, guards, limit switches, fault detection or interlocks. Mains/servo/VFD wiring requires qualified review, proper earthing, isolation and protection.
-7. Any machining cycle, threading or C-axis indexing is **design-only** until mechanics, encoder direction, backlash, holding torque and stop behavior are validated. Software backlash compensation does not remove physical play.
+## Архитектура
 
-## Software engineering
-- No blocking I/O, sleep, filesystem writes, CAN waits, or heavy computation in LVGL callbacks. Only LVGL owner task may mutate UI objects; use queues/snapshots to transfer state.
-- Prefer static allocation where practical, bounded queues, explicit timeouts, and predictable memory use. Avoid unbounded dynamic allocations in high-frequency paths.
-- Use hardware timers/DMA/interrupts for step generation; target 1 kHz planning only after measured feasibility, never promise deterministic timing from an RTOS task alone.
-- Use explicit units (mm, mm/min, mm/rev, rpm, degrees), X diameter/radius mode, machine/work coordinate frames, and signed direction conventions. Do not silently choose machine dimensions.
-- No invented pinouts, vendor specifications, performance claims, or CAN IDs. Record unknowns in docs/OPEN_QUESTIONS.md.
-- Version CAN messages, validate payload lengths/ranges, use sequence numbers, state machine and heartbeat/timeout; no motion commands without acknowledgement and authorization.
-- **Russian (ru-RU) is the only user-facing language in MVP and the default on first boot.** All visible UI text must be Russian: navigation, buttons, status, warnings, dialogs, units where appropriate, and simulation labels (e.g. «СИМУЛЯЦИЯ», not «SIMULATION»). Do not mix English UI strings into the interface. Internal identifiers, protocol tokens, logs, and established technical abbreviations (X/Z, CAN, RPM where unavoidable) may remain in English.
-- Implement centralized localization by stable string IDs, UTF-8 RU translations, and a future-ready locale interface. Do **not** expose a language switcher or ship incomplete KK/EN translations in MVP. Reserve support for kk-KZ and en-US later; missing translations must fall back to Russian. No hardcoded user-visible strings in view code.
-- Bundle or configure a legally usable LVGL font with full Cyrillic coverage (including Ё/ё); test rendering, clipping and touch layout on 800×480. Keep fonts/assets appropriately licensed and small; do not commit proprietary vendor binaries or fonts.
-- No web stack required for core HMI. No remote machine control in MVP.
+- ESP32-S3: Waveshare ESP32-S3-Touch-LCD-7 Rev 1.2, 800×480, LVGL 9,
+  ESP-IDF 6.1.1; 5.3.2 — проверяемый резерв. Flash 16 МБ, PSRAM 8 МБ
+  согласно текущему аппаратному статусу. HMI, Wi-Fi, будущие microSD и OTA,
+  CAN-коммуникации; **никакой генерации STEP на ESP32**.
+- STM32F407: DevEBox STM32F4VX_M Ver. 2.0; точные MCU/Flash/кварц/распиновка
+  пока не подтверждены. Только он отвечает за планирование, таймерный STEP/DIR,
+  энкодеры, homing, watchdog и состояние реальной машины после commissioning.
+- Blue Pill STM32F103C8T6: отдельный стенд протокола/таймеров/загрузчиков;
+  не замена F407 и не контроллер станка. Подтверждение владельца: Flash 64 КиБ.
+- CAN — не аппаратная безопасность. Реальные GPIO, CAN ID и bitrate назначать
+  только отдельным документированным решением с проверкой ревизии/трансиверов.
+  Существующий 4-байтный heartbeat и 500 мс — только host-заглушка.
 
-## HMI quality bar
-- iOS-like *responsiveness*, not an iOS clone. Dark industrial theme, accessible contrast, large touch targets, minimal visual clutter.
-- Performance targets to **measure**, not assert: touch feedback <50 ms, smooth 30+ FPS where achievable, coordinate display 20–30 Hz, no stalls during CAN loss; log FPS, frame time, heap and touch latency.
-- Clearly distinguish «СИМУЛЯЦИЯ», «НЕТ СВЯЗИ», «ГОТОВ», «ОШИБКА» and «ДВИЖЕНИЕ» in the UI (internal enum names may remain English). Never show simulated telemetry as live machine readings.
-- UI STOP may request a controlled stop but is not safety-rated. Never depict it as the only E-stop.
+## Неослабляемая безопасность
 
-## Codex workflow
-1. Inspect repository, vendor docs/schematic, hardware revision and open questions before editing.
-2. Write a short plan and acceptance criteria. Keep PRs small and scoped.
-3. Build reproducibly with pinned toolchain/component versions; document exact commands and outputs.
-4. Add unit/host tests for protocol and state logic; simulate fault/timeout/disconnect; do not test movement on real machine without explicit commissioning authorization.
-5. Include in PR: changed files, build/test results, screenshots where relevant, performance measurements (or clearly marked unmeasured), hardware assumptions, risks, rollback plan.
-6. Never merge your own PR unless explicitly instructed. Never claim a successful build or test that was not executed.
-7. Preserve manual operation and avoid irreversible modifications to the lathe.
+1. Нормально-замкнутый физический E-stop и независимое снятие опасного
+   момента/питания через проверенные контактор/STO. UI STOP не заменяет его.
+2. Механическая и электрическая блокировка ручного/CNC переключения;
+   конкурирующее включение приводов недопустимо. Сохранить ручной режим.
+3. Загрузка, сброс, переподключение, потеря CAN, watchdog, ошибка датчика и OTA
+   не запускают оси/шпиндель. Движение по умолчанию запрещено. ACK не является
+   ARM/START и не возобновляет движение автоматически.
+4. Не активировать приводы до отдельного разрешения на commissioning,
+   проверки механики, направлений, концевиков, homing, soft limits, полярности
+   ENABLE и аппаратной цепи. Не угадывать «безопасный» уровень GPIO.
+5. Не обходить E-stop, ограждения, концевики или блокировки. Силовые цепи,
+   заземление, контакторы/STO/VFD требуют квалифицированной аппаратной проверки.
+6. Резьба, C-axis и фрезерная приставка — проектные задачи до измерения
+   энкодера, люфта, механики, удержания и останова. Компенсация не устраняет люфт.
+7. Испытание симуляции не доказывает безопасность или готовность станка.
+   Различать SIMULATION, нет связи, ошибка, готовность HMI и готовность машины.
+8. Чтение/запись реальных устройств, прошивка, стирание и тесты приводов
+   требуют отдельного разрешения владельца на соответствующую операцию.
+   Не включать Secure Boot, Flash Encryption, eFuse или STM32 option bytes
+   без отдельного разрешения; не выполнять необратимые настройки по умолчанию.
 
-## First assignment
-Read docs/CODEX_TASK_001.md. Deliver a simulation-only HMI skeleton with verifiable LVGL 9 build, UI state machine and tests.
+## ПО и интерфейс
+
+- Только владелец LVGL меняет UI; очереди/snapshots передают намерения/данные.
+  В callbacks нет блокирующего I/O, файловых операций, ожиданий CAN/сети,
+  задержек или тяжёлой обработки. Worker-задачи имеют явные лимиты/тайм-ауты.
+- Предпочитать статическое/ограниченное выделение, bounded queues и предсказуемую
+  память. Не вводить неограниченную аллокацию в частые пути.
+- STEP формируется аппаратными таймерами/DMA/IRQ STM32, не RTOS-задержками.
+  Частоты planner, jitter и производительность подтверждать измерениями.
+- Явные единицы: мм, мм/мин, мм/об, об/мин, градусы; X radius/diameter,
+  машинный/рабочий отсчёт и направления. Геометрию станка не придумывать.
+- UI MVP только ru-RU, строки через стабильные ID и fallback на русский.
+  kk-KZ/en-US резервируются архитектурно, неполных переводов/переключателя нет.
+  Протокольные токены, X/Z/CAN/SSID и технические логи могут быть английскими.
+- Шрифты с Ё/ё, разрешённые лицензии, проверка глифов/клиппинга/касания на 800×480.
+  Тёмный читаемый UI, контраст и удобные сенсорные цели; отзывчивость как цель,
+  не копирование iOS. Не коммитить чужие закрытые бинарники/шрифты.
+- Цели: touch feedback <50 мс, 30+ FPS где достижимо, координаты 20–30 Гц,
+  отсутствие зависаний при потере связи. Не объявлять их достигнутыми без замеров.
+  LVGL refresh rate не равен RGB scanout; event latency не touch-to-display.
+- Не добавлять web stack или удалённое управление станком без отдельного задания.
+
+## OTA и релизы — обязательная будущая функциональность
+
+- GitHub Releases → HTTPS → ESP32 OTA Manager; отдельно ESP32 OTA A/B и
+  ESP32 → CAN → независимый загрузчик F407. Пока это проект, а не готовый OTA.
+- Подписанный манифест, доверенный локальный публичный ключ, SHA-256, hardware/
+  protocol compatibility, ограниченные размеры, штатный rollback ESP-IDF.
+  Не доверять одному SHA, TLS или имени релиза вместо подписи.
+- Разметку мигрировать только отдельной USB-процедурой с бэкапом/проверкой,
+  не обычным app OTA. Текущий factory 2 МиБ остаётся до отдельного PR миграции.
+- Для STM32 нужны подтверждённая геометрия Flash и состояние без движения,
+  шпинделя и программы. Не выбирать адреса/сектора/A-B по предположению.
+- Автопроверка разрешена; установка требует явного подтверждения оператора
+  для конкретного образа. Сброс/потеря питания не разрешают движение.
+- Не публиковать релиз без успешного CI и отдельного явного разрешения
+  владельца на конкретный релиз. Push в main не является разрешением.
+  Не публиковать фиктивную STM32-прошивку. Приватные ключи/пароли/Flash dumps
+  не попадают в Git, логи, PR и CI-артефакты.
+
+## Процесс
+
+1. Отдельная ветка, короткий план и критерии приёмки, небольшой независимый PR.
+2. Фиксировать точные toolchain/dependency версии и лицензии; воспроизводимые
+   команды и реальные результаты. Не менять подтверждённые GPIO без проверки.
+3. Прогонять соответствующие host/fault/timeout/layout тесты и матрицу сборок
+   для изменений кода. Для docs-only проверять ссылки, согласованность и scope;
+   не объявлять новую сборку, если её не выполняли.
+4. PR описывает проблему/результат, файлы, критерии, проверки, ограничения,
+   аппаратные предположения, риски и откат. Измерения или отметка «не измерено».
+5. Не сливать собственный PR без явного разрешения владельца. Не создавать
+   теги, релизы, секреты CI и публикации под видом обычного push.
+6. Обновлять актуальный статус; исторические отчёты сохранять с явной пометкой.
+
+## Текущее задание
+
+Активный план — docs/ROADMAP.md. CODEX_TASK_001 — историческое задание, не
+команда повторять каркас. PR-01: только правила/архитектура/статус/процесс;
+не менять исполняемый код, Flash-разметку и аппаратные настройки.
+После создания PR-01 остановиться и представить отчёт владельцу. PR-02
+и последующие изменения начинать после его проверки/нового задания.
