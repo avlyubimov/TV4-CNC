@@ -190,3 +190,6 @@ web stable на момент проверки отображал 6.0.2, поэт
 
 Native signed manifest parsing/policy: [OTA_MANIFEST_POLICY.md](OTA_MANIFEST_POLICY.md).
 Это проверка кандидата, не активация A/B или завершённый OTA Manager.
+
+PR-04c: [потоковая проверка образа](OTA_IMAGE_STREAM.md), без storage/installer
+или изменения boot partition. SDK validation/health rollback ещё нужны.

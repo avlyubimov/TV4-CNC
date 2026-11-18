@@ -95,3 +95,9 @@ trust anchors, downloader/installer/rollback или записи устройс�
 затем bounded schema/target/layout/versions/protocol/URL. Namespaced cJSON
 v1.7.19 MIT закреплён SHA-256. Installer/context provisioning ещё отсутствуют.
 [Описание и evidence](OTA_MANIFEST_POLICY.md).
+
+## PR-04c — read-only image stream
+
+Добавлены incremental dual SHA-256, ESP image format/descriptor/checksum checks,
+receive/cancel/error/deadline состояния и cleanup. Нет sink/HTTP/Flash/boot commit.
+[Описание и evidence](OTA_IMAGE_STREAM.md).
