@@ -79,3 +79,10 @@ SSID/IP/MAC/паролей. При отказе не запускать TLS/inst
 всегда probe off; наличие кода не разрешает auto-flash. Откат PR — revert кода,
 само устройство это не меняет. Затем — TLS memory profiling/time provisioning,
 remaining soak/physical latency/UART procedure и последующие OTA stages.
+
+## Фактический запуск 1c38d1e
+
+[18 ноября 2026: разрешённая запись и completed=3 pass=1](evidence/hardware/2026-11-18-1c38d1e-psram/README.md).
+Acquire2281..2369us, pattern4821..5314us, release416..600us в этой выборке.
+Это один isolated bench, не TLS/soak/whole-PSRAM certification. На плате сейчас
+этот bench image; следующая запись/тест требует отдельного разрешения.
