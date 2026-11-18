@@ -58,3 +58,6 @@ SDK configs/locks/main/board/STM32/CAN/vendor и зависимости сохр
 Нет production trust/version provisioning, discovery, release, A/B migration,
 Flash writes/boot activation/self-test/rollback. Нынешний active factory layout
 не выдаётся за совместимый OTA target; тестовый A/B context только fixture.
+
+PR-04f: [PSRAM-only workspace lifetime/admission](OTA_MEMORY.md). Runtime
+worker всё ещё отсутствует, production TLS budget не выбран.

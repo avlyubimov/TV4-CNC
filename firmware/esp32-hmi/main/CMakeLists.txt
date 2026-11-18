@@ -6,9 +6,9 @@ if(CONFIG_TV4_BOARD_REV12)
     endif()
     list(APPEND board_sources "../board/rev12.c")
 endif()
-idf_component_register(SRCS ${board_sources} "main.c" "../ota/verification.c" "../ota/manifest.c" "../ota/hash.c" "../ota/image_stream.c" "../ota/json_guard.c" "../ota/envelope.c" "../ota/download.c" "../ota/https.c" "../ota/session.c" "../../../third_party/cjson/cJSON.c" "../core/diagnostics.c" "../diagnostics/export.c" "../network/wifi_service.c" "../network/wifi_profiles.c" "../network/wifi_link.c" "../ui/wifi_view.c" "../ui/wifi_editor.c" "../ui/boot_view.c" "../core/model.c" "../core/journal.c" "../core/tools.c" "../core/strings.c"
+idf_component_register(SRCS ${board_sources} "main.c" "../ota/verification.c" "../ota/manifest.c" "../ota/hash.c" "../ota/image_stream.c" "../ota/json_guard.c" "../ota/envelope.c" "../ota/download.c" "../ota/https.c" "../ota/session.c" "../ota/memory.c" "../../../third_party/cjson/cJSON.c" "../core/diagnostics.c" "../diagnostics/export.c" "../network/wifi_service.c" "../network/wifi_profiles.c" "../network/wifi_link.c" "../ui/wifi_view.c" "../ui/wifi_editor.c" "../ui/boot_view.c" "../core/model.c" "../core/journal.c" "../core/tools.c" "../core/strings.c"
  "../ui/dashboard.c" "../ui/tools_view.c" "../assets/tv4_icons.c" "../assets/tv4_lathe.c" "../assets/tv4_button_12.c" "../assets/tv4_bold_24.c" "../assets/tv4_boot_56.c" "../assets/tv4_ru_12.c" "../assets/tv4_ru_14.c" "../assets/tv4_ru_20.c" "../assets/tv4_digits_36.c" "../assets/tv4_digits_32.c"
- INCLUDE_DIRS "." "../core" "../ui" "../board" "../network" "../diagnostics" "../ota" "../../../third_party/cjson" REQUIRES lvgl esp_timer esp_lcd esp_driver_gpio esp_driver_i2c esp_wifi esp_netif esp_event nvs_flash mbedtls esp_http_client)
+ INCLUDE_DIRS "." "../core" "../ui" "../board" "../network" "../diagnostics" "../ota" "../../../third_party/cjson" REQUIRES lvgl esp_timer esp_lcd esp_driver_gpio esp_driver_i2c esp_wifi esp_netif esp_event nvs_flash mbedtls esp_http_client esp_hw_support heap)
 # lv_font_conv resources use the short LVGL include with managed IDF components.
 target_compile_definitions(${COMPONENT_LIB} PRIVATE LV_LVGL_H_INCLUDE_SIMPLE=1)
 # Keep the verification entry point in the ELF so both SDK jobs resolve its
@@ -22,3 +22,5 @@ target_link_options(${COMPONENT_LIB} INTERFACE "LINKER:--undefined=tv4_ota_manif
 target_link_options(${COMPONENT_LIB} INTERFACE "LINKER:--undefined=tv4_image_start" "LINKER:--undefined=tv4_image_feed" "LINKER:--undefined=tv4_image_finish" "LINKER:--undefined=tv4_image_abort" "LINKER:--undefined=tv4_image_close")
 
 target_link_options(${COMPONENT_LIB} INTERFACE "LINKER:--undefined=tv4_ota_signed_manifest_read" "LINKER:--undefined=tv4_https_read" "LINKER:--undefined=tv4_ota_session_run")
+
+target_link_options(${COMPONENT_LIB} INTERFACE "LINKER:--undefined=tv4_ota_memory_acquire_psram" "LINKER:--undefined=tv4_ota_memory_release" "LINKER:--undefined=tv4_ota_workspace_bytes")

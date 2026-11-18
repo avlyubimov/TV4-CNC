@@ -121,3 +121,9 @@ verified. Boot log подтверждает версию/PSRAM/RGB, владел
 экран/касания/клавиатуру/показ пароля/Wi-Fi IP. [Evidence, memory blocker и
 ограничение UART capture](evidence/hardware/2026-11-18-b93cf3b/README.md).
 Это не OTA install/soak/commissioning и не разрешение на следующую запись.
+
+## PR-04f — PSRAM-only session workspace
+
+Добавлены bounded allocation/lifetime, explicit reviewed headroom policy и
+ELF target sizeof check. Нет internal fallback, runtime calls или installer.
+[Контракт, evidence и оставшиеся ограничения](OTA_MEMORY.md).

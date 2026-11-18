@@ -205,3 +205,9 @@ PR-04c: [потоковая проверка образа](OTA_IMAGE_STREAM.md),
 Единая worker-only операция связывает metadata/envelope/policy/image checks,
 общий timeout/cancel, cleanup и terminal result. Нет runtime task/UI/install.
 [Контракт, evidence и board gate](OTA_SESSION.md).
+
+## PR-04f — PSRAM-only session workspace
+
+Добавлены bounded allocation/lifetime, explicit reviewed headroom policy и
+ELF target sizeof check. Нет internal fallback, runtime calls или installer.
+[Контракт, evidence и оставшиеся ограничения](OTA_MEMORY.md).
