@@ -98,5 +98,28 @@ int main(void) {
  model_event(&m,EV_TOUCH_FAULT);model_event(&m,EV_RPM_PLUS);
  assert(m.rpm==0 && !model_set_feed_override(&m,50) && m.feed==0);
  model_event(&m,EV_ACK);assert(m.rpm==0 && m.mode==HOLD);
+ model_init(&m);initial_x=m.x_um;initial_z=m.z_um;
+ assert(model_display_x(&m)==initial_x && model_display_z(&m)==initial_z);
+ model_event(&m,EV_ZERO_WORK_X);
+ assert(m.work_frame && model_display_x(&m)==0 && model_display_z(&m)==initial_z);
+ assert(m.x_um==initial_x && m.z_um==initial_z && m.work_z_um==0);
+ model_event(&m,EV_STEP);assert(model_display_x(&m)==100 && m.x_um==initial_x+100);
+ model_event(&m,EV_ZERO_WORK_Z);assert(model_display_z(&m)==0 && m.z_um==initial_z);
+ model_event(&m,EV_FRAME_TOGGLE);assert(!m.work_frame && model_display_x(&m)==initial_x+100);
+ model_event(&m,EV_ZERO_WORK_ALL);assert(model_display_x(&m)==0 && model_display_z(&m)==0);
+ int32_t datum_x=m.work_x_um,datum_z=m.work_z_um;
+ model_event(&m,EV_STOP);model_event(&m,EV_ZERO_WORK_ALL);
+ assert(m.mode==HOLD && m.work_x_um==datum_x && m.work_z_um==datum_z && m.rpm==0);
+ model_event(&m,EV_TOUCH_FAULT);model_event(&m,EV_ZERO_WORK_X);
+ assert(m.mode==FAULT && m.work_x_um==datum_x);
+ model_event(&m,EV_FRAME_TOGGLE);assert(m.mode==FAULT && m.fault==F_TOUCH);
+ model_event(&m,EV_ACK);model_event(&m,EV_NEW_SIM);
+ assert(!m.work_frame && !m.work_x_um && !m.work_z_um && m.mode==SIMULATION);
+ model_event(&m,EV_CONNECT);datum_x=m.work_x_um;model_event(&m,EV_ZERO_WORK_X);assert(m.work_x_um==datum_x);
+ model_init(&m);m.x_um=-1000000;m.z_um=1000000;model_event(&m,EV_ZERO_WORK_ALL);
+ m.x_um=1000000;m.z_um=-1000000;
+ assert(model_display_x(&m)==2000000 && model_display_z(&m)==-2000000);
+ model_init(&m);assert(model_set_feed_override(&m,150));model_event(&m,EV_INC_100);
+ assert(m.feed_override==150 && m.feed==270 && m.step_um==100);
  assert(!transport_send(b,4)); puts("State, timeout, invalid frames, RU fallback and inert transport passed");
 }

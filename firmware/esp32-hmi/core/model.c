@@ -24,6 +24,7 @@ void model_event(model_t *m, event_t e) {
         /* Explicit reset of this simulation provider, not machine authorization. */
         if(m->mode!=HOLD || m->fault!=F_NONE) { m->rejected++; journal_push(&m->journal,m->clock_ms,J_REJECTED,m->fault); return; }
         m->mode=SIMULATION; m->connected=m->heartbeat_seen=false;
+        m->work_x_um=m->work_z_um=0; m->work_frame=false;
         m->x_um=25430; m->z_um=-142850; m->rpm=1250; m->feed=(uint16_t)(180u*m->feed_override/100u);
         journal_push(&m->journal,m->clock_ms,J_RESTART,F_NONE); return;
     case EV_STOP: if(m->mode!=FAULT) m->mode=HOLD; kind=J_STOP; break;
@@ -37,6 +38,17 @@ void model_event(model_t *m, event_t e) {
     case EV_ACK:
         journal_push(&m->journal,m->clock_ms,J_ACK,m->fault);
         m->emergency=false; m->fault=F_NONE; m->mode=HOLD; m->rpm=m->feed=0; return;
+    case EV_FRAME_TOGGLE: m->work_frame=!m->work_frame; kind=J_FRAME; break;
+    case EV_ZERO_WORK_X:
+    case EV_ZERO_WORK_Z:
+    case EV_ZERO_WORK_ALL:
+        if(m->mode==SIMULATION && !m->connected) {
+            if(e!=EV_ZERO_WORK_Z)m->work_x_um=m->x_um;
+            if(e!=EV_ZERO_WORK_X)m->work_z_um=m->z_um;
+            m->work_frame=true;
+            kind=e==EV_ZERO_WORK_X?J_ZERO_X:e==EV_ZERO_WORK_Z?J_ZERO_Z:J_ZERO_ALL;
+        }
+        break;
     case EV_RPM_MINUS:
         if(m->mode==SIMULATION && !m->connected && m->rpm>=50) { m->rpm-=50; kind=J_RPM; } break;
     case EV_RPM_PLUS:
@@ -47,7 +59,7 @@ void model_event(model_t *m, event_t e) {
     case EV_Z_PLUS: if(m->mode==SIMULATION && m->z_um<=1000000-m->step_um) { m->z_um+=m->step_um; kind=J_STEP; } break;
     case EV_INC_1: m->step_um=1; kind=J_INCREMENT; break;
     case EV_INC_10: m->step_um=10; kind=J_INCREMENT; break;
-    case EV_INC_100: m->feed_override=100; m->step_um=100; kind=J_INCREMENT; break;
+    case EV_INC_100: m->step_um=100; kind=J_INCREMENT; break;
     case EV_INC_1000: m->step_um=1000; kind=J_INCREMENT; break;
     default: fault(m,F_INVALID); m->rejected++; return;
     }
@@ -96,3 +108,6 @@ bool model_set_feed_override(model_t *m,unsigned percent) {
     journal_push(&m->journal,m->clock_ms,J_OVERRIDE,F_NONE);
     return true;
 }
+
+int32_t model_display_x(const model_t *m) { return m->work_frame?m->x_um-m->work_x_um:m->x_um; }
+int32_t model_display_z(const model_t *m) { return m->work_frame?m->z_um-m->work_z_um:m->z_um; }
