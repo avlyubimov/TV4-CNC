@@ -69,3 +69,9 @@ production keys/release. SDK configs/locks/layout/board/UI/Wi-Fi/STM32/vendor
 не меняются. Для runtime TLS ещё нужны источник UTC и reviewed source policy,
 TLS peak/budget/time failure tests, bounded worker/UI и разрешённый bench.
 Откат — revert PR; persistent/device state не меняется.
+
+## Следующий слой PR-04i
+
+[SNTP source](SNTP_SOURCE.md) даёт explicit worker operation; предыдущие слова
+«SNTP service отсутствует» описывают PR-04h до него. В startup/UI он по-прежнему
+не вызывается, production policy/UTC readiness не подставляются автоматически.

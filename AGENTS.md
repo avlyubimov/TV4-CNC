@@ -107,10 +107,10 @@ PR и Actions; не копировать код уже открытого PR. Д
 
 ## Текущее задание
 
-PR #17 слит: hardware PSRAM allocation PASS сохранён. По «Продолжай»
-выполняется PR-04h: local time provenance/age/skew gate + portable guarded HTTP
-binding и SDK gettimeofday/esp_timer sampler. См. docs/TLS_TIME_GATE.md.
-Нет SNTP service/clock updates/UI/runtime downloader/TLS budget или installer.
-Не обращаться к плате: разрешение на запись/reset/один capture 1c38d1e завершено.
-На плате memory-bench 1c38d1e. Не менять SDK configs/layout/board/timings и
-не создавать production keys/release. Не merge свой PR.
+PR #18 слит. По «Продолжай» выполняется PR-04i: bounded SNTP lifecycle,
+explicit reviewed unauthenticated-source policy, SDK TCP/IP-owned init/stop.
+См. docs/SNTP_SOURCE.md. Нет startup/UI invocation, runtime HTTPS/installer,
+production time/TLS budget defaults или нового bench trigger.
+Не обращаться к плате: разрешение на 1c38d1e/capture завершено. На плате остаётся
+memory-bench1c38d1e. Не менять configs/layout/board/timings, не создавать keys/
+release и не merge свой PR. Пробы UTC/TLS на устройстве — отдельное разрешение.

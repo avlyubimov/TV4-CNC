@@ -16,6 +16,7 @@ typedef struct { bool ready;tv4_time_sample accepted;tv4_time_policy policy; } t
  * SNTP provenance is explicit; this gate does not authenticate NTP or set UTC.
  * One worker owns anchor/provider/system clock updates throughout a request. */
 void tv4_time_forget(tv4_time_anchor *);
+tv4_time_result tv4_time_policy_validate(const tv4_time_policy *);
 tv4_time_result tv4_time_adopt(tv4_time_anchor *,const tv4_time_policy *,const tv4_time_sample *);
 /* Rejection revokes anchor until explicit new adoption; no automatic revival. */
 tv4_time_result tv4_time_check(tv4_time_anchor *,const tv4_time_sample *current);
