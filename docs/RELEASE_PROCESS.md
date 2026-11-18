@@ -120,3 +120,9 @@ CI и отдельного owner approval. Отмена/update history не уд
 
 Основа: [GitHub Releases](https://docs.github.com/en/repositories/releasing-projects-on-github/about-releases).
 Подробная модель доверия и миграции: [OTA_ARCHITECTURE.md](OTA_ARCHITECTURE.md).
+
+## Подготовка кандидата PR-04a
+
+[OTA_VERIFICATION.md](OTA_VERIFICATION.md) описывает локальный read-only checker
+подписи/compatibility/hash. Он не создаёт release, не подписывает и не включает
+установку. Поддерживается только один HMI component; motion остаётся будущим.

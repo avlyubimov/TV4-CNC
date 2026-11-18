@@ -28,6 +28,9 @@ docs/BOARD_ADAPTER.md, docs/RUNTIME_DIAGNOSTICS.md и docs/OTA_ARCHITECTURE.md.
   для успешной загрузки HMI. Установка — только после подтверждения оператора.
 - Не включать eFuse/Secure Boot/Flash Encryption в рамках настройки OTA.
   Текущий factory 2 МиБ не менять до отдельно проверенной USB-миграции.
-- PR-03 дополняет instrumentation/worker export. Не менять GPIO, PCLK,
-  framebuffer/PSRAM timing и Flash-разметку без измерений. Аппаратная часть
-  и per-core CPU load остаются открытыми; не заявлять выполнение targets.
+- PR-04a добавляет verification primitives и локальные проверки, не installer.
+  Неактивный candidate CSV не подключать к sdkconfig/build/flash. Никаких
+  production ключей, сетевого OTA/write/boot partition activation без review.
+  Для вызовов verifier нужен reviewed local trust store, не downloaded key.
+- CPU/hardware/soak часть PR-03 остаётся открытой; не выдавать software windows
+  за физическую latency или достижение целевых показателей.

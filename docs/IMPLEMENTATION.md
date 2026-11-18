@@ -81,3 +81,10 @@ compile-only Cortex-M4F библиотека. Нет startup/linker/board image,
 Добавлены fixed-window histograms, ресурсы/стек/counters/reset, панель ресурсов
 и worker serial JSON export. Перенесён printf из UI owner; render callback не
 логирует. [Детали и оставшиеся hardware/CPU/soak задачи](HMI_PERFORMANCE.md).
+
+## PR-04a — verification foundation
+
+Добавлены host/SDK P-256/SHA-256 primitives, локальный валидатор подписанного
+релиза и неактивный candidate A/B CSV с проверкой обоих SDK. Нет production
+trust anchors, downloader/installer/rollback или записи устройства.
+[Контракт, evidence и следующие части](OTA_VERIFICATION.md).
