@@ -139,3 +139,9 @@ worker после 15 секунд работы UI. Обычные headless/rev12
 Отдельно разрешённая USB-запись rev12-memory-bench и один60s capture выполнены.
 [completed=3 pass=1, timings/heap и ограничения](evidence/hardware/2026-11-18-1c38d1e-psram/README.md).
 На плате остаётся этот bench image. Runtime TLS budget/installer не включены.
+
+## PR-04h — time gate для native HTTPS
+
+Свежая local provenance/age/skew anchor проверяется вокруг backend I/O и final
+cleanup; boolean hint не даёт native transport разрешения без anchor. Нет
+SNTP/clock updates/runtime UI. [Контракт и evidence](TLS_TIME_GATE.md).

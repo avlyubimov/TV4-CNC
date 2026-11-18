@@ -104,6 +104,6 @@ int main(void) {
     m=healthy();assert(run(&m,r)==TV4_HTTP_ARGUMENT && !m.opens);r.maximum_bytes=2048;
     m=healthy();assert(run(&m,r)==TV4_HTTP_OK);
     tv4_http_report report;
-    assert(tv4_https_read(NULL,&workspace,consume,&m,NULL,NULL,&report)==TV4_HTTP_UNAVAILABLE);
+    assert(tv4_https_read(NULL,NULL,&workspace,consume,&m,NULL,NULL,&report)==TV4_HTTP_UNAVAILABLE);
     printf("HTTPS policy/redirects/status/length/encoding/cancel/deadlines/cleanup PASS; workspace=%zu bytes (host)\n",sizeof(workspace));
 }

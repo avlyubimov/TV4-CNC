@@ -61,3 +61,7 @@ Flash writes/boot activation/self-test/rollback. Нынешний active factory
 
 PR-04f: [PSRAM-only workspace lifetime/admission](OTA_MEMORY.md). Runtime
 worker всё ещё отсутствует, production TLS budget не выбран.
+
+PR-04h: native tv4_https_read требует отдельный [time anchor](TLS_TIME_GATE.md).
+Будущий io.fetch adapter передаёт worker-owned anchor и serialized UTC updates;
+одного session_request.trusted_time недостаточно. Session не provisioning UTC.

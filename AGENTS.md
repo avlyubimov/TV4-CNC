@@ -107,11 +107,10 @@ PR и Actions; не копировать код уже открытого PR. Д
 
 ## Текущее задание
 
-PR #16 слит. Пользователь отдельно разрешил запись/reset/один60s capture
-1c38d1e rev12-memory-bench: выполнено, completed=3 pass=1. См.
-docs/evidence/hardware/2026-11-18-1c38d1e-psram/README.md. Текущая ветка docs-only.
-На плате остаётся memory-bench image (три цикла максимум на каждый boot).
-Новых Flash/serial/reset операций не выполнять: это разрешение завершено.
-PSRAM allocation gate подтверждён для isolated пробы; TLS peak/headroom/time/
-soak/UART reset cause остаются открытыми. Не считать probe floors production
-TLS policy. Не создавать production keys/release и не merge свой PR.
+PR #17 слит: hardware PSRAM allocation PASS сохранён. По «Продолжай»
+выполняется PR-04h: local time provenance/age/skew gate + portable guarded HTTP
+binding и SDK gettimeofday/esp_timer sampler. См. docs/TLS_TIME_GATE.md.
+Нет SNTP service/clock updates/UI/runtime downloader/TLS budget или installer.
+Не обращаться к плате: разрешение на запись/reset/один capture 1c38d1e завершено.
+На плате memory-bench 1c38d1e. Не менять SDK configs/layout/board/timings и
+не создавать production keys/release. Не merge свой PR.

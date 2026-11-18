@@ -48,7 +48,8 @@ PR #13 слит: [read-only OTA session](docs/OTA_SESSION.md), без runtime UI
 выполнены. [PR-04f: PSRAM workspace](docs/OTA_MEMORY.md) и PR #16 слиты.
 [Разрешённый memory bench 1c38d1e](docs/evidence/hardware/2026-11-18-1c38d1e-psram/README.md)
 прошёл три цикла allocation/pattern/release; на плате остаётся этот bench image.
-Перед HTTPS worker нужны production TLS peak/headroom/time review и остальные
+Текущий [PR-04h: проверка времени TLS](docs/TLS_TIME_GATE.md) не включает
+синхронизацию/HTTPS в HMI. Перед worker нужны TLS peak/headroom/time provisioning и остальные
 [аппаратные проверки](docs/HMI_BENCH_GATE.md).
 
 ## Обязательные следующие подсистемы

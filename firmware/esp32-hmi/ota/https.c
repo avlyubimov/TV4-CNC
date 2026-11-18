@@ -1,4 +1,5 @@
 #include "https.h"
+#include "timed_download.h"
 #ifdef ESP_PLATFORM
 #include "sdkconfig.h"
 #include "esp_http_client.h"
@@ -86,16 +87,17 @@ static void close_client(void *context) {
 }
 static uint32_t now(void *context) {(void)context;return (uint32_t)(esp_timer_get_time()/1000);}
 static bool cancelled(void *context) {bridge *b=context;return b->cancelled && b->cancelled(b->cancel_context);}
+static tv4_time_result clock_read(void *context,tv4_time_sample *out) {(void)context;return tv4_time_clock_read(out);}
 #endif
 #endif
-tv4_http_result tv4_https_read(const tv4_http_request *r,tv4_http_workspace *w,
+tv4_http_result tv4_https_read(const tv4_http_request *r,tv4_time_anchor *time,tv4_http_workspace *w,
     tv4_http_consume consume,void *consumer,bool (*cancel_cb)(void *),void *cancel_context,tv4_http_report *report) {
 #if defined(ESP_PLATFORM) && CONFIG_MBEDTLS_CERTIFICATE_BUNDLE
     bridge b={.cancelled=cancel_cb,.cancel_context=cancel_context};
     tv4_http_ops ops={&b,open_client,read_client,complete_client,close_client,now,cancelled};
-    return tv4_http_fetch(r,&ops,w,consume,consumer,report);
+    return tv4_http_fetch_timed(r,&ops,time,clock_read,NULL,w,consume,consumer,report);
 #else
-    (void)r;(void)w;(void)consume;(void)consumer;(void)cancel_cb;(void)cancel_context;
+    (void)r;(void)time;(void)w;(void)consume;(void)consumer;(void)cancel_cb;(void)cancel_context;
     if(report) {*report=(tv4_http_report){0};}
     return TV4_HTTP_UNAVAILABLE;
 #endif

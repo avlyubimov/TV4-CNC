@@ -40,7 +40,7 @@ jobs:
           python - <<'PYCODE'
           import subprocess
           output = subprocess.check_output(['readelf', '-Ws', 'build-idf-${{ matrix.sdk }}-${{ matrix.profile }}/tv4_hmi.elf'], text=True)
-          for symbol in ['tv4_ota_verify_manifest', 'tv4_ota_manifest_read', 'tv4_image_feed', 'tv4_image_finish', 'tv4_ota_signed_manifest_read', 'tv4_https_read', 'tv4_ota_session_run', 'tv4_ota_memory_acquire_psram', 'tv4_ota_memory_release', 'tv4_ota_workspace_bytes']:
+          for symbol in ['tv4_ota_verify_manifest', 'tv4_ota_manifest_read', 'tv4_image_feed', 'tv4_image_finish', 'tv4_ota_signed_manifest_read', 'tv4_https_read', 'tv4_ota_session_run', 'tv4_ota_memory_acquire_psram', 'tv4_ota_memory_release', 'tv4_ota_workspace_bytes', 'tv4_time_adopt', 'tv4_time_check', 'tv4_time_clock_read']:
               assert any(symbol in line and ' UND ' not in line for line in output.splitlines()), 'OTA entry point discarded or unresolved: ' + symbol
           if '${{ matrix.profile }}' == 'rev12-memory-bench':
               for symbol in ['tv4_ota_memory_bench_start', 'tv4_ota_memory_probe_buffers']:

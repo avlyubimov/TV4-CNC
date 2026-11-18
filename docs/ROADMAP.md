@@ -47,3 +47,9 @@ OTA, microSD и CI/CD поддерживают эти этапы, но не яв
 Basic HMI/input/Wi-Fi DHCP PASS; internal largest block 12288 bytes блокирует
 простое добавление HTTPS/session в internal RAM. PR-04f/04g слиты; [isolated allocation bench 1c38d1e прошёл три цикла](evidence/hardware/2026-11-18-1c38d1e-psram/README.md). Production TLS memory budget ещё не утверждён; Gate 1 soak/negative tests,
 UART capture/reset procedure и Gate 2 ещё не завершены.
+
+## PR-04h — время для TLS
+
+[Local provenance/age/skew gate](TLS_TIME_GATE.md) и guard вокруг каждого
+HTTP operation, SDK clock sampler. Источник UTC/SNTP service, production policy,
+UI и runtime TLS profiling ещё не включены; аппаратных операций нет.
