@@ -6,7 +6,7 @@
 #include <sys/time.h>
 #endif
 void tv4_time_forget(tv4_time_anchor *a) {if(a)memset(a,0,sizeof(*a));}
-static tv4_time_result policy_valid(const tv4_time_policy *p) {
+tv4_time_result tv4_time_policy_validate(const tv4_time_policy *p) {
     if(!p)return TV4_TIME_ARGUMENT;
     if(!p->reviewed)return TV4_TIME_UNREVIEWED;
     if(!p->earliest_epoch || p->latest_epoch<=p->earliest_epoch || !p->maximum_age_ms ||
@@ -30,7 +30,7 @@ tv4_time_result tv4_time_adopt(tv4_time_anchor *a,const tv4_time_policy *p,const
     if(p)policy=*p;
     if(s)sample=*s;
     tv4_time_forget(a);
-    tv4_time_result result=policy_valid(p?&policy:NULL);
+    tv4_time_result result=tv4_time_policy_validate(p?&policy:NULL);
     if(result!=TV4_TIME_OK)return result;
     result=sample_valid(&policy,s?&sample:NULL);if(result!=TV4_TIME_OK)return result;
     if(!source_allowed(&policy,sample.source))return TV4_TIME_SOURCE;
@@ -40,7 +40,7 @@ static tv4_time_result revoke(tv4_time_anchor *a,tv4_time_result r) {tv4_time_fo
 tv4_time_result tv4_time_check(tv4_time_anchor *a,const tv4_time_sample *current) {
     if(!a)return TV4_TIME_ARGUMENT;
     if(!a->ready)return TV4_TIME_NOT_READY;
-    tv4_time_result r=policy_valid(&a->policy);
+    tv4_time_result r=tv4_time_policy_validate(&a->policy);
     if(r!=TV4_TIME_OK)return revoke(a,r);
     r=sample_valid(&a->policy,current);if(r!=TV4_TIME_OK)return revoke(a,r);
     r=sample_valid(&a->policy,&a->accepted);if(r!=TV4_TIME_OK)return revoke(a,r);

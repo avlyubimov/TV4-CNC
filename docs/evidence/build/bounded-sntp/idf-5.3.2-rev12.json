@@ -1,0 +1,43 @@
+{
+  "profile": "rev12",
+  "sdk": "5.3.2",
+  "target": "esp32s3",
+  "flash_bytes": 16777216,
+  "memory_bench": false,
+  "psram": "octal 80MHz",
+  "images": {
+    "tv4_hmi.bin": {
+      "bytes": 1528768,
+      "sha256": "4bff3b63238787f48d65f563bacff307f56a7756b53979a10b25f03cec96bd59"
+    },
+    "bootloader/bootloader.bin": {
+      "bytes": 21648,
+      "sha256": "e917a3a905f22d359a3c050750688dcd56421b655e5f3f67b2a4671dc5f64d90"
+    }
+  },
+  "partitions": [
+    {
+      "kind": 1,
+      "subtype": 2,
+      "address": 36864,
+      "size": 24576,
+      "label": "nvs"
+    },
+    {
+      "kind": 1,
+      "subtype": 1,
+      "address": 61440,
+      "size": 4096,
+      "label": "phy_init"
+    },
+    {
+      "kind": 0,
+      "subtype": 0,
+      "address": 65536,
+      "size": 2097152,
+      "label": "factory"
+    }
+  ],
+  "device_access": false,
+  "physical_performance": "not measured"
+}

@@ -53,3 +53,9 @@ UART capture/reset procedure и Gate 2 ещё не завершены.
 [Local provenance/age/skew gate](TLS_TIME_GATE.md) и guard вокруг каждого
 HTTP operation, SDK clock sampler. Источник UTC/SNTP service, production policy,
 UI и runtime TLS profiling ещё не включены; аппаратных операций нет.
+
+## PR-04i — SNTP source
+
+[Bounded source](SNTP_SOURCE.md) готовится отдельным PR после #18. Нет
+startup/UI invocation или production time policy. Следующий шаг — opt-in
+UTC/TLS memory profiling с отдельным разрешением на точный image и network test.

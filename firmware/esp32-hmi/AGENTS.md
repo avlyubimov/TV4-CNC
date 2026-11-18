@@ -43,3 +43,7 @@ docs/BOARD_ADAPTER.md, docs/RUNTIME_DIAGNOSTICS.md и docs/OTA_ARCHITECTURE.md.
 - PR-04h: native HTTPS требует fresh local time anchor, одного boolean hint
   недостаточно. Clock sampler не устанавливает provenance; SNTP не включать
   молча и не считать authenticated. Time/anchor меняет один worker, не callback.
+
+- PR-04i SNTP source — explicit worker call, не из startup/LVGL callback. Только
+  reviewed local policy с allow_unauthenticated_sntp; source не authenticated.
+  Нет параллельных TLS/UTC updates или других владельцев global SNTP service.

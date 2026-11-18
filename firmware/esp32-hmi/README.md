@@ -138,3 +138,9 @@ worker после 15 секунд работы UI. Обычные headless/rev12
 Свежая local provenance/age/skew anchor проверяется вокруг backend I/O и final
 cleanup; boolean hint не даёт native transport разрешения без anchor. Нет
 SNTP/clock updates/runtime UI. [Контракт и evidence](../../docs/TLS_TIME_GATE.md).
+
+## PR-04i — bounded SNTP source
+
+Worker-only lifecycle с deadline/cancel/cleanup и SDK TCP/IP ownership.
+Mark SNTP_UNAUTHENTICATED после stop/sample/policy; нет startup/UI/TLS trigger.
+[Контракт, evidence и ограничения](../../docs/SNTP_SOURCE.md).
