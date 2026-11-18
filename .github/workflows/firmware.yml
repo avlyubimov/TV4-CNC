@@ -30,6 +30,18 @@ jobs:
           ./tools/build_idf.sh '${{ matrix.profile }}' '${{ matrix.sdk }}' local 2>&1 | tee evidence/build.log
           cp 'build-idf-${{ matrix.sdk }}-${{ matrix.profile }}/validation.json' evidence/
           diff -ru "$lock_snapshot/" firmware/esp32-hmi/locks/
+      - name: Verify inactive OTA layout candidate and crypto symbol linkage
+        shell: bash
+        run: |
+          set -euo pipefail
+          source "$IDF_PATH/export.sh" >/dev/null
+          python tools/check_ota_layout.py --sdk "$IDF_PATH" > evidence/ota-layout.log 2>&1
+          python - <<'PYCODE'
+          import subprocess
+          output = subprocess.check_output(['readelf', '-Ws', 'build-idf-${{ matrix.sdk }}-${{ matrix.profile }}/tv4_hmi.elf'], text=True)
+          assert any('tv4_ota_verify_manifest' in line and ' UND ' not in line for line in output.splitlines()), 'OTA verifier entry point was discarded or unresolved'
+          print('Crypto symbols linked; no OTA installer enabled')
+          PYCODE
       - uses: actions/upload-artifact@v4
         if: always()
         with:

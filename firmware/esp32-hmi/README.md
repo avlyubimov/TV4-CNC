@@ -61,8 +61,8 @@ cmake --build build-host -j 4
 ctest --test-dir build-host --output-on-failure
 ```
 
-Семь тестов: ядро, инспектор сборок, Wi-Fi profiles, LVGL 32-bit/RGB565,
-диагностические окна/экспорт и STM32 supervisor.
+Девять тестов: ядро, инспектор сборок, Wi-Fi profiles, LVGL 32-bit/RGB565,
+диагностические окна/экспорт, OTA crypto/candidate и STM32 supervisor.
 Есть проверки кириллицы/глифов, границ надписей/кнопок, отказов, локализации,
 журнала и редактирования инструмента. CI повторяет тесты с ASan/UBSan/LSan.
 Кадры PPM в build-host/ являются рендером ПК, не фото работающей платы.
@@ -96,3 +96,8 @@ assets/IMAGE-PROVENANCE.md. Исходный PNG не включается в б
 Диагностика → «Ресурсы» и bounded worker serial export schema=1 добавлены в
 PR-03: [HMI_PERFORMANCE](../../docs/HMI_PERFORMANCE.md). Программные окна
 не заменяют per-core CPU/физическую latency/scanout; аппаратные замеры открыты.
+
+PR-04a добавляет только OTA verification primitives и неактивный layout candidate:
+[OTA_VERIFICATION](../../docs/OTA_VERIFICATION.md). Активный factory 2 МиБ
+сохранён; install/HTTPS/rollback пока отсутствуют. Host CMake теперь требует
+OpenSSL development library >=3.0 и CLI для crypto/candidate тестов.

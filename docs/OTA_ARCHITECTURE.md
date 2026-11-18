@@ -1,6 +1,7 @@
 # OTA TV4-CNC — проект архитектуры
 
-Статус: **требование и проект, не реализация**. PR-01 не меняет partitions.csv,
+Статус: целевая архитектура. PR-04a добавляет [verification foundation](OTA_VERIFICATION.md),
+но downloader/installer/A-B/rollback ещё не реализованы. PR-01 не меняет partitions.csv,
 sdkconfig, bootloader или исполняемый код. PR-04/05/07/08 реализуют и проверяют
 этот проект отдельными review. Release source — GitHub Releases, не произвольный
 URL из UI. Производственные доверенные ключи ещё не созданы/не установлены.
@@ -30,7 +31,8 @@ ESP32 OTA и F407 update имеют собственные version/status/histor
 каждого образа. SHA без доверенной подписи не подтверждает автора.
 
 - manifest.json ограничен 16 КиБ; manifest.sig — 2 КиБ (предлагаемые лимиты).
-  Оболочка подписи содержит schema/key_id/algorithm/base64 DER signature.
+  Оболочка подписи PR-04a содержит key_id/algorithm/signature (base64 DER);
+  schema_version=1 находится в подписанном manifest.
   key_id только выбирает из локального allowlist публичных ключей; неизвестный
   key_id/алгоритм отклоняется. Ключ из загруженного манифеста/URL не доверенный.
 - Подпись проверяется до применения содержимого manifest. Затем строгая схема:
