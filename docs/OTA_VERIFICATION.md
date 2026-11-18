@@ -1,5 +1,8 @@
 # PR-04a — проверка OTA-кандидатов, без установки
 
+Продолжение PR-04b: [native manifest policy](OTA_MANIFEST_POLICY.md).
+Этот документ сохраняет scope и результаты PR-04a; runtime installer ещё нет.
+
 База: main 36c0530 после PR #8. Это первая часть PR-04, а не готовый OTA.
 Существующие factory 2 МиБ, sdkconfig, bootloader и GPIO не меняются.
 Нет сетевого downloader/installer, переключения слота или записи устройства.
@@ -102,7 +105,8 @@ tools/check_ota_layout.py проверяет точную карту, грани
 ## Оставшиеся части PR-04
 
 - Reviewed production trust store/provisioning/key rotation/schema test vectors.
-- Firmware manifest parser/compatibility context с реальными версиями.
+- Native parser/policy реализуется в PR-04b; реальные context sources и
+  network integration ещё нужны.
 - Bounded HTTPS worker/CA/time/redirect allowlist; no insecure fallback.
 - Streaming image hash + SDK validation до finish/set_boot_partition.
 - Native A/B/otadata rollback config, health self-test/deadline/watchdog и
