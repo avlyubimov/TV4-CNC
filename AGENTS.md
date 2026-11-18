@@ -107,11 +107,10 @@ PR и Actions; не копировать код уже открытого PR. Д
 
 ## Текущее задание
 
-PR #13 слит. Пользователь отдельно разрешил прошить b93cf3b на изолированном
-Waveshare стенде; запись выполнена, hashes verified. Текущая ветка docs-only:
-фиксирует реальные baseline/results, не даёт нового разрешения на прошивку,
-serial/reset или последующую версию. См. docs/evidence/hardware/2026-11-18-b93cf3b/README.md.
-Basic display/touch/Wi-Fi DHCP/keyboard/password visibility подтверждены.
-Перед runtime HTTPS: memory allocation review (internal largest 12288 bytes),
-TLS peak/time provisioning и исправленная процедура UART capture. Soak/CPU/
-physical latency и остальные hardware gates остаются открытыми. Не merge свой PR.
+PR #14 слит: baseline b93cf3b зафиксирован. По «Дальше» выполняется PR-04f:
+PSRAM-only session workspace lifetime/admission и target sizeof из ELF.
+См. docs/OTA_MEMORY.md. Нет approved production TLS budget, runtime worker/UI,
+новых tasks/network calls или installer. Active configs/layout/board/LVGL buffers
+не менять. Не обращаться к плате, не прошивать новую версию; прежнее разрешение
+относилось только к b93cf3b. UART open/close reset не расследовать на устройстве
+без отдельного разрешения. Не создавать production keys/release и не merge PR.

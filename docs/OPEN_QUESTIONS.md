@@ -54,3 +54,7 @@ PSRAM, basic touch/keyboard/password visibility и Wi-Fi/DHCP подтвержд
 Перед runtime HTTPS нужны memory allocation review (largest internal block
 12288 bytes при host session 34024), TLS peak и проверенный time provider.
 Отдельно разобраться с reset при UART open/close; две выборки не являются soak.
+
+PR-04f добавляет [PSRAM-only allocation/lifetime](OTA_MEMORY.md) и target sizeof
+из ELF; это не runtime allocation test и не подтверждение достаточного TLS
+reserve. Memory blocker остаётся до аппаратного allocation/TLS peak review.

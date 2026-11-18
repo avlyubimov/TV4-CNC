@@ -45,7 +45,8 @@ Wi-Fi/DHCP. Полный GT911/FPS/touch-to-display/soak ещё не подтв�
 
 PR #13 слит: [read-only OTA session](docs/OTA_SESSION.md), без runtime UI/install.
 Разрешённая USB-запись b93cf3b и [первый аппаратный baseline](docs/evidence/hardware/2026-11-18-b93cf3b/README.md)
-выполнены. Перед HTTPS worker нужны memory budget/TLS peak review и остальные
+выполнены. Текущий [PR-04f: PSRAM workspace](docs/OTA_MEMORY.md) не включает
+HTTPS worker. До него нужны reviewed memory budget/TLS peak и остальные
 [аппаратные проверки](docs/HMI_BENCH_GATE.md).
 
 ## Обязательные следующие подсистемы
