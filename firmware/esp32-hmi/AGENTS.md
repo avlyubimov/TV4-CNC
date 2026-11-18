@@ -28,7 +28,8 @@ docs/BOARD_ADAPTER.md, docs/RUNTIME_DIAGNOSTICS.md и docs/OTA_ARCHITECTURE.md.
   для успешной загрузки HMI. Установка — только после подтверждения оператора.
 - Не включать eFuse/Secure Boot/Flash Encryption в рамках настройки OTA.
   Текущий factory 2 МиБ не менять до отдельно проверенной USB-миграции.
-- PR-04a/04b/04c добавляют verification/native policy/read-only stream, не installer.
+- PR-04a/04b/04c добавляют verification/native policy/read-only stream;
+  PR-04d добавляет envelope/read-only HTTPS primitives, не installer.
   Неактивный candidate CSV не подключать к sdkconfig/build/flash. Никаких
   production ключей, сетевого OTA/write/boot partition activation без review.
   Для вызовов verifier нужен reviewed local trust store, не downloaded key.

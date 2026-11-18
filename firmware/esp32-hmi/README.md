@@ -108,3 +108,9 @@ installer и runtime calls в UI/сети не добавлены.
 
 PR-04c: [read-only image stream](../../docs/OTA_IMAGE_STREAM.md). Полный образ
 не хранится firmware verifier в RAM; storage/HTTP/installer не добавлены.
+
+## PR-04d — signature envelope / HTTPS
+
+Добавлены bounded конверт подписи и read-only HTTPS transport primitives.
+Не подключены к app_main/UI, нет discovery/OTA Manager/installer/Flash writes.
+[Контракт, проверки и ограничения](../../docs/OTA_HTTPS.md).
