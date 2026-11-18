@@ -1,33 +1,59 @@
-# First-boot runtime diagnostics
+# Диагностика HMI: что измеряется и чего пока нет
 
-Scope: collect boot milestones and bounded periodic health reports before display/touch commissioning.
-Acceptance: ESP-IDF 6.1.1 headless and rev12 compile and pass binary validation; host tests pass.
-No motion, CAN initialization or device flashing is introduced.
+Существующий код main 323ab36, без изменений в PR-01. Физическое изображение
+HMI наблюдалось, но числовых performance результатов с платы в проверенных
+материалах нет. Повторно создавать instrumentation вместо анализа кода не нужно.
 
-Serial logs now identify successful RGB panel creation, GT911 creation, memory before UI
-initialization and LVGL readiness. Driver initialization messages confirm API success;
-they do not prove visible output or correct physical touch coordinates.
+| Показатель | Существующий источник/смысл | Ограничение |
+|---|---|---|
+| LVGL refresh rate | dashboard.c считает LV_EVENT_REFR_READY за окно ~1 с | Перерисовки LVGL, не RGB scanout/VSYNC и не обещание 30 FPS |
+| LVGL render/refresh time | Последний REFR_START → REFR_READY, мс | Не полный physical input-to-pixel, не распределение p95/p99 |
+| Event processing latency | Время queue enqueue callback → обработка owner | Не включает физический контакт/GT911 sample/видимость пикселя |
+| Free heap | esp_get_free_heap_size в dashboard | Общая оценка, не полный профиль всех capability heaps |
+| Internal memory | main: free/minimum/largest block, каждые 5 с | Минимум с boot и fragmentation proxy, не измеренная длительная устойчивость |
+| PSRAM | total до UI, free в main health log | Нет графика/пиков/сквозного bandwidth measurement |
+| Owner work duration | max_work_us за 5 с | Исключает sleep и отдельный health log; включает dashboard/LVGL и их работу/логи, не CPU utilization |
+| Stack high-water | uxTaskGetStackHighWaterMark(NULL) владельца, ESP-IDF bytes | Не все worker stacks и не доказанный безопасный запас |
+| Touch freshness | Возраст последнего valid sample/защёлкнутый fault | Не corner calibration и не physical latency |
+| Queue overflow | bounded queue/drop/fault logic есть | Нет отдельного полного counter/export на все очереди |
+| CAN timeout | Тестовый heartbeat 500 мс, journal | Только mock envelope, не физическая CAN performance |
 
-Every five seconds the LVGL owner task reports loop count and elapsed window,
-maximum UI work duration (microseconds), internal free/minimum/largest-block memory,
-free PSRAM and its stack high-water mark (ESP-IDF bytes). The rev12 profile also
-reports elapsed time since the latest valid touch sample and its latched fault flag.
-The loop duration excludes task sleep and diagnostic logging. It includes dashboard
-update, LVGL processing and, in rev12, the touch freshness check. These are not
-scanout FPS, touch-to-photon latency or a guarantee of real-time performance.
+UI показывает примерные 36 °C/24.1 В и фиксированные часы/дату; это не измерение
+температуры/питания и не источник времени TLS. Driver init messages подтверждают
+возврат API, а не качество физического изображения/касания.
 
-No logging was added to LVGL input/flush callbacks. The 16 MHz RGB pixel clock,
-single PSRAM framebuffer, partial draw buffer and task polling periods are unchanged.
-Periodic serial output may still add scheduling time once per five-second interval;
-measure on the board before claiming any responsiveness target.
+## Дополнение PR-03 (ещё не сделано)
 
-From the ASCII-path worktree, after activating ESP-IDF:
+- Runtime CPU load по ядрам, memory capability stats, min/free PSRAM и
+  все worker stack watermarks с ограниченной частотой публикации.
+- Reset reason, watchdog cause/count, Wi-Fi reconnect attempts/success/failure,
+  queue overflow по источнику и отдельно mock/будущий physical CAN timeouts.
+- Показатели на диагностическом экране с корректными названиями/единицами,
+  sampled windows/percentiles, hardware/profile/version/uptime и error context.
+- Export versioned bounded records через worker (сначала serial/file abstraction,
+  microSD backend после PR-06). Пароли, signing keys и private dumps исключить.
+- Физическую touch-to-display измерять отдельной воспроизводимой методикой:
+  момент физического касания и появления изменения пикселей, разрешение и
+  погрешность измерителя; не переименовывать существующий event_ms.
+- Снять baseline до/после Wi-Fi scan/reconnect, без AP/карты, при ошибке touch,
+  под memory pressure и при длительном прогоне. RGB frame/scanout считать отдельно.
+- Проверить неблокирующее поведение callbacks, включая существующий error log
+  внутри flush: при необходимости перенести логирование в owner/worker.
+- Не менять PCLK/framebuffer/DMA/PSRAM в рамках документационного PR-01.
+
+Цели <50 мс feedback, 30+ FPS где достижимо, координаты 20–30 Гц, отсутствие
+зависаний на timeout — **цели, не достигнутые показатели**. Для каждой записи
+указать host/board, метод, версии, длительность, worst case/погрешность и ограничения.
+Частоты single framebuffer/PCLK 16 МГц и polling 20 мс не доказывают их выполнение.
+
+## Чтение serial — только отдельно разрешённый стенд
+
+После отдельного разрешения на подключение, выбора порта и активации SDK,
+из ASCII-path корня репозитория пример monitor (без Flash):
 
 ```bash
-idf.py -C firmware/esp32-hmi -B "$PWD/build-idf-6.1.1-rev12" -p /dev/ttyACM0 monitor
+idf.py -C firmware/esp32-hmi -B "$PWD/build-idf-6.1.1-rev12" -p "$PORT" monitor
 ```
 
-Press RESET to capture boot milestones; exit with Ctrl+]. This monitor command does
-not flash firmware. The diagnostic changes must be flashed separately before their
-new messages can appear; hardware testing of these changes is pending.
-Rollback: revert this diagnostics commit and rebuild the previously tested profile.
+PR-01 не запускает эту команду. Аппаратный статус и оставшиеся gates:
+[HARDWARE_STATUS.md](HARDWARE_STATUS.md), [OPEN_QUESTIONS.md](OPEN_QUESTIONS.md).

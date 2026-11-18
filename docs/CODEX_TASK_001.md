@@ -1,3 +1,8 @@
+> **Историческое задание первого HMI. Не является текущей командой Codex.**
+> Программная основа уже реализована; аппаратные и performance проверки
+> остаются отдельными задачами. Продолжение — [ROADMAP.md](ROADMAP.md),
+> текущий PR-01 — [PR01_REVIEW.md](PR01_REVIEW.md). Не создавать HMI заново.
+
 # Codex Task 001 — First buildable HMI
 
 ## Objective

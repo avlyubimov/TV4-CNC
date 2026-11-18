@@ -1,30 +1,60 @@
 # TV4 CNC
 
-Reversible CNC retrofit of TV-4-07-20 KA lathe. **Engineering prototype, not production-ready machine control.**
+Развиваемая система ЧПУ для ТВ-4-07-20 КА с сохранением ручного управления.
+**Инженерный прототип: реальное управление приводами ещё не реализовано
+и не введено в эксплуатацию.** Существующий HMI продолжается, не создаётся заново.
 
-## Hardware
-- HMI: Waveshare ESP32-S3-Touch-LCD-7 **PCB Rev 1.2** (observed), 800×480 touchscreen; factory LVGL v8 demo tested.
-- Motion: STM32F407VGT6 (pending delivery); optional STM32F103 Blue Pill for communication bench tests.
-- Axis test drive: one purchased closed-loop NEMA23 3.1 N·m with STEP/DIR driver, exact model/encoder details pending verification.
-- Planned X/Z ballscrews, optional spindle encoder directly on spindle, spindle servo and removable milling attachment: **not yet validated or installed**.
+## Архитектура и оборудование
 
-## Initial scope
-Create a responsive, testable **simulation-only HMI** in ESP-IDF + LVGL 9, based on the Waveshare board support package. No real motor outputs until separately reviewed and hardware-tested.
+- ESP32-S3 Waveshare ESP32-S3-Touch-LCD-7 Rev 1.2: 800×480, RGB LCD/GT911,
+  Flash 16 МБ, PSRAM 8 МБ по сообщению ROM/esptool. ESP-IDF 6.1.1, LVGL 9;
+  5.3.2 — проверенный резерв. HMI, Wi-Fi, будущие microSD и OTA.
+- Motion: **DevEBox STM32F4VX_M Ver. 2.0 получена**, но точный F407 part number,
+  Flash/RAM, кварц и pinout требуют проверки. STEP/DIR будет на таймерах STM32,
+  не на ESP32. Сейчас в stm32-motion только документация.
+- Blue Pill STM32F103C8T6 — отдельный bench: владелец подтвердил ST-Link V2,
+  OpenOCD 0.12.0, SWD/64 КиБ Flash и локальный backup. Не замена F407.
+- Один closed-loop NEMA23 заказан и ещё не получен; второго двигателя и
+  CAN-трансиверов нет. Механика/энкодеры/приводы не введены в эксплуатацию.
 
-See [AGENTS.md](AGENTS.md), [architecture](docs/ARCHITECTURE.md), [roadmap](docs/ROADMAP.md), and [first Codex task](docs/CODEX_TASK_001.md).
+Доказательства и неизвестные: [аппаратный статус](docs/HARDWARE_STATUS.md),
+[открытые вопросы](docs/OPEN_QUESTIONS.md). Независимый аппаратный E-stop и
+блокировки ручного/CNC режима обязательны; сенсорный STOP их не заменяет.
 
-## Getting started
-1. Read AGENTS.md and docs/CODEX_TASK_001.md.
-2. Verify vendor example and exact PCB revision; pin mapping must come from schematics, not assumptions.
-3. Implement in a feature branch; create a PR with reproducible build steps and test evidence.
+## Текущее состояние
 
-## Status
-Simulation core and LVGL 9 host renderer implemented. Host tests are available.
-ESP-IDF 6.1.1 (installed Ubuntu SDK) and 5.3.2 (fallback) build both headless and Rev 1.2 profiles with Flash 16 MB.
-The 16 MiB factory backup is complete and its SHA-256 has been verified. Physical testing of this HMI firmware is still pending.
-See [SDK compatibility](docs/IDF_611_COMPATIBILITY.md) and [backup status](docs/BACKUP_STATUS.md).
-See [implementation status](docs/IMPLEMENTATION.md) and [build instructions](firmware/esp32-hmi/README.md).
+В main есть simulation-only HMI, инструменты, журнал/диагностика, Wi-Fi с
+сохранением профилей и стартовый экран. Обе версии SDK × headless/rev12
+проверяются CI. Фото владельца подтверждают изображение HMI и список сетей;
+полный тест GT911, FPS/touch-to-display, успешное подключение Wi-Fi и длительная
+устойчивость ещё не подтверждены. Фабричный backup 16 МиБ сохранён и SHA-256
+проверен; restore не испытан. Бэкапы/пароли/окружения не включены в Git.
 
-## Язык интерфейса
+На снимке PR-01 main = `323ab36`, отдельно открыт [PR #5](https://github.com/avlyubimov/TV4-CNC/pull/5)
+с рабочими координатами и исправлением Wi-Fi 263/клавиатуры. PR-01 не включает
+его код. Сводка и границы результатов: [IMPLEMENTATION](docs/IMPLEMENTATION.md).
+Сборка: [ESP32 HMI README](firmware/esp32-hmi/README.md).
 
-Первая версия HMI полностью на русском (`ru-RU`). Архитектура локализации предусматривает добавление казахского и английского позже; см. [docs/LOCALIZATION.md](docs/LOCALIZATION.md).
+## Продолжение разработки
+
+1. Прочитать [AGENTS.md](AGENTS.md), [архитектуру](docs/ARCHITECTURE.md),
+   [roadmap](docs/ROADMAP.md) и scoped AGENTS изменяемого модуля.
+2. Проверить main/открытые PR/CI, определить короткую задачу и критерии.
+3. Изменять в отдельной ветке; PR с проверками, ограничениями и откатом.
+   Merge, прошивка, релиз и необратимые настройки — только с соответствующим
+   отдельным разрешением владельца.
+
+Текущее задание **PR-01 — Architecture & Codex Rules**: только документы,
+после создания PR остановиться на review. [CODEX_TASK_001](docs/CODEX_TASK_001.md)
+— историческое задание первого HMI, не инструкция повторять проект.
+
+## Обязательные следующие подсистемы
+
+[OTA ESP32 A/B и F407 по CAN](docs/OTA_ARCHITECTURE.md),
+[GitHub Releases/подписи/owner approval](docs/RELEASE_PROCESS.md),
+STM32 foundation, microSD/FAT32 и единый экран «Параметры → Обновления»
+запланированы отдельно. Пока не заявляются реализованными. Автопроверка
+обновлений допустима, автоматическая установка без оператора — нет.
+
+Пользовательский интерфейс MVP — русский ru-RU, централизованные строки;
+kk-KZ/en-US предусмотрены архитектурно, но не включены частично.
