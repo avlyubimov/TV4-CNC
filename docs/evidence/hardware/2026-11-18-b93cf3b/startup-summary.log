@@ -1,0 +1,8 @@
+I (423) esp_psram: Found 8MB PSRAM device
+I (748) app_init: Project name:     tv4_hmi
+I (752) app_init: App version:      b93cf3b
+I (766) app_init: ESP-IDF:          v6.1.1
+I (803) esp_psram: Adding pool of 8192K of PSRAM memory to heap allocator
+I (1179) rev12: RGB initialized: 800x480 RGB565, PCLK=16MHz, one PSRAM framebuffer
+I (1180) tv4: Memory before UI: internal=235143 PSRAM=8388608 bytes
+I (4371) tv4: UI ready: LVGL 9.2.2, 800x480 RGB565, draw buffer=32000 bytes
