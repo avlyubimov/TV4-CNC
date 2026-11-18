@@ -47,3 +47,8 @@ docs/BOARD_ADAPTER.md, docs/RUNTIME_DIAGNOSTICS.md и docs/OTA_ARCHITECTURE.md.
 - PR-04i SNTP source — explicit worker call, не из startup/LVGL callback. Только
   reviewed local policy с allow_unauthenticated_sntp; source не authenticated.
   Нет параллельных TLS/UTC updates или других владельцев global SNTP service.
+
+- PR-04j rev12-tls-bench — explicit opt-in, mutual exclusion с memory probe.
+  Единственный owner SDK local heap minimum monitor; во время окон existing
+  resources diagnostics видят window minima, после stop history восстанавливается.
+  No body/auth/redirects; SNTP может менять UTC, source не authenticated.

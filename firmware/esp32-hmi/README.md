@@ -144,3 +144,9 @@ SNTP/clock updates/runtime UI. [Контракт и evidence](../../docs/TLS_TIM
 Worker-only lifecycle с deadline/cancel/cleanup и SDK TCP/IP ownership.
 Mark SNTP_UNAUTHENTICATED после stop/sample/policy; нет startup/UI/TLS trigger.
 [Контракт, evidence и ограничения](../../docs/SNTP_SOURCE.md).
+
+## PR-04j — отдельный UTC/TLS bench
+
+rev12-tls-bench выполняет one-shot SNTP/verified HEAD и heap-window snapshots
+в worker. Ordinary profiles off, без response body/OTA install.
+[Policy, scope, evidence и hardware gate](../../docs/UTC_TLS_BENCH.md).

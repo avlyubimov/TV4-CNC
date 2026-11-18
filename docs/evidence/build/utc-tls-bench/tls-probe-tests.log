@@ -1,0 +1,1 @@
+HEAD probe time/deadline/cleanup/status/no-redirect lifecycle PASS; mocks only, no CA/TLS/network executed

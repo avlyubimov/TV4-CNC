@@ -1,0 +1,280 @@
+Checking "python3" ...
+Python 3.14.4
+"python3" has been detected
+Activating ESP-IDF 6.1
+Setting IDF_PATH to '/home/avlyubimov/.espressif/v6.1.1/esp-idf'.
+* Checking python version ... 3.14.4
+* Checking python dependencies ... OK
+* Deactivating the current ESP-IDF environment (if any) ... OK
+* Establishing a new ESP-IDF environment ... OK
+* Identifying shell ... bash
+* Detecting outdated tools in system ... Found tools that are not used by active ESP-IDF version.
+For removing old versions of shims, python, components use command 'python /home/avlyubimov/.espressif/v6.1.1/esp-idf/tools/idf_tools.py uninstall'
+To free up even more space, remove installation packages of those tools.
+Use option python /home/avlyubimov/.espressif/v6.1.1/esp-idf/tools/idf_tools.py uninstall --remove-archives.
+* Shell completion ... Autocompletion code generated
+
+Done! You can now compile ESP-IDF projects.
+Go to the project directory and run:
+
+  idf.py build
+[0/1] Re-running CMake...
+-- Minimal build - OFF
+-- Building ESP-IDF components for target esp32s3
+NOTE: Processing 4 dependencies:
+NOTE: [1/4] espressif/esp_lcd_touch (1.2.1)
+NOTE: [2/4] espressif/esp_lcd_touch_gt911 (1.1.3)
+NOTE: [3/4] lvgl/lvgl (9.2.2)
+NOTE: [4/4] idf (6.1.1)
+-- KCONFIG_REPORT_VERBOSITY not set, using default
+-- Project sdkconfig file /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/utc-tls-bench/build-idf-6.1.1-rev12/sdkconfig
+NOTE: /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/bootloader/Kconfig.projbuild:383: Deprecation notice: hex literal '0' without '0x' prefix detected. In the next major version, hex literals will be required to have a '0x' prefix.
+NOTE: /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/bootloader/Kconfig.projbuild:423: Deprecation notice: hex literal '0' without '0x' prefix detected. In the next major version, hex literals will be required to have a '0x' prefix.
+NOTE: /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/bt/common/Kconfig.in:180: Deprecation notice: hex literal '0' without '0x' prefix detected. In the next major version, hex literals will be required to have a '0x' prefix.
+NOTE: /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/bt/host/bluedroid/Kconfig.in:75: Choice symbol BT_ENC_KEY_SIZE_CTRL_STD (member of BT_ENC_KEY_SIZE_CTRL_ENABLED choice) is defined with a warning, which has no effect for choice symbols.
+NOTE: /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/bt/host/bluedroid/Kconfig.in:81: Choice symbol BT_ENC_KEY_SIZE_CTRL_VSC (member of BT_ENC_KEY_SIZE_CTRL_ENABLED choice) is defined with a warning, which has no effect for choice symbols.
+NOTE: /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/bt/host/bluedroid/Kconfig.in:88: Choice symbol BT_ENC_KEY_SIZE_CTRL_NONE (member of BT_ENC_KEY_SIZE_CTRL_ENABLED choice) is defined with a warning, which has no effect for choice symbols.
+NOTE: /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/bt/host/nimble/Kconfig.in:1124: Deprecation notice: hex literal '0' without '0x' prefix detected. In the next major version, hex literals will be required to have a '0x' prefix.
+NOTE: /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/bt/controller/esp32c3/Kconfig.in:649: Deprecation notice: hex literal '0' without '0x' prefix detected. In the next major version, hex literals will be required to have a '0x' prefix.
+NOTE: /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_hw_support/./lowpower/port/esp32p4/Kconfig.p4_rev3_mspi_workaround:6: Deprecation notice: hex literal '0' without '0x' prefix detected. In the next major version, hex literals will be required to have a '0x' prefix.
+NOTE: /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_mm/Kconfig:20: Deprecation notice: hex literal '0' without '0x' prefix detected. In the next major version, hex literals will be required to have a '0x' prefix.
+NOTE: /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_system/./port/soc/esp32s3/Kconfig.memory:21: Deprecation notice: hex literal '0' without '0x' prefix detected. In the next major version, hex literals will be required to have a '0x' prefix.
+NOTE: /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/openthread/Kconfig:106: Deprecation notice: hex literal '0' without '0x' prefix detected. In the next major version, hex literals will be required to have a '0x' prefix.
+NOTE: /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/bt/sdkconfig.rename.esp32s3:4: duplicate rename mapping for CONFIG_BT_NIMBLE_COEX_PHY_CODED_TX_RX_TLIM_EN: previous target CONFIG_BT_LE_COEX_PHY_CODED_TX_RX_TLIM_EN, new target CONFIG_BT_CTRL_COEX_PHY_CODED_TX_RX_TLIM_EN - last mapping is used
+NOTE: /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/bt/sdkconfig.rename.esp32s3:5: duplicate rename mapping for CONFIG_BT_NIMBLE_COEX_PHY_CODED_TX_RX_TLIM_DIS: previous target CONFIG_BT_LE_COEX_PHY_CODED_TX_RX_TLIM_DIS, new target CONFIG_BT_CTRL_COEX_PHY_CODED_TX_RX_TLIM_DIS - last mapping is used
+Loading defaults file /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/utc-tls-bench/firmware/esp32-hmi/sdkconfig.defaults...
+Loading defaults file /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/utc-tls-bench/firmware/esp32-hmi/sdkconfig.rev12...
+NOTE: Kconfig parser version: 1
+NOTE: Kconfig defaults policy: use sdkconfig
+NOTE: Status: Finished successfully
+-- Compiler supported targets: xtensa-esp-elf
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- App "tv4_hmi" version: 3c113de-dirty
+-- Setting up mbedtls configuration
+-- Linkage type is PUBLIC
+-- Adding linker script /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_hal_wdt/esp32s3/rom.wdt.ld
+-- Adding linker script /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_system/ld/esp32s3/memory.ld.in
+--   -> Preprocessing .in script: /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_system/ld/esp32s3/memory.ld.in
+-- Adding linker script /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_system/ld/esp32s3/sections.ld.in
+--   -> Preprocessing .in script: /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_system/ld/esp32s3/sections.ld.in
+--   -> Applying ldgen processing: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/utc-tls-bench/build-idf-6.1.1-rev12/esp-idf/esp_system/ld/sections.ld.in
+-- Adding linker script /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_rom/esp32s3/ld/esp32s3.rom.ld
+-- Adding linker script /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_rom/esp32s3/ld/esp32s3.rom.api.ld
+-- Adding linker script /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_rom/esp32s3/ld/esp32s3.rom.bt_funcs.ld
+-- Adding linker script /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_rom/esp32s3/ld/esp32s3.rom.libgcc.ld
+-- Adding linker script /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_rom/esp32s3/ld/esp32s3.rom.version.ld
+-- Adding linker script /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_rom/esp32s3/ld/esp32s3.rom.ble_master.ld
+-- Adding linker script /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_rom/esp32s3/ld/esp32s3.rom.ble_50.ld
+-- Adding linker script /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_rom/esp32s3/ld/esp32s3.rom.ble_smp.ld
+-- Adding linker script /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_rom/esp32s3/ld/esp32s3.rom.ble_dtm.ld
+-- Adding linker script /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_rom/esp32s3/ld/esp32s3.rom.ble_test.ld
+-- Adding linker script /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_rom/esp32s3/ld/esp32s3.rom.ble_scan.ld
+-- Adding linker script /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_rom/esp32s3/ld/esp32s3.rom.libc.ld
+-- Adding linker script /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/soc/esp32s3/ld/esp32s3.peripherals.ld
+-- Adding linker script /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_hal_regi2c/esp32s3/rom.regi2c.ld
+CMake Warning at /home/avlyubimov/.espressif/v6.1.1/esp-idf/tools/cmake/component_validation.cmake:106 (message):
+  Private include directory
+  '/home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_wifi/wifi_apps/roaming_app/include'
+  belongs to component esp_wifi but is being used by component
+  wpa_supplicant.  It is recommended to define the component dependency for
+  wpa_supplicant on the component esp_wifi, i.e.  'idf_component_register(...
+  PRIV_REQUIRES esp_wifi)' in the CMakeLists.txt of wpa_supplicant, and
+  specify the included directory as idf_component_register(...
+  PRIV_INCLUDE_DIRS <dir relative to component>) in the CMakeLists.txt of
+  component esp_wifi.
+Call Stack (most recent call first):
+  /home/avlyubimov/.espressif/v6.1.1/esp-idf/tools/cmake/component_validation.cmake:130 (__component_validation_check_include_dirs)
+  /home/avlyubimov/.espressif/v6.1.1/esp-idf/CMakeLists.txt:356 (__component_validation_run_checks)
+
+
+CMake Warning at /home/avlyubimov/.espressif/v6.1.1/esp-idf/tools/cmake/component_validation.cmake:106 (message):
+  Private include directory
+  '/home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_wifi/wifi_apps/roaming_app/src'
+  belongs to component esp_wifi but is being used by component
+  wpa_supplicant.  It is recommended to define the component dependency for
+  wpa_supplicant on the component esp_wifi, i.e.  'idf_component_register(...
+  PRIV_REQUIRES esp_wifi)' in the CMakeLists.txt of wpa_supplicant, and
+  specify the included directory as idf_component_register(...
+  PRIV_INCLUDE_DIRS <dir relative to component>) in the CMakeLists.txt of
+  component esp_wifi.
+Call Stack (most recent call first):
+  /home/avlyubimov/.espressif/v6.1.1/esp-idf/tools/cmake/component_validation.cmake:130 (__component_validation_check_include_dirs)
+  /home/avlyubimov/.espressif/v6.1.1/esp-idf/CMakeLists.txt:356 (__component_validation_run_checks)
+
+
+CMake Warning at /home/avlyubimov/.espressif/v6.1.1/esp-idf/tools/cmake/component_validation.cmake:106 (message):
+  Private include directory
+  '/home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_wifi/wifi_apps/include/apps_private'
+  belongs to component esp_wifi but is being used by component
+  wpa_supplicant.  It is recommended to define the component dependency for
+  wpa_supplicant on the component esp_wifi, i.e.  'idf_component_register(...
+  PRIV_REQUIRES esp_wifi)' in the CMakeLists.txt of wpa_supplicant, and
+  specify the included directory as idf_component_register(...
+  PRIV_INCLUDE_DIRS <dir relative to component>) in the CMakeLists.txt of
+  component esp_wifi.
+Call Stack (most recent call first):
+  /home/avlyubimov/.espressif/v6.1.1/esp-idf/tools/cmake/component_validation.cmake:130 (__component_validation_check_include_dirs)
+  /home/avlyubimov/.espressif/v6.1.1/esp-idf/CMakeLists.txt:356 (__component_validation_run_checks)
+
+
+CMake Warning at /home/avlyubimov/.espressif/v6.1.1/esp-idf/tools/cmake/component_validation.cmake:106 (message):
+  Private include directory
+  '/home/avlyubimov/.espressif/v6.1.1/esp-idf/components/wpa_supplicant/src'
+  belongs to component wpa_supplicant but is being used by component
+  esp_wifi.  It is recommended to define the component dependency for
+  esp_wifi on the component wpa_supplicant, i.e.  'idf_component_register(...
+  PRIV_REQUIRES wpa_supplicant)' in the CMakeLists.txt of esp_wifi, and
+  specify the included directory as idf_component_register(...
+  PRIV_INCLUDE_DIRS <dir relative to component>) in the CMakeLists.txt of
+  component wpa_supplicant.
+Call Stack (most recent call first):
+  /home/avlyubimov/.espressif/v6.1.1/esp-idf/tools/cmake/component_validation.cmake:130 (__component_validation_check_include_dirs)
+  /home/avlyubimov/.espressif/v6.1.1/esp-idf/CMakeLists.txt:356 (__component_validation_run_checks)
+
+
+CMake Warning at /home/avlyubimov/.espressif/v6.1.1/esp-idf/tools/cmake/component_validation.cmake:106 (message):
+  Private include directory
+  '/home/avlyubimov/.espressif/v6.1.1/esp-idf/components/wpa_supplicant/esp_supplicant/src'
+  belongs to component wpa_supplicant but is being used by component
+  esp_wifi.  It is recommended to define the component dependency for
+  esp_wifi on the component wpa_supplicant, i.e.  'idf_component_register(...
+  PRIV_REQUIRES wpa_supplicant)' in the CMakeLists.txt of esp_wifi, and
+  specify the included directory as idf_component_register(...
+  PRIV_INCLUDE_DIRS <dir relative to component>) in the CMakeLists.txt of
+  component wpa_supplicant.
+Call Stack (most recent call first):
+  /home/avlyubimov/.espressif/v6.1.1/esp-idf/tools/cmake/component_validation.cmake:130 (__component_validation_check_include_dirs)
+  /home/avlyubimov/.espressif/v6.1.1/esp-idf/CMakeLists.txt:356 (__component_validation_run_checks)
+
+
+-- Component idf::esp_trace will be linked with -Wl,--whole-archive
+-- Components: app_trace app_update bootloader bootloader_support bt cmock console cxx driver efuse esp-tls esp_adc esp_app_format esp_asrc_adapter esp_blockdev esp_blockdev_util esp_bootloader_format esp_coex esp_common esp_driver_ana_cmpr esp_driver_bitscrambler esp_driver_cam esp_driver_cordic esp_driver_dac esp_driver_dma esp_driver_gpio esp_driver_gptimer esp_driver_i2c esp_driver_i2s esp_driver_i3c esp_driver_isp esp_driver_jpeg esp_driver_ledc esp_driver_mcpwm esp_driver_parlio esp_driver_pcnt esp_driver_ppa esp_driver_rmt esp_driver_sd_intf esp_driver_sdio esp_driver_sdm esp_driver_sdmmc esp_driver_sdspi esp_driver_spi esp_driver_touch_sens esp_driver_tsens esp_driver_twai esp_driver_uart esp_driver_usb_serial_jtag esp_eth esp_event esp_gdbstub esp_hal_ana_cmpr esp_hal_ana_conv esp_hal_asrc esp_hal_cam esp_hal_clock esp_hal_cordic esp_hal_dma esp_hal_emac esp_hal_gpio esp_hal_gpspi esp_hal_i2c esp_hal_i2s esp_hal_i3c esp_hal_ieee802154 esp_hal_jpeg esp_hal_lcd esp_hal_ledc esp_hal_mcpwm esp_hal_mspi esp_hal_parlio esp_hal_pcnt esp_hal_pmu esp_hal_ppa esp_hal_regi2c esp_hal_rmt esp_hal_rtc_timer esp_hal_sd esp_hal_security esp_hal_systimer esp_hal_timg esp_hal_touch_sens esp_hal_twai esp_hal_uart esp_hal_usb esp_hal_wdt esp_hid esp_http_client esp_http_server esp_https_ota esp_https_server esp_hw_support esp_lcd esp_libc esp_local_ctrl esp_mm esp_netif esp_netif_stack esp_partition esp_phy esp_pm esp_psram esp_ringbuf esp_rom esp_security esp_stdio esp_system esp_timer esp_trace esp_usb_cdc_rom_console esp_wifi espcoredump espressif__esp_lcd_touch espressif__esp_lcd_touch_gt911 esptool_py fatfs freertos hal heap http_parser ieee802154 log lvgl__lvgl lwip main mbedtls nvs_flash nvs_sec_provider openthread partition_table perfmon protobuf-c protocomm pthread rt sdmmc soc spi_flash spiffs tcp_transport ulp unity vfs wear_levelling wpa_supplicant xtensa
+-- Component paths: /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/app_trace /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/app_update /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/bootloader /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/bootloader_support /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/bt /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/cmock /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/console /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/cxx /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/driver /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/efuse /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp-tls /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_adc /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_app_format /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_asrc_adapter /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_blockdev /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_blockdev_util /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_bootloader_format /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_coex /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_common /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_driver_ana_cmpr /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_driver_bitscrambler /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_driver_cam /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_driver_cordic /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_driver_dac /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_driver_dma /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_driver_gpio /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_driver_gptimer /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_driver_i2c /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_driver_i2s /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_driver_i3c /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_driver_isp /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_driver_jpeg /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_driver_ledc /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_driver_mcpwm /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_driver_parlio /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_driver_pcnt /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_driver_ppa /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_driver_rmt /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_driver_sd_intf /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_driver_sdio /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_driver_sdm /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_driver_sdmmc /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_driver_sdspi /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_driver_spi /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_driver_touch_sens /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_driver_tsens /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_driver_twai /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_driver_uart /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_driver_usb_serial_jtag /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_eth /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_event /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_gdbstub /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_hal_ana_cmpr /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_hal_ana_conv /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_hal_asrc /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_hal_cam /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_hal_clock /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_hal_cordic /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_hal_dma /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_hal_emac /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_hal_gpio /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_hal_gpspi /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_hal_i2c /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_hal_i2s /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_hal_i3c /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_hal_ieee802154 /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_hal_jpeg /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_hal_lcd /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_hal_ledc /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_hal_mcpwm /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_hal_mspi /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_hal_parlio /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_hal_pcnt /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_hal_pmu /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_hal_ppa /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_hal_regi2c /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_hal_rmt /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_hal_rtc_timer /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_hal_sd /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_hal_security /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_hal_systimer /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_hal_timg /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_hal_touch_sens /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_hal_twai /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_hal_uart /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_hal_usb /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_hal_wdt /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_hid /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_http_client /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_http_server /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_https_ota /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_https_server /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_hw_support /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_lcd /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_libc /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_local_ctrl /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_mm /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_netif /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_netif_stack /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_partition /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_phy /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_pm /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_psram /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_ringbuf /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_rom /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_security /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_stdio /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_system /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_timer /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_trace /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_usb_cdc_rom_console /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esp_wifi /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/espcoredump /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/utc-tls-bench/firmware/esp32-hmi/managed_components/espressif__esp_lcd_touch /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/utc-tls-bench/firmware/esp32-hmi/managed_components/espressif__esp_lcd_touch_gt911 /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/esptool_py /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/fatfs /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/freertos /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/hal /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/heap /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/http_parser /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/ieee802154 /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/log /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/utc-tls-bench/firmware/esp32-hmi/managed_components/lvgl__lvgl /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/lwip /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/utc-tls-bench/firmware/esp32-hmi/main /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/mbedtls /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/nvs_flash /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/nvs_sec_provider /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/openthread /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/partition_table /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/perfmon /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/protobuf-c /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/protocomm /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/pthread /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/rt /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/sdmmc /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/soc /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/spi_flash /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/spiffs /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/tcp_transport /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/ulp /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/unity /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/vfs /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/wear_levelling /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/wpa_supplicant /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/xtensa
+-- Configuring done (6.9s)
+-- Generating done (0.4s)
+-- Build files have been written to: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/utc-tls-bench/build-idf-6.1.1-rev12
+[1/54] Building C object esp-idf/main/CMakeFiles/__idf_main.dir/__/ota/memory_bench.c.obj
+[2/54] Building C object esp-idf/main/CMakeFiles/__idf_main.dir/__/ota/utc_tls_bench.c.obj
+[3/54] Building C object esp-idf/main/CMakeFiles/__idf_main.dir/__/ota/memory_probe.c.obj
+[4/54] Building C object esp-idf/main/CMakeFiles/__idf_main.dir/__/ota/timed_download.c.obj
+[5/54] Building C object esp-idf/main/CMakeFiles/__idf_main.dir/__/ota/tls_probe.c.obj
+[6/54] Building C object esp-idf/main/CMakeFiles/__idf_main.dir/__/ota/envelope.c.obj
+[7/54] Building C object esp-idf/main/CMakeFiles/__idf_main.dir/__/ota/json_guard.c.obj
+[8/54] Building C object esp-idf/main/CMakeFiles/__idf_main.dir/__/ota/memory.c.obj
+[9/54] Building C object esp-idf/main/CMakeFiles/__idf_main.dir/__/ota/sntp_source.c.obj
+[10/54] Building C object esp-idf/main/CMakeFiles/__idf_main.dir/__/core/diagnostics.c.obj
+[11/54] Building C object esp-idf/main/CMakeFiles/__idf_main.dir/__/network/wifi_link.c.obj
+[12/54] Building C object esp-idf/main/CMakeFiles/__idf_main.dir/__/network/wifi_profiles.c.obj
+[13/54] Building C object esp-idf/main/CMakeFiles/__idf_main.dir/__/ota/session.c.obj
+[14/54] Building C object esp-idf/main/CMakeFiles/__idf_main.dir/__/ota/hash.c.obj
+[15/54] Building C object esp-idf/main/CMakeFiles/__idf_main.dir/__/ota/download.c.obj
+[16/54] Building C object esp-idf/main/CMakeFiles/__idf_main.dir/__/ota/image_stream.c.obj
+[17/54] Building C object esp-idf/main/CMakeFiles/__idf_main.dir/__/ota/time_gate.c.obj
+[18/54] Building C object esp-idf/main/CMakeFiles/__idf_main.dir/__/diagnostics/export.c.obj
+[19/54] Building C object esp-idf/main/CMakeFiles/__idf_main.dir/__/core/strings.c.obj
+[20/54] Building C object esp-idf/main/CMakeFiles/__idf_main.dir/__/ota/verification.c.obj
+[21/54] Building C object esp-idf/main/CMakeFiles/__idf_main.dir/__/ota/manifest.c.obj
+[22/54] Building C object esp-idf/main/CMakeFiles/__idf_main.dir/__/core/tools.c.obj
+[23/54] Building C object esp-idf/main/CMakeFiles/__idf_main.dir/__/ota/sntp_sdk.c.obj
+[24/54] Building C object esp-idf/main/CMakeFiles/__idf_main.dir/__/core/journal.c.obj
+[25/54] Building C object esp-idf/main/CMakeFiles/__idf_main.dir/__/board/rev12.c.obj
+[26/54] Building C object esp-idf/main/CMakeFiles/__idf_main.dir/__/core/model.c.obj
+[27/54] Building C object esp-idf/main/CMakeFiles/__idf_main.dir/__/ota/https.c.obj
+[28/54] Performing build step for 'bootloader'
+[1/1] cd /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/utc-tls-bench/build-idf-6.1.1-rev12/bootloader && /home/avlyubimov/.espressif/python_env/idf6.1_py3.14_env/bin/python /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/partition_table/check_sizes.py --offset 0x8000 bootloader 0x0 /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/utc-tls-bench/build-idf-6.1.1-rev12/bootloader/bootloader.bin
+Bootloader binary size 0x50b0 bytes. 0x2f50 bytes (37%) free.
+[29/54] No install step for 'bootloader'
+[30/54] Completed 'bootloader'
+[31/54] Building C object esp-idf/main/CMakeFiles/__idf_main.dir/__/assets/tv4_button_12.c.obj
+[32/54] Building C object esp-idf/main/CMakeFiles/__idf_main.dir/__/assets/tv4_ru_14.c.obj
+[33/54] Building C object esp-idf/main/CMakeFiles/__idf_main.dir/__/assets/tv4_digits_32.c.obj
+[34/54] Building C object esp-idf/main/CMakeFiles/__idf_main.dir/__/assets/tv4_boot_56.c.obj
+[35/54] Building C object esp-idf/main/CMakeFiles/__idf_main.dir/__/assets/tv4_ru_12.c.obj
+[36/54] Building C object esp-idf/main/CMakeFiles/__idf_main.dir/__/network/wifi_service.c.obj
+[37/54] Building C object esp-idf/main/CMakeFiles/__idf_main.dir/main.c.obj
+[38/54] Building C object esp-idf/main/CMakeFiles/__idf_main.dir/__/assets/tv4_bold_24.c.obj
+[39/54] Building C object esp-idf/main/CMakeFiles/__idf_main.dir/__/assets/tv4_icons.c.obj
+[40/54] Building C object esp-idf/main/CMakeFiles/__idf_main.dir/__/assets/tv4_ru_20.c.obj
+[41/54] Building C object esp-idf/main/CMakeFiles/__idf_main.dir/__/ui/wifi_editor.c.obj
+[42/54] Building C object esp-idf/main/CMakeFiles/__idf_main.dir/__/ui/wifi_view.c.obj
+[43/54] Building C object esp-idf/main/CMakeFiles/__idf_main.dir/__/assets/tv4_digits_36.c.obj
+[44/54] Building C object esp-idf/main/CMakeFiles/__idf_main.dir/__/assets/tv4_lathe.c.obj
+[45/54] Building C object esp-idf/main/CMakeFiles/__idf_main.dir/__/ui/boot_view.c.obj
+[46/54] Building C object esp-idf/main/CMakeFiles/__idf_main.dir/__/ui/tools_view.c.obj
+[47/54] Building C object esp-idf/main/CMakeFiles/__idf_main.dir/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/utc-tls-bench/third_party/cjson/cJSON.c.obj
+[48/54] Building C object esp-idf/main/CMakeFiles/__idf_main.dir/__/ui/dashboard.c.obj
+[49/54] Linking C static library esp-idf/main/libmain.a
+[50/54] Generating esp-idf/esp_system/ld/sections.ld
+Skipping linker script generation, section names unchanged
+[51/54] Linking CXX executable tv4_hmi.elf
+[52/54] Generating binary image from built executable
+esptool v5.6.0
+Creating ESP32-S3 image...
+Merged 3 ELF sections.
+Successfully created ESP32-S3 image.
+Generated /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/utc-tls-bench/build-idf-6.1.1-rev12/tv4_hmi.bin
+[53/54] cd /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/utc-tls-bench/build-idf-6.1.1-rev12 && /home/avlyubimov/.espressif/python_env/idf6.1_py3.14_env/bin/python /home/avlyubimov/.espressif/v6.1.1/esp-idf/components/partition_table/check_sizes.py --offset 0x8000 partition --type app /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/utc-tls-bench/build-idf-6.1.1-rev12/partition_table/partition-table.bin /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/utc-tls-bench/build-idf-6.1.1-rev12/tv4_hmi.bin
+tv4_hmi.bin binary size 0x1802c0 bytes. Smallest app partition is 0x200000 bytes. 0x7fd40 bytes (25%) free.
+Executing action: all (aliases: build)
+Running ninja in directory /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/utc-tls-bench/build-idf-6.1.1-rev12
+Executing "ninja all"...
+
+Project build complete. To flash, run:
+ idf.py flash
+or
+ idf.py -p PORT flash
+or
+ python -m esptool --chip esp32s3 -b 460800 --before default-reset --after hard-reset write-flash --flash-mode dio --flash-size 16MB --flash-freq 80m 0x0 build-idf-6.1.1-rev12/bootloader/bootloader.bin 0x8000 build-idf-6.1.1-rev12/partition_table/partition-table.bin 0x10000 build-idf-6.1.1-rev12/tv4_hmi.bin
+or from the "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/utc-tls-bench/build-idf-6.1.1-rev12" directory
+ python -m esptool --chip esp32s3 -b 460800 --before default-reset --after hard-reset write-flash "@flash_args"
+{
+  "profile": "rev12",
+  "sdk": "6.1.1",
+  "target": "esp32s3",
+  "flash_bytes": 16777216,
+  "memory_bench": false,
+  "tls_bench": false,
+  "psram": "octal 80MHz",
+  "images": {
+    "tv4_hmi.bin": {
+      "bytes": 1573568,
+      "sha256": "8ce4a0b00b0d5d60a3407a138702cdc296edb3a7582d4e33723dd7e0e660810a"
+    },
+    "bootloader/bootloader.bin": {
+      "bytes": 20656,
+      "sha256": "973aa809b1f17799fe2ea768d340faa6260301d490ad66e7a0c6e5c8f03d7b6d"
+    }
+  },
+  "partitions": [
+    {
+      "kind": 1,
+      "subtype": 2,
+      "address": 36864,
+      "size": 24576,
+      "label": "nvs"
+    },
+    {
+      "kind": 1,
+      "subtype": 1,
+      "address": 61440,
+      "size": 4096,
+      "label": "phy_init"
+    },
+    {
+      "kind": 0,
+      "subtype": 0,
+      "address": 65536,
+      "size": 2097152,
+      "label": "factory"
+    }
+  ],
+  "device_access": false,
+  "physical_performance": "not measured"
+}
