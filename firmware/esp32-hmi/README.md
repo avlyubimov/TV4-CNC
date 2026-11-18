@@ -114,3 +114,9 @@ PR-04c: [read-only image stream](../../docs/OTA_IMAGE_STREAM.md). Полный �
 Добавлены bounded конверт подписи и read-only HTTPS transport primitives.
 Не подключены к app_main/UI, нет discovery/OTA Manager/installer/Flash writes.
 [Контракт, проверки и ограничения](../../docs/OTA_HTTPS.md).
+
+## PR-04e — read-only session
+
+Единая worker-only операция связывает metadata/envelope/policy/image checks,
+общий timeout/cancel, cleanup и terminal result. Нет runtime task/UI/install.
+[Контракт, evidence и board gate](../../docs/OTA_SESSION.md).
