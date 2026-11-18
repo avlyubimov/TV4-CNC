@@ -14,4 +14,13 @@ config TV4_OTA_MEMORY_BENCH
         Three allocation/pattern/release cycles after 15 seconds, worker only.
         No HTTPS, OTA installer or machine commands. Not a TLS budget test.
         Requires separate authorization before recording this image on a board.
+config TV4_UTC_TLS_BENCH
+    bool "Run one explicit UTC/verified HEAD memory probe (diagnostic image only)"
+    depends on TV4_BOARD_REV12 && SPIRAM && MBEDTLS_CERTIFICATE_BUNDLE && !TV4_OTA_MEMORY_BENCH
+    default n
+    help
+        Runs SNTP then one verified HTTPS HEAD to the public TV4-CNC repository.
+        Changes system UTC, no response body/installer/machine commands.
+        Isolated 2026 bench policy, not production TLS budget. Separate board
+        authorization needed; ordinary profiles never enable this flag.
 endmenu

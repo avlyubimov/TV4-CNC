@@ -107,10 +107,11 @@ PR и Actions; не копировать код уже открытого PR. Д
 
 ## Текущее задание
 
-PR #18 слит. По «Продолжай» выполняется PR-04i: bounded SNTP lifecycle,
-explicit reviewed unauthenticated-source policy, SDK TCP/IP-owned init/stop.
-См. docs/SNTP_SOURCE.md. Нет startup/UI invocation, runtime HTTPS/installer,
-production time/TLS budget defaults или нового bench trigger.
-Не обращаться к плате: разрешение на 1c38d1e/capture завершено. На плате остаётся
-memory-bench1c38d1e. Не менять configs/layout/board/timings, не создавать keys/
-release и не merge свой PR. Пробы UTC/TLS на устройстве — отдельное разрешение.
+PR #19 слит. По «Слито, дальше» выполняется PR-04j: opt-in rev12-tls-bench,
+SNTP затем один CA/hostname/time-checked HEAD к публичному TV4-CNC repo,
+отдельные SDK local heap-min windows. См. docs/UTC_TLS_BENCH.md.
+Обычные профили ничего нового не запускают; нет OTA body/install/Flash writes.
+Не обращаться к плате и не прошивать: разрешение на 1c38d1e test завершено.
+Bench network/UTC/reset/serial operations требуют нового разрешения для
+reviewed image. Не менять existing configs/layout/board/timings, не подставлять
+production TLS budget или keys/release и не merge свой PR.

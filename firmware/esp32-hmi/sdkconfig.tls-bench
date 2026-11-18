@@ -1,0 +1,2 @@
+# Explicit network diagnostic image, no installer or production TLS budget.
+CONFIG_TV4_UTC_TLS_BENCH=y

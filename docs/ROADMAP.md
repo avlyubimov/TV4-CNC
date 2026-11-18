@@ -59,3 +59,10 @@ UI и runtime TLS profiling ещё не включены; аппаратных �
 [Bounded source](SNTP_SOURCE.md) готовится отдельным PR после #18. Нет
 startup/UI invocation или production time policy. Следующий шаг — opt-in
 UTC/TLS memory profiling с отдельным разрешением на точный image и network test.
+
+## PR-04j — явный UTC/TLS memory bench
+
+[Отдельный профиль](UTC_TLS_BENCH.md), две heap windows, один HEAD без body.
+После review/CI — подготовить точный image и получить новое разрешение на
+network/UTC/flash/reset/UART test. Production TLS budget не объявлять по одному
+снимку/endpoint: нужны ошибки/redirect-hosts/soak и ownership/performance review.
