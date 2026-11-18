@@ -132,3 +132,9 @@ ELF target sizeof check. Нет internal fallback, runtime calls или installe
 Добавлен rev12-memory-bench: три bounded allocation/pattern/release cycles в
 worker после 15 секунд работы UI. Обычные headless/rev12 отключены от probe.
 Нет HTTPS/session_run/Flash/boot operations. [Контракт и board procedure](../../docs/OTA_MEMORY_BENCH.md).
+
+## PR-04h — time gate для native HTTPS
+
+Свежая local provenance/age/skew anchor проверяется вокруг backend I/O и final
+cleanup; boolean hint не даёт native transport разрешения без anchor. Нет
+SNTP/clock updates/runtime UI. [Контракт и evidence](../../docs/TLS_TIME_GATE.md).

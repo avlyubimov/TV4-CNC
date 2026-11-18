@@ -19,7 +19,7 @@ typedef struct {
     uint32_t maximum_bytes,expected_bytes; /* expected=0 for bounded metadata. */
     uint32_t idle_timeout_ms,total_timeout_ms,io_timeout_ms;
     unsigned maximum_redirects; /* 0..3 */
-    bool trusted_time; /* Real local TLS time provider, not static HMI clock. */
+    bool trusted_time; /* Request intent only; native HTTPS additionally checks time anchor. */
 } tv4_http_request;
 typedef struct {
     char current_url[TV4_HTTP_URL_MAX+1];

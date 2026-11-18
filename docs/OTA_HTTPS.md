@@ -35,8 +35,10 @@ esp_http_client + штатный CA bundle с hostname verification. Вызыв�
 - Cancel, idle/total deadlines с wrap-safe monotonic ms, I/O timeout до 10 с.
   Проверки до/после blocking SDK calls и consumer. Они отклоняют опоздавшие
   данные, но не обеспечивают жёсткое прерывание DNS/TLS внутри SDK.
-- trusted_time — обязательное предусловие от будущего проверенного поставщика
-  времени. Статические часы HMI не являются таким источником.
+- trusted_time — только request intent; PR-04h дополнительно требует fresh
+  local anchor в tv4_https_read. SDK читает system UTC/esp_timer; static HMI
+  clock/build date/downloaded timestamps не являются источником.
+  См. [time gate](TLS_TIME_GATE.md).
 - Нет логирования URL/query, заголовков, credentials или ключей.
 
 Consumer может подавать bytes в read-only image checker. При любой ошибке

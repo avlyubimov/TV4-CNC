@@ -39,3 +39,7 @@ docs/BOARD_ADAPTER.md, docs/RUNTIME_DIAGNOSTICS.md и docs/OTA_ARCHITECTURE.md.
   Для вызовов verifier нужен reviewed local trust store, не downloaded key.
 - CPU/hardware/soak часть PR-03 остаётся открытой; не выдавать software windows
   за физическую latency или достижение целевых показателей.
+
+- PR-04h: native HTTPS требует fresh local time anchor, одного boolean hint
+  недостаточно. Clock sampler не устанавливает provenance; SNTP не включать
+  молча и не считать authenticated. Time/anchor меняет один worker, не callback.
