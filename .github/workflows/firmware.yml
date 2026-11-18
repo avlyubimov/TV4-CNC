@@ -9,7 +9,7 @@ jobs:
       fail-fast: false
       matrix:
         sdk: [5.3.2, 6.1.1]
-        profile: [headless, rev12]
+        profile: [headless, rev12, rev12-memory-bench]
         include:
           - sdk: 5.3.2
             image: espressif/idf@sha256:5b8f58d9d9caa45b689a31a0b6a0cc53b84594e0ba5fdd8d28eeef7d6123242a
@@ -42,7 +42,12 @@ jobs:
           output = subprocess.check_output(['readelf', '-Ws', 'build-idf-${{ matrix.sdk }}-${{ matrix.profile }}/tv4_hmi.elf'], text=True)
           for symbol in ['tv4_ota_verify_manifest', 'tv4_ota_manifest_read', 'tv4_image_feed', 'tv4_image_finish', 'tv4_ota_signed_manifest_read', 'tv4_https_read', 'tv4_ota_session_run', 'tv4_ota_memory_acquire_psram', 'tv4_ota_memory_release', 'tv4_ota_workspace_bytes']:
               assert any(symbol in line and ' UND ' not in line for line in output.splitlines()), 'OTA entry point discarded or unresolved: ' + symbol
-          print('OTA verification/session/memory symbols linked; no OTA installer enabled')
+          if '${{ matrix.profile }}' == 'rev12-memory-bench':
+              for symbol in ['tv4_ota_memory_bench_start', 'tv4_ota_memory_probe_buffers']:
+                  assert any(symbol in line and ' UND ' not in line for line in output.splitlines()), 'Bench entry point missing: ' + symbol
+          else:
+              assert not any('tv4_ota_memory_bench_start' in line for line in output.splitlines()), 'Bench worker retained in ordinary image'
+          print('OTA symbols/profile gates verified; no installer enabled')
           PYCODE
       - uses: actions/upload-artifact@v4
         if: always()

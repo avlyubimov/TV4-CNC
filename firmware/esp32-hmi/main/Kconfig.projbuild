@@ -6,4 +6,12 @@ config TV4_BOARD_REV12
         Initializes display/touch only, never CAN or machine outputs.
         Enable only after verifying PCB revision and backing up factory firmware.
         The default build is a headless simulation and initializes no peripherals.
+config TV4_OTA_MEMORY_BENCH
+    bool "Run finite PSRAM workspace allocation probe (explicit bench image only)"
+    depends on TV4_BOARD_REV12 && SPIRAM
+    default n
+    help
+        Three allocation/pattern/release cycles after 15 seconds, worker only.
+        No HTTPS, OTA installer or machine commands. Not a TLS budget test.
+        Requires separate authorization before recording this image on a board.
 endmenu

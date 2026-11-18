@@ -1,4 +1,5 @@
 #include "memory.h"
+#include "memory_probe.h"
 #include <assert.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -44,6 +45,21 @@ int main(void) {
     assert(acquire(&l,&f,policy)==TV4_MEMORY_OK);
     for(size_t i=0;i<sizeof(*l.session);i++)assert(!((unsigned char *)l.session)[i]);
     assert(acquire(&l,&f,policy)==TV4_MEMORY_BUSY && f.allocations==1);
+    assert(!tv4_ota_memory_bench_start()); /* Host never schedules a task. */
+    l.session->candidate.size_bytes=123;l.session->http.response.status=200;l.session->image.expected=456;
+    assert(tv4_ota_memory_probe_buffers(l.session));
+    assert(l.session->candidate.size_bytes==123 && l.session->http.response.status==200 && l.session->image.expected==456);
+    for(size_t i=0;i<sizeof(l.session->manifest);i++)assert(!l.session->manifest[i]);
+    for(size_t i=0;i<sizeof(l.session->envelope);i++)assert(!l.session->envelope[i]);
+    for(size_t i=0;i<sizeof(l.session->http.chunk);i++)assert(!l.session->http.chunk[i]);
+    l.session->manifest[0]=123;l.session->result.state=TV4_SESSION_IMAGE;
+    assert(!tv4_ota_memory_probe_buffers(l.session) && l.session->manifest[0]==123);
+    l.session->result.state=TV4_SESSION_IDLE;
+    assert(tv4_ota_hash_open(&l.session->image.whole_hash));
+    assert(!tv4_ota_memory_probe_buffers(l.session) && l.session->manifest[0]==123);
+    tv4_ota_hash_close(&l.session->image.whole_hash);
+    assert(tv4_ota_memory_probe_buffers(l.session));
+    assert(!tv4_ota_memory_probe_buffers(NULL));
     for(int state=TV4_SESSION_MANIFEST;state<=TV4_SESSION_FINISHING;state++) {
         l.session->result.state=(tv4_session_state)state;
         assert(tv4_ota_memory_release(&l)==TV4_MEMORY_BUSY && !f.frees);

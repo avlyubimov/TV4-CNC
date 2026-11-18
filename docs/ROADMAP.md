@@ -45,6 +45,6 @@ OTA, microSD и CI/CD поддерживают эти этапы, но не яв
 
 [18 ноября: разрешённая USB-запись и результаты](evidence/hardware/2026-11-18-b93cf3b/README.md).
 Basic HMI/input/Wi-Fi DHCP PASS; internal largest block 12288 bytes блокирует
-простое добавление HTTPS/session в internal RAM. Текущий PR-04f —
-PSRAM-only workspace/admission; production TLS memory budget ещё не утверждён; Gate 1 soak/negative tests,
+простое добавление HTTPS/session в internal RAM. PR-04f PSRAM-only workspace/admission слит; текущий PR-04g — отдельный
+finite allocation bench. Production TLS memory budget ещё не утверждён; Gate 1 soak/negative tests,
 UART capture/reset procedure и Gate 2 ещё не завершены.

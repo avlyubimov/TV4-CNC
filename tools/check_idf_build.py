@@ -13,7 +13,7 @@ def require(condition, message):
 
 
 def verify(build, profile, version):
-    require(profile in {"headless", "rev12"}, "unknown profile")
+    require(profile in {"headless", "rev12", "rev12-memory-bench"}, "unknown profile")
     require(version in {"5.3.2", "6.1.1"}, "unvalidated SDK")
     build = Path(build)
     config = json.loads((build / "config/sdkconfig.json").read_text())
@@ -24,8 +24,10 @@ def verify(build, profile, version):
                         "LV_COLOR_DEPTH": 16, "FREERTOS_HZ": 1000,
                         "ESP_DEFAULT_CPU_FREQ_MHZ": 240}.items():
         require(config[name] == value, f"{name} must equal {value}")
-    require(config.get("TV4_BOARD_REV12", False) == (profile == "rev12"), "wrong board enable gate")
-    if profile == "rev12":
+    require(config.get("TV4_BOARD_REV12", False) == (profile != "headless"), "wrong board enable gate")
+    require(config.get("TV4_OTA_MEMORY_BENCH", False) == (profile == "rev12-memory-bench"),
+            "memory probe must be enabled only for explicit bench profile")
+    if profile != "headless":
         for name, value in {"SPIRAM": True, "SPIRAM_MODE_OCT": True, "SPIRAM_SPEED": 80,
                             "SPIRAM_USE_MALLOC": True, "SPIRAM_MALLOC_ALWAYSINTERNAL": 16384,
                             "SPIRAM_MALLOC_RESERVE_INTERNAL": 65536}.items():
@@ -54,7 +56,7 @@ def verify(build, profile, version):
         images[rel] = dict(bytes=len(image), sha256=hashlib.sha256(image).hexdigest())
     require(images["tv4_hmi.bin"]["bytes"] <= apps[0]["size"], "application exceeds factory partition")
     result = dict(profile=profile, sdk=version, target="esp32s3", flash_bytes=16*1024*1024,
-                  psram="octal 80MHz" if profile == "rev12" else "disabled", images=images, partitions=partitions,
+                  memory_bench=config.get("TV4_OTA_MEMORY_BENCH", False), psram="octal 80MHz" if profile != "headless" else "disabled", images=images, partitions=partitions,
                   device_access=False, physical_performance="not measured")
     (build / "validation.json").write_text(json.dumps(result, indent=2) + "\n")
     print(json.dumps(result, indent=2))
@@ -63,7 +65,7 @@ def verify(build, profile, version):
 
 if __name__ == "__main__":
     if len(sys.argv) != 4:
-        raise SystemExit("Usage: check_idf_build.py BUILD_DIR headless|rev12 5.3.2|6.1.1")
+        raise SystemExit("Usage: check_idf_build.py BUILD_DIR headless|rev12|rev12-memory-bench 5.3.2|6.1.1")
     try:
         verify(*sys.argv[1:])
     except (ValueError, KeyError, OSError, struct.error) as error:

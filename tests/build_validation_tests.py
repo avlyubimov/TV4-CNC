@@ -60,6 +60,19 @@ class BuildValidationTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             self.check("rev12")
 
+    def test_memory_bench_gate(self):
+        self.config["TV4_OTA_MEMORY_BENCH"] = True
+        with self.assertRaises(ValueError):
+            self.check("headless")
+        self.config.update(TV4_BOARD_REV12=True, SPIRAM=True, SPIRAM_MODE_OCT=True, SPIRAM_SPEED=80,
+                           SPIRAM_USE_MALLOC=True, SPIRAM_MALLOC_ALWAYSINTERNAL=16384, SPIRAM_MALLOC_RESERVE_INTERNAL=65536)
+        with self.assertRaises(ValueError):
+            self.check("rev12")
+        self.assertTrue(self.check("rev12-memory-bench")["memory_bench"])
+        self.config["TV4_OTA_MEMORY_BENCH"] = False
+        with self.assertRaises(ValueError):
+            self.check("rev12-memory-bench")
+
     def test_bad_image_headers(self):
         original = (self.root / "tv4_hmi.bin").read_bytes()
         for offset, value in [(0, 0), (3, 0x10), (12, 0)]:
