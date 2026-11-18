@@ -6,7 +6,10 @@
 - Native signature/UTF-8/duplicates/NUL/limits/policy/signed mutations — PASS.
 - Каждая из 71 fixture allocation отдельно принудительно отказала: cleanup/output PASS.
 - Фикстура parser: 2323 bytes peak; не worst-case, не замер ESP32 heap.
-- -fanalyzer native manifest.c, diff --check, links, YAML/heredoc — PASS.
+- -fanalyzer native manifest.c, links, YAML/heredoc — PASS.
+- diff --check собственных файлов — PASS. Полная проверка показывает две
+  upstream whitespace особенности cJSON.h/LICENSE (trailing space/blank EOF);
+  vendor файлы сохранены побайтово, чтобы не нарушать закреплённые SHA.
 - SHA-256 upstream C/header/MIT license проверен CMake host и SDK.
 
 | SDK | Профиль | App bytes | Entry points linked |
