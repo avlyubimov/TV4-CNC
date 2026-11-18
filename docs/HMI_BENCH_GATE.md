@@ -54,3 +54,10 @@ Basic startup/touch/keyboard/password visibility/Wi-Fi DHCP подтвержде
 полностью не закрыт: 10 минут soak, corners, negative password и persistence stress
 ещё не проведены. UART open/close сопровождался новым boot; повторные capture
 требуют исправленной процедуры. До Gate 2 — memory budget/TLS peak review.
+
+## PSRAM allocation gate — 1c38d1e
+
+[Отдельно разрешённая запись и три цикла PASS](evidence/hardware/2026-11-18-1c38d1e-psram/README.md).
+Buffer allocation/cache-visible patterns/release подтверждены, HMI/touch/Wi-Fi
+владелец подтвердил. Это не закрывает Gate 2 TLS peak/time/CA/network faults,
+Gate 1 long soak/negative tests или Gate 3 install/recovery.

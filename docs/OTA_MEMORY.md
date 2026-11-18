@@ -67,3 +67,9 @@ RGB/DMA/framebuffer/draw buffers/PCLK/PSRAM timings, configs/locks/layout,
 app_main/Wi-Fi/board/STM32/CAN/vendor sources не меняются. Не объявлять снижение
 internal memory pressure или улучшение FPS до аппаратных замеров.
 Откат — revert PR: runtime/persistent state не менялись, плата остаётся b93cf3b.
+
+## Обновление аппаратного статуса
+
+Allocation-only backend на [1c38d1e проверен: три цикла PASS](evidence/hardware/2026-11-18-1c38d1e-psram/README.md).
+Предыдущие UNKNOWN про allocation относятся к состоянию PR-04f до этого теста.
+TLS peak, production budget, cache-off/DMA/whole-PSRAM и soak остаются открытыми.

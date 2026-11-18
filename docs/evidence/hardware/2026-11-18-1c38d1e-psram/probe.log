@@ -1,0 +1,14 @@
+W (19327) tv4_memory_bench: Allocation probe only; floors are NOT a TLS budget; three cycles, no HTTPS/install
+I (19328) tv4_memory_bench: cycle=1 phase=before result=0 pattern_ok=-1 us=0 workspace=34000 internal_free=22731 internal_min=7796 internal_largest=12288 psram_free=7616576 psram_largest=7602176 stack=2988
+I (19346) tv4_memory_bench: cycle=1 phase=allocated result=0 pattern_ok=-1 us=2281 workspace=34000 internal_free=22767 internal_min=7796 internal_largest=12288 psram_free=7581756 psram_largest=7471104 stack=2780
+I (19437) tv4_memory_bench: cycle=1 phase=pattern result=0 pattern_ok=1 us=4821 workspace=34000 internal_free=22767 internal_min=7796 internal_largest=12288 psram_free=7581756 psram_largest=7471104 stack=2780
+I (19451) tv4_memory_bench: cycle=1 phase=released result=0 pattern_ok=1 us=416 workspace=34000 internal_free=22767 internal_min=7796 internal_largest=12288 psram_free=7616576 psram_largest=7602176 stack=2780
+I (19719) tv4_memory_bench: cycle=2 phase=before result=0 pattern_ok=-1 us=0 workspace=34000 internal_free=22767 internal_min=7796 internal_largest=12288 psram_free=7616576 psram_largest=7602176 stack=2780
+I (19729) tv4_memory_bench: cycle=2 phase=allocated result=0 pattern_ok=-1 us=2330 workspace=34000 internal_free=22767 internal_min=7796 internal_largest=12288 psram_free=7581756 psram_largest=7471104 stack=2780
+I (19751) tv4_memory_bench: cycle=2 phase=pattern result=0 pattern_ok=1 us=5314 workspace=34000 internal_free=22767 internal_min=7796 internal_largest=12288 psram_free=7581756 psram_largest=7471104 stack=2684
+I (19764) tv4_memory_bench: cycle=2 phase=released result=0 pattern_ok=1 us=591 workspace=34000 internal_free=22767 internal_min=7796 internal_largest=12288 psram_free=7616576 psram_largest=7602176 stack=2684
+I (20032) tv4_memory_bench: cycle=3 phase=before result=0 pattern_ok=-1 us=0 workspace=34000 internal_free=22767 internal_min=7796 internal_largest=12288 psram_free=7616576 psram_largest=7602176 stack=2684
+I (20042) tv4_memory_bench: cycle=3 phase=allocated result=0 pattern_ok=-1 us=2369 workspace=34000 internal_free=22767 internal_min=7796 internal_largest=12288 psram_free=7581756 psram_largest=7471104 stack=2684
+I (20063) tv4_memory_bench: cycle=3 phase=pattern result=0 pattern_ok=1 us=4874 workspace=34000 internal_free=22767 internal_min=7796 internal_largest=12288 psram_free=7581756 psram_largest=7471104 stack=2684
+I (20077) tv4_memory_bench: cycle=3 phase=released result=0 pattern_ok=1 us=600 workspace=34000 internal_free=22767 internal_min=7796 internal_largest=12288 psram_free=7616576 psram_largest=7602176 stack=2684
+I (20095) tv4_memory_bench: Probe finished: completed=3 pass=1; worker exits. Not a TLS/soak/bootability result

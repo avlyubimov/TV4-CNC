@@ -13,7 +13,7 @@
 | ESP32 HMI | Waveshare ESP32-S3-Touch-LCD-7 PCB Rev 1.2, 800×480; владелец и фото | Длительный stress/thermal test, стабильность всех подсистем |
 | Flash ESP32 | Приняты 16 МБ; полный локальный образ 16 777 216 байт, SHA-256 проверен; [backup](BACKUP_STATUS.md) | Успешное восстановление заводского образа, отдельная копия вне основного диска |
 | PSRAM ESP32 | ROM/esptool сообщает Embedded PSRAM 8MB AP_3v3; rev12 требует octal 80 МГц | На b93cf3b агент подтвердил startup PSRAM 8MB/pool 8192K и свободную память; полный runtime memtest/stress и пропускная способность не проверены |
-| Запись HMI | 18 ноября агент записал разрешённый b93cf3b, 3/3 hashes verified; boot log подтверждает SDK 6.1.1/app version | Это не тест FPS/касания/сети/устойчивости |
+| Запись HMI | 18 ноября агент записал разрешённые b93cf3b, затем 1c38d1e memory-bench; 3/3 hashes verified, SDK6.1.1/app version подтверждены | Это не тест FPS/касания/сети/устойчивости |
 | RGB LCD | На фото владельца HMI и список Wi-Fi выводятся на физический экран | Измерения tearing, FPS/scanout, ориентация/качество всех областей |
 | GT911 | На b93cf3b владелец подтвердил касания, удобную клавиатуру и показ/скрытие пароля | Покрытие углов, multitouch/ошибки, latency, воспроизводимый полный тест сенсора |
 | Wi-Fi | Физический список SSID/RSSI виден на фото; владелец сообщил ошибку 263 | На b93cf3b владелец подтвердил подключение/IP, агент видел wifi_ip_events=1 в обоих запусках. Неверный пароль, полный reconnect/NVS power-cycle stress ещё не проверены |
@@ -59,3 +59,13 @@ runtime HTTPS пока блокирован memory budget/allocation review и T
 Вторая serial выборка содержит новый boot; влияние UART open/close не изолировано,
 не считать это непрерывным soak или watchdog failure. Новых serial/reset операций
 агент не выполняет без согласования следующего испытания.
+
+## PSRAM bench 1c38d1e — 18 ноября 2026
+
+По отдельному разрешению записан rev12-memory-bench; [три цикла PASS и evidence](evidence/hardware/2026-11-18-1c38d1e-psram/README.md).
+Буфер34000bytes реально выделен в PSRAM, pattern/release PASS, PSRAMfree
+возвращалась к исходному значению. Bench watermark минимум2684bytes.
+Владелец подтвердил сохранение работы HMI/touch/Wi-Fi. Один60s UART capture,
+в нём один boot и нет ошибок; после close порт не открывали. Internal largest
+всё ещё12288: TLS peak/time/budget review остаётся отдельным блокером.
+Текущая установленная версия — 1c38d1e **memory-bench**, не ordinary rev12.

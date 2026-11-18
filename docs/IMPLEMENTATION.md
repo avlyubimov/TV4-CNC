@@ -133,3 +133,9 @@ ELF target sizeof check. Нет internal fallback, runtime calls или installe
 Добавлен rev12-memory-bench: три bounded allocation/pattern/release cycles в
 worker после 15 секунд работы UI. Обычные headless/rev12 отключены от probe.
 Нет HTTPS/session_run/Flash/boot operations. [Контракт и board procedure](OTA_MEMORY_BENCH.md).
+
+## Hardware memory bench 1c38d1e
+
+Отдельно разрешённая USB-запись rev12-memory-bench и один60s capture выполнены.
+[completed=3 pass=1, timings/heap и ограничения](evidence/hardware/2026-11-18-1c38d1e-psram/README.md).
+На плате остаётся этот bench image. Runtime TLS budget/installer не включены.
