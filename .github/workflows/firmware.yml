@@ -39,7 +39,8 @@ jobs:
           python - <<'PYCODE'
           import subprocess
           output = subprocess.check_output(['readelf', '-Ws', 'build-idf-${{ matrix.sdk }}-${{ matrix.profile }}/tv4_hmi.elf'], text=True)
-          assert any('tv4_ota_verify_manifest' in line and ' UND ' not in line for line in output.splitlines()), 'OTA verifier entry point was discarded or unresolved'
+          for symbol in ['tv4_ota_verify_manifest', 'tv4_ota_manifest_read']:
+              assert any(symbol in line and ' UND ' not in line for line in output.splitlines()), 'OTA entry point discarded or unresolved: ' + symbol
           print('Crypto symbols linked; no OTA installer enabled')
           PYCODE
       - uses: actions/upload-artifact@v4

@@ -42,8 +42,21 @@ def pairs(items):
 
 def parse(raw):
     # Strict UTF-8, no BOM/NaN/Infinity or repeated keys, including nested objects.
-    return json.loads(raw.decode('utf-8'), object_pairs_hook=pairs,
-                      parse_constant=lambda _: (_ for _ in ()).throw(Rejected('invalid JSON number')))
+    value = json.loads(raw.decode('utf-8'), object_pairs_hook=pairs,
+                       parse_constant=lambda _: (_ for _ in ()).throw(Rejected('invalid JSON number')))
+    def check_strings(node):
+        if isinstance(node, str):
+            require('\x00' not in node, 'embedded NUL rejected')
+            node.encode('utf-8')  # Reject unpaired escaped surrogates too.
+        elif isinstance(node, dict):
+            for key, item in node.items():
+                check_strings(key)
+                check_strings(item)
+        elif isinstance(node, list):
+            for item in node:
+                check_strings(item)
+    check_strings(value)
+    return value
 
 
 def keys(value, required, optional=()):
@@ -55,6 +68,7 @@ def version(text):
     require(isinstance(text, str) and len(text) <= 64, 'invalid version')
     m = re.fullmatch(r'(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)(?:-([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?', text)
     require(m is not None, 'expected bounded SemVer without build metadata')
+    require(all(int(x) <= 0xffffffff for x in m.group(1, 2, 3)), 'version core overflow')
     pre = m.group(4)
     if pre:
         require(all(not (x.isdigit() and len(x) > 1 and x[0] == '0') for x in pre.split('.')), 'invalid prerelease')
@@ -64,6 +78,8 @@ def version(text):
 
 
 def verify(args):
+    require(isinstance(args.trusted_key_id, str) and 0 < len(args.trusted_key_id.encode('utf-8')) <= 64,
+            'invalid local key id')
     raw = bounded_read(args.manifest, MANIFEST_MAX)
     envelope = parse(bounded_read(args.signature, ENVELOPE_MAX))
     keys(envelope, ('key_id', 'algorithm', 'signature'))
@@ -93,7 +109,7 @@ def verify(args):
     require(manifest['channel'] == args.channel, 'channel mismatch')
     require((release[1] == 1) == (args.channel == 'stable'), 'channel/version mismatch')
     require(isinstance(manifest['source_commit'], str) and re.fullmatch('[0-9a-f]{40}', manifest['source_commit']), 'invalid source commit')
-    require(isinstance(manifest['release_notes'], str) and len(manifest['release_notes']) <= 4096, 'invalid changelog')
+    require(isinstance(manifest['release_notes'], str) and len(manifest['release_notes'].encode('utf-8')) <= 4096, 'invalid changelog')
     keys(manifest['signing'], ('key_id', 'algorithm'))
     require(manifest['signing'] == {k: envelope[k] for k in ('key_id', 'algorithm')}, 'signing metadata mismatch')
     keys(manifest['protocol'], ('min', 'max'))

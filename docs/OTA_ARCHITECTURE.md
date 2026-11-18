@@ -187,3 +187,6 @@ CAN loss/reboot/duplicate/reorder, F407 partial metadata/vector/hash и восс
 [Partition tables](https://docs.espressif.com/projects/esp-idf/en/stable/esp32s3/api-guides/partition-tables.html).
 Для 6.1.1 дополнительно просмотрен установленный components/esp_https_ota/src/esp_https_ota.c;
 web stable на момент проверки отображал 6.0.2, поэтому он не выдаётся за проверку 6.1.1.
+
+Native signed manifest parsing/policy: [OTA_MANIFEST_POLICY.md](OTA_MANIFEST_POLICY.md).
+Это проверка кандидата, не активация A/B или завершённый OTA Manager.

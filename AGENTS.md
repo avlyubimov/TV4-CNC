@@ -107,9 +107,9 @@ PR и Actions; не копировать код уже открытого PR. Д
 
 ## Текущее задание
 
-Программная часть PR-03 слита (PR #8); CPU/hardware baseline/soak остаются
-открытыми. По заданию «Дальше» выполняется PR-04a: verification primitives,
-локальная проверка OTA-кандидатов и неактивная A/B-карта. См.
-docs/OTA_VERIFICATION.md. Активные partitions/sdkconfig не менять;
-не подключаться/не прошивать устройство, не создавать production keys,
-не включать installer и не merge свой PR.
+PR #9 (PR-04a) слит. По заданию «Дальше» выполняется PR-04b: native signed
+manifest parser/policy и тесты. См. docs/OTA_MANIFEST_POLICY.md. Context только
+локальный доверенный, не из network manifest. Не включать installer, не менять
+active partitions/sdkconfig, не подключаться/не прошивать устройство,
+не создавать production keys и не merge свой PR.
+CPU/hardware baseline/soak часть PR-03 остаётся открытой.

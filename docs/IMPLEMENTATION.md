@@ -88,3 +88,10 @@ compile-only Cortex-M4F библиотека. Нет startup/linker/board image,
 релиза и неактивный candidate A/B CSV с проверкой обоих SDK. Нет production
 trust anchors, downloader/installer/rollback или записи устройства.
 [Контракт, evidence и следующие части](OTA_VERIFICATION.md).
+
+## PR-04b — native manifest policy
+
+Общий C parser/policy проверяет exact-byte подпись до JSON allocations,
+затем bounded schema/target/layout/versions/protocol/URL. Namespaced cJSON
+v1.7.19 MIT закреплён SHA-256. Installer/context provisioning ещё отсутствуют.
+[Описание и evidence](OTA_MANIFEST_POLICY.md).

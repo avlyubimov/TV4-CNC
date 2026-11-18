@@ -151,11 +151,25 @@ class CandidateTests(unittest.TestCase):
         self.sign()
         with self.assertRaises(ota.Rejected): ota.verify(self.args)
 
+    def test_native_bounds_nul_and_local_key_id(self):
+        self.manifest['release_notes'] = '\x00'
+        self.sign()
+        with self.assertRaises(ValueError): ota.verify(self.args)
+        self.manifest['release_notes'] = 'test'
+        key_id = 'т' * 33  # 66 UTF-8 bytes, above native 64-byte bound.
+        self.manifest['signing']['key_id'] = key_id
+        self.args.trusted_key_id = key_id
+        self.sign()
+        envelope = json.loads(self.args.signature.read_text())
+        envelope['key_id'] = key_id
+        self.args.signature.write_text(json.dumps(envelope))
+        with self.assertRaises(ota.Rejected): ota.verify(self.args)
+
     def test_semver(self):
         for a, b in [('1.0.0-alpha', '1.0.0-alpha.1'), ('1.0.0-2', '1.0.0-11'),
                      ('1.0.0-rc.1', '1.0.0'), ('1.9.0', '1.10.0')]:
             self.assertLess(ota.version(a), ota.version(b))
-        for bad in ['1.0', '1.0.0-01', '1.0.0+unreviewed', '01.0.0']:
+        for bad in ['1.0', '1.0.0-01', '1.0.0+unreviewed', '01.0.0', '4294967296.0.0']:
             with self.assertRaises(ota.Rejected): ota.version(bad)
 
 
