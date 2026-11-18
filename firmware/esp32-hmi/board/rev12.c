@@ -37,7 +37,7 @@ esp_err_t board_rev12_backlight(bool on) {
     return err;
 }
 static void poll_touch(void *arg) {
-    (void)arg;
+    (void)arg;uint32_t errors=0,stack=0,last_stack=0;
     for(;;) {
         board_touch_t sample={.ms=(uint32_t)(esp_timer_get_time()/1000)};
         sample.valid=esp_lcd_touch_read_data(touch)==ESP_OK;
@@ -48,6 +48,11 @@ static void poll_touch(void *arg) {
             if(sample.pressed) { sample.x=point.x; sample.y=point.y; }
         }
         if(sample.x>=800 || sample.y>=480) { sample.valid=false; sample.pressed=false; }
+        if(!sample.valid && errors<UINT32_MAX)++errors;
+        if((uint32_t)(sample.ms-last_stack)>=1000 || !stack) {
+            stack=uxTaskGetStackHighWaterMark(NULL);last_stack=sample.ms;
+        }
+        sample.errors=errors;sample.stack_watermark=stack;
         xQueueOverwrite(samples,&sample);
         vTaskDelay(pdMS_TO_TICKS(20));
     }

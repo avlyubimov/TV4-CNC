@@ -75,3 +75,9 @@ C/C++, build scripts и workflow YAML не меняются. Бэкапы и о�
 compile-only Cortex-M4F библиотека. Нет startup/linker/board image, HAL/STEP
 или физического CAN. Владелец сообщил STM32F407VGT6; HSE/pinout и фактическая
 геометрия остаются блокерами. [Контракт и проверки](STM32_FOUNDATION.md).
+
+## PR-03 — программная диагностика
+
+Добавлены fixed-window histograms, ресурсы/стек/counters/reset, панель ресурсов
+и worker serial JSON export. Перенесён printf из UI owner; render callback не
+логирует. [Детали и оставшиеся hardware/CPU/soak задачи](HMI_PERFORMANCE.md).

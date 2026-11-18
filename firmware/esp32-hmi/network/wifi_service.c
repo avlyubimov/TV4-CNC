@@ -32,8 +32,10 @@ static wifi_profile_t pending;
 static bool pending_valid,auto_connect=true;
 static int64_t connect_started,next_scan;
 static wifi_ap_record_t records[WIFI_UI_NETWORKS];
+static void increment(uint32_t *value) { if(*value<UINT32_MAX)++*value; }
 static void publish(net_state_t value,int error) {
     xSemaphoreTake(lock,portMAX_DELAY);state.state=value;state.error=error;
+    if(value==NET_CONNECTING)increment(&state.connect_attempts);
     if(value!=NET_ONLINE && value!=NET_SCANNING)state.ip[0]=0;
     state.revision++;xSemaphoreGive(lock);
 }
@@ -70,11 +72,12 @@ static void load_profiles(void) {
 static void event(void *arg,esp_event_base_t base,int32_t id,void *data) {
     (void)arg;
     if(base==WIFI_EVENT && id==WIFI_EVENT_STA_DISCONNECTED) {
+        xSemaphoreTake(lock,portMAX_DELAY);increment(&state.disconnect_events);xSemaphoreGive(lock);
         publish(NET_IDLE,((wifi_event_sta_disconnected_t *)data)->reason);
         xEventGroupSetBits(events,1);
     } else if(base==IP_EVENT && id==IP_EVENT_STA_GOT_IP) {
         ip_event_got_ip_t *got=data;
-        xSemaphoreTake(lock,portMAX_DELAY);state.state=NET_ONLINE;state.error=0;
+        xSemaphoreTake(lock,portMAX_DELAY);state.state=NET_ONLINE;state.error=0;increment(&state.ip_events);
         snprintf(state.ip,sizeof(state.ip),IPSTR,IP2STR(&got->ip_info.ip));
         state.revision++;xSemaphoreGive(lock);
     } else if(base==IP_EVENT && id==IP_EVENT_STA_LOST_IP)publish(NET_IDLE,0);
@@ -168,8 +171,14 @@ static void worker(void *arg) {
     load_profiles();
     xSemaphoreTake(lock,portMAX_DELAY);service_ready=true;xSemaphoreGive(lock);
     publish(NET_IDLE,0);next_scan=0;
-    command_t cmd;
+    command_t cmd;int64_t last_stack=0;
     for(;;) {
+        int64_t sample_time=esp_timer_get_time();
+        if(sample_time-last_stack>=1000000) {
+            uint32_t watermark=uxTaskGetStackHighWaterMark(NULL);
+            xSemaphoreTake(lock,portMAX_DELAY);state.stack_watermark=watermark;xSemaphoreGive(lock);
+            last_stack=sample_time;
+        }
         wifi_snapshot_t snapshot=read_state();
         if(snapshot.state==NET_ONLINE && pending_valid) {
             wifi_profiles_t updated=profiles;
@@ -231,8 +240,10 @@ bool wifi_service_start(void) {
 }
 static bool submit(command_t *cmd) {
     if(!commands || !lock || xSemaphoreTake(lock,0)!=pdTRUE)return false;
-    bool ready=service_ready;xSemaphoreGive(lock);
-    return ready && xQueueSend(commands,cmd,0)==pdTRUE;
+    bool ready=service_ready;
+    bool ok=ready && xQueueSend(commands,cmd,0)==pdTRUE;
+    if(ready && !ok)increment(&state.queue_drops);
+    xSemaphoreGive(lock);return ok;
 }
 bool wifi_service_scan(void) { command_t c={.kind=1};return submit(&c); }
 bool wifi_service_disconnect(void) { command_t c={.kind=3};return submit(&c); }

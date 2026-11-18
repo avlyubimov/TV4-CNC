@@ -12,6 +12,8 @@ LV_FONT_DECLARE(tv4_ru_20);
 LV_FONT_DECLARE(tv4_digits_36);
 LV_FONT_DECLARE(tv4_digits_32);
 static model_t model, rendered;
+static diagnostics_t diagnostics;
+diagnostics_t *dashboard_diagnostics(void) { return &diagnostics; }
 static bool view_valid;
 static dashboard_view_t view, pending_view;
 static bool view_requested;
@@ -22,6 +24,9 @@ static lv_obj_t *diag_state, *diag_fault, *diag_channel, *diag_frames, *diag_hea
 static lv_obj_t *log_summary, *log_page_label, *log_time[8], *log_event[8], *log_reason[8];
 static uint32_t metrics_revision, rendered_metrics, measured_fps, free_bytes;
 static bool metrics_valid;
+static lv_obj_t *resource_panel,*diag_left,*diag_right,*resource_lines[5];
+static bool resource_view,resource_requested;
+static void resource_request(lv_event_t *ev) { (void)ev;resource_requested=true; }
 
 static lv_obj_t *override_slider, *override_value;
 static bool override_pending;
@@ -67,11 +72,12 @@ static void render_event(lv_event_t *ev) {
     if(lv_event_get_code(ev)==LV_EVENT_REFR_START) render_start_ms=lv_tick_get();
     if(lv_event_get_code(ev)==LV_EVENT_REFR_READY) {
         render_ms=lv_tick_elaps(render_start_ms); frames++;
+        diagnostics_render(&diagnostics,render_ms);
     }
 }
 bool dashboard_post_event(event_t event) {
     if(event<EV_STEP || event>EV_ZERO_WORK_ALL) { pending_fault=EV_INVALID_FAULT; dropped_events++; return false; }
-    if(used==8) { pending_fault=EV_QUEUE_FAULT; dropped_events++; return false; }
+    if(used==8) { pending_fault=EV_QUEUE_FAULT; dropped_events++; diag_increment(&diagnostics.record.queue_drops); return false; }
     queue[write_pos]=event; event_ms[write_pos]=lv_tick_get();
     write_pos=(write_pos+1)%8; used++; return true;
 }
@@ -229,12 +235,20 @@ static void create_views(lv_obj_t *root) {
 #else
     muted(label(diag_panel,tr(0,S_HOST_PLATFORM),356,40,335));
 #endif
-    lv_obj_t *left=panel(diag_panel,14,68,330,115,0x1a2935);
+    lv_obj_t *toggle=button(diag_panel,S_RESOURCES,-1,546,5,145,32,false);
+    lv_obj_add_event_cb(toggle,resource_request,LV_EVENT_CLICKED,NULL);
+    resource_panel=panel(diag_panel,14,68,677,115,0x1a2935);
+    for(unsigned i=0;i<5;i++) {
+        resource_lines[i]=label(resource_panel,"",10,6+(int)i*21,653);
+        lv_obj_set_style_text_font(resource_lines[i],&tv4_ru_12,0);
+    }
+    lv_obj_add_flag(resource_panel,LV_OBJ_FLAG_HIDDEN);
+    lv_obj_t *left=diag_left=panel(diag_panel,14,68,330,115,0x1a2935);
     muted(label(left,tr(0,S_STATE_MODEL),12,9,304));
     diag_state=label(left,"",12,30,304); lv_obj_set_style_text_font(diag_state,&tv4_ru_20,0);
     muted(label(left,tr(0,S_CAUSE),12,62,60)); diag_fault=label(left,"",82,62,236);
     diag_channel=label(left,"",12,88,306);
-    lv_obj_t *right=panel(diag_panel,356,68,335,115,0x1a2935);
+    lv_obj_t *right=diag_right=panel(diag_panel,356,68,335,115,0x1a2935);
     muted(label(right,tr(0,S_METRICS),12,9,310));
     diag_frames=label(right,"",12,34,310);diag_heap=label(right,"",12,58,310);diag_latency=label(right,"",12,82,310);
     muted(label(diag_panel,tr(0,S_TESTS),14,196,674));
@@ -271,6 +285,17 @@ static void create_views(lv_obj_t *root) {
     lv_obj_add_flag(diag_panel,LV_OBJ_FLAG_HIDDEN);lv_obj_add_flag(log_panel,LV_OBJ_FLAG_HIDDEN);
 }
 static void refresh_views(void) {
+    const diag_record_t *r=&diagnostics.record;
+    if(r->resources_valid) {
+        lv_label_set_text_fmt(resource_lines[0],tr(NULL,S_DIAG_MEM),(unsigned long)(r->internal_free/1024),(unsigned long)(r->internal_min/1024),(unsigned long)(r->internal_largest/1024));
+        lv_label_set_text_fmt(resource_lines[1],tr(NULL,S_DIAG_PSRAM),(unsigned long)(r->psram_free/1024),(unsigned long)(r->psram_min/1024),(unsigned long)(r->psram_total/1024));
+        lv_label_set_text_fmt(resource_lines[2],tr(NULL,S_DIAG_STACK),(unsigned long)r->owner_stack,(unsigned long)r->touch_stack,(unsigned long)r->wifi_stack);
+    } else {
+        lv_label_set_text(resource_lines[0],tr(NULL,S_UNMEASURED));
+        lv_label_set_text(resource_lines[1],"");lv_label_set_text(resource_lines[2],"");
+    }
+    lv_label_set_text_fmt(resource_lines[3],tr(NULL,S_DIAG_DROPS),(unsigned long)r->queue_drops,(unsigned long)r->wifi_queue_drops,(unsigned long)r->export_drops);
+    lv_label_set_text_fmt(resource_lines[4],tr(NULL,S_DIAG_RESET),(unsigned long)r->reset_reason,(unsigned long)r->watchdog_boot);
     lv_label_set_text(diag_state,state_text(model.mode)); lv_label_set_text(diag_fault,fault_text(model.fault));
     lv_label_set_text_fmt(diag_channel,tr(0,S_FMT_CHANNEL),tr(0,model.connected?S_LINK_UP:S_LINK_DOWN),(unsigned long)model.rejected);
     if(metrics_valid) {
@@ -300,6 +325,8 @@ static void refresh_views(void) {
 void dashboard_create(void) {
     zero_requested=zero_close=false;zero_dialog=NULL;
     override_pending=false;
+    resource_view=resource_requested=false;
+    diagnostics_init(&diagnostics,lv_tick_get());
     model_init(&model); read_pos=write_pos=used=0; pending_fault=EV_STEP; dropped_events=0; view_valid=false; view=VIEW_HOME; view_requested=false; home_count=log_page=0; metrics_valid=false; metrics_revision=rendered_metrics=0;
     /* Reference-matching deterministic demo readings, never live machine data. */
     model.x_um=25430; model.z_um=-142850; model.step_um=10; model.rpm=1250; model.feed=180;
@@ -483,10 +510,23 @@ void dashboard_create(void) {
     dashboard_update();
 }
 void dashboard_update(void) {
+    if(resource_requested) {
+        resource_view=!resource_view;resource_requested=false;view_valid=false;
+        if(resource_view) {
+            lv_obj_remove_flag(resource_panel,LV_OBJ_FLAG_HIDDEN);
+            lv_obj_add_flag(diag_left,LV_OBJ_FLAG_HIDDEN);lv_obj_add_flag(diag_right,LV_OBJ_FLAG_HIDDEN);
+        } else {
+            lv_obj_add_flag(resource_panel,LV_OBJ_FLAG_HIDDEN);
+            lv_obj_remove_flag(diag_left,LV_OBJ_FLAG_HIDDEN);lv_obj_remove_flag(diag_right,LV_OBJ_FLAG_HIDDEN);
+        }
+    }
     apply_view();
+    bool was_connected=model.connected;
     model_tick(&model,lv_tick_get());
+    if(was_connected && !model.connected)diag_increment(&diagnostics.record.mock_can_timeouts);
     while(used) {
         touch_latency_ms=lv_tick_elaps(event_ms[read_pos]);
+        diagnostics_event(&diagnostics,touch_latency_ms);
         model_event(&model,queue[read_pos]); read_pos=(read_pos+1)%8; used--;
     }
     model.rejected+=dropped_events; dropped_events=0;
@@ -495,6 +535,7 @@ void dashboard_update(void) {
     update_zero_dialog();
     tools_view_update(&model);
     wifi_view_update();
+    if(diagnostics_window(&diagnostics,lv_tick_get()))metrics_revision++;
     uint32_t elapsed=lv_tick_elaps(log_ms);
     if(elapsed>=1000) {
         free_bytes=0;
@@ -503,16 +544,6 @@ void dashboard_update(void) {
 #else
         lv_mem_monitor_t mem; lv_mem_monitor(&mem); free_bytes=mem.free_size;
 #endif
-        /* Logs describe the running platform; host figures are not board evidence.
-           Touch value is event-to-owner latency, not physical touch-to-photon. */
-        printf("hmi platform=%s fps=%lu render_ms=%lu free_bytes=%lu event_ms=%lu\n",
-#ifdef ESP_PLATFORM
-            "esp32",
-#else
-            "host",
-#endif
-            (unsigned long)(frames*1000/elapsed), (unsigned long)render_ms,
-            (unsigned long)free_bytes, (unsigned long)touch_latency_ms);
         measured_fps=frames*1000/elapsed; metrics_valid=true; metrics_revision++;
         frames=0; log_ms=lv_tick_get();
     }

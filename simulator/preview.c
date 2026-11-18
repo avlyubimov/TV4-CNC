@@ -274,6 +274,13 @@ int main(int argc,char **argv) {
     press(root,S_TEST_TOUCH); assert(dashboard_snapshot().fault==F_TOUCH);
     press(root,S_NEW_SIM); assert(dashboard_snapshot().mode==FAULT);
     save_frame("diagnostics");
+    press(root,S_RESOURCES);
+    diag_record_t *metrics=&dashboard_diagnostics()->record;
+    metrics->resources_valid=true;metrics->internal_free=220000;metrics->internal_min=180000;
+    metrics->internal_largest=160000;metrics->psram_total=8388608;metrics->psram_free=6200000;
+    metrics->psram_min=5900000;metrics->owner_stack=2048;metrics->touch_stack=1900;metrics->wifi_stack=3000;
+    lv_tick_inc(1000);dashboard_update();check_dashboard_layout(root);save_frame("diagnostics-resources");
+    press(root,S_RESOURCES);
     press(root,S_ACK); assert(dashboard_snapshot().mode==HOLD);
     press(root,S_NEW_SIM); assert(dashboard_snapshot().mode==SIMULATION);
     press(root,S_TEST_CONNECT); assert(dashboard_snapshot().connected);
