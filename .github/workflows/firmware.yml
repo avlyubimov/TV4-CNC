@@ -39,7 +39,7 @@ jobs:
           python - <<'PYCODE'
           import subprocess
           output = subprocess.check_output(['readelf', '-Ws', 'build-idf-${{ matrix.sdk }}-${{ matrix.profile }}/tv4_hmi.elf'], text=True)
-          for symbol in ['tv4_ota_verify_manifest', 'tv4_ota_manifest_read', 'tv4_image_feed', 'tv4_image_finish']:
+          for symbol in ['tv4_ota_verify_manifest', 'tv4_ota_manifest_read', 'tv4_image_feed', 'tv4_image_finish', 'tv4_ota_signed_manifest_read', 'tv4_https_read']:
               assert any(symbol in line and ' UND ' not in line for line in output.splitlines()), 'OTA entry point discarded or unresolved: ' + symbol
           print('Crypto symbols linked; no OTA installer enabled')
           PYCODE

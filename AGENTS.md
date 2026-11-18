@@ -107,9 +107,9 @@ PR и Actions; не копировать код уже открытого PR. Д
 
 ## Текущее задание
 
-PR #10 (native manifest policy) слит. По заданию «Дальше» выполняется PR-04c:
-read-only streaming image integrity/format checks и interruption tests.
-См. docs/OTA_IMAGE_STREAM.md. Не включать HTTP/installer/storage sink,
-не менять active partitions/sdkconfig, не подключаться/не прошивать устройство,
-не создавать production keys и не merge свой PR.
+PR #11 (read-only image stream) слит. По заданию «Дальше» выполняется PR-04d:
+bounded signature envelope и read-only HTTPS transport primitives.
+См. docs/OTA_HTTPS.md. Не подключать транспорт к app_main/UI и не включать
+installer/storage sink; не менять active partitions/sdkconfig, не обращаться
+к устройству, не создавать production keys и не merge свой PR.
 CPU/hardware baseline/soak часть PR-03 остаётся открытой.

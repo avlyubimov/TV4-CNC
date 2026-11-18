@@ -101,3 +101,9 @@ v1.7.19 MIT закреплён SHA-256. Installer/context provisioning ещё о
 Добавлены incremental dual SHA-256, ESP image format/descriptor/checksum checks,
 receive/cancel/error/deadline состояния и cleanup. Нет sink/HTTP/Flash/boot commit.
 [Описание и evidence](OTA_IMAGE_STREAM.md).
+
+## PR-04d — signature envelope / HTTPS
+
+Добавлены bounded конверт подписи и read-only HTTPS transport primitives.
+Не подключены к app_main/UI, нет discovery/OTA Manager/installer/Flash writes.
+[Контракт, проверки и ограничения](OTA_HTTPS.md).

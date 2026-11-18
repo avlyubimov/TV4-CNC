@@ -1,4 +1,5 @@
 #include "manifest.h"
+#include "envelope.h"
 #include "tv4_namespace.h"
 #include "cJSON.h"
 #include <assert.h>
@@ -44,6 +45,29 @@ static void replace(const char *needle,const char *value,tv4_ota_result expected
     int n=snprintf(raw,sizeof(raw),"%.*s%s%s",(int)(at-valid),valid,value,at+strlen(needle));
     assert(n>0 && (size_t)n<sizeof(raw));reject(raw,expected);
 }
+static void envelope_checks(void) {
+    unsigned char der[80],base64[112];size_t count=signature(valid,strlen(valid),der);
+    int encoded=EVP_EncodeBlock(base64,der,(int)count);assert(encoded>0 && encoded<=96);
+    char envelope[1024];
+    int n=snprintf(envelope,sizeof(envelope),"{\"key_id\":\"test-only\",\"algorithm\":\"ECDSA-P256-SHA256\",\"signature\":\"%s\"}",base64);
+    assert(n>0 && (size_t)n<sizeof(envelope));
+    assert(tv4_ota_signed_manifest_read((const uint8_t *)valid,strlen(valid),(const uint8_t *)envelope,(size_t)n,&context,&output)==TV4_OTA_OK);
+    assert(tv4_ota_signed_manifest_read((const uint8_t *)valid,strlen(valid)-1,(const uint8_t *)envelope,(size_t)n,&context,&output)==TV4_OTA_BAD_SIGNATURE);
+    const char *bad[]={"{}","{\"key_id\":\"test-only\",\"algorithm\":\"none\",\"signature\":\"AAAAAAAAAAA=\"}",
+        "{\"key_id\":\"test-only\",\"algorithm\":\"ECDSA-P256-SHA256\",\"signature\":\"AAAAAAAAAAB=\"}",
+        "{\"key_id\":\"test-only\",\"algorithm\":\"ECDSA-P256-SHA256\",\"signature\":\"AAAAAAAAAA==\"}",
+        "{\"key_id\":\"test-only\",\"key_id\":\"test-only\",\"algorithm\":\"ECDSA-P256-SHA256\",\"signature\":\"AAAAAAAAAAA=\"}",
+        "{\"key_id\":\"test-only\",\"algorithm\":\"ECDSA-P256-SHA256\",\"signature\":\"AAAAAAAAAAA=\",\"public_key\":\"downloaded\"}"};
+    for(unsigned i=0;i<sizeof(bad)/sizeof(bad[0]);i++) {
+        assert(tv4_ota_signed_manifest_read((const uint8_t *)valid,strlen(valid),(const uint8_t *)bad[i],strlen(bad[i]),&context,&output)==TV4_OTA_BAD_ENVELOPE);
+        assert(!output.size_bytes && !output.url[0]);
+    }
+    char large[2049];memset(large,' ',sizeof(large));
+    assert(tv4_ota_signed_manifest_read((const uint8_t *)valid,strlen(valid),(const uint8_t *)large,sizeof(large),&context,&output)==TV4_OTA_BAD_ENVELOPE);
+    const char *saved=context.key_id;context.key_id="unknown";
+    assert(tv4_ota_signed_manifest_read((const uint8_t *)valid,strlen(valid),(const uint8_t *)envelope,(size_t)n,&context,&output)==TV4_OTA_NO_TRUST);
+    context.key_id=saved;
+}
 static size_t allocations,fail_at,outstanding,peak;
 typedef union { max_align_t alignment;size_t size; } allocation_header;
 static void *limited_malloc(size_t size) {
@@ -65,6 +89,7 @@ int main(void) {
         .board_rev12=true,.public_key=public_key,.public_key_length=(size_t)key_length};
     assert(read(valid,strlen(valid))==TV4_OTA_OK);
     assert(output.size_bytes==512 && output.sha256[0]==0xaa && strstr(output.notes,"Проверка\n"));
+    envelope_checks();
     unsigned char sig[80];size_t n=signature(valid,strlen(valid),sig);sig[n-1]^=1;
     assert(tv4_ota_manifest_read((const uint8_t *)valid,strlen(valid),sig,n,&context,&output)==TV4_OTA_BAD_SIGNATURE);
     replace("\"size_bytes\":512","\"size_bytes\":1.0",TV4_OTA_BAD_JSON);

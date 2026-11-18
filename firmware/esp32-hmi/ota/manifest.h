@@ -19,7 +19,7 @@ typedef enum {
     TV4_OTA_OK, TV4_OTA_NO_TRUST, TV4_OTA_BAD_SIGNATURE, TV4_OTA_BAD_JSON,
     TV4_OTA_BAD_SCHEMA, TV4_OTA_WRONG_TARGET, TV4_OTA_WRONG_LAYOUT,
     TV4_OTA_WRONG_VERSION, TV4_OTA_WRONG_PROTOCOL, TV4_OTA_WRONG_PEER,
-    TV4_OTA_BAD_SIZE, TV4_OTA_BAD_URL
+    TV4_OTA_BAD_SIZE, TV4_OTA_BAD_URL, TV4_OTA_BAD_ENVELOPE
 } tv4_ota_result;
 /* DER signature; envelope decoding remains in the future transport layer.
  * Verifies exact bytes BEFORE bounded JSON parsing. No network/Flash/LVGL.

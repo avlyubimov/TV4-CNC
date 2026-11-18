@@ -68,7 +68,8 @@ Actions только проверяют docs, host/sanitizers и ESP-IDF matrix.
 ## Схема манифеста — пример, не действующий релиз
 
 Ниже невалидные placeholders намеренно не являются опубликованными hashes/URL/
-подписью. Schema и signature envelope финализируются с test vectors в PR-04/05.
+подписью. HMI schema и signature envelope проверяются test vectors PR-04b/04d;
+production key provisioning и release approval ещё не выполнены.
 Один релиз может содержать только HMI, без фиктивной STM32 записи.
 
 ```json
@@ -126,3 +127,7 @@ CI и отдельного owner approval. Отмена/update history не уд
 [OTA_VERIFICATION.md](OTA_VERIFICATION.md) описывает локальный read-only checker
 подписи/compatibility/hash. Он не создаёт release, не подписывает и не включает
 установку. Поддерживается только один HMI component; motion остаётся будущим.
+
+PR-04d: manifest.sig — JSON envelope до 2048 байт с ровно key_id, algorithm
+(ECDSA-P256-SHA256), signature (canonical Base64 DER).
+См. [native HTTPS/envelope contract](OTA_HTTPS.md); production release не создан.
