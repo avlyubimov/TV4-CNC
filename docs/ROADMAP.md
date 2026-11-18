@@ -63,6 +63,8 @@ UTC/TLS memory profiling с отдельным разрешением на то�
 ## PR-04j — явный UTC/TLS memory bench
 
 [Отдельный профиль](UTC_TLS_BENCH.md), две heap windows, один HEAD без body.
-После review/CI — подготовить точный image и получить новое разрешение на
-network/UTC/flash/reset/UART test. Production TLS budget не объявлять по одному
+PR #20 слит; [19 ноября b085abb испытан](evidence/hardware/2026-11-19-b085abb-utc-tls/README.md):
+SNTP PASS, TLS context allocation FAIL (-141 insufficient memory). Возвращён
+ordinary rev12 b085abb. Следующий шаг — review allocator/PSRAM/TLS memory
+с host/build проверками; новое аппаратное испытание требует нового разрешения. Production TLS budget не объявлять по одному
 снимку/endpoint: нужны ошибки/redirect-hosts/soak и ownership/performance review.

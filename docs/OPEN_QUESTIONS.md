@@ -62,3 +62,12 @@ reserve. Memory blocker остаётся до аппаратного allocation/
 PSRAM allocation test на 1c38d1e [прошёл три цикла](evidence/hardware/2026-11-18-1c38d1e-psram/README.md).
 Runtime allocation UNKNOWN закрыт для этой isolated пробы; production TLS
 peak/headroom и time provider, cache-off/full RAM stress и UART cause не закрыты.
+
+## После UTC/TLS b085abb — 19 ноября 2026
+
+[SNTP PASS, TLS allocation FAIL](evidence/hardware/2026-11-19-b085abb-utc-tls/README.md).
+Изолированная private2026 UTC policy приняла actual SNTP; production provenance
+и time policy остаются открытыми. TLS context не создан (-141 insufficient
+memory): certificate/HTTP200/production peak не подтверждены. Следующий gate —
+review allocation capabilities/PSRAM/buffers без ослабления CA/time/DMA reserve,
+затем новое отдельно разрешённое испытание. На плате ordinary rev12 b085abb.

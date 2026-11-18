@@ -107,11 +107,12 @@ PR и Actions; не копировать код уже открытого PR. Д
 
 ## Текущее задание
 
-PR #19 слит. По «Слито, дальше» выполняется PR-04j: opt-in rev12-tls-bench,
-SNTP затем один CA/hostname/time-checked HEAD к публичному TV4-CNC repo,
-отдельные SDK local heap-min windows. См. docs/UTC_TLS_BENCH.md.
-Обычные профили ничего нового не запускают; нет OTA body/install/Flash writes.
-Не обращаться к плате и не прошивать: разрешение на 1c38d1e test завершено.
-Bench network/UTC/reset/serial operations требуют нового разрешения для
-reviewed image. Не менять existing configs/layout/board/timings, не подставлять
-production TLS budget или keys/release и не merge свой PR.
+PR #20 слит. 19 ноября разрешённый b085abb rev12-tls-bench испытан:
+SNTP PASS, TLS context allocation FAIL (-141 insufficient memory), см.
+docs/evidence/hardware/2026-11-19-b085abb-utc-tls/README.md. После одного90s UART
+capture возвращён ordinary rev12 b085abb, 3/3 hashes verified; владелец подтвердил
+HMI/touch/Wi-Fi. Это docs-only фиксация результата, не исправление allocator.
+Следующий программный шаг — review allocator capabilities/PSRAM/TLS buffers,
+не ослабляя CA/hostname/time/DMA reserves. Production TLS budget не подтверждён.
+Разрешение на обе записи/UTC/network/reset/capture исполнено; не обращаться
+к плате вновь без отдельного согласования exact image/операций. Не merge свой PR.

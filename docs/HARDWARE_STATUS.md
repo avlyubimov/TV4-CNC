@@ -1,6 +1,6 @@
 # Аппаратный статус TV4-CNC
 
-Снимок на 18 ноября 2026. Источники: сообщения/фотографии/терминальные журналы
+Снимок на 19 ноября 2026. Источники: сообщения/фотографии/терминальные журналы
 владельца и проверенные файлы репозитория. В PR-01 агент не подключался
 к устройствам и не повторял аппаратные проверки. «Сообщено владельцем» не
 равно независимому измерению агентом. Новые результаты добавлять с версией
@@ -68,4 +68,16 @@ runtime HTTPS пока блокирован memory budget/allocation review и T
 Владелец подтвердил сохранение работы HMI/touch/Wi-Fi. Один60s UART capture,
 в нём один boot и нет ошибок; после close порт не открывали. Internal largest
 всё ещё12288: TLS peak/time/budget review остаётся отдельным блокером.
-Текущая установленная версия — 1c38d1e **memory-bench**, не ordinary rev12.
+На завершение теста 18 ноября оставалась 1c38d1e **memory-bench**; текущий статус ниже.
+
+## UTC/TLS bench b085abb — 19 ноября 2026
+
+[Разрешённая проба и numeric evidence](evidence/hardware/2026-11-19-b085abb-utc-tls/README.md).
+SNTP PASS/source unauthenticated, но TLS OPEN FAIL: mbedtls_ssl_setup -0x008D,
+PSA_ERROR_INSUFFICIENT_MEMORY. HTTP/сертификат не проверены. Internal window
+min8795/largest sample7680bytes, monitors cleanup PASS. Это реальный blocker
+runtime HTTPS; production memory budget не подтверждён. Один90s capture,
+17 diagnostics/один boot; ошибки display/touch/queues/watchdog не наблюдались.
+После пробы **вернули ordinary rev12 b085abb**, SDK6.1.1, 3/3 hashes verified;
+UART после возврата не открывали. Владелец подтвердил главный экран/касания/Wi-Fi.
+Проверка записи не равна factory restore. Старое разрешение исполнено.
