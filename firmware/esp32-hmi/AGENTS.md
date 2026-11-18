@@ -31,7 +31,9 @@ docs/BOARD_ADAPTER.md, docs/RUNTIME_DIAGNOSTICS.md и docs/OTA_ARCHITECTURE.md.
 - PR-04a/04b/04c добавляют verification/native policy/read-only stream;
   PR-04d добавляет envelope/read-only HTTPS primitives; PR-04e — bounded
   read-only session coordinator; PR-04f — PSRAM-only workspace/admission.
-  Нет app_main/UI wiring или installer; не включать allocation в startup.
+  Нет runtime OTA worker/UI или installer. PR-04g — отдельный explicit
+  rev12-memory-bench с finite allocation probe через low-priority worker;
+  обычные headless/rev12 probe не запускают. Никакого HTTPS/session_run в probe.
   Неактивный candidate CSV не подключать к sdkconfig/build/flash. Никаких
   production ключей, сетевого OTA/write/boot partition activation без review.
   Для вызовов verifier нужен reviewed local trust store, не downloaded key.

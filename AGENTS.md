@@ -107,10 +107,12 @@ PR и Actions; не копировать код уже открытого PR. Д
 
 ## Текущее задание
 
-PR #14 слит: baseline b93cf3b зафиксирован. По «Дальше» выполняется PR-04f:
-PSRAM-only session workspace lifetime/admission и target sizeof из ELF.
-См. docs/OTA_MEMORY.md. Нет approved production TLS budget, runtime worker/UI,
-новых tasks/network calls или installer. Active configs/layout/board/LVGL buffers
-не менять. Не обращаться к плате, не прошивать новую версию; прежнее разрешение
-относилось только к b93cf3b. UART open/close reset не расследовать на устройстве
-без отдельного разрешения. Не создавать production keys/release и не merge PR.
+PR #15 слит. По «Дальше» выполняется PR-04g: opt-in rev12-memory-bench,
+finite worker с allocation/buffer-pattern/release metrics. См. docs/OTA_MEMORY_BENCH.md.
+Обычные headless/rev12 не активируют probe; новый overlay только для bench.
+Нет production TLS budget, HTTPS/session_run/installer/motion в probe.
+Не менять existing board/layout/SDK defaults/LVGL buffers; не обращаться к плате,
+не прошивать новую версию. На плате b93cf3b; новое разрешение на запись/reset/
+UART capture запрашивается только для готового reviewed bench image.
+UART open/close может reset; не объявлять capture read-only/no-reset.
+Не создавать production keys/release и не merge свой PR.

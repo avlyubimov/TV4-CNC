@@ -4,6 +4,9 @@
 #include "boot_view.h"
 #include "wifi_service.h"
 #include "export.h"
+#if CONFIG_TV4_OTA_MEMORY_BENCH
+#include "memory_probe.h"
+#endif
 #include "esp_system.h"
 #include "esp_log.h"
 #include "esp_timer.h"
@@ -122,6 +125,9 @@ void app_main(void) {
 #endif
     ESP_LOGI(TAG,"UI ready: LVGL %d.%d.%d, 800x480 RGB565, draw buffer=%u bytes",
         LVGL_VERSION_MAJOR,LVGL_VERSION_MINOR,LVGL_VERSION_PATCH,(unsigned)bytes);
+#if CONFIG_TV4_OTA_MEMORY_BENCH
+    uint32_t bench_ready=tick_ms();bool bench_requested=false;
+#endif
     uint32_t last_report=tick_ms(),last_resources=last_report;
     for(;;) {
         int64_t work_started=esp_timer_get_time();
@@ -160,6 +166,14 @@ void app_main(void) {
 #endif
             last_resources=report_now;
         }
+#if CONFIG_TV4_OTA_MEMORY_BENCH
+        /* Defer stack allocation until the startup/connect peak has passed.
+         * Owner only schedules; worker performs all memory I/O and logging. */
+        if(!bench_requested && (uint32_t)(report_now-bench_ready)>=15000) {
+            bench_requested=true;
+            if(!tv4_ota_memory_bench_start())ESP_LOGE(TAG,"Memory probe unavailable; HMI continues");
+        }
+#endif
         if((uint32_t)(report_now-last_report)>=5000) {
             if(!diag_export_submit(&diagnostics->record))diag_increment(&diagnostics->record.export_drops);
             last_report=report_now;

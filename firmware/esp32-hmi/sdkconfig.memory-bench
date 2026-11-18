@@ -1,0 +1,2 @@
+# Explicit diagnostic image only; not a production memory policy.
+CONFIG_TV4_OTA_MEMORY_BENCH=y

@@ -211,3 +211,9 @@ PR-04c: [потоковая проверка образа](OTA_IMAGE_STREAM.md),
 Добавлены bounded allocation/lifetime, explicit reviewed headroom policy и
 ELF target sizeof check. Нет internal fallback, runtime calls или installer.
 [Контракт, evidence и оставшиеся ограничения](OTA_MEMORY.md).
+
+## PR-04g — explicit memory bench profile
+
+Добавлен rev12-memory-bench: три bounded allocation/pattern/release cycles в
+worker после 15 секунд работы UI. Обычные headless/rev12 отключены от probe.
+Нет HTTPS/session_run/Flash/boot operations. [Контракт и board procedure](OTA_MEMORY_BENCH.md).
