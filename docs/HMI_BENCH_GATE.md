@@ -24,7 +24,7 @@ SHA/build/profile, существующий layout и точную разреш�
   программная event latency не доказывает touch-to-display.
 
 Результат PASS только с реальным наблюдением и версией; неизвестное оставить
-UNKNOWN. Сейчас эти пункты ещё не подтверждены. Если Wi-Fi/DHCP не работают,
+UNKNOWN. Частичные подтверждения приведены в результате ниже. Если Wi-Fi/DHCP не работают,
 runtime HTTPS откладывается и сначала исправляется baseline.
 
 ## Gate 2 — после отдельного runtime worker PR
@@ -46,3 +46,11 @@ Secure Boot, Flash Encryption или STM32 option bytes. F407 SWD/таймеры
 
 Evidence складывать с датой/версией/методом/ограничениями в docs/evidence/;
 не публиковать дампы Flash, Wi-Fi пароли, ключи или лишние идентификаторы.
+
+## Первый результат Gate 1 — b93cf3b
+
+[18 ноября 2026: разрешённая запись и baseline](evidence/hardware/2026-11-18-b93cf3b/README.md).
+Basic startup/touch/keyboard/password visibility/Wi-Fi DHCP подтверждены; Gate 1
+полностью не закрыт: 10 минут soak, corners, negative password и persistence stress
+ещё не проведены. UART open/close сопровождался новым boot; повторные capture
+требуют исправленной процедуры. До Gate 2 — memory budget/TLS peak review.

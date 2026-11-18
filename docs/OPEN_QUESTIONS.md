@@ -46,3 +46,11 @@
 Статусы закрывать только с источником/датой/версией и пределами результата.
 Проведение проверки/прошивка требуют отдельного разрешения владельца;
 этот список не разрешает подключаться к оборудованию.
+
+## После baseline b93cf3b
+
+[Аппаратный отчёт](evidence/hardware/2026-11-18-b93cf3b/README.md): startup,
+PSRAM, basic touch/keyboard/password visibility и Wi-Fi/DHCP подтверждены.
+Перед runtime HTTPS нужны memory allocation review (largest internal block
+12288 bytes при host session 34024), TLS peak и проверенный time provider.
+Отдельно разобраться с reset при UART open/close; две выборки не являются soak.

@@ -113,3 +113,11 @@ receive/cancel/error/deadline состояния и cleanup. Нет sink/HTTP/Fl
 Единая worker-only операция связывает metadata/envelope/policy/image checks,
 общий timeout/cancel, cleanup и terminal result. Нет runtime task/UI/install.
 [Контракт, evidence и board gate](OTA_SESSION.md).
+
+## Baseline b93cf3b на Waveshare — 18 ноября 2026
+
+По отдельному разрешению владельца записана ESP-IDF 6.1.1 rev12; 3/3 hashes
+verified. Boot log подтверждает версию/PSRAM/RGB, владелец подтвердил
+экран/касания/клавиатуру/показ пароля/Wi-Fi IP. [Evidence, memory blocker и
+ограничение UART capture](evidence/hardware/2026-11-18-b93cf3b/README.md).
+Это не OTA install/soak/commissioning и не разрешение на следующую запись.
