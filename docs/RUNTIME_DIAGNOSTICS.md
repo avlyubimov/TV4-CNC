@@ -1,4 +1,9 @@
-# Диагностика HMI: что измеряется и чего пока нет
+# Диагностика HMI: instrumentation и границы измерений
+
+PR-03 расширяет код ниже: [HMI_PERFORMANCE.md](HMI_PERFORMANCE.md).
+Добавлены heap/PSRAM minima, task stacks, reset/counters/histograms и bounded
+worker serial JSON export. Per-core CPU и аппаратная latency/soak не завершены.
+Следующий раздел сохраняет baseline до PR-03; старый printf заменён worker export.
 
 Существующий код main 323ab36, без изменений в PR-01. Физическое изображение
 HMI наблюдалось, но числовых performance результатов с платы в проверенных

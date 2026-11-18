@@ -6,6 +6,7 @@
 /* No credentials in snapshots or logs. All control is local, station-only. */
 typedef enum { NET_OFF, NET_IDLE, NET_SCANNING, NET_CONNECTING, NET_ONLINE, NET_FAILED } net_state_t;
 typedef struct {
+    uint32_t connect_attempts, disconnect_events, ip_events, queue_drops, stack_watermark;
     net_state_t state; unsigned revision,count,saved_count; int error,storage_error;
     char ip[16],active_ssid[33],saved_ssids[WIFI_SAVED_MAX][33];
     char ssids[WIFI_UI_NETWORKS][33]; int8_t rssi[WIFI_UI_NETWORKS]; bool secured[WIFI_UI_NETWORKS];

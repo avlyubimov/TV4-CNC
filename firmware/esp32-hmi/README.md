@@ -61,8 +61,8 @@ cmake --build build-host -j 4
 ctest --test-dir build-host --output-on-failure
 ```
 
-Пять тестов: ядро, инспектор сборок, Wi-Fi profiles, настоящий рендер LVGL
-32-bit и RGB565.
+Семь тестов: ядро, инспектор сборок, Wi-Fi profiles, LVGL 32-bit/RGB565,
+диагностические окна/экспорт и STM32 supervisor.
 Есть проверки кириллицы/глифов, границ надписей/кнопок, отказов, локализации,
 журнала и редактирования инструмента. CI повторяет тесты с ASan/UBSan/LSan.
 Кадры PPM в build-host/ являются рендером ПК, не фото работающей платы.
@@ -92,3 +92,7 @@ assets/IMAGE-PROVENANCE.md. Исходный PNG не включается в б
 Будущая OTA A/B и отдельная USB-миграция описаны в
 [OTA_ARCHITECTURE](../../docs/OTA_ARCHITECTURE.md). Эта документация не меняет
 действующий factory 2 МиБ. Правила модуля: [AGENTS.md](AGENTS.md).
+
+Диагностика → «Ресурсы» и bounded worker serial export schema=1 добавлены в
+PR-03: [HMI_PERFORMANCE](../../docs/HMI_PERFORMANCE.md). Программные окна
+не заменяют per-core CPU/физическую latency/scanout; аппаратные замеры открыты.

@@ -107,7 +107,7 @@ PR и Actions; не копировать код уже открытого PR. Д
 
 ## Текущее задание
 
-PR-01 завершён и слит. По следующему заданию владельца выполняется PR-02:
-STM32 foundation, host/fault tests и compile-only ARM проверка. См.
-docs/STM32_FOUNDATION.md и ROADMAP.md. Startup/linker и board image остаются
-заблокированы до проверки памяти/HSE/pinout. Не прошивать и не merge свой PR.
+PR-01 и PR-02 завершены и слиты. По заданию «дальше» выполняется программная
+часть PR-03: HMI instrumentation/экспорт, host и SDK проверки. Аппаратные замеры,
+per-core CPU load и soak остаются открытыми. См. docs/HMI_PERFORMANCE.md.
+Не подключаться/не прошивать устройство, не merge свой PR.
