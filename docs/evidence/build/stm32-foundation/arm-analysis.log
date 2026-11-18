@@ -1,0 +1,33 @@
+$ arm-none-eabi-gcc --version
+arm-none-eabi-gcc (15:14.2.rel1-1) 14.2.1 20241119
+Copyright (C) 2024 Free Software Foundation, Inc.
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+
+exit=0
+$ cmake -S firmware/stm32-motion -B build-motion-arm -G Ninja -DCMAKE_TOOLCHAIN_FILE=cmake/arm-none-eabi.cmake -DCMAKE_BUILD_TYPE=MinSizeRel
+-- Configuring done (0.0s)
+-- Generating done (0.0s)
+CMake Warning:
+  Manually-specified variables were not used by the project:
+
+    CMAKE_TOOLCHAIN_FILE
+
+
+-- Build files have been written to: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32-foundation/build-motion-arm
+
+exit=0
+$ cmake --build build-motion-arm
+ninja: no work to do.
+
+exit=0
+$ python3 tools/check_motion_size.py build-motion-arm/libtv4_motion_core.a
+   text	   data	    bss	    dec	    hex	filename
+    612	      0	      0	    612	    264	supervisor.c.obj (ex build-motion-arm/libtv4_motion_core.a)
+PASS: core object budget only; no startup/linker/board RAM claim
+
+exit=0
+$ gcc -std=c11 -Wall -Wextra -Werror -fanalyzer -fsyntax-only -Ifirmware/stm32-motion/core firmware/stm32-motion/core/supervisor.c
+
+exit=0

@@ -68,3 +68,10 @@ PR-01 меняет только Markdown-документы/AGENTS. Откат �
 C/C++, build scripts и workflow YAML не меняются. Бэкапы и окружения исключены
 из Git. Испытания/прошивка, публикация релиза и переход к PR-02 требуют
 отдельного разрешения/проверки владельца после отчёта PR-01.
+
+## PR-02 — следующий этап
+
+В отдельной ветке добавлены portable STM32 supervisor, host/fault tests и
+compile-only Cortex-M4F библиотека. Нет startup/linker/board image, HAL/STEP
+или физического CAN. Владелец сообщил STM32F407VGT6; HSE/pinout и фактическая
+геометрия остаются блокерами. [Контракт и проверки](STM32_FOUNDATION.md).

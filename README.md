@@ -9,9 +9,9 @@
 - ESP32-S3 Waveshare ESP32-S3-Touch-LCD-7 Rev 1.2: 800×480, RGB LCD/GT911,
   Flash 16 МБ, PSRAM 8 МБ по сообщению ROM/esptool. ESP-IDF 6.1.1, LVGL 9;
   5.3.2 — проверенный резерв. HMI, Wi-Fi, будущие microSD и OTA.
-- Motion: **DevEBox STM32F4VX_M Ver. 2.0 получена**, но точный F407 part number,
-  Flash/RAM, кварц и pinout требуют проверки. STEP/DIR будет на таймерах STM32,
-  не на ESP32. Сейчас в stm32-motion только документация.
+- Motion: **DevEBox STM32F4VX_M Ver. 2.0 получена**, владелец уточнил STM32F407VGT6;
+  фактические Flash/RAM/секторы, кварц и pinout требуют проверки. STEP/DIR будет на таймерах STM32,
+  не на ESP32. В PR-02 добавлено переносимое ядро/host tests; board image пока нет.
 - Blue Pill STM32F103C8T6 — отдельный bench: владелец подтвердил ST-Link V2,
   OpenOCD 0.12.0, SWD/64 КиБ Flash и локальный backup. Не замена F407.
 - Один closed-loop NEMA23 заказан и ещё не получен; второго двигателя и
@@ -44,9 +44,9 @@ PR-01 согласован с ним и меняет только докумен
    Merge, прошивка, релиз и необратимые настройки — только с соответствующим
    отдельным разрешением владельца.
 
-Текущее задание **PR-01 — Architecture & Codex Rules**: только документы,
-после создания PR остановиться на review. [CODEX_TASK_001](docs/CODEX_TASK_001.md)
-— историческое задание первого HMI, не инструкция повторять проект.
+Текущее задание **PR-02 — STM32 Firmware Foundation**: переносимое ядро,
+тесты и compile-only ARM, без прошивки устройства. [Описание и блокеры](docs/STM32_FOUNDATION.md).
+PR-01 слит; [CODEX_TASK_001](docs/CODEX_TASK_001.md) — историческое задание.
 
 ## Обязательные следующие подсистемы
 

@@ -31,3 +31,5 @@ if(DEFINED LVGL_DIR)
  add_test(NAME render_rgb565 COMMAND preview --rgb565)
  set_tests_properties(render render_rgb565 PROPERTIES TIMEOUT 15)
 endif()
+# Independent motion supervisor is exercised by the existing host/sanitizer matrix.
+add_subdirectory(firmware/stm32-motion)

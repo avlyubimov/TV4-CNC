@@ -1,0 +1,42 @@
+name: STM32 foundation (compile only)
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  arm-core:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Install exact ARM GNU Toolchain 14.2.Rel1
+        shell: bash
+        run: |
+          set -euo pipefail
+          archive=arm-gnu-toolchain-14.2.rel1-x86_64-arm-none-eabi.tar.xz
+          curl --fail --location --proto '=https' --proto-redir '=https' --retry 3 \
+            "https://developer.arm.com/-/media/Files/downloads/gnu/14.2.rel1/binrel/$archive" -o "$RUNNER_TEMP/$archive"
+          echo "62a63b981fe391a9cbad7ef51b17e49aeaa3e7b0d029b36ca1e9c3b2a9b78823  $RUNNER_TEMP/$archive" | sha256sum --check
+          tar -xJf "$RUNNER_TEMP/$archive" -C "$RUNNER_TEMP"
+          echo "$RUNNER_TEMP/arm-gnu-toolchain-14.2.rel1-x86_64-arm-none-eabi/bin" >> "$GITHUB_PATH"
+      - name: Compile core, static analysis and object budget (not firmware)
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p evidence
+          arm-none-eabi-gcc --version | tee evidence/compiler.txt
+          cmake -S firmware/stm32-motion -B build-motion-arm -G Ninja \
+            -DCMAKE_TOOLCHAIN_FILE=cmake/arm-none-eabi.cmake -DCMAKE_BUILD_TYPE=MinSizeRel
+          cmake --build build-motion-arm
+          gcc -std=c11 -Wall -Wextra -Werror -fanalyzer -fsyntax-only \
+            -Ifirmware/stm32-motion/core firmware/stm32-motion/core/supervisor.c
+          python3 tools/check_motion_size.py build-motion-arm/libtv4_motion_core.a | tee evidence/core-size.txt
+          # This PR intentionally cannot produce a deployable image.
+          if cmake -S firmware/stm32-motion -B build-motion-blocked -DTV4_MOTION_BOARD_IMAGE=ON > evidence/board-gate.txt 2>&1; then
+            echo 'ERROR: board image unexpectedly allowed'; exit 1
+          fi
+          grep -q 'F407 board image blocked' evidence/board-gate.txt
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        if: always()
+        with:
+          name: motion-core-compile-evidence
+          path: evidence/

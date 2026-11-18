@@ -10,7 +10,7 @@
 | Компонент | Обязанности | Состояние на PR-01 |
 |---|---|---|
 | ESP32-S3 HMI | LVGL 9/FreeRTOS, UI, Wi-Fi, программы/инструменты, диагностика/журнал; будущие microSD, OTA Manager, CAN transport | HMI/host simulation/Wi-Fi/startup реализованы; список сети и изображение наблюдались; остальное по IMPLEMENTATION |
-| STM32F407 Motion | Планировщик X/Z, timer/DMA STEP/DIR, encoders/spindle sync, homing/limits, faults/watchdog, CAN state machine | Только README; target geometry не подтверждена, firmware отсутствует |
+| STM32F407 Motion | Планировщик X/Z, timer/DMA STEP/DIR, encoders/spindle sync, homing/limits, faults/watchdog, CAN state machine | PR-02: portable supervisor/host tests/ARM library; board firmware и motion отсутствуют |
 | F407 bootloader | Независимый recovery и проверяемая запись образов по CAN | Отдельный будущий компонент; не зависит от motion app |
 | F103 Blue Pill | Bench CAN/протокол/таймеры/IRQ/bootloader experiments | Отдельный стенд, не контроллер движения |
 | Аппаратная безопасность | E-stop, снятие опасного момента/питания, блокировки manual/CNC | Независима от обоих MCU, CAN и OTA; требуется отдельная аппаратная проверка |

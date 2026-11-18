@@ -1,0 +1,82 @@
+# PR-02 — STM32 Motion Foundation
+
+База: main a40aeb3, после слияния PR-01. Задача владельца «дальше» разрешает
+этот этап; merge, SWD/Flash, включение приводов и выпуск релиза не выполняются.
+
+## План и приёмка
+
+- Переносимое C11 ядро, фиксированная память, один owner, bounded вызовы.
+- Состояния, защёлки ошибок, запрет выходов, контроль связи/периода/watchdog.
+- Host/fault tests + sanitizers; compile-only Cortex-M4F с точным ARM GCC.
+- CI static analysis/object budget; target build явно блокирован, нет .bin.
+- HMI, Flash partition и подтверждённые GPIO не меняются.
+
+## Контракт supervisor
+
+Инициализация немедленно вызывает inhibit_outputs. Адаптер обязан синхронно
+и без ожиданий запретить STEP, axis enables и шпиндель. В PR адаптер только
+mock; полярность GPIO неизвестна и не назначена. Отсутствие callback/config
+или отказ inhibit — ошибка. Успех callback не является safety-rated feedback.
+Нет enable callback, RUN/JOG и команды движения.
+
+BOOT ждёт self-test; затем DISCONNECTED ждёт heartbeat согласованной внешним
+transport сессии; IDLE — только software readiness. Сбой interlock/drive/link
+защёлкивает FAULT. Возвращение связи/устранение причины не снимает защёлку:
+нужны fresh healthy cycle и отдельный ACK. ACK не включает выходы. При ошибке
+периода или platform adapter ACK запрещён до повторной инициализации.
+Watchdog reset также защёлкивается и требует self-test/session/healthy cycle/ACK.
+
+Время — uint32 ms modulo 2^32; caller соблюдает монотонность и интервал <2^31.
+Timeouts 1..INT32_MAX задаются вызывающим кодом, это не CAN wire constants.
+Граница elapsed >= timeout считается отказом; поздний heartbeat не скрывает
+пропущенный deadline. Session zero — disconnected; новый session сбрасывает
+предыдущий heartbeat. Wire version/sequence/authentication ещё не реализованы:
+этот API не подключать напрямую к CAN ISR/непроверенным пакетам.
+
+Cycle вызывается owner после чтения входов и успешного завершения control work.
+Watchdog feed только при продвижении времени, после self-test и успешного
+inhibit, без latched deadline/platform fault. Link/interlock fault допускает
+watchdog feed для диагностики при запрещённых выходах. Повторный вызов с тем же
+временем не feed. Реальный IWDG, clock/GPIO/timer/DMA backend и проверка частот
+ещё отсутствуют. Сбой/зависание owner должен в будущем пресекать независимый IWDG;
+вызовы этой библиотеки сами аппаратный watchdog не запускают.
+
+Supervisor не thread-safe: ISR публикует snapshot, owner выполняет API. Никакого
+malloc, I/O, RTOS delay и CAN waits. Struct принадлежит caller; heap/global state
+нет. Статусы software supervisor нельзя использовать как подтверждённый
+quiescent state для OTA без отдельных датчиков/согласованного PR-07 протокола.
+
+## Сборка и CI
+
+Независимый CMake/Ninja проект можно собирать host или ARM toolchain.
+Корневой CMake включает его тест в существующую host/sanitizer matrix.
+Новый motion.yml: официальный ARM GNU 14.2.Rel1 (GCC 14.2.1), archive SHA-256
+`62a63b981fe391a9cbad7ef51b17e49aeaa3e7b0d029b36ca1e9c3b2a9b78823`,
+из developer.arm.com; actions закреплены commit SHA. На CI нет SWD, secrets,
+release или flash. GCC -fanalyzer и warnings-as-errors проверяют core.
+
+check_motion_size.py ограничивает сумму text объектов 8192 байт и запрещает
+mutable .data/.bss. Это регрессионный бюджет ядра, не измерение Flash/RAM target:
+нет startup, linker, stacks, vector table, HAL, peripherals или bootloader.
+TV4_MOTION_BOARD_IMAGE=ON обязан завершиться явной ошибкой. Нельзя заменять его
+фиктивным app binary ради зелёного target job.
+
+## Аппаратные блокеры и следующие части
+
+Владелец сообщил VGT6. Перед board image нужны подтверждение фактической карты
+Flash/RAM/секторов и CCM, HSE/PLL/питание, schematic/pinout/boot recovery.
+Startup/vector/linker, CMSIS/HAL/LL с версиями/лицензиями и hardware abstractions
+добавляются после этого отдельным изменением. До commissioning нет drive output.
+Таймерный planner/STEP/DMA/encoder, production CAN и bootloader остаются будущими
+этапами. Blue Pill не подменяет F407 geometry. К устройствам не подключались.
+
+## Проверки, риски и откат
+
+Результаты команд: [evidence/build/stm32-foundation](evidence/build/stm32-foundation/).
+Тесты проверяют boot/reset, active/latched faults, stale ACK, sessions/reconnect,
+точные deadlines, late heartbeat, wraparound, invalid config, platform failure,
+watchdog feed и 99 999 детерминированных fault-injection cycles.
+Компиляция не подтверждает safety wiring, HSE, таймеры и физический safe state.
+
+Откат — revert PR-02. Данные устройства/разметка Flash не менялись, прошивка
+для платы не создавалась. После создания PR остановиться на review; не merge.

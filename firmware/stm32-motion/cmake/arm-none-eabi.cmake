@@ -1,0 +1,13 @@
+# Compile-only Cortex-M4F ABI check. No startup, linker, memory map or .bin.
+set(CMAKE_SYSTEM_NAME Generic)
+set(CMAKE_SYSTEM_PROCESSOR arm)
+set(CMAKE_TRY_COMPILE_TARGET_TYPE STATIC_LIBRARY)
+find_program(CMAKE_C_COMPILER arm-none-eabi-gcc REQUIRED)
+find_program(CMAKE_AR arm-none-eabi-ar REQUIRED)
+find_program(CMAKE_RANLIB arm-none-eabi-ranlib REQUIRED)
+execute_process(COMMAND "${CMAKE_C_COMPILER}" -dumpfullversion
+                OUTPUT_VARIABLE TV4_ARM_VERSION OUTPUT_STRIP_TRAILING_WHITESPACE)
+if(NOT TV4_ARM_VERSION STREQUAL "14.2.1")
+  message(FATAL_ERROR "Expected ARM GCC 14.2.1, found ${TV4_ARM_VERSION}")
+endif()
+set(CMAKE_C_FLAGS_INIT "-mcpu=cortex-m4 -mthumb -mfpu=fpv4-sp-d16 -mfloat-abi=hard -ffreestanding -fno-common -ffunction-sections -fdata-sections")
