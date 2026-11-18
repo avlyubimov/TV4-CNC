@@ -1,0 +1,14 @@
+-- The C compiler identification is GNU 15.2.0
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /usr/bin/cc - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+CMake Error at CMakeLists.txt:8 (message):
+  F407 board image blocked: verify HSE, pinout, memory/sector map and
+  recovery; startup/linker/HAL are not supplied.
+
+
+-- Configuring incomplete, errors occurred!
+
+exit=1 (expected nonzero)
