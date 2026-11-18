@@ -66,7 +66,7 @@ allowlist OTA downloader. Он не проверяет GitHub asset/CDN redirect
 [Evidence](evidence/build/utc-tls-bench/README.md). Host mock tests для HEAD lifecycle:
 time/cancel/deadline/open/header/status/cleanup/final clock change, no redirects.
 Profile gate/CA bundle/mutual exclusion проверяются Python negative tests.
-Остальные UI/STM32/OTA tests сохранены. Native SDK compiled/linked, не исполнялся.
+Остальные UI/STM32/OTA tests сохранены. Native SDK compiled/linked; [аппаратный результат b085abb — ниже](#аппаратный-результат-19-ноября-2026).
 
 Сборка: ./tools/build_idf.sh rev12-tls-bench 6.1.1 local
 (установленный SDK) либо 5.3.2 docker (pinned image). Build script не прошивает.
@@ -85,8 +85,17 @@ HTTP status/TLS/cert errors, monitor_stop=0, final pass и monotonic diag sequen
 Проверить HMI/touch/Wi-Fi у владельца. При source/time/OOM/CA/status/monitor failure
 сохранить результат и остановиться; не менять reserves/security автоматически.
 
-Сейчас на плате остаётся memory-bench1c38d1e. Новый профиль не записывался,
-live UTC/TLS/memory/performance results UNKNOWN. После будущего теста возврат
-к ordinary rev12 требует отдельной согласованной записи. Defaults всегда probe off.
+До теста 19 ноября на плате оставался memory-bench1c38d1e. Bench и возврат
+ordinary b085abb отдельно согласованы и выполнены; текущий статус ниже. Defaults всегда probe off.
 Нет Flash/eFuse/boot-selection/installer/motion/private keys/release/auto-merge.
 Откат PR — revert кода, не изменение уже прошитого устройства.
+
+## Аппаратный результат — 19 ноября 2026
+
+[Evidence b085abb](evidence/hardware/2026-11-19-b085abb-utc-tls/README.md):
+SNTP PASS; TLS OPEN FAIL, mbedtls_ssl_setup -0x008D (insufficient memory).
+Verified HEAD/HTTP200/certificate success не достигнуты. Оба monitor cleanup PASS.
+Нужен отдельный allocator/PSRAM/memory review; не уменьшать проверки/reserves
+ради PASS. После одного90s capture возвращён ordinary rev12 того же b085abb,
+3/3 hashes verified; владелец подтвердил HMI/touch/Wi-Fi. Новых аппаратных
+операций это evidence не разрешает, production TLS budget остаётся блокирован.

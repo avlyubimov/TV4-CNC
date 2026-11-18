@@ -1,0 +1,14 @@
+W (19179) tv4_utc_tls_bench: ONE UTC/HEAD probe: SNTP unauthenticated; global heap minima temporarily windowed; no body/install
+I (19180) tv4_utc_tls_bench: stage=sntp_before internal_free=20615 internal_min=7796 internal_largest=7680 psram_free=7616576 psram_min=7601980 stack=3940
+I (19263) tv4_utc_tls_bench: stage=sntp_window_start internal_free=20615 internal_min=20615 internal_largest=7680 psram_free=7616552 psram_min=7616552 stack=3636
+I (22309) tv4_utc_tls_bench: stage=sntp_window_end internal_free=20175 internal_min=16615 internal_largest=7680 psram_free=7616552 psram_min=7616552 stack=3220
+I (22313) tv4_utc_tls_bench: stage=sntp_window_end monitor_stop=0 historical_min_restored=1
+I (22321) tv4_utc_tls_bench: sntp_result=0 time_result=0 elapsed_ms=3032 cleanup=1 source=2
+I (22329) tv4_utc_tls_bench: stage=tls_before internal_free=20175 internal_min=7796 internal_largest=7680 psram_free=7616576 psram_min=7601980 stack=3220
+I (22343) tv4_utc_tls_bench: stage=tls_window_start internal_free=20175 internal_min=20175 internal_largest=7680 psram_free=7616552 psram_min=7616552 stack=3220
+E (22524) esp-tls-mbedtls: mbedtls_ssl_setup returned -0x008D
+I (22538) tv4_utc_tls_bench: stage=tls_window_end internal_free=19699 internal_min=8795 internal_largest=7680 psram_free=7616552 psram_min=7616384 stack=3108
+I (22551) tv4_utc_tls_bench: stage=tls_window_end monitor_stop=0 historical_min_restored=1
+I (22559) tv4_utc_tls_bench: tls_result=5 status=0 elapsed_ms=181 cleanup=1 native_error=28674 tls_error=141 cert_flags=0 header_bytes=0
+I (22571) tv4_utc_tls_bench: stage=worker_end internal_free=19699 internal_min=7796 internal_largest=7680 psram_free=7616576 psram_min=7601980 stack=3108
+I (22585) tv4_utc_tls_bench: finished pass=0 stage=tls; not an OTA/TLS-production-budget approval

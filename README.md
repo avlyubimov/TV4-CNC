@@ -47,11 +47,15 @@ PR #13 слит: [read-only OTA session](docs/OTA_SESSION.md), без runtime UI
 Разрешённая USB-запись b93cf3b и [первый аппаратный baseline](docs/evidence/hardware/2026-11-18-b93cf3b/README.md)
 выполнены. [PR-04f: PSRAM workspace](docs/OTA_MEMORY.md) и PR #16 слиты.
 [Разрешённый memory bench 1c38d1e](docs/evidence/hardware/2026-11-18-1c38d1e-psram/README.md)
-прошёл три цикла allocation/pattern/release; на плате остаётся этот bench image.
+прошёл три цикла allocation/pattern/release; это историческая проба.
 PR #18 добавил [проверку времени TLS](docs/TLS_TIME_GATE.md). [PR-04i: SNTP source](docs/SNTP_SOURCE.md) слит. Текущий
 [PR-04j: отдельный UTC/TLS bench](docs/UTC_TLS_BENCH.md) запускает проверки
-только в специальном diagnostic image, не в обычном HMI. Перед worker нужны TLS peak/headroom/time provisioning и остальные
-[аппаратные проверки](docs/HMI_BENCH_GATE.md).
+только в специальном diagnostic image, не в обычном HMI.
+[19 ноября b085abb испытан](docs/evidence/hardware/2026-11-19-b085abb-utc-tls/README.md):
+SNTP PASS, TLS context allocation FAIL (insufficient memory). На плату возвращён
+ordinary rev12 b085abb; владелец подтвердил HMI/touch/Wi-Fi. Runtime HTTPS
+блокирован до allocator/PSRAM/memory review; остальные
+[аппаратные проверки](docs/HMI_BENCH_GATE.md) также открыты.
 
 ## Обязательные следующие подсистемы
 

@@ -157,3 +157,9 @@ Mark SNTP_UNAUTHENTICATED после stop/sample/policy; нет startup/UI/TLS t
 rev12-tls-bench выполняет one-shot SNTP/verified HEAD и heap-window snapshots
 в worker. Ordinary profiles off, без response body/OTA install.
 [Policy, scope, evidence и hardware gate](UTC_TLS_BENCH.md).
+
+19 ноября [разрешённый b085abb bench](evidence/hardware/2026-11-19-b085abb-utc-tls/README.md)
+подтвердил actual SNTP/private policy, но TLS OPEN FAIL (-141 insufficient memory).
+Нет успешного verified HEAD/HTTP200. Ordinary rev12 того же SHA возвращён,
+3/3 hashes verified; владелец подтвердил HMI/touch/Wi-Fi. Это измерение отказа,
+не allocator fix или разрешение runtime HTTPS/OTA; следующий gate — memory review.
