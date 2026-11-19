@@ -115,3 +115,7 @@ CA/negative/redirect/CDN/failure/soak/performance и cache-off/PSRAM/security
 internal allocator и исходные параметры; TLS/UTC worker в нём отсутствует.
 Согласованные операции исполнены; новые device/flash/reset/serial/network
 тесты требуют отдельного разрешения на конкретный image и процедуру.
+
+Исторический отчёт1bfc7e2. Позднее выполнена отдельно согласованная
+[headroom проба8f0d899 и возврат ordinary](../2026-11-19-8f0d899-headroom/README.md).
+Старые measured minima и ограничение production budget сохраняются.

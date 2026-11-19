@@ -185,3 +185,11 @@ PASS нет; на плате ordinary b085abb. Это не runtime OTA/installer
 HEAD HTTP RX2048 и пять worker-phase snapshots. Только diagnostic caller;
 UI snapshot/NVS API и buffers TLS/DMA/stacks прежние. Нет runtime OTA integration
 или нового измерения на плате. Hardware record1bfc7e2 остаётся актуальным.
+
+## Аппаратная проверка PR-04l — 8f0d899
+
+[Сравнение с1bfc7e2](evidence/hardware/2026-11-19-8f0d899-headroom/README.md):
+SNTP/HEAD200/cleanup PASS,window internal minimum5307/history4204,stack1840bytes.
+Phase snapshots показывают recorded low уже после open. Production budget/CPU/
+worst-case не подтверждены. Ordinary rev12 того же8f0d899 возвращён,3/3 hashes
+verified,владелец подтвердил HMI/touch/Wi-Fi. Runtime body/install/rollback нет.

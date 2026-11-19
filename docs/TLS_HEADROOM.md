@@ -60,9 +60,9 @@ host fixture не моделирует; соответствующий код с
 
 ## Следующий аппаратный gate
 
-На плате остаётся **ordinary rev12 1bfc7e2**, owner HMI/touch/Wi-Fi PASS.
-В этом PR нет device/serial/reset/Flash/SNTP/HEAD операций, runtime результата
-новой версии нет. Старое разрешение на1bfc7e2 исполнено. После review/CI собрать
+На момент software PR на плате был **ordinary rev12 1bfc7e2**,owner HMI PASS.
+Сам software PR не делал device/serial/reset/Flash/SNTP/HEAD операций.
+Последующая отдельно согласованная проба — ниже. Старое разрешение на1bfc7e2 исполнено. После review/CI собрать
 exact SHA и ordinary возврат, проверить hashes/backup и отдельно согласовать
 новое испытание. Сопоставить SNTP/verified HEAD200/cleanup, phase snapshots,
 local/history minima, largest samples/stack watermarks и HMI/Wi-Fi под нагрузкой.
@@ -74,3 +74,12 @@ runtime OTA body/session/installer до budget/fault/soak review; production UTC
 CA/redirect/CDN/security и physical performance gates остаются открыты.
 Откат кода — revert PR; устройство этим PR не меняется. SDK/ключи/eFuse/релизы,
 движение/CAN и активная разметка не меняются.
+
+## Последующая аппаратная проба — 8f0d899
+
+[19 ноября](evidence/hardware/2026-11-19-8f0d899-headroom/README.md):
+SNTP/HEAD200/cleanup/monitors PASS; observed window min3123→5307,history2408→4204,
+stack watermark912→1840bytes. Новый runtime результат относится к одной пробе,
+не production/CPU/worst-case budget. Phase low уже после TLS open; headers не
+уменьшили minimum. Controlled single-field fragmentation/negative/load/soak ещё
+открыты. Возвращён ordinary8f0d899,owner HMI/touch/Wi-Fi PASS,разрешение исполнено.

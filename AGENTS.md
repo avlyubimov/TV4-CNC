@@ -107,13 +107,15 @@ PR и Actions; не копировать код уже открытого PR. Д
 
 ## Текущее задание
 
-PR #23 слит, main82743d2 CI зелёный. PR-04l: compact Wi-Fi online getter вместо
-UI snapshot в стеке TLS worker, только bench HTTP RX4096→2048 и finite phase
-snapshots. См. docs/TLS_HEADROOM.md. TLS records16384/4096/stack6144/DMA reserve64KiB,
-обычные profiles/SDK config/board/layout/locks/security gates сохраняются.
-Проверить host/sanitizer, оба SDK ×4profiles, native frame (не runtime max) и
-review fragmented header handling. Не объявлять production RAM/stack/performance
-reserve по compile/sizeof/request sizes. На плате остаётся ordinary1bfc7e2.
-Её owner-approved тест/возврат исполнены, HMI/touch/Wi-Fi PASS; новых device/
-flash/reset/serial/SNTP/HEAD операций без нового разрешения не выполнять.
-Нет runtime OTA body/session/installer, keys/release/eFuse/motion и auto-merge PR.
+PR #24 слит, main8f0d899 CI зелёный. 19 ноября по отдельному разрешению испытан
+rev12-tls-bench8f0d899: SNTP/verified HEAD200/cleanup/monitors PASS. См.
+docs/evidence/hardware/2026-11-19-8f0d899-headroom/README.md. Window internal
+min5307/history4204/worker stack watermark1840bytes против3123/2408/912 у1bfc7e2.
+Наблюдаемый запас вырос, но production/worst-case/load/CPU budget не утверждён.
+Phase low уже после TLS open; review allocations/call stack/admission/failure
+нужен до runtime OTA session/body. Не ослаблять CA/time/DMA reserve ради PASS.
+После одного90s UART capture вернули ordinary rev12 того же8f0d899,3/3 hashes
+verified; владелец подтвердил HMI/touch/Wi-Fi. Текущий PR docs-only report/status,
+не изменение firmware. Разрешённые обе записи/reset/serial/UTC/network операции
+исполнены; не обращаться к плате вновь без нового согласования exact image/
+процедуры. Нет installer/production keys/release/eFuse/layout/motion/auto-merge PR.

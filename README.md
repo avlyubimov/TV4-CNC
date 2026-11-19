@@ -55,8 +55,9 @@ PR #18 добавил [проверку времени TLS](docs/TLS_TIME_GATE.m
 SNTP PASS, TLS context allocation FAIL (insufficient memory). На плату возвращён
 ordinary rev12 b085abb. [Исправление TLS allocator/X.509 dates](docs/TLS_MEMORY_REVIEW.md)
 слито в PR #22; [повторный test1bfc7e2](docs/evidence/hardware/2026-11-19-1bfc7e2-tls-psram/README.md)
-дал SNTP/verified HEAD200 PASS. Теперь на плате **ordinary rev12 1bfc7e2**,
-владелец подтвердил HMI/touch/Wi-Fi. Internal heap/stack запас остаётся мал,
+дал SNTP/verified HEAD200 PASS. На завершение той пробы вернули ordinary rev12 1bfc7e2;
+владелец подтвердил HMI/touch/Wi-Fi. Актуальная запись/следующий test — ниже.
+Internal heap/stack запас остаётся ограниченным,
 production TLS/OTA gate требует review; остальные
 [аппаратные проверки](docs/HMI_BENCH_GATE.md) также открыты.
 
@@ -72,5 +73,7 @@ STM32 foundation, microSD/FAT32 и единый экран «Параметры 
 kk-KZ/en-US предусмотрены архитектурно, но не включены частично.
 
 [PR-04l: TLS memory/stack headroom](docs/TLS_HEADROOM.md) уменьшает только
-HTTP RX и собственный frame diagnostic worker; новый hardware результат ещё
-не получен. На плате остаётся ordinary1bfc7e2, production budget открыт.
+HTTP RX и собственный frame diagnostic worker.
+[Headroom test8f0d899](docs/evidence/hardware/2026-11-19-8f0d899-headroom/README.md)
+дал HEAD200 PASS,internal window min5307/worker watermark1840bytes. Теперь на
+плате **ordinary rev12 8f0d899**,owner HMI/touch/Wi-Fi PASS; production budget открыт.

@@ -91,3 +91,13 @@ PR-04l [сокращает собственный кадр TLS worker и HTTP RX
 добавляет phase snapshots для следующего review. Реальные headroom minima,
 max stack/fragmented-header/failure/soak/CPU остаются открыты до нового отдельно
 разрешённого exact-image теста; compile или request size не являются budget.
+
+## После headroom8f0d899 — 19 ноября 2026
+
+[Повторная проба](evidence/hardware/2026-11-19-8f0d899-headroom/README.md):
+HEAD200 PASS,internal window minimum5307/history4204,worker watermark1840bytes.
+Наблюдаемый запас вырос относительно1bfc7e2, но production budget не утверждён.
+Остались worst-case handshake/error/stack/load/soak и controlled fragmented/
+oversized headers; total5587>RX2048 не доказывает fragmentation одного поля.
+Самый низкий window minimum уже после TLS open; review allocations/admission
+нужен до runtime session/body. На плате ordinary8f0d899,owner HMI PASS.

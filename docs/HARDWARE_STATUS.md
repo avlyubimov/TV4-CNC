@@ -13,7 +13,7 @@
 | ESP32 HMI | Waveshare ESP32-S3-Touch-LCD-7 PCB Rev 1.2, 800×480; владелец и фото | Длительный stress/thermal test, стабильность всех подсистем |
 | Flash ESP32 | Приняты 16 МБ; полный локальный образ 16 777 216 байт, SHA-256 проверен; [backup](BACKUP_STATUS.md) | Успешное восстановление заводского образа, отдельная копия вне основного диска |
 | PSRAM ESP32 | ROM/esptool сообщает Embedded PSRAM 8MB AP_3v3; rev12 требует octal 80 МГц | На b93cf3b агент подтвердил startup PSRAM 8MB/pool 8192K и свободную память; полный runtime memtest/stress и пропускная способность не проверены |
-| Запись HMI | 19 ноября после TLS bench возвращён ordinary rev12 1bfc7e2, 3/3 hashes verified; владелец подтвердил HMI/touch/Wi-Fi; отчёт ниже | Boot ordinary не перечитывали по UART; физические FPS/latency/soak не измерены |
+| Запись HMI | 19 ноября после headroom test возвращён ordinary rev12 8f0d899, 3/3 hashes verified; владелец подтвердил HMI/touch/Wi-Fi; отчёт ниже | Boot ordinary не перечитывали по UART; физические FPS/latency/soak не измерены |
 | RGB LCD | На фото владельца HMI и список Wi-Fi выводятся на физический экран | Измерения tearing, FPS/scanout, ориентация/качество всех областей |
 | GT911 | На b93cf3b владелец подтвердил касания, удобную клавиатуру и показ/скрытие пароля | Покрытие углов, multitouch/ошибки, latency, воспроизводимый полный тест сенсора |
 | Wi-Fi | Физический список SSID/RSSI виден на фото; владелец сообщил ошибку 263 | На b93cf3b владелец подтвердил подключение/IP, агент видел wifi_ip_events=1 в обоих запусках. Неверный пароль, полный reconnect/NVS power-cycle stress ещё не проверены |
@@ -95,9 +95,21 @@ PASS, cleanup/monitors PASS. Один90s capture,17diagnostics/один boot, о
 не повторился, но production gate не закрыт: internal window min3123bytes,
 historical min2408,worker stack watermark912/6144bytes. Нужен memory/stack review.
 После пробы возвращён **ordinary rev12 1bfc7e2**,SDK6.1.1,3/3 hashes verified,
-UART больше не открывали. Владелец подтвердил HMI/touch/Wi-Fi. Это текущая запись;
-новых аппаратных операций/OTA install этот отчёт не разрешает.
+UART больше не открывали. Владелец подтвердил HMI/touch/Wi-Fi. Это состояние на конец пробы1bfc7e2;
+новых аппаратных операций/OTA install тот отчёт не разрешал. Текущий статус ниже.
 
 PR-04l [готовит TLS headroom fix](TLS_HEADROOM.md) без новых аппаратных операций.
-Текущая запись остаётся ordinary1bfc7e2; новую экономию peak heap/stack/CPU
-не считать аппаратно подтверждённой.
+На момент software PR запись оставалась ordinary1bfc7e2. Последующая проба
+ниже не закрывает production/CPU/worst-case budget.
+
+## TLS headroom8f0d899 — 19 ноября 2026
+
+[Отчёт и сравнение](evidence/hardware/2026-11-19-8f0d899-headroom/README.md).
+По отдельному разрешению испытан merged PR #24: SNTP/verified HEAD200/cleanup/
+monitors PASS. Один90s capture,17diagnostics/один boot, display/touch/queue/
+watchdog errors не наблюдались. Internal window min3123→5307,history2408→4204,
+worker stack watermark912→1840bytes; это два разных boots, не causal/production
+budget. Lowest window sample уже после TLS open; header phase не снизила minimum.
+После теста возвращён **ordinary rev12 8f0d899**,SDK6.1.1,3/3 hashes verified;
+UART больше не открывали, владелец подтвердил HMI/touch/Wi-Fi. Это текущая запись.
+Worst-case/failure/load/soak/CPU/OTA memory budget остаются открытыми.
