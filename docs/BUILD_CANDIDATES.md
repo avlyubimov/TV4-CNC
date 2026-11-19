@@ -91,8 +91,10 @@ python3 tools/build_candidate.py verify --candidate build-review-6.1.1-rev12 \
 
 ## CI, проверки и граница этапа
 
-Все workflow используют checkout v4.2.2 `11bd71901bbe5b1630ceea73d27597364c9af683`
+Все workflow используют checkout v4 `11d5960a326750d5838078e36cf38b85af677262`
 и upload-artifact v4.6.2 `ea165f8d65b6e75b540449e92b4886f43607fa02`.
+Refs сверены через GitHub connector 19 ноября 2026. Checkout pin сохраняет
+текущие v4 backport fixes (в том числе ref/fork-checkout guard), а не старый v4.2.2.
 SDK/toolchains/dependencies не обновляются. Contents permission — read, нет
 pull_request_target, signing secrets, release/tag creation или deploy job.
 SDK jobs собирают и повторно проверяют candidate до upload; retention14days.

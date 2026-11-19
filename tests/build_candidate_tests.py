@@ -352,6 +352,28 @@ class CandidateTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'profile/SDK mismatch'):
             self.verify()
 
+    def test_rehashed_validation_rejects_extra_fields_and_false_claims(self):
+        self.profile = 'rev12-tls-bench'
+        self.configure()
+        self.create()
+        initial = (self.output / 'candidate.json').read_bytes()
+        report = (self.output / 'validation.json').read_bytes()
+        for change in (lambda v: v.update(unreviewed='extra field'),
+                       lambda v: v.update(mbedtls_certificate_dates=False),
+                       lambda v: v.update(tls_record_in=2048),
+                       lambda v: v.update(physical_performance='measured 60 FPS'),
+                       lambda v: v['partitions'][2].update(kind=False),
+                       lambda v: v['images']['tv4_hmi.bin'].update(bytes=True)):
+            with self.subTest(change=change):
+                v = json.loads(report)
+                change(v)
+                raw = candidate.encoded(v)
+                (self.output / 'validation.json').write_bytes(raw)
+                (self.output / 'candidate.json').write_bytes(initial)
+                self.mutate(lambda r: r['files'].update({'validation.json': candidate.digest(raw)}))
+                with self.assertRaises(ValueError):
+                    self.verify()
+
 
 if __name__ == '__main__':
     unittest.main()

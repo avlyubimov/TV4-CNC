@@ -93,24 +93,43 @@ def inventory(files):
 
 
 def check_validation(v, sdk, profile):
-    require(isinstance(v, dict) and v.get('sdk') == sdk and v.get('profile') == profile,
+    require(isinstance(v, dict) and set(v) == {
+        'profile', 'sdk', 'target', 'flash_bytes', 'mbedtls_allocator', 'mbedtls_certificate_dates',
+        'tls_record_in', 'tls_record_out', 'memory_bench', 'tls_bench', 'psram', 'images',
+        'partitions', 'device_access', 'physical_performance'}, 'unknown validation fields')
+    require(v.get('sdk') == sdk and v.get('profile') == profile,
             'validation profile/SDK mismatch')
     require(v.get('target') == 'esp32s3' and v.get('flash_bytes') == 16777216 and
-            v.get('device_access') is False, 'invalid validation target/scope')
+            type(v['flash_bytes']) is int and v.get('device_access') is False and
+            v['physical_performance'] == 'not measured', 'invalid validation target/scope')
     require(v.get('memory_bench') is (profile == 'rev12-memory-bench') and
             v.get('tls_bench') is (profile == 'rev12-tls-bench'), 'bench mislabelled')
     require(v.get('psram') == ('disabled' if profile == 'headless' else 'octal 80MHz'),
             'wrong PSRAM profile')
     require(v.get('mbedtls_allocator') == ('spiram-only' if profile == 'rev12-tls-bench' else 'internal-only'),
             'wrong allocator profile')
+    require(type(v['mbedtls_certificate_dates']) is bool and
+            all(v[k] is None or (type(v[k]) is int and 0 < v[k] <= 65536)
+                for k in ('tls_record_in', 'tls_record_out')), 'invalid TLS fields')
+    if profile == 'rev12-tls-bench':
+        require(v['mbedtls_certificate_dates'] and v['tls_record_in'] == 16384 and
+                v['tls_record_out'] == 4096, 'TLS bench date/record gates missing')
     expected = [(1, 2, 0x9000, 0x6000, 'nvs'), (1, 1, 0xf000, 0x1000, 'phy_init'),
                 (0, 0, 0x10000, APP_MAX, 'factory')]
     parts = v.get('partitions')
     require(isinstance(parts, list) and len(parts) == 3, 'unexpected active layout')
     require(all(isinstance(p, dict) for p in parts), 'invalid partition entry')
+    require(all(set(p) == {'kind', 'subtype', 'address', 'size', 'label'} and
+                all(type(p[k]) is int for k in ('kind', 'subtype', 'address', 'size'))
+                for p in parts), 'unknown/invalid partition fields')
     require([(p.get('kind'), p.get('subtype'), p.get('address'), p.get('size'), p.get('label'))
              for p in parts] == expected, 'only current factory layout is supported')
     require(set(v['images']) == {'tv4_hmi.bin', 'bootloader/bootloader.bin'}, 'unknown image inventory')
+    for name, maximum in (('tv4_hmi.bin', APP_MAX), ('bootloader/bootloader.bin', 0x8000)):
+        item = v['images'][name]
+        require(isinstance(item, dict) and set(item) == {'bytes', 'sha256'} and
+                type(item['bytes']) is int and 0 < item['bytes'] <= maximum and sha(item['sha256']),
+                'invalid validation image digest')
 
 
 def create(repo, build, output, sdk, profile, expected):

@@ -31,5 +31,5 @@ PR-05a: build_candidate — отдельная Python suite для offline revie
 faults, stale outputs/source, scope/profile mixups, strict JSON/file limits,
 symlink/FIFO/extra files, deterministic inventory и CLI. Docker version forwarding
 проверяется mock command без запуска container/SDK/device. Полная host матрица
-с LVGL содержит19 CTest suites; Python suite имеет15 tests. Реальные8 SDK images
+с LVGL содержит19 CTest suites; Python suite имеет16 tests. Реальные8 SDK images
 дополнительно проверяются build inspector/candidate verifier в firmware CI.
