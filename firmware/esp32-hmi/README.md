@@ -160,4 +160,6 @@ ordinary rev12 1bfc7e2,owner HMI/touch/Wi-Fi PASS; production budget откры�
 
 PR-04l: [TLS worker headroom](../../docs/TLS_HEADROOM.md) — HTTP RX2048,
 compact online getter и finite stage diagnostics. Stack/TLS/DMA reserve прежние,
-нового hardware результата нет; текущая запись ordinary1bfc7e2.
+[Новый test8f0d899](../../docs/evidence/hardware/2026-11-19-8f0d899-headroom/README.md)
+подтвердил HEAD200 и наблюдаемый запас5307/window/1840stackbytes. Production
+budget открыт; текущая запись ordinary8f0d899,owner HMI/touch/Wi-Fi PASS.

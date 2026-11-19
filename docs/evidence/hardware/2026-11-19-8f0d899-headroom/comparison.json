@@ -1,0 +1,42 @@
+{
+  "baseline_source": "1bfc7e277fd54899b3e4b16b8fb57867917526ab",
+  "source": "8f0d8991a8f76762cc6b213c6936bb2aa0a66c68",
+  "baseline_tls_window": {
+    "internal_free": 21515,
+    "internal_min": 3123,
+    "internal_largest": 7680,
+    "psram_free": 7614424,
+    "psram_min": 7581240,
+    "stack": 912
+  },
+  "new_tls_window": {
+    "internal_free": 21631,
+    "internal_min": 5307,
+    "internal_largest": 7680,
+    "psram_free": 7614424,
+    "psram_min": 7581240,
+    "stack": 1840
+  },
+  "baseline_worker_end": {
+    "internal_free": 21515,
+    "internal_min": 2408,
+    "internal_largest": 7680,
+    "psram_free": 7614448,
+    "psram_min": 7581240,
+    "stack": 912
+  },
+  "new_worker_end": {
+    "internal_free": 21631,
+    "internal_min": 4204,
+    "internal_largest": 7680,
+    "psram_free": 7614448,
+    "psram_min": 7581240,
+    "stack": 1840
+  },
+  "observed_deltas": {
+    "internal_window_min": 2184,
+    "historical_min": 1796,
+    "stack_watermark": 928
+  },
+  "scope": "one boot each; concurrent workload and stage logging differ; not causal attribution or approved production budget"
+}

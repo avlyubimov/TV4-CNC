@@ -1,0 +1,8 @@
+{
+  "duration_seconds": 90.0082781809997,
+  "bytes": 22775,
+  "baud": 115200,
+  "deadline_seconds": 90,
+  "explicit_reset": true,
+  "open_close_may_reset": true
+}

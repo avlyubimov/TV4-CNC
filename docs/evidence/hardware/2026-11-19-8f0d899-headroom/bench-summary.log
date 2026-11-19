@@ -1,0 +1,20 @@
+W (19173) tv4_utc_tls_bench: ONE UTC/HEAD probe: SNTP unauthenticated; global heap minima temporarily windowed; no body/install
+I (19173) tv4_utc_tls_bench: allocator=spiram tls_rx=16384 tls_tx=4096 cert_dates=1
+I (19180) tv4_utc_tls_bench: http_rx=2048 http_tx=512
+I (19185) tv4_utc_tls_bench: stage=sntp_before internal_free=22915 internal_min=7796 internal_largest=7680 psram_free=7614448 psram_min=7600560 stack=4704
+I (19269) tv4_utc_tls_bench: stage=sntp_window_start internal_free=22915 internal_min=22915 internal_largest=7680 psram_free=7614424 psram_min=7614424 stack=4688
+I (19657) tv4_utc_tls_bench: stage=sntp_window_end internal_free=22471 internal_min=20431 internal_largest=7680 psram_free=7614424 psram_min=7614424 stack=4240
+I (19661) tv4_utc_tls_bench: stage=sntp_window_end monitor_stop=0 historical_min_restored=1
+I (19669) tv4_utc_tls_bench: sntp_result=0 time_result=0 elapsed_ms=374 cleanup=1 source=2
+I (19677) tv4_utc_tls_bench: stage=tls_before internal_free=22471 internal_min=7796 internal_largest=7680 psram_free=7614448 psram_min=7600560 stack=4240
+I (19691) tv4_utc_tls_bench: stage=tls_window_start internal_free=22471 internal_min=22471 internal_largest=7680 psram_free=7614424 psram_min=7614424 stack=4240
+I (19705) tv4_utc_tls_bench: stage=http_before_init internal_free=22471 internal_min=22471 internal_largest=7680 psram_free=7614424 psram_min=7614424 stack=4240
+I (19720) tv4_utc_tls_bench: stage=http_after_init internal_free=18683 internal_min=18667 internal_largest=7680 psram_free=7614424 psram_min=7614424 stack=4240
+I (21819) tv4_utc_tls_bench: stage=http_after_open internal_free=12947 internal_min=5307 internal_largest=7680 psram_free=7592704 psram_min=7581240 stack=1840
+I (22557) tv4_utc_tls_bench: stage=http_after_headers internal_free=14823 internal_min=5307 internal_largest=7680 psram_free=7592704 psram_min=7581240 stack=1840
+I (22564) tv4_utc_tls_bench: stage=http_after_cleanup internal_free=21435 internal_min=5307 internal_largest=7680 psram_free=7614424 psram_min=7581240 stack=1840
+I (22576) tv4_utc_tls_bench: stage=tls_window_end internal_free=21631 internal_min=5307 internal_largest=7680 psram_free=7614424 psram_min=7581240 stack=1840
+I (22589) tv4_utc_tls_bench: stage=tls_window_end monitor_stop=0 historical_min_restored=1
+I (22597) tv4_utc_tls_bench: tls_result=0 status=200 elapsed_ms=2871 cleanup=1 native_error=0 tls_error=0 cert_flags=0 header_bytes=5587
+I (22609) tv4_utc_tls_bench: stage=worker_end internal_free=21631 internal_min=4204 internal_largest=7680 psram_free=7614448 psram_min=7581240 stack=1840
+I (22623) tv4_utc_tls_bench: finished pass=1 stage=tls; not an OTA/TLS-production-budget approval

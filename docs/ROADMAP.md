@@ -92,3 +92,12 @@ reserve ради progress; новые hardware/fault/soak tests только о�
 вместо UI snapshot в стеке, HTTP RX2048, finite stage diagnostics. Stack6144,
 TLS16384/4096 и DMA reserve64KiB прежние. Software checks не закрывают runtime
 memory/stack/CPU gate; следующее exact-image испытание отдельно согласовать.
+
+## Hardware gate PR-04l — 8f0d899
+
+[Разрешённый test](evidence/hardware/2026-11-19-8f0d899-headroom/README.md):
+SNTP/HEAD200/cleanup PASS,window internal min5307/stack watermark1840bytes,
+против3123/912 у1bfc7e2. Вернули ordinary8f0d899,owner HMI/touch/Wi-Fi PASS.
+Следующий программный шаг — review remaining handshake/internal allocations/
+call stack и bounded resource admission/failure перед runtime OTA session/body.
+Не превращать один положительный test в production reserve/soak approval.

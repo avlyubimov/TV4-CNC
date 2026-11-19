@@ -57,9 +57,14 @@ docs/BOARD_ADAPTER.md, docs/RUNTIME_DIAGNOSTICS.md и docs/OTA_ARCHITECTURE.md.
   checks. Choice глобальна для mbedTLS image, не per-client. Ordinary internal
   allocator/DMA reserve64KiB/records16384/4096 не менять ради PASS. Source/ELF
   validation не является hardware TLS/performance evidence; после отдельного
-  теста1bfc7e2 получен HEAD200, но RAM/stack budget открыт. Плата1bfc7e2 ordinary.
+  теста1bfc7e2 получен HEAD200, но RAM/stack budget открыт. На конец той пробы
+  возвращён1bfc7e2 ordinary; текущий статус — docs/HARDWARE_STATUS.md.
 
 - PR-04l: TLS worker использует nonblocking wifi_service_online(), не UI list
   snapshot в своём стеке. HTTP RX2048 только для HEAD bench, TLS records прежние.
   Phase logging только в worker, не callbacks. Не выдавать compiler frame/RX
   request size за runtime stack/heap budget или performance измерение.
+
+- Headroom test8f0d899: HEAD200 PASS,window min5307/history4204/stack1840bytes.
+  Это не production/worst-case/load approval; после одного90s capture возвращён
+  ordinary8f0d899,owner HMI PASS. Новые device operations только отдельно согласовать.

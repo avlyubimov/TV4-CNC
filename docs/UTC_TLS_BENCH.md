@@ -124,3 +124,11 @@ min3123/window,2408/history,stack watermark912bytes. Это не production budg
 полный Wi-Fi snapshot из стека TLS worker. Добавлены http_* phase snapshots,
 не из SDK callbacks. Старый transport PASS1bfc7e2 и его minima остаются
 историческими измерениями; нового runtime headroom/performance результата нет.
+
+## Headroom test — 8f0d899
+
+[19 ноября после PR #24](evidence/hardware/2026-11-19-8f0d899-headroom/README.md):
+HEAD200 PASS,window internal minimum5307/stack watermark1840bytes,оба cleanup
+monitors PASS. Наблюдаемый запас вырос, production budget/worst-case/CPU/load
+не утверждены. Возвращён ordinary8f0d899,owner HMI/touch/Wi-Fi PASS; новых
+аппаратных операций отчёт не разрешает. Phase low уже после TLS open.
