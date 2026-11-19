@@ -76,8 +76,9 @@ Build script по-прежнему не прошивает/не открывае
 × четыре профиля, host/negative/sanitizer tests, неизменность dependencies/layout,
 проверки retained symbols и native PSRAM allocation code. Это не результат на плате.
 
-На плате по-прежнему **b085abb ordinary rev12**. Новый image не записан,
-SNTP/HEAD/serial/reset не запускались. После review/зелёного CI нужны exact SHA,
+На момент software review PR-04k на плате был **b085abb ordinary rev12**,
+новый image ещё не испытывался. Последующая разрешённая проба — ниже.
+Для каждого нового теста после review/зелёного CI нужны exact SHA,
 новая сборка/хеши, отдельное разрешение на новую пробу и возврат ordinary. Проверить
 SNTP, verified HEAD/HTTP200, cleanup, heap windows/stack/error counters и HMI/Wi-Fi.
 OOM/expiry/CA/timeout — результат, не повод ослаблять проверки/резервы.
@@ -89,4 +90,12 @@ storage policy; eFuse/Flash Encryption не включаются. Production ado
 отдельного security/performance review. Ни отсутствие задержек UI, ни TLS peak/
 достаточный headroom/production reserve пока не измерены. PSRAM free, compile
 или ELF symbols не доказывают успешный handshake или отсутствие регрессии.
-Rollback кода — revert PR; установленная ordinary b085abb здесь не меняется.
+Rollback software PR — revert кода; сам software PR не меняет запись платы.
+
+## Последующая аппаратная проба — 19 ноября 2026
+
+[1bfc7e2: SNTP и verified HEAD200 PASS](evidence/hardware/2026-11-19-1bfc7e2-tls-psram/README.md)
+по отдельному разрешению; старое состояние b085abb выше относится к моменту
+software PR-04k. После пробы возвращён ordinary1bfc7e2,owner HMI/touch/Wi-Fi PASS.
+Реальный TLS window internal min3123bytes,historical min2408,stack watermark912:
+production memory/stack budget НЕ утверждён, следующий gate — review запаса.

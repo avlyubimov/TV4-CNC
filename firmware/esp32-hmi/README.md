@@ -154,4 +154,6 @@ rev12-tls-bench выполняет one-shot SNTP/verified HEAD и heap-window sn
 PR-04k: [PSRAM-only mbedTLS / X.509 validity dates](../../docs/TLS_MEMORY_REVIEW.md)
 только в TLS bench overlay, не в обычном HMI. При старом sdkconfig необходимо
 перегенерировать именно этот профиль; compile/validator guard запрещает обход.
-Нового аппаратного результата нет. На плате ordinary b085abb.
+[Аппаратная проба1bfc7e2](../../docs/evidence/hardware/2026-11-19-1bfc7e2-tls-psram/README.md)
+дала verified HEAD200 PASS, но internal heap/stack запас ограничен. Возвращён
+ordinary rev12 1bfc7e2,owner HMI/touch/Wi-Fi PASS; production budget открыт.

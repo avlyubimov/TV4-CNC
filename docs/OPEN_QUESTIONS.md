@@ -76,3 +76,13 @@ PR-04k [готовит исправленный TLS diagnostic profile](TLS_MEMO
 (PSRAM-only allocator + SDK certificate dates). Старый local time anchor сам
 не включал X.509 expiry check. Runtime OOM/verified HEAD/production memory и
 security/performance gates не закрывать по compile/ELF/source review.
+
+## После TLS/PSRAM 1bfc7e2 — 19 ноября 2026
+
+[Verified HEAD HTTP200 прошёл](evidence/hardware/2026-11-19-1bfc7e2-tls-psram/README.md)
+в isolated image. Blocker «неизвестно, создастся ли TLS context после PSRAM fix»
+закрыт для одной пробы. Production TLS/OTA memory budget остаётся открытым:
+internal min3123(window)/2408(history),stack watermark912/6144bytes. Нужен
+review оставшихся internal allocations/stack/error paths до body/session.
+SNTP не authenticated; production UTC, negative certificate/redirect/CDN/soak/
+performance остаются отдельными gates. На плате ordinary1bfc7e2,owner HMI PASS.

@@ -107,12 +107,15 @@ PR и Actions; не копировать код уже открытого PR. Д
 
 ## Текущее задание
 
-PR #21 слит, main CI зелёный. PR-04k исправляет TLS diagnostic profile после
-b085abb OOM: штатный SDK PSRAM-only allocator, X.509 validity-date checks,
-compile/artifact/profile guards. См. docs/TLS_MEMORY_REVIEW.md. Только TLS
-bench overlay, обычные профили/internal reserves/record sizes не менять.
-Проверить host/negative/sanitizer и оба SDK × четыре профиля, ELF и exact locks.
-На плате остаётся b085abb ordinary rev12; нового hardware результата нет.
-Не обращаться к плате/не прошивать/reset/serial/SNTP/HEAD без нового разрешения
-на exact image/операции. Production TLS/OTA budget не объявлять по compile.
-Не создавать release/keys, не менять security/eFuse/layout/board и не merge PR.
+PR #22 слит, merged1bfc7e2/main CI зелёный. 19 ноября по отдельному разрешению
+испытан rev12-tls-bench1bfc7e2: SNTP/verified HEAD200/cleanup/monitors PASS.
+См. docs/evidence/hardware/2026-11-19-1bfc7e2-tls-psram/README.md. Internal
+min3123/window,2408/history,worker stack watermark912/6144bytes: production
+memory/stack budget не утверждён. После одного90s capture вернули ordinary
+rev12 того же1bfc7e2,3/3 hashes verified; владелец подтвердил HMI/touch/Wi-Fi.
+Текущий PR — только sanitized report/status, не изменение firmware/allocator.
+Следующий программный шаг — review internal allocations/stack worst cases
+перед runtime OTA session/body. Не ослаблять CA/time/DMA reserve ради PASS.
+Разрешённые обе записи/reset/serial/UTC/network операции исполнены; не обращаться
+к плате вновь без нового согласования exact image/процедуры. Нет installer,
+нового production budget/keys/release/eFuse/layout/motion и auto-merge PR.

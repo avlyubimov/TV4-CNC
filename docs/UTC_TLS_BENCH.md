@@ -106,5 +106,14 @@ Verified HEAD/HTTP200/certificate success не достигнуты. Оба moni
 allocator и включает X.509 notBefore/notAfter только в TLS overlay. TLS records
 16384/4096 и internal DMA reserve64KiB сохранены. Исходный b085abb имел local
 UTC anchor, но SDK certificate-date check был выключен; старую формулировку
-«time-checked» не считать доказательством X.509 validity check. Новый image
-пока не испытывался на плате; runtime/production TLS gate остаётся открытым.
+«time-checked» не считать доказательством X.509 validity check. На момент
+software PR новый image не испытывался; последующая проба — ниже.
+Production TLS gate остаётся открытым.
+
+## Повторная аппаратная проба — 1bfc7e2
+
+[19 ноября, после PR #22](evidence/hardware/2026-11-19-1bfc7e2-tls-psram/README.md):
+SNTP PASS, TLS HEAD HTTP200/cleanup/monitors PASS. Запас ограничен: internal
+min3123/window,2408/history,stack watermark912bytes. Это не production budget
+и не body/OTA install acceptance. Возвращён ordinary rev12 1bfc7e2,owner HMI PASS;
+новых аппаратных операций отчёт не разрешает.

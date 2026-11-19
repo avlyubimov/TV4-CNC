@@ -1,0 +1,14 @@
+W (19211) tv4_utc_tls_bench: ONE UTC/HEAD probe: SNTP unauthenticated; global heap minima temporarily windowed; no body/install
+I (19212) tv4_utc_tls_bench: allocator=spiram tls_rx=16384 tls_tx=4096 cert_dates=1
+I (19219) tv4_utc_tls_bench: stage=sntp_before internal_free=22795 internal_min=7796 internal_largest=7680 psram_free=7614448 psram_min=7600560 stack=3840
+I (19233) tv4_utc_tls_bench: stage=sntp_window_start internal_free=22795 internal_min=22795 internal_largest=7680 psram_free=7614424 psram_min=7614424 stack=3760
+I (22289) tv4_utc_tls_bench: stage=sntp_window_end internal_free=22367 internal_min=20331 internal_largest=7680 psram_free=7614424 psram_min=7614424 stack=3312
+I (22293) tv4_utc_tls_bench: stage=sntp_window_end monitor_stop=0 historical_min_restored=1
+I (22301) tv4_utc_tls_bench: sntp_result=0 time_result=0 elapsed_ms=2973 cleanup=1 source=2
+I (22309) tv4_utc_tls_bench: stage=tls_before internal_free=22367 internal_min=7796 internal_largest=7680 psram_free=7614448 psram_min=7600560 stack=3312
+I (22322) tv4_utc_tls_bench: stage=tls_window_start internal_free=22367 internal_min=22367 internal_largest=7680 psram_free=7614424 psram_min=7614424 stack=3312
+I (25167) tv4_utc_tls_bench: stage=tls_window_end internal_free=21515 internal_min=3123 internal_largest=7680 psram_free=7614424 psram_min=7581240 stack=912
+I (25171) tv4_utc_tls_bench: stage=tls_window_end monitor_stop=0 historical_min_restored=1
+I (25179) tv4_utc_tls_bench: tls_result=0 status=200 elapsed_ms=2831 cleanup=1 native_error=0 tls_error=0 cert_flags=0 header_bytes=5590
+I (25191) tv4_utc_tls_bench: stage=worker_end internal_free=21515 internal_min=2408 internal_largest=7680 psram_free=7614448 psram_min=7581240 stack=912
+I (25204) tv4_utc_tls_bench: finished pass=1 stage=tls; not an OTA/TLS-production-budget approval
