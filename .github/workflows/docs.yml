@@ -2,11 +2,13 @@ name: Documentation checks
 on:
   push:
   pull_request:
+permissions:
+  contents: read
 jobs:
   check:
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4, reviewed 2026-11-19
       - name: Verify mandatory project documents
         run: |
           set -eu

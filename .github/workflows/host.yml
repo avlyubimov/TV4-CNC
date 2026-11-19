@@ -5,12 +5,13 @@ permissions:
 jobs:
   host:
     runs-on: ubuntu-24.04
+    timeout-minutes: 20
     strategy:
       fail-fast: false
       matrix:
         sanitizer: [false, true]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4, reviewed 2026-11-19
       - name: Fetch exact LVGL 9.2.2 source
         run: |
           git init vendor-lvgl
@@ -27,7 +28,7 @@ jobs:
           cmake -S . -B build -G Ninja -DLVGL_DIR="$PWD/vendor-lvgl" "${args[@]}"
       - run: cmake --build build -j 4
       - run: ctest --test-dir build --output-on-failure
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         if: always()
         with:
           name: host-sanitized-${{ matrix.sanitizer }}

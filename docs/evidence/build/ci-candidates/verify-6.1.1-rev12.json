@@ -1,0 +1,13 @@
+{
+  "authenticity_verified": false,
+  "device_access": false,
+  "image_checked": true,
+  "install_enabled": false,
+  "manifest_signed": false,
+  "metadata_only": true,
+  "profile": "rev12",
+  "release_published": false,
+  "sdk": "6.1.1",
+  "source_commit": "70416d936b95f09e4f99389e642add82f199234d",
+  "status": "verified-metadata-only"
+}

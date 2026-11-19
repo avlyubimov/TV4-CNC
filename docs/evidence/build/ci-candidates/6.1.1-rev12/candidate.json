@@ -1,0 +1,71 @@
+{
+  "application": {
+    "bytes": 1574128,
+    "chip_revision_max": 99,
+    "chip_revision_min": 0,
+    "elf_sha256": "e8505d399283cc0082670153640448bee9d5c9c3a9dfe445fa875023e5aead70",
+    "flash_bytes": 16777216,
+    "flash_frequency_mhz": 80,
+    "flash_mode": "dio",
+    "idf_version": "v6.1.1",
+    "project": "tv4_hmi",
+    "segments": 6,
+    "sha256": "c2cdd733f67dad18f749a045d5bca991ef9777bffbc2d124f7e3a87e14d5f7af",
+    "version": "70416d9"
+  },
+  "elf": {
+    "bytes": 14741692,
+    "sha256": "e8505d399283cc0082670153640448bee9d5c9c3a9dfe445fa875023e5aead70"
+  },
+  "files": {
+    "LICENSE-NOTICE.md": {
+      "bytes": 596,
+      "sha256": "9b4065b78776c87fce70008b7a6945defdc7dcfc5b2cac50a80b4c831018bf3c"
+    },
+    "dependencies.lock": {
+      "bytes": 1237,
+      "sha256": "d09551b18bfceae3a3f4c5c50583d81907bc7f2e47e3629182cbf1d1914a10b1"
+    },
+    "validation.json": {
+      "bytes": 1044,
+      "sha256": "4aa1ffbb635653aa36cc848dc046a637d9a6872fab05b3ad5cd774b5f9363d73"
+    }
+  },
+  "kind": "tv4-unsigned-build-review",
+  "layout": {
+    "app_bytes": 2097152,
+    "app_offset": 65536,
+    "id": "factory-single-2m",
+    "ota_slots": 0
+  },
+  "partition_table": {
+    "bytes": 3072,
+    "sha256": "5e71c3c890e04714daa03b21a0d23953a2dadf9fdf15eec02b886f7b6e9f8c81"
+  },
+  "policy": {
+    "authenticity_verified": false,
+    "device_access": false,
+    "install_enabled": false,
+    "manifest_signed": false,
+    "metadata_only": true,
+    "release_published": false
+  },
+  "profile": "rev12",
+  "reference_sdk_image": "espressif/idf@sha256:2b4f966c37eaedc19542b0637a5f850b2eff9478d8e858192aa0073d92c2dc91",
+  "release_gates": [
+    "owner-license-selection",
+    "release-version-context",
+    "trusted-key-provisioning",
+    "migration-recovery",
+    "runtime-resource-and-fault-tests",
+    "exact-release-owner-approval"
+  ],
+  "schema_version": 1,
+  "sdk": "6.1.1",
+  "sdkconfig": {
+    "bytes": 107896,
+    "sha256": "344ebda3a4cd075fd24993423cbe74a8100491b3134571d07a7bc88fad67db3d"
+  },
+  "source_commit": "70416d936b95f09e4f99389e642add82f199234d",
+  "source_tree": "374526a7966b06268b13a1b332f6e447a7451716"
+}

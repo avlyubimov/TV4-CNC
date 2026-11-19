@@ -107,15 +107,18 @@ PR и Actions; не копировать код уже открытого PR. Д
 
 ## Текущее задание
 
-PR #25 слит, main475be10 CI зелёный. PR-04m добавляет pure local resource policy,
-read-only SDK heap/stack sampler и guarded read-only session boundary checks.
-См. docs/OTA_RESOURCE_GUARD.md. Отсутствующие/unreviewed/low resources fail closed,
-resource failure sticky через cleanup, candidate/data/hash contexts отзываются.
-Нет runtime callers/tasks/UI/SNTP/HTTPS/body/install activation и default floors.
-Legacy API/target workspace34000/config/board/locks/layout/security сохраняются.
-Проверить policy и signed-session boundary fault cases, host/sanitizers18tests,
-оба SDK ×4profiles/ELF/workspace. Snapshot не reservation/hard preemption или
-защита внутри SDK/crypto; production budget/load/fault/soak остаются открытыми.
+PR #26 слит, main18b2bf5 CI зелёный. PR-05a объединяет offline full app image/
+ELF/clean source checks, deterministic metadata-only review bundles, independent
+verifier, negative tests, CI8profiles и SHA-pinned Actions. См. docs/BUILD_CANDIDATES.md
+и docs/plans/PR05A_BUILD_CANDIDATES.md. Bundle не подписанный OTA manifest или
+attestation; binary publication ждёт license/release approval/context/trust gates.
+Не расширять CI upload allowlist до app/ELF/raw config/build/Flash/NVS/private keys.
+Проверить host/sanitizers19suites, оба SDK ×4profiles/ELF/workspace/layout и
+candidate create/verify. Docker должен сохранять реальную Git display version.
+В CI root SDK steps до version/build нужен exact GITHUB_WORKSPACE safe.directory
+и HEAD==github.sha; HOME checkout action временный. Не использовать wildcard trust.
+Firmware C/UI/config/board/locks/layout/security сохраняются. Runtime resource
+budget/load/fault/soak и guarded body/session/installer activation ещё открыты.
 На плате ordinary8f0d899,owner HMI/touch/Wi-Fi PASS; разрешения исполнены.
 Новых device/flash/reset/serial/UTC/network probes без отдельного exact-image
 согласования не выполнять. Нет keys/release/eFuse/CAN/motion и auto-merge PR.

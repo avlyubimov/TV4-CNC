@@ -1,0 +1,31 @@
+Fixture: container uid0, private checkout/.git uid12345; host mounts read-only
+PASS: mismatched-UID root container rejects untrusted checkout (exit128)
+PASS: exact safe.directory and expected commit/display version; no wildcard
+{
+  "app_sha256": "dc2c4341d14b1b4a0c6db4ffe3c34d046490f5fbbe034f8908ee3e6319d8af6f",
+  "authenticity_verified": false,
+  "binary_uploaded": false,
+  "device_access": false,
+  "install_enabled": false,
+  "manifest_signed": false,
+  "metadata_only": true,
+  "profile": "headless",
+  "release_published": false,
+  "sdk": "6.1.1",
+  "source_commit": "70416d936b95f09e4f99389e642add82f199234d",
+  "status": "created-metadata-only"
+}
+{
+  "authenticity_verified": false,
+  "device_access": false,
+  "image_checked": true,
+  "install_enabled": false,
+  "manifest_signed": false,
+  "metadata_only": true,
+  "profile": "headless",
+  "release_published": false,
+  "sdk": "6.1.1",
+  "source_commit": "70416d936b95f09e4f99389e642add82f199234d",
+  "status": "verified-metadata-only"
+}
+PASS: candidate create/verify after exact workspace trust; no device/network access

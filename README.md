@@ -81,3 +81,8 @@ HTTP RX и собственный frame diagnostic worker.
 [PR-04m: resource-checked OTA session](docs/OTA_RESOURCE_GUARD.md) добавляет
 проверки local heap/stack policy на границах read-only сессии, без runtime
 caller/production floors. На плате остаётся ordinary8f0d899.
+
+[PR-05a: review-кандидаты сборок](docs/BUILD_CANDIDATES.md) связывают clean
+source SHA/tree, app/ELF/config hashes и точный SDK/profile; CI сохраняет
+проверяемый metadata-only artifact каждого из8 вариантов. Actions закреплены
+полными SHA. Подпись/публикация binary/релиза и установка ещё не включены.

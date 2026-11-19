@@ -61,8 +61,9 @@ cmake --build build-host -j 4
 ctest --test-dir build-host --output-on-failure
 ```
 
-Одиннадцать тестов: ядро, инспектор сборок, Wi-Fi profiles, LVGL 32-bit/RGB565,
-диагностические окна/экспорт, OTA crypto/candidate/native manifest/image stream и STM32 supervisor.
+Полный host набор с LVGL содержит19 CTest suites: ядро, инспектор/review-кандидаты
+сборок, Wi-Fi profiles, LVGL32/RGB565, диагностика, OTA crypto/manifest/stream/
+HTTP/session/memory/time/SNTP/TLS/resource checks и STM32 supervisor.
 Есть проверки кириллицы/глифов, границ надписей/кнопок, отказов, локализации,
 журнала и редактирования инструмента. CI повторяет тесты с ASan/UBSan/LSan.
 Кадры PPM в build-host/ являются рендером ПК, не фото работающей платы.
@@ -163,6 +164,10 @@ compact online getter и finite stage diagnostics. Stack/TLS/DMA reserve пре�
 [Новый test8f0d899](../../docs/evidence/hardware/2026-11-19-8f0d899-headroom/README.md)
 подтвердил HEAD200 и наблюдаемый запас5307/window/1840stackbytes. Production
 budget открыт; текущая запись ordinary8f0d899,owner HMI/touch/Wi-Fi PASS.
+
+PR-05a: [metadata-only review bundles](../../docs/BUILD_CANDIDATES.md) для8 SDK/
+profile вариантов; offline full app/ELF/source checks и pinned Actions. Git display
+version linked worktree передаётся в Docker. Нет binary Releases/signing/install.
 
 PR-04m: [resource-checked session](../../docs/OTA_RESOURCE_GUARD.md) с local
 reviewed policy/current heap/stack и sticky failure. Native sampler только
