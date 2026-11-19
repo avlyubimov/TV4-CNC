@@ -16,6 +16,9 @@ bool wifi_service_scan(void);
 bool wifi_service_connect(const char *ssid,const char *password);
 bool wifi_service_disconnect(void);
 bool wifi_service_snapshot(wifi_snapshot_t *out);
+/* Nonblocking advisory NET_ONLINE check without copying the UI network list.
+ * False if the service/lock is unavailable; not a guarantee for the next I/O. */
+bool wifi_service_online(void);
 
 bool wifi_credentials_valid(const char *ssid,const char *password);
 

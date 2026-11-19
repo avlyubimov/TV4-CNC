@@ -22,6 +22,8 @@
 #include "freertos/task.h"
 static bool requested;
 static const char *TAG="tv4_utc_tls_bench";
+enum { HTTP_RX_BYTES=2048, HTTP_TX_BYTES=512 };
+static void snapshot(const char *stage);
 /* Isolated 2026 bench acceptance window, NOT a production source policy.
  * Actual SNTP success is required; this is not a build-date fallback. */
 static const tv4_time_policy policy={true,true,1767225600u,1798761599u,60000,2000};
@@ -69,11 +71,14 @@ static bool head_open(void *context,uint32_t timeout) {
         .method=HTTP_METHOD_HEAD,.transport_type=HTTP_TRANSPORT_OVER_SSL,
         .crt_bundle_attach=esp_crt_bundle_attach,.skip_cert_common_name_check=false,
         .disable_auto_redirect=true,.auth_type=HTTP_AUTH_TYPE_NONE,.max_authorization_retries=-1,
-        .timeout_ms=(int)timeout,.buffer_size=4096,.buffer_size_tx=512,.keep_alive_enable=false,
+        .timeout_ms=(int)timeout,.buffer_size=HTTP_RX_BYTES,.buffer_size_tx=HTTP_TX_BYTES,.keep_alive_enable=false,
         .event_handler=headers_event,.user_data=b,.user_agent="TV4-CNC-TLS-Bench/1"};
+    snapshot("http_before_init");
     b->client=esp_http_client_init(&config);
+    snapshot("http_after_init");
     if(!b->client) {errors(b,ESP_ERR_NO_MEM);return false;}
     esp_err_t error=esp_http_client_open(b->client,0);
+    snapshot("http_after_open");
     if(error!=ESP_OK) {errors(b,error);return false;}
     return true;
 }
@@ -81,13 +86,16 @@ static int head_headers(void *context,uint32_t timeout) {
     head_backend *b=context;
     esp_err_t error=esp_http_client_set_timeout_ms(b->client,(int)timeout);
     if(error!=ESP_OK) {errors(b,error);return -1;}
-    if(esp_http_client_fetch_headers(b->client)<0 || b->bad_headers) {errors(b,ESP_FAIL);return -1;}
+    int64_t length=esp_http_client_fetch_headers(b->client);
+    snapshot("http_after_headers");
+    if(length<0 || b->bad_headers) {errors(b,ESP_FAIL);return -1;}
     return esp_http_client_get_status_code(b->client);
 }
 static bool head_close(void *context) {
     head_backend *b=context;
     if(!b->client)return true;
     esp_err_t error=esp_http_client_cleanup(b->client);b->client=NULL;
+    snapshot("http_after_cleanup");
     if(error!=ESP_OK)b->native_error=error;
     return error==ESP_OK;
 }
@@ -120,9 +128,10 @@ static void worker(void *context) {
     ESP_LOGW(TAG,"ONE UTC/HEAD probe: SNTP unauthenticated; global heap minima temporarily windowed; no body/install");
     ESP_LOGI(TAG,"allocator=spiram tls_rx=%u tls_tx=%u cert_dates=1",
         (unsigned)CONFIG_MBEDTLS_SSL_IN_CONTENT_LEN,(unsigned)CONFIG_MBEDTLS_SSL_OUT_CONTENT_LEN);
-    uint32_t start=now_ms(NULL);wifi_snapshot_t wifi;bool online=false;
+    ESP_LOGI(TAG,"http_rx=%u http_tx=%u",(unsigned)HTTP_RX_BYTES,(unsigned)HTTP_TX_BYTES);
+    uint32_t start=now_ms(NULL);bool online=false;
     while((uint32_t)(now_ms(NULL)-start)<15000) {
-        if(wifi_service_snapshot(&wifi) && wifi.state==NET_ONLINE) {online=true;break;}
+        if(wifi_service_online()) {online=true;break;}
         vTaskDelay(pdMS_TO_TICKS(250));
     }
     if(!online)goto done;

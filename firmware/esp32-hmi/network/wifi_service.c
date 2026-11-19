@@ -262,6 +262,10 @@ bool wifi_service_snapshot(wifi_snapshot_t *out) {
     if(!out || !lock || xSemaphoreTake(lock,0)!=pdTRUE)return false;
     *out=state;xSemaphoreGive(lock);return true;
 }
+bool wifi_service_online(void) {
+    if(!lock || xSemaphoreTake(lock,0)!=pdTRUE)return false;
+    bool online=state.state==NET_ONLINE;xSemaphoreGive(lock);return online;
+}
 #else
 bool wifi_service_start(void) { return true; }
 bool wifi_service_scan(void) { return false; }
@@ -274,4 +278,5 @@ void wifi_service_host_fixture(const wifi_snapshot_t *value) {
     if(value)host_fixture=*value;else memset(&host_fixture,0,sizeof(host_fixture));
 }
 bool wifi_service_snapshot(wifi_snapshot_t *out) { if(!out)return false;*out=host_fixture;return true; }
+bool wifi_service_online(void) { return host_fixture.state==NET_ONLINE; }
 #endif

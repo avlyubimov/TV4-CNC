@@ -1,0 +1,57 @@
+Compilation only; full local build log retained outside Git.
+Project build complete. To flash, run:
+ idf.py flash
+or
+ idf.py -p PORT flash
+or
+ python -m esptool --chip esp32s3 -b 460800 --before default-reset --after hard-reset write-flash --flash-mode dio --flash-size 16MB --flash-freq 80m 0x0 build-idf-6.1.1-headless/bootloader/bootloader.bin 0x8000 build-idf-6.1.1-headless/partition_table/partition-table.bin 0x10000 build-idf-6.1.1-headless/tv4_hmi.bin
+or from the "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/tls-bench-headroom/build-idf-6.1.1-headless" directory
+ python -m esptool --chip esp32s3 -b 460800 --before default-reset --after hard-reset write-flash "@flash_args"
+{
+  "profile": "headless",
+  "sdk": "6.1.1",
+  "target": "esp32s3",
+  "flash_bytes": 16777216,
+  "mbedtls_allocator": "internal-only",
+  "mbedtls_certificate_dates": false,
+  "tls_record_in": 16384,
+  "tls_record_out": 4096,
+  "memory_bench": false,
+  "tls_bench": false,
+  "psram": "disabled",
+  "images": {
+    "tv4_hmi.bin": {
+      "bytes": 1055488,
+      "sha256": "39d5a8fea00153fd3f4ec7c6e7a6664e6a705a761c5297d2574c04f0666794aa"
+    },
+    "bootloader/bootloader.bin": {
+      "bytes": 20656,
+      "sha256": "a3df441d9337ad479f9c796861d8a616adf45f68fb387a5c21ac2b74b4729055"
+    }
+  },
+  "partitions": [
+    {
+      "kind": 1,
+      "subtype": 2,
+      "address": 36864,
+      "size": 24576,
+      "label": "nvs"
+    },
+    {
+      "kind": 1,
+      "subtype": 1,
+      "address": 61440,
+      "size": 4096,
+      "label": "phy_init"
+    },
+    {
+      "kind": 0,
+      "subtype": 0,
+      "address": 65536,
+      "size": 2097152,
+      "label": "factory"
+    }
+  ],
+  "device_access": false,
+  "physical_performance": "not measured"
+}

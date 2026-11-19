@@ -178,3 +178,10 @@ PASS нет; на плате ordinary b085abb. Это не runtime OTA/installer
 владелец подтвердил HMI/touch/Wi-Fi. Internal min3123/window,2408/history,stack912
 ограничивают дальнейшее runtime OTA: нужен отдельный review запаса и failure paths.
 Успешного manifest/image download/install/rollback и performance измерений нет.
+
+## PR-04l — собственный stack frame / HTTP RX
+
+[TLS_HEADROOM.md](TLS_HEADROOM.md): read-only try-lock Wi-Fi online getter,
+HEAD HTTP RX2048 и пять worker-phase snapshots. Только diagnostic caller;
+UI snapshot/NVS API и buffers TLS/DMA/stacks прежние. Нет runtime OTA integration
+или нового измерения на плате. Hardware record1bfc7e2 остаётся актуальным.

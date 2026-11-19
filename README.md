@@ -70,3 +70,7 @@ STM32 foundation, microSD/FAT32 и единый экран «Параметры 
 
 Пользовательский интерфейс MVP — русский ru-RU, централизованные строки;
 kk-KZ/en-US предусмотрены архитектурно, но не включены частично.
+
+[PR-04l: TLS memory/stack headroom](docs/TLS_HEADROOM.md) уменьшает только
+HTTP RX и собственный frame diagnostic worker; новый hardware результат ещё
+не получен. На плате остаётся ordinary1bfc7e2, production budget открыт.

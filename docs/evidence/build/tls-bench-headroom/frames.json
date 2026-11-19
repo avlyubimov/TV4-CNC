@@ -1,0 +1,18 @@
+[
+  {
+    "sdk": "6.1.1",
+    "before": 1136,
+    "after": 208,
+    "saved_direct_frame_bytes": 928,
+    "task_stack_bytes": 6144,
+    "runtime_max": "not measured"
+  },
+  {
+    "sdk": "5.3.2",
+    "before": 1136,
+    "after": 208,
+    "saved_direct_frame_bytes": 928,
+    "task_stack_bytes": 6144,
+    "runtime_max": "not measured"
+  }
+]

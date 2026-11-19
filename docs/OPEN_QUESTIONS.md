@@ -86,3 +86,8 @@ internal min3123(window)/2408(history),stack watermark912/6144bytes. Нужен
 review оставшихся internal allocations/stack/error paths до body/session.
 SNTP не authenticated; production UTC, negative certificate/redirect/CDN/soak/
 performance остаются отдельными gates. На плате ordinary1bfc7e2,owner HMI PASS.
+
+PR-04l [сокращает собственный кадр TLS worker и HTTP RX](TLS_HEADROOM.md),
+добавляет phase snapshots для следующего review. Реальные headroom minima,
+max stack/fragmented-header/failure/soak/CPU остаются открыты до нового отдельно
+разрешённого exact-image теста; compile или request size не являются budget.

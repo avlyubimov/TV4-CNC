@@ -1,0 +1,3 @@
+Direct worker frame, not complete call graph or runtime stack use.
+0:	01a136        	entry	a1, 208
+object_sha256=0c4e2329a1c58c82b1ee010af2c089b94dfc879ed3c144c73daf8ea5b3a4f27f
