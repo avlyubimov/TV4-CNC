@@ -2,5 +2,3 @@
 CMake Error at CMakeLists.txt:35 (message):
   Synthetic link probe requires the pinned ARM toolchain; never execute its
   ELF
-
-

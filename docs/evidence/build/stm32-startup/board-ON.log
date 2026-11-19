@@ -3,5 +3,3 @@ CMake Error at CMakeLists.txt:8 (message):
   F407 board image blocked: package/RAM/CCM, board memory/full vector/clock
   contract and recovery are unreviewed; synthetic link probe is not board
   firmware.
-
-
