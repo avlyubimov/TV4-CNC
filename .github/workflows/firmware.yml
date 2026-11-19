@@ -5,6 +5,7 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-24.04
+    timeout-minutes: 30
     strategy:
       fail-fast: false
       matrix:
@@ -18,25 +19,25 @@ jobs:
     container:
       image: ${{ matrix.image }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - name: Build and verify image configuration (no hardware)
         shell: bash
         run: |
           set -o pipefail
-          mkdir -p evidence
+          mkdir -p build-ci-evidence
           # Compare file contents without relying on Git discovery inside the SDK container.
           lock_snapshot="$(mktemp -d)"
           cp -a firmware/esp32-hmi/locks/. "$lock_snapshot/"
-          ./tools/build_idf.sh '${{ matrix.profile }}' '${{ matrix.sdk }}' local 2>&1 | tee evidence/build.log
-          cp 'build-idf-${{ matrix.sdk }}-${{ matrix.profile }}/validation.json' evidence/
+          ./tools/build_idf.sh '${{ matrix.profile }}' '${{ matrix.sdk }}' local 2>&1 | tee build-ci-evidence/build.log
+          cp 'build-idf-${{ matrix.sdk }}-${{ matrix.profile }}/validation.json' build-ci-evidence/
           diff -ru "$lock_snapshot/" firmware/esp32-hmi/locks/
       - name: Verify inactive OTA layout, symbol linkage and memory bounds
         shell: bash
         run: |
           set -euo pipefail
           source "$IDF_PATH/export.sh" >/dev/null
-          python tools/check_ota_layout.py --sdk "$IDF_PATH" > evidence/ota-layout.log 2>&1
-          python tools/check_ota_memory.py 'build-idf-${{ matrix.sdk }}-${{ matrix.profile }}/tv4_hmi.elf' > evidence/ota-memory.json
+          python tools/check_ota_layout.py --sdk "$IDF_PATH" > build-ci-evidence/ota-layout.log 2>&1
+          python tools/check_ota_memory.py 'build-idf-${{ matrix.sdk }}-${{ matrix.profile }}/tv4_hmi.elf' > build-ci-evidence/ota-memory.json
           python - <<'PYCODE'
           import subprocess
           output = subprocess.check_output(['readelf', '-Ws', 'build-idf-${{ matrix.sdk }}-${{ matrix.profile }}/tv4_hmi.elf'], text=True)
@@ -55,8 +56,36 @@ jobs:
               assert not any('tv4_utc_tls_bench_start' in line for line in output.splitlines()), 'UTC/TLS worker retained outside TLS bench'
           print('OTA symbols/profile gates verified; no installer enabled')
           PYCODE
-      - uses: actions/upload-artifact@v4
+      - name: Create and independently verify unsigned review candidate
+        shell: bash
+        env:
+          TV4_SOURCE_SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          python tools/build_candidate.py create --repo . \
+            --build 'build-idf-${{ matrix.sdk }}-${{ matrix.profile }}' \
+            --output build-ci-candidate --source-commit "$TV4_SOURCE_SHA" \
+            --sdk '${{ matrix.sdk }}' --profile '${{ matrix.profile }}' > build-ci-evidence/candidate-create.json
+          python tools/build_candidate.py verify --candidate build-ci-candidate \
+            --image 'build-idf-${{ matrix.sdk }}-${{ matrix.profile }}/tv4_hmi.bin' \
+            --source-commit "$TV4_SOURCE_SHA" --sdk '${{ matrix.sdk }}' \
+            --profile '${{ matrix.profile }}' > build-ci-evidence/candidate-verify.json
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         if: always()
         with:
           name: idf-${{ matrix.sdk }}-${{ matrix.profile }}
-          path: evidence/
+          path: build-ci-evidence/
+          if-no-files-found: error
+          retention-days: 14
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: review-candidate-${{ matrix.sdk }}-${{ matrix.profile }}
+          # Explicit metadata allowlist. Never upload app/ELF/build/NVS dumps.
+          path: |
+            build-ci-candidate/candidate.json
+            build-ci-candidate/validation.json
+            build-ci-candidate/dependencies.lock
+            build-ci-candidate/LICENSE-NOTICE.md
+            build-ci-candidate/checksums.sha256
+          if-no-files-found: error
+          retention-days: 14

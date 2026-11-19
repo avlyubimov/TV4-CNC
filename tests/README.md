@@ -25,3 +25,11 @@ SDK-миграция: четвёртый тест build_validation провер�
 инспектора и отказы для Flash, профиля, PSRAM, image header/chip id и
 переполнения раздела. Используются синтетические файлы, не прошивка устройства.
 Host CI и локальная проверка также проходят ASan/UBSan/LSan.
+
+PR-05a: build_candidate — отдельная Python suite для offline review pipeline:
+оба SDK ×4profiles на synthetic images, checksum/digest/segment/descriptor/ELF
+faults, stale outputs/source, scope/profile mixups, strict JSON/file limits,
+symlink/FIFO/extra files, deterministic inventory и CLI. Docker version forwarding
+проверяется mock command без запуска container/SDK/device. Полная host матрица
+с LVGL содержит19 CTest suites; Python suite имеет15 tests. Реальные8 SDK images
+дополнительно проверяются build inspector/candidate verifier в firmware CI.

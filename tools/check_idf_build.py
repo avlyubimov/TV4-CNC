@@ -12,7 +12,7 @@ def require(condition, message):
         raise ValueError(message)
 
 
-def verify(build, profile, version):
+def verify(build, profile, version, *, write_report=True):
     require(profile in {"headless", "rev12", "rev12-memory-bench", "rev12-tls-bench"}, "unknown profile")
     require(version in {"5.3.2", "6.1.1"}, "unvalidated SDK")
     build = Path(build)
@@ -79,8 +79,9 @@ def verify(build, profile, version):
                   tls_record_out=config.get("MBEDTLS_SSL_OUT_CONTENT_LEN"),
                   memory_bench=config.get("TV4_OTA_MEMORY_BENCH", False), tls_bench=config.get("TV4_UTC_TLS_BENCH", False), psram="octal 80MHz" if profile != "headless" else "disabled", images=images, partitions=partitions,
                   device_access=False, physical_performance="not measured")
-    (build / "validation.json").write_text(json.dumps(result, indent=2) + "\n")
-    print(json.dumps(result, indent=2))
+    if write_report:
+        (build / "validation.json").write_text(json.dumps(result, indent=2) + "\n")
+        print(json.dumps(result, indent=2))
     return result
 
 

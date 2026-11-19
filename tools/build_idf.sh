@@ -11,9 +11,20 @@ case "$version" in
   *) echo 'Validated SDKs: 5.3.2 or 6.1.1' >&2; exit 2 ;;
 esac
 project_root="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)"
+# IDF cannot discover a linked worktree's external .git directory inside the
+# container. Carry its actual display version in; the review tool also checks
+# full clean commit/tree and the app descriptor. Never invent a release SemVer.
+project_version="${TV4_BUILD_PROJECT_VERSION:-}"
+if [[ -z "$project_version" ]]; then
+  project_version="$(git -C "$project_root" describe --always --dirty 2>/dev/null || true)"
+fi
+if [[ -n "$project_version" && ( ${#project_version} -gt 31 || ! "$project_version" =~ ^[A-Za-z0-9._-]+$ ) ]]; then
+  echo 'Unsupported project display version; expected <=31 ASCII version characters' >&2; exit 2
+fi
 if [[ "$mode" == docker ]]; then
   # Re-enter in the official immutable SDK container. No device passthrough.
   exec docker run --rm --cap-drop=ALL --security-opt=no-new-privileges \
+    -e "TV4_BUILD_PROJECT_VERSION=$project_version" \
     -v "$project_root:/project" -w /project "$image" \
     bash /project/tools/build_idf.sh "$profile" "$version" local
 elif [[ "$mode" != local ]]; then
@@ -28,10 +39,12 @@ set -u
 actual="$(idf.py --version)"
 if [[ "$actual" != "ESP-IDF v$version" ]]; then echo "Wrong SDK: $actual (expected v$version)" >&2; exit 2; fi
 build="$project_root/build-idf-$version-$profile"
+version_args=()
+if [[ -n "$project_version" ]]; then version_args+=("-DPROJECT_VER=$project_version"); fi
 defaults="$project_root/firmware/esp32-hmi/sdkconfig.defaults"
 if [[ "$profile" != headless ]]; then defaults+=";$project_root/firmware/esp32-hmi/sdkconfig.rev12"; fi
 if [[ "$profile" == rev12-memory-bench ]]; then defaults+=";$project_root/firmware/esp32-hmi/sdkconfig.memory-bench"; fi
 if [[ "$profile" == rev12-tls-bench ]]; then defaults+=";$project_root/firmware/esp32-hmi/sdkconfig.tls-bench"; fi
 idf.py -C "$project_root/firmware/esp32-hmi" -B "$build" \
-  -DIDF_TARGET=esp32s3 "-DSDKCONFIG=$build/sdkconfig" "-DSDKCONFIG_DEFAULTS=$defaults" build
+  -DIDF_TARGET=esp32s3 "-DSDKCONFIG=$build/sdkconfig" "-DSDKCONFIG_DEFAULTS=$defaults" "${version_args[@]}" build
 python "$project_root/tools/check_idf_build.py" "$build" "$profile" "$version"

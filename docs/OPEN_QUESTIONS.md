@@ -25,6 +25,7 @@
 | OTA-F407-01 | По подтверждённым секторам выбрать A/B либо staging+recovery; metadata/vector/commit/power-loss план | PR-07, не заменяется кэшем microSD ESP32 |
 | OTA-STATE-01 | Fresh подтверждение F407 без движения/оборотов/программы, session lifecycle и повтор после reboot; согласованный safe state | CAN install; симуляция/heartbeat/ACK доставки не подтверждают останов |
 | RELEASE-01 | Версии/каналы/tag policy, signing authority и owner gate для exact SHA/digests, доступность environment protections | PR-05 и любой релиз; main push не разрешение |
+| RELEASE-LICENSE-01 | Владелец выбирает лицензию приложения, review прав на распространяемые assets/библиотеки; LICENSE-NOTICE.md пока оставляет решение открытым | Внешнее распространение app binary/source release; PR-05a публикует только review metadata |
 | PERF-01 | Реальные LVGL/CPU/heap/PSRAM/stacks/reset/watchdog/queues/reconnect/CAN timeout measurements, touch-to-display и soak methodology | PR-03 acceptance, заявления о <50 мс/30 FPS/20–30 Гц |
 | RECOVERY-01 | Независимая копия ESP32 backup, испытание восстановления; данные/отчёт по восстановлению Blue Pill | Аппаратная migration/bootloader уверенность, не permission на запись |
 
@@ -106,3 +107,7 @@ PR-04m [добавляет контракт resource admission](OTA_RESOURCE_GUA
 назначает floors из8f0d899 minima. Native guarded body/session budget/stack worst
 case/inside-handshake peak и UI/load/failure/soak остаются открыты. Snapshot
 не reservation и не защита от transient OOM/overflow до возврата SDK.
+
+PR-05a [автоматизирует review-кандидаты](BUILD_CANDIDATES.md), фиксирует clean
+source/build identity, hashes и exact Actions. Это не release/signing authority,
+утверждение SemVer/protocol/layout или лицензии и не закрытие hardware gates.

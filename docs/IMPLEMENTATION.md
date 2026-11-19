@@ -200,3 +200,12 @@ verified,владелец подтвердил HMI/touch/Wi-Fi. Runtime body/ins
 heap/stack sampler и session boundary checks с отдельным report. Проверки не
 резервируют память/не прерывают SDK и не дают production budget. Нет caller
 в app_main/UI/network tasks, новых native operations или изменения платы.
+
+## PR-05a — CI review-кандидаты
+
+[BUILD_CANDIDATES.md](BUILD_CANDIDATES.md): offline проверка полного ESP app
+image и ELF digest, clean source/SDK/profile provenance, deterministic metadata
+bundle/checksums и независимый verifier. Новая host suite, интеграция в8 SDK jobs,
+все Actions закреплены SHA. Docker получает Git display version linked worktree.
+Реализована подготовка кандидатов; signing, binary Releases, production version/
+trust provisioning и установка остаются открыты. Плата ordinary8f0d899 прежняя.

@@ -1,10 +1,11 @@
 # GitHub Releases и CI/CD
 
-Статус PR-01: **описание процесса, не настроенный release workflow**. Сейчас
-Actions только проверяют docs, host/sanitizers и ESP-IDF matrix. ARM build,
-подпись, публикация, защищённое окружение и OTA ещё не реализованы.
-На момент аудита публичных Releases нет. Push в main не создаёт релиз и
-не является разрешением владельца на его выпуск.
+Статус PR-05a: [проверяемые metadata-only кандидаты](BUILD_CANDIDATES.md)
+реализованы в существующей ESP-IDF матрице. Есть host/sanitizers и ARM core
+compile-only; полноценного F407 image нет. Подпись, binary Releases, защищённое
+окружение и OTA install ещё не реализованы. Push в main не создаёт релиз и
+не является разрешением владельца на его выпуск. Лицензия приложения ещё не
+выбрана (LICENSE-NOTICE.md); public CI review artifact не содержит binary.
 
 ## Версии и публикация
 
@@ -12,7 +13,7 @@ Actions только проверяют docs, host/sanitizers и ESP-IDF matrix.
   Release tag связывает точный commit и согласованный набор компонентов.
 - prerelease/stable — отдельные каналы. Prerelease не становится stable
   автоматически; promotion требует нового явного approval владельца.
-- Сборка кандидата автоматическая в будущем workflow PR-05; publication
+- Сборка metadata-only review-кандидата автоматическая в текущей CI; publication
   запускается вручную только после зелёного CI, review и разрешения владельца
   на точные commit/tag/канал/список артефактов и их digest.
 - Merge PR, workflow_dispatch неуказанного пользователя или успешный build
@@ -32,11 +33,12 @@ Actions только проверяют docs, host/sanitizers и ESP-IDF matrix.
    startup/vector/linker checks, Flash/RAM budgets, host state/fault tests и static
    analysis. Target F407 job блокируется до подтверждения MCU/memory/clock;
    placeholder .bin не генерировать и не публиковать.
-3. Pin GitHub Actions полными reviewable commit SHA и toolchain versions.
-   Сейчас actions/checkout@v4 и upload-artifact@v4 не закреплены commit SHA:
-   это известная задача PR-05, не изменение workflow в PR-01.
-4. Собирать/проверять неподписанный candidate без production secrets на PR.
+3. PR-05a: все GitHub Actions закреплены полными reviewable commit SHA,
+   SDK images/toolchains/dependency locks остаются точными прежними версиями.
+4. PR-05a: собирать/проверять неподписанный metadata-only candidate без production secrets на PR.
    Fork/PR code не получает signing credentials или contents:write.
+   App/ELF/config/partition hashes и source identity доступны в review artifact;
+   публикация app binary ждёт решения о лицензии и отдельных release gates.
 5. В доверенном контексте одобренного commit/tag сформировать manifest,
    hashes, release notes и подпись; проверить подпись локальным доверенным
    публичным ключом. Не пересобирать бинарники после подписания digest.
