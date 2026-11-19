@@ -1,5 +1,11 @@
 # Реализация: main, открытые PR и аппаратные границы
 
+Актуализация после mainb19a40b / PR #27: owner SWD F407/core/Flash1024KiB/
+backup подтверждены в [HARDWARE_STATUS](HARDWARE_STATUS.md). PR-02b добавляет
+[startup/sections/no-I/O building blocks](STM32_STARTUP.md), synthetic ARM link
+checks и сохраняет board image gate; физического запуска/Flash writer нет.
+Следующий этап — [NEXT_STAGE](NEXT_STAGE.md). Ниже сохранены исторические снимки.
+
 Снимок PR-01 от 18 ноября 2026. База: main
 `0c4168e864d4c867ba0f49a86eba72c0d59205a1`. Это не утверждение, что все
 коммиты рабочей ветки уже слиты. Отчёт: [PR01_REVIEW.md](PR01_REVIEW.md).

@@ -1,13 +1,16 @@
 # Открытые вопросы и блокирующие решения
 
-Актуально для PR-01, 18 ноября 2026. Единственный свод аппаратных фактов —
+Обновлено после mainb19a40b, 19 ноября2026. Единственный свод аппаратных фактов —
 [HARDWARE_STATUS.md](HARDWARE_STATUS.md). Не заполнять неизвестные поля
 типовыми данными семейства, USB VID/PID, старым заказом или host mock.
 
 | ID | Что нужно подтвердить/решить | Блокирует |
 |---|---|---|
-| HW-F407-01 | Владелец сообщил STM32F407VGT6; сверить маркировку/документацию и отдельно разрешённое чтение device/Flash ID; фактическая Flash/RAM/секторная карта | Target startup/linker/size budgets PR-02; layout и Flash writer PR-07 |
-| HW-F407-02 | Кварц/HSE, питание/PLL/реальная частота; verified board pinout, SWD/boot/recovery способ | Clock/timer/DMA и физическая загрузка F407 |
+| HW-F407-01 | Owner SWD/core/device ID/Flash1024KiB подтверждены; остаются физическая маркировка/package и согласование reference documentation. Device ID не заменяет package check | Выбор полного device vector/CMSIS/board profile; raw device ID0x101f6413 не даёт адресов bootloader |
+| HW-F407-02 | HSE/PLL/реальная частота, schematic/pinout/boot-reset/recovery. SWD работает;3,252V — один owner sample | Physical clock/timer/DMA/CAN. HSE не обязателен для будущего reviewed HSI-only startup, но HSI/частоты пока не измерены |
+| HW-F407-03 | Фактические RAM/CCM bounds/availability, stack/heap budget и утверждённый полный vector/memory contract | Настоящий linker/board image; synthetic link probe не подтверждает размер/работу RAM |
+| HW-F407-04 | Sector/erase geometry и protection/option byte state до отдельного Flash writer/bootloader решения | PR-07 layout/write/recovery; Flash1024KiB не доказывает sector map или пригодность A/B |
+| HW-F407-05 | Физические GPIO/CAN, transceiver/pin routing, безопасные уровни/полярности ENABLE/STEP/DIR/шпинделя | Любой physical adapter/drive commissioning; no-I/O adapter не подтверждает physical inhibit |
 | HW-USB-01 | Отдельно подтвердить, что устройство 0483:5720 принадлежит именно F407 стенду | Идентификация; VID/PID не доказывает MCU/Flash/прошивку |
 | HW-DRIVE-01 | Получение первого NEMA23, точные двигатель/драйвер/питание, STEP/DIR/ENABLE polarity, encoder/alarm, второй привод | Любые испытания приводов/осей |
 | HW-SAFETY-01 | Схема независимого NC E-stop, контактор/STO/earthing, mechanical/electrical manual/CNC interlocks с квалифицированной проверкой | Всё опасное движение и commissioning |
@@ -28,6 +31,7 @@
 | RELEASE-LICENSE-01 | Владелец выбирает лицензию приложения, review прав на распространяемые assets/библиотеки; LICENSE-NOTICE.md пока оставляет решение открытым | Внешнее распространение app binary/source release; PR-05a публикует только review metadata |
 | PERF-01 | Реальные LVGL/CPU/heap/PSRAM/stacks/reset/watchdog/queues/reconnect/CAN timeout measurements, touch-to-display и soak methodology | PR-03 acceptance, заявления о <50 мс/30 FPS/20–30 Гц |
 | RECOVERY-01 | Независимая копия ESP32 backup, испытание восстановления; данные/отчёт по восстановлению Blue Pill | Аппаратная migration/bootloader уверенность, не permission на запись |
+| RECOVERY-F407-01 | Owner backup1048576bytes/vector structure PASS; SHA-256, повторное чтение/независимая копия и restore не сообщены | Recovery confidence перед новой записью; dump не включать в Git/CI |
 
 ## Уже установлено / не открывать заново
 
@@ -40,13 +44,21 @@
   уже собираются. Обновлять API заново без ошибки/цели не нужно.
 - Физическое изображение HMI/списка сетей наблюдалось на фото. Формального
   полного теста touch/performance это не закрывает.
-- F407 DevEBox получена, владелец уточнил suffix VGT6; NEMA23 ещё нет, второго двигателя и трансиверов нет.
+- F407 DevEBox получена; владелец подтвердил SWD/ST-Link V2, Cortex-M4r0p1,
+  raw ID0x101f6413, Flash1024KiB,3,252V, backup1048576bytes/vector structure PASS.
+  Суффикс VGT6 сообщён ранее; маркировка/RAM/geometry/HSE/GPIO/CAN не закрыты.
+  NEMA23 ещё нет, второго двигателя и трансиверов нет.
 - Blue Pill по отчёту владельца доступна через SWD/64 КиБ, backup сохранён;
   это не production motion target. Не подменять ей недостающую F407 geometry.
 
 Статусы закрывать только с источником/датой/версией и пределами результата.
 Проведение проверки/прошивка требуют отдельного разрешения владельца;
 этот список не разрешает подключаться к оборудованию.
+
+Для F407 scope/split зависимостей и последовательность следующего этапа:
+[NEXT_STAGE.md](NEXT_STAGE.md), [STM32_STARTUP.md](STM32_STARTUP.md).
+Закрыт blocker SWD access/Flash capacity **по сообщению владельца**, а не все
+условия deployment. Physical inhibit, production CAN/bootloader и motion запрещены.
 
 ## После baseline b93cf3b
 

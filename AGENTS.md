@@ -20,7 +20,9 @@ PR и Actions; не копировать код уже открытого PR. Д
   согласно текущему аппаратному статусу. HMI, Wi-Fi, будущие microSD и OTA,
   CAN-коммуникации; **никакой генерации STEP на ESP32**.
 - STM32F407: DevEBox STM32F4VX_M Ver. 2.0; владелец сообщил STM32F407VGT6;
-  фактические Flash/RAM/секторы/кварц/распиновка ещё не проверены. Только он отвечает за планирование, таймерный STEP/DIR,
+  owner SWD/ST-Link V2/Cortex-M4r0p1/raw ID0x101f6413/Flash1024KiB/3,252V/
+  backup1048576bytes/vector structure PASS подтверждены. Package/RAM/CCM/секторы/
+  кварц/распиновка/physical GPIO/CAN ещё не проверены. Только он отвечает за планирование, таймерный STEP/DIR,
   энкодеры, homing, watchdog и состояние реальной машины после commissioning.
 - Blue Pill STM32F103C8T6: отдельный стенд протокола/таймеров/загрузчиков;
   не замена F407 и не контроллер станка. Подтверждение владельца: Flash 64 КиБ.
@@ -107,18 +109,18 @@ PR и Actions; не копировать код уже открытого PR. Д
 
 ## Текущее задание
 
-PR #26 слит, main18b2bf5 CI зелёный. PR-05a объединяет offline full app image/
-ELF/clean source checks, deterministic metadata-only review bundles, independent
-verifier, negative tests, CI8profiles и SHA-pinned Actions. См. docs/BUILD_CANDIDATES.md
-и docs/plans/PR05A_BUILD_CANDIDATES.md. Bundle не подписанный OTA manifest или
-attestation; binary publication ждёт license/release approval/context/trust gates.
-Не расширять CI upload allowlist до app/ELF/raw config/build/Flash/NVS/private keys.
-Проверить host/sanitizers19suites, оба SDK ×4profiles/ELF/workspace/layout и
-candidate create/verify. Docker должен сохранять реальную Git display version.
-В CI root SDK steps до version/build нужен exact GITHUB_WORKSPACE safe.directory
-и HEAD==github.sha; HOME checkout action временный. Не использовать wildcard trust.
-Firmware C/UI/config/board/locks/layout/security сохраняются. Runtime resource
-budget/load/fault/soak и guarded body/session/installer activation ещё открыты.
+PR #1–27 слиты, mainb19a40b CI зелёный, открытых PR перед работой нет.
+Текущее задание: owner F407 SWD facts и PR-02b startup foundation; см.
+docs/STM32_STARTUP.md, NEXT_STAGE.md и docs/plans/PR02B_STM32_STARTUP.md.
+Не повторять device access и не читать/публиковать raw dump. Owner1MiB не
+задаёт RAM/sector/bootloader layout. Generic reset/support/no-I/O и linker
+sections проверяются только opt-in synthetic probe; его ROM/RAM/stack/core
+vectors не являются F407 profile. BOARD_IMAGE=ON всегда fail; no .bin/ELF upload.
+No-I/O inhibit=false/watchdog unavailable, нельзя объявлять physical safe state.
+Host/sanitizers20suites, ARM/static/positive-negative link/board gates и CI;
+существующая ESP SDK matrix сохраняется. HMI/config/board/locks/security прежние.
+PR-05 candidates остаются metadata-only, CI exact workspace trust без wildcard.
+Runtime ESP resource budget/load/fault/soak/installer gates ещё открыты.
 На плате ordinary8f0d899,owner HMI/touch/Wi-Fi PASS; разрешения исполнены.
 Новых device/flash/reset/serial/UTC/network probes без отдельного exact-image
 согласования не выполнять. Нет keys/release/eFuse/CAN/motion и auto-merge PR.

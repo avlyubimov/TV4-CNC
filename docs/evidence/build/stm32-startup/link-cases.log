@@ -1,0 +1,16 @@
+test_constructor_not_silently_ignored (__main__.LinkContractTests.test_constructor_not_silently_ignored) ... ok
+test_data_bss_collide_with_stack (__main__.LinkContractTests.test_data_bss_collide_with_stack) ... ok
+test_missing_memory_or_stack (__main__.LinkContractTests.test_missing_memory_or_stack) ... ok
+test_mutated_vectors_entry_and_truncation (__main__.LinkContractTests.test_mutated_vectors_entry_and_truncation) ... ok
+test_overlapping_memory (__main__.LinkContractTests.test_overlapping_memory) ... ok
+test_ram_stack_overflow (__main__.LinkContractTests.test_ram_stack_overflow) ... ok
+test_rom_overflow (__main__.LinkContractTests.test_rom_overflow) ... ok
+test_unaligned_ram (__main__.LinkContractTests.test_unaligned_ram) ... ok
+test_unaligned_rom (__main__.LinkContractTests.test_unaligned_rom) ... ok
+test_valid_probe (__main__.LinkContractTests.test_valid_probe) ... ok
+test_zero_and_unaligned_stack (__main__.LinkContractTests.test_zero_and_unaligned_stack) ... ok
+
+----------------------------------------------------------------------
+Ran 11 tests in 0.036s
+
+OK

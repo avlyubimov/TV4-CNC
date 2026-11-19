@@ -1,4 +1,4 @@
-name: STM32 foundation (compile only)
+name: STM32 foundation (no hardware)
 on: [push, pull_request]
 permissions:
   contents: read
@@ -28,15 +28,58 @@ jobs:
             -DCMAKE_TOOLCHAIN_FILE=cmake/arm-none-eabi.cmake -DCMAKE_BUILD_TYPE=MinSizeRel
           cmake --build build-motion-arm
           gcc -std=c11 -Wall -Wextra -Werror -fanalyzer -fsyntax-only \
-            -Ifirmware/stm32-motion/core firmware/stm32-motion/core/supervisor.c
+            -Ifirmware/stm32-motion/core -Ifirmware/stm32-motion/startup -Ifirmware/stm32-motion/board \
+            firmware/stm32-motion/core/supervisor.c firmware/stm32-motion/startup/memory_init.c \
+            firmware/stm32-motion/board/noio.c
           python3 tools/check_motion_size.py build-motion-arm/libtv4_motion_core.a | tee evidence/core-size.txt
-          # This PR intentionally cannot produce a deployable image.
-          if cmake -S firmware/stm32-motion -B build-motion-blocked -DTV4_MOTION_BOARD_IMAGE=ON > evidence/board-gate.txt 2>&1; then
-            echo 'ERROR: board image unexpectedly allowed'; exit 1
+          python3 tools/check_motion_size.py build-motion-arm/libtv4_motion_boot_support.a | tee evidence/boot-support-size.txt
+      - name: Link synthetic startup fixture and reject invalid layouts (no execution)
+        shell: bash
+        run: |
+          set -euo pipefail
+          cmake -S firmware/stm32-motion -B build-motion-probe -G Ninja \
+            -DCMAKE_TOOLCHAIN_FILE=cmake/arm-none-eabi.cmake -DCMAKE_BUILD_TYPE=MinSizeRel \
+            -DTV4_MOTION_LINK_PROBE=ON
+          cmake --build build-motion-probe
+          python3 tools/check_motion_link.py build-motion-probe/tv4_motion_link_probe.elf > evidence/link-probe.json
+          ctest --test-dir build-motion-probe --output-on-failure | tee evidence/link-contract.log
+          arm-none-eabi-objdump -d --disassemble=Reset_Handler \
+            build-motion-probe/tv4_motion_link_probe.elf > evidence/reset-disassembly.txt
+          for probe in OFF ON; do
+            if cmake -S firmware/stm32-motion -B "build-motion-blocked-$probe" \
+                -DTV4_MOTION_BOARD_IMAGE=ON -DTV4_MOTION_LINK_PROBE="$probe" > "evidence/board-gate-$probe.txt" 2>&1; then
+              echo 'ERROR: board image unexpectedly allowed'; exit 1
+            fi
+            grep -q 'F407 board image blocked' "evidence/board-gate-$probe.txt"
+          done
+          if cmake -S firmware/stm32-motion -B build-motion-host-probe \
+              -DTV4_MOTION_LINK_PROBE=ON > evidence/host-probe-gate.txt 2>&1; then
+            echo 'ERROR: host configure accepted ARM link probe'; exit 1
           fi
-          grep -q 'F407 board image blocked' evidence/board-gate.txt
+          grep -q 'requires the pinned ARM toolchain' evidence/host-probe-gate.txt
+          # CMake may name its internal compiler-ABI archive *.bin; that cache
+          # file is not a board image and is excluded from the upload allowlist.
+          python3 - <<'PY'
+          from pathlib import Path
+          for directory in ('build-motion-arm', 'build-motion-probe'):
+              for path in Path(directory).rglob('*.bin'):
+                  assert path.name == 'CMakeDetermineCompilerABI_C.bin' and 'CMakeFiles' in path.parts, path
+          print('No firmware .bin; only permitted CMake compiler-ABI cache')
+          PY
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         if: always()
         with:
           name: motion-core-compile-evidence
-          path: evidence/
+          # Text evidence only; never publish the synthetic ELF/archive as firmware.
+          path: |
+            evidence/compiler.txt
+            evidence/core-size.txt
+            evidence/boot-support-size.txt
+            evidence/link-probe.json
+            evidence/link-contract.log
+            evidence/reset-disassembly.txt
+            evidence/board-gate-OFF.txt
+            evidence/board-gate-ON.txt
+            evidence/host-probe-gate.txt
+          if-no-files-found: error
+          retention-days: 14

@@ -1,0 +1,2 @@
+gcc -std=c11 -Wall -Wextra -Werror -fanalyzer -fsyntax-only -Ifirmware/stm32-motion/core -Ifirmware/stm32-motion/startup -Ifirmware/stm32-motion/board firmware/stm32-motion/core/supervisor.c firmware/stm32-motion/startup/memory_init.c firmware/stm32-motion/board/noio.c
+Exit0, no warnings/diagnostics: PASS

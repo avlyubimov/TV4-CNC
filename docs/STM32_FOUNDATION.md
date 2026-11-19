@@ -1,5 +1,11 @@
 # PR-02 — STM32 Motion Foundation
 
+Актуализация после mainb19a40b: [owner SWD/Flash/backup facts](evidence/hardware/stm32f407-owner-swd/README.md)
+приняты; [PR-02b startup/sections/no-I/O](STM32_STARTUP.md) готовит generic
+building blocks и synthetic link checks. Физическая маркировка/RAM/CCM/HSE/
+pinout/erase geometry/GPIO/CAN неизвестны. Board image/loader/motion не готовы.
+Ниже сохранён исторический scope PR #7; текущая последовательность — [NEXT_STAGE](NEXT_STAGE.md).
+
 База: main a40aeb3, после слияния PR-01. Задача владельца «дальше» разрешает
 этот этап; merge, SWD/Flash, включение приводов и выпуск релиза не выполняются.
 
@@ -62,6 +68,11 @@ TV4_MOTION_BOARD_IMAGE=ON обязан завершиться явной оши�
 фиктивным app binary ради зелёного target job.
 
 ## Аппаратные блокеры и следующие части
+
+Этот раздел — историческое состояние PR #7 до нового owner SWD report;
+Flash1024KiB и SWD теперь подтверждены владельцем, остальные blockers разделены
+в [OPEN_QUESTIONS](OPEN_QUESTIONS.md). HSE не обязателен для будущего HSI-only
+пути; erase geometry блокирует writer/bootloader, RAM/vector profile — board linker.
 
 Владелец сообщил VGT6. Перед board image нужны подтверждение фактической карты
 Flash/RAM/секторов и CCM, HSE/PLL/питание, schematic/pinout/boot recovery.
