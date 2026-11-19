@@ -115,6 +115,8 @@ attestation; binary publication ждёт license/release approval/context/trust 
 Не расширять CI upload allowlist до app/ELF/raw config/build/Flash/NVS/private keys.
 Проверить host/sanitizers19suites, оба SDK ×4profiles/ELF/workspace/layout и
 candidate create/verify. Docker должен сохранять реальную Git display version.
+В CI root SDK steps до version/build нужен exact GITHUB_WORKSPACE safe.directory
+и HEAD==github.sha; HOME checkout action временный. Не использовать wildcard trust.
 Firmware C/UI/config/board/locks/layout/security сохраняются. Runtime resource
 budget/load/fault/soak и guarded body/session/installer activation ещё открыты.
 На плате ordinary8f0d899,owner HMI/touch/Wi-Fi PASS; разрешения исполнены.

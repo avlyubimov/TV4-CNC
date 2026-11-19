@@ -5,8 +5,9 @@
 
 Дата: 19 ноября 2026. База main18b2bf5 (PR #26 слит, четыре workflow main PASS).
 Финальный проверенный code source: `70416d936b95f09e4f99389e642add82f199234d`.
-Следующий commit добавляет только документацию/evidence; CI заново соберёт
-точный PR checkout SHA. Local bundles честно ссылаются на70416d9, не на будущий HEAD.
+Позднейшие изменения — документация/evidence и CI-only exact workspace trust;
+firmware C/SDK inputs прежние. CI заново собирает точный PR checkout SHA.
+Local bundles честно ссылаются на70416d9, не на будущий HEAD.
 
 ## Результаты
 
@@ -75,7 +76,36 @@ binary правильный replay имеет image_checked=false. `verify-*.jso
 состоявшиеся локальные проверки с image_checked=true, не включают сам образ.
 `workspace-*.json`, `symbols-*.log`, `build-*.log` и test/layout logs сохраняют
 компактные результаты; полные локальные build trees/logs не включены.
-`versions.json`, `actions-pins.json` и `source-hashes.json` задают exact inputs.
+`versions.json`/`actions-pins.json` задают версии; `source-hashes.json` фиксирует
+финальные reviewed tools/tests/workflows (включая CI-only ownership fix).
+
+## CI container ownership regression
+
+Первый PR run9134fe5 собирал app/ELF, но candidate step отказал: Git exit128
+при чтении HEAD. В SDK root container checkout принадлежит другому UID;
+checkout action задаёт safe.directory в своём временном HOME, который не
+переносится в последующие SDK shell steps. Это также мешало раннему Git version
+discovery. Строгий source check остановил упаковку, fallback image не принят.
+
+Firmware workflow теперь до build добавляет **только GITHUB_WORKSPACE** в
+safe.directory внутри эфемерного container HOME и проверяет HEAD против
+github.sha. Нет wildcard trust, изменения checkout ref или постоянного user config.
+
+`ci-ownership-repro.log` — отдельная реальная OS/Git regression: private copy
+standalone checkout70416d9 внутри SDK5.3.2 container, process uid0, checkout/.git
+uid12345. До fix Git отверг его с dubious ownership/exit128; после exact path
+trust clean HEAD/display version/source/candidate create/verify PASS. App input —
+ранее собранный6.1.1 headless70416d9; это тест offline inspector, не новая сборка
+6.1.1 внутри5.3.2. Host source/app mounts read-only, network=none; CHOWN capability
+использовалась только для приватной временной копии, контейнер удалён. Host UID/
+права не менялись. Docker Desktop переводит ownership bind mounts, поэтому
+использована private container copy с реальным другим UID, не mock Git output.
+
+Репродукция: copytree checkout в /tmp, chown только worktree/.git directories
+uid12345, Git rev-parse →128; git config --global --add safe.directory с **этим
+одним path** → HEAD70416d9/describe70416d9/status clean; далее обычные create/
+verify с expected source70416d9. В actual CI exact checkout assertion выполняется
+перед каждой из8 сборок. Все эти операции относятся к файлам/container, не плате.
 
 ## Ограничения
 

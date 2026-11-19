@@ -98,6 +98,9 @@ Refs сверены через GitHub connector 19 ноября 2026. Checkout p
 SDK/toolchains/dependencies не обновляются. Contents permission — read, нет
 pull_request_target, signing secrets, release/tag creation или deploy job.
 SDK jobs собирают и повторно проверяют candidate до upload; retention14days.
+В root SDK container до build регистрируется только точный GITHUB_WORKSPACE в
+Git safe.directory и сверяется HEAD с github.sha. Временный HOME checkout action
+не переносит эту настройку в следующие steps. Wildcard trust не используется.
 Конкретные результаты — [evidence](evidence/build/ci-candidates/README.md).
 
 LICENSE-NOTICE.md требует выбора лицензии владельцем до внешнего распространения

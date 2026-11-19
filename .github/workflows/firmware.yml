@@ -20,6 +20,16 @@ jobs:
       image: ${{ matrix.image }}
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4, reviewed 2026-11-19
+      - name: Validate exact checkout inside SDK container
+        shell: bash
+        env:
+          TV4_SOURCE_SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          # Checkout's temporary HOME does not carry safe.directory into later
+          # root SDK steps. Trust only this job's explicit workspace, never '*'.
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          test "$(git -C "$GITHUB_WORKSPACE" rev-parse HEAD)" = "$TV4_SOURCE_SHA"
       - name: Build and verify image configuration (no hardware)
         shell: bash
         run: |

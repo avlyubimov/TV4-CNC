@@ -6,7 +6,7 @@
   "tests/build_candidate_tests.py": "7670098548eadd8e5ce820c42abbd1255eaab7f3d76a4485ec7683b46427d6cd",
   "CMakeLists.txt": "4d754f809d7432d0fc66301380ea19bb42a8750c699537174e5bbc1a18523dda",
   ".github/workflows/docs.yml": "4ed16758a43e0861c24b886d950603fdc275cebe1726f0d4859e9c092de88f0d",
-  ".github/workflows/firmware.yml": "37b9097ab2cb83b3a4e7dbbe54c99cdb2162759c61080d9a0ab8c2d9e1463910",
+  ".github/workflows/firmware.yml": "b9b906ee0ec2b1c1f7849846f4d0a35aeb465e79d62832ec38c3335c589f2c17",
   ".github/workflows/host.yml": "e733770590e140127c4a1009fb899e233d5b858c485a7c3487841589885aa436",
   ".github/workflows/motion.yml": "09cb93f37447526e2c598077d61000889f476047b2aa1ac58360ffaec7281c54"
 }
