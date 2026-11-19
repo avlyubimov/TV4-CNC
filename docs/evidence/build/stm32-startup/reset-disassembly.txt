@@ -1,0 +1,12 @@
+
+build-motion-probe/tv4_motion_link_probe.elf:     file format elf32-littlearm
+
+
+Disassembly of section .text:
+
+01000040 <Reset_Handler>:
+ 1000040:	b672      	cpsid	i
+ 1000042:	4803      	ldr	r0, [pc, #12]	@ (1000050 <Reset_Handler+0x10>)
+ 1000044:	4685      	mov	sp, r0
+ 1000046:	f000 f807 	bl	1000058 <tv4_startup_entry>
+ 100004a:	f000 b803 	b.w	1000054 <tv4_startup_halt>

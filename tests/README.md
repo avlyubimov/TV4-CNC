@@ -33,3 +33,9 @@ symlink/FIFO/extra files, deterministic inventory и CLI. Docker version forward
 проверяется mock command без запуска container/SDK/device. Полная host матрица
 с LVGL содержит19 CTest suites; Python suite имеет16 tests. Реальные8 SDK images
 дополнительно проверяются build inspector/candidate verifier в firmware CI.
+
+PR-02b: motion_startup_noio проверяет data/BSS/zero/alignment/overflow/overlap,
+write-free errors и запрет readiness реального supervisor с incomplete no-I/O
+adapter. Полный root набор теперь20 CTest suites. Opt-in ARM motion_link_contract
+отдельно выполняет11 unittest cases: positive ELF/SP/Thumb/LMA/VMA/stack и
+negative memory/stack/constructor/corruption; ARM-код нигде не исполняется.

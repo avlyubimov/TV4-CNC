@@ -18,9 +18,10 @@
 | GT911 | На b93cf3b владелец подтвердил касания, удобную клавиатуру и показ/скрытие пароля | Покрытие углов, multitouch/ошибки, latency, воспроизводимый полный тест сенсора |
 | Wi-Fi | Физический список SSID/RSSI виден на фото; владелец сообщил ошибку 263 | На b93cf3b владелец подтвердил подключение/IP, агент видел wifi_ip_events=1 в обоих запусках. Неверный пароль, полный reconnect/NVS power-cycle stress ещё не проверены |
 | Защита ESP32 | По переданному get-security-info Secure Boot и Flash Encryption Disabled | Это не разрешение менять eFuse; не утверждается защита от физического чтения паролей |
-| F407 | DevEBox STM32F4VX_M Ver. 2.0 получена, по новому сообщению владельца | Владелец позднее сообщил suffix VGT6 (STM32F407VGT6); фактическая Flash/RAM/секторы, кварц, schematic/pinout и SWD target ещё не проверены |
+| F407 | DevEBox STM32F4VX_M Ver. 2.0; владелец подтвердил SWD/ST-Link V2, Cortex-M4 r0p1, raw device ID **0x101f6413**, Flash **1024 КиБ**, напряжение **3,252 В**; [owner report](evidence/hardware/stm32f407-owner-swd/README.md) | Физическая маркировка корпуса (раньше сообщён suffix VGT6), HSE, RAM/CCM, pinout, bootloader erase geometry, физические GPIO/CAN и startup нового ПО не проверены |
+| Backup F407 | Владелец сообщил дамп **1 048 576 байт**, таблица векторов структурно проверена | SHA-256/повторное чтение/независимая копия/restore не сообщены; raw dump не включается в Git/CI. Структура vectors не доказывает RAM map или запуск |
 | USB F407 | Владелец сообщил 0483:5720 Mass Storage Device | Принадлежность именно F407 плате нужна отдельная проверка; VID/PID не определяет part number/память/bootloader |
-| ST-Link V2 | По отчёту владельца работает с Blue Pill | Работа с конкретной F407 платой ещё не подтверждена |
+| ST-Link V2 | По отчёту владельца работает с Blue Pill и с конкретной F407 по SWD | Версии probe/debugger для нового F407 сеанса и испытание restore не сообщены; доступ не разрешает новые device operations |
 | Blue Pill | STM32F103C8T6; OpenOCD 0.12.0 видит Cortex-M3, Flash 64 КиБ, SWD работает; отчёт владельца | CAN, таймеры, bootloader, подключение к станку не испытаны |
 | Backup Blue Pill | Сохранён локально, таблица векторов структурно проверена; отчёт владельца | Путь/хеш в публичном Git не фиксируются без отдельной безопасной записи отчёта; восстановление не проверено |
 | Ось X/Z | Один closed-loop NEMA23 заказан, ещё не получен; второй не приобретён | Точная модель двигателя/драйвера, ток, питание, encoder/alarm/ENABLE, стендовые результаты |
@@ -31,7 +32,26 @@
 Актуальное сообщение о заказанном, но не полученном двигателе заменяет старое
 неоднозначное «purchased/test drive». Старое имя STM32F407VGT6 не считать
 аппаратным измерением. В новом сообщении для PR-02 владелец подтвердил
-суффикс VGT6; источник — сообщение, не SWD чтение агента.
+суффикс VGT6; источник — сообщение, не SWD чтение агента. Новый owner SWD report
+ниже подтверждает доступ/core/Flash, но не физическую маркировку корпуса.
+
+## STM32F407 — подтверждение владельца после main b19a40b
+
+Приняты перечисленные в таблице результаты нового задания владельца:
+SWD/ST-Link V2, Cortex-M4 r0p1, device ID0x101f6413, Flash1024KiB,
+напряжение3,252V, backup1048576bytes и structural vector check PASS.
+Данные записаны 19 ноября2026; точная дата/команды измерения не переданы.
+Агент не подключался к STM32, не повторял чтение и не открывал raw dump.
+
+Размер1MiB больше не UNKNOWN. Он не определяет sector boundaries/erase policy,
+RAM/CCM, package pins, HSE или возможность двух OTA slots. Raw device ID сохранён
+как сообщён; core r0p1 не выдаётся за chip silicon/package revision. Напряжение —
+один сообщённый результат, не проверка питания под нагрузкой. Подробные пределы
+доказательств — [owner report](evidence/hardware/stm32f407-owner-swd/README.md).
+
+Следующая программная часть — [startup/sections/no-I/O foundation](STM32_STARTUP.md).
+Synthetic link fixture не использует эту1MiB как production layout и не резервирует
+bootloader/app addresses. Hardware startup/clock/GPIO/CAN остаются открытыми.
 
 ## Границы доказательств
 

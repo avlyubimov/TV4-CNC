@@ -10,8 +10,10 @@
   Flash 16 МБ, PSRAM 8 МБ по сообщению ROM/esptool. ESP-IDF 6.1.1, LVGL 9;
   5.3.2 — проверенный резерв. HMI, Wi-Fi, будущие microSD и OTA.
 - Motion: **DevEBox STM32F4VX_M Ver. 2.0 получена**, владелец уточнил STM32F407VGT6;
-  фактические Flash/RAM/секторы, кварц и pinout требуют проверки. STEP/DIR будет на таймерах STM32,
-  не на ESP32. PR #7 слит: добавлено переносимое ядро/host tests; board image пока нет.
+  владелец подтвердил SWD/ST-Link V2, Cortex-M4r0p1, ID0x101f6413, Flash1024KiB,
+  3,252V и backup1048576bytes/vector structure PASS. Package/RAM/CCM/HSE/
+  секторы/pinout/GPIO/CAN ещё требуют проверки. STEP/DIR будет на таймерах STM32,
+  не на ESP32. PR #7 слит: переносимое ядро/host tests; board image пока нет.
 - Blue Pill STM32F103C8T6 — отдельный bench: владелец подтвердил ST-Link V2,
   OpenOCD 0.12.0, SWD/64 КиБ Flash и локальный backup. Не замена F407.
 - Один closed-loop NEMA23 заказан и ещё не получен; второго двигателя и
@@ -86,3 +88,8 @@ caller/production floors. На плате остаётся ordinary8f0d899.
 source SHA/tree, app/ELF/config hashes и точный SDK/profile; CI сохраняет
 проверяемый metadata-only artifact каждого из8 вариантов. Actions закреплены
 полными SHA. Подпись/публикация binary/релиза и установка ещё не включены.
+
+[STM32 startup foundation](docs/STM32_STARTUP.md) продолжает mainb19a40b после
+PR #1–27: owner SWD facts, generic init/reset/no-I/O и synthetic link/fault tests.
+Реальная board memory/vector/clock map и CAN bootloader ещё не утверждены;
+следующая последовательность — [NEXT_STAGE](docs/NEXT_STAGE.md). Плата не прошивается.

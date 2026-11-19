@@ -139,8 +139,19 @@ Factory fallback — отдельный recovery, не утверждение, �
 
 ## STM32F407: CAN bootloader
 
-До кода Flash driver нужны фактические part number, Flash/RAM, секторная карта,
-кварц, vector placement и решение по памяти. **Адресов/размеров F407 в PR-01 нет**.
+После mainb19a40b [владелец подтвердил](evidence/hardware/stm32f407-owner-swd/README.md)
+SWD/ST-Link V2, Cortex-M4r0p1, raw ID0x101f6413, Flash1024KiB,3,252V и backup
+1048576bytes/vector structure PASS. Размер Flash больше не UNKNOWN; package,
+RAM/CCM, HSE, erase geometry/protection, physical GPIO/CAN и restore неизвестны.
+Этот результат не выбирает bootloader sectors, metadata address, app base или A/B.
+[Synthetic startup/link probe](STM32_STARTUP.md) не является прошивкой, Flash
+layout или проверкой jump/commit; адреса fixtures никогда не переносить в installer.
+
+До реального Flash driver нужны verified part/RAM/erase geometry/protection,
+vector placement, clock/reset/recovery и решение по памяти. HSE не обязателен
+для reviewed HSI-only пути, но частоты и пригодность CAN нужно подтвердить.
+**В PR-01 адресов/размеров F407 не выбирали**; owner1024KiB выше — новый факт,
+не готовая sector/slot map.
 A/B выбирать только если оба приложения и metadata помещаются в подтверждённые
 сектора. Иначе использовать staged образ и power-loss-safe recovery/commit;
 bootloader и его transport/crypto не зависят от motion app или наличия сети ESP32.

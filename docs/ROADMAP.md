@@ -1,7 +1,8 @@
 # План последовательной разработки TV4-CNC
 
-Актуально на 18 ноября 2026; состояние main после слияния PR #12 —
-[IMPLEMENTATION.md](IMPLEMENTATION.md). Рабочий HMI не переписывать заново.
+Обновлено после mainb19a40b, 19 ноября2026; PR #1–27 слиты, main CI зелёный.
+История и текущее ПО — [IMPLEMENTATION.md](IMPLEMENTATION.md); следующий
+STM32 этап — [NEXT_STAGE.md](NEXT_STAGE.md). Рабочий HMI не переписывать заново.
 Все новые этапы — отдельные ветки/небольшие PR, merge только с разрешения
 владельца. PR-01 слит; PR #13 слит, выполнен первый разрешённый baseline b93cf3b. Таблица не является разрешением
 на автоматическое выполнение/прошивку всех следующих этапов.
@@ -9,7 +10,7 @@
 | PR | Содержание | Приёмка / зависимости | Статус |
 |---|---|---|---|
 | PR-01 Architecture & Codex Rules | Root/scoped AGENTS, hardware status, OTA/release design, open questions, актуализация документов | Docs-only diff; нет firmware/settings/partition changes; отдельный PR и отчёт | Завершён, PR #6 слит |
-| PR-02 STM32 Firmware Foundation | CMake/Ninja/точный ARM GCC, CMSIS/HAL/LL, startup/linker, clock/GPIO/timer/DMA/watchdog abstractions, faults/state machine и host tests | Target/startup/linker только после идентификации MCU, Flash/RAM/кварца/секторов; иначе host foundation + явный blocker. Никаких приводов. CI size/static analysis без SWD | PR #7 слит: ядро/host tests/ARM compile-only; board image блокирован HSE/pinout/memory verification |
+| PR-02 STM32 Firmware Foundation | CMake/Ninja/точный ARM GCC, reviewed startup/linker, clock/GPIO/timer/DMA/watchdog abstractions, faults/state machine и host tests | Реальный board profile после package/RAM/vector/clock review; секторная карта нужна для bootloader/Flash writer. Никаких приводов. CI без SWD | PR #7 слит. Owner подтвердил SWD/core/Flash1024KiB/backup; PR-02b: startup objects/no-I/O/sections + synthetic link tests. Board image ещё блокирован, HSE/GPIO/CAN не проверены |
 | PR-03 ESP32 Performance Diagnostics | Дополнить существующие метрики, reset/watchdog/reconnect/queue counters, CPU/PSRAM/stacks, export | Не дублировать dashboard/main logs. Измерить физическую touch-to-display отдельно, собрать baseline и soak/fault results | PR #8 слит: instrumentation/ресурсы/worker serial export; per-core CPU и аппаратные baseline/soak ещё открыты |
 | PR-04 ESP32 OTA Foundation | Плановая USB-миграция, otadata, A/B, HTTPS, подпись/хеш/compatibility, self-test и rollback | Проверенный backup, trusted key provisioning, migration/recovery review; power-loss/bad-signature/wrong-hardware tests. Разметку не менять app OTA. Firmware install только отдельно разрешён | PR #9–13 слиты; read-only session. Runtime worker/UI/native install/rollback/USB migration ещё не реализованы |
 | PR-05 GitHub Release Pipeline | Build matrix, versioned artifacts, signed manifest, checksums, release notes, prerelease/stable | Публикация только после CI и явного owner approval на SHA/tag/канал/артефакты; secrets/protected environment design; никакой фиктивной STM32 bin | PR-05a: unsigned metadata-only review bundles, app/ELF/output checks, exact source и pinned Actions; signing/publication ещё не реализованы |
@@ -26,8 +27,9 @@ UI-каркас обновлений допустим в своём PR, но н�
 
 ## Сохранённые инженерные milestones
 
-- M0: база документов/backup. ESP32 backup завершён; Blue Pill backup сообщён;
-  restore обоих, идентификация F407 и аппаратные unknowns остаются открыты.
+- M0: база документов/backup. ESP32 backup завершён; Blue Pill и F407 backups
+  сообщены; F407 SWD/core/Flash1024KiB подтверждены владельцем. Restore/SHA F407,
+  маркировка/RAM/HSE/секторы и аппаратные unknowns остаются открыты.
 - M1: работающий HMI/software simulation и матрица SDK; display наблюдался,
   Wi-Fi input/connect fix — PR #5; commissioning сенсора/метрик ещё не завершён.
 - M2: CAN bench и fault injection; сейчас только inert host envelope,
@@ -116,3 +118,12 @@ app↔ELF/clean source/display version, детерминированный metad
 независимый verifier и negative tests, интеграция в8 CI jobs и SHA-pinned Actions.
 Обычная factory2MiB layout остаётся; SemVer/key/license/release approval и runtime
 OTA/migration gates не подменяются успешным review artifact. Аппаратных операций нет.
+
+## PR-02b — после owner SWD F407
+
+[Owner evidence](evidence/hardware/stm32f407-owner-swd/README.md) закрывает прежнее
+UNKNOWN по SWD/core/device ID/Flash capacity. [Startup foundation](STM32_STARTUP.md)
+проверяет portable init/no-I/O и Cortex-M4 reset/link sections на synthetic map,
+сохраняя блокировку board image. Следом нужен reviewed RAM/vector/clock/board
+contract; HSE можно отложить при отдельно принятом HSI-only решении. CAN bootloader
+и OTA sectors не резервируются до geometry/recovery review; motion запрещён.

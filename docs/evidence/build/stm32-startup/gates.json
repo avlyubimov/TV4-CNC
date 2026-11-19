@@ -1,0 +1,27 @@
+{
+  "cases": [
+    {
+      "case": "board-OFF",
+      "exit_code": 1,
+      "expected_error": "F407 board image blocked",
+      "status": "PASS"
+    },
+    {
+      "case": "board-ON",
+      "exit_code": 1,
+      "expected_error": "F407 board image blocked",
+      "status": "PASS"
+    },
+    {
+      "case": "host-probe",
+      "exit_code": 1,
+      "expected_error": "requires the pinned ARM toolchain",
+      "status": "PASS"
+    }
+  ],
+  "firmware_bin": false,
+  "compiler_abi_cache": [
+    "build-motion-arm/CMakeFiles/4.2.3/CMakeDetermineCompilerABI_C.bin",
+    "build-motion-probe/CMakeFiles/4.2.3/CMakeDetermineCompilerABI_C.bin"
+  ]
+}

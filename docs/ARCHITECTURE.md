@@ -80,6 +80,11 @@ owner gate после CI. Production-подпись, STM32 firmware и OTA capab
 
 ## Производительность и дальнейшая проверка
 
+STM32 после mainb19a40b: owner подтвердил SWD/core/Flash1024KiB/backup;
+[startup foundation](STM32_STARTUP.md) содержит только generic building blocks
+и synthetic link probe. Полный device memory/vector/clock profile и physical
+GPIO/CAN не подтверждены; board image/bootloader/motion не активируются.
+
 Частоты RGB scanout, LVGL redraw и coordinate updates различаются. Цели:
 feedback <50 мс, 30+ FPS где достижимо, координаты 20–30 Гц; это не результаты.
 В [RUNTIME_DIAGNOSTICS.md](RUNTIME_DIAGNOSTICS.md) перечислены текущие метрики

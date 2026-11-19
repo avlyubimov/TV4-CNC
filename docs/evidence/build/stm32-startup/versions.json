@@ -1,0 +1,24 @@
+{
+  "base": "b19a40be33f6a122d723e7f3ff1ad3a63f9cef0a",
+  "host": {
+    "gcc": "gcc (Ubuntu 15.2.0-16ubuntu1) 15.2.0",
+    "cmake": "cmake version 4.2.3",
+    "ninja": "1.13.2",
+    "python": "Python 3.14.4",
+    "openssl": "OpenSSL 3.5.5 27 Jan 2026 (Library: OpenSSL 3.5.5 27 Jan 2026)"
+  },
+  "local_arm": {
+    "gcc": "arm-none-eabi-gcc (15:14.2.rel1-1) 14.2.1 20241119",
+    "binutils": "GNU ld (2.45.50.20251209-1ubuntu1+23build1) 2.45.50.20251209",
+    "source": "Installed Ubuntu compiler package, not official archive"
+  },
+  "ci_arm": {
+    "release": "14.2.Rel1",
+    "gcc": "14.2.1",
+    "archive_sha256": "62a63b981fe391a9cbad7ef51b17e49aeaa3e7b0d029b36ca1e9c3b2a9b78823",
+    "source": "official developer.arm.com archive; verified by CI"
+  },
+  "new_vendor_dependencies": false,
+  "device_access": false,
+  "deployable_board_image": false
+}
