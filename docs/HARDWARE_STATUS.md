@@ -113,3 +113,7 @@ budget. Lowest window sample уже после TLS open; header phase не сн�
 После теста возвращён **ordinary rev12 8f0d899**,SDK6.1.1,3/3 hashes verified;
 UART больше не открывали, владелец подтвердил HMI/touch/Wi-Fi. Это текущая запись.
 Worst-case/failure/load/soak/CPU/OTA memory budget остаются открытыми.
+
+PR-04m [добавляет программный resource guard](OTA_RESOURCE_GUARD.md), native
+sampler только compiled/linked. Новых device/serial/reset/SNTP/HEAD операций
+нет, текущая запись ordinary8f0d899 и её измерения не меняются.

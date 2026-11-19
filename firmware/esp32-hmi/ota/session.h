@@ -2,6 +2,7 @@
 #include "https.h"
 #include "envelope.h"
 #include "image_stream.h"
+#include "resource_guard.h"
 /* Read-only, single worker-owned operation. No task, UI, storage or install.
  * Zero initialize once; reset after every terminal result before reuse.
  * Request/context/strings must remain immutable outside the session workspace.
@@ -12,7 +13,7 @@ typedef enum { TV4_SESSION_IDLE,TV4_SESSION_MANIFEST,TV4_SESSION_ENVELOPE,
     TV4_SESSION_FAILED,TV4_SESSION_CANCELLED } tv4_session_state;
 typedef enum { TV4_SESSION_NONE,TV4_SESSION_ARGUMENT,TV4_SESSION_TRANSPORT,
     TV4_SESSION_POLICY,TV4_SESSION_FORMAT,TV4_SESSION_TIMEOUT,
-    TV4_SESSION_CANCEL } tv4_session_error;
+    TV4_SESSION_CANCEL,TV4_SESSION_RESOURCE } tv4_session_error;
 typedef struct {
     tv4_session_state state,failed_stage;
     tv4_session_error error;
@@ -48,7 +49,17 @@ typedef struct {
     char envelope_url[TV4_HTTP_URL_MAX+1];
 } tv4_ota_session;
 /* Returns true only for CANDIDATE_READY / IMAGE_VERIFIED. All downloaded data
- * remains read-only; IMAGE_VERIFIED is integrity/format, not bootability. */
+ * remains read-only; IMAGE_VERIFIED is integrity/format, not bootability.
+ * Legacy portable coordinator: no resource admission. Not a runtime enable gate. */
 bool tv4_ota_session_run(tv4_ota_session *,const tv4_session_request *,const tv4_session_io *);
+/* Resource-checked entry for future worker integration, not runtime activation.
+ * Policy is immutable; reader/context outlive run. Report is writable by this
+ * runner only, disjoint from workspace/inputs, same worker. No default floors.
+ * Checks before/after fetch/crypto/finish and in consumers, not inside TLS/SDK.
+ * Resource failure is sticky through cleanup; candidate/metadata/HTTP cleared,
+ * hash contexts closed.
+ * Report is separate so the bounded session workspace does not grow. */
+bool tv4_ota_session_run_guarded(tv4_ota_session *,const tv4_session_request *,const tv4_session_io *,
+    const tv4_ota_resource_policy *,tv4_ota_resource_reader,void *,tv4_ota_resource_report *);
 /* Single owner, outside run only. Releases hash contexts and clears all state. */
 void tv4_ota_session_reset(tv4_ota_session *);

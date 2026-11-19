@@ -101,3 +101,10 @@ SNTP/HEAD200/cleanup PASS,window internal min5307/stack watermark1840bytes,
 Следующий программный шаг — review remaining handshake/internal allocations/
 call stack и bounded resource admission/failure перед runtime OTA session/body.
 Не превращать один положительный test в production reserve/soak approval.
+
+## PR-04m — bounded resource admission
+
+[Resource guard](OTA_RESOURCE_GUARD.md): reviewed local policy/current heap/stack,
+обязательные inputs нового guarded session entry, sticky failure/candidate revoke
+на phase/chunk boundaries. Legacy API и target workspace34000 сохранены.
+Нет runtime worker/body/install activation; native budget/load/fault gates открыты.

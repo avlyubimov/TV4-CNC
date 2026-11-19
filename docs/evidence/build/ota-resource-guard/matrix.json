@@ -1,0 +1,82 @@
+[
+  {
+    "sdk": "6.1.1",
+    "profile": "headless",
+    "app_bytes": 1055968,
+    "project_version": "475be10-dirty",
+    "allocator": "internal-only",
+    "certificate_dates": false,
+    "workspace_bytes": 34000,
+    "symbols": "PASS"
+  },
+  {
+    "sdk": "6.1.1",
+    "profile": "rev12",
+    "app_bytes": 1574128,
+    "project_version": "475be10-dirty",
+    "allocator": "internal-only",
+    "certificate_dates": false,
+    "workspace_bytes": 34000,
+    "symbols": "PASS"
+  },
+  {
+    "sdk": "6.1.1",
+    "profile": "rev12-memory-bench",
+    "app_bytes": 1575792,
+    "project_version": "475be10-dirty",
+    "allocator": "internal-only",
+    "certificate_dates": false,
+    "workspace_bytes": 34000,
+    "symbols": "PASS"
+  },
+  {
+    "sdk": "6.1.1",
+    "profile": "rev12-tls-bench",
+    "app_bytes": 1578960,
+    "project_version": "475be10-dirty",
+    "allocator": "spiram-only",
+    "certificate_dates": true,
+    "workspace_bytes": 34000,
+    "symbols": "PASS"
+  },
+  {
+    "sdk": "5.3.2",
+    "profile": "headless",
+    "app_bytes": 1070416,
+    "project_version": "1",
+    "allocator": "internal-only",
+    "certificate_dates": false,
+    "workspace_bytes": 34000,
+    "symbols": "PASS"
+  },
+  {
+    "sdk": "5.3.2",
+    "profile": "rev12",
+    "app_bytes": 1529872,
+    "project_version": "1",
+    "allocator": "internal-only",
+    "certificate_dates": false,
+    "workspace_bytes": 34000,
+    "symbols": "PASS"
+  },
+  {
+    "sdk": "5.3.2",
+    "profile": "rev12-memory-bench",
+    "app_bytes": 1531600,
+    "project_version": "1",
+    "allocator": "internal-only",
+    "certificate_dates": false,
+    "workspace_bytes": 34000,
+    "symbols": "PASS"
+  },
+  {
+    "sdk": "5.3.2",
+    "profile": "rev12-tls-bench",
+    "app_bytes": 1534864,
+    "project_version": "1",
+    "allocator": "spiram-only",
+    "certificate_dates": true,
+    "workspace_bytes": 34000,
+    "symbols": "PASS"
+  }
+]

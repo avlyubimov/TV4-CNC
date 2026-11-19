@@ -68,3 +68,8 @@ docs/BOARD_ADAPTER.md, docs/RUNTIME_DIAGNOSTICS.md и docs/OTA_ARCHITECTURE.md.
 - Headroom test8f0d899: HEAD200 PASS,window min5307/history4204/stack1840bytes.
   Это не production/worst-case/load approval; после одного90s capture возвращён
   ordinary8f0d899,owner HMI PASS. Новые device operations только отдельно согласовать.
+
+- PR-04m: будущий runtime entry — tv4_ota_session_run_guarded с reviewed local
+  policy/reader/report; legacy run не выполняет resource admission. Пока новых
+  callers нет. Boundary samples не reservation/peak trace/overflow protection;
+  не выводить production floors из HEAD minimum. Workspace34000 сохраняется.

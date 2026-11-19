@@ -65,3 +65,10 @@ worker всё ещё отсутствует, production TLS budget не выбр
 PR-04h: native tv4_https_read требует отдельный [time anchor](TLS_TIME_GATE.md).
 Будущий io.fetch adapter передаёт worker-owned anchor и serialized UTC updates;
 одного session_request.trusted_time недостаточно. Session не provisioning UTC.
+
+## PR-04m — ресурсный entry
+
+[tv4_ota_session_run_guarded](OTA_RESOURCE_GUARD.md) требует reviewed local
+heap/stack policy/reader/report, проверяет phase/chunk boundaries и не публикует
+candidate после resource failure. Старый run остаётся portable coordinator без
+этой проверки. Workspace не вырос; никаких runtime callers/install не добавлено.

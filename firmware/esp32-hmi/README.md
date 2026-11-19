@@ -163,3 +163,7 @@ compact online getter и finite stage diagnostics. Stack/TLS/DMA reserve пре�
 [Новый test8f0d899](../../docs/evidence/hardware/2026-11-19-8f0d899-headroom/README.md)
 подтвердил HEAD200 и наблюдаемый запас5307/window/1840stackbytes. Production
 budget открыт; текущая запись ordinary8f0d899,owner HMI/touch/Wi-Fi PASS.
+
+PR-04m: [resource-checked session](../../docs/OTA_RESOURCE_GUARD.md) с local
+reviewed policy/current heap/stack и sticky failure. Native sampler только
+compile/link, runtime callers/production floors не добавлены; плата ordinary8f0d899.

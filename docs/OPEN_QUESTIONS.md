@@ -101,3 +101,8 @@ HEAD200 PASS,internal window minimum5307/history4204,worker watermark1840bytes.
 oversized headers; total5587>RX2048 не доказывает fragmentation одного поля.
 Самый низкий window minimum уже после TLS open; review allocations/admission
 нужен до runtime session/body. На плате ordinary8f0d899,owner HMI PASS.
+
+PR-04m [добавляет контракт resource admission](OTA_RESOURCE_GUARD.md), но не
+назначает floors из8f0d899 minima. Native guarded body/session budget/stack worst
+case/inside-handshake peak и UI/load/failure/soak остаются открыты. Snapshot
+не reservation и не защита от transient OOM/overflow до возврата SDK.

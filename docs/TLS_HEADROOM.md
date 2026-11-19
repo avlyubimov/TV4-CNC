@@ -83,3 +83,9 @@ stack watermark912→1840bytes. Новый runtime результат относ
 не production/CPU/worst-case budget. Phase low уже после TLS open; headers не
 уменьшили minimum. Controlled single-field fragmentation/negative/load/soak ещё
 открыты. Возвращён ordinary8f0d899,owner HMI/touch/Wi-Fi PASS,разрешение исполнено.
+
+## PR-04m — ресурсная проверка следующего уровня
+
+[Guarded session contract](OTA_RESOURCE_GUARD.md) добавляет pure heap/stack
+policy и проверки границ сессии. Не назначает production floors из этой одной
+HEAD пробы, не включает runtime fetch/body и не ловит все transient SDK peaks.
