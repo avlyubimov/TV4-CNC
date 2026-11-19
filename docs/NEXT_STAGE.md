@@ -1,6 +1,6 @@
-# Следующий этап: STM32F407 startup и board contract
+# Следующий этап: STM32 update verification и board contract
 
-База: mainb19a40b, PR #1–27 слиты, четыре workflow main PASS. ESP32 HMI,
+База: main `74a7af9`, PR #1–28 слиты, четыре workflow main PASS. ESP32 HMI,
 Wi-Fi/LVGL/SDK matrix, read-only OTA и CI candidates уже существуют; заново
 реализовывать их вместо STM32 foundation не нужно. План ниже не разрешает
 доступ к устройству или прошивку.
@@ -12,7 +12,7 @@ ST-Link V2/SWD, Cortex-M4r0p1, raw device ID0x101f6413, Flash1024KiB,
 напряжение3,252V, backup1048576bytes и structural vector check PASS.
 Агент их не перечитывал. Путь/дамп/непереданный SHA не публикуются.
 
-## Текущая программная часть PR-02b
+## Уже слитая программная часть PR-02b
 
 [Контракт](STM32_STARTUP.md): portable data/BSS init и no-I/O platform,
 Cortex-M4 reset object, linker sections без MEMORY/default board addresses,
@@ -24,6 +24,23 @@ supervisor остаётся FAULT даже после healthy inputs/self-test/A
 Synthetic addresses/stack/64-byte core vectors — только test fixture. Их нельзя
 использовать как1MiB layout платы, пример резервирования bootloader или OTA slot.
 BOARD_IMAGE=ON продолжает fail. Compile/link PASS не означает аппаратный запуск.
+
+## PR-07a в этой ветке
+
+[Logical update transport](STM32_UPDATE_TRANSPORT.md) готовит обе стороны
+stop-and-wait: identity/cursors/CRC-32C, bounded retry/deadlines, local consumer
+completion перед ACK. Проверено только в памяти на ПК; нет production wire
+format, driver, Flash writer, доверенной проверки образа, COMMIT или jump.
+COMPLETE_UNVERIFIED не запускает install/motion и не подтверждает физический
+останов. Включения этого модуля в ESP32 runtime/STM32 startup нет.
+
+Следующий независимый software шаг: спроектировать bootloader-local verified
+metadata/image admission с обязательными signature/SHA/length/hardware/protocol
+и recovery gates. Crypto backend — стандартная проверенная библиотека с
+зафиксированной версией/лицензией; production keys/context не подставлять из tests.
+Не добавлять writer/commit до reviewed erase/protection/recovery decision.
+Boot/transfer uniqueness, fresh quiescent proof и raw CAN codec/fragmentation
+должны пройти отдельный review. Ни ID, ни bitrate, ни GPIO пока не назначены.
 
 ## Что требуется для следующего board-only build
 
@@ -56,6 +73,7 @@ ESP32 bounded transport/cache → независимый F407 bootloader, кот
 нужно fresh session-bound подтверждение остановленных осей/шпинделя/программы;
 no-I/O stub, SIMULATION и ACK доставки его не заменяют. Hardware E-stop независим.
 
-Приёмка текущего PR: docs согласованы с owner facts/unknowns; host/sanitizer,
-ARM/static/link/fault tests и CI PASS; нет hardware операций, firmware binary
-публикации, релиза или самостоятельного merge.
+Приёмка текущего PR: host/sanitizer 22 suites, bounded transport loss/fault/reset
+tests и ARM static/object/frame checks PASS; прежние startup/board gates и
+8-profile ESP CI сохраняются. Evidence — в docs/evidence/build/stm32-update-transport/.
+Нет hardware операций, firmware binary публикации, релиза или самостоятельного merge.

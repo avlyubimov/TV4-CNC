@@ -21,3 +21,16 @@ docs/OTA_ARCHITECTURE.md и docs/OPEN_QUESTIONS.md.
 - Никаких CAN ожиданий в UI callbacks и никакого STEP из CAN ISR.
   До появления трансиверов проверять всё с memory/mock transport.
 - PR-01 описывает требования, но не выделяет IDs и не меняет wire format.
+
+## PR-07a: программная граница
+
+Читать docs/STM32_UPDATE_TRANSPORT.md. update_session — logical structs, не
+CAN frames или утверждённая production version. Fixed block ceiling256 не
+задаёт Classic CAN fragmentation. Локальный begin/consumer ACK и opaque hash
+не заменяют независимые signature/SHA/compatibility/quiescent/recovery gates.
+У COMPLETE_UNVERIFIED нет install/commit/jump. Новых runtime callers, writer,
+пинов/IDs/bitrate или physical inhibit в этом этапе нет. Unique boot/transfer
+negotiation остаётся внешним обязательством; не переиспользовать identity.
+После reset требуется новый сеанс; volatile mock не доказывает durable recovery.
+Host tests используют только RAM/OpenSSL oracle; embedded crypto dependency
+не добавлять под видом CRC или вызова ESP32 verifier из F407 bootloader.

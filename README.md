@@ -93,3 +93,9 @@ source SHA/tree, app/ELF/config hashes и точный SDK/profile; CI сохр�
 PR #1–27: owner SWD facts, generic init/reset/no-I/O и synthetic link/fault tests.
 Реальная board memory/vector/clock map и CAN bootloader ещё не утверждены;
 следующая последовательность — [NEXT_STAGE](docs/NEXT_STAGE.md). Плата не прошивается.
+
+PR #28 со startup foundation слит в main `74a7af9`. Следующая часть в этой
+ветке — [PR-07a update transport](docs/STM32_UPDATE_TRANSPORT.md): независимые
+sender/receiver, bounded memory/retries/deadlines и RAM fault tests. Это ещё
+не CAN bootloader: нет wire driver, Flash writer, crypto/COMMIT/jump или
+runtime caller. Успешная передача имеет статус COMPLETE_UNVERIFIED.

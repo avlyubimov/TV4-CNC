@@ -33,6 +33,28 @@ jobs:
             firmware/stm32-motion/board/noio.c
           python3 tools/check_motion_size.py build-motion-arm/libtv4_motion_core.a | tee evidence/core-size.txt
           python3 tools/check_motion_size.py build-motion-arm/libtv4_motion_boot_support.a | tee evidence/boot-support-size.txt
+      - name: Compile bounded update transport (no CAN or Flash backend)
+        shell: bash
+        run: |
+          set -euo pipefail
+          cmake -S protocol/can -B build-update-arm -G Ninja \
+            -DCMAKE_TOOLCHAIN_FILE="$PWD/firmware/stm32-motion/cmake/arm-none-eabi.cmake" \
+            -DCMAKE_BUILD_TYPE=MinSizeRel
+          cmake --build build-update-arm
+          gcc -std=c11 -Wall -Wextra -Werror -Wconversion -Wshadow -Wstrict-prototypes \
+            -fanalyzer -fsyntax-only -Iprotocol/can protocol/can/update_session.c
+          python3 tools/check_motion_size.py build-update-arm/libtv4_update_transport.a | tee evidence/update-size.txt
+          arm-none-eabi-nm --undefined-only build-update-arm/libtv4_update_transport.a | tee evidence/update-symbols.txt
+          cat build-update-arm/CMakeFiles/tv4_update_transport.dir/update_session.c.su > evidence/update-stack.txt
+          python3 - <<'PY'
+          from pathlib import Path
+          symbols = Path('evidence/update-symbols.txt').read_text().splitlines()
+          undefined = {line.split()[-1] for line in symbols if line.split() and 'U' in line.split()}
+          assert undefined <= {'memcmp', 'memcpy', 'memmove', 'memset'}, undefined
+          rows = [line.split('\t') for line in Path('evidence/update-stack.txt').read_text().splitlines()]
+          assert rows and all(len(row) == 3 and row[2] == 'static' and int(row[1]) <= 128 for row in rows), rows
+          print('PASS: libc memory helpers only; individual compiler frames <=128 bytes, not total runtime stack')
+          PY
       - name: Link synthetic startup fixture and reject invalid layouts (no execution)
         shell: bash
         run: |
@@ -61,7 +83,7 @@ jobs:
           # file is not a board image and is excluded from the upload allowlist.
           python3 - <<'PY'
           from pathlib import Path
-          for directory in ('build-motion-arm', 'build-motion-probe'):
+          for directory in ('build-motion-arm', 'build-motion-probe', 'build-update-arm'):
               for path in Path(directory).rglob('*.bin'):
                   assert path.name == 'CMakeDetermineCompilerABI_C.bin' and 'CMakeFiles' in path.parts, path
           print('No firmware .bin; only permitted CMake compiler-ABI cache')
@@ -81,5 +103,8 @@ jobs:
             evidence/board-gate-OFF.txt
             evidence/board-gate-ON.txt
             evidence/host-probe-gate.txt
+            evidence/update-size.txt
+            evidence/update-symbols.txt
+            evidence/update-stack.txt
           if-no-files-found: error
           retention-days: 14

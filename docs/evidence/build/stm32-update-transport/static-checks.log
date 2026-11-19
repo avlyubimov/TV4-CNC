@@ -1,0 +1,1 @@
+PASS GCC -fanalyzer/warnings; no heap/HAL/driver imports; Cortex-M4 hard-float ABI; max individual compiler frame=64 bytes (not total stack)

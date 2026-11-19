@@ -39,3 +39,15 @@ write-free errors и запрет readiness реального supervisor с inc
 adapter. Полный root набор теперь20 CTest suites. Opt-in ARM motion_link_contract
 отдельно выполняет11 unittest cases: positive ELF/SP/Thumb/LMA/VMA/stack и
 negative memory/stack/constructor/corruption; ARM-код нигде не исполняется.
+
+PR-07a: update_session / update_loopback добавляют portable sender/receiver и
+RAM-only fault injection. Полный root набор теперь 22 CTest suites (включая
+LVGL и sanitizer variants). Есть 17 unit groups, CRC known vectors и collision,
+identity/cursor/length/retry/deadline/abort/clock checks; 2049 memory transfers
+с потерями DATA/ACK/final ACK, corruption/reorder/pending duplicates; 10 volatile
+reset cuts и truncated/partial consumer failures. Стандартный OpenSSL 3 SHA
+oracle проверяет полученные байты и отвергает изменённый payload с валидной CRC.
+Это не embedded signature verifier, physical CAN или power-loss Flash test.
+Конечный статус только COMPLETE_UNVERIFIED; runtime/install caller отсутствует.
+Контракт — [STM32_UPDATE_TRANSPORT](../docs/STM32_UPDATE_TRANSPORT.md),
+результаты — [evidence](../docs/evidence/build/stm32-update-transport/README.md).

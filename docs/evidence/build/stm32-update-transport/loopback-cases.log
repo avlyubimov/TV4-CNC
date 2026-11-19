@@ -1,0 +1,4 @@
+PASS 2049 memory transfers; lost DATA=4318 ACK=4360 (final=397) corrupt=3924 reorder=4338 pending duplicates=4004
+PASS altered payload + valid CRC completes transport only; SHA oracle rejects image
+PASS 10 volatile reset cut cases; stale sessions/ACK rejected; no resume
+PASS truncated stream / partial RAM consumer never reach completion

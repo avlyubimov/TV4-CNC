@@ -85,6 +85,13 @@ STM32 после mainb19a40b: owner подтвердил SWD/core/Flash1024KiB/b
 и synthetic link probe. Полный device memory/vector/clock profile и physical
 GPIO/CAN не подтверждены; board image/bootloader/motion не активируются.
 
+В PR-07a [logical update session](STM32_UPDATE_TRANSPORT.md) вынесен в
+независимую библиотеку protocol/can. Есть только sender/receiver и host RAM
+consumer, без зависимости от motion или hardware backend. ACK подтверждает
+cursor, а COMPLETE_UNVERIFIED — получение байтов; оба не являются доверенной
+проверкой образа, physical quiescent proof или install/START. Production wire
+negotiation/identity uniqueness и bootloader-local crypto/recovery ещё нужны.
+
 Частоты RGB scanout, LVGL redraw и coordinate updates различаются. Цели:
 feedback <50 мс, 30+ FPS где достижимо, координаты 20–30 Гц; это не результаты.
 В [RUNTIME_DIAGNOSTICS.md](RUNTIME_DIAGNOSTICS.md) перечислены текущие метрики

@@ -246,3 +246,18 @@ Mark SNTP_UNAUTHENTICATED после stop/sample/policy; нет startup/UI/TLS t
 rev12-tls-bench выполняет one-shot SNTP/verified HEAD и heap-window snapshots
 в worker. Ordinary profiles off, без response body/OTA install.
 [Policy, scope, evidence и hardware gate](UTC_TLS_BENCH.md).
+
+## PR-07a — host foundation для CAN update transport
+
+[Контракт](STM32_UPDATE_TRANSPORT.md): независимые logical sender/receiver,
+stop-and-wait, relative offset/sequence, CRC-32C, bounded retries/deadlines,
+двухфазный local consumer/ACK и RAM fault tests. Модуль не подключён к runtime
+ESP32/STM32 и не задаёт production wire protocol. Нет Flash map/writer/commit,
+signature/SHA verification на MCU, physical safe-state detector или jump.
+
+COMPLETE_UNVERIFIED означает только transport completion. Нужны независимые
+bootloader-local trusted metadata/image checks и свежий quiescent gate до
+интеграции writer; ACK доставки и opaque hash не заменяют их. Boot/transfer
+uniqueness после reset — будущая negotiation policy, не встроенная аутентификация.
+Существующие geometry/recovery/key/context/owner-install gates сохранены;
+адреса F407 Flash по-прежнему не резервируются.
