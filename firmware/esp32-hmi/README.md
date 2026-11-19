@@ -150,3 +150,8 @@ Mark SNTP_UNAUTHENTICATED после stop/sample/policy; нет startup/UI/TLS t
 rev12-tls-bench выполняет one-shot SNTP/verified HEAD и heap-window snapshots
 в worker. Ordinary profiles off, без response body/OTA install.
 [Policy, scope, evidence и hardware gate](../../docs/UTC_TLS_BENCH.md).
+
+PR-04k: [PSRAM-only mbedTLS / X.509 validity dates](../../docs/TLS_MEMORY_REVIEW.md)
+только в TLS bench overlay, не в обычном HMI. При старом sdkconfig необходимо
+перегенерировать именно этот профиль; compile/validator guard запрещает обход.
+Нового аппаратного результата нет. На плате ordinary b085abb.

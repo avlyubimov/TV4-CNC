@@ -29,8 +29,21 @@ def verify(build, profile, version):
             "memory probe must be enabled only for explicit bench profile")
     require(config.get("TV4_UTC_TLS_BENCH", False) == (profile == "rev12-tls-bench"),
             "UTC/TLS probe must be enabled only for explicit TLS bench profile")
-    if profile == "rev12-tls-bench":
+    tls_bench = profile == "rev12-tls-bench"
+    allocation_modes = {name for name in ("INTERNAL", "EXTERNAL", "DEFAULT", "CUSTOM", "IRAM_8BIT")
+                        if config.get(f"MBEDTLS_{name}_MEM_ALLOC", False)}
+    expected_allocation = "EXTERNAL" if tls_bench else "INTERNAL"
+    require(allocation_modes == {expected_allocation},
+            f"mbedTLS allocator must be {expected_allocation} for {profile}")
+    if tls_bench:
         require(config.get("MBEDTLS_CERTIFICATE_BUNDLE", False), "TLS bench requires CA bundle")
+        require(config.get("MBEDTLS_HAVE_TIME", False) and config.get("MBEDTLS_HAVE_TIME_DATE", False),
+                "TLS bench requires certificate validity-date checks, not only a local time anchor")
+        require(not config.get("ESP_TLS_INSECURE", False), "TLS bench forbids insecure TLS options")
+        require(config.get("MBEDTLS_ASYMMETRIC_CONTENT_LEN", False), "TLS bench requires explicit record sizes")
+        require(config.get("MBEDTLS_SSL_IN_CONTENT_LEN") == 16384 and
+                config.get("MBEDTLS_SSL_OUT_CONTENT_LEN") == 4096,
+                "TLS bench must retain 16384/4096-byte record payloads")
     if profile != "headless":
         for name, value in {"SPIRAM": True, "SPIRAM_MODE_OCT": True, "SPIRAM_SPEED": 80,
                             "SPIRAM_USE_MALLOC": True, "SPIRAM_MALLOC_ALWAYSINTERNAL": 16384,
@@ -60,6 +73,10 @@ def verify(build, profile, version):
         images[rel] = dict(bytes=len(image), sha256=hashlib.sha256(image).hexdigest())
     require(images["tv4_hmi.bin"]["bytes"] <= apps[0]["size"], "application exceeds factory partition")
     result = dict(profile=profile, sdk=version, target="esp32s3", flash_bytes=16*1024*1024,
+                  mbedtls_allocator="spiram-only" if tls_bench else "internal-only",
+                  mbedtls_certificate_dates=config.get("MBEDTLS_HAVE_TIME_DATE", False),
+                  tls_record_in=config.get("MBEDTLS_SSL_IN_CONTENT_LEN"),
+                  tls_record_out=config.get("MBEDTLS_SSL_OUT_CONTENT_LEN"),
                   memory_bench=config.get("TV4_OTA_MEMORY_BENCH", False), tls_bench=config.get("TV4_UTC_TLS_BENCH", False), psram="octal 80MHz" if profile != "headless" else "disabled", images=images, partitions=partitions,
                   device_access=False, physical_performance="not measured")
     (build / "validation.json").write_text(json.dumps(result, indent=2) + "\n")

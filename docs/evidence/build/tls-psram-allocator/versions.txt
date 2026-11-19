@@ -1,0 +1,4 @@
+gcc (Ubuntu 15.2.0-16ubuntu1) 15.2.0
+cmake version 4.2.3
+1.13.2
+OpenSSL 3.5.5 27 Jan 2026 (Library: OpenSSL 3.5.5 27 Jan 2026)

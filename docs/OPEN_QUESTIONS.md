@@ -71,3 +71,8 @@ peak/headroom и time provider, cache-off/full RAM stress и UART cause не з�
 memory): certificate/HTTP200/production peak не подтверждены. Следующий gate —
 review allocation capabilities/PSRAM/buffers без ослабления CA/time/DMA reserve,
 затем новое отдельно разрешённое испытание. На плате ordinary rev12 b085abb.
+
+PR-04k [готовит исправленный TLS diagnostic profile](TLS_MEMORY_REVIEW.md)
+(PSRAM-only allocator + SDK certificate dates). Старый local time anchor сам
+не включал X.509 expiry check. Runtime OOM/verified HEAD/production memory и
+security/performance gates не закрывать по compile/ELF/source review.

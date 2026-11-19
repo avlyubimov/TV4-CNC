@@ -163,3 +163,10 @@ rev12-tls-bench выполняет one-shot SNTP/verified HEAD и heap-window sn
 Нет успешного verified HEAD/HTTP200. Ordinary rev12 того же SHA возвращён,
 3/3 hashes verified; владелец подтвердил HMI/touch/Wi-Fi. Это измерение отказа,
 не allocator fix или разрешение runtime HTTPS/OTA; следующий gate — memory review.
+
+## PR-04k — изолированный TLS memory fix
+
+[TLS_MEMORY_REVIEW.md](TLS_MEMORY_REVIEW.md): native SDK external allocator,
+X.509 date checks и строгая artifact validation только для TLS diagnostic image.
+Остальные профили/internal reserve/record sizes сохранены. Нового аппаратного
+PASS нет; на плате ordinary b085abb. Это не runtime OTA/installer integration.

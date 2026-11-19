@@ -1,0 +1,19 @@
+
+BUILD/tv4_hmi.elf:     file format elf32-xtensa-le
+
+
+Disassembly of section .iram0.vectors:
+
+Disassembly of section .iram0.text:
+
+Disassembly of section .flash.text:
+
+420c4b30 <esp_mbedtls_mem_calloc>:
+420c4b30:	004136        	entry	a1, 32
+420c4b33:	02ad      	mov.n	a10, a2
+420c4b35:	03bd      	mov.n	a11, a3
+420c4b37:	04a4c2        	movi	a12, 0x404
+420c4b3a:	f7bb81        	l32r	a8, 420c2a28 <pp_timer_process+0x14c> (403761e4 <heap_caps_calloc>)
+420c4b3d:	0008e0        	callx8	a8
+420c4b40:	0a2d      	mov.n	a2, a10
+420c4b42:	f01d      	retw.n

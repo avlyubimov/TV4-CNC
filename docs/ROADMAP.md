@@ -68,3 +68,11 @@ SNTP PASS, TLS context allocation FAIL (-141 insufficient memory). Возвра�
 ordinary rev12 b085abb. Следующий шаг — review allocator/PSRAM/TLS memory
 с host/build проверками; новое аппаратное испытание требует нового разрешения. Production TLS budget не объявлять по одному
 снимку/endpoint: нужны ошибки/redirect-hosts/soak и ownership/performance review.
+
+## PR-04k — TLS PSRAM allocator / X.509 dates
+
+[Review и профиль](TLS_MEMORY_REVIEW.md): исправление причины b085abb allocation
+failure через штатный SDK PSRAM-only allocator. Только TLS bench; ordinary
+profiles/reserves/record sizes не меняются. Включена SDK certificate-date check,
+которую local anchor не заменяет. Software matrix/negative/ELF checks; новый
+hardware gate отдельно, до него runtime TLS/production budget остаются блокированы.
