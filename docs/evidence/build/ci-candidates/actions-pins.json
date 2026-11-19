@@ -1,0 +1,24 @@
+{
+  "date": "2026-11-19",
+  "method": "GitHub connector fetch_commit(ref=v4) and checkout/action.yml at resolved SHA",
+  "runtime": "node20",
+  "repositories": [
+    "actions/checkout",
+    "actions/upload-artifact"
+  ],
+  "resolved_v4": [
+    {
+      "sha": "11d5960a326750d5838078e36cf38b85af677262",
+      "message": "backport fixes to releases-v4 (#2524)",
+      "url": "https://github.com/actions/checkout/commit/11d5960a326750d5838078e36cf38b85af677262"
+    },
+    {
+      "sha": "ea165f8d65b6e75b540449e92b4886f43607fa02",
+      "message": "Merge pull request #685 from salmanmkc/salmanmkc/3-new-upload-artifacts-release\n\nUpdate to use artifact 2.3.2 package & prepare for new upload-artifact release",
+      "url": "https://github.com/actions/upload-artifact/commit/ea165f8d65b6e75b540449e92b4886f43607fa02"
+    }
+  ],
+  "permissions": "contents: read",
+  "publish_job": false,
+  "signing_secrets": false
+}

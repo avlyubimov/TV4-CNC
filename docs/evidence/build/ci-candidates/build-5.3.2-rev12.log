@@ -1,0 +1,5 @@
+Source 70416d936b95f09e4f99389e642add82f199234d
+./tools/build_idf.sh rev12 5.3.2 docker
+Bootloader binary size 0x5490 bytes. 0x2b70 bytes (34%) free.
+tv4_hmi.bin binary size 0x175810 bytes. Smallest app partition is 0x200000 bytes. 0x8a7f0 bytes (27%) free.
+Project build complete. To flash, run:

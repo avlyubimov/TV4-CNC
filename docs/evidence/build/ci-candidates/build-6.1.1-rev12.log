@@ -1,0 +1,5 @@
+Source 70416d936b95f09e4f99389e642add82f199234d
+./tools/build_idf.sh rev12 6.1.1 local
+Bootloader binary size 0x50b0 bytes. 0x2f50 bytes (37%) free.
+tv4_hmi.bin binary size 0x1804f0 bytes. Smallest app partition is 0x200000 bytes. 0x7fb10 bytes (25%) free.
+Project build complete. To flash, run:

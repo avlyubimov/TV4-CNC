@@ -1,0 +1,43 @@
+Test project <worktree>/build-host
+      Start  1: build_validation
+ 1/19 Test  #1: build_validation .................   Passed    0.03 sec
+      Start  2: build_candidate
+ 2/19 Test  #2: build_candidate ..................   Passed    0.44 sec
+      Start  3: core
+ 3/19 Test  #3: core .............................   Passed    0.00 sec
+      Start  4: wifi_profiles
+ 4/19 Test  #4: wifi_profiles ....................   Passed    0.00 sec
+      Start  5: render
+ 5/19 Test  #5: render ...........................   Passed    0.38 sec
+      Start  6: render_rgb565
+ 6/19 Test  #6: render_rgb565 ....................   Passed    0.38 sec
+      Start  7: diagnostics
+ 7/19 Test  #7: diagnostics ......................   Passed    0.00 sec
+      Start  8: ota_crypto
+ 8/19 Test  #8: ota_crypto .......................   Passed    0.00 sec
+      Start  9: ota_candidate
+ 9/19 Test  #9: ota_candidate ....................   Passed    0.19 sec
+      Start 10: ota_manifest
+10/19 Test #10: ota_manifest .....................   Passed    0.06 sec
+      Start 11: ota_stream
+11/19 Test #11: ota_stream .......................   Passed    0.00 sec
+      Start 12: ota_http
+12/19 Test #12: ota_http .........................   Passed    0.00 sec
+      Start 13: ota_session
+13/19 Test #13: ota_session ......................   Passed    0.01 sec
+      Start 14: ota_memory
+14/19 Test #14: ota_memory .......................   Passed    0.00 sec
+      Start 15: ota_time
+15/19 Test #15: ota_time .........................   Passed    0.00 sec
+      Start 16: ota_sntp
+16/19 Test #16: ota_sntp .........................   Passed    0.00 sec
+      Start 17: ota_tls_probe
+17/19 Test #17: ota_tls_probe ....................   Passed    0.00 sec
+      Start 18: ota_resource
+18/19 Test #18: ota_resource .....................   Passed    0.00 sec
+      Start 19: motion_supervisor
+19/19 Test #19: motion_supervisor ................   Passed    0.00 sec
+
+100% tests passed, 0 tests failed out of 19
+
+Total Test time (real) =   1.52 sec

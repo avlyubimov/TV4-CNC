@@ -1,0 +1,12 @@
+{
+  "tools/build_candidate.py": "a26a0d475f40d01863ec39aec1b6c3fff621416fa7d77182378e77a547dbfdd5",
+  "tools/esp_app_image.py": "448e7be9ac4bf4fb24f7594beab0e1052145c3446872d14543494291bf5fb26d",
+  "tools/check_idf_build.py": "e92e5528e7d843ba9be675b408d7cc8a928fce1e74afba1f885dad605865ae4a",
+  "tools/build_idf.sh": "f98a7dccfe98706d39b1251ae38adfa219671026fc94dfbcc7985afe40cf1bc3",
+  "tests/build_candidate_tests.py": "7670098548eadd8e5ce820c42abbd1255eaab7f3d76a4485ec7683b46427d6cd",
+  "CMakeLists.txt": "4d754f809d7432d0fc66301380ea19bb42a8750c699537174e5bbc1a18523dda",
+  ".github/workflows/docs.yml": "4ed16758a43e0861c24b886d950603fdc275cebe1726f0d4859e9c092de88f0d",
+  ".github/workflows/firmware.yml": "37b9097ab2cb83b3a4e7dbbe54c99cdb2162759c61080d9a0ab8c2d9e1463910",
+  ".github/workflows/host.yml": "e733770590e140127c4a1009fb899e233d5b858c485a7c3487841589885aa436",
+  ".github/workflows/motion.yml": "09cb93f37447526e2c598077d61000889f476047b2aa1ac58360ffaec7281c54"
+}

@@ -1,0 +1,21 @@
+test_cli_create_verify_and_reject_no_extra_files (__main__.CandidateTests.test_cli_create_verify_and_reject_no_extra_files) ... ok
+test_container_version_forwarding_without_running_container (__main__.CandidateTests.test_container_version_forwarding_without_running_container) ... ok
+test_full_matrix_deterministic_bundle_no_binary_or_private_paths (__main__.CandidateTests.test_full_matrix_deterministic_bundle_no_binary_or_private_paths) ... ok
+test_image_corruption_truncation_extra_bytes_and_wrong_sdk (__main__.CandidateTests.test_image_corruption_truncation_extra_bytes_and_wrong_sdk) ... ok
+test_inventory_damage_and_unexpected_files (__main__.CandidateTests.test_inventory_damage_and_unexpected_files) ... ok
+test_large_idf_description_is_bounded_but_never_exported (__main__.CandidateTests.test_large_idf_description_is_bounded_but_never_exported) ... ok
+test_rehashed_payload_still_must_match_expected_profile (__main__.CandidateTests.test_rehashed_payload_still_must_match_expected_profile) ... ok
+test_rehashed_validation_rejects_extra_fields_and_false_claims (__main__.CandidateTests.test_rehashed_validation_rejects_extra_fields_and_false_claims) ... ok
+test_repeat_output_preserves_existing_bundle (__main__.CandidateTests.test_repeat_output_preserves_existing_bundle) ... ok
+test_source_mismatch_dirty_and_untracked (__main__.CandidateTests.test_source_mismatch_dirty_and_untracked) ... ok
+test_stale_description_validation_elf_or_version (__main__.CandidateTests.test_stale_description_validation_elf_or_version) ... ok
+test_strict_json_bounds_and_nonregular_inputs (__main__.CandidateTests.test_strict_json_bounds_and_nonregular_inputs) ... ok
+test_structural_image_errors_even_with_recomputed_digest (__main__.CandidateTests.test_structural_image_errors_even_with_recomputed_digest) ... ok
+test_validation_api_does_not_rewrite_inputs (__main__.CandidateTests.test_validation_api_does_not_rewrite_inputs) ... ok
+test_verify_expected_source_profile_and_immutable_gates (__main__.CandidateTests.test_verify_expected_source_profile_and_immutable_gates) ... ok
+test_wrong_profile_and_layout (__main__.CandidateTests.test_wrong_profile_and_layout) ... ok
+
+----------------------------------------------------------------------
+Ran 16 tests in 0.402s
+
+OK
