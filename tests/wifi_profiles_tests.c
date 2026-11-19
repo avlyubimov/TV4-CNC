@@ -30,8 +30,22 @@ static void link_regressions(void) {
     assert(wifi_problem_from_code(0)==WIFI_PROBLEM_NONE);
     assert(wifi_problem_from_code(-1)==WIFI_PROBLEM_OTHER);
 }
+static void online_regressions(void) {
+    wifi_service_host_fixture(NULL);assert(!wifi_service_online());
+    for(net_state_t state=NET_OFF;state<=NET_FAILED;state++) {
+        wifi_snapshot_t fixture={.state=state,.count=WIFI_UI_NETWORKS,.saved_count=WIFI_SAVED_MAX,.revision=17};
+        strcpy(fixture.ip,"192.0.2.1"); /* A stale address must not imply NET_ONLINE. */
+        memset(fixture.ssids,'x',sizeof(fixture.ssids));
+        wifi_service_host_fixture(&fixture);
+        assert(wifi_service_online()==(state==NET_ONLINE));
+        wifi_snapshot_t unchanged;assert(wifi_service_snapshot(&unchanged));
+        assert(!memcmp(&fixture,&unchanged,sizeof(fixture)));
+    }
+    wifi_service_host_fixture(NULL);assert(!wifi_service_online());
+}
 int main(void) {
     link_regressions();
+    online_regressions();
     wifi_profiles_t p;wifi_profiles_init(&p);assert(wifi_profiles_valid(&p));
     assert(!wifi_profiles_remember(&p,"","12345678"));
     assert(!wifi_profiles_remember(&p,"test","short"));

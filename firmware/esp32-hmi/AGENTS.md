@@ -58,3 +58,8 @@ docs/BOARD_ADAPTER.md, docs/RUNTIME_DIAGNOSTICS.md и docs/OTA_ARCHITECTURE.md.
   allocator/DMA reserve64KiB/records16384/4096 не менять ради PASS. Source/ELF
   validation не является hardware TLS/performance evidence; после отдельного
   теста1bfc7e2 получен HEAD200, но RAM/stack budget открыт. Плата1bfc7e2 ordinary.
+
+- PR-04l: TLS worker использует nonblocking wifi_service_online(), не UI list
+  snapshot в своём стеке. HTTP RX2048 только для HEAD bench, TLS records прежние.
+  Phase logging только в worker, не callbacks. Не выдавать compiler frame/RX
+  request size за runtime stack/heap budget или performance измерение.

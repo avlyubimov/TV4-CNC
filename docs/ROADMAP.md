@@ -85,3 +85,10 @@ Production reserve не утверждён: internal min3123/window,2408/history
 watermark912bytes. Следующий программный шаг — bounded memory/stack review
 перед runtime session/body. Не подключать installer или снижать CA/time/DMA
 reserve ради progress; новые hardware/fault/soak tests только отдельно согласовать.
+
+## PR-04l — TLS worker headroom
+
+[Изолированное исправление](TLS_HEADROOM.md): compact Wi-Fi online accessor
+вместо UI snapshot в стеке, HTTP RX2048, finite stage diagnostics. Stack6144,
+TLS16384/4096 и DMA reserve64KiB прежние. Software checks не закрывают runtime
+memory/stack/CPU gate; следующее exact-image испытание отдельно согласовать.

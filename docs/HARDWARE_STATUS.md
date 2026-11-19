@@ -97,3 +97,7 @@ historical min2408,worker stack watermark912/6144bytes. Нужен memory/stack 
 После пробы возвращён **ordinary rev12 1bfc7e2**,SDK6.1.1,3/3 hashes verified,
 UART больше не открывали. Владелец подтвердил HMI/touch/Wi-Fi. Это текущая запись;
 новых аппаратных операций/OTA install этот отчёт не разрешает.
+
+PR-04l [готовит TLS headroom fix](TLS_HEADROOM.md) без новых аппаратных операций.
+Текущая запись остаётся ordinary1bfc7e2; новую экономию peak heap/stack/CPU
+не считать аппаратно подтверждённой.

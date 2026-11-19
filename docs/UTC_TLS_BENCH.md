@@ -117,3 +117,10 @@ SNTP PASS, TLS HEAD HTTP200/cleanup/monitors PASS. Запас ограничен
 min3123/window,2408/history,stack watermark912bytes. Это не production budget
 и не body/OTA install acceptance. Возвращён ordinary rev12 1bfc7e2,owner HMI PASS;
 новых аппаратных операций отчёт не разрешает.
+
+## PR-04l — HTTP/stack headroom
+
+[Новый software review](TLS_HEADROOM.md) уменьшает HTTP RX до2048 и убирает
+полный Wi-Fi snapshot из стека TLS worker. Добавлены http_* phase snapshots,
+не из SDK callbacks. Старый transport PASS1bfc7e2 и его minima остаются
+историческими измерениями; нового runtime headroom/performance результата нет.

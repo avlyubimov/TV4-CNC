@@ -1,0 +1,4 @@
+1b8ff3ec24f62e7ac8ab1be64c74bb33706df4f0d5c79d2118c1d29842a1e648  firmware/esp32-hmi/ota/utc_tls_bench.c
+307d1db98a1655e89475b85a243c0ab672dcf25c7b38e06421d39c8629529412  firmware/esp32-hmi/network/wifi_service.c
+ae1987564d2606c2e80ac758a3d87b8719f861418cffeb4a3322230fdb7553e4  firmware/esp32-hmi/network/wifi_service.h
+6304e65010ea8e34c881e262de6cc0fb1226ae3d12cbccc36b258bae886ef350  tests/wifi_profiles_tests.c

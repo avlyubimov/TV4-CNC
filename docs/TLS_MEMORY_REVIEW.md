@@ -99,3 +99,9 @@ Rollback software PR — revert кода; сам software PR не меняет �
 software PR-04k. После пробы возвращён ordinary1bfc7e2,owner HMI/touch/Wi-Fi PASS.
 Реальный TLS window internal min3123bytes,historical min2408,stack watermark912:
 production memory/stack budget НЕ утверждён, следующий gate — review запаса.
+
+## Дальнейший review — PR-04l
+
+[TLS_HEADROOM.md](TLS_HEADROOM.md): уменьшение собственного worker frame через
+compact Wi-Fi status и HTTP RX2048, finite phase snapshots. Без изменения
+TLS fragment sizes/DMA reserve/stacks и без новых hardware результатов.
