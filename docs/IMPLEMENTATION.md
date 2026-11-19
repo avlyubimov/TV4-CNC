@@ -193,3 +193,10 @@ SNTP/HEAD200/cleanup PASS,window internal minimum5307/history4204,stack1840bytes
 Phase snapshots показывают recorded low уже после open. Production budget/CPU/
 worst-case не подтверждены. Ordinary rev12 того же8f0d899 возвращён,3/3 hashes
 verified,владелец подтвердил HMI/touch/Wi-Fi. Runtime body/install/rollback нет.
+
+## PR-04m — guarded read-only session entry
+
+[OTA_RESOURCE_GUARD.md](OTA_RESOURCE_GUARD.md): pure policy/checker, read-only SDK
+heap/stack sampler и session boundary checks с отдельным report. Проверки не
+резервируют память/не прерывают SDK и не дают production budget. Нет caller
+в app_main/UI/network tasks, новых native operations или изменения платы.

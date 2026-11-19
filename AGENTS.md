@@ -107,15 +107,15 @@ PR и Actions; не копировать код уже открытого PR. Д
 
 ## Текущее задание
 
-PR #24 слит, main8f0d899 CI зелёный. 19 ноября по отдельному разрешению испытан
-rev12-tls-bench8f0d899: SNTP/verified HEAD200/cleanup/monitors PASS. См.
-docs/evidence/hardware/2026-11-19-8f0d899-headroom/README.md. Window internal
-min5307/history4204/worker stack watermark1840bytes против3123/2408/912 у1bfc7e2.
-Наблюдаемый запас вырос, но production/worst-case/load/CPU budget не утверждён.
-Phase low уже после TLS open; review allocations/call stack/admission/failure
-нужен до runtime OTA session/body. Не ослаблять CA/time/DMA reserve ради PASS.
-После одного90s UART capture вернули ordinary rev12 того же8f0d899,3/3 hashes
-verified; владелец подтвердил HMI/touch/Wi-Fi. Текущий PR docs-only report/status,
-не изменение firmware. Разрешённые обе записи/reset/serial/UTC/network операции
-исполнены; не обращаться к плате вновь без нового согласования exact image/
-процедуры. Нет installer/production keys/release/eFuse/layout/motion/auto-merge PR.
+PR #25 слит, main475be10 CI зелёный. PR-04m добавляет pure local resource policy,
+read-only SDK heap/stack sampler и guarded read-only session boundary checks.
+См. docs/OTA_RESOURCE_GUARD.md. Отсутствующие/unreviewed/low resources fail closed,
+resource failure sticky через cleanup, candidate/data/hash contexts отзываются.
+Нет runtime callers/tasks/UI/SNTP/HTTPS/body/install activation и default floors.
+Legacy API/target workspace34000/config/board/locks/layout/security сохраняются.
+Проверить policy и signed-session boundary fault cases, host/sanitizers18tests,
+оба SDK ×4profiles/ELF/workspace. Snapshot не reservation/hard preemption или
+защита внутри SDK/crypto; production budget/load/fault/soak остаются открытыми.
+На плате ordinary8f0d899,owner HMI/touch/Wi-Fi PASS; разрешения исполнены.
+Новых device/flash/reset/serial/UTC/network probes без отдельного exact-image
+согласования не выполнять. Нет keys/release/eFuse/CAN/motion и auto-merge PR.

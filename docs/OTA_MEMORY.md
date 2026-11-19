@@ -73,3 +73,9 @@ internal memory pressure или улучшение FPS до аппаратных
 Allocation-only backend на [1c38d1e проверен: три цикла PASS](evidence/hardware/2026-11-18-1c38d1e-psram/README.md).
 Предыдущие UNKNOWN про allocation относятся к состоянию PR-04f до этого теста.
 TLS peak, production budget, cache-off/DMA/whole-PSRAM и soak остаются открытыми.
+
+## PR-04m — последующие resource boundaries
+
+[Resource guard](OTA_RESOURCE_GUARD.md) дополняет workspace acquire отдельной
+local heap/stack policy во время guarded session, не заменяя lease/lifetime.
+Нет резервирования TLS memory, default floors или гарантии внутри blocking SDK.

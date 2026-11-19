@@ -6,14 +6,27 @@ typedef struct {
     const tv4_session_request *request;
     const tv4_session_io *io;
     uint32_t started;
+    const tv4_ota_resource_policy *resource_policy;
+    tv4_ota_resource_reader resource_reader;
+    void *resource_context;
+    tv4_ota_resource_report *resources;
 } operation;
 static bool stop(operation *op) {
     tv4_session_result *r=&op->session->result;
+    if(op->resources && op->resources->result!=TV4_RESOURCE_OK) {
+        r->error=TV4_SESSION_RESOURCE;return true;
+    }
     if(op->io->cancelled && op->io->cancelled(op->io->context)) {
         r->error=TV4_SESSION_CANCEL;return true;
     }
     if((uint32_t)(op->io->now_ms(op->io->context)-op->started)>=op->request->total_timeout_ms) {
         r->error=TV4_SESSION_TIMEOUT;return true;
+    }
+    if(op->resources) {
+        if(op->resources->checks<UINT32_MAX)op->resources->checks++;
+        op->resources->result=tv4_ota_resource_check(op->resource_policy,op->resource_reader,
+            op->resource_context,&op->resources->sample);
+        if(op->resources->result!=TV4_RESOURCE_OK) {r->error=TV4_SESSION_RESOURCE;return true;}
     }
     return false;
 }
@@ -74,7 +87,8 @@ void tv4_ota_session_reset(tv4_ota_session *s) {
     if(!s)return;
     tv4_image_close(&s->image);memset(s,0,sizeof(*s));
 }
-bool tv4_ota_session_run(tv4_ota_session *s,const tv4_session_request *r,const tv4_session_io *io) {
+static bool run(tv4_ota_session *s,const tv4_session_request *r,const tv4_session_io *io,
+    const tv4_ota_resource_policy *policy,tv4_ota_resource_reader reader,void *context,tv4_ota_resource_report *report) {
     if(!s || s->result.state!=TV4_SESSION_IDLE)return false;
     if(!r || !io || !io->fetch || !io->now_ms || !r->trust ||
        !r->idle_timeout_ms || r->total_timeout_ms<r->idle_timeout_ms || r->total_timeout_ms>INT32_MAX ||
@@ -86,7 +100,7 @@ bool tv4_ota_session_run(tv4_ota_session *s,const tv4_session_request *r,const t
     if(!asset || strcmp(asset+1,"manifest.json")) {s->result.error=TV4_SESSION_ARGUMENT;return failed(s);}
     size_t prefix=(size_t)(asset+1-r->manifest_url);
     memcpy(s->envelope_url,r->manifest_url,prefix);memcpy(s->envelope_url+prefix,"manifest.sig",13);
-    operation op={s,r,io,io->now_ms(io->context)};
+    operation op={s,r,io,io->now_ms(io->context),policy,reader,context,report};
     s->result.state=TV4_SESSION_MANIFEST;
     if(!fetch(&op,r->manifest_url,sizeof(s->manifest),0,metadata))return failed(s);
     s->result.state=TV4_SESSION_ENVELOPE;
@@ -120,4 +134,17 @@ bool tv4_ota_session_run(tv4_ota_session *s,const tv4_session_request *r,const t
     tv4_image_close(&s->image);memset(&s->http,0,sizeof(s->http));
     if(stop(&op))return failed(s);
     s->result.state=TV4_SESSION_IMAGE_VERIFIED;return true;
+}
+bool tv4_ota_session_run(tv4_ota_session *s,const tv4_session_request *r,const tv4_session_io *io) {
+    return run(s,r,io,NULL,NULL,NULL,NULL);
+}
+bool tv4_ota_session_run_guarded(tv4_ota_session *s,const tv4_session_request *r,const tv4_session_io *io,
+    const tv4_ota_resource_policy *policy,tv4_ota_resource_reader reader,void *context,tv4_ota_resource_report *report) {
+    if(!s || s->result.state!=TV4_SESSION_IDLE)return false;
+    if(!report) {s->result.error=TV4_SESSION_ARGUMENT;return failed(s);}
+    *report=(tv4_ota_resource_report){0};
+    report->result=tv4_ota_resource_policy_validate(policy);
+    if(report->result==TV4_RESOURCE_OK && !reader)report->result=TV4_RESOURCE_ARGUMENT;
+    if(report->result!=TV4_RESOURCE_OK) {s->result.error=TV4_SESSION_RESOURCE;return failed(s);}
+    return run(s,r,io,policy,reader,context,report);
 }

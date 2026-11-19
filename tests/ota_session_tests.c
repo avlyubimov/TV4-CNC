@@ -106,10 +106,113 @@ static bool run(server *s,tv4_session_request r) {
     if(!ok)assert(!session.candidate.size_bytes && !session.candidate.url[0]);
     return ok;
 }
+typedef struct {
+    server *server;
+    unsigned reads,fail_at;
+    bool unavailable,stack_failure,cancel_after_failure,expire_after_failure;
+    bool failed_active,failed_after_close,failed_with_candidate;
+} resource_fixture;
+/* Synthetic test policy; never a production admission threshold. */
+static const tv4_ota_resource_policy resource_policy={true,32768,8192,65536,32768,2048};
+static bool resource_read(void *context,tv4_ota_resource_sample *out) {
+    resource_fixture *f=context;f->reads++;
+    *out=(tv4_ota_resource_sample){65536,32768,1024*1024,512*1024,8192};
+    if(f->reads!=f->fail_at)return true;
+    f->failed_active=f->server->opens>f->server->closes;
+    f->failed_after_close=f->server->closes && f->server->closes==f->server->opens;
+    f->failed_with_candidate=session.candidate.size_bytes!=0;
+    if(f->cancel_after_failure)f->server->cancel=true;
+    if(f->expire_after_failure)f->server->now+=10000;
+    if(f->unavailable)return false;
+    if(f->stack_failure)out->stack_watermark=resource_policy.stack_floor-1;
+    else {out->internal_free=resource_policy.internal_free_floor-1;out->internal_largest=8192;}
+    return true;
+}
+static bool guarded(server *s,tv4_session_request r,const tv4_ota_resource_policy *p,
+    tv4_ota_resource_reader reader,resource_fixture *f,tv4_ota_resource_report *report) {
+    tv4_session_io io={s,fetch,now,cancel};
+    bool ok=tv4_ota_session_run_guarded(&session,&r,&io,p,reader,f,report);
+    assert(s->opens==s->closes && !session.image.whole_hash.context && !session.image.body_hash.context);
+    assert(!session.manifest_length && !session.envelope_length);
+    for(size_t i=0;i<sizeof(session.http);i++)assert(!((const unsigned char *)&session.http)[i]);
+    if(!ok)assert(!session.candidate.size_bytes && !session.candidate.url[0]);
+    return ok;
+}
+static void resource_regressions(void) {
+    fixture();server s=healthy();resource_fixture f={.server=&s};tv4_ota_resource_report report;
+    assert(guarded(&s,request(),&resource_policy,resource_read,&f,&report));
+    assert(report.result==TV4_RESOURCE_OK && report.checks==f.reads && s.calls==3);
+    unsigned boundaries=f.reads,active=0,closed=0,candidate=0;assert(boundaries>20);
+    /* Reuse the SAME signed bytes: DER/base64 length can vary if re-signed. */
+    for(unsigned fail=1;fail<=boundaries;fail++) {
+        tv4_ota_session_reset(&session);s=healthy();f=(resource_fixture){.server=&s,.fail_at=fail};
+        assert(!guarded(&s,request(),&resource_policy,resource_read,&f,&report));
+        assert(session.result.error==TV4_SESSION_RESOURCE && session.result.state==TV4_SESSION_FAILED);
+        assert(report.result==TV4_RESOURCE_INTERNAL_FREE && report.checks==fail && f.reads==fail);
+        if(f.failed_active) {active++;assert(session.result.http==TV4_HTTP_CONSUMER);}
+        if(f.failed_after_close)closed++;
+        if(f.failed_with_candidate)candidate++;
+    }
+    assert(active && closed && candidate);
+    tv4_ota_session_reset(&session);s=healthy();f=(resource_fixture){.server=&s,.fail_at=boundaries,.stack_failure=true};
+    assert(!guarded(&s,request(),&resource_policy,resource_read,&f,&report));
+    assert(report.result==TV4_RESOURCE_STACK && session.result.failed_stage==TV4_SESSION_FINISHING);
+    tv4_ota_session_reset(&session);s=healthy();f=(resource_fixture){.server=&s,.fail_at=2,.unavailable=true};
+    assert(!guarded(&s,request(),&resource_policy,resource_read,&f,&report));
+    assert(report.result==TV4_RESOURCE_UNAVAILABLE && !report.sample.internal_free);
+    /* The first resource failure remains sticky even if cleanup frees memory,
+       or cancellation/deadline becomes visible after the failure. */
+    tv4_ota_session_reset(&session);s=healthy();f=(resource_fixture){.server=&s,.fail_at=2,.cancel_after_failure=true,.expire_after_failure=true};
+    assert(!guarded(&s,request(),&resource_policy,resource_read,&f,&report));
+    assert(session.result.error==TV4_SESSION_RESOURCE && report.checks==2 && f.reads==2);
+    tv4_ota_session_reset(&session);s=healthy();f=(resource_fixture){.server=&s};
+    tv4_ota_resource_policy p=resource_policy;p.reviewed=false;
+    assert(!guarded(&s,request(),&p,resource_read,&f,&report));
+    assert(report.result==TV4_RESOURCE_NOT_REVIEWED && !f.reads && !s.calls);
+    tv4_ota_session_reset(&session);s=healthy();
+    assert(!guarded(&s,request(),NULL,resource_read,&f,&report));
+    assert(report.result==TV4_RESOURCE_ARGUMENT && !s.calls);
+    tv4_ota_session_reset(&session);s=healthy();
+    assert(!guarded(&s,request(),&resource_policy,resource_read,&f,NULL));
+    assert(session.result.error==TV4_SESSION_ARGUMENT && !s.calls);
+    tv4_ota_session_reset(&session);s=healthy();
+    assert(!guarded(&s,request(),&resource_policy,NULL,&f,&report));
+    assert(report.result==TV4_RESOURCE_ARGUMENT && !s.calls);
+    tv4_ota_session_reset(&session);s=healthy();
+    assert(!guarded(&s,request(),&resource_policy,tv4_ota_resource_sample_current,&f,&report));
+    assert(report.result==TV4_RESOURCE_UNAVAILABLE && !s.calls);
+    tv4_ota_session_reset(&session);s=healthy();s.cancel=true;f=(resource_fixture){.server=&s,.fail_at=1};
+    assert(!guarded(&s,request(),&resource_policy,resource_read,&f,&report));
+    assert(session.result.state==TV4_SESSION_CANCELLED && !report.checks && !s.calls);
+    tv4_ota_session_reset(&session);s=healthy();f=(resource_fixture){.server=&s};
+    tv4_session_request r=request();r.verify_image=false;
+    assert(guarded(&s,r,&resource_policy,resource_read,&f,&report) && s.calls==2);
+    assert(session.result.state==TV4_SESSION_CANDIDATE_READY && report.result==TV4_RESOURCE_OK);
+    /* Active/terminal run is rejected without changing the prior report/result. */
+    unsigned saved=report.checks;
+    assert(!tv4_ota_session_run_guarded(&session,NULL,NULL,NULL,NULL,NULL,&report));
+    assert(session.result.state==TV4_SESSION_CANDIDATE_READY && report.checks==saved);
+    tv4_ota_session_reset(&session);s=healthy();f=(resource_fixture){.server=&s,.fail_at=saved,.stack_failure=true};
+    assert(!guarded(&s,r,&resource_policy,resource_read,&f,&report));
+    assert(report.result==TV4_RESOURCE_STACK && session.result.failed_stage==TV4_SESSION_AUTHENTICATING);
+    for(unsigned kind=0;kind<2;kind++) {
+        tv4_ota_session_reset(&session);s=healthy();s.expire_auth=kind==0;s.cancel_auth=kind==1;
+        f=(resource_fixture){.server=&s};
+        assert(!guarded(&s,request(),&resource_policy,resource_read,&f,&report));
+        assert(session.result.error==(kind?TV4_SESSION_CANCEL:TV4_SESSION_TIMEOUT));
+        assert(report.result==TV4_RESOURCE_OK && session.result.failed_stage==TV4_SESSION_AUTHENTICATING);
+    }
+    fixture();s=healthy();manifest[0]='[';f=(resource_fixture){.server=&s};
+    assert(!guarded(&s,request(),&resource_policy,resource_read,&f,&report));
+    assert(session.result.error==TV4_SESSION_POLICY && session.result.policy==TV4_OTA_BAD_SIGNATURE);
+    assert(report.result==TV4_RESOURCE_OK);
+    printf("Guarded signed session: resource fault at all %u boundaries, active/cleanup/authenticated candidate revocation PASS\n",boundaries);
+}
 int main(void) {
     key=EVP_PKEY_Q_keygen(NULL,NULL,"EC","prime256v1");assert(key);
     int public_length=i2d_PUBKEY(key,&public_key);assert(public_length==91);
     trust=(tv4_ota_context){"test-only","0.1.0","0.1.0","1.0.0",NULL,"tv4-16m-ab-v1",false,true,public_key,(size_t)public_length};
+    resource_regressions();
     fixture();server s=healthy();assert(run(&s,request()));
     assert(session.result.state==TV4_SESSION_IMAGE_VERIFIED && session.result.image_bytes==sizeof(binary));
     assert(s.calls==3 && s.stages[0]==TV4_SESSION_MANIFEST && s.stages[1]==TV4_SESSION_ENVELOPE && s.stages[2]==TV4_SESSION_IMAGE);

@@ -77,3 +77,7 @@ HTTP RX и собственный frame diagnostic worker.
 [Headroom test8f0d899](docs/evidence/hardware/2026-11-19-8f0d899-headroom/README.md)
 дал HEAD200 PASS,internal window min5307/worker watermark1840bytes. Теперь на
 плате **ordinary rev12 8f0d899**,owner HMI/touch/Wi-Fi PASS; production budget открыт.
+
+[PR-04m: resource-checked OTA session](docs/OTA_RESOURCE_GUARD.md) добавляет
+проверки local heap/stack policy на границах read-only сессии, без runtime
+caller/production floors. На плате остаётся ordinary8f0d899.
