@@ -107,12 +107,12 @@ PR и Actions; не копировать код уже открытого PR. Д
 
 ## Текущее задание
 
-PR #20 слит. 19 ноября разрешённый b085abb rev12-tls-bench испытан:
-SNTP PASS, TLS context allocation FAIL (-141 insufficient memory), см.
-docs/evidence/hardware/2026-11-19-b085abb-utc-tls/README.md. После одного90s UART
-capture возвращён ordinary rev12 b085abb, 3/3 hashes verified; владелец подтвердил
-HMI/touch/Wi-Fi. Это docs-only фиксация результата, не исправление allocator.
-Следующий программный шаг — review allocator capabilities/PSRAM/TLS buffers,
-не ослабляя CA/hostname/time/DMA reserves. Production TLS budget не подтверждён.
-Разрешение на обе записи/UTC/network/reset/capture исполнено; не обращаться
-к плате вновь без отдельного согласования exact image/операций. Не merge свой PR.
+PR #21 слит, main CI зелёный. PR-04k исправляет TLS diagnostic profile после
+b085abb OOM: штатный SDK PSRAM-only allocator, X.509 validity-date checks,
+compile/artifact/profile guards. См. docs/TLS_MEMORY_REVIEW.md. Только TLS
+bench overlay, обычные профили/internal reserves/record sizes не менять.
+Проверить host/negative/sanitizer и оба SDK × четыре профиля, ELF и exact locks.
+На плате остаётся b085abb ordinary rev12; нового hardware результата нет.
+Не обращаться к плате/не прошивать/reset/serial/SNTP/HEAD без нового разрешения
+на exact image/операции. Production TLS/OTA budget не объявлять по compile.
+Не создавать release/keys, не менять security/eFuse/layout/board и не merge PR.

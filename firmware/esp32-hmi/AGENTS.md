@@ -52,3 +52,8 @@ docs/BOARD_ADAPTER.md, docs/RUNTIME_DIAGNOSTICS.md и docs/OTA_ARCHITECTURE.md.
   Единственный owner SDK local heap minimum monitor; во время окон existing
   resources diagnostics видят window minima, после stop history восстанавливается.
   No body/auth/redirects; SNTP может менять UTC, source не authenticated.
+
+- PR-04k: TLS bench использует штатный SDK PSRAM-only allocator и X.509 date
+  checks. Choice глобальна для mbedTLS image, не per-client. Ordinary internal
+  allocator/DMA reserve64KiB/records16384/4096 не менять ради PASS. Source/ELF
+  validation не является hardware TLS/performance evidence; плата b085abb ordinary.

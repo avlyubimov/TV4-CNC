@@ -99,3 +99,12 @@ Verified HEAD/HTTP200/certificate success не достигнуты. Оба moni
 ради PASS. После одного90s capture возвращён ordinary rev12 того же b085abb,
 3/3 hashes verified; владелец подтвердил HMI/touch/Wi-Fi. Новых аппаратных
 операций это evidence не разрешает, production TLS budget остаётся блокирован.
+
+## Исправление после allocation failure
+
+[PR-04k: review allocator/проверки дат](TLS_MEMORY_REVIEW.md) выбирает PSRAM-only
+allocator и включает X.509 notBefore/notAfter только в TLS overlay. TLS records
+16384/4096 и internal DMA reserve64KiB сохранены. Исходный b085abb имел local
+UTC anchor, но SDK certificate-date check был выключен; старую формулировку
+«time-checked» не считать доказательством X.509 validity check. Новый image
+пока не испытывался на плате; runtime/production TLS gate остаётся открытым.

@@ -54,7 +54,8 @@ PR #18 добавил [проверку времени TLS](docs/TLS_TIME_GATE.m
 [19 ноября b085abb испытан](docs/evidence/hardware/2026-11-19-b085abb-utc-tls/README.md):
 SNTP PASS, TLS context allocation FAIL (insufficient memory). На плату возвращён
 ordinary rev12 b085abb; владелец подтвердил HMI/touch/Wi-Fi. Runtime HTTPS
-блокирован до allocator/PSRAM/memory review; остальные
+блокирован до новой аппаратной проверки. [Исправление TLS allocator/X.509 dates](docs/TLS_MEMORY_REVIEW.md)
+готовится только в diagnostic profile; остальные
 [аппаратные проверки](docs/HMI_BENCH_GATE.md) также открыты.
 
 ## Обязательные следующие подсистемы

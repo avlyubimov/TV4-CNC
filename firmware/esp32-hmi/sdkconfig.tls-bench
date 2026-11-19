@@ -1,2 +1,13 @@
 # Explicit network diagnostic image, no installer or production TLS budget.
 CONFIG_TV4_UTC_TLS_BENCH=y
+
+# SDK allocator is PSRAM-only, with no fallback into the display/DMA reserve.
+# This choice is global to mbedTLS in THIS diagnostic image, not per connection.
+CONFIG_MBEDTLS_EXTERNAL_MEM_ALLOC=y
+CONFIG_MBEDTLS_ASYMMETRIC_CONTENT_LEN=y
+CONFIG_MBEDTLS_SSL_IN_CONTENT_LEN=16384
+CONFIG_MBEDTLS_SSL_OUT_CONTENT_LEN=4096
+
+# The local UTC anchor does not replace X.509 notBefore/notAfter validation.
+CONFIG_MBEDTLS_HAVE_TIME=y
+CONFIG_MBEDTLS_HAVE_TIME_DATE=y

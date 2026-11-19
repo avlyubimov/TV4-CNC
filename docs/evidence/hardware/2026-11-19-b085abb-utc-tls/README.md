@@ -83,3 +83,8 @@ Production UTC policy/CA/redirect/failure/soak budget, OTA install/rollback,
 factory restore и physical performance targets остаются открытыми.
 Текущая запись — **b085abb ordinary rev12, probe off**. Это разрешение исполнено;
 новые записи/reset/serial/network испытания требуют отдельного согласования.
+
+Уточнение software review PR-04k: в sdkconfig этого b085abb был выключен
+MBEDTLS_HAVE_TIME_DATE. Anchor gate и SNTP PASS не означают X.509 date validation;
+handshake здесь не состоялся. [Дефект и изолированное исправление](../../../TLS_MEMORY_REVIEW.md).
+Исторические значения и FAIL сохраняются, новых аппаратных результатов нет.

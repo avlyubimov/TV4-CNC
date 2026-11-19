@@ -3,6 +3,12 @@
 #include "sdkconfig.h"
 #endif
 #if defined(ESP_PLATFORM) && CONFIG_TV4_UTC_TLS_BENCH
+#if !CONFIG_MBEDTLS_EXTERNAL_MEM_ALLOC || !CONFIG_SPIRAM
+#error "UTC/TLS bench requires the SDK PSRAM-only mbedTLS allocator"
+#endif
+#if !CONFIG_MBEDTLS_HAVE_TIME || !CONFIG_MBEDTLS_HAVE_TIME_DATE || !CONFIG_MBEDTLS_CERTIFICATE_BUNDLE
+#error "UTC/TLS bench requires certificate chain and validity-date verification"
+#endif
 #include "sntp_source.h"
 #include "wifi_service.h"
 #include "esp_http_client.h"
@@ -112,6 +118,8 @@ static bool monitor_stop(const char *stage) {
 static void worker(void *context) {
     (void)context;tv4_time_anchor anchor={0};bool passed=false;const char *stage="network";
     ESP_LOGW(TAG,"ONE UTC/HEAD probe: SNTP unauthenticated; global heap minima temporarily windowed; no body/install");
+    ESP_LOGI(TAG,"allocator=spiram tls_rx=%u tls_tx=%u cert_dates=1",
+        (unsigned)CONFIG_MBEDTLS_SSL_IN_CONTENT_LEN,(unsigned)CONFIG_MBEDTLS_SSL_OUT_CONTENT_LEN);
     uint32_t start=now_ms(NULL);wifi_snapshot_t wifi;bool online=false;
     while((uint32_t)(now_ms(NULL)-start)<15000) {
         if(wifi_service_snapshot(&wifi) && wifi.state==NET_ONLINE) {online=true;break;}

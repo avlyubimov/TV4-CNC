@@ -49,6 +49,8 @@ jobs:
               assert not any('tv4_ota_memory_bench_start' in line for line in output.splitlines()), 'Bench worker retained in ordinary image'
           if '${{ matrix.profile }}' == 'rev12-tls-bench':
               assert any('tv4_utc_tls_bench_start' in line and ' UND ' not in line for line in output.splitlines()), 'UTC/TLS bench entry missing'
+              for symbol in ['mbedtls_x509_time_cmp', 'mbedtls_x509_time_gmtime']:
+                  assert any(symbol in line and ' UND ' not in line for line in output.splitlines()), 'X.509 date check not linked: ' + symbol
           else:
               assert not any('tv4_utc_tls_bench_start' in line for line in output.splitlines()), 'UTC/TLS worker retained outside TLS bench'
           print('OTA symbols/profile gates verified; no installer enabled')

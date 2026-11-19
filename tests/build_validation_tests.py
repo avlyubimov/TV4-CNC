@@ -22,7 +22,8 @@ class BuildValidationTests(unittest.TestCase):
         for name in ["config", "partition_table", "bootloader"]:
             (self.root / name).mkdir()
         self.config = dict(ESPTOOLPY_FLASHSIZE="16MB", ESPTOOLPY_FLASHFREQ="80m", LV_COLOR_DEPTH=16,
-                           FREERTOS_HZ=1000, ESP_DEFAULT_CPU_FREQ_MHZ=240, TV4_BOARD_REV12=False)
+                           FREERTOS_HZ=1000, ESP_DEFAULT_CPU_FREQ_MHZ=240, TV4_BOARD_REV12=False,
+                           MBEDTLS_INTERNAL_MEM_ALLOC=True)
         (self.root / "project_description.json").write_text(json.dumps(dict(target="esp32s3", git_revision="v6.1.1")))
         header = bytearray(24)
         header[0] = 0xE9
@@ -84,12 +85,56 @@ class BuildValidationTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             self.check("rev12-tls-bench")
         self.config["MBEDTLS_CERTIFICATE_BUNDLE"] = True
+        self.config.update(MBEDTLS_INTERNAL_MEM_ALLOC=False, MBEDTLS_EXTERNAL_MEM_ALLOC=True,
+                           MBEDTLS_HAVE_TIME=True, MBEDTLS_HAVE_TIME_DATE=True,
+                           MBEDTLS_ASYMMETRIC_CONTENT_LEN=True,
+                           MBEDTLS_SSL_IN_CONTENT_LEN=16384, MBEDTLS_SSL_OUT_CONTENT_LEN=4096)
         self.assertTrue(self.check("rev12-tls-bench")["tls_bench"])
         self.config["TV4_OTA_MEMORY_BENCH"] = True
         with self.assertRaises(ValueError):
             self.check("rev12-tls-bench")
         with self.assertRaises(ValueError):
             self.check("rev12-memory-bench")
+
+    def tls_config(self):
+        self.config.update(TV4_BOARD_REV12=True, TV4_UTC_TLS_BENCH=True,
+                           SPIRAM=True, SPIRAM_MODE_OCT=True, SPIRAM_SPEED=80,
+                           SPIRAM_USE_MALLOC=True, SPIRAM_MALLOC_ALWAYSINTERNAL=16384,
+                           SPIRAM_MALLOC_RESERVE_INTERNAL=65536,
+                           MBEDTLS_INTERNAL_MEM_ALLOC=False, MBEDTLS_EXTERNAL_MEM_ALLOC=True,
+                           MBEDTLS_HAVE_TIME=True, MBEDTLS_HAVE_TIME_DATE=True,
+                           MBEDTLS_CERTIFICATE_BUNDLE=True, MBEDTLS_ASYMMETRIC_CONTENT_LEN=True,
+                           MBEDTLS_SSL_IN_CONTENT_LEN=16384, MBEDTLS_SSL_OUT_CONTENT_LEN=4096)
+
+    def test_tls_allocator_and_security_regressions(self):
+        self.tls_config()
+        good = copy.deepcopy(self.config)
+        for key, value in [("MBEDTLS_EXTERNAL_MEM_ALLOC", False), ("MBEDTLS_INTERNAL_MEM_ALLOC", True),
+                           ("MBEDTLS_DEFAULT_MEM_ALLOC", True), ("MBEDTLS_CUSTOM_MEM_ALLOC", True),
+                           ("MBEDTLS_IRAM_8BIT_MEM_ALLOC", True), ("MBEDTLS_CERTIFICATE_BUNDLE", False),
+                           ("MBEDTLS_HAVE_TIME", False), ("MBEDTLS_HAVE_TIME_DATE", False),
+                           ("ESP_TLS_INSECURE", True), ("MBEDTLS_ASYMMETRIC_CONTENT_LEN", False),
+                           ("MBEDTLS_SSL_IN_CONTENT_LEN", 4096), ("MBEDTLS_SSL_OUT_CONTENT_LEN", 512),
+                           ("SPIRAM", False), ("SPIRAM_MALLOC_RESERVE_INTERNAL", 32768)]:
+            self.config = copy.deepcopy(good)
+            self.config[key] = value
+            with self.subTest(key=key), self.assertRaises(ValueError):
+                self.check("rev12-tls-bench")
+        self.config = good
+        del self.config["MBEDTLS_HAVE_TIME_DATE"]
+        with self.assertRaises(ValueError):
+            self.check("rev12-tls-bench")
+
+    def test_allocator_cannot_leak_into_ordinary_profiles(self):
+        for profile in ("headless", "rev12", "rev12-memory-bench"):
+            if profile != "headless":
+                self.config.update(TV4_BOARD_REV12=True, SPIRAM=True, SPIRAM_MODE_OCT=True, SPIRAM_SPEED=80,
+                                   SPIRAM_USE_MALLOC=True, SPIRAM_MALLOC_ALWAYSINTERNAL=16384,
+                                   SPIRAM_MALLOC_RESERVE_INTERNAL=65536,
+                                   TV4_OTA_MEMORY_BENCH=profile == "rev12-memory-bench")
+            self.config.update(MBEDTLS_INTERNAL_MEM_ALLOC=False, MBEDTLS_EXTERNAL_MEM_ALLOC=True)
+            with self.subTest(profile=profile), self.assertRaises(ValueError):
+                self.check(profile)
 
     def test_bad_image_headers(self):
         original = (self.root / "tv4_hmi.bin").read_bytes()

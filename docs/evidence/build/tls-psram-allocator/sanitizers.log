@@ -1,0 +1,39 @@
+Test project /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/tls-psram-allocator/build-sanitized
+      Start  1: build_validation
+ 1/17 Test  #1: build_validation .................   Passed    0.05 sec
+      Start  2: core
+ 2/17 Test  #2: core .............................   Passed    0.00 sec
+      Start  3: wifi_profiles
+ 3/17 Test  #3: wifi_profiles ....................   Passed    0.00 sec
+      Start  4: render
+ 4/17 Test  #4: render ...........................   Passed    1.90 sec
+      Start  5: render_rgb565
+ 5/17 Test  #5: render_rgb565 ....................   Passed    1.48 sec
+      Start  6: diagnostics
+ 6/17 Test  #6: diagnostics ......................   Passed    0.00 sec
+      Start  7: ota_crypto
+ 7/17 Test  #7: ota_crypto .......................   Passed    0.01 sec
+      Start  8: ota_candidate
+ 8/17 Test  #8: ota_candidate ....................   Passed    0.18 sec
+      Start  9: ota_manifest
+ 9/17 Test  #9: ota_manifest .....................   Passed    0.13 sec
+      Start 10: ota_stream
+10/17 Test #10: ota_stream .......................   Passed    0.01 sec
+      Start 11: ota_http
+11/17 Test #11: ota_http .........................   Passed    0.00 sec
+      Start 12: ota_session
+12/17 Test #12: ota_session ......................   Passed    0.02 sec
+      Start 13: ota_memory
+13/17 Test #13: ota_memory .......................   Passed    0.01 sec
+      Start 14: ota_time
+14/17 Test #14: ota_time .........................   Passed    0.00 sec
+      Start 15: ota_sntp
+15/17 Test #15: ota_sntp .........................   Passed    0.00 sec
+      Start 16: ota_tls_probe
+16/17 Test #16: ota_tls_probe ....................   Passed    0.00 sec
+      Start 17: motion_supervisor
+17/17 Test #17: motion_supervisor ................   Passed    0.01 sec
+
+100% tests passed, 0 tests failed out of 17
+
+Total Test time (real) =   3.83 sec

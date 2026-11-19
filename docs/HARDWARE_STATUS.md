@@ -81,3 +81,7 @@ runtime HTTPS; production memory budget не подтверждён. Один90s
 После пробы **вернули ordinary rev12 b085abb**, SDK6.1.1, 3/3 hashes verified;
 UART после возврата не открывали. Владелец подтвердил главный экран/касания/Wi-Fi.
 Проверка записи не равна factory restore. Старое разрешение исполнено.
+
+Software PR-04k [исправляет allocator и SDK certificate dates](TLS_MEMORY_REVIEW.md)
+только в TLS diagnostic profile. Это ещё не аппаратное подтверждение исправления:
+новых flash/serial/reset/UTC/network операций нет, текущая запись b085abb ordinary.
