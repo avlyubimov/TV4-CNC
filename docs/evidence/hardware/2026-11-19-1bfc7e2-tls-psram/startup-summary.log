@@ -1,0 +1,6 @@
+rst:0x1 (POWERON),boot:0x8 (SPI_FAST_FLASH_BOOT)
+I (425) esp_psram: Found 8MB PSRAM device
+I (754) app_init: App version:      1bfc7e2
+I (768) app_init: ESP-IDF:          v6.1.1
+I (1181) rev12: RGB initialized: 800x480 RGB565, PCLK=16MHz, one PSRAM framebuffer
+I (4205) tv4: UI ready: LVGL 9.2.2, 800x480 RGB565, draw buffer=32000 bytes

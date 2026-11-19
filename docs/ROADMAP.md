@@ -76,3 +76,12 @@ failure через штатный SDK PSRAM-only allocator. Только TLS ben
 profiles/reserves/record sizes не меняются. Включена SDK certificate-date check,
 которую local anchor не заменяет. Software matrix/negative/ELF checks; новый
 hardware gate отдельно, до него runtime TLS/production budget остаются блокированы.
+
+## Hardware gate PR-04k — 1bfc7e2
+
+[Разрешённый TLS/PSRAM test](evidence/hardware/2026-11-19-1bfc7e2-tls-psram/README.md)
+дал SNTP/verified HEAD200/cleanup PASS; возвращён ordinary1bfc7e2,owner HMI PASS.
+Production reserve не утверждён: internal min3123/window,2408/history и stack
+watermark912bytes. Следующий программный шаг — bounded memory/stack review
+перед runtime session/body. Не подключать installer или снижать CA/time/DMA
+reserve ради progress; новые hardware/fault/soak tests только отдельно согласовать.

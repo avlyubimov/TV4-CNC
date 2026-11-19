@@ -88,3 +88,7 @@ factory restore и physical performance targets остаются открыты�
 MBEDTLS_HAVE_TIME_DATE. Anchor gate и SNTP PASS не означают X.509 date validation;
 handshake здесь не состоялся. [Дефект и изолированное исправление](../../../TLS_MEMORY_REVIEW.md).
 Исторические значения и FAIL сохраняются, новых аппаратных результатов нет.
+
+Исторический отчёт b085abb. Позднее выполнена отдельно согласованная
+[успешная HEAD200 проба1bfc7e2 и возврат ordinary](../2026-11-19-1bfc7e2-tls-psram/README.md).
+Её результат не отменяет исходный OOM или необходимость production memory review.

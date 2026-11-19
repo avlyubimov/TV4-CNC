@@ -13,7 +13,7 @@
 | ESP32 HMI | Waveshare ESP32-S3-Touch-LCD-7 PCB Rev 1.2, 800×480; владелец и фото | Длительный stress/thermal test, стабильность всех подсистем |
 | Flash ESP32 | Приняты 16 МБ; полный локальный образ 16 777 216 байт, SHA-256 проверен; [backup](BACKUP_STATUS.md) | Успешное восстановление заводского образа, отдельная копия вне основного диска |
 | PSRAM ESP32 | ROM/esptool сообщает Embedded PSRAM 8MB AP_3v3; rev12 требует octal 80 МГц | На b93cf3b агент подтвердил startup PSRAM 8MB/pool 8192K и свободную память; полный runtime memtest/stress и пропускная способность не проверены |
-| Запись HMI | 18 ноября агент записал разрешённые b93cf3b, затем 1c38d1e memory-bench; 3/3 hashes verified, SDK6.1.1/app version подтверждены | Это не тест FPS/касания/сети/устойчивости |
+| Запись HMI | 19 ноября после TLS bench возвращён ordinary rev12 1bfc7e2, 3/3 hashes verified; владелец подтвердил HMI/touch/Wi-Fi; отчёт ниже | Boot ordinary не перечитывали по UART; физические FPS/latency/soak не измерены |
 | RGB LCD | На фото владельца HMI и список Wi-Fi выводятся на физический экран | Измерения tearing, FPS/scanout, ориентация/качество всех областей |
 | GT911 | На b93cf3b владелец подтвердил касания, удобную клавиатуру и показ/скрытие пароля | Покрытие углов, multitouch/ошибки, latency, воспроизводимый полный тест сенсора |
 | Wi-Fi | Физический список SSID/RSSI виден на фото; владелец сообщил ошибку 263 | На b93cf3b владелец подтвердил подключение/IP, агент видел wifi_ip_events=1 в обоих запусках. Неверный пароль, полный reconnect/NVS power-cycle stress ещё не проверены |
@@ -78,10 +78,22 @@ PSA_ERROR_INSUFFICIENT_MEMORY. HTTP/сертификат не проверены
 min8795/largest sample7680bytes, monitors cleanup PASS. Это реальный blocker
 runtime HTTPS; production memory budget не подтверждён. Один90s capture,
 17 diagnostics/один boot; ошибки display/touch/queues/watchdog не наблюдались.
-После пробы **вернули ordinary rev12 b085abb**, SDK6.1.1, 3/3 hashes verified;
+После пробы b085abb **вернули ordinary rev12 b085abb**, SDK6.1.1, 3/3 hashes verified;
 UART после возврата не открывали. Владелец подтвердил главный экран/касания/Wi-Fi.
 Проверка записи не равна factory restore. Старое разрешение исполнено.
 
 Software PR-04k [исправляет allocator и SDK certificate dates](TLS_MEMORY_REVIEW.md)
-только в TLS diagnostic profile. Это ещё не аппаратное подтверждение исправления:
-новых flash/serial/reset/UTC/network операций нет, текущая запись b085abb ordinary.
+только в TLS diagnostic profile. Его программные проверки сами по себе
+не подтверждают hardware; последующее испытание и текущая запись — ниже.
+
+## TLS/PSRAM bench 1bfc7e2 — 19 ноября 2026
+
+[Отчёт и sanitized evidence](evidence/hardware/2026-11-19-1bfc7e2-tls-psram/README.md).
+По отдельному разрешению испытан merged PR #22: SNTP PASS, TLS/HEAD HTTP200
+PASS, cleanup/monitors PASS. Один90s capture,17diagnostics/один boot, ошибки
+касаний/дисплея/очередей/watchdog не наблюдались. Прежний isolated TLS OPEN OOM
+не повторился, но production gate не закрыт: internal window min3123bytes,
+historical min2408,worker stack watermark912/6144bytes. Нужен memory/stack review.
+После пробы возвращён **ordinary rev12 1bfc7e2**,SDK6.1.1,3/3 hashes verified,
+UART больше не открывали. Владелец подтвердил HMI/touch/Wi-Fi. Это текущая запись;
+новых аппаратных операций/OTA install этот отчёт не разрешает.

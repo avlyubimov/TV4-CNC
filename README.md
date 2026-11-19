@@ -53,9 +53,11 @@ PR #18 добавил [проверку времени TLS](docs/TLS_TIME_GATE.m
 только в специальном diagnostic image, не в обычном HMI.
 [19 ноября b085abb испытан](docs/evidence/hardware/2026-11-19-b085abb-utc-tls/README.md):
 SNTP PASS, TLS context allocation FAIL (insufficient memory). На плату возвращён
-ordinary rev12 b085abb; владелец подтвердил HMI/touch/Wi-Fi. Runtime HTTPS
-блокирован до новой аппаратной проверки. [Исправление TLS allocator/X.509 dates](docs/TLS_MEMORY_REVIEW.md)
-готовится только в diagnostic profile; остальные
+ordinary rev12 b085abb. [Исправление TLS allocator/X.509 dates](docs/TLS_MEMORY_REVIEW.md)
+слито в PR #22; [повторный test1bfc7e2](docs/evidence/hardware/2026-11-19-1bfc7e2-tls-psram/README.md)
+дал SNTP/verified HEAD200 PASS. Теперь на плате **ordinary rev12 1bfc7e2**,
+владелец подтвердил HMI/touch/Wi-Fi. Internal heap/stack запас остаётся мал,
+production TLS/OTA gate требует review; остальные
 [аппаратные проверки](docs/HMI_BENCH_GATE.md) также открыты.
 
 ## Обязательные следующие подсистемы

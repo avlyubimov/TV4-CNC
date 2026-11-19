@@ -170,3 +170,11 @@ rev12-tls-bench выполняет one-shot SNTP/verified HEAD и heap-window sn
 X.509 date checks и строгая artifact validation только для TLS diagnostic image.
 Остальные профили/internal reserve/record sizes сохранены. Нового аппаратного
 PASS нет; на плате ordinary b085abb. Это не runtime OTA/installer integration.
+
+## Аппаратная проверка PR-04k — 1bfc7e2
+
+[SNTP/verified HEAD200 PASS](evidence/hardware/2026-11-19-1bfc7e2-tls-psram/README.md),
+оба cleanup/monitor PASS. Ordinary rev12 того же SHA возвращён,3/3 hashes verified,
+владелец подтвердил HMI/touch/Wi-Fi. Internal min3123/window,2408/history,stack912
+ограничивают дальнейшее runtime OTA: нужен отдельный review запаса и failure paths.
+Успешного manifest/image download/install/rollback и performance измерений нет.
