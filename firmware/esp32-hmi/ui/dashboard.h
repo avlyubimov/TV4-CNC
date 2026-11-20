@@ -10,10 +10,16 @@ model_t dashboard_snapshot(void);
 /* LVGL-owner task only; same bounded ingress used by buttons and input faults. */
 bool dashboard_post_event(event_t event);
 
-typedef enum { VIEW_HOME, VIEW_DIAGNOSTICS, VIEW_LOG, VIEW_TOOLS, VIEW_WIFI } dashboard_view_t;
+typedef enum { VIEW_HOME, VIEW_DIAGNOSTICS, VIEW_LOG, VIEW_TOOLS, VIEW_WIFI,
+    VIEW_SETTINGS, VIEW_FIRMWARE } dashboard_view_t;
 /* Owner-only requests; navigation callback queues the requested view. */
 bool dashboard_set_view(dashboard_view_t view);
 dashboard_view_t dashboard_get_view(void);
+
+#include "firmware_info.h"
+/* LVGL owner only, after dashboard_create; copies/validates local display metadata. NULL clears it.
+ * Never a release verifier, peer status, worker request or install permission. */
+void dashboard_set_firmware_info(const firmware_info_t *info);
 
 #include "diagnostics.h"
 /* Owner-only instrumentation; resources are sampled in app_main, not callbacks. */

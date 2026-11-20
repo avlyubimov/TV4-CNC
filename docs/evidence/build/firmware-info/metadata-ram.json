@@ -1,0 +1,9 @@
+{
+  "bytes": {
+    "settings_panel": 4,
+    "firmware_view": 28,
+    "firmware_info": 72
+  },
+  "total_bytes": 104,
+  "meaning": "New global snapshot/view handles only; not full runtime heap/stack budget or hardware measurement"
+}

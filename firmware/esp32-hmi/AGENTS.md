@@ -31,7 +31,8 @@ docs/BOARD_ADAPTER.md, docs/RUNTIME_DIAGNOSTICS.md и docs/OTA_ARCHITECTURE.md.
 - PR-04a/04b/04c добавляют verification/native policy/read-only stream;
   PR-04d добавляет envelope/read-only HTTPS primitives; PR-04e — bounded
   read-only session coordinator; PR-04f — PSRAM-only workspace/admission.
-  Нет runtime OTA worker/UI или installer. PR-04g — отдельный explicit
+  Нет runtime OTA worker или installer. PR-08a даёт только local info UI ниже.
+  PR-04g — отдельный explicit
   rev12-memory-bench с finite allocation probe через low-priority worker;
   обычные headless/rev12 probe не запускают. Никакого HTTPS/session_run в probe.
   Неактивный candidate CSV не подключать к sdkconfig/build/flash. Никаких
@@ -78,3 +79,10 @@ docs/BOARD_ADAPTER.md, docs/RUNTIME_DIAGNOSTICS.md и docs/OTA_ARCHITECTURE.md.
   gate до pinned cJSON; canonical envelope Base64 native/offline parity.
   Host-only signing/conformance helper не собирать в firmware. Corpus не назначает
   local production versions/keys/layout и не разрешает Motion schema/installer.
+
+- PR-08a: читать docs/FIRMWARE_INFO_UI.md. Local descriptor/build/SDK/profile
+  только для отображения, не installed SemVer/trust store. Неизвестные STM32/CAN
+  остаются unknown. New panels lazy-create/delete в LVGL owner, не callbacks;
+  no fake discovery/check/download/install/progress/history и no OTA callers.
+  New snapshot origin SIMULATOR явно маркирует host fixtures; DEVICE означает
+  local SDK descriptor, не commissioned hardware или release verification.

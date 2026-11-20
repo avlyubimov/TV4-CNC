@@ -68,6 +68,70 @@ static void save_frame(const char *name) {
 }
 LV_FONT_DECLARE(tv4_ru_20);
 LV_FONT_DECLARE(tv4_ru_12);
+static void firmware_navigation(lv_obj_t *root,lv_obj_t *wifi_password) {
+    unsigned children=lv_obj_get_child_count(root);
+    model_t before=dashboard_snapshot();
+    firmware_info_t info;
+    const char build[]="host-preview",sdk[]="test-sdk";
+    assert(firmware_info_set(&info,build,sizeof(build),sdk,sizeof(sdk),
+        FIRMWARE_INFO_SIMULATOR,FIRMWARE_PROFILE_REV12));
+    dashboard_set_firmware_info(&info);info.build[0]='X';
+    press(root,S_SETTINGS);assert(dashboard_get_view()==VIEW_SETTINGS);
+    assert(find_button(root,tr(NULL,S_SETTINGS_WIFI)) && find_button(root,tr(NULL,S_FW_TITLE)));
+    save_frame("settings");
+    press(root,S_FW_TITLE);assert(dashboard_get_view()==VIEW_FIRMWARE);
+    assert(has_label(root,build) && has_label(root,sdk));
+    assert(has_label(root,tr(NULL,S_FW_SIMULATOR)) && has_label(root,tr(NULL,S_FW_PEER_UNKNOWN)));
+    assert(has_label(root,tr(NULL,S_FW_UPDATE_OFF)));
+    assert(find_button(root,tr(NULL,S_FW_BACK)));
+    /* The only controls on the read-only page are navigation and the existing
+     * persistent STOP; no fake check/download/install action is created. */
+    save_frame("firmware-info");
+    dashboard_set_firmware_info(NULL);check_dashboard_layout(root);
+    assert(has_label(root,tr(NULL,S_FW_UNKNOWN)) && !has_label(root,build));
+    save_frame("firmware-info-unknown");
+    char longest[32];memset(longest,'W',31);longest[31]=0;
+    for(unsigned profile=FIRMWARE_PROFILE_HEADLESS;profile<=FIRMWARE_PROFILE_TLS_BENCH;profile++) {
+        assert(firmware_info_set(&info,longest,sizeof(longest),longest,sizeof(longest),
+            FIRMWARE_INFO_SIMULATOR,(firmware_info_profile_t)profile));
+        dashboard_set_firmware_info(&info);check_dashboard_layout(root);
+        assert(has_label(root,longest));
+    }
+    save_frame("firmware-info-long");
+    memset(info.sdk,'W',sizeof(info.sdk));dashboard_set_firmware_info(&info);
+    assert(!has_label(root,longest) && has_label(root,tr(NULL,S_FW_UNKNOWN)));
+    assert(firmware_info_set(&info,build,sizeof(build),sdk,sizeof(sdk),
+        FIRMWARE_INFO_SIMULATOR,FIRMWARE_PROFILE_REV12));dashboard_set_firmware_info(&info);
+    press(root,S_FW_BACK);assert(dashboard_get_view()==VIEW_SETTINGS);
+    press(root,S_SETTINGS_WIFI);assert(dashboard_get_view()==VIEW_WIFI);
+    lv_textarea_set_text(wifi_password,"sensitive-test-only");
+    lv_obj_send_event(wifi_password,LV_EVENT_FOCUSED,NULL);assert(wifi_editor_is_open());
+    press(root,S_SETTINGS);assert(!wifi_editor_is_open() && !*lv_textarea_get_text(wifi_password));
+    press(root,S_FW_TITLE);assert(!has_label(root,"sensitive-test-only"));
+    press(root,S_HOME);assert(lv_obj_get_child_count(root)==children);
+    /* Warmed LVGL builtin-pool footprint must return exactly after navigation;
+     * this is a host allocation regression, not ESP32 heap/latency evidence. */
+    lv_mem_monitor_t memory_before,memory_after;lv_mem_monitor(&memory_before);
+    for(unsigned i=0;i<64;i++) {
+        press(root,S_SETTINGS);assert(lv_obj_get_child_count(root)==children+1);
+        press(root,S_FW_TITLE);assert(lv_obj_get_child_count(root)==children+1);
+        press(root,S_FW_BACK);assert(dashboard_get_view()==VIEW_SETTINGS);
+        press(root,S_HOME);assert(lv_obj_get_child_count(root)==children);
+    }
+    lv_mem_monitor(&memory_after);assert(memory_after.free_size==memory_before.free_size);
+    model_t after=dashboard_snapshot();
+    assert(after.mode==before.mode && after.connected==before.connected);
+    assert(after.x_um==before.x_um && after.z_um==before.z_um && after.rpm==before.rpm);
+    press(root,S_SETTINGS);press(root,S_FW_TITLE);
+    assert(dashboard_post_event(EV_TOUCH_FAULT));dashboard_update();
+    assert(dashboard_snapshot().mode==FAULT && find_button(root,tr(NULL,S_STOP)));
+    save_frame("firmware-info-fault");
+    press(root,S_STOP);assert(dashboard_snapshot().mode==FAULT);
+    press(root,S_FW_BACK);press(root,S_HOME);assert(dashboard_snapshot().mode==FAULT);
+    assert(!dashboard_set_view((dashboard_view_t)(VIEW_FIRMWARE+1)));
+    puts("Firmware UI PASS: local/simulator/unknown/31-byte/profile states, Wi-Fi editor cleanup, "
+        "64 navigation cycles with identical host-pool free bytes, persistent STOP/fault/no motion");
+}
 int main(int argc,char **argv) {
     assert(wifi_credentials_valid("bench","12345678"));
     assert(wifi_credentials_valid("open",""));
@@ -327,5 +391,6 @@ int main(int argc,char **argv) {
     assert(dashboard_snapshot().x_um==tool_test_x && dashboard_snapshot().z_um==tool_test_z);
     save_frame("tools");press(root,S_HOME);check_dashboard_layout(root);
     assert(has_label(root,"T02") && has_label(root,"0.800"));
+    firmware_navigation(root,wifi_password);
     puts("LVGL 9 render and Cyrillic coverage passed"); return 0;
 }

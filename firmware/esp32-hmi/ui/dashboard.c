@@ -3,6 +3,7 @@
 #include "strings.h"
 #include "tools_view.h"
 #include "wifi_view.h"
+#include "firmware_view.h"
 #include <stdint.h>
 #include <stdio.h>
 #ifdef ESP_PLATFORM
@@ -18,6 +19,15 @@ static bool view_valid;
 static dashboard_view_t view, pending_view;
 static bool view_requested;
 static lv_obj_t *home_objects[96], *navigation[6], *diag_panel, *log_panel, *tools_panel, *wifi_panel;
+static lv_obj_t *settings_panel;
+static firmware_view_t firmware_view;
+static firmware_info_t firmware_info;
+void dashboard_set_firmware_info(const firmware_info_t *info) {
+    if(info)firmware_info_set(&firmware_info,info->build,sizeof(info->build),
+        info->sdk,sizeof(info->sdk),info->source,info->profile);
+    else firmware_info_reset(&firmware_info);
+    firmware_view_update(&firmware_view,&firmware_info);
+}
 static lv_obj_t *home_tool_id,*home_tool_name,*home_tool_code,*home_tool_radius;
 static unsigned home_count, log_page;
 static lv_obj_t *diag_state, *diag_fault, *diag_channel, *diag_frames, *diag_heap, *diag_latency;
@@ -196,10 +206,28 @@ static void nav_event(lv_event_t *event) {
     dashboard_set_view((dashboard_view_t)(uintptr_t)lv_event_get_user_data(event));
 }
 bool dashboard_set_view(dashboard_view_t requested) {
-    if(requested<VIEW_HOME || requested>VIEW_WIFI) return false;
+    if(requested<VIEW_HOME || requested>VIEW_FIRMWARE) return false;
     pending_view=requested; view_requested=true; return true;
 }
 dashboard_view_t dashboard_get_view(void) { return view; }
+static void create_settings(lv_obj_t *root) {
+    settings_panel=panel(root,89,56,705,347,0x14212b);
+    lv_obj_t *title=label(settings_panel,tr(NULL,S_SETTINGS),18,14,665);
+    lv_obj_set_style_text_font(title,&tv4_ru_20,0);
+    muted(label(settings_panel,tr(NULL,S_SETTINGS_HINT),18,49,665));
+    const string_id names[]={S_SETTINGS_WIFI,S_FW_TITLE};
+    const dashboard_view_t targets[]={VIEW_WIFI,VIEW_FIRMWARE};
+    const lv_image_dsc_t *icons[]={&tv4_icon_wifi,&tv4_icon_layers};
+    for(unsigned i=0;i<2;i++) {
+        lv_obj_t *b=button(settings_panel,names[i],-1,18,100+(int)i*90,669,66,false);
+        lv_obj_t *caption=lv_obj_get_child(b,0);
+        lv_obj_set_style_text_font(caption,&tv4_ru_14,0);
+        lv_obj_align(caption,LV_ALIGN_LEFT_MID,56,0);
+        icon(b,icons[i],20,22,22);
+        lv_obj_add_flag(b,LV_OBJ_FLAG_CLICKABLE);
+        lv_obj_add_event_cb(b,nav_event,LV_EVENT_CLICKED,(void *)(uintptr_t)targets[i]);
+    }
+}
 static void page_event(lv_event_t *event) {
     if((uintptr_t)lv_event_get_user_data(event)) log_page++;
     else if(log_page) log_page--;
@@ -219,8 +247,16 @@ static void apply_view(void) {
     lv_obj_add_flag(wifi_panel,LV_OBJ_FLAG_HIDDEN);
     if(view==VIEW_WIFI) { lv_obj_remove_flag(wifi_panel,LV_OBJ_FLAG_HIDDEN);wifi_view_show(); }
     else wifi_view_hide();
+    if(view!=VIEW_SETTINGS && settings_panel) { lv_obj_delete(settings_panel);settings_panel=NULL; }
+    if(view!=VIEW_FIRMWARE)firmware_view_destroy(&firmware_view);
+    if(view==VIEW_SETTINGS && !settings_panel)create_settings(lv_screen_active());
+    if(view==VIEW_FIRMWARE) {
+        firmware_view_create(&firmware_view,lv_screen_active(),nav_event,(void *)(uintptr_t)VIEW_SETTINGS);
+        firmware_view_update(&firmware_view,&firmware_info);
+    }
     for(unsigned i=0;i<6;i++) {
-        bool selected=(i==0 && view==VIEW_HOME)||(i==4 && view==VIEW_DIAGNOSTICS)||(i==5 && view==VIEW_LOG)||(i==2 && view==VIEW_TOOLS)||(i==3 && view==VIEW_WIFI);
+        bool selected=(i==0 && view==VIEW_HOME)||(i==4 && view==VIEW_DIAGNOSTICS)||(i==5 && view==VIEW_LOG)||(i==2 && view==VIEW_TOOLS)||
+            (i==3 && (view==VIEW_WIFI || view==VIEW_SETTINGS || view==VIEW_FIRMWARE));
         lv_obj_set_style_bg_opa(navigation[i],selected?LV_OPA_COVER:LV_OPA_TRANSP,0);
         lv_obj_set_style_border_opa(navigation[i],selected?LV_OPA_COVER:LV_OPA_TRANSP,0);
         lv_obj_set_style_shadow_opa(navigation[i],selected?LV_OPA_50:LV_OPA_TRANSP,0);
@@ -323,6 +359,7 @@ static void refresh_views(void) {
     }
 }
 void dashboard_create(void) {
+    settings_panel=NULL;firmware_view=(firmware_view_t){0};firmware_info_reset(&firmware_info);
     zero_requested=zero_close=false;zero_dialog=NULL;
     override_pending=false;
     resource_view=resource_requested=false;
@@ -364,7 +401,7 @@ void dashboard_create(void) {
     muted(label(can,"CAN",5,8,32));
     lv_obj_t *gear=panel(s,760,7,32,32,0x23303c); icon(gear,&tv4_icon_gear,5,5,22);
     lv_obj_add_flag(gear,LV_OBJ_FLAG_CLICKABLE);
-    lv_obj_add_event_cb(gear,nav_event,LV_EVENT_CLICKED,(void *)(uintptr_t)VIEW_WIFI);
+    lv_obj_add_event_cb(gear,nav_event,LV_EVENT_CLICKED,(void *)(uintptr_t)VIEW_SETTINGS);
     panel(s,0,48,79,355,0x121e28);
     string_id nav[]={S_HOME,S_PROGRAM,S_TOOLS,S_SETTINGS,S_DIAG,S_LOG};
     const lv_image_dsc_t *icons[]={&tv4_icon_home,&tv4_icon_code,&tv4_icon_tool,&tv4_icon_sliders,&tv4_icon_pulse,&tv4_icon_file};
@@ -379,7 +416,7 @@ void dashboard_create(void) {
         icon(n,icons[i],27,6,21);
         if(i==0 || i==2 || i==3 || i==4 || i==5) {
             lv_obj_add_flag(n,LV_OBJ_FLAG_CLICKABLE);
-            lv_obj_add_event_cb(n,nav_event,LV_EVENT_CLICKED,(void *)(uintptr_t)(i==0?VIEW_HOME:i==2?VIEW_TOOLS:i==3?VIEW_WIFI:i==4?VIEW_DIAGNOSTICS:VIEW_LOG));
+            lv_obj_add_event_cb(n,nav_event,LV_EVENT_CLICKED,(void *)(uintptr_t)(i==0?VIEW_HOME:i==2?VIEW_TOOLS:i==3?VIEW_SETTINGS:i==4?VIEW_DIAGNOSTICS:VIEW_LOG));
         }
         if(i) {
             lv_obj_set_style_bg_opa(n,LV_OPA_TRANSP,0);lv_obj_set_style_border_opa(n,LV_OPA_TRANSP,0);

@@ -1,0 +1,3 @@
+Firmware display metadata PASS: local origins/profiles,31-byte bounds, unterminated/invalid spans, independent copies/alias, atomic UNKNOWN; sizeof=72
+Firmware UI PASS: local/simulator/unknown/31-byte/profile states, Wi-Fi editor cleanup, 64 navigation cycles with identical host-pool free bytes, persistent STOP/fault/no motion
+Firmware UI PASS: local/simulator/unknown/31-byte/profile states, Wi-Fi editor cleanup, 64 navigation cycles with identical host-pool free bytes, persistent STOP/fault/no motion

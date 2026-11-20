@@ -97,7 +97,13 @@ static const char *const ru[S_COUNT]={
  "PSRAM, КиБ: своб. %lu · мин. %lu · всего %lu",
  "Стек, байт: UI %lu · сенсор %lu · Wi-Fi %lu",
  "Потери: UI %lu · Wi-Fi %lu · экспорт %lu",
- "Сброс %lu · WDT %lu · CPU / физ. отклик: нет замера"};
+ "Сброс %lu · WDT %lu · CPU / физ. отклик: нет замера",
+ "Подключение и сведения о ПО", "Сеть Wi-Fi", "ПО и обновления",
+ "Локальные данные HMI", "Симулятор · тестовые данные", "Нет данных",
+ "Сборка HMI", "ESP-IDF", "Профиль", "STM32", "Протокол CAN", "Версия неизвестна",
+ "Обновления пока недоступны", "Проверка и установка ещё не настроены.", "К параметрам",
+ "headless · без периферии", "rev12 · HMI", "rev12-memory-bench · диагностика",
+ "rev12-tls-bench · диагностика"};
 const char *tr(const char *locale, string_id id) {
     (void)locale; /* Reserved locale interface: all missing locales fall back to RU. */
     return id>=0 && id<S_COUNT ? ru[id] : ru[S_FAULT];

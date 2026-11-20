@@ -11,6 +11,7 @@
 #include "tls_probe.h"
 #endif
 #include "esp_system.h"
+#include "esp_app_desc.h"
 #include "esp_log.h"
 #include "esp_timer.h"
 #include "freertos/FreeRTOS.h"
@@ -101,6 +102,21 @@ void app_main(void) {
 #endif
     boot_view_stage(BOOT_INTERFACE);lv_refr_now(display);
     dashboard_create();
+    /* Local running-build metadata, sampled once by LVGL owner at startup.
+     * No network, partition scan, verifier or OTA worker is invoked. */
+    firmware_info_t info;firmware_info_reset(&info);
+    const esp_app_desc_t *app=esp_app_get_description();
+    firmware_info_profile_t profile=FIRMWARE_PROFILE_HEADLESS;
+#if CONFIG_TV4_OTA_MEMORY_BENCH
+    profile=FIRMWARE_PROFILE_MEMORY_BENCH;
+#elif CONFIG_TV4_UTC_TLS_BENCH
+    profile=FIRMWARE_PROFILE_TLS_BENCH;
+#elif CONFIG_TV4_BOARD_REV12
+    profile=FIRMWARE_PROFILE_REV12;
+#endif
+    if(app)firmware_info_set(&info,app->version,sizeof(app->version),app->idf_ver,
+        sizeof(app->idf_ver),FIRMWARE_INFO_DEVICE,profile);
+    dashboard_set_firmware_info(&info);
     diagnostics_t *diagnostics=dashboard_diagnostics();
     diagnostics->record.board=true;
 #if CONFIG_TV4_BOARD_REV12

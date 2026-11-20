@@ -71,9 +71,14 @@ PR #29–33 DATA/admission/handoff/model preflight/completion слиты в main
 результата/ACK отправителю. Pending cleanup не даёт success, quarantine не
 забывает resource. Peer report не аутентифицирован и не разрешает install/motion.
 
-Текущая ветка [PR-05b release policy review](docs/RELEASE_POLICY_REVIEW.md): strict
+В PR #34 слит [PR-05b release policy review](docs/RELEASE_POLICY_REVIEW.md): strict
 Unicode/Base64, общий signed C/Python corpus, версии/каналы/component/local-context
 проверки. Это не production Motion manifest, назначение версий/ключей или installer.
+
+Текущая ветка [PR-08a: сведения о ПО](docs/FIRMWARE_INFO_UI.md), база main `b56986f`:
+«Параметры» → Wi-Fi / «ПО и обновления», local build/SDK/profile с явным
+provenance, неизвестные STM32/CAN версии. Проверка/установка обновлений ещё не
+настроены; сетевого updater или записи Flash этот экран не запускает.
 
 [OTA ESP32 A/B и F407 по CAN](docs/OTA_ARCHITECTURE.md),
 [GitHub Releases/подписи/owner approval](docs/RELEASE_PROCESS.md),
