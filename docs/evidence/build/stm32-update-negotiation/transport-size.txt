@@ -1,0 +1,4 @@
+   text	   data	    bss	    dec	    hex	filename
+   1924	      0	      0	   1924	    784	update_session.c.obj (ex build-neg-arm/libtv4_update_transport.a)
+   1588	      0	      0	   1588	    634	update_outcome.c.obj (ex build-neg-arm/libtv4_update_transport.a)
+   1930	      0	      0	   1930	    78a	update_negotiation.c.obj (ex build-neg-arm/libtv4_update_transport.a)

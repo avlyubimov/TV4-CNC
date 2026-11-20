@@ -75,10 +75,15 @@ PR #29–33 DATA/admission/handoff/model preflight/completion слиты в main
 Unicode/Base64, общий signed C/Python corpus, версии/каналы/component/local-context
 проверки. Это не production Motion manifest, назначение версий/ключей или installer.
 
-Текущая ветка [PR-08a: сведения о ПО](docs/FIRMWARE_INFO_UI.md), база main `b56986f`:
+Слитый PR #35 [PR-08a: сведения о ПО](docs/FIRMWARE_INFO_UI.md):
 «Параметры» → Wi-Fi / «ПО и обновления», local build/SDK/profile с явным
 provenance, неизвестные STM32/CAN версии. Проверка/установка обновлений ещё не
 настроены; сетевого updater или записи Flash этот экран не запускает.
+
+Текущая ветка от main `f0bd866`: [PR-07f logical update negotiation](docs/STM32_UPDATE_NEGOTIATION.md).
+Fresh IDs/boot pair, bounded четыре сообщения и одноразовые параметры DATA
+проверены вместе с independent crypto/model/close/outcome. Это host/ARM foundation,
+без runtime CAN/identity provider/installer; hardware gates сохраняются.
 
 [OTA ESP32 A/B и F407 по CAN](docs/OTA_ARCHITECTURE.md),
 [GitHub Releases/подписи/owner approval](docs/RELEASE_PROCESS.md),

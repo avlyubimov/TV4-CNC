@@ -195,6 +195,11 @@ boot/transfer/policy/source при выдаче receipt. RX/local deadline ос�
 конечными; release failure сохраняет ресурс до bounded retry/quarantine. Нет
 производственного storage/Flash writer, install permission или новых адресов.
 
+PR-07f [logical negotiation](STM32_UPDATE_NEGOTIATION.md) даёт bounded memory-model
+REQUEST/OFFER/ACCEPT/CONFIRM и one-time transport setup. Pool counters не заменяют
+reviewed boot identity/persistence/authentication provider. Independent signature/
+SHA/model/physical/operator/recovery gates сохраняются; production wire нет.
+
 PR-08a [local firmware info UI](FIRMWARE_INFO_UI.md) показывает только текущие
 build/SDK/profile и unknown STM32/CAN. Runtime discovery/install ещё не настроены;
 SDK descriptor не подменяет trusted version/key context. Целевой полный UI ниже:

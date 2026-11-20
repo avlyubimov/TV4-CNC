@@ -1,0 +1,4 @@
+PASS 7 negotiation groups/1024 sessions; state=368 pool=32 message=128. Opaque bindings only; no CAN/authentication/install/device access.
+PASS 6 signed negotiation -> DATA -> P-256/SHA -> vectors -> close -> outcome/ACK chains; all four handshake losses, DATA/final ACK/report losses
+PASS 3 negotiated binding failures: changed image, invalid signature, valid re-signed metadata with mismatched raw SHA; no retained lease
+PASS 19 handoff/completion groups; completion=568; state=2136 receipt=136 workspace=17664; RAM only, no install/device access

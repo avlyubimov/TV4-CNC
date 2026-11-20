@@ -91,3 +91,11 @@ watchdog feed и 99 999 детерминированных fault-injection cycle
 
 Откат — revert PR-02. Данные устройства/разметка Flash не менялись, прошивка
 для платы не создавалась. После создания PR остановиться на review; не merge.
+
+
+## PR-07f — только logical negotiation
+
+[Свежий update-сеанс](STM32_UPDATE_NEGOTIATION.md) проверен на host/ARM с
+существующей независимой crypto/model/cleanup цепочкой. Volatile counters/tag
+не задают production protocol или real board identity; memory map/clock/GPIO/
+CAN/recovery по-прежнему требуют отдельных hardware/review gates. Нет board image.

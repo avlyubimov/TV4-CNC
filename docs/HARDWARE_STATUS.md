@@ -43,6 +43,10 @@ builds; на устройство этот UI не записывался. «Л�
 app descriptor, не новую аппаратную проверку. На стенде прежний ordinary8f0d899;
 версии STM32/CAN остаются неизвестными, hardware gates не закрыты.
 
+PR-07f [logical negotiation](STM32_UPDATE_NEGOTIATION.md) — только RAM/ARM compile
+и signed integration. Test boot epochs/pool counters не являются измеренными
+device identity или persistent recovery. Новых подключений/прошивки/измерений нет.
+
 ## STM32F407 — подтверждение владельца после main b19a40b
 
 Приняты перечисленные в таблице результаты нового задания владельца:

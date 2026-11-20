@@ -1,0 +1,2 @@
+Expected rejection of a test-only unexpected output marker PASS; marker removed.
+Admission build rejected: unexpected firmware binary

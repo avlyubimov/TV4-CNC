@@ -22,6 +22,11 @@ fragmentation/ACK/retry, подтверждённого safe state, полног
 в самом F407 bootloader. Пока только план/host моделирование, без Flash driver
 и без физической передачи. CAN не является safety chain.
 
+PR-07f: [logical fresh negotiation](../../docs/STM32_UPDATE_NEGOTIATION.md),
+REQUEST/OFFER/ACCEPT/CONFIRM, volatile identity pool и one-time transport setup.
+Нет production wire/entropy/persistent identity/authentication; реальные
+версии/IDs/bitrate/GPIO по-прежнему не назначены. DATA APIs не меняются.
+
 ## PR-07a: логический update-сеанс на ПК
 
 [update_session.h](update_session.h) и [контракт](../../docs/STM32_UPDATE_TRANSPORT.md):
