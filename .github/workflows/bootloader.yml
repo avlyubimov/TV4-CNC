@@ -33,12 +33,15 @@ jobs:
             --lock third_party/mbedtls/origin.json > evidence/source-check.txt
           python3 tools/check_boot_admission_build.py build-boot-arm > evidence/arm-budget.json
           cp third_party/mbedtls/origin.json evidence/crypto-origin.json
-          for source in admission metadata image_profile update_handoff update_completion; do
+          gcc --version > evidence/static-analysis.txt
+          for source in admission metadata release_policy image_profile update_handoff update_completion; do
             gcc -std=c11 -Wall -Wextra -Werror -Wconversion -Wshadow -Wstrict-prototypes -fanalyzer \
               -DMBEDTLS_CONFIG_FILE='"tv4_boot_mbedtls_config.h"' \
               -Ifirmware/stm32-bootloader/include -Ifirmware/stm32-bootloader/core \
               -Ifirmware/stm32-bootloader/config -Iprotocol/can -Ibuild-boot-arm/_deps/tv4_boot_mbedtls-src/include \
-              -c "firmware/stm32-bootloader/core/$source.c" -o "build-static-analysis/$source.o"
+              -c "firmware/stm32-bootloader/core/$source.c" -o "build-static-analysis/$source.o" \
+              2>&1 | tee -a evidence/static-analysis.txt
+            printf 'PASS actual-source -fanalyzer -c %s\n' "$source" | tee -a evidence/static-analysis.txt
           done
       - name: Reject bootloader images and unexpected binary outputs
         shell: bash
@@ -71,6 +74,7 @@ jobs:
             evidence/source-check.txt
             evidence/arm-budget.json
             evidence/crypto-origin.json
+            evidence/static-analysis.txt
             evidence/board-gate.txt
             evidence/output-gate.txt
           if-no-files-found: error

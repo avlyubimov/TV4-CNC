@@ -1,6 +1,6 @@
 # Следующий этап: release context и STM32 board contract
 
-21 ноября2026. База main `f0bd866`, PR #1–35 слиты, пять workflow PASS.
+21 ноября2026. База main `3381236`, PR #1–36 слиты, пять workflow PASS.
 ESP32 HMI/Wi-Fi/OTA primitives/candidates и STM32 transport/admission существуют;
 не создавать их заново. Данный план не разрешает доступ к устройствам или merge.
 
@@ -74,7 +74,7 @@ sanitizers30, две render formats/64 navigation cycles и local SDK6.1.1 headl
 rev12 PASS; [evidence](evidence/build/firmware-info/README.md). Не создаёт
 runtime HTTPS/verifier/session/install caller или новое устройство доверия.
 
-## Текущая ветка PR-07f
+## Слитая часть PR-07f, PR #36
 
 [Fresh logical negotiation](STM32_UPDATE_NEGOTIATION.md): boot-pair pool,
 REQUEST/OFFER/ACCEPT/CONFIRM, monotonic counters/high-water, fixed deadline,
@@ -84,13 +84,25 @@ ARM/static/source/image/output PASS — [evidence](evidence/build/stm32-update-n
 Не создаёт runtime caller, production wire/capabilities/entropy provider,
 authentication или install/physical authority. DATA deadlines прежние.
 
+## Текущая ветка PR-07g
+
+[Independent release binding](STM32_RELEASE_BINDING.md): отдельный signed15-field
+Motion draft, release/component SemVer/channel/source selection и прежние
+target/counter/full image checks через один existing crypto engine. Host33/
+sanitizers33/standalone10,2745 SemVer comparisons, ARM/static/source/image/output
+PASS — [evidence](evidence/build/stm32-release-binding/README.md). Workspace17664
+прежний, candidate224/policy288 на host. Legacy strict11-field API сохраняется.
+Новый API standalone: не подключён к live lease/negotiation/handoff/completion,
+не production bundle/CAN ABI или доверенный installed context/installer.
+
 ## Что делать дальше программно
 
-1. HMI SemVer/channel/component/local unknowns проверены PR-05b. Дальше review
-   production Motion schema и независимого signed release↔component↔target/
-   profile↔image binding на загрузчике. Draft counters не переводить в SemVer,
-   HMI success не заменяет независимый verifier. Actual local versions/key
-   provisioning/signing authority по-прежнему отдельный owner gate.
+1. HMI policy проверена PR-05b; PR-07g проверяет independent release/component/
+   target/profile/image draft. Дальше review production bundle↔component link и
+   schema, доверенного local context и fresh live source/coordinator adapter.
+   Не принимать standalone historical candidate вместо lease/vector/deadline
+   checks, не менять RX lifetime. Draft counters не переводить в SemVer;
+   actual local versions/key provisioning/signing authority — owner gate.
 2. PR-07f проверяет volatile logical negotiation, но production boot epoch
    provider/persistence/collision/authentication, capabilities/version и raw CAN
    fragmentation/codec/IDs/bitrate требуют review. Logical terminal outcome уже есть; он не authenticated и

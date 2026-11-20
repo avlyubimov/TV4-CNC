@@ -1,0 +1,374 @@
+UpdateCTestConfiguration  from :/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32-release-binding/build-release-sanitize/DartConfiguration.tcl
+Test project /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32-release-binding/build-release-sanitize
+Constructing a list of tests
+Done constructing a list of tests
+Updating test list for fixtures
+Added 0 tests to meet fixture requirements
+Checking test dependency graph...
+Checking test dependency graph end
+test 1
+      Start  1: build_validation
+
+1: Test command: /home/avlyubimov/.local/bin/python3.14 "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32-release-binding/tests/build_validation_tests.py"
+1: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32-release-binding/build-release-sanitize
+1: Test timeout computed to be: 10000000
+1: ..........
+1: ----------------------------------------------------------------------
+1: Ran 10 tests in 0.004s
+1:
+1: OK
+ 1/33 Test  #1: build_validation .................   Passed    0.04 sec
+test 2
+      Start  2: build_candidate
+
+2: Test command: /home/avlyubimov/.local/bin/python3.14 "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32-release-binding/tests/build_candidate_tests.py"
+2: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32-release-binding/build-release-sanitize
+2: Test timeout computed to be: 10000000
+2: ................
+2: ----------------------------------------------------------------------
+2: Ran 16 tests in 0.453s
+2:
+2: OK
+ 2/33 Test  #2: build_candidate ..................   Passed    0.49 sec
+test 3
+      Start  3: core
+
+3: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32-release-binding/build-release-sanitize/core_tests
+3: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32-release-binding/build-release-sanitize
+3: Test timeout computed to be: 10000000
+3: State, timeout, invalid frames, RU fallback and inert transport passed
+ 3/33 Test  #3: core .............................   Passed    0.00 sec
+test 4
+      Start  4: firmware_info
+
+4: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32-release-binding/build-release-sanitize/firmware_info_tests
+4: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32-release-binding/build-release-sanitize
+4: Test timeout computed to be: 10000000
+4: Firmware display metadata PASS: local origins/profiles,31-byte bounds, unterminated/invalid spans, independent copies/alias, atomic UNKNOWN; sizeof=72
+ 4/33 Test  #4: firmware_info ....................   Passed    0.00 sec
+test 5
+      Start  5: wifi_profiles
+
+5: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32-release-binding/build-release-sanitize/wifi_profiles_tests
+5: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32-release-binding/build-release-sanitize
+5: Test timeout computed to be: 10000000
+5: Wi-Fi profile validation, persistence image, updates, eviction and forgetting passed
+ 5/33 Test  #5: wifi_profiles ....................   Passed    0.00 sec
+test 6
+      Start  6: render
+
+6: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32-release-binding/build-release-sanitize/preview
+6: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32-release-binding/build-release-sanitize
+6: Test timeout computed to be: 15
+6: Firmware UI PASS: local/simulator/unknown/31-byte/profile states, Wi-Fi editor cleanup, 64 navigation cycles with identical host-pool free bytes, persistent STOP/fault/no motion
+6: LVGL 9 render and Cyrillic coverage passed
+ 6/33 Test  #6: render ...........................   Passed    2.18 sec
+test 7
+      Start  7: render_rgb565
+
+7: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32-release-binding/build-release-sanitize/preview "--rgb565"
+7: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32-release-binding/build-release-sanitize
+7: Test timeout computed to be: 15
+7: Firmware UI PASS: local/simulator/unknown/31-byte/profile states, Wi-Fi editor cleanup, 64 navigation cycles with identical host-pool free bytes, persistent STOP/fault/no motion
+7: LVGL 9 render and Cyrillic coverage passed
+ 7/33 Test  #7: render_rgb565 ....................   Passed    2.04 sec
+test 8
+      Start  8: diagnostics
+
+8: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32-release-binding/build-release-sanitize/diagnostics_tests
+8: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32-release-binding/build-release-sanitize
+8: Test timeout computed to be: 10000000
+8: Diagnostics windows, wraparound, p95 bounds, saturation and bounded export PASS
+ 8/33 Test  #8: diagnostics ......................   Passed    0.00 sec
+test 9
+      Start  9: ota_crypto
+
+9: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32-release-binding/build-release-sanitize/ota_crypto_tests
+9: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32-release-binding/build-release-sanitize
+9: Test timeout computed to be: 10000000
+9: OTA P-256 signature, exact-byte mutation, unknown key, curve and SHA-256 PASS
+ 9/33 Test  #9: ota_crypto .......................   Passed    0.01 sec
+test 10
+      Start 10: ota_candidate
+
+10: Test command: /home/avlyubimov/.local/bin/python3.14 "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32-release-binding/tests/ota_candidate_tests.py"
+10: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32-release-binding/build-release-sanitize
+10: Test timeout computed to be: 10000000
+10: ...........
+10: ----------------------------------------------------------------------
+10: Ran 11 tests in 0.178s
+10:
+10: OK
+10/33 Test #10: ota_candidate ....................   Passed    0.22 sec
+test 11
+      Start 11: ota_manifest
+
+11: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32-release-binding/build-release-sanitize/ota_manifest_tests
+11: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32-release-binding/build-release-sanitize
+11: Test timeout computed to be: 10000000
+11: Native manifest signature/policy/encoding/OOM scenarios PASS; parse peak=2323 bytes, allocations=71
+11/33 Test #11: ota_manifest .....................   Passed    0.14 sec
+test 12
+      Start 12: ota_json
+
+12: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32-release-binding/build-release-sanitize/ota_json_tests
+12: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32-release-binding/build-release-sanitize
+12: Test timeout computed to be: 15
+12: JSON escape oracle PASS: BMP=65536, accepted=63487, invalid hex=420; surrogate/escape/duplicate/truncation cases PASS
+12/33 Test #12: ota_json .........................   Passed    0.05 sec
+test 13
+      Start 13: ota_policy_conformance
+
+13: Test command: /home/avlyubimov/.local/bin/python3.14 "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32-release-binding/tests/ota_policy_conformance_tests.py" "--driver" "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32-release-binding/build-release-sanitize/ota_policy_driver"
+13: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32-release-binding/build-release-sanitize
+13: Test timeout computed to be: 60
+13: Conformance PASS: signed metadata=115, accepted=16, rejected=99; SemVer comparisons=2809; Base64 cases=130
+13: Native candidate fields equal offline policy; rejected native output entirely zero. Ephemeral private key stayed in C helper memory; no device/install/release.
+13/33 Test #13: ota_policy_conformance ...........   Passed    0.39 sec
+test 14
+      Start 14: ota_stream
+
+14: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32-release-binding/build-release-sanitize/ota_stream_tests
+14: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32-release-binding/build-release-sanitize
+14: Test timeout computed to be: 10000000
+14: Stream chunks, descriptor/checksum/dual-SHA, 480 truncation points, cancellation/deadlines/wrap PASS; verifier struct=504 bytes
+14/33 Test #14: ota_stream .......................   Passed    0.01 sec
+test 15
+      Start 15: ota_http
+
+15: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32-release-binding/build-release-sanitize/ota_http_tests
+15: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32-release-binding/build-release-sanitize
+15: Test timeout computed to be: 10000000
+15: HTTPS policy/redirects/status/length/encoding/cancel/deadlines/cleanup PASS; workspace=8212 bytes (host)
+15/33 Test #15: ota_http .........................   Passed    0.00 sec
+test 16
+      Start 16: ota_session
+
+16: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32-release-binding/build-release-sanitize/ota_session_tests
+16: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32-release-binding/build-release-sanitize
+16: Test timeout computed to be: 10000000
+16: Guarded signed session: resource fault at all 94 boundaries, active/cleanup/authenticated candidate revocation PASS
+16: Read-only session signed end-to-end/failure/cancel/truncation/deadline/reset PASS; workspace=34024 bytes (host)
+16/33 Test #16: ota_session ......................   Passed    0.03 sec
+test 17
+      Start 17: ota_memory
+
+17: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32-release-binding/build-release-sanitize/ota_memory_tests
+17: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32-release-binding/build-release-sanitize
+17: Test timeout computed to be: 10000000
+17: PSRAM-only admission/low-memory/race/region/cleanup/retry PASS; host workspace=34024 bytes
+17/33 Test #17: ota_memory .......................   Passed    0.01 sec
+test 18
+      Start 18: ota_time
+
+18: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32-release-binding/build-release-sanitize/ota_time_tests
+18: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32-release-binding/build-release-sanitize
+18: Test timeout computed to be: 10000000
+18: Time provenance/policy/age/skew/revocation/range/64-bit-clock PASS; no system clock or network changed
+18/33 Test #18: ota_time .........................   Passed    0.00 sec
+test 19
+      Start 19: ota_sntp
+
+19: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32-release-binding/build-release-sanitize/ota_sntp_tests
+19: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32-release-binding/build-release-sanitize
+19: Test timeout computed to be: 10000000
+19: SNTP lifecycle/policy/provenance/deadline/cancel/network/cleanup/retry PASS; mock only, no UTC/network changed
+19/33 Test #19: ota_sntp .........................   Passed    0.00 sec
+test 20
+      Start 20: ota_tls_probe
+
+20: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32-release-binding/build-release-sanitize/ota_tls_probe_tests
+20: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32-release-binding/build-release-sanitize
+20: Test timeout computed to be: 10000000
+20: HEAD probe time/deadline/cleanup/status/no-redirect lifecycle PASS; mocks only, no CA/TLS/network executed
+20/33 Test #20: ota_tls_probe ....................   Passed    0.00 sec
+test 21
+      Start 21: ota_resource
+
+21: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32-release-binding/build-release-sanitize/ota_resource_tests
+21: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32-release-binding/build-release-sanitize
+21: Test timeout computed to be: 10000000
+21: Resource policy bounds/review/current heap/stack/unavailable/fail-closed sampler PASS; no allocation/network
+21/33 Test #21: ota_resource .....................   Passed    0.00 sec
+test 22
+      Start 22: motion_supervisor
+
+22: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32-release-binding/build-release-sanitize/firmware/stm32-motion/motion_tests
+22: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32-release-binding/build-release-sanitize/firmware/stm32-motion
+22: Test timeout computed to be: 10
+22: 7 motion supervisor scenarios PASS (including 99,999 fault-injection cycles)
+22/33 Test #22: motion_supervisor ................   Passed    0.01 sec
+test 23
+      Start 23: motion_startup_noio
+
+23: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32-release-binding/build-release-sanitize/firmware/stm32-motion/motion_startup_tests
+23: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32-release-binding/build-release-sanitize/firmware/stm32-motion
+23: Test timeout computed to be: 10
+23/33 Test #23: motion_startup_noio ..............   Passed    0.00 sec
+test 24
+      Start 24: update_session
+
+24: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32-release-binding/build-release-sanitize/protocol/can/update_session_tests
+24: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32-release-binding/build-release-sanitize/protocol/can
+24: Test timeout computed to be: 20
+24: PASS checksum_vectors
+24: PASS invalid_limits
+24: PASS begin_and_exclusivity
+24: PASS two_phase_and_exact_duplicates
+24: PASS malformed_blocks
+24: PASS conflicting_duplicate
+24: PASS crc_collision_does_not_match_duplicate
+24: PASS consumer_failure_is_sticky
+24: PASS sender_retry_budget
+24: PASS receiver_retry_budget
+24: PASS ack_validation
+24: PASS deadline_boundaries
+24: PASS total_deadline
+24: PASS clocks_and_wraparound
+24: PASS abort_and_reboot
+24: PASS null_and_output_contracts
+24: PASS retry_counter_boundary
+24: PASS 17 unit groups; rx=384 tx=384 bytes; no device access
+24/33 Test #24: update_session ...................   Passed    0.00 sec
+test 25
+      Start 25: update_loopback
+
+25: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32-release-binding/build-release-sanitize/protocol/can/update_loopback_tests
+25: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32-release-binding/build-release-sanitize/protocol/can
+25: Test timeout computed to be: 20
+25: PASS 2049 memory transfers; lost DATA=4318 ACK=4360 (final=397) corrupt=3924 reorder=4338 pending duplicates=4004
+25: PASS altered payload + valid CRC completes transport only; SHA oracle rejects image
+25: PASS 10 volatile reset cut cases; stale sessions/ACK rejected; no resume
+25: PASS truncated stream / partial RAM consumer never reach completion
+25/33 Test #25: update_loopback ..................   Passed    0.08 sec
+test 26
+      Start 26: update_outcome
+
+26: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32-release-binding/build-release-sanitize/protocol/can/update_outcome_tests
+26: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32-release-binding/build-release-sanitize/protocol/can
+26: Test timeout computed to be: 20
+26: PASS 1001 outcome sessions, 1001 deliveries; lost report/final ACK; duplicates not redelivered
+26: PASS loss_duplicate_and_history
+26: PASS binding_and_ack_validation
+26: PASS conflicts_invalid_reports_and_forgery_boundary
+26: PASS deadlines_retries_and_late_begin
+26: PASS transport_reboot_abort_and_clock
+26: PASS config_and_canonical_codes
+26: PASS 6 outcome groups; report=84 TX=128 RX=224; no authentication/install/device access
+26/33 Test #26: update_outcome ...................   Passed    0.01 sec
+test 27
+      Start 27: update_negotiation
+
+27: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32-release-binding/build-release-sanitize/protocol/can/update_negotiation_tests
+27: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32-release-binding/build-release-sanitize/protocol/can
+27: Test timeout computed to be: 20
+27: PASS 7 negotiation groups/1024 sessions; state=368 pool=32 message=128. Opaque bindings only; no CAN/authentication/install/device access.
+27/33 Test #27: update_negotiation ...............   Passed    0.01 sec
+test 28
+      Start 28: boot_image_admission
+
+28: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32-release-binding/build-release-sanitize/firmware/stm32-bootloader/boot_admission_tests
+28: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32-release-binding/build-release-sanitize/firmware/stm32-bootloader
+28: Test timeout computed to be: 30
+28: PASS sha_vectors
+28: PASS success_and_fragmentation
+28: PASS invalid_signature_and_key
+28: PASS wrong_signer
+28: PASS compatibility_and_rollback
+28: PASS policy_errors
+28: PASS signed_malformed_metadata
+28: PASS stream_faults
+28: PASS deadlines_cancellation_and_wrap
+28: PASS arena_exhaustion_and_reuse
+28: PASS snapshot_and_reentry
+28: PASS arguments_and_limits
+28: PASS boundary_metadata_and_key_selection
+28: PASS storage_aliases_are_write_free
+28: PASS 14 admission groups; workspace=17664 bytes; ephemeral host signing keys; no device access
+28/33 Test #28: boot_image_admission .............   Passed    0.38 sec
+test 29
+      Start 29: boot_crypto_source
+
+29: Test command: /home/avlyubimov/.local/bin/python3.14 "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32-release-binding/firmware/stm32-bootloader/tests/source_tests.py" "--source" "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32-release-binding/build-release-sanitize/_deps/tv4_boot_mbedtls-src"
+29: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32-release-binding/build-release-sanitize/firmware/stm32-bootloader
+29: Test timeout computed to be: 15
+29: test_added_header (__main__.SourceTests.test_added_header) ... ok
+29: test_changed_code (__main__.SourceTests.test_changed_code) ... ok
+29: test_exact_source (__main__.SourceTests.test_exact_source) ... ok
+29: test_missing_header (__main__.SourceTests.test_missing_header) ... ok
+29: test_symlink (__main__.SourceTests.test_symlink) ... ok
+29:
+29: ----------------------------------------------------------------------
+29: Ran 5 tests in 0.076s
+29:
+29: OK
+29/33 Test #29: boot_crypto_source ...............   Passed    0.11 sec
+test 30
+      Start 30: boot_update_handoff
+
+30: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32-release-binding/build-release-sanitize/firmware/stm32-bootloader/boot_handoff_tests
+30: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32-release-binding/build-release-sanitize/firmware/stm32-bootloader
+30: Test timeout computed to be: 30
+30: PASS 54 signed end-to-end RAM transfers with lost DATA/final ACK and pending duplicate
+30: PASS end_to_end_sizes_and_fragments
+30: PASS snapshots_and_reentry
+30: PASS binding_is_not_transport_trust
+30: PASS changes_during_verification
+30: PASS revoke_after_success
+30: PASS acquire_and_release_failures
+30: PASS deadlines_before_verification_and_wrap
+30: PASS boundaries_and_final_cleanup
+30: PASS retained_ack_does_not_extend_handoff
+30: PASS rejected_inputs_and_aliases
+30: PASS 15 signed vector inspections with fragmented reads + captured local profile mutation
+30: PASS signed_vector_success_and_snapshot
+30: PASS valid_signature_invalid_vector_model
+30: PASS preflight_context_cleanup_and_reentry
+30: PASS 6 signed DATA -> crypto -> vectors -> close -> outcome/ACK sessions, lost report/final ACK; no lease retained
+30: PASS completion_end_to_end_history
+30: PASS completion_rejections
+30: PASS completion_release_and_late_context
+30: PASS completion_reentry_snapshot_and_arguments
+30: PASS 6 signed negotiation -> DATA -> P-256/SHA -> vectors -> close -> outcome/ACK chains; all four handshake losses, DATA/final ACK/report losses
+30: PASS negotiated_full_chain
+30: PASS 3 negotiated binding failures: changed image, invalid signature, valid re-signed metadata with mismatched raw SHA; no retained lease
+30: PASS negotiated_binding_still_requires_crypto
+30: PASS 19 handoff/completion groups; completion=568; state=2136 receipt=136 workspace=17664; RAM only, no install/device access
+30/33 Test #30: boot_update_handoff ..............   Passed    0.84 sec
+test 31
+      Start 31: boot_image_profile
+
+31: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32-release-binding/build-release-sanitize/firmware/stm32-bootloader/boot_profile_tests
+31: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32-release-binding/build-release-sanitize/firmware/stm32-bootloader
+31: Test timeout computed to be: 15
+31: PASS 241 vector-table lengths, 16..256 entries; synthetic models only
+31: PASS all_table_lengths
+31: PASS unknown_and_invalid_profiles
+31: PASS stack_edges_and_gaps
+31: PASS every slot in 256-entry table; null/even/outside/table/RAM/truncated Thumb target rejected
+31: PASS every_handler_and_reserved_slot
+31: PASS full_uint32_arithmetic
+31: PASS lengths_aliases_and_zero_output
+31: PASS 6 profile groups; profile=116 inspection=44; model consistency only, no execution/device access
+31/33 Test #31: boot_image_profile ...............   Passed    0.01 sec
+test 32
+      Start 32: boot_release_admission
+
+32: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32-release-binding/build-release-sanitize/firmware/stm32-bootloader/boot_release_tests
+32: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32-release-binding/build-release-sanitize/firmware/stm32-bootloader
+32: Test timeout computed to be: 30
+32: PASS maximum-width fields: document=604 padded=1024 workspace=17664 candidate=224 policy=288
+32: PASS 8 signed release admission groups; raw P-256/SHA, versions/selection/target/image, cleanup/faults; RAM only, no install/device access
+32/33 Test #32: boot_release_admission ...........   Passed    0.28 sec
+test 33
+      Start 33: boot_release_versions
+
+33: Test command: /home/avlyubimov/.local/bin/python3.14 "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32-release-binding/firmware/stm32-bootloader/tests/release_versions.py" "--driver" "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32-release-binding/build-release-sanitize/firmware/stm32-bootloader/boot_release_tests"
+33: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32-release-binding/build-release-sanitize/firmware/stm32-bootloader
+33: Test timeout computed to be: 30
+33: PASS 2745 independent bounded SemVer comparisons; 31-byte subset, numeric prerelease not truncated to uint32
+33/33 Test #33: boot_release_versions ............   Passed    0.05 sec
+
+100% tests passed, 0 tests failed out of 33
+
+Total Test time (real) =   7.45 sec

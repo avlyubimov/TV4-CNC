@@ -56,3 +56,16 @@ saved bytes и свежие physical/operator/recovery условия занов
 затем выполняют настоящие independent P-256/SHA/model/cleanup/outcome проверки.
 Opaque request/tag/counter не подменяет их. Нельзя зашивать fixture epochs или
 принимать HMI handshake success как signature/install/physical permission.
+
+## PR-07g — independent signed release document
+
+Читать docs/STM32_RELEASE_BINDING.md. Только opt-in release-draft-1 API через
+тот же single-owner bounded Mbed TLS engine. Legacy draft strict11 fields/API
+сохраняются; новый15-field draft не утверждает production HMI/CAN/release ABI.
+Полные raw signature/SHA/EOF обязательны; selected release/source/channel и
+installed/minimum component SemVer — local inputs, numeric counters отдельно.
+Нет defaults/provisioning/перевода git display версии в trusted context.
+Source commit signer claim не является build provenance proof. Новый standalone
+candidate не live receipt/install token; coordinator его пока не вызывает.
+Не менять workspace/dependency/heap/crypto owner или старые lifetime/vector/
+deadline gates. Нет actual board profile/map/writer/keys/runtime/device actions.

@@ -1,0 +1,5 @@
+   text	   data	    bss	    dec	    hex	filename
+   2453	      0	      1	   2454	    996	admission.c.obj (ex build-release-arm/libtv4_boot_admission.a)
+   1366	      0	      0	   1366	    556	metadata.c.obj (ex build-release-arm/libtv4_boot_admission.a)
+   1126	      0	      0	   1126	    466	release_policy.c.obj (ex build-release-arm/libtv4_boot_admission.a)
+    766	      0	      0	    766	    2fe	image_profile.c.obj (ex build-release-arm/libtv4_boot_admission.a)

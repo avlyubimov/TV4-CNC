@@ -137,3 +137,16 @@ CI и отдельного owner approval. Отмена/update history не уд
 PR-04d: manifest.sig — JSON envelope до 2048 байт с ровно key_id, algorithm
 (ECDSA-P256-SHA256), signature (canonical Base64 DER).
 См. [native HTTPS/envelope contract](OTA_HTTPS.md); production release не создан.
+
+## PR-07g — отдельная проверка Motion document до production release
+
+[Независимый signed release draft](STM32_RELEASE_BINDING.md) связывает release/
+component/target/profile/source/channel с полным образом на стороне STM32
+library. Явный selected release/source и installed/minimum SemVer context
+обязателен, numeric counters независимы. Это не общий HMI manifest или готовый
+production bundle ABI; HMI по-прежнему принимает только собственный component.
+
+Новый format/API не создаёт Motion artifact, keys/version defaults, signer или
+публикацию. Source commit в подписи не доказывает происхождение build; связь
+review candidate→signer→exact bytes остаётся отдельным pipeline/owner review.
+Live lease/coordinator adapter и installation/recovery/hardware gates открыты.

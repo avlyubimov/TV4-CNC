@@ -1,4 +1,5 @@
 #include "metadata.h"
+#include "release_metadata.h"
 #include <string.h>
 
 typedef struct { const uint8_t *p, *end; } parser;
@@ -46,13 +47,17 @@ static bool equal(span s, const char *literal)
     size_t n = strlen(literal);
     return s.length == n && memcmp(s.p, literal, n) == 0;
 }
-static bool identifier(parser *p, char out[TV4_BOOT_ID_BYTES])
+static bool bounded_string(parser *p, char *out, size_t capacity)
 {
     span s;
-    if (!string(p, &s) || s.length >= TV4_BOOT_ID_BYTES) return false;
+    if (!string(p, &s) || s.length >= capacity) return false;
     memcpy(out, s.p, s.length);
     out[s.length] = '\0';
     return true;
+}
+static bool identifier(parser *p, char out[TV4_BOOT_ID_BYTES])
+{
+    return bounded_string(p, out, TV4_BOOT_ID_BYTES);
 }
 static bool integer(parser *p, uint32_t *out)
 {
@@ -86,27 +91,29 @@ static bool digest(parser *p, uint8_t out[32])
     }
     return true;
 }
-bool tv4_boot_parse_metadata(const uint8_t *bytes, size_t length, tv4_boot_metadata *out)
+static bool parse(const uint8_t *bytes, size_t length, tv4_boot_metadata *out,
+    tv4_boot_release_candidate *extra)
 {
     static const char *const fields[] = {"schema", "component", "hardware_id", "hardware_revision",
         "memory_profile", "image_counter", "minimum_bootloader_counter", "protocol_min",
-        "protocol_max", "image_size", "sha256"};
+        "protocol_max", "image_size", "sha256", "release_version", "component_version", "channel", "source_commit"};
     if (bytes == NULL || out == NULL || length == 0 || length > TV4_BOOT_METADATA_MAX) return false;
     parser p = {bytes, bytes + length};
     tv4_boot_metadata m = {0};
     unsigned seen = 0;
+    unsigned count = extra == NULL ? 11u : 15u;
     if (!token(&p, '{')) return false;
-    for (unsigned field = 0; field < 11; ++field) {
+    for (unsigned field = 0; field < count; ++field) {
         span key, value;
         if (field != 0 && !token(&p, ',')) return false;
         if (!string(&p, &key) || !token(&p, ':')) return false;
         unsigned index = 0;
-        while (index < 11 && !equal(key, fields[index])) ++index;
-        if (index == 11 || (seen & (1u << index)) != 0) return false;
+        while (index < count && !equal(key, fields[index])) ++index;
+        if (index == count || (seen & (1u << index)) != 0) return false;
         seen |= 1u << index;
         bool ok;
         switch (index) {
-        case 0: ok = string(&p, &value) && equal(value, TV4_BOOT_DRAFT_SCHEMA); break;
+        case 0: ok = string(&p, &value) && equal(value, extra == NULL ? TV4_BOOT_DRAFT_SCHEMA : TV4_BOOT_RELEASE_SCHEMA); break;
         case 1: ok = string(&p, &value) && equal(value, "motion"); break;
         case 2: ok = identifier(&p, m.hardware_id); break;
         case 3: ok = identifier(&p, m.hardware_revision); break;
@@ -116,13 +123,27 @@ bool tv4_boot_parse_metadata(const uint8_t *bytes, size_t length, tv4_boot_metad
         case 7: ok = integer(&p, &m.protocol_min); break;
         case 8: ok = integer(&p, &m.protocol_max); break;
         case 9: ok = integer(&p, &m.image_size); break;
-        default: ok = digest(&p, m.sha256); break;
+        case 10: ok = digest(&p, m.sha256); break;
+        case 11: ok = extra != NULL && bounded_string(&p, extra->release_version, TV4_BOOT_VERSION_BYTES); break;
+        case 12: ok = extra != NULL && bounded_string(&p, extra->component_version, TV4_BOOT_VERSION_BYTES); break;
+        case 13: ok = extra != NULL && bounded_string(&p, extra->channel, TV4_BOOT_CHANNEL_BYTES); break;
+        default: ok = extra != NULL && bounded_string(&p, extra->source_commit, TV4_BOOT_COMMIT_BYTES); break;
         }
         if (!ok) return false;
     }
-    if (seen != 0x7ffu || !token(&p, '}')) return false;
+    if (seen != (1u << count) - 1u || !token(&p, '}')) return false;
     space(&p);
     if (p.p != p.end) return false;
+    if (extra != NULL && !tv4_boot_release_fields_valid(extra)) return false;
     *out = m;
     return true;
+}
+bool tv4_boot_parse_metadata(const uint8_t *bytes, size_t length, tv4_boot_metadata *out)
+{
+    return parse(bytes, length, out, NULL);
+}
+bool tv4_boot_parse_release_metadata(const uint8_t *bytes, size_t length,
+    tv4_boot_metadata *out, tv4_boot_release_candidate *extra)
+{
+    return extra != NULL && parse(bytes, length, out, extra);
 }

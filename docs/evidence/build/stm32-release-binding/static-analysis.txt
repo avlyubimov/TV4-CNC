@@ -1,0 +1,7 @@
+gcc (Ubuntu 15.2.0-16ubuntu1) 15.2.0
+PASS actual-source -fanalyzer -c admission
+PASS actual-source -fanalyzer -c metadata
+PASS actual-source -fanalyzer -c release_policy
+PASS actual-source -fanalyzer -c image_profile
+PASS actual-source -fanalyzer -c update_handoff
+PASS actual-source -fanalyzer -c update_completion

@@ -80,10 +80,16 @@ Unicode/Base64, общий signed C/Python corpus, версии/каналы/com
 provenance, неизвестные STM32/CAN версии. Проверка/установка обновлений ещё не
 настроены; сетевого updater или записи Flash этот экран не запускает.
 
-Текущая ветка от main `f0bd866`: [PR-07f logical update negotiation](docs/STM32_UPDATE_NEGOTIATION.md).
+Слитый PR #36: [PR-07f logical update negotiation](docs/STM32_UPDATE_NEGOTIATION.md).
 Fresh IDs/boot pair, bounded четыре сообщения и одноразовые параметры DATA
 проверены вместе с independent crypto/model/close/outcome. Это host/ARM foundation,
 без runtime CAN/identity provider/installer; hardware gates сохраняются.
+
+Текущая ветка от main `3381236`: [PR-07g independent release binding](docs/STM32_RELEASE_BINDING.md).
+Новый отдельный Motion draft связывает signed release/component version/channel/
+source commit с target/profile/image, использует прежний crypto/arena/stream и
+отклоняет unknown local context. Host33/sanitizers33/standalone10;2745 SemVer
+comparisons. Это не production bundle/CAN ABI, runtime coordinator или installer.
 
 [OTA ESP32 A/B и F407 по CAN](docs/OTA_ARCHITECTURE.md),
 [GitHub Releases/подписи/owner approval](docs/RELEASE_PROCESS.md),

@@ -1,0 +1,246 @@
+Start testing: Nov 21 01:19 +05
+----------------------------------------------------------
+1/10 Testing: boot_image_admission
+1/10 Test: boot_image_admission
+Command: "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32-release-binding/build-release-host/boot_admission_tests"
+Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32-release-binding/build-release-host
+"boot_image_admission" start time: Nov 21 01:19 +05
+Output:
+----------------------------------------------------------
+PASS sha_vectors
+PASS success_and_fragmentation
+PASS invalid_signature_and_key
+PASS wrong_signer
+PASS compatibility_and_rollback
+PASS policy_errors
+PASS signed_malformed_metadata
+PASS stream_faults
+PASS deadlines_cancellation_and_wrap
+PASS arena_exhaustion_and_reuse
+PASS snapshot_and_reentry
+PASS arguments_and_limits
+PASS boundary_metadata_and_key_selection
+PASS storage_aliases_are_write_free
+PASS 14 admission groups; workspace=17664 bytes; ephemeral host signing keys; no device access
+<end of output>
+Test time =   0.15 sec
+----------------------------------------------------------
+Test Passed.
+"boot_image_admission" end time: Nov 21 01:19 +05
+"boot_image_admission" time elapsed: 00:00:00
+----------------------------------------------------------
+
+2/10 Testing: boot_crypto_source
+2/10 Test: boot_crypto_source
+Command: "/home/avlyubimov/.local/bin/python3.14" "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32-release-binding/firmware/stm32-bootloader/tests/source_tests.py" "--source" "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32-release-binding/build-release-host/_deps/tv4_boot_mbedtls-src"
+Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32-release-binding/build-release-host
+"boot_crypto_source" start time: Nov 21 01:19 +05
+Output:
+----------------------------------------------------------
+test_added_header (__main__.SourceTests.test_added_header) ... ok
+test_changed_code (__main__.SourceTests.test_changed_code) ... ok
+test_exact_source (__main__.SourceTests.test_exact_source) ... ok
+test_missing_header (__main__.SourceTests.test_missing_header) ... ok
+test_symlink (__main__.SourceTests.test_symlink) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.089s
+
+OK
+<end of output>
+Test time =   0.12 sec
+----------------------------------------------------------
+Test Passed.
+"boot_crypto_source" end time: Nov 21 01:19 +05
+"boot_crypto_source" time elapsed: 00:00:00
+----------------------------------------------------------
+
+3/10 Testing: boot_update_handoff
+3/10 Test: boot_update_handoff
+Command: "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32-release-binding/build-release-host/boot_handoff_tests"
+Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32-release-binding/build-release-host
+"boot_update_handoff" start time: Nov 21 01:19 +05
+Output:
+----------------------------------------------------------
+PASS 54 signed end-to-end RAM transfers with lost DATA/final ACK and pending duplicate
+PASS end_to_end_sizes_and_fragments
+PASS snapshots_and_reentry
+PASS binding_is_not_transport_trust
+PASS changes_during_verification
+PASS revoke_after_success
+PASS acquire_and_release_failures
+PASS deadlines_before_verification_and_wrap
+PASS boundaries_and_final_cleanup
+PASS retained_ack_does_not_extend_handoff
+PASS rejected_inputs_and_aliases
+PASS 15 signed vector inspections with fragmented reads + captured local profile mutation
+PASS signed_vector_success_and_snapshot
+PASS valid_signature_invalid_vector_model
+PASS preflight_context_cleanup_and_reentry
+PASS 6 signed DATA -> crypto -> vectors -> close -> outcome/ACK sessions, lost report/final ACK; no lease retained
+PASS completion_end_to_end_history
+PASS completion_rejections
+PASS completion_release_and_late_context
+PASS completion_reentry_snapshot_and_arguments
+PASS 6 signed negotiation -> DATA -> P-256/SHA -> vectors -> close -> outcome/ACK chains; all four handshake losses, DATA/final ACK/report losses
+PASS negotiated_full_chain
+PASS 3 negotiated binding failures: changed image, invalid signature, valid re-signed metadata with mismatched raw SHA; no retained lease
+PASS negotiated_binding_still_requires_crypto
+PASS 19 handoff/completion groups; completion=568; state=2136 receipt=136 workspace=17664; RAM only, no install/device access
+<end of output>
+Test time =   0.32 sec
+----------------------------------------------------------
+Test Passed.
+"boot_update_handoff" end time: Nov 21 01:19 +05
+"boot_update_handoff" time elapsed: 00:00:00
+----------------------------------------------------------
+
+4/10 Testing: boot_image_profile
+4/10 Test: boot_image_profile
+Command: "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32-release-binding/build-release-host/boot_profile_tests"
+Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32-release-binding/build-release-host
+"boot_image_profile" start time: Nov 21 01:19 +05
+Output:
+----------------------------------------------------------
+PASS 241 vector-table lengths, 16..256 entries; synthetic models only
+PASS all_table_lengths
+PASS unknown_and_invalid_profiles
+PASS stack_edges_and_gaps
+PASS every slot in 256-entry table; null/even/outside/table/RAM/truncated Thumb target rejected
+PASS every_handler_and_reserved_slot
+PASS full_uint32_arithmetic
+PASS lengths_aliases_and_zero_output
+PASS 6 profile groups; profile=116 inspection=44; model consistency only, no execution/device access
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"boot_image_profile" end time: Nov 21 01:19 +05
+"boot_image_profile" time elapsed: 00:00:00
+----------------------------------------------------------
+
+5/10 Testing: boot_release_admission
+5/10 Test: boot_release_admission
+Command: "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32-release-binding/build-release-host/boot_release_tests"
+Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32-release-binding/build-release-host
+"boot_release_admission" start time: Nov 21 01:19 +05
+Output:
+----------------------------------------------------------
+PASS maximum-width fields: document=604 padded=1024 workspace=17664 candidate=224 policy=288
+PASS 8 signed release admission groups; raw P-256/SHA, versions/selection/target/image, cleanup/faults; RAM only, no install/device access
+<end of output>
+Test time =   0.10 sec
+----------------------------------------------------------
+Test Passed.
+"boot_release_admission" end time: Nov 21 01:19 +05
+"boot_release_admission" time elapsed: 00:00:00
+----------------------------------------------------------
+
+6/10 Testing: boot_release_versions
+6/10 Test: boot_release_versions
+Command: "/home/avlyubimov/.local/bin/python3.14" "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32-release-binding/firmware/stm32-bootloader/tests/release_versions.py" "--driver" "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32-release-binding/build-release-host/boot_release_tests"
+Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32-release-binding/build-release-host
+"boot_release_versions" start time: Nov 21 01:19 +05
+Output:
+----------------------------------------------------------
+PASS 2745 independent bounded SemVer comparisons; 31-byte subset, numeric prerelease not truncated to uint32
+<end of output>
+Test time =   0.04 sec
+----------------------------------------------------------
+Test Passed.
+"boot_release_versions" end time: Nov 21 01:19 +05
+"boot_release_versions" time elapsed: 00:00:00
+----------------------------------------------------------
+
+7/10 Testing: update_session
+7/10 Test: update_session
+Command: "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32-release-binding/build-release-host/update-transport/update_session_tests"
+Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32-release-binding/build-release-host/update-transport
+"update_session" start time: Nov 21 01:19 +05
+Output:
+----------------------------------------------------------
+PASS checksum_vectors
+PASS invalid_limits
+PASS begin_and_exclusivity
+PASS two_phase_and_exact_duplicates
+PASS malformed_blocks
+PASS conflicting_duplicate
+PASS crc_collision_does_not_match_duplicate
+PASS consumer_failure_is_sticky
+PASS sender_retry_budget
+PASS receiver_retry_budget
+PASS ack_validation
+PASS deadline_boundaries
+PASS total_deadline
+PASS clocks_and_wraparound
+PASS abort_and_reboot
+PASS null_and_output_contracts
+PASS retry_counter_boundary
+PASS 17 unit groups; rx=384 tx=384 bytes; no device access
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"update_session" end time: Nov 21 01:19 +05
+"update_session" time elapsed: 00:00:00
+----------------------------------------------------------
+
+8/10 Testing: update_loopback
+8/10 Test: update_loopback
+Command: "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32-release-binding/build-release-host/update-transport/update_loopback_tests"
+Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32-release-binding/build-release-host/update-transport
+"update_loopback" start time: Nov 21 01:19 +05
+Output:
+----------------------------------------------------------
+PASS 2049 memory transfers; lost DATA=4318 ACK=4360 (final=397) corrupt=3924 reorder=4338 pending duplicates=4004
+PASS altered payload + valid CRC completes transport only; SHA oracle rejects image
+PASS 10 volatile reset cut cases; stale sessions/ACK rejected; no resume
+PASS truncated stream / partial RAM consumer never reach completion
+<end of output>
+Test time =   0.05 sec
+----------------------------------------------------------
+Test Passed.
+"update_loopback" end time: Nov 21 01:19 +05
+"update_loopback" time elapsed: 00:00:00
+----------------------------------------------------------
+
+9/10 Testing: update_outcome
+9/10 Test: update_outcome
+Command: "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32-release-binding/build-release-host/update-transport/update_outcome_tests"
+Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32-release-binding/build-release-host/update-transport
+"update_outcome" start time: Nov 21 01:19 +05
+Output:
+----------------------------------------------------------
+PASS 1001 outcome sessions, 1001 deliveries; lost report/final ACK; duplicates not redelivered
+PASS loss_duplicate_and_history
+PASS binding_and_ack_validation
+PASS conflicts_invalid_reports_and_forgery_boundary
+PASS deadlines_retries_and_late_begin
+PASS transport_reboot_abort_and_clock
+PASS config_and_canonical_codes
+PASS 6 outcome groups; report=84 TX=128 RX=224; no authentication/install/device access
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"update_outcome" end time: Nov 21 01:19 +05
+"update_outcome" time elapsed: 00:00:00
+----------------------------------------------------------
+
+10/10 Testing: update_negotiation
+10/10 Test: update_negotiation
+Command: "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32-release-binding/build-release-host/update-transport/update_negotiation_tests"
+Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32-release-binding/build-release-host/update-transport
+"update_negotiation" start time: Nov 21 01:19 +05
+Output:
+----------------------------------------------------------
+PASS 7 negotiation groups/1024 sessions; state=368 pool=32 message=128. Opaque bindings only; no CAN/authentication/install/device access.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"update_negotiation" end time: Nov 21 01:19 +05
+"update_negotiation" time elapsed: 00:00:00
+----------------------------------------------------------
+
+End testing: Nov 21 01:19 +05

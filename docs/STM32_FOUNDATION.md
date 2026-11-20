@@ -99,3 +99,11 @@ watchdog feed и 99 999 детерминированных fault-injection cycle
 существующей независимой crypto/model/cleanup цепочкой. Volatile counters/tag
 не задают production protocol или real board identity; memory map/clock/GPIO/
 CAN/recovery по-прежнему требуют отдельных hardware/review gates. Нет board image.
+
+## PR-07g — independent release context draft
+
+[Signed release binding](STM32_RELEASE_BINDING.md) проверяет release/component/
+source/channel/target/image в отдельном opt-in API. Прежние workspace/crypto
+owner и legacy API сохраняются. Это не trusted installed-state provider,
+production bundle contract или новая функция live coordinator. Нет board image,
+actual memory/vector/erase/clock/GPIO/CAN profile или устройств/движения.
