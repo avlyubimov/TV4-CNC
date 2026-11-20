@@ -67,6 +67,13 @@ watchdog/fault возвращают запрещённое движение; ACK
 
 ## Обновления и отказоустойчивость
 
+PR-07b добавляет [независимый admission кандидата F407](STM32_IMAGE_ADMISSION.md):
+отдельная pinned Mbed TLS, локальный trust store/context, signature до parser,
+exact stream SHA/EOF и cleanup. Проверяется на ПК/ARM compile, без installer.
+Draft metadata/counters не задают production release format или CAN version.
+VERIFIED_CANDIDATE не подтверждает SP/PC, physical quiescent/recovery/permission;
+самостоятельные bootloader writer/commit/jump ещё отсутствуют.
+
 OTA обязательно для ESP32 и F407 в штатной эксплуатации без USB. Пока оно
 не реализовано. [OTA_ARCHITECTURE.md](OTA_ARCHITECTURE.md) задаёт подпись
 манифеста/образы, независимые состояния обновления, A/B, health confirmation,

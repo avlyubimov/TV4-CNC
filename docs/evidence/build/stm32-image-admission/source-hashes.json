@@ -1,0 +1,19 @@
+{
+  "base_commit": "74a7af9fb9a84ffee5587f4956ccb485e725b848",
+  "sha256": {
+    "CMakeLists.txt": "dfd105a0620260f64a0a148d2ea919e9384987a1a9bc2b6907fcad95f0026c09",
+    ".github/workflows/bootloader.yml": "7f2945684ec802aa814a6880677c5eeaadd1b2f5314dc70fe1946c228922d113",
+    "tools/check_boot_admission_build.py": "0853f95b4250b64182ee044dfb6f047f3f231ed5a296ba47b6f06095445ef2b0",
+    "tools/check_boot_crypto_source.py": "b917e9cfa593ae8a0a2b563bd3a2d43e68610e09db70594a3ed5e7bb473a4e53",
+    "third_party/mbedtls/origin.json": "696888057447b110c98789c69712830b81c50a1cc5d1e6e552c2945eab3b2fa3",
+    "firmware/stm32-bootloader/AGENTS.md": "aa7e1a8810b13291d1afc5996cee466de6c0c615cabad3d2b5e41e99f3611a6d",
+    "firmware/stm32-bootloader/CMakeLists.txt": "f93282c3651c82bf8f79c5bcdc6a3f86642b46e0bfc44e6db2951e0c891a88dc",
+    "firmware/stm32-bootloader/config/tv4_boot_mbedtls_config.h": "27f58c76fdeb3dd13f3e5da8afdf312890ead9e78262dc84a068aed81326b1d6",
+    "firmware/stm32-bootloader/core/admission.c": "0330840c5d25ba683639ce3855504846bb66275b539b6b540a3f392a7841a1cd",
+    "firmware/stm32-bootloader/core/metadata.c": "cb6781836618e2364b8f4cd4aa7405c2e0a49fdeb69197cebd811957fc4fb86c",
+    "firmware/stm32-bootloader/core/metadata.h": "39e62fc3a803e712715798002b7e504ccfd17b8d70e8906d8b4ea6723aeaba86",
+    "firmware/stm32-bootloader/include/admission.h": "a7f5e65e3d8c26c758dc42efc8b4088feff4d2f20e3d326db7b68a7315e3eeba",
+    "firmware/stm32-bootloader/tests/admission_tests.c": "988890fdb9dba83d16fbd7b99e238630d48f75d22b0d5661bbfbaf907637a6f1",
+    "firmware/stm32-bootloader/tests/source_tests.py": "022c96c2e245f9127808a96c141e356d8ebbf72ab6f24c7279a886ecd020395e"
+  }
+}

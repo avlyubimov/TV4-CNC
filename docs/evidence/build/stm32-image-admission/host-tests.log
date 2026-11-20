@@ -1,0 +1,49 @@
+Test project <repo>/build-host
+      Start  1: build_validation
+ 1/22 Test  #1: build_validation .................   Passed    0.04 sec
+      Start  2: build_candidate
+ 2/22 Test  #2: build_candidate ..................   Passed    0.56 sec
+      Start  3: core
+ 3/22 Test  #3: core .............................   Passed    0.00 sec
+      Start  4: wifi_profiles
+ 4/22 Test  #4: wifi_profiles ....................   Passed    0.00 sec
+      Start  5: render
+ 5/22 Test  #5: render ...........................   Passed    0.41 sec
+      Start  6: render_rgb565
+ 6/22 Test  #6: render_rgb565 ....................   Passed    0.43 sec
+      Start  7: diagnostics
+ 7/22 Test  #7: diagnostics ......................   Passed    0.00 sec
+      Start  8: ota_crypto
+ 8/22 Test  #8: ota_crypto .......................   Passed    0.00 sec
+      Start  9: ota_candidate
+ 9/22 Test  #9: ota_candidate ....................   Passed    0.23 sec
+      Start 10: ota_manifest
+10/22 Test #10: ota_manifest .....................   Passed    0.06 sec
+      Start 11: ota_stream
+11/22 Test #11: ota_stream .......................   Passed    0.00 sec
+      Start 12: ota_http
+12/22 Test #12: ota_http .........................   Passed    0.00 sec
+      Start 13: ota_session
+13/22 Test #13: ota_session ......................   Passed    0.01 sec
+      Start 14: ota_memory
+14/22 Test #14: ota_memory .......................   Passed    0.00 sec
+      Start 15: ota_time
+15/22 Test #15: ota_time .........................   Passed    0.00 sec
+      Start 16: ota_sntp
+16/22 Test #16: ota_sntp .........................   Passed    0.00 sec
+      Start 17: ota_tls_probe
+17/22 Test #17: ota_tls_probe ....................   Passed    0.00 sec
+      Start 18: ota_resource
+18/22 Test #18: ota_resource .....................   Passed    0.00 sec
+      Start 19: motion_supervisor
+19/22 Test #19: motion_supervisor ................   Passed    0.00 sec
+      Start 20: motion_startup_noio
+20/22 Test #20: motion_startup_noio ..............   Passed    0.00 sec
+      Start 21: boot_image_admission
+21/22 Test #21: boot_image_admission .............   Passed    0.14 sec
+      Start 22: boot_crypto_source
+22/22 Test #22: boot_crypto_source ...............   Passed    0.12 sec
+
+100% tests passed, 0 tests failed out of 22
+
+Total Test time (real) =   2.03 sec

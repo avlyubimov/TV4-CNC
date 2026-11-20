@@ -1,0 +1,15 @@
+PASS sha_vectors
+PASS success_and_fragmentation
+PASS invalid_signature_and_key
+PASS wrong_signer
+PASS compatibility_and_rollback
+PASS policy_errors
+PASS signed_malformed_metadata
+PASS stream_faults
+PASS deadlines_cancellation_and_wrap
+PASS arena_exhaustion_and_reuse
+PASS snapshot_and_reentry
+PASS arguments_and_limits
+PASS boundary_metadata_and_key_selection
+PASS storage_aliases_are_write_free
+PASS 14 admission groups; workspace=17664 bytes; ephemeral host signing keys; no device access

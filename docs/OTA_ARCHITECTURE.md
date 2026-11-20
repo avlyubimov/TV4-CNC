@@ -181,6 +181,14 @@ CRC и retry windows выбираются отдельно. Reassembly/timeouts/
 
 ## Единый UI и проверки
 
+Software PR-07b: [независимый verifier кандидата STM32](STM32_IMAGE_ADMISSION.md)
+с pinned Mbed TLS3.6.7, локальным allowlist, raw-byte signature и bounded
+image SHA/EOF. Он использует явно экспериментальную metadata schema;
+это не изменение действующего HMI release manifest или CAN wire protocol.
+Нет production context/keys, writer/commit/vector jump или runtime caller.
+Receipt относится к проверенному snapshot и не является install permission;
+сохранённый образ перед commit/jump потребуется проверять снова.
+
 Параметры → Обновления: installed HMI/Motion/protocol, доступный релиз/канал,
 changelog, hardware compatibility, размер, стадии download/install/verification,
 результат/ошибки и история. Неизвестная версия отображается как «нет данных»,

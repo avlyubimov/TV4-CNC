@@ -1,0 +1,21 @@
+{
+  "recorded_client_date": "2026-11-20",
+  "recorded_utc": "2026-11-20T15:34:05.162539+00:00",
+  "base_commit": "74a7af9fb9a84ffee5587f4956ccb485e725b848",
+  "independent_of_open_pr": 29,
+  "host_gcc": "gcc (Ubuntu 15.2.0-16ubuntu1) 15.2.0",
+  "arm_gcc": "arm-none-eabi-gcc (15:14.2.rel1-1) 14.2.1 20241119",
+  "arm_ld": "GNU ld (2.45.50.20251209-1ubuntu1+23build1) 2.45.50.20251209",
+  "cmake": "cmake version 4.2.3",
+  "ninja": "1.13.2",
+  "python": "Python 3.14.4",
+  "host_oracle": "OpenSSL 3.5.5 27 Jan 2026 (Library: OpenSSL 3.5.5 27 Jan 2026)",
+  "mbedtls": "3.6.7",
+  "mbedtls_archive_sha256": "a7e8bcbec0e6f761b4af24f25677626b35f762f68eef79c08677a363212d11f6",
+  "lvgl_commit": "7f07a129e8d77f4984fff8e623fd5be18ff42e74",
+  "local_toolchain_note": "Ubuntu GCC14.2.1; Binutils differs from official CI ARM14.2.Rel1 archive",
+  "device_access": false,
+  "board_firmware_generated": false,
+  "production_keys_provisioned": false,
+  "ctest_python": "Python 3.14.6"
+}

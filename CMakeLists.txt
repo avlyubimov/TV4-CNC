@@ -102,3 +102,6 @@ add_executable(ota_resource_tests tests/ota_resource_tests.c)
 target_link_libraries(ota_resource_tests PRIVATE tv4_ota_verification)
 target_compile_options(ota_resource_tests PRIVATE -Wall -Wextra -Werror -UNDEBUG)
 add_test(NAME ota_resource COMMAND ota_resource_tests)
+
+# Independent read-only bootloader admission; no transport/runtime dependency.
+add_subdirectory(firmware/stm32-bootloader)

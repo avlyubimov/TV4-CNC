@@ -1,0 +1,39 @@
+{
+  "version": "3.6.7",
+  "tag": "mbedtls-3.6.7",
+  "url": "https://github.com/Mbed-TLS/mbedtls/releases/download/mbedtls-3.6.7/mbedtls-3.6.7.tar.bz2",
+  "archive_sha256": "a7e8bcbec0e6f761b4af24f25677626b35f762f68eef79c08677a363212d11f6",
+  "license": "Apache-2.0 OR GPL-2.0-or-later",
+  "verification_profile_license": "Apache-2.0",
+  "crypto_sources": [
+    "asn1parse",
+    "asn1write",
+    "bignum",
+    "bignum_core",
+    "bignum_mod",
+    "bignum_mod_raw",
+    "constant_time",
+    "ecp",
+    "ecp_curves",
+    "ecp_curves_new",
+    "ecdsa",
+    "sha256",
+    "platform",
+    "platform_util",
+    "memory_buffer_alloc"
+  ],
+  "integrity_scope": [
+    "include/**/*.h",
+    "library/*.h",
+    "listed library/*.c",
+    "LICENSE"
+  ],
+  "tree_file_count": 178,
+  "tree_sha256": "2087a1191bd838ec63bc7d97452337888fef6247eac6ba782554d58408041310",
+  "archive_binary_test_inputs": {
+    "framework/data_files/base64/def_b64_ff.bin": "6ddff1c9506617bd8ff835154841f1c4553608ad96adaf0757694f5b3b17d8e8",
+    "framework/data_files/pkcs7_data.bin": "05ade08fcfb104f40b2536a14dfcd6e916d643f5cf8044b19028b607ae8f4908",
+    "framework/data_files/pkcs7_data_1.bin": "df4e26a04a444901b95afef44e4a96cfae34690fff2ad2c66389c70079cdff2b",
+    "framework/data_files/pkcs7_zerolendata.bin": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

@@ -1,0 +1,10 @@
+test_added_header (__main__.SourceTests.test_added_header) ... ok
+test_changed_code (__main__.SourceTests.test_changed_code) ... ok
+test_exact_source (__main__.SourceTests.test_exact_source) ... ok
+test_missing_header (__main__.SourceTests.test_missing_header) ... ok
+test_symlink (__main__.SourceTests.test_symlink) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.083s
+
+OK
