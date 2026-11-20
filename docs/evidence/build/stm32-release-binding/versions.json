@@ -56,7 +56,7 @@
   "base_main": "33812368cb70e782389c30dfb77b2d7f61b39e9e",
   "client_date": "2026-11-21",
   "timezone": "Asia/Almaty",
-  "captured_utc": "2026-11-20T20:28:19.470919+00:00",
+  "captured_utc": "2026-11-20T20:38:40.809906+00:00",
   "working_tree_tested": true,
   "gcc": "gcc (Ubuntu 15.2.0-16ubuntu1) 15.2.0",
   "arm_gcc": "arm-none-eabi-gcc (15:14.2.rel1-1) 14.2.1 20241119",
@@ -83,5 +83,12 @@
   "firmware_flashing": false,
   "sdk_note": "No new local ESP builds for this STM32-only stage; existing eight CI SDK profiles retained.",
   "stage": "PR-07g independent signed release document",
-  "source_tree_tested": true
+  "source_tree_tested": true,
+  "ci_regression": {
+    "old_head": "60a698f022edc51e0784d99c2c732d72e1970e01",
+    "push_run": 44812179802,
+    "job": 136551266370,
+    "cause": "constant negative fixture replacement could equal original SHA tail; XOR1 guarantees changed byte",
+    "production_verifier_changed": false
+  }
 }

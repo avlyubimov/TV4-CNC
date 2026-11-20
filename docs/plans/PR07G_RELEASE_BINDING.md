@@ -24,3 +24,8 @@ handoff lifetime и deadline не менять. Новый путь ещё не 
 Нет runtime/device/SWD/UART/reset/Flash/wire/GPIO/motion/install/jump/release/key
 provisioning. Source commit — подписанное заявление signer, не build provenance
 proof. Hardware marking/HSE/RAM/erase/protection/GPIO/CAN/recovery gates прежние.
+
+Во время проверки push CI найден старый flaky negative fixture PR-05a: замена
+SHA tail на constant `x` иногда не меняла образ. Исправить только fixture на
+XOR1, сохранить deterministic RAM reproducer и повторить host/sanitizers;
+image verifier и правила приёмки не ослаблять.

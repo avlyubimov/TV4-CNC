@@ -7,8 +7,8 @@ PR #1–36 слиты, открытых PR перед работой нет; [ma
 
 | Проверка | Результат | Evidence |
 |---|---|---|
-| Root host/LVGL | **33/33 PASS**,3.30s | [CTest](host-ctest.txt), [full log](host-tests.log) |
-| ASan/UBSan/LeakSanitizer | **33/33 PASS**,7.45s; default env, без suppressions | [CTest](sanitizer-ctest.txt), [full log](sanitizer-tests.log) |
+| Root host/LVGL | **33/33 PASS**,2.91s | [CTest](host-ctest.txt), [full log](host-tests.log) |
+| ASan/UBSan/LeakSanitizer | **33/33 PASS**,6.58s; default env, без suppressions | [CTest](sanitizer-ctest.txt), [full log](sanitizer-tests.log) |
 | Standalone bootloader/protocol | **10/10 PASS**,0.80s | [full log](standalone-tests.log) |
 | Новый signed release API | **8 groups PASS**: actual P-256/SHA, selection/version/channel/target, unknown context, schema, source/crypto faults, alias/snapshot/reentry/cleanup | [groups](case-groups.txt) |
 | Independent bounded SemVer | **2745 comparisons PASS**, C policy vs Python oracle; official precedence chain, uint32/31-byte bounds, numeric prerelease | case-groups.txt |
@@ -42,6 +42,21 @@ Object/frame totals — static libraries, не board image или полный c
 RAM/CCM/CPU/latency measurement. Добавленный shim16 и wrapper592 должны входить
 в будущий full-stack review; прежний max984 не доказывает прежний total stack.
 Новых mutable globals/heap imports/arena нет; общий single owner сохранён.
+
+## Исправленный сбой push CI
+
+На первом head60a698f push [host job](https://github.com/avlyubimov/TV4-CNC/actions/runs/44812179802/job/136551266370)
+упал в существующем `build_candidate`, тогда как PR jobs прошли. Причина:
+`app[:-1]+b'x'` не повреждает образ, если SHA tail уже0x78. Git-derived fixture
+version меняется между runs; это не ошибка принятия повреждённого firmware.
+[RAM reproducer](ci-regression.txt) на deterministic version `tail-case-589`
+подтвердил идентичные bytes и правильный accept unchanged image.
+
+Только негативная fixture в tests/build_candidate_tests.py теперь XOR1 меняет
+последний байт, assert проверяет отличие. Production ESP parser/policy неизменны;
+проверка действительно изменённого image отвергает appended SHA mismatch. После
+изменения повторены оба полных host/санитайзер набора33; сохранённые логи актуальны.
+Исторический failed run не скрывается и не превращается в PASS повторным запуском.
 
 ## Воспроизведение
 

@@ -24,6 +24,8 @@ target/counter/image checks через прежний engine. Host33/sanitizers3
 2745 version comparisons и ARM/static/source/image/output PASS; workspace17664
 прежний. Новый API ещё не подключён к lease/coordinator/runtime и не задаёт
 production bundle/schema/keys/installed context. Legacy strict11-field API прежний.
+Push CI также обнаружил старый build-candidate flaky fixture: constant `x` мог
+совпасть с SHA tail. Теперь test XOR1 гарантированно меняет байт; verifier прежний.
 Нет runtime caller, Flash writer/map/commit/jump или физического safe-state proof.
 Следующий этап — [NEXT_STAGE](NEXT_STAGE.md). Ниже исторические снимки отдельных PR;
 их старые counts/«не реализовано» не заменяют текущий статус этого абзаца.

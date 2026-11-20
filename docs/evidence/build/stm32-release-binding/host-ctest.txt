@@ -1,16 +1,16 @@
- 1/33 Test  #1: build_validation .................   Passed    0.05 sec
- 2/33 Test  #2: build_candidate ..................   Passed    0.57 sec
+ 1/33 Test  #1: build_validation .................   Passed    0.03 sec
+ 2/33 Test  #2: build_candidate ..................   Passed    0.44 sec
  3/33 Test  #3: core .............................   Passed    0.00 sec
  4/33 Test  #4: firmware_info ....................   Passed    0.00 sec
  5/33 Test  #5: wifi_profiles ....................   Passed    0.00 sec
- 6/33 Test  #6: render ...........................   Passed    0.61 sec
- 7/33 Test  #7: render_rgb565 ....................   Passed    0.59 sec
+ 6/33 Test  #6: render ...........................   Passed    0.54 sec
+ 7/33 Test  #7: render_rgb565 ....................   Passed    0.56 sec
  8/33 Test  #8: diagnostics ......................   Passed    0.00 sec
  9/33 Test  #9: ota_crypto .......................   Passed    0.00 sec
-10/33 Test #10: ota_candidate ....................   Passed    0.22 sec
-11/33 Test #11: ota_manifest .....................   Passed    0.07 sec
+10/33 Test #10: ota_candidate ....................   Passed    0.19 sec
+11/33 Test #11: ota_manifest .....................   Passed    0.06 sec
 12/33 Test #12: ota_json .........................   Passed    0.01 sec
-13/33 Test #13: ota_policy_conformance ...........   Passed    0.36 sec
+13/33 Test #13: ota_policy_conformance ...........   Passed    0.30 sec
 14/33 Test #14: ota_stream .......................   Passed    0.00 sec
 15/33 Test #15: ota_http .........................   Passed    0.00 sec
 16/33 Test #16: ota_session ......................   Passed    0.01 sec
@@ -26,10 +26,10 @@
 26/33 Test #26: update_outcome ...................   Passed    0.01 sec
 27/33 Test #27: update_negotiation ...............   Passed    0.00 sec
 28/33 Test #28: boot_image_admission .............   Passed    0.14 sec
-29/33 Test #29: boot_crypto_source ...............   Passed    0.12 sec
-30/33 Test #30: boot_update_handoff ..............   Passed    0.32 sec
+29/33 Test #29: boot_crypto_source ...............   Passed    0.11 sec
+30/33 Test #30: boot_update_handoff ..............   Passed    0.30 sec
 31/33 Test #31: boot_image_profile ...............   Passed    0.00 sec
-32/33 Test #32: boot_release_admission ...........   Passed    0.11 sec
-33/33 Test #33: boot_release_versions ............   Passed    0.05 sec
+32/33 Test #32: boot_release_admission ...........   Passed    0.10 sec
+33/33 Test #33: boot_release_versions ............   Passed    0.04 sec
 100% tests passed, 0 tests failed out of 33
-Total Test time (real) =   3.30 sec
+Total Test time (real) =   2.91 sec

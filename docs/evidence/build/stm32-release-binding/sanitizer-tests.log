@@ -14,10 +14,10 @@ test 1
 1: Test timeout computed to be: 10000000
 1: ..........
 1: ----------------------------------------------------------------------
-1: Ran 10 tests in 0.004s
+1: Ran 10 tests in 0.003s
 1:
 1: OK
- 1/33 Test  #1: build_validation .................   Passed    0.04 sec
+ 1/33 Test  #1: build_validation .................   Passed    0.03 sec
 test 2
       Start  2: build_candidate
 
@@ -26,10 +26,10 @@ test 2
 2: Test timeout computed to be: 10000000
 2: ................
 2: ----------------------------------------------------------------------
-2: Ran 16 tests in 0.453s
+2: Ran 16 tests in 0.378s
 2:
 2: OK
- 2/33 Test  #2: build_candidate ..................   Passed    0.49 sec
+ 2/33 Test  #2: build_candidate ..................   Passed    0.41 sec
 test 3
       Start  3: core
 
@@ -62,7 +62,7 @@ test 6
 6: Test timeout computed to be: 15
 6: Firmware UI PASS: local/simulator/unknown/31-byte/profile states, Wi-Fi editor cleanup, 64 navigation cycles with identical host-pool free bytes, persistent STOP/fault/no motion
 6: LVGL 9 render and Cyrillic coverage passed
- 6/33 Test  #6: render ...........................   Passed    2.18 sec
+ 6/33 Test  #6: render ...........................   Passed    1.89 sec
 test 7
       Start  7: render_rgb565
 
@@ -71,7 +71,7 @@ test 7
 7: Test timeout computed to be: 15
 7: Firmware UI PASS: local/simulator/unknown/31-byte/profile states, Wi-Fi editor cleanup, 64 navigation cycles with identical host-pool free bytes, persistent STOP/fault/no motion
 7: LVGL 9 render and Cyrillic coverage passed
- 7/33 Test  #7: render_rgb565 ....................   Passed    2.04 sec
+ 7/33 Test  #7: render_rgb565 ....................   Passed    1.86 sec
 test 8
       Start  8: diagnostics
 
@@ -96,10 +96,10 @@ test 10
 10: Test timeout computed to be: 10000000
 10: ...........
 10: ----------------------------------------------------------------------
-10: Ran 11 tests in 0.178s
+10: Ran 11 tests in 0.152s
 10:
 10: OK
-10/33 Test #10: ota_candidate ....................   Passed    0.22 sec
+10/33 Test #10: ota_candidate ....................   Passed    0.18 sec
 test 11
       Start 11: ota_manifest
 
@@ -107,7 +107,7 @@ test 11
 11: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32-release-binding/build-release-sanitize
 11: Test timeout computed to be: 10000000
 11: Native manifest signature/policy/encoding/OOM scenarios PASS; parse peak=2323 bytes, allocations=71
-11/33 Test #11: ota_manifest .....................   Passed    0.14 sec
+11/33 Test #11: ota_manifest .....................   Passed    0.13 sec
 test 12
       Start 12: ota_json
 
@@ -124,7 +124,7 @@ test 13
 13: Test timeout computed to be: 60
 13: Conformance PASS: signed metadata=115, accepted=16, rejected=99; SemVer comparisons=2809; Base64 cases=130
 13: Native candidate fields equal offline policy; rejected native output entirely zero. Ephemeral private key stayed in C helper memory; no device/install/release.
-13/33 Test #13: ota_policy_conformance ...........   Passed    0.39 sec
+13/33 Test #13: ota_policy_conformance ...........   Passed    0.33 sec
 test 14
       Start 14: ota_stream
 
@@ -285,7 +285,7 @@ test 28
 28: PASS boundary_metadata_and_key_selection
 28: PASS storage_aliases_are_write_free
 28: PASS 14 admission groups; workspace=17664 bytes; ephemeral host signing keys; no device access
-28/33 Test #28: boot_image_admission .............   Passed    0.38 sec
+28/33 Test #28: boot_image_admission .............   Passed    0.34 sec
 test 29
       Start 29: boot_crypto_source
 
@@ -299,10 +299,10 @@ test 29
 29: test_symlink (__main__.SourceTests.test_symlink) ... ok
 29:
 29: ----------------------------------------------------------------------
-29: Ran 5 tests in 0.076s
+29: Ran 5 tests in 0.061s
 29:
 29: OK
-29/33 Test #29: boot_crypto_source ...............   Passed    0.11 sec
+29/33 Test #29: boot_crypto_source ...............   Passed    0.09 sec
 test 30
       Start 30: boot_update_handoff
 
@@ -334,7 +334,7 @@ test 30
 30: PASS 3 negotiated binding failures: changed image, invalid signature, valid re-signed metadata with mismatched raw SHA; no retained lease
 30: PASS negotiated_binding_still_requires_crypto
 30: PASS 19 handoff/completion groups; completion=568; state=2136 receipt=136 workspace=17664; RAM only, no install/device access
-30/33 Test #30: boot_update_handoff ..............   Passed    0.84 sec
+30/33 Test #30: boot_update_handoff ..............   Passed    0.74 sec
 test 31
       Start 31: boot_image_profile
 
@@ -359,7 +359,7 @@ test 32
 32: Test timeout computed to be: 30
 32: PASS maximum-width fields: document=604 padded=1024 workspace=17664 candidate=224 policy=288
 32: PASS 8 signed release admission groups; raw P-256/SHA, versions/selection/target/image, cleanup/faults; RAM only, no install/device access
-32/33 Test #32: boot_release_admission ...........   Passed    0.28 sec
+32/33 Test #32: boot_release_admission ...........   Passed    0.26 sec
 test 33
       Start 33: boot_release_versions
 
@@ -367,8 +367,8 @@ test 33
 33: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32-release-binding/build-release-sanitize/firmware/stm32-bootloader
 33: Test timeout computed to be: 30
 33: PASS 2745 independent bounded SemVer comparisons; 31-byte subset, numeric prerelease not truncated to uint32
-33/33 Test #33: boot_release_versions ............   Passed    0.05 sec
+33/33 Test #33: boot_release_versions ............   Passed    0.04 sec
 
 100% tests passed, 0 tests failed out of 33
 
-Total Test time (real) =   7.45 sec
+Total Test time (real) =   6.58 sec
