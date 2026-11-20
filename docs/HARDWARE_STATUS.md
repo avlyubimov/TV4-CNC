@@ -157,3 +157,12 @@ bootloader. Все package/HSE/erase/GPIO/CAN/recovery unknowns сохранен
 1024KiB/3,252V/backup1048576bytes/vector structure остаются принятыми. Lease/
 generation/receipt не подтверждают physical inhibit, RAM/CCM/erase/protection,
 HSE/package/pinout/GPIO/CAN/restore. На ESP32 ordinary8f0d899 без новых записей.
+
+## Software PR-07d — 20 ноября2026
+
+[Vector/model preflight](STM32_IMAGE_PREFLIGHT.md) проверен только в synthetic
+RAM/host/ARM compile. Не читали MCU/raw dump и не повторяли SWD/Flash/reset.
+Owner SWD/core/ID/Flash1024KiB/3,252V/backup1048576bytes/vector structure facts
+сохранены; RAM/CCM/package/HSE/full IRQ/pinout/erase/protection/GPIO/CAN/restore
+не подтверждены. Actual alignment/map неизвестны; reference docs не заменяют
+проверку платы. На ESP32 ordinary8f0d899, без новых записей.

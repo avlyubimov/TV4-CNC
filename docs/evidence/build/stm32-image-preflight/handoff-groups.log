@@ -1,0 +1,16 @@
+PASS 54 signed end-to-end RAM transfers with lost DATA/final ACK and pending duplicate
+PASS end_to_end_sizes_and_fragments
+PASS snapshots_and_reentry
+PASS binding_is_not_transport_trust
+PASS changes_during_verification
+PASS revoke_after_success
+PASS acquire_and_release_failures
+PASS deadlines_before_verification_and_wrap
+PASS boundaries_and_final_cleanup
+PASS retained_ack_does_not_extend_handoff
+PASS rejected_inputs_and_aliases
+PASS 15 signed vector inspections with fragmented reads + captured local profile mutation
+PASS signed_vector_success_and_snapshot
+PASS valid_signature_invalid_vector_model
+PASS preflight_context_cleanup_and_reentry
+PASS 13 handoff groups; state=2136 receipt=136 workspace=17664; RAM only, no install/device access

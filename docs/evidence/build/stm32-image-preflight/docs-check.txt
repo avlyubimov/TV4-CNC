@@ -1,0 +1,1 @@
+PASS 200 local Markdown links in changed documents; no remote availability claim. git diff --check PASS.

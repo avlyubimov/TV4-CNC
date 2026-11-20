@@ -1,6 +1,6 @@
 # PR-07c — от приёма байтов к проверенному кандидату
 
-20 ноября 2026. База main `28fe7bc`, PR #1–30 слиты; transport #29 и
+Исторический контракт PR #31 от main `28fe7bc`, 20 ноября2026; теперь он слит в main `4b7631e`. transport #29 и
 independent admission #30 используются без копирования. [План](plans/PR07C_UPDATE_HANDOFF.md),
 [API](../firmware/stm32-bootloader/include/update_handoff.h),
 [evidence](evidence/build/stm32-update-handoff/README.md).
@@ -109,3 +109,11 @@ Owner SWD/core/ID/Flash1024KiB/3,252V/backup1048576bytes/vector structure facts
 recovery, production metadata/keys/version, fresh physical quiescent proof и
 approval конкретного образа. No-I/O/ACK/SIMULATION не подтверждают останов;
 E-stop независим. Устройства не использовались. Откат — revert PR без миграции.
+
+## Продолжение PR-07d
+
+[Explicit memory/vector preflight](STM32_IMAGE_PREFLIGHT.md) читает тот же held
+source только после VERIFIED и сверяет signed memory_profile с trusted local
+моделью. Guards/cleanup/revoke/quarantine прежние, runtime/install не включены.
+Числа25 suites/state2128bytes выше — исторический отчёт PR #31; текущие
+26 suites и размеры — в новом evidence. Actual board profile по-прежнему отсутствует.

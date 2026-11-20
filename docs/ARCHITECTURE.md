@@ -112,3 +112,11 @@ feedback <50 мс, 30+ FPS где достижимо, координаты 20–
 и пробелы (CPU, физическая latency, export, reset/watchdog/reconnect counters).
 Работа при сетевых/CAN ошибках, длительный run и memory pressure требуют
 испытаний на плате; ни успешный build, ни фото этого не заменяют.
+
+## Read-only image model, PR-07d
+
+[Preflight](STM32_IMAGE_PREFLIGHT.md) проверяет SP/vector/Thumb bounds signed
+image по explicit local memory_profile, из того же immutable source после
+admission. PROFILE_MODEL_MATCH не hardware/bootability/physical safety или
+install authority. Действующего F407 profile/default addresses нет; board image,
+Flash writer/erase/recovery и runtime остаются заблокированы.

@@ -18,4 +18,5 @@ jobs:
           test -s docs/ARCHITECTURE.md
           test -s docs/STM32_IMAGE_ADMISSION.md
           test -s docs/STM32_UPDATE_HANDOFF.md
+          test -s docs/STM32_IMAGE_PREFLIGHT.md
           echo 'Documentation scaffold present'

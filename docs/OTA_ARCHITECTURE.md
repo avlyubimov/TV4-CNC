@@ -275,3 +275,11 @@ bootloader-local trusted metadata/image checks; свежий quiescent gate ну
 uniqueness после reset — будущая negotiation policy, не встроенная аутентификация.
 Существующие geometry/recovery/key/context/owner-install gates сохранены;
 адреса F407 Flash по-прежнему не резервируются.
+
+## PR-07d — read-only vector/model preflight
+
+[Checker](STM32_IMAGE_PREFLIGHT.md) связывает signed memory_profile с explicit
+local model, проверяет stack/handler/vector bounds в том же held image и
+отзывает candidate при ошибке/смене context. Это MODEL_MATCH, не проверка
+физической памяти/Flash geometry/erase/protection или install/jump permission.
+Никакого адреса F407/bootloader/OTA не резервируется.

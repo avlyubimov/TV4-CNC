@@ -13,13 +13,15 @@ typedef enum {
     OWNER_BOOT, OWNER_POLICY, OWNER_FAIL, RX_ABORT, RX_REINIT, RX_HASH,
     READ_TIMEOUT, READ_BACKWARD, REENTER, REENTER_ABORT, ACQUIRE_ABORT, EOF_ABORT,
     READ_OVERSIZE, READ_STALL, READ_SHORT, READ_EXTRA, ACQUIRE_TIMEOUT,
-    ADMISSION_TIMEOUT, CLEANUP_OWNER, EOF_SOURCE, INSPECT_BAD_TOKEN
+    ADMISSION_TIMEOUT, CLEANUP_OWNER, EOF_SOURCE, INSPECT_BAD_TOKEN, PREFLIGHT_PROFILE_MUTATE
 } fault;
 typedef struct {
     tv4_boot_handoff session;
     tv4_boot_handoff_config config;
     tv4_boot_workspace workspace;
     tv4_boot_handoff_receipt receipt;
+    tv4_boot_image_profile preflight_profile;
+    tv4_boot_handoff_image_report image_report;
     tv4_boot_key key;
     tv4_update_rx rx;
     tv4_update_tx tx;
@@ -62,9 +64,9 @@ static void metadata(fixture *f, uint32_t bytes)
     for (size_t i = 0; i < 32; ++i) (void)snprintf(hex + 2u * i, 3, "%02x", hash[i]);
     int n = snprintf((char *)f->metadata, sizeof(f->metadata),
         "{\"schema\":\"%s\",\"component\":\"motion\",\"hardware_id\":\"test-f407\","
-        "\"hardware_revision\":\"synthetic\",\"memory_profile\":\"test-no-addresses\","
+        "\"hardware_revision\":\"synthetic\",\"memory_profile\":\"%s\","
         "\"image_counter\":3,\"minimum_bootloader_counter\":5,\"protocol_min\":6,\"protocol_max\":8,"
-        "\"image_size\":%" PRIu32 ",\"sha256\":\"%s\"}", TV4_BOOT_DRAFT_SCHEMA, bytes, hex);
+        "\"image_size\":%" PRIu32 ",\"sha256\":\"%s\"}", TV4_BOOT_DRAFT_SCHEMA, f->config.policy.memory_profile, bytes, hex);
     assert(n > 0 && (size_t)n < sizeof(f->metadata));
     f->config.metadata_bytes = (size_t)n;
     sign_metadata(f);
@@ -140,6 +142,7 @@ static bool read_memory(void *context, uint64_t token, uint32_t offset,
         case READ_BACKWARD: --f->now; break;
         case REENTER_ABORT: tv4_boot_handoff_abort(&f->session); /* defer release until read returns */
             assert(f->locked && f->releases == 0); break;
+        case PREFLIGHT_PROFILE_MUTATE: f->preflight_profile.image_base = 0; f->preflight_profile.id[0] = 'x'; break;
         default: break;
         }
     }
@@ -152,6 +155,10 @@ static bool read_memory(void *context, uint64_t token, uint32_t offset,
         assert(!tv4_boot_handoff_verify(&f->session, &f->workspace));
         assert(!tv4_boot_handoff_begin(&f->session, &f->config, &f->rx));
         assert(!tv4_boot_handoff_close(&f->session));
+        memset(&f->image_report, 0xa5, sizeof(f->image_report));
+        tv4_boot_handoff_image_report report_before = f->image_report;
+        assert(tv4_boot_handoff_preflight(&f->session, &f->preflight_profile, &f->workspace, &f->image_report) == TV4_IMAGE_BUSY);
+        assert(memcmp(&report_before, &f->image_report, sizeof(report_before)) == 0);
     }
     if (f->inject == READ_FAIL) return false;
     if (f->inject == READ_OVERSIZE) { *count = capacity + 1; return true; }
@@ -462,6 +469,113 @@ static void rejected_inputs_and_aliases(void)
     assert(!tv4_boot_handoff_verify(&f.session, &f.workspace));
     assert(f.session.admission_result == TV4_BOOT_RESOURCE); closed_failure(&f, TV4_HANDOFF_ADMISSION); finish(&f);
 }
+static void vector_word(uint8_t *out, uint32_t value)
+{
+    for (unsigned i = 0; i < 4; ++i) out[i] = (uint8_t)(value >> (i * 8u));
+}
+static void bind_changed_image(fixture *f)
+{
+    metadata(f, (uint32_t)f->source_bytes);
+    digest(f->source, f->source_bytes, f->descriptor.image_sha256);
+    ++f->owner.boot; ++f->descriptor.id.transfer; f->descriptor.id.boot = f->owner.boot;
+    f->view.id = f->descriptor.id; ++f->view.generation;
+    tv4_update_limits limits = f->rx.context.limits;
+    assert(tv4_update_rx_init(&f->rx, limits, f->owner.boot, f->now));
+    assert(tv4_update_tx_init(&f->tx, limits, f->owner.boot, f->now));
+    assert(tv4_update_rx_begin(&f->rx, &f->descriptor, f->now) == TV4_UPDATE_OK);
+    assert(tv4_update_tx_begin(&f->tx, &f->descriptor, f->now) == TV4_UPDATE_OK);
+}
+static void vector_fixture(fixture *f, uint16_t vectors)
+{
+    setup(f, vectors > 128 ? 1537 : 769, 31);
+    memcpy(f->config.policy.memory_profile, "synthetic-vector-v1", 20);
+    f->preflight_profile = (tv4_boot_image_profile){.id = "synthetic-vector-v1", .image_base = 0x01000000,
+        .image_capacity = IMAGE_MAX, .minimum_stack_bytes = 128, .vector_alignment = 1024,
+        .vector_count = vectors, .ram_count = 1, .ram = {{0x30000000,4096}}};
+    for (unsigned i = 0; i < vectors; ++i) {
+        bool reserved = (i >= 7 && i <= 10) || i == 13;
+        vector_word(f->source + i * 4u, i == 0 ? 0x30001000u : reserved ? 0u : 0x01000001u + (uint32_t)vectors * 4u);
+    }
+    bind_changed_image(f);
+}
+static void signed_vector_success_and_snapshot(void)
+{
+    const uint16_t counts[] = {16,17,33,129,256};
+    const size_t fragments[] = {1,7,256};
+    for (size_t i = 0; i < 5; ++i) for (size_t j = 0; j < 3; ++j) {
+        fixture f; vector_fixture(&f, counts[i]); transfer(&f); begin(&f);
+        if (i == 0 && j == 0) {
+            assert(tv4_boot_handoff_preflight(&f.session,&f.preflight_profile,&f.workspace,&f.image_report) == TV4_IMAGE_CONTEXT);
+            assert(f.reads == 0 && !f.session.preflight_attempted && f.locked);
+        }
+        verified(&f); f.fragment = fragments[j];
+        assert(tv4_boot_handoff_preflight(&f.session, &f.preflight_profile, &f.workspace, &f.image_report) == TV4_IMAGE_PROFILE_MODEL_MATCH);
+        assert(f.image_report.vectors.initial_sp == 0x30001000u && f.image_report.vectors.vector_count == counts[i]);
+        assert(memcmp(&f.image_report.receipt, &f.receipt, sizeof(f.receipt)) == 0);
+        assert(f.session.preflight_attempted && f.session.preflight_result == TV4_IMAGE_PROFILE_MODEL_MATCH);
+        assert(f.session.state == TV4_HANDOFF_VERIFIED && f.locked && f.releases == 0 && zero(&f.workspace, sizeof(f.workspace)));
+        finish(&f);
+    }
+    fixture f; vector_fixture(&f,17); transfer(&f); begin(&f); verified(&f); f.reads = 0;
+    f.inject = PREFLIGHT_PROFILE_MUTATE;
+    assert(tv4_boot_handoff_preflight(&f.session, &f.preflight_profile, &f.workspace, &f.image_report) == TV4_IMAGE_PROFILE_MODEL_MATCH);
+    assert(strcmp(f.image_report.vectors.profile_id,"synthetic-vector-v1") == 0 && f.preflight_profile.image_base == 0);
+    finish(&f);
+    puts("PASS 15 signed vector inspections with fragmented reads + captured local profile mutation");
+}
+static void valid_signature_invalid_vector_model(void)
+{
+    for (unsigned which = 0; which < 9; ++which) {
+        fixture f; vector_fixture(&f,17);
+        tv4_boot_image_result expected = TV4_IMAGE_HANDLER;
+        switch (which) {
+        case 0: vector_word(f.source,0x30000008u); expected = TV4_IMAGE_STACK; break;
+        case 1: vector_word(f.source + 4,0x01000044u); break; /* even Reset */
+        case 2: vector_word(f.source + 8,0); break; /* absent NMI */
+        case 3: vector_word(f.source + 7u * 4u,0x01000101u); expected = TV4_IMAGE_RESERVED_VECTOR; break;
+        case 4: vector_word(f.source + 4,0x01000401u); break; /* inside capacity, outside signed bytes */
+        case 5: f.preflight_profile.id[0] = 'x'; expected = TV4_IMAGE_PROFILE; break;
+        case 6: f.preflight_profile.vector_alignment = 0; expected = TV4_IMAGE_PROFILE; break;
+        case 7: f.preflight_profile.image_capacity = 768; expected = TV4_IMAGE_LENGTH; break;
+        default: f.preflight_profile.reserved_irq[0] = 1; expected = TV4_IMAGE_RESERVED_VECTOR; break;
+        }
+        bind_changed_image(&f); transfer(&f); begin(&f); verified(&f);
+        assert(tv4_boot_handoff_preflight(&f.session, &f.preflight_profile, &f.workspace, &f.image_report) == expected);
+        assert(zero(&f.image_report,sizeof(f.image_report)) && zero(&f.workspace,sizeof(f.workspace)));
+        closed_failure(&f,TV4_HANDOFF_PREFLIGHT); finish(&f);
+    }
+}
+static void preflight_context_cleanup_and_reentry(void)
+{
+    fixture invalid; vector_fixture(&invalid,17); invalid.signature[invalid.config.signature_bytes - 1] ^= 1;
+    transfer(&invalid); begin(&invalid); assert(!tv4_boot_handoff_verify(&invalid.session,&invalid.workspace));
+    memset(&invalid.image_report,0xa5,sizeof(invalid.image_report));
+    assert(tv4_boot_handoff_preflight(&invalid.session,&invalid.preflight_profile,&invalid.workspace,&invalid.image_report) == TV4_IMAGE_CONTEXT);
+    assert(!invalid.session.preflight_attempted && zero(&invalid.image_report,sizeof(invalid.image_report)) && invalid.reads == 0);
+    finish(&invalid);
+    const fault faults[] = {SOURCE_GENERATION, OWNER_POLICY, RX_ABORT, READ_TIMEOUT, REENTER_ABORT,
+        READ_FAIL, READ_OVERSIZE, READ_STALL, READ_SHORT, CLEANUP_OWNER, REENTER};
+    for (size_t i = 0; i < sizeof(faults)/sizeof(faults[0]); ++i) {
+        fixture f; vector_fixture(&f,33); transfer(&f); begin(&f); verified(&f);
+        f.reads = 0; f.fragment = 7; f.inject = faults[i];
+        tv4_boot_image_result result = tv4_boot_handoff_preflight(&f.session, &f.preflight_profile, &f.workspace, &f.image_report);
+        if (faults[i] == REENTER) { assert(result == TV4_IMAGE_PROFILE_MODEL_MATCH && f.locked); finish(&f); continue; }
+        assert(result != TV4_IMAGE_PROFILE_MODEL_MATCH && zero(&f.image_report,sizeof(f.image_report)));
+        assert(zero(&f.workspace,sizeof(f.workspace)) && !f.locked && f.releases == 1 && f.session.state == TV4_HANDOFF_CLOSED);
+        finish(&f);
+    }
+    fixture f; vector_fixture(&f,17); vector_word(f.source,0); bind_changed_image(&f); transfer(&f); begin(&f); verified(&f);
+    unsigned reads = f.reads;
+    assert(tv4_boot_handoff_preflight(&f.session,&f.preflight_profile,(tv4_boot_workspace *)(void *)&f.session,&f.image_report) == TV4_IMAGE_ARGUMENT);
+    assert(tv4_boot_handoff_preflight(&f.session,&f.preflight_profile,&f.workspace,(tv4_boot_handoff_image_report *)(void *)&f.session) == TV4_IMAGE_ARGUMENT);
+    assert(f.reads == reads && f.locked && f.releases == 0);
+    f.release_failures = 100;
+    assert(tv4_boot_handoff_preflight(&f.session,&f.preflight_profile,&f.workspace,&f.image_report) == TV4_IMAGE_STACK);
+    assert(f.session.state == TV4_HANDOFF_RELEASING && f.session.held && f.locked && f.releases == 1);
+    for (unsigned i = 0; i < 5; ++i) assert(!tv4_boot_handoff_poll(&f.session));
+    assert(f.session.state == TV4_HANDOFF_QUARANTINED && f.releases == 3 && f.session.source.token == 81);
+    assert(!tv4_boot_handoff_clear(&f.session)); finish(&f);
+}
 #define RUN(name) do { name(); puts("PASS " #name); } while (0)
 int main(void)
 {
@@ -475,7 +589,10 @@ int main(void)
     RUN(boundaries_and_final_cleanup);
     RUN(retained_ack_does_not_extend_handoff);
     RUN(rejected_inputs_and_aliases);
-    printf("PASS 10 handoff groups; state=%zu receipt=%zu workspace=%zu; RAM only, no install/device access\n",
+    RUN(signed_vector_success_and_snapshot);
+    RUN(valid_signature_invalid_vector_model);
+    RUN(preflight_context_cleanup_and_reentry);
+    printf("PASS 13 handoff groups; state=%zu receipt=%zu workspace=%zu; RAM only, no install/device access\n",
         sizeof(tv4_boot_handoff), sizeof(tv4_boot_handoff_receipt), sizeof(tv4_boot_workspace));
     return 0;
 }

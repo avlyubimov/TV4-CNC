@@ -1,0 +1,11 @@
+[1/10] cd /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32-image-preflight/build-preflight-host && /home/avlyubimov/.local/bin/python3.14 /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32-image-preflight/tools/check_boot_crypto_source.py --source /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32-image-preflight/build-preflight-host/_deps/tv4_boot_mbedtls-src --lock /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32-image-preflight/third_party/mbedtls/origin.json
+PASS pinned Mbed TLS source: {"files": 178, "tree_sha256": "2087a1191bd838ec63bc7d97452337888fef6247eac6ba782554d58408041310", "version": "3.6.7"}
+[2/10] Building C object CMakeFiles/tv4_boot_admission.dir/core/image_profile.c.o
+[3/10] Building C object CMakeFiles/boot_profile_tests.dir/tests/image_profile_tests.c.o
+[4/10] Building C object CMakeFiles/tv4_boot_handoff.dir/core/update_handoff.c.o
+[5/10] Linking C static library libtv4_boot_admission.a
+[6/10] Linking C executable boot_profile_tests
+[7/10] Linking C executable boot_admission_tests
+[8/10] Linking C static library libtv4_boot_handoff.a
+[9/10] Building C object CMakeFiles/boot_handoff_tests.dir/tests/handoff_tests.c.o
+[10/10] Linking C executable boot_handoff_tests

@@ -3,6 +3,7 @@
 #include <string.h>
 
 _Static_assert(sizeof(tv4_boot_handoff) <= 2304, "handoff state budget regression");
+_Static_assert(TV4_BOOT_VECTOR_BYTES_MAX <= TV4_BOOT_METADATA_MAX, "vector scratch regression");
 
 static bool separate(const void *a, size_t as, const void *b, size_t bs)
 {
@@ -199,6 +200,58 @@ bool tv4_boot_handoff_close(tv4_boot_handoff *s)
     if (s->state == TV4_HANDOFF_CLOSED) return true;
     s->busy = true; release_once(s); s->busy = false;
     return s->state == TV4_HANDOFF_CLOSED;
+}
+tv4_boot_image_result tv4_boot_handoff_preflight(tv4_boot_handoff *s,
+    const tv4_boot_image_profile *profile, tv4_boot_workspace *w, tv4_boot_handoff_image_report *out)
+{
+    if (s != NULL && s->busy) return TV4_IMAGE_BUSY;
+    if (s == NULL || profile == NULL || w == NULL || out == NULL) return TV4_IMAGE_ARGUMENT;
+    if (!separate(s, sizeof(*s), w, sizeof(*w)) || !separate(s, sizeof(*s), out, sizeof(*out)) ||
+        !separate(s, sizeof(*s), profile, sizeof(*profile)) || !separate(w, sizeof(*w), out, sizeof(*out)) ||
+        !separate(w, sizeof(*w), profile, sizeof(*profile)) || !separate(out, sizeof(*out), profile, sizeof(*profile)) ||
+        (s->rx != NULL && (!separate(s->rx, sizeof(*s->rx), w, sizeof(*w)) ||
+                         !separate(s->rx, sizeof(*s->rx), out, sizeof(*out))))) return TV4_IMAGE_ARGUMENT;
+    *out = (tv4_boot_handoff_image_report){0};
+    if (s->state != TV4_HANDOFF_VERIFIED) return TV4_IMAGE_CONTEXT;
+    tv4_boot_image_profile p = *profile; /* before any external callback */
+    tv4_boot_vector_inspection inspection = {0};
+    s->busy = true; s->preflight_attempted = true;
+    tv4_boot_image_result result = TV4_IMAGE_CONTEXT;
+    if (!guard(s, true)) goto cleanup;
+    if (!tv4_boot_image_profile_valid(&p) || strcmp(p.id, s->policy.memory_profile) != 0) {
+        result = TV4_IMAGE_PROFILE; goto cleanup;
+    }
+    size_t total = (size_t)p.vector_count * 4u, offset = 0;
+    if (total >= s->candidate.image_bytes || s->candidate.image_bytes > p.image_capacity) {
+        result = TV4_IMAGE_LENGTH; goto cleanup;
+    }
+    while (offset < total) {
+        size_t capacity = total - offset;
+        if (capacity > TV4_BOOT_CHUNK_BYTES) capacity = TV4_BOOT_CHUNK_BYTES;
+        size_t count = 0; bool eof = false;
+        if (!admission_read(s, (uint32_t)offset, w->metadata + offset, capacity, &count, &eof)) {
+            result = s->error == TV4_HANDOFF_ERROR_NONE ? TV4_IMAGE_SOURCE : TV4_IMAGE_CONTEXT;
+            goto cleanup;
+        }
+        if (count == 0 || count > capacity || eof) { result = TV4_IMAGE_SOURCE; goto cleanup; }
+        offset += count;
+    }
+    result = tv4_boot_inspect_vectors(&p, w->metadata, total, s->candidate.image_bytes, &inspection);
+cleanup:
+    memset(w, 0, sizeof(*w));
+    if (!guard(s, true)) result = TV4_IMAGE_CONTEXT;
+    s->preflight_result = result;
+    if (result == TV4_IMAGE_PROFILE_MODEL_MATCH) {
+        out->vectors = inspection;
+        out->receipt = (tv4_boot_handoff_receipt){.image = s->candidate, .id = s->descriptor.id,
+            .policy_generation = s->owner.policy_generation, .source_object = s->source.object,
+            .source_generation = s->source.generation};
+    } else {
+        *out = (tv4_boot_handoff_image_report){0};
+        fail(s, TV4_HANDOFF_PREFLIGHT); release_once(s);
+    }
+    s->busy = false;
+    return result;
 }
 void tv4_boot_handoff_abort(tv4_boot_handoff *s)
 {

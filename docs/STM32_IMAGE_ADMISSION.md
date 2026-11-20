@@ -136,3 +136,8 @@ package/RAM/CCM/HSE/erase/protection/pinout/GPIO/CAN/restore неизвестн�
 memory/vector/clock/erase/protection/recovery contract, реальные ключи и версии,
 доказанный physical quiescent state и operator approval. E-stop независим.
 Откат — revert PR; данные устройств не менялись.
+
+PR-07d добавляет отдельный [vector/model preflight](STM32_IMAGE_PREFLIGHT.md)
+после admission, из того же lease. Crypto API/draft/signature policy прежние.
+Проверка явной модели не подтверждает реальный memory/erase/vector contract
+и не создаёт install/jump permission.
