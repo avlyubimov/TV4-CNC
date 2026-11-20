@@ -1,0 +1,59 @@
+Test project /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32-update-outcome/build-outcome-root
+      Start  1: build_validation
+ 1/27 Test  #1: build_validation .................   Passed    0.04 sec
+      Start  2: build_candidate
+ 2/27 Test  #2: build_candidate ..................   Passed    0.46 sec
+      Start  3: core
+ 3/27 Test  #3: core .............................   Passed    0.00 sec
+      Start  4: wifi_profiles
+ 4/27 Test  #4: wifi_profiles ....................   Passed    0.00 sec
+      Start  5: render
+ 5/27 Test  #5: render ...........................   Passed    0.40 sec
+      Start  6: render_rgb565
+ 6/27 Test  #6: render_rgb565 ....................   Passed    0.40 sec
+      Start  7: diagnostics
+ 7/27 Test  #7: diagnostics ......................   Passed    0.00 sec
+      Start  8: ota_crypto
+ 8/27 Test  #8: ota_crypto .......................   Passed    0.00 sec
+      Start  9: ota_candidate
+ 9/27 Test  #9: ota_candidate ....................   Passed    0.20 sec
+      Start 10: ota_manifest
+10/27 Test #10: ota_manifest .....................   Passed    0.06 sec
+      Start 11: ota_stream
+11/27 Test #11: ota_stream .......................   Passed    0.00 sec
+      Start 12: ota_http
+12/27 Test #12: ota_http .........................   Passed    0.00 sec
+      Start 13: ota_session
+13/27 Test #13: ota_session ......................   Passed    0.01 sec
+      Start 14: ota_memory
+14/27 Test #14: ota_memory .......................   Passed    0.00 sec
+      Start 15: ota_time
+15/27 Test #15: ota_time .........................   Passed    0.00 sec
+      Start 16: ota_sntp
+16/27 Test #16: ota_sntp .........................   Passed    0.00 sec
+      Start 17: ota_tls_probe
+17/27 Test #17: ota_tls_probe ....................   Passed    0.00 sec
+      Start 18: ota_resource
+18/27 Test #18: ota_resource .....................   Passed    0.00 sec
+      Start 19: motion_supervisor
+19/27 Test #19: motion_supervisor ................   Passed    0.00 sec
+      Start 20: motion_startup_noio
+20/27 Test #20: motion_startup_noio ..............   Passed    0.00 sec
+      Start 21: update_session
+21/27 Test #21: update_session ...................   Passed    0.00 sec
+      Start 22: update_loopback
+22/27 Test #22: update_loopback ..................   Passed    0.04 sec
+      Start 23: update_outcome
+23/27 Test #23: update_outcome ...................   Passed    0.01 sec
+      Start 24: boot_image_admission
+24/27 Test #24: boot_image_admission .............   Passed    0.14 sec
+      Start 25: boot_crypto_source
+25/27 Test #25: boot_crypto_source ...............   Passed    0.11 sec
+      Start 26: boot_update_handoff
+26/27 Test #26: boot_update_handoff ..............   Passed    0.29 sec
+      Start 27: boot_image_profile
+27/27 Test #27: boot_image_profile ...............   Passed    0.00 sec
+
+100% tests passed, 0 tests failed out of 27
+
+Total Test time (real) =   2.17 sec

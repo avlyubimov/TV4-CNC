@@ -154,3 +154,11 @@ signed image/session/source. Actual memory_profile/IRQ count/reserved vectors/
 VTOR alignment должны пройти board/reference review; generic ARM minimum
 не подставляется как настройка F407. HW-F407-01–05, OTA-F407/STATE/KEY/CONTEXT,
 recovery и production profile/version/keys остаются открытыми.
+
+## PR-07e — terminal report остаётся историей
+
+[Logical completion/report/ACK](STM32_UPDATE_OUTCOME.md) закрывает software
+cleanup/delivery gap, не доверие к CAN. Нужны production boot/session uniqueness/
+replay/codec/fragmentation/IDs/bitrate, reviewed actual profile/metadata/keys и
+fresh physical/operator/recovery gate. После ожидания нельзя устанавливать по
+старому report: saved bytes проверяются заново. Hardware/Flash blockers прежние.

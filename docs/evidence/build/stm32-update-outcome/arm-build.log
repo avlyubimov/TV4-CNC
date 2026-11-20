@@ -1,0 +1,28 @@
+[1/27] cd /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32-update-outcome/build-outcome-arm && /home/avlyubimov/.local/bin/python3.14 /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32-update-outcome/tools/check_boot_crypto_source.py --source /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32-update-outcome/build-outcome-arm/_deps/tv4_boot_mbedtls-src --lock /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32-update-outcome/third_party/mbedtls/origin.json
+PASS pinned Mbed TLS source: {"files": 178, "tree_sha256": "2087a1191bd838ec63bc7d97452337888fef6247eac6ba782554d58408041310", "version": "3.6.7"}
+[2/27] Building C object update-transport/CMakeFiles/tv4_update_transport.dir/update_outcome.c.obj
+[3/27] Building C object update-transport/CMakeFiles/tv4_update_transport.dir/update_session.c.obj
+[4/27] Building C object CMakeFiles/tv4_boot_crypto.dir/_deps/tv4_boot_mbedtls-src/library/asn1write.c.obj
+[5/27] Building C object CMakeFiles/tv4_boot_crypto.dir/_deps/tv4_boot_mbedtls-src/library/asn1parse.c.obj
+[6/27] Building C object CMakeFiles/tv4_boot_crypto.dir/_deps/tv4_boot_mbedtls-src/library/bignum_mod.c.obj
+[7/27] Building C object CMakeFiles/tv4_boot_crypto.dir/_deps/tv4_boot_mbedtls-src/library/bignum_mod_raw.c.obj
+[8/27] Building C object CMakeFiles/tv4_boot_crypto.dir/_deps/tv4_boot_mbedtls-src/library/constant_time.c.obj
+[9/27] Building C object CMakeFiles/tv4_boot_crypto.dir/_deps/tv4_boot_mbedtls-src/library/ecp_curves.c.obj
+[10/27] Building C object CMakeFiles/tv4_boot_crypto.dir/_deps/tv4_boot_mbedtls-src/library/ecp_curves_new.c.obj
+[11/27] Building C object CMakeFiles/tv4_boot_crypto.dir/_deps/tv4_boot_mbedtls-src/library/bignum_core.c.obj
+[12/27] Building C object CMakeFiles/tv4_boot_crypto.dir/_deps/tv4_boot_mbedtls-src/library/ecdsa.c.obj
+[13/27] Building C object CMakeFiles/tv4_boot_crypto.dir/_deps/tv4_boot_mbedtls-src/library/platform.c.obj
+[14/27] Building C object CMakeFiles/tv4_boot_crypto.dir/_deps/tv4_boot_mbedtls-src/library/platform_util.c.obj
+[15/27] Building C object CMakeFiles/tv4_boot_crypto.dir/_deps/tv4_boot_mbedtls-src/library/sha256.c.obj
+[16/27] Building C object CMakeFiles/tv4_boot_crypto.dir/_deps/tv4_boot_mbedtls-src/library/bignum.c.obj
+[17/27] Building C object CMakeFiles/tv4_boot_crypto.dir/_deps/tv4_boot_mbedtls-src/library/memory_buffer_alloc.c.obj
+[18/27] Building C object CMakeFiles/tv4_boot_crypto.dir/_deps/tv4_boot_mbedtls-src/library/ecp.c.obj
+[19/27] Building C object CMakeFiles/tv4_boot_admission.dir/core/image_profile.c.obj
+[20/27] Building C object CMakeFiles/tv4_boot_admission.dir/core/metadata.c.obj
+[21/27] Building C object CMakeFiles/tv4_boot_admission.dir/core/admission.c.obj
+[22/27] Linking C static library libtv4_boot_crypto.a
+[23/27] Linking C static library libtv4_boot_admission.a
+[24/27] Linking C static library update-transport/libtv4_update_transport.a
+[25/27] Building C object CMakeFiles/tv4_boot_handoff.dir/core/update_completion.c.obj
+[26/27] Building C object CMakeFiles/tv4_boot_handoff.dir/core/update_handoff.c.obj
+[27/27] Linking C static library libtv4_boot_handoff.a

@@ -1,0 +1,4 @@
+   text	   data	    bss	    dec	    hex	filename
+   1924	      0	      0	   1924	    784	update_session.c.obj (ex build-outcome-arm/update-transport/libtv4_update_transport.a)
+   1588	      0	      0	   1588	    634	update_outcome.c.obj (ex build-outcome-arm/update-transport/libtv4_update_transport.a)
+PASS: static object budget only; no board Flash/RAM usage claim

@@ -1,6 +1,6 @@
-# Следующий этап: модель образа и STM32 board contract
+# Следующий этап: завершение проверки и STM32 board contract
 
-20 ноября 2026. База main `4b7631e`, PR #1–31 слиты, пять workflow PASS.
+20 ноября 2026. База main `e0bd84e`, PR #1–32 слиты, пять workflow PASS.
 ESP32 HMI/Wi-Fi/OTA primitives/candidates и STM32 transport/admission существуют;
 не создавать их заново. Данный план не разрешает доступ к устройствам или merge.
 
@@ -38,24 +38,34 @@ transfers и10 fault/lifecycle groups; ARM/source/import/frame/static checks,
 CI сохраняет все8 ESP SDK profiles. Аппаратных операций или самостоятельного
 merge нет. Source generation не является блокировкой; это обязанность backend.
 
-## Текущая ветка PR-07d
+## Слитая часть PR-07d, PR #32
 
 [Image preflight](STM32_IMAGE_PREFLIGHT.md): bounded read-only model checker,
 явные alignment/vector count/reserved IRQ/RAM/load bounds, проверка того же
 held image после signature/SHA. Unknown profile отклоняется; PROFILE_MODEL_MATCH
 не подтверждает hardware/bootability. Actual F407 memory/erase map не выбирается.
-Host26/sanitizers26/standalone6, ARM/static/source/image/output gates —
+Исторические Host26/sanitizers26/standalone6 и ARM/static/source/image/output gates —
 [evidence](evidence/build/stm32-image-preflight/README.md). Hardware gates ниже прежние.
+
+## Текущая ветка PR-07e
+
+[Completion/outcome](STM32_UPDATE_OUTCOME.md) выполняет существующие проверки,
+закрывает lease и возвращает historical result через bounded report/ACK.
+Потери/duplicates/conflict/clock/reset и cleanup/quarantine проверены в RAM;
+ожидание оператора не держит lease. Peer report не authentication/install token.
+Host27/sanitizers27/standalone7 и ARM/static/source/image/output —
+[evidence](evidence/build/stm32-update-outcome/README.md). Actual board/Flash gates прежние.
 
 ## Что делать дальше программно
 
 1. Review production release metadata/SemVer/channel/component binding и
    локального version/key context. Draft/counters/test IDs не переносить в
    реальный release manifest; provisioning/signing authority — отдельный owner gate.
-2. Спроектировать protocol/source переход после COMPLETE_UNVERIFIED, включая
-   конечный результат/статус, bounded ожидание оператора, reconnect/reboot и
-   повторную полную проверку сохранённых bytes. Текущий RX deadline не продлевать
-   молча. Raw CAN fragmentation/codec/boot identity negotiation пока отдельные решения.
+2. Review production negotiation/boot identity/replay и raw CAN fragmentation/
+   codec/IDs/bitrate. Logical terminal outcome уже есть; он не authenticated и
+   не переносит candidate через ожидание оператора. Для следующей операции
+   проверять saved bytes полностью и подтверждать новый session/context.
+   Текущий DATA RX deadline не продлевать молча.
 3. Разделить software candidate и будущую установку: fresh session-bound
    отсутствие движения/шпинделя/программы, operator exact-image approval,
    reviewed recovery/vector/erase gate. Не вводить permissive boolean stub,

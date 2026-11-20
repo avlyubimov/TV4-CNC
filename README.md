@@ -65,11 +65,11 @@ production TLS/OTA gate требует review; остальные
 
 ## Обязательные следующие подсистемы
 
-PR #29–31 transport, [independent admission](docs/STM32_IMAGE_ADMISSION.md) и
-[handoff](docs/STM32_UPDATE_HANDOFF.md) слиты в main `4b7631e`. В текущей ветке
-[PR-07d image preflight](docs/STM32_IMAGE_PREFLIGHT.md) проверяет SP/PC/vectors и
-границы signed image по явно заданной локальной модели памяти. Кандидат/отчёт
-не являются install permission; реального F407 profile/Flash writer/jump нет.
+PR #29–32 DATA/admission/handoff/model preflight слиты в main `e0bd84e`.
+Текущая ветка [PR-07e completion/outcome](docs/STM32_UPDATE_OUTCOME.md) связывает
+проверку signed image с clean lease close и bounded доставкой исторического
+результата/ACK отправителю. Pending cleanup не даёт success, quarantine не
+забывает resource. Peer report не аутентифицирован и не разрешает install/motion.
 
 [OTA ESP32 A/B и F407 по CAN](docs/OTA_ARCHITECTURE.md),
 [GitHub Releases/подписи/owner approval](docs/RELEASE_PROCESS.md),
@@ -101,6 +101,6 @@ PR #1–27: owner SWD facts, generic init/reset/no-I/O и synthetic link/fault t
 следующая последовательность — [NEXT_STAGE](docs/NEXT_STAGE.md). Плата не прошивается.
 
 PR #28–30 со startup, [update transport](docs/STM32_UPDATE_TRANSPORT.md) и
-crypto admission слиты. Host/LVGL26 suites и sanitizers26 проверяют текущую
-ветку с preflight; [evidence](docs/evidence/build/stm32-image-preflight/README.md).
+crypto admission слиты. Host/LVGL27 suites и sanitizers27 проверяют текущую
+ветку с completion/outcome; [evidence](docs/evidence/build/stm32-update-outcome/README.md).
 Это software foundation, без физического CAN, Flash writer и board bootloader.

@@ -1,0 +1,10 @@
+[1/10] Building ASM object CMakeFiles/tv4_motion_probe_objects.dir/startup/reset.S.obj
+[2/10] Building C object CMakeFiles/tv4_motion_boot_support.dir/board/noio.c.obj
+[3/10] Building ASM object CMakeFiles/tv4_motion_probe_objects.dir/tests/link_fixture/vectors.S.obj
+[4/10] Building C object CMakeFiles/tv4_motion_probe_objects.dir/startup/entry.c.obj
+[5/10] Building C object CMakeFiles/tv4_motion_boot_support.dir/startup/memory_init.c.obj
+[6/10] Building C object CMakeFiles/tv4_motion_probe_objects.dir/tests/link_fixture/data.c.obj
+[7/10] Building C object CMakeFiles/tv4_motion_core.dir/core/supervisor.c.obj
+[8/10] Linking C static library libtv4_motion_boot_support.a
+[9/10] Linking C executable tv4_motion_link_probe.elf
+[10/10] Linking C static library libtv4_motion_core.a

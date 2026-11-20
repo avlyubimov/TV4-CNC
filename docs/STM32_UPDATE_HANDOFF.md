@@ -117,3 +117,8 @@ source только после VERIFIED и сверяет signed memory_profile 
 моделью. Guards/cleanup/revoke/quarantine прежние, runtime/install не включены.
 Числа25 suites/state2128bytes выше — исторический отчёт PR #31; текущие
 26 suites и размеры — в новом evidence. Actual board profile по-прежнему отсутствует.
+
+PR-07e [completion/outcome](STM32_UPDATE_OUTCOME.md) использует существующие
+handoff/model checks, закрывает lease и экспортирует только historical result.
+Pending/quarantine не создают positive и не забывают ownership; input/report
+не является permission на будущую установку.

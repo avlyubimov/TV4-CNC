@@ -166,3 +166,11 @@ Owner SWD/core/ID/Flash1024KiB/3,252V/backup1048576bytes/vector structure facts
 сохранены; RAM/CCM/package/HSE/full IRQ/pinout/erase/protection/GPIO/CAN/restore
 не подтверждены. Actual alignment/map неизвестны; reference docs не заменяют
 проверку платы. На ESP32 ordinary8f0d899, без новых записей.
+
+## Software PR-07e — 20 ноября2026
+
+[Completion/outcome](STM32_UPDATE_OUTCOME.md) проверен только в host RAM/ARM
+compile. Новых device/SWD/UART/Flash/reset/backup reads нет. Owner SWD/core/ID/
+Flash1024KiB/3,252V/backup1048576bytes/vector structure facts сохранены.
+Package/RAM/HSE/IRQ/erase/protection/GPIO/CAN/restore и physical quiescent gate
+не подтверждены; peer report/ACK не закрывает их. На ESP32 ordinary8f0d899.
