@@ -28,3 +28,13 @@ Receipt временный, не install/ARM/START token; copied receipt нел�
 действительным без проверки живого coordinator. RX deadline не продлевать.
 Нет storage writer/Flash layout или physical quiescent proof. Memory mock не
 закрывает persistent recovery/physical inhibit/операторское подтверждение.
+
+## PR-07d — explicit memory/vector model
+
+Читать docs/STM32_IMAGE_PREFLIGHT.md. PROFILE_MODEL_MATCH не bootability и не
+board/Flash/install permission. Только read-only prefix inspection после crypto
+из того же lease, signed memory_profile/local policy generation binding.
+Нет actual F407 profile/default addresses/vector count/alignment. Generic ARM
+minimum не подставлять вместо device-specific VTOR review. Test maps не
+переносить в firmware/Flash layout. Errors отзывают candidate, cleanup соблюдает
+прежний held-resource/retry/quarantine contract. Hardware gates не закрывать.

@@ -109,11 +109,13 @@ PR и Actions; не копировать код уже открытого PR. Д
 
 ## Текущее задание
 
-PR #1–30 слиты, база main `28fe7bc`; пять workflow PASS, открытых PR перед
-работой нет. PR-02b startup, PR-07a transport и PR-07b crypto admission уже
-существуют. Продолжение PR-07c: читать STM32_UPDATE_HANDOFF.md, NEXT_STAGE.md
-и scoped bootloader rules. Только read-only session/source lifetime coordinator,
-RAM end-to-end/fault tests и ARM compile. Нет runtime caller, CAN wire driver,
+PR #1–31 слиты, база main `4b7631e`; пять workflow PASS, открытых PR перед
+работой нет. Startup/transport/crypto/handoff уже существуют. Продолжение PR-07d:
+читать STM32_IMAGE_PREFLIGHT.md, NEXT_STAGE.md и scoped bootloader rules.
+Только explicit local memory/vector model, read-only inspection того же held
+source после signature/SHA, RAM end-to-end/fault tests и ARM compile.
+PROFILE_MODEL_MATCH не hardware/bootability/install proof. Не вводить actual
+F407 map, default addresses/IRQ/alignment; profile changes меняют policy generation. Нет runtime caller, CAN wire driver,
 Flash map/writer, physical quiescent proof, install/COMMIT/jump или ARM/START.
 Candidate/CRC/ACK/generation не являются install token или остановленным станком.
 Immutable lease гарантирует backend; failed release удерживает handle/retry/
@@ -123,7 +125,7 @@ quarantine, clear/reopen его не скрывают. RX deadline не прод
 задаёт RAM/sector/bootloader layout. Startup synthetic fixture не является
 F407 profile. BOARD_IMAGE=ON всегда fail; no .bin/ELF upload. No-I/O adapter
 inhibit=false/watchdog unavailable; нельзя объявлять physical safe state.
-Host/sanitizers25 suites, standalone5, ARM/static/board/output gates; прежняя
+Host/sanitizers26 suites, standalone6, ARM/static/board/output gates; прежняя
 ESP SDK matrix8 сохраняется. HMI/config/board/dependency locks/security прежние.
 PR-05 candidates остаются metadata-only, CI exact workspace trust без wildcard.
 Runtime ESP resource budget/load/fault/soak/installer gates ещё открыты.

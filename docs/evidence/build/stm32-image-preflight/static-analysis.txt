@@ -1,0 +1,1 @@
+PASS GCC15.2.0 -fanalyzer -c admission.c metadata.c image_profile.c update_handoff.c; all warnings as errors; all exit0. No device access.

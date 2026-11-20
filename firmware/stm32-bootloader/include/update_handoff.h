@@ -2,6 +2,7 @@
 #define TV4_BOOT_UPDATE_HANDOFF_H
 
 #include "admission.h"
+#include "image_profile.h"
 #include "update_session.h"
 
 #define TV4_BOOT_RELEASE_ATTEMPTS_MAX 8u
@@ -47,13 +48,17 @@ typedef enum {
     TV4_HANDOFF_ERROR_NONE, TV4_HANDOFF_CANCELLED, TV4_HANDOFF_CLOCK,
     TV4_HANDOFF_TIMEOUT, TV4_HANDOFF_OWNER, TV4_HANDOFF_RECEIVER,
     TV4_HANDOFF_SOURCE, TV4_HANDOFF_ADMISSION, TV4_HANDOFF_BINDING,
-    TV4_HANDOFF_RELEASE
+    TV4_HANDOFF_RELEASE, TV4_HANDOFF_PREFLIGHT
 } tv4_boot_handoff_error;
 typedef struct {
     tv4_boot_candidate image;
     tv4_update_id id;
     uint64_t policy_generation, source_object, source_generation;
 } tv4_boot_handoff_receipt;
+typedef struct {
+    tv4_boot_handoff_receipt receipt;
+    tv4_boot_vector_inspection vectors;
+} tv4_boot_handoff_image_report;
 
 /* Zero-initialize once, then only the API may change live state. Static bounded
  * storage, one owner, no ISR/threads. Do not copy/move a live session. RX and callback context must remain valid
@@ -67,7 +72,8 @@ typedef struct {
     tv4_boot_handoff_state state;
     tv4_boot_handoff_error error;
     tv4_boot_result admission_result;
-    bool busy, held, cancel_requested, admission_attempted;
+    tv4_boot_image_result preflight_result;
+    bool busy, held, cancel_requested, admission_attempted, preflight_attempted;
     uint8_t release_attempts, release_attempt_limit;
     uint32_t started_ms, observed_ms, lifetime_ms, rx_started_ms, rx_progress_ms;
     tv4_update_rx *rx;
@@ -96,6 +102,18 @@ bool tv4_boot_handoff_poll(tv4_boot_handoff *session);
  * not an install/commit/jump/ARM token. Revalidate on each use; never persist it.
  * It cannot revoke copies already held by a caller. */
 bool tv4_boot_handoff_peek(tv4_boot_handoff *session, tv4_boot_handoff_receipt *out);
+/* Only after VERIFIED; checks the SAME held immutable source and snapshots a
+ * trusted local profile whose ID matches signed memory_profile. Profile changes
+ * must also change owner policy generation. Unknown profile never defaults.
+ * Reuses/wipes scratch; no retained vector buffer/global/heap. A recognized
+ * preflight failure revokes candidate and releases (or quarantines) the lease.
+ * Success only PROFILE_MODEL_MATCH, not hardware/bootability/install permission.
+ * Report is temporary like peek: revalidate live context on each use, do not
+ * persist it or use it across callbacks. BUSY/aliases leave all storage intact.
+ */
+tv4_boot_image_result tv4_boot_handoff_preflight(tv4_boot_handoff *session,
+    const tv4_boot_image_profile *profile, tv4_boot_workspace *workspace,
+    tv4_boot_handoff_image_report *out);
 /* Close discards candidate and tries release once. Poll/close may retry once per
  * call up to the configured limit. Failure retains token and rejects clear/begin;
  * exhaustion (or an invalid zero success token) quarantines for owner recovery.

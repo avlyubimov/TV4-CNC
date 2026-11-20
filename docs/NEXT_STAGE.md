@@ -1,6 +1,6 @@
-# Следующий этап: lifetime кандидата и STM32 board contract
+# Следующий этап: модель образа и STM32 board contract
 
-20 ноября 2026. База main `28fe7bc`, PR #1–30 слиты, пять workflow PASS.
+20 ноября 2026. База main `4b7631e`, PR #1–31 слиты, пять workflow PASS.
 ESP32 HMI/Wi-Fi/OTA primitives/candidates и STM32 transport/admission существуют;
 не создавать их заново. Данный план не разрешает доступ к устройствам или merge.
 
@@ -24,7 +24,7 @@ backup1048576bytes, structural vector check PASS. Агент их не пере�
   P-256 signature/draft metadata/compatibility/counters/SHA/length/EOF. Нет
   install token, persistent anti-rollback, writer, vector validation или jump.
 
-## Текущая ветка PR-07c
+## Слитая часть PR-07c, PR #31
 
 [Read-only handoff](STM32_UPDATE_HANDOFF.md) связывает completed RX, immutable
 source lease и verifier. Boot/transfer/policy/source lifetime и deadline guards
@@ -32,11 +32,20 @@ source lease и verifier. Boot/transfer/policy/source lifetime и deadline guard
 release failures не теряют handle, retries ограничены, quarantine нельзя reset
 через clear/reopen. Нет production backend или physical quiescent gate.
 
-Приёмка: host/LVGL25 suites, sanitizer25, standalone5; 54 signed end-to-end RAM
+Историческая приёмка PR #31: host/LVGL25 suites, sanitizer25, standalone5; 54 signed end-to-end RAM
 transfers и10 fault/lifecycle groups; ARM/source/import/frame/static checks,
 прежние board/output gates. [Evidence](evidence/build/stm32-update-handoff/README.md).
 CI сохраняет все8 ESP SDK profiles. Аппаратных операций или самостоятельного
 merge нет. Source generation не является блокировкой; это обязанность backend.
+
+## Текущая ветка PR-07d
+
+[Image preflight](STM32_IMAGE_PREFLIGHT.md): bounded read-only model checker,
+явные alignment/vector count/reserved IRQ/RAM/load bounds, проверка того же
+held image после signature/SHA. Unknown profile отклоняется; PROFILE_MODEL_MATCH
+не подтверждает hardware/bootability. Actual F407 memory/erase map не выбирается.
+Host26/sanitizers26/standalone6, ARM/static/source/image/output gates —
+[evidence](evidence/build/stm32-image-preflight/README.md). Hardware gates ниже прежние.
 
 ## Что делать дальше программно
 

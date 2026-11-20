@@ -1,0 +1,9 @@
+PASS 241 vector-table lengths, 16..256 entries; synthetic models only
+PASS all_table_lengths
+PASS unknown_and_invalid_profiles
+PASS stack_edges_and_gaps
+PASS every slot in 256-entry table; null/even/outside/table/RAM/truncated Thumb target rejected
+PASS every_handler_and_reserved_slot
+PASS full_uint32_arithmetic
+PASS lengths_aliases_and_zero_output
+PASS 6 profile groups; profile=116 inspection=44; model consistency only, no execution/device access

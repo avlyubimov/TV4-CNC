@@ -1,0 +1,17 @@
+Test project /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32-image-preflight/build-preflight-host
+    Start 1: boot_image_admission
+1/6 Test #1: boot_image_admission .............   Passed    0.14 sec
+    Start 2: boot_crypto_source
+2/6 Test #2: boot_crypto_source ...............   Passed    0.11 sec
+    Start 3: boot_update_handoff
+3/6 Test #3: boot_update_handoff ..............   Passed    0.25 sec
+    Start 4: boot_image_profile
+4/6 Test #4: boot_image_profile ...............   Passed    0.00 sec
+    Start 5: update_session
+5/6 Test #5: update_session ...................   Passed    0.00 sec
+    Start 6: update_loopback
+6/6 Test #6: update_loopback ..................   Passed    0.04 sec
+
+100% tests passed, 0 tests failed out of 6
+
+Total Test time (real) =   0.54 sec

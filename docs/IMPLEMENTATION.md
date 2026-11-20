@@ -1,11 +1,11 @@
 # Реализация: main, открытые PR и аппаратные границы
 
-Актуализация от main `28fe7bc`, 20 ноября2026: PR #1–30 слиты. Owner SWD
+Актуализация от main `4b7631e`, 20 ноября2026: PR #1–31 слиты. Owner SWD
 F407/core/Flash1024KiB/backup — [HARDWARE_STATUS](HARDWARE_STATUS.md).
-Startup #28, logical transport #29 и independent admission #30 уже в main.
-Текущая ветка PR-07c добавляет [immutable source/session handoff](STM32_UPDATE_HANDOFF.md),
-сквозные signed RAM transfers, отзыв кандидата и bounded cleanup/quarantine.
-Host/LVGL25, sanitizers25, standalone5 и ARM gates — [evidence](evidence/build/stm32-update-handoff/README.md).
+Startup/transport/admission/handoff уже в main. Текущая ветка PR-07d добавляет
+[SP/PC/vector preflight по явной модели](STM32_IMAGE_PREFLIGHT.md), связанный с
+signed image/lease/policy. Actual F407 profile/Flash layout не подставляются.
+Host/LVGL26, sanitizers26, standalone6 и ARM gates — [evidence](evidence/build/stm32-image-preflight/README.md).
 Нет runtime caller, Flash writer/map/commit/jump или физического safe-state proof.
 Следующий этап — [NEXT_STAGE](NEXT_STAGE.md). Ниже исторические снимки отдельных PR;
 их старые counts/«не реализовано» не заменяют текущий статус этого абзаца.

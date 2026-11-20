@@ -1,0 +1,23 @@
+Start testing: Nov 20 22:01 +05
+----------------------------------------------------------
+1/1 Testing: motion_link_contract
+1/1 Test: motion_link_contract
+Command: "/home/avlyubimov/.local/bin/python3.14" "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32-image-preflight/firmware/stm32-motion/tests/link_contract_tests.py" "--elf" "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32-image-preflight/build-preflight-motion-probe/tv4_motion_link_probe.elf" "--compiler" "/usr/bin/arm-none-eabi-gcc" "--objects" "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32-image-preflight/build-preflight-motion-probe/probe-inputs.txt" "--sections" "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32-image-preflight/firmware/stm32-motion/linker/sections.ld" "--memory" "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32-image-preflight/firmware/stm32-motion/tests/link_fixture/memory.ld"
+Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32-image-preflight/build-preflight-motion-probe
+"motion_link_contract" start time: Nov 20 22:01 +05
+Output:
+----------------------------------------------------------
+...........
+----------------------------------------------------------------------
+Ran 11 tests in 0.032s
+
+OK
+<end of output>
+Test time =   0.06 sec
+----------------------------------------------------------
+Test Passed.
+"motion_link_contract" end time: Nov 20 22:01 +05
+"motion_link_contract" time elapsed: 00:00:00
+----------------------------------------------------------
+
+End testing: Nov 20 22:01 +05

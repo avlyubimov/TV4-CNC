@@ -33,7 +33,7 @@ jobs:
             --lock third_party/mbedtls/origin.json > evidence/source-check.txt
           python3 tools/check_boot_admission_build.py build-boot-arm > evidence/arm-budget.json
           cp third_party/mbedtls/origin.json evidence/crypto-origin.json
-          for source in admission metadata update_handoff; do
+          for source in admission metadata image_profile update_handoff; do
             gcc -std=c11 -Wall -Wextra -Werror -Wconversion -Wshadow -Wstrict-prototypes -fanalyzer \
               -DMBEDTLS_CONFIG_FILE='"tv4_boot_mbedtls_config.h"' \
               -Ifirmware/stm32-bootloader/include -Ifirmware/stm32-bootloader/core \

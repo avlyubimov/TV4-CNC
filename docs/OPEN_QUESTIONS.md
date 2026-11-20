@@ -146,3 +146,11 @@ metadata/SemVer/key context, boot/transfer uniqueness, backend immutability/
 durable recovery и протокол ожидания оператора за пределами RX deadline.
 HW-F407-01–05, OTA-F407/STATE/KEY/CONTEXT и RECOVERY-F407 остаются открытыми;
 новых разрешений на devices/Flash/motion нет.
+
+## PR-07d — model consistency не hardware contract
+
+[Preflight](STM32_IMAGE_PREFLIGHT.md) проверяет explicit model и её связь с
+signed image/session/source. Actual memory_profile/IRQ count/reserved vectors/
+VTOR alignment должны пройти board/reference review; generic ARM minimum
+не подставляется как настройка F407. HW-F407-01–05, OTA-F407/STATE/KEY/CONTEXT,
+recovery и production profile/version/keys остаются открытыми.

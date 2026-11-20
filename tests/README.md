@@ -1,5 +1,14 @@
 # Host tests
 
+Текущий набор от main4b7631e + PR-07d: **26 suites**. Новая boot_image_profile:
+6 groups/241 table lengths/every slot in256-entry table, SP/PC/reserved/overflow/
+gaps/alias checks. Handoff расширен до13 groups: прежние54 signed transfers +
+15 signed vector inspections, wrong vectors with valid signature, snapshot/
+context/reentry/cleanup/quarantine. Host26/26, sanitizers26/26, standalone6/6.
+[Контракт](../docs/STM32_IMAGE_PREFLIGHT.md),
+[evidence](../docs/evidence/build/stm32-image-preflight/README.md).
+Числа ниже относятся к историческим снимкам отдельных PR.
+
 Текущий набор от main28fe7bc + PR-07c: **25 suites** (в main после #29/30 было24).
 Новая boot_update_handoff suite:10 групп,54 signed end-to-end RAM transfers с
 loss/duplicate и real Mbed TLS admission; boot/policy/source/RX invalidation,
