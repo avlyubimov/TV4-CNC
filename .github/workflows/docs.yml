@@ -16,4 +16,5 @@ jobs:
           test -s README.md
           test -s docs/CODEX_TASK_001.md
           test -s docs/ARCHITECTURE.md
+          test -s docs/STM32_IMAGE_ADMISSION.md
           echo 'Documentation scaffold present'

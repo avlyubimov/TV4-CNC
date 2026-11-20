@@ -45,6 +45,15 @@ BOARD_IMAGE=ON продолжает fail. Compile/link PASS не означае�
 
 ## Будущий CAN Bootloader / ESP32 OTA
 
+Продолжение 20 ноября2026 от main74a7af9 — [PR-07b admission](STM32_IMAGE_ADMISSION.md).
+PR #29 transport пока открыт и не дублируется. В новой независимой библиотеке
+проверяются signature/draft schema/local compatibility/counters/image SHA/EOF;
+production format/keys/context и transport integration ещё не утверждены.
+Следующий software этап — coordinator с явной identity/source lifetime и
+политикой повторной проверки сохранённых bytes. Flash writer/commit остаются
+заблокированы erase/protection/recovery/vector map и physical quiescent gates.
+Установка и любые новые device operations требуют отдельного разрешения.
+
 Архитектура [OTA](OTA_ARCHITECTURE.md) сохраняется: GitHub signed component →
 ESP32 bounded transport/cache → независимый F407 bootloader, который сам
 проверяет подпись/длину/SHA/hardware/protocol и recovery до jump/commit.

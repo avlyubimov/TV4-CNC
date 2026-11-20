@@ -123,3 +123,11 @@ case/inside-handshake peak и UI/load/failure/soak остаются открыт
 PR-05a [автоматизирует review-кандидаты](BUILD_CANDIDATES.md), фиксирует clean
 source/build identity, hashes и exact Actions. Это не release/signing authority,
 утверждение SemVer/protocol/layout или лицензии и не закрытие hardware gates.
+
+## PR-07b — программная проверка не закрывает аппаратные gates
+
+[Admission](STM32_IMAGE_ADMISSION.md) проверяет draft metadata и поток образа
+через отдельную pinned Mbed TLS. Production format/key/context и связь с общим
+GitHub manifest ещё требуют review. Счётчики не persistent anti-rollback;
+VERIFIED_CANDIDATE не заменяет fresh quiescent/operator/recovery/vector checks.
+HW-F407-01–05, OTA-KEY/CONTEXT/F407/STATE и RECOVERY-F407 остаются открытыми.

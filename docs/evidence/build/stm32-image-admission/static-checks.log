@@ -1,0 +1,2 @@
+PASS actual GCC -fanalyzer -c compilation (admission.c, metadata.c); strict warnings; object-only outputs in ignored build-static-analysis.
+PASS deployable bootloader configure rejected; synthetic forbidden .bin output rejected and removed.

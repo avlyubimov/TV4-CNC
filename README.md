@@ -65,6 +65,11 @@ production TLS/OTA gate требует review; остальные
 
 ## Обязательные следующие подсистемы
 
+Ветка PR-07b от main `74a7af9`: [независимый read-only admission STM32](docs/STM32_IMAGE_ADMISSION.md)
+проверяет P-256 подпись raw draft metadata, совместимость и потоковый image SHA.
+Это software candidate check, без runtime/Flash/commit/jump. PR #29 transport
+остаётся отдельным PR; этот модуль не копирует и не требует его кода.
+
 [OTA ESP32 A/B и F407 по CAN](docs/OTA_ARCHITECTURE.md),
 [GitHub Releases/подписи/owner approval](docs/RELEASE_PROCESS.md),
 STM32 foundation, microSD/FAT32 и единый экран «Параметры → Обновления»

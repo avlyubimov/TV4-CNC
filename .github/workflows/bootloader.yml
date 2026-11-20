@@ -1,0 +1,77 @@
+name: STM32 image admission (no hardware)
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  crypto-arm:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - name: Install exact ARM GNU Toolchain 14.2.Rel1
+        shell: bash
+        run: |
+          set -euo pipefail
+          archive=arm-gnu-toolchain-14.2.rel1-x86_64-arm-none-eabi.tar.xz
+          curl --fail --location --proto '=https' --proto-redir '=https' --retry 3 \
+            "https://developer.arm.com/-/media/Files/downloads/gnu/14.2.rel1/binrel/$archive" -o "$RUNNER_TEMP/$archive"
+          echo "62a63b981fe391a9cbad7ef51b17e49aeaa3e7b0d029b36ca1e9c3b2a9b78823  $RUNNER_TEMP/$archive" | sha256sum --check
+          tar -xJf "$RUNNER_TEMP/$archive" -C "$RUNNER_TEMP"
+          echo "$RUNNER_TEMP/arm-gnu-toolchain-14.2.rel1-x86_64-arm-none-eabi/bin" >> "$GITHUB_PATH"
+      - name: Build independent bounded crypto/admission libraries
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p evidence build-static-analysis
+          arm-none-eabi-gcc --version > evidence/compiler.txt
+          cmake -S firmware/stm32-bootloader -B build-boot-arm -G Ninja \
+            -DCMAKE_TOOLCHAIN_FILE="$PWD/firmware/stm32-motion/cmake/arm-none-eabi.cmake" \
+            -DCMAKE_BUILD_TYPE=MinSizeRel
+          cmake --build build-boot-arm -j 4
+          python3 tools/check_boot_crypto_source.py \
+            --source build-boot-arm/_deps/tv4_boot_mbedtls-src \
+            --lock third_party/mbedtls/origin.json > evidence/source-check.txt
+          python3 tools/check_boot_admission_build.py build-boot-arm > evidence/arm-budget.json
+          cp third_party/mbedtls/origin.json evidence/crypto-origin.json
+          for source in admission metadata; do
+            gcc -std=c11 -Wall -Wextra -Werror -Wconversion -Wshadow -Wstrict-prototypes -fanalyzer \
+              -DMBEDTLS_CONFIG_FILE='"tv4_boot_mbedtls_config.h"' \
+              -Ifirmware/stm32-bootloader/include -Ifirmware/stm32-bootloader/core \
+              -Ifirmware/stm32-bootloader/config -Ibuild-boot-arm/_deps/tv4_boot_mbedtls-src/include \
+              -c "firmware/stm32-bootloader/core/$source.c" -o "build-static-analysis/$source.o"
+          done
+      - name: Reject bootloader images and unexpected binary outputs
+        shell: bash
+        run: |
+          set -euo pipefail
+          if cmake -S firmware/stm32-bootloader -B build-boot-blocked \
+              -DTV4_BOOT_BOARD_IMAGE=ON > evidence/board-gate.txt 2>&1; then
+            echo 'ERROR: deployable bootloader unexpectedly enabled'; exit 1
+          fi
+          grep -q 'STM32 bootloader image blocked' evidence/board-gate.txt
+          python3 - <<'PY' > evidence/output-gate.txt
+          from pathlib import Path
+          import subprocess
+          path = Path('build-boot-arm/forbidden-output-test.bin')
+          with path.open('xb') as stream:
+              stream.write(b'not firmware: gate test only')
+          try:
+              result = subprocess.run(['python3', 'tools/check_boot_admission_build.py', 'build-boot-arm'], capture_output=True, text=True)
+              assert result.returncode != 0 and 'unexpected firmware binary' in result.stderr
+          finally:
+              path.unlink()
+          print('PASS unexpected generated binary rejected; test marker removed')
+          PY
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        if: always()
+        with:
+          name: boot-admission-compile-evidence
+          path: |
+            evidence/compiler.txt
+            evidence/source-check.txt
+            evidence/arm-budget.json
+            evidence/crypto-origin.json
+            evidence/board-gate.txt
+            evidence/output-gate.txt
+          if-no-files-found: error
+          retention-days: 14

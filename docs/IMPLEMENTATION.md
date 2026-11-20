@@ -215,3 +215,10 @@ bundle/checksums и независимый verifier. Новая host suite, ин
 все Actions закреплены SHA. Docker получает Git display version linked worktree.
 Реализована подготовка кандидатов; signing, binary Releases, production version/
 trust provisioning и установка остаются открыты. Плата ordinary8f0d899 прежняя.
+
+## PR-07b — независимая проверка кандидата STM32
+
+Ветка от main74a7af9, 20 ноября2026: [signature/metadata/image admission](STM32_IMAGE_ADMISSION.md)
+на отдельной Mbed TLS3.6.7, с bounded arena и host/ARM проверками. PR #29
+transport остаётся отдельным открытым PR. Нет runtime/Flash/commit/jump,
+production metadata/context/keys и аппаратного подтверждения readiness.

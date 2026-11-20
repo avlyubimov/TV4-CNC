@@ -137,3 +137,10 @@ Worst-case/failure/load/soak/CPU/OTA memory budget остаются открыт
 PR-04m [добавляет программный resource guard](OTA_RESOURCE_GUARD.md), native
 sampler только compiled/linked. Новых device/serial/reset/SNTP/HEAD операций
 нет, текущая запись ordinary8f0d899 и её измерения не меняются.
+
+## Software PR-07b — 20 ноября2026
+
+[Read-only image admission](STM32_IMAGE_ADMISSION.md) добавляет только PC tests
+и ARM compile. Новых hardware результатов/доступа к платам/backup reads нет.
+RAM arena и code/frame metrics не подтверждают карту памяти или готовый
+bootloader. Все package/HSE/erase/GPIO/CAN/recovery unknowns сохранены.

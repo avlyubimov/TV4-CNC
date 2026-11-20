@@ -27,6 +27,17 @@ UI-каркас обновлений допустим в своём PR, но н�
 
 ## Сохранённые инженерные milestones
 
+### Software PR-07b от main74a7af9 — 20 ноября2026
+
+[Независимый image admission](STM32_IMAGE_ADMISSION.md) в этой ветке:
+подпись P-256/raw metadata, strict draft parser/local compatibility/counters,
+SHA/exact EOF, bounded arena/deadline/cancel, cleanup и ARM compile checks.
+PR #29 transport ещё открыт; код этой ветки независим от него. Есть только
+VERIFIED_CANDIDATE, без board image/Flash/CAN/commit/jump/runtime.
+Дальше нужны утверждённый release metadata/keys/version context, интеграционный
+session/quiescent contract и verified erase/vector/recovery перед writer.
+Аппаратные milestones ниже этим software результатом не закрываются.
+
 - M0: база документов/backup. ESP32 backup завершён; Blue Pill и F407 backups
   сообщены; F407 SWD/core/Flash1024KiB подтверждены владельцем. Restore/SHA F407,
   маркировка/RAM/HSE/секторы и аппаратные unknowns остаются открыты.

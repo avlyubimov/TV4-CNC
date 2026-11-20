@@ -1,5 +1,14 @@
 # Host tests
 
+PR-07b от main74a7af9: root набор22 suites =20 ранее существовавших +
+boot_image_admission и boot_crypto_source. Отдельный PR #29 сюда не копируется.
+Admission содержит14 групп с реальными ephemeral OpenSSL подписями против
+Mbed TLS3.6.7: key/DER/metadata/compatibility/counter/stream/hash/deadline/cancel/
+OOM/reentry/snapshot/alias failures; source gate —5 positive/tamper cases.
+Это software tests, без actual STM32 execution/Flash или install approval.
+[Контракт](../docs/STM32_IMAGE_ADMISSION.md),
+[evidence](../docs/evidence/build/stm32-image-admission/README.md).
+
 CMake + CTest, см. firmware/esp32-hmi/README.md.
 Тест core проверяет старт, инертный транспорт, сброс без движения, аварийную защёлку,
 таймаут 500 мс, переполнение часов/последовательности, неверные длины/версии/значения,
