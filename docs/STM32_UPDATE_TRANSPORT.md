@@ -127,3 +127,10 @@ feedback/interlocks и [OTA state policy](OTA_ARCHITECTURE.md).
 Software init/abort/reconnect/COMPLETE_UNVERIFIED не является physical inhibit,
 подтверждением останова, ARM/START или разрешением установки. Независимый
 hardware E-stop сохраняется. Откат — revert PR, данные устройств не менялись.
+
+## Продолжение PR-07e
+
+[Historical outcome/ACK](STM32_UPDATE_OUTCOME.md) — отдельная logical phase
+после завершённого DATA TX. Image и raw metadata SHA binding, finite retry/
+linger/total, exactly-once delivery и sticky conflict. DATA API/deadlines не
+изменены; peer report/ACK не authenticated/install/physical ready authority.

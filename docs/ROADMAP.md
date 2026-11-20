@@ -1,6 +1,6 @@
 # План последовательной разработки TV4-CNC
 
-Обновлено от main `4b7631e`, 20 ноября 2026; PR #1–31 слиты, пять main workflow PASS.
+Обновлено от main `e0bd84e`, 20 ноября 2026; PR #1–32 слиты, пять main workflow PASS.
 История и текущее ПО — [IMPLEMENTATION.md](IMPLEMENTATION.md); следующий
 STM32 этап — [NEXT_STAGE.md](NEXT_STAGE.md). Рабочий HMI не переписывать заново.
 Все новые этапы — отдельные ветки/небольшие PR, merge только с разрешения
@@ -15,7 +15,7 @@ STM32 этап — [NEXT_STAGE.md](NEXT_STAGE.md). Рабочий HMI не пе�
 | PR-04 ESP32 OTA Foundation | Плановая USB-миграция, otadata, A/B, HTTPS, подпись/хеш/compatibility, self-test и rollback | Проверенный backup, trusted key provisioning, migration/recovery review; power-loss/bad-signature/wrong-hardware tests. Разметку не менять app OTA. Firmware install только отдельно разрешён | PR #9–13 слиты; read-only session. Runtime worker/UI/native install/rollback/USB migration ещё не реализованы |
 | PR-05 GitHub Release Pipeline | Build matrix, versioned artifacts, signed manifest, checksums, release notes, prerelease/stable | Публикация только после CI и явного owner approval на SHA/tag/канал/артефакты; secrets/protected environment design; никакой фиктивной STM32 bin | PR-05a: unsigned metadata-only review bundles, app/ELF/output checks, exact source и pinned Actions; signing/publication ещё не реализованы |
 | PR-06 microSD Support | FAT32, detect/mount/read/write/free-space/eject/error handling; G-code files, logs/settings export, OTA cache | Подтверждённая разводка Rev 1.2 и схема USB/CAN/SD; отсутствие/извлечение/повреждение не блокирует HMI; file I/O только worker | Не реализован |
-| PR-07 STM32 CAN Bootloader | Независимый bootloader, sequence/chunks/ACK/retry, SHA/signature, hardware/protocol checks, recovery | Flash geometry и A/B либо staging/recovery решение; сначала host transport. SWD initial install и CAN hardware только по отдельному разрешению | PR #29–31 transport/crypto/handoff слиты. PR-07d: explicit memory/vector model и signed image preflight. Flash/recovery/physical CAN/install ещё не реализованы |
+| PR-07 STM32 CAN Bootloader | Независимый bootloader, sequence/chunks/ACK/retry, SHA/signature, hardware/protocol checks, recovery | Flash geometry и A/B либо staging/recovery решение; сначала host transport. SWD initial install и CAN hardware только по отдельному разрешению | PR #29–32 DATA/crypto/handoff/preflight слиты. PR-07e: completion/lease close и historical outcome/ACK. Flash/recovery/physical CAN/install ещё не реализованы |
 | PR-08 Unified Firmware Update UI | Параметры → Обновления: версии HMI/Motion/protocol, compatibility, changelog, размер, progress/result/history, check/download/install/cancel | Worker APIs PR-04/05/07; auto-check можно, auto-install нельзя. STM32 install только после подтверждённого quiescent state | Не реализован |
 
 PR-04 не обязан ждать физического motion: ESP32 обновляется на изолированном
@@ -168,3 +168,11 @@ profile suite, signed vector/fault tests, ARM/static/import/frame и прежн�
 8 SDK builds. MODEL_MATCH не закрывает hardware/Flash/recovery milestones и
 не разрешает writer/jump. Следующие review: production release/context/profile
 и verified board memory/vector/clock/erase/protection без предположения адресов.
+
+## PR-07e — завершение software-проверки и доставка истории
+
+[Completion/outcome](STM32_UPDATE_OUTCOME.md) от maine0bd84e: actual crypto/model
+checks → lease close → historical report/ACK, bounded repeats/linger/deadline,
+context/reboot/conflict и quarantine. Host27/sanitizers27/standalone7, ARM/static/
+source/output gates и8 SDK builds. Next: reviewed production negotiation/codec/
+identity и metadata/context, actual board/Flash/recovery; не activation по peer report.

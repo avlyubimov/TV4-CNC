@@ -1,5 +1,13 @@
 # Host tests
 
+Текущий набор от maine0bd84e + PR-07e: **27 suites**, sanitizers27, standalone7.
+Новая update_outcome suite:6 groups/1001 loss+duplicate sessions, binding/meta/
+ACK/conflict/clock/retry/linger/abort/reboot. Handoff/completion17 groups:
+6 signed DATA→crypto→model→close→report/ACK sessions, rejection/cleanup/reentry/
+late-context/quarantine. [Контракт](../docs/STM32_UPDATE_OUTCOME.md),
+[evidence](../docs/evidence/build/stm32-update-outcome/README.md).
+Counts ниже — исторические snapshots предыдущих PR.
+
 Текущий набор от main4b7631e + PR-07d: **26 suites**. Новая boot_image_profile:
 6 groups/241 table lengths/every slot in256-entry table, SP/PC/reserved/overflow/
 gaps/alias checks. Handoff расширен до13 groups: прежние54 signed transfers +

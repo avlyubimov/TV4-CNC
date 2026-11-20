@@ -120,3 +120,11 @@ image по explicit local memory_profile, из того же immutable source п
 admission. PROFILE_MODEL_MATCH не hardware/bootability/physical safety или
 install authority. Действующего F407 profile/default addresses нет; board image,
 Flash writer/erase/recovery и runtime остаются заблокированы.
+
+## Завершение проверки, PR-07e
+
+[Completion/outcome](STM32_UPDATE_OUTCOME.md) закрывает source lease после
+independent crypto/model checks и сообщает historical result через отдельный
+bounded logical report/ACK. Нет authenticated peer/physical ready/install claim.
+После operator wait нужен новый session и полная проверка saved bytes.
+Quarantine не забывает ownership; DATA deadlines/runtime/Flash gates прежние.

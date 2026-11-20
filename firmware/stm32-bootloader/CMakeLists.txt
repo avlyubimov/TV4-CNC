@@ -50,7 +50,7 @@ target_compile_options(tv4_boot_admission PRIVATE -Wall -Wextra -Werror -Wconver
 if(NOT TARGET tv4_update_transport)
   add_subdirectory("${tv4_root}/protocol/can" "${CMAKE_CURRENT_BINARY_DIR}/update-transport")
 endif()
-add_library(tv4_boot_handoff STATIC core/update_handoff.c)
+add_library(tv4_boot_handoff STATIC core/update_handoff.c core/update_completion.c)
 target_include_directories(tv4_boot_handoff PUBLIC include)
 target_link_libraries(tv4_boot_handoff PUBLIC tv4_boot_admission tv4_update_transport)
 target_compile_options(tv4_boot_handoff PRIVATE -Wall -Wextra -Werror -Wconversion -Wshadow -Wstrict-prototypes)

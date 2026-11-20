@@ -41,11 +41,14 @@ jobs:
             -DCMAKE_TOOLCHAIN_FILE="$PWD/firmware/stm32-motion/cmake/arm-none-eabi.cmake" \
             -DCMAKE_BUILD_TYPE=MinSizeRel
           cmake --build build-update-arm
-          gcc -std=c11 -Wall -Wextra -Werror -Wconversion -Wshadow -Wstrict-prototypes \
-            -fanalyzer -fsyntax-only -Iprotocol/can protocol/can/update_session.c
+          mkdir -p build-update-static
+          for source in update_session update_outcome; do
+            gcc -std=c11 -Wall -Wextra -Werror -Wconversion -Wshadow -Wstrict-prototypes \
+              -fanalyzer -Iprotocol/can -c "protocol/can/$source.c" -o "build-update-static/$source.o"
+          done
           python3 tools/check_motion_size.py build-update-arm/libtv4_update_transport.a | tee evidence/update-size.txt
           arm-none-eabi-nm --undefined-only build-update-arm/libtv4_update_transport.a | tee evidence/update-symbols.txt
-          cat build-update-arm/CMakeFiles/tv4_update_transport.dir/update_session.c.su > evidence/update-stack.txt
+          cat build-update-arm/CMakeFiles/tv4_update_transport.dir/*.su > evidence/update-stack.txt
           python3 - <<'PY'
           from pathlib import Path
           symbols = Path('evidence/update-symbols.txt').read_text().splitlines()

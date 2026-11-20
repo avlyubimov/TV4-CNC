@@ -1,0 +1,8 @@
+PASS 1001 outcome sessions, 1001 deliveries; lost report/final ACK; duplicates not redelivered
+PASS loss_duplicate_and_history
+PASS binding_and_ack_validation
+PASS conflicts_invalid_reports_and_forgery_boundary
+PASS deadlines_retries_and_late_begin
+PASS transport_reboot_abort_and_clock
+PASS config_and_canonical_codes
+PASS 6 outcome groups; report=84 TX=128 RX=224; no authentication/install/device access

@@ -34,3 +34,13 @@ negotiation остаётся внешним обязательством; не �
 После reset требуется новый сеанс; volatile mock не доказывает durable recovery.
 Host tests используют только RAM/OpenSSL oracle; embedded crypto dependency
 не добавлять под видом CRC или вызова ESP32 verifier из F407 bootloader.
+
+## PR-07e — terminal outcome channel
+
+Читать docs/STM32_UPDATE_OUTCOME.md. Outcome/ACK — bounded historical peer
+reports, НЕ authentication/install/local verified/physical ready proof. Не
+назначать wire/CAN IDs/bitrate/codec. Bind image и raw metadata SHA; borrowed
+completed DATA TX до terminal state, exact duplicate без redelivery/deadline
+extension, mismatch/conflict/clock/retry/reset fail closed. Ни одно сообщение
+не запускает/возобновляет motion. DATA deadlines не менять. После operator wait
+нужны fresh negotiation и независимые полные checks до любого будущего install.

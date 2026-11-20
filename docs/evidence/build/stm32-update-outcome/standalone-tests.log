@@ -1,0 +1,19 @@
+Test project /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32-update-outcome/build-outcome-host
+    Start 1: boot_image_admission
+1/7 Test #1: boot_image_admission .............   Passed    0.14 sec
+    Start 2: boot_crypto_source
+2/7 Test #2: boot_crypto_source ...............   Passed    0.11 sec
+    Start 3: boot_update_handoff
+3/7 Test #3: boot_update_handoff ..............   Passed    0.29 sec
+    Start 4: boot_image_profile
+4/7 Test #4: boot_image_profile ...............   Passed    0.00 sec
+    Start 5: update_session
+5/7 Test #5: update_session ...................   Passed    0.00 sec
+    Start 6: update_loopback
+6/7 Test #6: update_loopback ..................   Passed    0.05 sec
+    Start 7: update_outcome
+7/7 Test #7: update_outcome ...................   Passed    0.01 sec
+
+100% tests passed, 0 tests failed out of 7
+
+Total Test time (real) =   0.61 sec

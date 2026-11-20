@@ -38,3 +38,13 @@ board/Flash/install permission. Только read-only prefix inspection пос�
 minimum не подставлять вместо device-specific VTOR review. Test maps не
 переносить в firmware/Flash layout. Errors отзывают candidate, cleanup соблюдает
 прежний held-resource/retry/quarantine contract. Hardware gates не закрывать.
+
+## PR-07e — completion history
+
+Читать docs/STM32_UPDATE_OUTCOME.md. Completion выполняет настоящие crypto/model
+checks и закрывает lease, не принимает old receipt/success boolean. Отчёт —
+история; pending release не positive, quarantine держит ownership и запрещает
+clear/restart. Borrowed context живёт до конца wrapper start/poll (включая post-close
+guard). Peer outcome/ACK не аутентифицированы и не install/quiescent/ARM authority.
+Никаких runtime/Flash/wire/real MCU profile actions; будущий install проверяет
+saved bytes и свежие physical/operator/recovery условия заново.

@@ -283,3 +283,12 @@ local model, проверяет stack/handler/vector bounds в том же held 
 отзывает candidate при ошибке/смене context. Это MODEL_MATCH, не проверка
 физической памяти/Flash geometry/erase/protection или install/jump permission.
 Никакого адреса F407/bootloader/OTA не резервируется.
+
+## PR-07e — historical outcome после close
+
+[Worker completion + bounded report/ACK](STM32_UPDATE_OUTCOME.md) возвращает
+результат проверки только после clean lease close; release failures не создают
+positive и сохраняют quarantine ownership. Peer message не authentication/
+install/ARM authority. Operator wait не держит lease; новая операция требует
+fresh negotiation/full saved-byte verification/physical/operator/recovery gates.
+Нет actual MCU map/Flash writer/runtime или изменения DATA deadline.

@@ -1,6 +1,6 @@
 # PR-07d — проверка образа по явной модели памяти
 
-20 ноября2026, main `4b7631e`, PR #1–31 слиты, пять main workflows PASS.
+Исторический контракт PR #32 от main `4b7631e`, 20 ноября2026; теперь он слит в main `e0bd84e`.
 [План](plans/PR07D_IMAGE_PREFLIGHT.md), [API модели](../firmware/stm32-bootloader/include/image_profile.h),
 [handoff API](../firmware/stm32-bootloader/include/update_handoff.h),
 [evidence](evidence/build/stm32-image-preflight/README.md).
@@ -102,3 +102,8 @@ Package/RAM/CCM/HSE/full IRQ map/pinout/erase/protection/GPIO/CAN/restore не
 production release/context/keys и fresh physical quiescent/operator gate.
 No-I/O/ACK/SIMULATION не подтверждают останов. Нет runtime/device/Flash/reset/
 CAN/motion/release/merge действий. Откат — revert PR без миграции устройства.
+
+PR-07e [completion wrapper](STM32_UPDATE_OUTCOME.md) вызывает этот preflight
+после full admission и закрывает lease до положительного historical outcome.
+Pure checker/model/Flash gates прежние. Counts26 выше — исторический PR #32;
+текущие27 suites и completion tests — в новом evidence.

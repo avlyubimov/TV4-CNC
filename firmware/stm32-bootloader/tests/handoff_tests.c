@@ -1,4 +1,5 @@
 #include "update_handoff.h"
+#include "update_completion.h"
 #include <assert.h>
 #include <inttypes.h>
 #include <openssl/evp.h>
@@ -13,7 +14,8 @@ typedef enum {
     OWNER_BOOT, OWNER_POLICY, OWNER_FAIL, RX_ABORT, RX_REINIT, RX_HASH,
     READ_TIMEOUT, READ_BACKWARD, REENTER, REENTER_ABORT, ACQUIRE_ABORT, EOF_ABORT,
     READ_OVERSIZE, READ_STALL, READ_SHORT, READ_EXTRA, ACQUIRE_TIMEOUT,
-    ADMISSION_TIMEOUT, CLEANUP_OWNER, EOF_SOURCE, INSPECT_BAD_TOKEN, PREFLIGHT_PROFILE_MUTATE
+    ADMISSION_TIMEOUT, CLEANUP_OWNER, EOF_SOURCE, INSPECT_BAD_TOKEN, PREFLIGHT_PROFILE_MUTATE,
+    COMPLETION_REENTER, COMPLETION_ABORT, COMPLETION_INPUT_MUTATE, RELEASE_POLICY, RELEASE_CANCEL, RELEASE_TIMEOUT
 } fault;
 typedef struct {
     tv4_boot_handoff session;
@@ -22,6 +24,9 @@ typedef struct {
     tv4_boot_handoff_receipt receipt;
     tv4_boot_image_profile preflight_profile;
     tv4_boot_handoff_image_report image_report;
+    tv4_boot_completion completion;
+    tv4_update_binding expected;
+    tv4_update_outcome outcome;
     tv4_boot_key key;
     tv4_update_rx rx;
     tv4_update_tx tx;
@@ -118,6 +123,9 @@ static bool release(void *context, uint64_t token)
     }
     if (f->releases <= f->release_failures) return false;
     f->locked = false;
+    if (f->inject == RELEASE_POLICY) ++f->owner.policy_generation;
+    if (f->inject == RELEASE_CANCEL) f->cancel = true;
+    if (f->inject == RELEASE_TIMEOUT) f->now += f->config.lifetime_ms;
     return true;
 }
 static bool read_memory(void *context, uint64_t token, uint32_t offset,
@@ -143,6 +151,7 @@ static bool read_memory(void *context, uint64_t token, uint32_t offset,
         case REENTER_ABORT: tv4_boot_handoff_abort(&f->session); /* defer release until read returns */
             assert(f->locked && f->releases == 0); break;
         case PREFLIGHT_PROFILE_MUTATE: f->preflight_profile.image_base = 0; f->preflight_profile.id[0] = 'x'; break;
+        case COMPLETION_INPUT_MUTATE: f->preflight_profile.image_base = 0; f->expected.metadata_sha256[0] ^= 1; break;
         default: break;
         }
     }
@@ -159,6 +168,15 @@ static bool read_memory(void *context, uint64_t token, uint32_t offset,
         tv4_boot_handoff_image_report report_before = f->image_report;
         assert(tv4_boot_handoff_preflight(&f->session, &f->preflight_profile, &f->workspace, &f->image_report) == TV4_IMAGE_BUSY);
         assert(memcmp(&report_before, &f->image_report, sizeof(report_before)) == 0);
+    }
+    if (f->inject == COMPLETION_REENTER || f->inject == COMPLETION_ABORT) {
+        memset(&f->outcome,0xa5,sizeof(f->outcome)); tv4_update_outcome before=f->outcome;
+        assert(!tv4_boot_completion_start(&f->completion,&f->session,&f->expected,&f->preflight_profile,&f->workspace));
+        assert(!tv4_boot_completion_clear(&f->completion) && !tv4_boot_completion_poll(&f->completion));
+        assert(!tv4_boot_completion_snapshot(&f->completion,&f->outcome) && memcmp(&before,&f->outcome,sizeof(before)) == 0);
+        if (f->inject == COMPLETION_ABORT) {
+            tv4_boot_completion_abort(&f->completion); assert(f->locked && f->releases == 0);
+        }
     }
     if (f->inject == READ_FAIL) return false;
     if (f->inject == READ_OVERSIZE) { *count = capacity + 1; return true; }
@@ -576,6 +594,110 @@ static void preflight_context_cleanup_and_reentry(void)
     assert(f.session.state == TV4_HANDOFF_QUARANTINED && f.releases == 3 && f.session.source.token == 81);
     assert(!tv4_boot_handoff_clear(&f.session)); finish(&f);
 }
+static void expected_binding(fixture *f)
+{
+    f->expected.image=f->descriptor;
+    digest(f->metadata,f->config.metadata_bytes,f->expected.metadata_sha256);
+}
+static void completed(fixture *f,tv4_outcome_code code,tv4_outcome_reason reason)
+{
+    assert(tv4_boot_completion_snapshot(&f->completion,&f->outcome));
+    assert(f->outcome.code==code && f->outcome.reason==reason && tv4_update_outcome_valid(&f->outcome));
+    assert(!f->locked && !f->session.held && f->session.state==TV4_HANDOFF_CLOSED && f->releases>=1);
+    assert(f->completion.state==TV4_COMPLETION_READY && f->completion.handoff==NULL && f->completion.transfer==NULL);
+    assert(zero(&f->workspace,sizeof(f->workspace)) && zero(&f->completion.profile,sizeof(f->completion.profile)));
+    assert(zero(&f->completion.inspection,sizeof(f->completion.inspection)));
+    assert(!tv4_boot_handoff_peek(&f->session,&f->receipt)); /* report is not a live candidate */
+}
+static void completion_end_to_end_history(void)
+{
+    const uint16_t counts[]={17,33,256};
+    for (size_t i=0;i<3;++i) for (unsigned j=0;j<2;++j) {
+        fixture f; vector_fixture(&f,counts[i]); transfer(&f); begin(&f); expected_binding(&f); f.fragment=j==0 ? 1 : 256;
+        assert(tv4_boot_completion_start(&f.completion,&f.session,&f.expected,&f.preflight_profile,&f.workspace));
+        completed(&f,TV4_OUTCOME_CHECKED_CLOSED,TV4_OUTCOME_REASON_NONE);
+        assert(tv4_update_binding_equal(&f.expected,&f.outcome.binding));
+        unsigned calls=f.reads; f.staging[100]^=1; /* legal after release, history is not current trust */
+        assert(tv4_boot_completion_snapshot(&f.completion,&f.outcome) && f.reads==calls && f.releases==1);
+        tv4_outcome_tx tx; tv4_outcome_rx rx; tv4_update_outcome packet,ack,delivery;
+        tv4_outcome_limits limits={.ack_timeout_ms=10,.linger_ms=50,.total_timeout_ms=100,.retry_limit=3};
+        assert(tv4_outcome_tx_init(&tx,limits,f.owner.boot,f.now)); assert(tv4_outcome_rx_init(&rx,limits,f.now));
+        assert(tv4_outcome_tx_begin(&tx,&f.outcome,f.now)==TV4_OUTCOME_OK);
+        assert(tv4_outcome_rx_begin(&rx,&f.tx,f.expected.metadata_sha256,f.now)==TV4_OUTCOME_OK);
+        assert(tv4_outcome_tx_next(&tx,&packet,f.now)==TV4_OUTCOME_SENT); /* lost report */
+        f.now+=10; assert(tv4_outcome_tx_next(&tx,&packet,f.now)==TV4_OUTCOME_SENT);
+        assert(tv4_outcome_rx_receive(&rx,&packet,&ack,&delivery,f.now)==TV4_OUTCOME_DELIVERED); /* lost ACK */
+        f.now+=10; assert(tv4_outcome_tx_next(&tx,&packet,f.now)==TV4_OUTCOME_SENT);
+        assert(tv4_outcome_rx_receive(&rx,&packet,&ack,&delivery,f.now)==TV4_OUTCOME_ACK);
+        assert(tv4_outcome_tx_ack(&tx,&ack,f.now)==TV4_OUTCOME_OK && tv4_update_outcome_equal(&delivery,&f.outcome));
+        assert(f.reads==calls && f.releases==1 && !f.locked);
+        assert(tv4_boot_completion_clear(&f.completion)); finish(&f);
+    }
+    puts("PASS 6 signed DATA -> crypto -> vectors -> close -> outcome/ACK sessions, lost report/final ACK; no lease retained");
+}
+static void completion_rejections(void)
+{
+    for (unsigned which=0;which<7;++which) {
+        fixture f; vector_fixture(&f,17); tv4_outcome_reason reason=TV4_OUTCOME_SIGNATURE;
+        if (which==0) f.signature[f.config.signature_bytes-1]^=1;
+        if (which==1) { vector_word(f.source,0); bind_changed_image(&f); reason=TV4_OUTCOME_VECTORS; }
+        if (which==2) { f.preflight_profile.id[0]='x'; reason=TV4_OUTCOME_PROFILE; }
+        if (which==3) { f.preflight_profile.image_capacity=768; reason=TV4_OUTCOME_LENGTH; }
+        transfer(&f);
+        if (which==4) { f.staging[0]^=1; reason=TV4_OUTCOME_HASH; }
+        begin(&f); expected_binding(&f);
+        if (which==5) { f.expected.metadata_sha256[0]^=1; reason=TV4_OUTCOME_BINDING; }
+        if (which==6) { f.cancel=true; reason=TV4_OUTCOME_CANCEL; }
+        assert(tv4_boot_completion_start(&f.completion,&f.session,&f.expected,&f.preflight_profile,&f.workspace));
+        completed(&f,reason==TV4_OUTCOME_CANCEL ? TV4_OUTCOME_CANCELLED_CLOSED : reason==TV4_OUTCOME_BINDING ?
+            TV4_OUTCOME_FAILED_CLOSED : TV4_OUTCOME_REJECTED_CLOSED,reason);
+        assert(f.releases==1); finish(&f);
+    }
+}
+static void completion_release_and_late_context(void)
+{
+    fixture f; vector_fixture(&f,17); transfer(&f); begin(&f); expected_binding(&f); f.release_failures=1;
+    assert(tv4_boot_completion_start(&f.completion,&f.session,&f.expected,&f.preflight_profile,&f.workspace));
+    assert(f.completion.state==TV4_COMPLETION_CLOSING && f.releases==1 && f.locked);
+    memset(&f.outcome,0xa5,sizeof(f.outcome));
+    assert(!tv4_boot_completion_snapshot(&f.completion,&f.outcome) && zero(&f.outcome,sizeof(f.outcome)));
+    assert(!tv4_boot_completion_clear(&f.completion));
+    assert(tv4_boot_completion_poll(&f.completion)); completed(&f,TV4_OUTCOME_FAILED_CLOSED,TV4_OUTCOME_RELEASE);
+    assert(f.releases==2); finish(&f);
+    vector_fixture(&f,17); transfer(&f); begin(&f); expected_binding(&f); f.release_failures=100;
+    assert(tv4_boot_completion_start(&f.completion,&f.session,&f.expected,&f.preflight_profile,&f.workspace));
+    for (unsigned i=0;i<8;++i) assert(!tv4_boot_completion_poll(&f.completion));
+    assert(f.completion.state==TV4_COMPLETION_QUARANTINED && f.session.held && f.locked && f.releases==3);
+    assert(tv4_boot_completion_snapshot(&f.completion,&f.outcome) && f.outcome.code==TV4_OUTCOME_QUARANTINED);
+    assert(f.completion.handoff==&f.session && !tv4_boot_completion_clear(&f.completion)); finish(&f);
+    const fault late[]={RELEASE_POLICY,RELEASE_CANCEL,RELEASE_TIMEOUT};
+    const tv4_outcome_reason reasons[]={TV4_OUTCOME_CONTEXT,TV4_OUTCOME_CANCEL,TV4_OUTCOME_TIMEOUT};
+    for (size_t i=0;i<3;++i) {
+        vector_fixture(&f,17); transfer(&f); begin(&f); expected_binding(&f); f.inject=late[i];
+        assert(tv4_boot_completion_start(&f.completion,&f.session,&f.expected,&f.preflight_profile,&f.workspace));
+        completed(&f,i==1 ? TV4_OUTCOME_CANCELLED_CLOSED : TV4_OUTCOME_FAILED_CLOSED,reasons[i]); finish(&f);
+    }
+    vector_fixture(&f,17); transfer(&f); f.config.lifetime_ms=20000; begin(&f); expected_binding(&f);
+    f.now+=f.rx.context.limits.progress_timeout_ms;
+    assert(tv4_boot_completion_start(&f.completion,&f.session,&f.expected,&f.preflight_profile,&f.workspace));
+    completed(&f,TV4_OUTCOME_FAILED_CLOSED,TV4_OUTCOME_TIMEOUT); finish(&f);
+}
+static void completion_reentry_snapshot_and_arguments(void)
+{
+    const fault faults[]={COMPLETION_REENTER,COMPLETION_ABORT,COMPLETION_INPUT_MUTATE};
+    for (size_t i=0;i<3;++i) {
+        fixture f; vector_fixture(&f,17); transfer(&f); begin(&f); expected_binding(&f); f.inject=faults[i];
+        assert(tv4_boot_completion_start(&f.completion,&f.session,&f.expected,&f.preflight_profile,&f.workspace));
+        completed(&f,i==1 ? TV4_OUTCOME_CANCELLED_CLOSED : TV4_OUTCOME_CHECKED_CLOSED,
+            i==1 ? TV4_OUTCOME_CANCEL : TV4_OUTCOME_REASON_NONE); finish(&f);
+    }
+    fixture f; vector_fixture(&f,17); transfer(&f); begin(&f); expected_binding(&f);
+    assert(!tv4_boot_completion_start(&f.completion,&f.session,&f.expected,NULL,&f.workspace));
+    assert(!tv4_boot_completion_start(&f.completion,&f.session,&f.expected,&f.preflight_profile,(tv4_boot_workspace *)(void *)&f.completion));
+    ++f.expected.image.id.transfer;
+    assert(!tv4_boot_completion_start(&f.completion,&f.session,&f.expected,&f.preflight_profile,&f.workspace));
+    assert(f.reads==0 && f.locked && f.completion.state==TV4_COMPLETION_EMPTY); finish(&f);
+}
 #define RUN(name) do { name(); puts("PASS " #name); } while (0)
 int main(void)
 {
@@ -592,7 +714,10 @@ int main(void)
     RUN(signed_vector_success_and_snapshot);
     RUN(valid_signature_invalid_vector_model);
     RUN(preflight_context_cleanup_and_reentry);
-    printf("PASS 13 handoff groups; state=%zu receipt=%zu workspace=%zu; RAM only, no install/device access\n",
+    RUN(completion_end_to_end_history); RUN(completion_rejections);
+    RUN(completion_release_and_late_context); RUN(completion_reentry_snapshot_and_arguments);
+    printf("PASS 17 handoff/completion groups; completion=%zu; state=%zu receipt=%zu workspace=%zu; RAM only, no install/device access\n",
+        sizeof(tv4_boot_completion),
         sizeof(tv4_boot_handoff), sizeof(tv4_boot_handoff_receipt), sizeof(tv4_boot_workspace));
     return 0;
 }
