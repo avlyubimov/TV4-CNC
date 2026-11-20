@@ -73,3 +73,8 @@ docs/BOARD_ADAPTER.md, docs/RUNTIME_DIAGNOSTICS.md и docs/OTA_ARCHITECTURE.md.
   policy/reader/report; legacy run не выполняет resource admission. Пока новых
   callers нет. Boundary samples не reservation/peak trace/overflow protection;
   не выводить production floors из HEAD minimum. Workspace34000 сохраняется.
+
+- PR-05b: читать docs/RELEASE_POLICY_REVIEW.md. Strict Unicode hex/short escape
+  gate до pinned cJSON; canonical envelope Base64 native/offline parity.
+  Host-only signing/conformance helper не собирать в firmware. Corpus не назначает
+  local production versions/keys/layout и не разрешает Motion schema/installer.

@@ -1,6 +1,6 @@
 # План последовательной разработки TV4-CNC
 
-Обновлено от main `e0bd84e`, 20 ноября 2026; PR #1–32 слиты, пять main workflow PASS.
+Обновлено от main `455ccc6`, 20 ноября 2026; PR #1–33 слиты, пять main workflow PASS.
 История и текущее ПО — [IMPLEMENTATION.md](IMPLEMENTATION.md); следующий
 STM32 этап — [NEXT_STAGE.md](NEXT_STAGE.md). Рабочий HMI не переписывать заново.
 Все новые этапы — отдельные ветки/небольшие PR, merge только с разрешения
@@ -13,9 +13,9 @@ STM32 этап — [NEXT_STAGE.md](NEXT_STAGE.md). Рабочий HMI не пе�
 | PR-02 STM32 Firmware Foundation | CMake/Ninja/точный ARM GCC, reviewed startup/linker, clock/GPIO/timer/DMA/watchdog abstractions, faults/state machine и host tests | Реальный board profile после package/RAM/vector/clock review; секторная карта нужна для bootloader/Flash writer. Никаких приводов. CI без SWD | PR #7 слит. Owner подтвердил SWD/core/Flash1024KiB/backup; PR-02b: startup objects/no-I/O/sections + synthetic link tests. Board image ещё блокирован, HSE/GPIO/CAN не проверены |
 | PR-03 ESP32 Performance Diagnostics | Дополнить существующие метрики, reset/watchdog/reconnect/queue counters, CPU/PSRAM/stacks, export | Не дублировать dashboard/main logs. Измерить физическую touch-to-display отдельно, собрать baseline и soak/fault results | PR #8 слит: instrumentation/ресурсы/worker serial export; per-core CPU и аппаратные baseline/soak ещё открыты |
 | PR-04 ESP32 OTA Foundation | Плановая USB-миграция, otadata, A/B, HTTPS, подпись/хеш/compatibility, self-test и rollback | Проверенный backup, trusted key provisioning, migration/recovery review; power-loss/bad-signature/wrong-hardware tests. Разметку не менять app OTA. Firmware install только отдельно разрешён | PR #9–13 слиты; read-only session. Runtime worker/UI/native install/rollback/USB migration ещё не реализованы |
-| PR-05 GitHub Release Pipeline | Build matrix, versioned artifacts, signed manifest, checksums, release notes, prerelease/stable | Публикация только после CI и явного owner approval на SHA/tag/канал/артефакты; secrets/protected environment design; никакой фиктивной STM32 bin | PR-05a: unsigned metadata-only review bundles, app/ELF/output checks, exact source и pinned Actions; signing/publication ещё не реализованы |
+| PR-05 GitHub Release Pipeline | Build matrix, versioned artifacts, signed manifest, checksums, release notes, prerelease/stable | Публикация только после CI и явного owner approval на SHA/tag/канал/артефакты; secrets/protected environment design; никакой фиктивной STM32 bin | PR-05a: metadata-only bundles/exact source/pinned Actions. PR-05b: encoding fixes/shared signed C/Python policy corpus; actual versions/keys/signing/publication ещё открыты |
 | PR-06 microSD Support | FAT32, detect/mount/read/write/free-space/eject/error handling; G-code files, logs/settings export, OTA cache | Подтверждённая разводка Rev 1.2 и схема USB/CAN/SD; отсутствие/извлечение/повреждение не блокирует HMI; file I/O только worker | Не реализован |
-| PR-07 STM32 CAN Bootloader | Независимый bootloader, sequence/chunks/ACK/retry, SHA/signature, hardware/protocol checks, recovery | Flash geometry и A/B либо staging/recovery решение; сначала host transport. SWD initial install и CAN hardware только по отдельному разрешению | PR #29–32 DATA/crypto/handoff/preflight слиты. PR-07e: completion/lease close и historical outcome/ACK. Flash/recovery/physical CAN/install ещё не реализованы |
+| PR-07 STM32 CAN Bootloader | Независимый bootloader, sequence/chunks/ACK/retry, SHA/signature, hardware/protocol checks, recovery | Flash geometry и A/B либо staging/recovery решение; сначала host transport. SWD initial install и CAN hardware только по отдельному разрешению | PR #29–33 DATA/crypto/handoff/preflight/completion/lease close и historical outcome/ACK слиты. Production metadata/Flash/recovery/physical CAN/install ещё не реализованы |
 | PR-08 Unified Firmware Update UI | Параметры → Обновления: версии HMI/Motion/protocol, compatibility, changelog, размер, progress/result/history, check/download/install/cancel | Worker APIs PR-04/05/07; auto-check можно, auto-install нельзя. STM32 install только после подтверждённого quiescent state | Не реализован |
 
 PR-04 не обязан ждать физического motion: ESP32 обновляется на изолированном
@@ -26,6 +26,15 @@ UI-каркас обновлений допустим в своём PR, но н�
 версии motion, проверенные подписи или завершённую установку.
 
 ## Сохранённые инженерные milestones
+
+### PR-05b — release metadata policy review от main455ccc6
+
+[Review](RELEASE_POLICY_REVIEW.md): malformed Unicode hex gate и canonical Base64
+offline parity;115 signed C/Python scenarios,2809 SemVer comparisons,65536 BMP
+escapes и130 Base64 cases. Host29/sanitizers29/native analyzer3units и local
+ESP-IDF6.1.1 headless/rev12 PASS; CI matrix8 и STM32 gates сохранены.
+Actual local versions/keys, production Motion schema, layout migration/installer
+и hardware commissioning остаются открыты. Owner повторил VGT6, HSE не сообщил.
 
 ### Исторический снимок PR-07b от main74a7af9 — 20 ноября2026
 

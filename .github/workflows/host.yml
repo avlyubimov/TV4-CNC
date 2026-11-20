@@ -27,9 +27,25 @@ jobs:
           fi
           cmake -S . -B build -G Ninja -DLVGL_DIR="$PWD/vendor-lvgl" "${args[@]}"
       - run: cmake --build build -j 4
+      - name: Analyze native release policy (compile actual sources)
+        if: matrix.sanitizer == false
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/policy-analysis
+          gcc --version > build/policy-analysis.log
+          for name in json_guard envelope manifest; do
+            gcc -std=c11 -Wall -Wextra -Werror -fanalyzer \
+              -Ifirmware/esp32-hmi/ota -Ithird_party/cjson \
+              -c "firmware/esp32-hmi/ota/$name.c" \
+              -o "build/policy-analysis/$name.o" >> build/policy-analysis.log 2>&1
+            printf '%s: actual-source analyzer PASS\n' "$name" >> build/policy-analysis.log
+          done
       - run: ctest --test-dir build --output-on-failure
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         if: always()
         with:
           name: host-sanitized-${{ matrix.sanitizer }}
-          path: build/Testing/Temporary/LastTest.log
+          path: |
+            build/Testing/Temporary/LastTest.log
+            build/policy-analysis.log

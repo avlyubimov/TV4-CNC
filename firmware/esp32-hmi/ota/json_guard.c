@@ -1,5 +1,11 @@
 #include "json_guard.h"
 #include <string.h>
+static int hex_digit(uint8_t c) {
+    if(c>='0' && c<='9')return c-'0';
+    if(c>='a' && c<='f')return c-'a'+10;
+    if(c>='A' && c<='F')return c-'A'+10;
+    return -1;
+}
 /* This lexical preflight is a resource/encoding gate, NOT the JSON parser.
  * cJSON validates grammar. Reject embedded NUL, invalid UTF-8, escaped NUL,
  * fractional/exponent/negative numbers and >128 structural separators before
@@ -21,7 +27,20 @@ static bool preflight(const uint8_t *s,size_t n) {
         }
         if(string) {
             if(escape) {
-                if(c=='u' && i+4<n && !memcmp(s+i+1,"0000",4))return false;
+                if(c=='u') {
+                    /* cJSON 1.7.19 maps invalid hex to zero, which can hide a
+                     * suffix behind a decoded NUL. Validate every digit first.
+                     * Surrogate pairing is still checked by cJSON. */
+                    if(n-i<=4)return false;
+                    unsigned code=0;
+                    for(size_t j=1;j<=4;j++) {
+                        int d=hex_digit(s[i+j]);if(d<0)return false;
+                        code=(code<<4)|(unsigned)d;
+                    }
+                    if(!code)return false;
+                    i+=4;
+                } else if(c!='"' && c!='\\' && c!='/' && c!='b' && c!='f' &&
+                          c!='n' && c!='r' && c!='t')return false;
                 escape=false;
             } else if(c=='\\')escape=true;
             else if(c=='"')string=false;

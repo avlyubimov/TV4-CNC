@@ -1,0 +1,4 @@
+Base main455ccc6 + new signed malformed-Unicode regression; implementation unchanged.
+Expected failing test, not a current build failure.
+returncode=-6
+ota_manifest_tests: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/release-policy-review/tests/ota_manifest_tests.c:39: reject: Assertion `read(raw,strlen(raw))==expected' failed.

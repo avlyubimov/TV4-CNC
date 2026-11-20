@@ -1,5 +1,10 @@
 # PR-04b — native manifest parser и policy
 
+Актуальное продолжение PR-05b: [release policy review](RELEASE_POLICY_REVIEW.md).
+Unicode escapes проверяются до cJSON allocation; malformed hex и decoded NUL
+отклоняются. Offline envelope требует canonical Base64 как native. Дополнительные
+shared signed scenarios/Unicode oracle не включают runtime OTA или installer.
+
 Продолжение PR-04c: [read-only stream verifier](OTA_IMAGE_STREAM.md).
 HMI app version теперь ограничена 31 байтом по размеру ESP app descriptor;
 остальные SemVer/release/key limits ниже сохраняются.

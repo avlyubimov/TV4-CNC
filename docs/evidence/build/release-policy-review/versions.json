@@ -1,0 +1,82 @@
+{
+  "base_main": "455ccc624baeef502c8c05aeedf00b02a2bf0856",
+  "task_date": "2026-11-20",
+  "timezone": "Asia/Almaty",
+  "captured_utc": "2026-11-20T18:19:49.436167+00:00",
+  "working_tree_tested": true,
+  "host_os": "Linux-7.0.0-43-generic-x86_64-with-glibc2.43",
+  "gcc": "gcc (Ubuntu 15.2.0-16ubuntu1) 15.2.0",
+  "cmake": "cmake version 4.2.3",
+  "ninja": "1.13.2",
+  "shell_python": {
+    "path": "/usr/bin/python3",
+    "version": "3.14.4"
+  },
+  "ctest_python": {
+    "path": "/home/avlyubimov/.local/bin/python3.14",
+    "version": "Python 3.14.6"
+  },
+  "openssl": "OpenSSL 3.5.5 27 Jan 2026 (Library: OpenSSL 3.5.5 27 Jan 2026)",
+  "lvgl": {
+    "version": "9.2.2",
+    "commit": "7f07a129e8d77f4984fff8e623fd5be18ff42e74"
+  },
+  "esp_idf": {
+    "version": "6.1.1",
+    "commit": "051e4c4eb20346e043cdd47bc388fde75ff8af63"
+  },
+  "sanitizer_environment": {
+    "ASAN_OPTIONS": null,
+    "LSAN_OPTIONS": null,
+    "UBSAN_OPTIONS": null
+  },
+  "device_access": false,
+  "firmware_flashing": false,
+  "cjson": {
+    "version": "1.7.19",
+    "commit": "c859b25da02955fef659d658b8f324b5cde87be3",
+    "license": "MIT",
+    "provenance": "# cJSON provenance\n\nUpstream: https://github.com/DaveGamble/cJSON\nTag v1.7.19, commit `c859b25da02955fef659d658b8f324b5cde87be3`.\nMIT license in LICENSE. cJSON.c/h are unmodified upstream files.\nBuild sets CJSON_NESTING_LIMIT=8 and CJSON_HIDE_SYMBOLS.\nLocal tv4_namespace.h prefixes public symbols with tv4_ota_json_, avoiding SDK/global cJSON hook collisions.\nNo global hooks are installed; input/token/UTF-8 limits apply before parsing.\n\nUpstream cJSON.h:264 has a trailing space; LICENSE has a final blank line.\nThese upstream whitespace details are intentionally retained with the exact file hashes.\n"
+  },
+  "mbedtls": {
+    "version": "3.6.7",
+    "tag": "mbedtls-3.6.7",
+    "url": "https://github.com/Mbed-TLS/mbedtls/releases/download/mbedtls-3.6.7/mbedtls-3.6.7.tar.bz2",
+    "archive_sha256": "a7e8bcbec0e6f761b4af24f25677626b35f762f68eef79c08677a363212d11f6",
+    "license": "Apache-2.0 OR GPL-2.0-or-later",
+    "verification_profile_license": "Apache-2.0",
+    "crypto_sources": [
+      "asn1parse",
+      "asn1write",
+      "bignum",
+      "bignum_core",
+      "bignum_mod",
+      "bignum_mod_raw",
+      "constant_time",
+      "ecp",
+      "ecp_curves",
+      "ecp_curves_new",
+      "ecdsa",
+      "sha256",
+      "platform",
+      "platform_util",
+      "memory_buffer_alloc"
+    ],
+    "integrity_scope": [
+      "include/**/*.h",
+      "library/*.h",
+      "listed library/*.c",
+      "LICENSE"
+    ],
+    "tree_file_count": 178,
+    "tree_sha256": "2087a1191bd838ec63bc7d97452337888fef6247eac6ba782554d58408041310",
+    "archive_binary_test_inputs": {
+      "framework/data_files/base64/def_b64_ff.bin": "6ddff1c9506617bd8ff835154841f1c4553608ad96adaf0757694f5b3b17d8e8",
+      "framework/data_files/pkcs7_data.bin": "05ade08fcfb104f40b2536a14dfcd6e916d643f5cf8044b19028b607ae8f4908",
+      "framework/data_files/pkcs7_data_1.bin": "df4e26a04a444901b95afef44e4a96cfae34690fff2ad2c66389c70079cdff2b",
+      "framework/data_files/pkcs7_zerolendata.bin": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "mbedtls_archive_sha256": "a7e8bcbec0e6f761b4af24f25677626b35f762f68eef79c08677a363212d11f6",
+  "sdk_local_build_note": "Base455ccc6 modified worktree, PROJECT_VER=455ccc6-dirty; CI rebuilds exact committed SHA. No image publication or installation."
+}

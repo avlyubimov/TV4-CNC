@@ -1,8 +1,13 @@
 # Открытые вопросы и блокирующие решения
 
-Обновлено после main `74a7af9`, 19 ноября 2026. Единственный свод аппаратных фактов —
+Обновлено от main `455ccc6`, 20 ноября2026. Единственный свод аппаратных фактов —
 [HARDWARE_STATUS.md](HARDWARE_STATUS.md). Не заполнять неизвестные поля
 типовыми данными семейства, USB VID/PID, старым заказом или host mock.
+
+Ответ владельца20ноября повторил только VGT6; full physical marking/HSE неизвестны.
+PR-05b [release policy review](RELEASE_POLICY_REVIEW.md) проверяет существующий
+HMI contract и закрывает два encoding расхождения; actual local SemVer/key context,
+production Motion metadata, CAN и hardware gates ниже остаются открытыми.
 
 | ID | Что нужно подтвердить/решить | Блокирует |
 |---|---|---|

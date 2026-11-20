@@ -1,0 +1,6 @@
+Base main455ccc6 regressions reproduced using ephemeral in-memory P-256 signing:
+1. Original json_guard.c + unchanged policy: signed chip esp32s3\u00g0hidden -> TV4_OTA_OK (0).
+2. Original offline checker: real noncanonical pad-bit signature -> verified-offline-only.
+3. Fixed native corpus rejects malformed Unicode; fixed offline rejects the same noncanonical signature.
+No device access or private-key file. Legacy guard/policy helper binaries remain ignored local test artifacts.
+Legacy offline source SHA256=ea3443724175ff97e5ca13dd1a541830a3e675e5c6c9717a3f8b872e15e76206

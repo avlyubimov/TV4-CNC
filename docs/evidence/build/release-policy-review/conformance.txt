@@ -1,0 +1,2 @@
+Conformance PASS: signed metadata=115, accepted=16, rejected=99; SemVer comparisons=2809; Base64 cases=130
+Native candidate fields equal offline policy; rejected native output entirely zero. Ephemeral private key stayed in C helper memory; no device/install/release.
