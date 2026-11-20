@@ -109,20 +109,22 @@ PR и Actions; не копировать код уже открытого PR. Д
 
 ## Текущее задание
 
-PR #1–28 слиты, main `74a7af9` CI зелёный, открытых PR перед работой нет.
-PR-02b owner facts/startup слит. Продолжение: PR-07a logical update transport;
-читать docs/STM32_UPDATE_TRANSPORT.md, NEXT_STAGE.md и scoped protocol/can rules.
-Sender/receiver проверяются только на ПК; нет runtime caller, wire format,
-CAN driver, Flash backend, crypto/physical quiescent gate, COMMIT или jump.
-COMPLETE_UNVERIFIED/opaque hash/CRC/consumer ACK не означают trusted firmware,
-остановленный станок или разрешение установки. Boot/transfer uniqueness
-требует будущей negotiation; reinit не разрешает replay прежнего session.
+PR #1–30 слиты, база main `28fe7bc`; пять workflow PASS, открытых PR перед
+работой нет. PR-02b startup, PR-07a transport и PR-07b crypto admission уже
+существуют. Продолжение PR-07c: читать STM32_UPDATE_HANDOFF.md, NEXT_STAGE.md
+и scoped bootloader rules. Только read-only session/source lifetime coordinator,
+RAM end-to-end/fault tests и ARM compile. Нет runtime caller, CAN wire driver,
+Flash map/writer, physical quiescent proof, install/COMMIT/jump или ARM/START.
+Candidate/CRC/ACK/generation не являются install token или остановленным станком.
+Immutable lease гарантирует backend; failed release удерживает handle/retry/
+quarantine, clear/reopen его не скрывают. RX deadline не продлевать.
+
 Не повторять device access и не читать/публиковать raw dump. Owner1MiB не
 задаёт RAM/sector/bootloader layout. Startup synthetic fixture не является
 F407 profile. BOARD_IMAGE=ON всегда fail; no .bin/ELF upload. No-I/O adapter
 inhibit=false/watchdog unavailable; нельзя объявлять physical safe state.
-Host/sanitizers22suites, ARM/static/positive-negative link/board gates и CI;
-существующая ESP SDK matrix сохраняется. HMI/config/board/locks/security прежние.
+Host/sanitizers25 suites, standalone5, ARM/static/board/output gates; прежняя
+ESP SDK matrix8 сохраняется. HMI/config/board/dependency locks/security прежние.
 PR-05 candidates остаются metadata-only, CI exact workspace trust без wildcard.
 Runtime ESP resource budget/load/fault/soak/installer gates ещё открыты.
 На плате ordinary8f0d899,owner HMI/touch/Wi-Fi PASS; разрешения исполнены.

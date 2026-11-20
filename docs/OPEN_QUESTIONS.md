@@ -137,3 +137,12 @@ source/build identity, hashes и exact Actions. Это не release/signing auth
 GitHub manifest ещё требуют review. Счётчики не persistent anti-rollback;
 VERIFIED_CANDIDATE не заменяет fresh quiescent/operator/recovery/vector checks.
 HW-F407-01–05, OTA-KEY/CONTEXT/F407/STATE и RECOVERY-F407 остаются открытыми.
+
+## PR-07c — lifetime кандидата проверен только программно
+
+[Handoff](STM32_UPDATE_HANDOFF.md) закрывает software binding completed RX →
+immutable lease → admission и cleanup/revoke tests. Не закрыты production
+metadata/SemVer/key context, boot/transfer uniqueness, backend immutability/
+durable recovery и протокол ожидания оператора за пределами RX deadline.
+HW-F407-01–05, OTA-F407/STATE/KEY/CONTEXT и RECOVERY-F407 остаются открытыми;
+новых разрешений на devices/Flash/motion нет.

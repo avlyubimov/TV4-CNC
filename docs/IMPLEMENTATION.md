@@ -1,15 +1,14 @@
 # Реализация: main, открытые PR и аппаратные границы
 
-Актуализация после main `74a7af9` / PR #28: owner SWD F407/core/Flash1024KiB/
-backup подтверждены в [HARDWARE_STATUS](HARDWARE_STATUS.md). PR-02b добавляет
-[startup/sections/no-I/O building blocks](STM32_STARTUP.md), synthetic ARM link
-checks и сохраняет board image gate; физического запуска/Flash writer нет.
-Следующий этап — [NEXT_STAGE](NEXT_STAGE.md). Ниже сохранены исторические снимки.
-
-В текущей ветке PR-07a добавляет [sender/receiver update session](STM32_UPDATE_TRANSPORT.md)
-с ограниченными buffers/retries/deadlines и host fault tests. Это logical
-transport, а не CAN driver/bootloader. COMPLETE_UNVERIFIED не включает подпись,
-Flash commit, jump или motion. STM32/ESP32 runtime caller не добавлен.
+Актуализация от main `28fe7bc`, 20 ноября2026: PR #1–30 слиты. Owner SWD
+F407/core/Flash1024KiB/backup — [HARDWARE_STATUS](HARDWARE_STATUS.md).
+Startup #28, logical transport #29 и independent admission #30 уже в main.
+Текущая ветка PR-07c добавляет [immutable source/session handoff](STM32_UPDATE_HANDOFF.md),
+сквозные signed RAM transfers, отзыв кандидата и bounded cleanup/quarantine.
+Host/LVGL25, sanitizers25, standalone5 и ARM gates — [evidence](evidence/build/stm32-update-handoff/README.md).
+Нет runtime caller, Flash writer/map/commit/jump или физического safe-state proof.
+Следующий этап — [NEXT_STAGE](NEXT_STAGE.md). Ниже исторические снимки отдельных PR;
+их старые counts/«не реализовано» не заменяют текущий статус этого абзаца.
 
 Снимок PR-01 от 18 ноября 2026. База: main
 `0c4168e864d4c867ba0f49a86eba72c0d59205a1`. Это не утверждение, что все
@@ -225,5 +224,5 @@ trust provisioning и установка остаются открыты. Пла
 
 Ветка от main74a7af9, 20 ноября2026: [signature/metadata/image admission](STM32_IMAGE_ADMISSION.md)
 на отдельной Mbed TLS3.6.7, с bounded arena и host/ARM проверками. PR #29
-transport остаётся отдельным открытым PR. Нет runtime/Flash/commit/jump,
+transport был отдельным открытым PR на момент того снимка; теперь #29/30 слиты. Нет runtime/Flash/commit/jump,
 production metadata/context/keys и аппаратного подтверждения readiness.

@@ -1,0 +1,26 @@
+{
+  "record_date": "2026-11-20 Asia/Almaty",
+  "capture_utc": "2026-11-20T16:24:39.045906+00:00",
+  "base_commit": "28fe7bc8cc417ccc75e9a6db1939209b258118a1",
+  "host_gcc": "gcc (Ubuntu 15.2.0-16ubuntu1) 15.2.0",
+  "arm_gcc": "arm-none-eabi-gcc (15:14.2.rel1-1) 14.2.1 20241119",
+  "arm_binutils": "GNU ld (2.45.50.20251209-1ubuntu1+23build1) 2.45.50.20251209",
+  "cmake": "cmake version 4.2.3",
+  "ninja": "1.13.2",
+  "shell_python": "Python 3.14.4",
+  "ctest_python": "Python 3.14.6",
+  "openssl": "OpenSSL 3.5.5 27 Jan 2026 (Library: OpenSSL 3.5.5 27 Jan 2026)",
+  "lvgl_commit": "7f07a129e8d77f4984fff8e623fd5be18ff42e74",
+  "mbedtls_version": "3.6.7",
+  "mbedtls_archive_sha256": "a7e8bcbec0e6f761b4af24f25677626b35f762f68eef79c08677a363212d11f6",
+  "sanitizer_environment": {
+    "ASAN_OPTIONS": null,
+    "UBSAN_OPTIONS": null,
+    "LSAN_OPTIONS": null
+  },
+  "sanitizer_suppressions": false,
+  "board_executed": false,
+  "ci_arm_archive": "arm-gnu-toolchain-14.2.rel1-x86_64-arm-none-eabi.tar.xz",
+  "ci_arm_archive_sha256": "62a63b981fe391a9cbad7ef51b17e49aeaa3e7b0d029b36ca1e9c3b2a9b78823",
+  "note": "Local Ubuntu binutils differs from official CI archive; no board RAM/stack/runtime performance claim."
+}

@@ -9,7 +9,8 @@ import subprocess
 
 def inspect(directory):
     directory = Path(directory)
-    archives = [directory / f'libtv4_boot_{name}.a' for name in ('admission', 'crypto')]
+    archives = [directory / f'libtv4_boot_{name}.a' for name in ('admission', 'crypto', 'handoff')]
+    archives.append(directory / 'update-transport/libtv4_update_transport.a')
     size = subprocess.check_output(['arm-none-eabi-size', '--format=berkeley', *map(str, archives)], text=True)
     rows = [line.split() for line in size.splitlines()[1:] if line.strip()]
     if not rows or any(len(row) < 6 for row in rows):
@@ -30,9 +31,12 @@ def inspect(directory):
     if not external <= allowed:
         raise ValueError('unreviewed heap/OS/driver imports: ' + repr(sorted(external - allowed)))
     frames = {}
-    for name, limit in (('admission', 1536), ('crypto', 512)):
+    for name, limit, subdirectory, target in (
+        ('admission', 1536, '.', 'tv4_boot_admission'), ('crypto', 512, '.', 'tv4_boot_crypto'),
+        ('handoff', 512, '.', 'tv4_boot_handoff'), ('transport', 128, 'update-transport', 'tv4_update_transport')
+    ):
         found = []
-        for path in (directory / f'CMakeFiles/tv4_boot_{name}.dir').rglob('*.su'):
+        for path in (directory / subdirectory / f'CMakeFiles/{target}.dir').rglob('*.su'):
             for row in path.read_text().splitlines():
                 fields = row.split('\t')
                 if len(fields) != 3 or fields[2] != 'static' or int(fields[1]) > limit:
@@ -40,6 +44,12 @@ def inspect(directory):
                 found.append(int(fields[1]))
         if not found: raise ValueError('missing compiler frames')
         frames[name] = max(found)
+    # The coordinator and transport must add no mutable globals/heap fallback.
+    for archive in archives[2:]:
+        component_size = subprocess.check_output(['arm-none-eabi-size', '--format=berkeley', str(archive)], text=True)
+        component_rows = [row.split() for row in component_size.splitlines()[1:] if row.strip()]
+        if any(int(row[1]) != 0 or int(row[2]) != 0 for row in component_rows):
+            raise ValueError('handoff/transport mutable global budget exceeded')
     for path in directory.rglob('*.bin'):
         # Four public upstream data vectors ship in the official source archive.
         # They are immutable dependency inputs, never firmware build outputs.

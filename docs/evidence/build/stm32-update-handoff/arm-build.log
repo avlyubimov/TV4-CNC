@@ -1,0 +1,4 @@
+[1/3] cd /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32-update-coordinator/build-handoff-arm && /home/avlyubimov/.local/bin/python3.14 /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32-update-coordinator/tools/check_boot_crypto_source.py --source /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32-update-coordinator/build-handoff-arm/_deps/tv4_boot_mbedtls-src --lock /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32-update-coordinator/third_party/mbedtls/origin.json
+PASS pinned Mbed TLS source: {"files": 178, "tree_sha256": "2087a1191bd838ec63bc7d97452337888fef6247eac6ba782554d58408041310", "version": "3.6.7"}
+[2/3] Building C object CMakeFiles/tv4_boot_handoff.dir/core/update_handoff.c.obj
+[3/3] Linking C static library libtv4_boot_handoff.a

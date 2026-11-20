@@ -65,10 +65,11 @@ production TLS/OTA gate требует review; остальные
 
 ## Обязательные следующие подсистемы
 
-Ветка PR-07b от main `74a7af9`: [независимый read-only admission STM32](docs/STM32_IMAGE_ADMISSION.md)
-проверяет P-256 подпись raw draft metadata, совместимость и потоковый image SHA.
-Это software candidate check, без runtime/Flash/commit/jump. PR #29 transport
-остаётся отдельным PR; этот модуль не копирует и не требует его кода.
+PR #29 transport и #30 [независимый read-only admission](docs/STM32_IMAGE_ADMISSION.md)
+слиты в main `28fe7bc`. В текущей ветке [PR-07c handoff](docs/STM32_UPDATE_HANDOFF.md)
+связывает completed RX с immutable source lease, policy/boot identity и signature/
+SHA checks. Кандидат отзывается при смене контекста/тайм-ауте; release failures
+не теряют ресурс. Нет runtime/Flash writer/commit/jump или install permission.
 
 [OTA ESP32 A/B и F407 по CAN](docs/OTA_ARCHITECTURE.md),
 [GitHub Releases/подписи/owner approval](docs/RELEASE_PROCESS.md),
@@ -99,8 +100,7 @@ PR #1–27: owner SWD facts, generic init/reset/no-I/O и synthetic link/fault t
 Реальная board memory/vector/clock map и CAN bootloader ещё не утверждены;
 следующая последовательность — [NEXT_STAGE](docs/NEXT_STAGE.md). Плата не прошивается.
 
-PR #28 со startup foundation слит в main `74a7af9`. Следующая часть в этой
-ветке — [PR-07a update transport](docs/STM32_UPDATE_TRANSPORT.md): независимые
-sender/receiver, bounded memory/retries/deadlines и RAM fault tests. Это ещё
-не CAN bootloader: нет wire driver, Flash writer, crypto/COMMIT/jump или
-runtime caller. Успешная передача имеет статус COMPLETE_UNVERIFIED.
+PR #28–30 со startup, [update transport](docs/STM32_UPDATE_TRANSPORT.md) и
+crypto admission слиты. Host/LVGL25 suites и sanitizers25 проверяют текущую
+ветку с handoff; [evidence](docs/evidence/build/stm32-update-handoff/README.md).
+Это software foundation, без физического CAN, Flash writer и board bootloader.

@@ -18,7 +18,7 @@ jobs:
           echo "62a63b981fe391a9cbad7ef51b17e49aeaa3e7b0d029b36ca1e9c3b2a9b78823  $RUNNER_TEMP/$archive" | sha256sum --check
           tar -xJf "$RUNNER_TEMP/$archive" -C "$RUNNER_TEMP"
           echo "$RUNNER_TEMP/arm-gnu-toolchain-14.2.rel1-x86_64-arm-none-eabi/bin" >> "$GITHUB_PATH"
-      - name: Build independent bounded crypto/admission libraries
+      - name: Build crypto/admission/transport handoff libraries
         shell: bash
         run: |
           set -euo pipefail
@@ -33,11 +33,11 @@ jobs:
             --lock third_party/mbedtls/origin.json > evidence/source-check.txt
           python3 tools/check_boot_admission_build.py build-boot-arm > evidence/arm-budget.json
           cp third_party/mbedtls/origin.json evidence/crypto-origin.json
-          for source in admission metadata; do
+          for source in admission metadata update_handoff; do
             gcc -std=c11 -Wall -Wextra -Werror -Wconversion -Wshadow -Wstrict-prototypes -fanalyzer \
               -DMBEDTLS_CONFIG_FILE='"tv4_boot_mbedtls_config.h"' \
               -Ifirmware/stm32-bootloader/include -Ifirmware/stm32-bootloader/core \
-              -Ifirmware/stm32-bootloader/config -Ibuild-boot-arm/_deps/tv4_boot_mbedtls-src/include \
+              -Ifirmware/stm32-bootloader/config -Iprotocol/can -Ibuild-boot-arm/_deps/tv4_boot_mbedtls-src/include \
               -c "firmware/stm32-bootloader/core/$source.c" -o "build-static-analysis/$source.o"
           done
       - name: Reject bootloader images and unexpected binary outputs
