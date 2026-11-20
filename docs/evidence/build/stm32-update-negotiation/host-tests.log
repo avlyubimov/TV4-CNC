@@ -1,0 +1,596 @@
+Start testing: Nov 21 00:41 +05
+----------------------------------------------------------
+1/31 Testing: build_validation
+1/31 Test: build_validation
+Command: "/home/avlyubimov/.local/bin/python3.14" "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-negotiation/tests/build_validation_tests.py"
+Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-negotiation/build-neg-root
+"build_validation" start time: Nov 21 00:41 +05
+Output:
+----------------------------------------------------------
+..........
+----------------------------------------------------------------------
+Ran 10 tests in 0.003s
+
+OK
+<end of output>
+Test time =   0.04 sec
+----------------------------------------------------------
+Test Passed.
+"build_validation" end time: Nov 21 00:41 +05
+"build_validation" time elapsed: 00:00:00
+----------------------------------------------------------
+
+2/31 Testing: build_candidate
+2/31 Test: build_candidate
+Command: "/home/avlyubimov/.local/bin/python3.14" "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-negotiation/tests/build_candidate_tests.py"
+Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-negotiation/build-neg-root
+"build_candidate" start time: Nov 21 00:41 +05
+Output:
+----------------------------------------------------------
+................
+----------------------------------------------------------------------
+Ran 16 tests in 0.449s
+
+OK
+<end of output>
+Test time =   0.49 sec
+----------------------------------------------------------
+Test Passed.
+"build_candidate" end time: Nov 21 00:41 +05
+"build_candidate" time elapsed: 00:00:00
+----------------------------------------------------------
+
+3/31 Testing: core
+3/31 Test: core
+Command: "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-negotiation/build-neg-root/core_tests"
+Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-negotiation/build-neg-root
+"core" start time: Nov 21 00:41 +05
+Output:
+----------------------------------------------------------
+State, timeout, invalid frames, RU fallback and inert transport passed
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"core" end time: Nov 21 00:41 +05
+"core" time elapsed: 00:00:00
+----------------------------------------------------------
+
+4/31 Testing: firmware_info
+4/31 Test: firmware_info
+Command: "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-negotiation/build-neg-root/firmware_info_tests"
+Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-negotiation/build-neg-root
+"firmware_info" start time: Nov 21 00:41 +05
+Output:
+----------------------------------------------------------
+Firmware display metadata PASS: local origins/profiles,31-byte bounds, unterminated/invalid spans, independent copies/alias, atomic UNKNOWN; sizeof=72
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"firmware_info" end time: Nov 21 00:41 +05
+"firmware_info" time elapsed: 00:00:00
+----------------------------------------------------------
+
+5/31 Testing: wifi_profiles
+5/31 Test: wifi_profiles
+Command: "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-negotiation/build-neg-root/wifi_profiles_tests"
+Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-negotiation/build-neg-root
+"wifi_profiles" start time: Nov 21 00:41 +05
+Output:
+----------------------------------------------------------
+Wi-Fi profile validation, persistence image, updates, eviction and forgetting passed
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"wifi_profiles" end time: Nov 21 00:41 +05
+"wifi_profiles" time elapsed: 00:00:00
+----------------------------------------------------------
+
+6/31 Testing: render
+6/31 Test: render
+Command: "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-negotiation/build-neg-root/preview"
+Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-negotiation/build-neg-root
+"render" start time: Nov 21 00:41 +05
+Output:
+----------------------------------------------------------
+Firmware UI PASS: local/simulator/unknown/31-byte/profile states, Wi-Fi editor cleanup, 64 navigation cycles with identical host-pool free bytes, persistent STOP/fault/no motion
+LVGL 9 render and Cyrillic coverage passed
+<end of output>
+Test time =   0.54 sec
+----------------------------------------------------------
+Test Passed.
+"render" end time: Nov 21 00:41 +05
+"render" time elapsed: 00:00:00
+----------------------------------------------------------
+
+7/31 Testing: render_rgb565
+7/31 Test: render_rgb565
+Command: "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-negotiation/build-neg-root/preview" "--rgb565"
+Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-negotiation/build-neg-root
+"render_rgb565" start time: Nov 21 00:41 +05
+Output:
+----------------------------------------------------------
+Firmware UI PASS: local/simulator/unknown/31-byte/profile states, Wi-Fi editor cleanup, 64 navigation cycles with identical host-pool free bytes, persistent STOP/fault/no motion
+LVGL 9 render and Cyrillic coverage passed
+<end of output>
+Test time =   0.55 sec
+----------------------------------------------------------
+Test Passed.
+"render_rgb565" end time: Nov 21 00:41 +05
+"render_rgb565" time elapsed: 00:00:00
+----------------------------------------------------------
+
+8/31 Testing: diagnostics
+8/31 Test: diagnostics
+Command: "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-negotiation/build-neg-root/diagnostics_tests"
+Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-negotiation/build-neg-root
+"diagnostics" start time: Nov 21 00:41 +05
+Output:
+----------------------------------------------------------
+Diagnostics windows, wraparound, p95 bounds, saturation and bounded export PASS
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"diagnostics" end time: Nov 21 00:41 +05
+"diagnostics" time elapsed: 00:00:00
+----------------------------------------------------------
+
+9/31 Testing: ota_crypto
+9/31 Test: ota_crypto
+Command: "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-negotiation/build-neg-root/ota_crypto_tests"
+Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-negotiation/build-neg-root
+"ota_crypto" start time: Nov 21 00:41 +05
+Output:
+----------------------------------------------------------
+OTA P-256 signature, exact-byte mutation, unknown key, curve and SHA-256 PASS
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"ota_crypto" end time: Nov 21 00:41 +05
+"ota_crypto" time elapsed: 00:00:00
+----------------------------------------------------------
+
+10/31 Testing: ota_candidate
+10/31 Test: ota_candidate
+Command: "/home/avlyubimov/.local/bin/python3.14" "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-negotiation/tests/ota_candidate_tests.py"
+Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-negotiation/build-neg-root
+"ota_candidate" start time: Nov 21 00:41 +05
+Output:
+----------------------------------------------------------
+...........
+----------------------------------------------------------------------
+Ran 11 tests in 0.165s
+
+OK
+<end of output>
+Test time =   0.20 sec
+----------------------------------------------------------
+Test Passed.
+"ota_candidate" end time: Nov 21 00:41 +05
+"ota_candidate" time elapsed: 00:00:00
+----------------------------------------------------------
+
+11/31 Testing: ota_manifest
+11/31 Test: ota_manifest
+Command: "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-negotiation/build-neg-root/ota_manifest_tests"
+Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-negotiation/build-neg-root
+"ota_manifest" start time: Nov 21 00:41 +05
+Output:
+----------------------------------------------------------
+Native manifest signature/policy/encoding/OOM scenarios PASS; parse peak=2323 bytes, allocations=71
+<end of output>
+Test time =   0.06 sec
+----------------------------------------------------------
+Test Passed.
+"ota_manifest" end time: Nov 21 00:41 +05
+"ota_manifest" time elapsed: 00:00:00
+----------------------------------------------------------
+
+12/31 Testing: ota_json
+12/31 Test: ota_json
+Command: "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-negotiation/build-neg-root/ota_json_tests"
+Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-negotiation/build-neg-root
+"ota_json" start time: Nov 21 00:41 +05
+Output:
+----------------------------------------------------------
+JSON escape oracle PASS: BMP=65536, accepted=63487, invalid hex=420; surrogate/escape/duplicate/truncation cases PASS
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"ota_json" end time: Nov 21 00:41 +05
+"ota_json" time elapsed: 00:00:00
+----------------------------------------------------------
+
+13/31 Testing: ota_policy_conformance
+13/31 Test: ota_policy_conformance
+Command: "/home/avlyubimov/.local/bin/python3.14" "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-negotiation/tests/ota_policy_conformance_tests.py" "--driver" "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-negotiation/build-neg-root/ota_policy_driver"
+Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-negotiation/build-neg-root
+"ota_policy_conformance" start time: Nov 21 00:41 +05
+Output:
+----------------------------------------------------------
+Conformance PASS: signed metadata=115, accepted=16, rejected=99; SemVer comparisons=2809; Base64 cases=130
+Native candidate fields equal offline policy; rejected native output entirely zero. Ephemeral private key stayed in C helper memory; no device/install/release.
+<end of output>
+Test time =   0.32 sec
+----------------------------------------------------------
+Test Passed.
+"ota_policy_conformance" end time: Nov 21 00:41 +05
+"ota_policy_conformance" time elapsed: 00:00:00
+----------------------------------------------------------
+
+14/31 Testing: ota_stream
+14/31 Test: ota_stream
+Command: "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-negotiation/build-neg-root/ota_stream_tests"
+Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-negotiation/build-neg-root
+"ota_stream" start time: Nov 21 00:41 +05
+Output:
+----------------------------------------------------------
+Stream chunks, descriptor/checksum/dual-SHA, 480 truncation points, cancellation/deadlines/wrap PASS; verifier struct=504 bytes
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"ota_stream" end time: Nov 21 00:41 +05
+"ota_stream" time elapsed: 00:00:00
+----------------------------------------------------------
+
+15/31 Testing: ota_http
+15/31 Test: ota_http
+Command: "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-negotiation/build-neg-root/ota_http_tests"
+Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-negotiation/build-neg-root
+"ota_http" start time: Nov 21 00:41 +05
+Output:
+----------------------------------------------------------
+HTTPS policy/redirects/status/length/encoding/cancel/deadlines/cleanup PASS; workspace=8212 bytes (host)
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"ota_http" end time: Nov 21 00:41 +05
+"ota_http" time elapsed: 00:00:00
+----------------------------------------------------------
+
+16/31 Testing: ota_session
+16/31 Test: ota_session
+Command: "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-negotiation/build-neg-root/ota_session_tests"
+Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-negotiation/build-neg-root
+"ota_session" start time: Nov 21 00:41 +05
+Output:
+----------------------------------------------------------
+Guarded signed session: resource fault at all 94 boundaries, active/cleanup/authenticated candidate revocation PASS
+Read-only session signed end-to-end/failure/cancel/truncation/deadline/reset PASS; workspace=34024 bytes (host)
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"ota_session" end time: Nov 21 00:41 +05
+"ota_session" time elapsed: 00:00:00
+----------------------------------------------------------
+
+17/31 Testing: ota_memory
+17/31 Test: ota_memory
+Command: "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-negotiation/build-neg-root/ota_memory_tests"
+Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-negotiation/build-neg-root
+"ota_memory" start time: Nov 21 00:41 +05
+Output:
+----------------------------------------------------------
+PSRAM-only admission/low-memory/race/region/cleanup/retry PASS; host workspace=34024 bytes
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"ota_memory" end time: Nov 21 00:41 +05
+"ota_memory" time elapsed: 00:00:00
+----------------------------------------------------------
+
+18/31 Testing: ota_time
+18/31 Test: ota_time
+Command: "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-negotiation/build-neg-root/ota_time_tests"
+Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-negotiation/build-neg-root
+"ota_time" start time: Nov 21 00:41 +05
+Output:
+----------------------------------------------------------
+Time provenance/policy/age/skew/revocation/range/64-bit-clock PASS; no system clock or network changed
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"ota_time" end time: Nov 21 00:41 +05
+"ota_time" time elapsed: 00:00:00
+----------------------------------------------------------
+
+19/31 Testing: ota_sntp
+19/31 Test: ota_sntp
+Command: "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-negotiation/build-neg-root/ota_sntp_tests"
+Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-negotiation/build-neg-root
+"ota_sntp" start time: Nov 21 00:41 +05
+Output:
+----------------------------------------------------------
+SNTP lifecycle/policy/provenance/deadline/cancel/network/cleanup/retry PASS; mock only, no UTC/network changed
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"ota_sntp" end time: Nov 21 00:41 +05
+"ota_sntp" time elapsed: 00:00:00
+----------------------------------------------------------
+
+20/31 Testing: ota_tls_probe
+20/31 Test: ota_tls_probe
+Command: "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-negotiation/build-neg-root/ota_tls_probe_tests"
+Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-negotiation/build-neg-root
+"ota_tls_probe" start time: Nov 21 00:41 +05
+Output:
+----------------------------------------------------------
+HEAD probe time/deadline/cleanup/status/no-redirect lifecycle PASS; mocks only, no CA/TLS/network executed
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"ota_tls_probe" end time: Nov 21 00:41 +05
+"ota_tls_probe" time elapsed: 00:00:00
+----------------------------------------------------------
+
+21/31 Testing: ota_resource
+21/31 Test: ota_resource
+Command: "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-negotiation/build-neg-root/ota_resource_tests"
+Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-negotiation/build-neg-root
+"ota_resource" start time: Nov 21 00:41 +05
+Output:
+----------------------------------------------------------
+Resource policy bounds/review/current heap/stack/unavailable/fail-closed sampler PASS; no allocation/network
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"ota_resource" end time: Nov 21 00:41 +05
+"ota_resource" time elapsed: 00:00:00
+----------------------------------------------------------
+
+22/31 Testing: motion_supervisor
+22/31 Test: motion_supervisor
+Command: "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-negotiation/build-neg-root/firmware/stm32-motion/motion_tests"
+Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-negotiation/build-neg-root/firmware/stm32-motion
+"motion_supervisor" start time: Nov 21 00:41 +05
+Output:
+----------------------------------------------------------
+7 motion supervisor scenarios PASS (including 99,999 fault-injection cycles)
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"motion_supervisor" end time: Nov 21 00:41 +05
+"motion_supervisor" time elapsed: 00:00:00
+----------------------------------------------------------
+
+23/31 Testing: motion_startup_noio
+23/31 Test: motion_startup_noio
+Command: "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-negotiation/build-neg-root/firmware/stm32-motion/motion_startup_tests"
+Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-negotiation/build-neg-root/firmware/stm32-motion
+"motion_startup_noio" start time: Nov 21 00:41 +05
+Output:
+----------------------------------------------------------
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"motion_startup_noio" end time: Nov 21 00:41 +05
+"motion_startup_noio" time elapsed: 00:00:00
+----------------------------------------------------------
+
+24/31 Testing: update_session
+24/31 Test: update_session
+Command: "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-negotiation/build-neg-root/protocol/can/update_session_tests"
+Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-negotiation/build-neg-root/protocol/can
+"update_session" start time: Nov 21 00:41 +05
+Output:
+----------------------------------------------------------
+PASS checksum_vectors
+PASS invalid_limits
+PASS begin_and_exclusivity
+PASS two_phase_and_exact_duplicates
+PASS malformed_blocks
+PASS conflicting_duplicate
+PASS crc_collision_does_not_match_duplicate
+PASS consumer_failure_is_sticky
+PASS sender_retry_budget
+PASS receiver_retry_budget
+PASS ack_validation
+PASS deadline_boundaries
+PASS total_deadline
+PASS clocks_and_wraparound
+PASS abort_and_reboot
+PASS null_and_output_contracts
+PASS retry_counter_boundary
+PASS 17 unit groups; rx=384 tx=384 bytes; no device access
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"update_session" end time: Nov 21 00:41 +05
+"update_session" time elapsed: 00:00:00
+----------------------------------------------------------
+
+25/31 Testing: update_loopback
+25/31 Test: update_loopback
+Command: "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-negotiation/build-neg-root/protocol/can/update_loopback_tests"
+Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-negotiation/build-neg-root/protocol/can
+"update_loopback" start time: Nov 21 00:41 +05
+Output:
+----------------------------------------------------------
+PASS 2049 memory transfers; lost DATA=4318 ACK=4360 (final=397) corrupt=3924 reorder=4338 pending duplicates=4004
+PASS altered payload + valid CRC completes transport only; SHA oracle rejects image
+PASS 10 volatile reset cut cases; stale sessions/ACK rejected; no resume
+PASS truncated stream / partial RAM consumer never reach completion
+<end of output>
+Test time =   0.04 sec
+----------------------------------------------------------
+Test Passed.
+"update_loopback" end time: Nov 21 00:41 +05
+"update_loopback" time elapsed: 00:00:00
+----------------------------------------------------------
+
+26/31 Testing: update_outcome
+26/31 Test: update_outcome
+Command: "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-negotiation/build-neg-root/protocol/can/update_outcome_tests"
+Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-negotiation/build-neg-root/protocol/can
+"update_outcome" start time: Nov 21 00:41 +05
+Output:
+----------------------------------------------------------
+PASS 1001 outcome sessions, 1001 deliveries; lost report/final ACK; duplicates not redelivered
+PASS loss_duplicate_and_history
+PASS binding_and_ack_validation
+PASS conflicts_invalid_reports_and_forgery_boundary
+PASS deadlines_retries_and_late_begin
+PASS transport_reboot_abort_and_clock
+PASS config_and_canonical_codes
+PASS 6 outcome groups; report=84 TX=128 RX=224; no authentication/install/device access
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"update_outcome" end time: Nov 21 00:41 +05
+"update_outcome" time elapsed: 00:00:00
+----------------------------------------------------------
+
+27/31 Testing: update_negotiation
+27/31 Test: update_negotiation
+Command: "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-negotiation/build-neg-root/protocol/can/update_negotiation_tests"
+Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-negotiation/build-neg-root/protocol/can
+"update_negotiation" start time: Nov 21 00:41 +05
+Output:
+----------------------------------------------------------
+PASS 7 negotiation groups/1024 sessions; state=368 pool=32 message=128. Opaque bindings only; no CAN/authentication/install/device access.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"update_negotiation" end time: Nov 21 00:41 +05
+"update_negotiation" time elapsed: 00:00:00
+----------------------------------------------------------
+
+28/31 Testing: boot_image_admission
+28/31 Test: boot_image_admission
+Command: "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-negotiation/build-neg-root/firmware/stm32-bootloader/boot_admission_tests"
+Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-negotiation/build-neg-root/firmware/stm32-bootloader
+"boot_image_admission" start time: Nov 21 00:41 +05
+Output:
+----------------------------------------------------------
+PASS sha_vectors
+PASS success_and_fragmentation
+PASS invalid_signature_and_key
+PASS wrong_signer
+PASS compatibility_and_rollback
+PASS policy_errors
+PASS signed_malformed_metadata
+PASS stream_faults
+PASS deadlines_cancellation_and_wrap
+PASS arena_exhaustion_and_reuse
+PASS snapshot_and_reentry
+PASS arguments_and_limits
+PASS boundary_metadata_and_key_selection
+PASS storage_aliases_are_write_free
+PASS 14 admission groups; workspace=17664 bytes; ephemeral host signing keys; no device access
+<end of output>
+Test time =   0.14 sec
+----------------------------------------------------------
+Test Passed.
+"boot_image_admission" end time: Nov 21 00:41 +05
+"boot_image_admission" time elapsed: 00:00:00
+----------------------------------------------------------
+
+29/31 Testing: boot_crypto_source
+29/31 Test: boot_crypto_source
+Command: "/home/avlyubimov/.local/bin/python3.14" "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-negotiation/firmware/stm32-bootloader/tests/source_tests.py" "--source" "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-negotiation/build-neg-root/_deps/tv4_boot_mbedtls-src"
+Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-negotiation/build-neg-root/firmware/stm32-bootloader
+"boot_crypto_source" start time: Nov 21 00:41 +05
+Output:
+----------------------------------------------------------
+test_added_header (__main__.SourceTests.test_added_header) ... ok
+test_changed_code (__main__.SourceTests.test_changed_code) ... ok
+test_exact_source (__main__.SourceTests.test_exact_source) ... ok
+test_missing_header (__main__.SourceTests.test_missing_header) ... ok
+test_symlink (__main__.SourceTests.test_symlink) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.081s
+
+OK
+<end of output>
+Test time =   0.11 sec
+----------------------------------------------------------
+Test Passed.
+"boot_crypto_source" end time: Nov 21 00:41 +05
+"boot_crypto_source" time elapsed: 00:00:00
+----------------------------------------------------------
+
+30/31 Testing: boot_update_handoff
+30/31 Test: boot_update_handoff
+Command: "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-negotiation/build-neg-root/firmware/stm32-bootloader/boot_handoff_tests"
+Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-negotiation/build-neg-root/firmware/stm32-bootloader
+"boot_update_handoff" start time: Nov 21 00:41 +05
+Output:
+----------------------------------------------------------
+PASS 54 signed end-to-end RAM transfers with lost DATA/final ACK and pending duplicate
+PASS end_to_end_sizes_and_fragments
+PASS snapshots_and_reentry
+PASS binding_is_not_transport_trust
+PASS changes_during_verification
+PASS revoke_after_success
+PASS acquire_and_release_failures
+PASS deadlines_before_verification_and_wrap
+PASS boundaries_and_final_cleanup
+PASS retained_ack_does_not_extend_handoff
+PASS rejected_inputs_and_aliases
+PASS 15 signed vector inspections with fragmented reads + captured local profile mutation
+PASS signed_vector_success_and_snapshot
+PASS valid_signature_invalid_vector_model
+PASS preflight_context_cleanup_and_reentry
+PASS 6 signed DATA -> crypto -> vectors -> close -> outcome/ACK sessions, lost report/final ACK; no lease retained
+PASS completion_end_to_end_history
+PASS completion_rejections
+PASS completion_release_and_late_context
+PASS completion_reentry_snapshot_and_arguments
+PASS 6 signed negotiation -> DATA -> P-256/SHA -> vectors -> close -> outcome/ACK chains; all four handshake losses, DATA/final ACK/report losses
+PASS negotiated_full_chain
+PASS 3 negotiated binding failures: changed image, invalid signature, valid re-signed metadata with mismatched raw SHA; no retained lease
+PASS negotiated_binding_still_requires_crypto
+PASS 19 handoff/completion groups; completion=568; state=2136 receipt=136 workspace=17664; RAM only, no install/device access
+<end of output>
+Test time =   0.32 sec
+----------------------------------------------------------
+Test Passed.
+"boot_update_handoff" end time: Nov 21 00:41 +05
+"boot_update_handoff" time elapsed: 00:00:00
+----------------------------------------------------------
+
+31/31 Testing: boot_image_profile
+31/31 Test: boot_image_profile
+Command: "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-negotiation/build-neg-root/firmware/stm32-bootloader/boot_profile_tests"
+Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-negotiation/build-neg-root/firmware/stm32-bootloader
+"boot_image_profile" start time: Nov 21 00:41 +05
+Output:
+----------------------------------------------------------
+PASS 241 vector-table lengths, 16..256 entries; synthetic models only
+PASS all_table_lengths
+PASS unknown_and_invalid_profiles
+PASS stack_edges_and_gaps
+PASS every slot in 256-entry table; null/even/outside/table/RAM/truncated Thumb target rejected
+PASS every_handler_and_reserved_slot
+PASS full_uint32_arithmetic
+PASS lengths_aliases_and_zero_output
+PASS 6 profile groups; profile=116 inspection=44; model consistency only, no execution/device access
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"boot_image_profile" end time: Nov 21 00:41 +05
+"boot_image_profile" time elapsed: 00:00:00
+----------------------------------------------------------
+
+End testing: Nov 21 00:41 +05

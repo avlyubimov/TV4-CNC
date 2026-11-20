@@ -42,7 +42,7 @@ jobs:
             -DCMAKE_BUILD_TYPE=MinSizeRel
           cmake --build build-update-arm
           mkdir -p build-update-static
-          for source in update_session update_outcome; do
+          for source in update_session update_outcome update_negotiation; do
             gcc -std=c11 -Wall -Wextra -Werror -Wconversion -Wshadow -Wstrict-prototypes \
               -fanalyzer -Iprotocol/can -c "protocol/can/$source.c" -o "build-update-static/$source.o"
           done

@@ -1,5 +1,6 @@
 #include "update_handoff.h"
 #include "update_completion.h"
+#include "update_negotiation.h"
 #include <assert.h>
 #include <inttypes.h>
 #include <openssl/evp.h>
@@ -698,6 +699,111 @@ static void completion_reentry_snapshot_and_arguments(void)
     assert(!tv4_boot_completion_start(&f.completion,&f.session,&f.expected,&f.preflight_profile,&f.workspace));
     assert(f.reads==0 && f.locked && f.completion.state==TV4_COMPLETION_EMPTY); finish(&f);
 }
+
+/* Test-only adapter: replace the fixture's unused legacy DATA setup with a
+ * fresh negotiated ID. No wire, source lease or storage is opened by handshake.
+ * Existing owner boot/metadata/signing policy are explicit model fixtures. */
+static void negotiate_source(fixture *f,unsigned drop_mask)
+{
+    tv4_update_limits data=f->rx.context.limits;
+    assert(f->staged_bytes==0 && f->acquired==0);
+    assert(tv4_update_rx_abort(&f->rx,f->descriptor.id,f->now)==TV4_UPDATE_OK);
+    assert(tv4_update_tx_abort(&f->tx,f->descriptor.id,f->now)==TV4_UPDATE_OK);
+    tv4_neg_pool sender={0},receiver={0};tv4_negotiation a={0},b={0};
+    uint8_t tag[32];digest((const uint8_t *)"test-negotiation-context",sizeof("test-negotiation-context")-1,tag);
+    assert(tv4_neg_pool_init(&sender,11,f->owner.boot,0));
+    assert(tv4_neg_pool_init(&receiver,f->owner.boot,11,f->descriptor.id.transfer));
+    tv4_neg_limits limits={.max_image_bytes=IMAGE_MAX,.retry_ms=10,.total_ms=1000,.block_ceiling=128,.send_limit=8};
+    assert(tv4_neg_init(&a,&sender,TV4_NEG_REQUESTER,limits,tag,2001,f->now));
+    limits.block_ceiling=31;
+    assert(tv4_neg_init(&b,&receiver,TV4_NEG_RESPONDER,limits,tag,f->owner.policy_generation,f->now));
+    tv4_neg_image image={.image_bytes=f->descriptor.image_bytes};
+    memcpy(image.image_sha256,f->descriptor.image_sha256,32);
+    digest(f->metadata,f->config.metadata_bytes,image.metadata_sha256);
+    assert(tv4_neg_begin(&a,&image,2001,f->now)==TV4_NEG_OK);
+    unsigned dropped=0;
+    for(unsigned step=0;step<40 && (a.state!=TV4_NEG_READY || b.state!=TV4_NEG_READY);step++) {
+        for(unsigned side=0;side<2;side++) {
+            tv4_negotiation *from=side?&b:&a,*to=side?&a:&b;
+            uint64_t from_generation=side?f->owner.policy_generation:2001;
+            uint64_t to_generation=side?2001:f->owner.policy_generation;
+            tv4_neg_message packet;
+            tv4_neg_result r=tv4_neg_next(from,&packet,from_generation,f->now);
+            if(r==TV4_NEG_WAIT)continue;
+            assert(r==TV4_NEG_SENT);
+            unsigned bit=1u<<(unsigned)packet.kind;
+            if((drop_mask&bit)!=0 && (dropped&bit)==0) { dropped|=bit;continue; }
+            r=tv4_neg_receive(to,&packet,to_generation,f->now);
+            assert(r==TV4_NEG_OK || r==TV4_NEG_DUPLICATE);
+        }
+        f->now+=10;
+    }
+    assert(a.state==TV4_NEG_READY && b.state==TV4_NEG_READY && dropped==drop_mask);
+    tv4_neg_message old_request=a.request;
+    tv4_negotiated tx,rx;
+    assert(tv4_neg_take(&a,&tx,2001,f->now)==TV4_NEG_OK);
+    assert(tv4_neg_take(&b,&rx,f->owner.policy_generation,f->now)==TV4_NEG_OK);
+    assert(tx.descriptor.id.boot==f->owner.boot && tx.descriptor.id.transfer==rx.descriptor.id.transfer);
+    assert(tx.block_bytes==31 && rx.block_bytes==31);
+    assert(!memcmp(tx.metadata_sha256,rx.metadata_sha256,32));
+    f->descriptor=tx.descriptor;f->view.id=tx.descriptor.id;++f->view.generation;
+    f->expected.image=tx.descriptor;memcpy(f->expected.metadata_sha256,tx.metadata_sha256,32);
+    data.block_bytes=tx.block_bytes;
+    assert(tv4_update_rx_init(&f->rx,data,rx.descriptor.id.boot,f->now));
+    assert(tv4_update_tx_init(&f->tx,data,tx.descriptor.id.boot,f->now));
+    assert(tv4_update_rx_begin(&f->rx,&rx.descriptor,f->now)==TV4_UPDATE_OK);
+    assert(tv4_update_tx_begin(&f->tx,&tx.descriptor,f->now)==TV4_UPDATE_OK);
+    assert(tv4_neg_take(&a,&tx,2001,f->now)==TV4_NEG_REJECT_STATE);
+    assert(tv4_neg_close(&a,2001,f->now)==TV4_NEG_OK);
+    assert(tv4_neg_close(&b,f->owner.policy_generation,f->now)==TV4_NEG_OK);
+    assert(tv4_neg_clear(&a) && tv4_neg_clear(&b));
+    assert(tv4_neg_receive(&b,&old_request,f->owner.policy_generation,f->now)==TV4_NEG_REJECT_SESSION);
+    assert(f->rx.context.next_offset==0 && f->tx.context.next_offset==0 && f->acquired==0);
+}
+static void negotiated_full_chain(void)
+{
+    for(unsigned i=0;i<6;i++) {
+        fixture f;vector_fixture(&f,i%2u?256:33);
+        unsigned mask=i<4 ? 1u<<(i+1u) : i==4 ? 0u : 30u;
+        negotiate_source(&f,mask);transfer(&f);begin(&f);
+        assert(tv4_boot_completion_start(&f.completion,&f.session,&f.expected,&f.preflight_profile,&f.workspace));
+        completed(&f,TV4_OUTCOME_CHECKED_CLOSED,TV4_OUTCOME_REASON_NONE);
+        tv4_outcome_tx tx;tv4_outcome_rx rx;tv4_update_outcome packet,ack,delivery;
+        tv4_outcome_limits limits={.ack_timeout_ms=10,.linger_ms=50,.total_timeout_ms=100,.retry_limit=3};
+        assert(tv4_outcome_tx_init(&tx,limits,f.owner.boot,f.now));
+        assert(tv4_outcome_rx_init(&rx,limits,f.now));
+        assert(tv4_outcome_tx_begin(&tx,&f.outcome,f.now)==TV4_OUTCOME_OK);
+        assert(tv4_outcome_rx_begin(&rx,&f.tx,f.expected.metadata_sha256,f.now)==TV4_OUTCOME_OK);
+        assert(tv4_outcome_tx_next(&tx,&packet,f.now)==TV4_OUTCOME_SENT); /* lost */
+        f.now+=10;assert(tv4_outcome_tx_next(&tx,&packet,f.now)==TV4_OUTCOME_SENT);
+        assert(tv4_outcome_rx_receive(&rx,&packet,&ack,&delivery,f.now)==TV4_OUTCOME_DELIVERED); /* ACK lost */
+        f.now+=10;assert(tv4_outcome_tx_next(&tx,&packet,f.now)==TV4_OUTCOME_SENT);
+        assert(tv4_outcome_rx_receive(&rx,&packet,&ack,&delivery,f.now)==TV4_OUTCOME_ACK);
+        assert(tv4_outcome_tx_ack(&tx,&ack,f.now)==TV4_OUTCOME_OK);
+        assert(tv4_update_outcome_equal(&delivery,&f.outcome) && f.releases==1 && !f.locked);
+        finish(&f);
+    }
+    puts("PASS 6 signed negotiation -> DATA -> P-256/SHA -> vectors -> close -> outcome/ACK chains; all four handshake losses, DATA/final ACK/report losses");
+}
+static void negotiated_binding_still_requires_crypto(void)
+{
+    for(unsigned which=0;which<3;which++) {
+        fixture f;vector_fixture(&f,33);negotiate_source(&f,0);
+        if(which==0)f.source[f.source_bytes-1]^=1; /* CRC follows changed RAM; signed SHA must fail */
+        else if(which==1)f.signature[f.config.signature_bytes-1]^=1;
+        else {
+            uint8_t *field=(uint8_t *)strstr((char *)f.metadata,"\"image_counter\":3");assert(field);
+            field[strlen("\"image_counter\":")]='4';sign_metadata(&f); /* valid new metadata, wrong negotiated raw digest */
+        }
+        transfer(&f);begin(&f);
+        assert(tv4_boot_completion_start(&f.completion,&f.session,&f.expected,&f.preflight_profile,&f.workspace));
+        if(which==0)completed(&f,TV4_OUTCOME_REJECTED_CLOSED,TV4_OUTCOME_HASH);
+        else if(which==1)completed(&f,TV4_OUTCOME_REJECTED_CLOSED,TV4_OUTCOME_SIGNATURE);
+        else completed(&f,TV4_OUTCOME_FAILED_CLOSED,TV4_OUTCOME_BINDING);
+        finish(&f);
+    }
+    puts("PASS 3 negotiated binding failures: changed image, invalid signature, valid re-signed metadata with mismatched raw SHA; no retained lease");
+}
 #define RUN(name) do { name(); puts("PASS " #name); } while (0)
 int main(void)
 {
@@ -716,7 +822,8 @@ int main(void)
     RUN(preflight_context_cleanup_and_reentry);
     RUN(completion_end_to_end_history); RUN(completion_rejections);
     RUN(completion_release_and_late_context); RUN(completion_reentry_snapshot_and_arguments);
-    printf("PASS 17 handoff/completion groups; completion=%zu; state=%zu receipt=%zu workspace=%zu; RAM only, no install/device access\n",
+    RUN(negotiated_full_chain);RUN(negotiated_binding_still_requires_crypto);
+    printf("PASS 19 handoff/completion groups; completion=%zu; state=%zu receipt=%zu workspace=%zu; RAM only, no install/device access\n",
         sizeof(tv4_boot_completion),
         sizeof(tv4_boot_handoff), sizeof(tv4_boot_handoff_receipt), sizeof(tv4_boot_workspace));
     return 0;

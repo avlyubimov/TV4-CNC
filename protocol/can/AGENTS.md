@@ -30,7 +30,8 @@ CAN frames или утверждённая production version. Fixed block ceili
 не заменяют независимые signature/SHA/compatibility/quiescent/recovery gates.
 У COMPLETE_UNVERIFIED нет install/commit/jump. Новых runtime callers, writer,
 пинов/IDs/bitrate или physical inhibit в этом этапе нет. Unique boot/transfer
-negotiation остаётся внешним обязательством; не переиспользовать identity.
+negotiation в PR-07a внешнее; PR-07f добавляет logical pool/handshake ниже.
+Boot epoch uniqueness после reset остаётся внешним обязательством; identity не переиспользовать.
 После reset требуется новый сеанс; volatile mock не доказывает durable recovery.
 Host tests используют только RAM/OpenSSL oracle; embedded crypto dependency
 не добавлять под видом CRC или вызова ESP32 verifier из F407 bootloader.
@@ -44,3 +45,14 @@ completed DATA TX до terminal state, exact duplicate без redelivery/deadlin
 extension, mismatch/conflict/clock/retry/reset fail closed. Ни одно сообщение
 не запускает/возобновляет motion. DATA deadlines не менять. После operator wait
 нужны fresh negotiation и независимые полные checks до любого будущего install.
+
+## PR-07f — volatile negotiation model
+
+Читать docs/STM32_UPDATE_NEGOTIATION.md. Только logical typed C REQUEST/OFFER/
+ACCEPT/CONFIRM, fixed boot pair/compatibility tag/generation и monotonic pool
+counters. No wire IDs/codec/version/bitrate, runtime caller или identity provider.
+Single-use take не является auth/install token; copied descriptor не оживляет
+сеанс. Не clear/reinit live state или reset counters ради retries. Boot epochs/
+persistence/collision policy/authentication ещё не реализованы. Полностью matching
+forged reply может пройти; не объявлять защитой от attacker или physical safe state.
+DATA lifetime и independent crypto/model/lease gates сохраняются.

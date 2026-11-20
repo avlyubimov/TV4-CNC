@@ -1,6 +1,6 @@
 # Открытые вопросы и блокирующие решения
 
-Обновлено от main `b56986f`, задание20ноября2026. Единственный свод аппаратных фактов —
+Обновлено от main `f0bd866`,21ноября2026. Единственный свод аппаратных фактов —
 [HARDWARE_STATUS.md](HARDWARE_STATUS.md). Не заполнять неизвестные поля
 типовыми данными семейства, USB VID/PID, старым заказом или host mock.
 
@@ -12,6 +12,11 @@ production Motion metadata, CAN и hardware gates ниже остаются от
 PR-08a [local info UI](FIRMWARE_INFO_UI.md) показывает build/SDK/profile; это
 не закрывает OTA-CONTEXT-01, доверие/installer/resource gates или физический
 version handshake F407. STM32/CAN версии намеренно остаются unknown.
+
+PR-07f [negotiation model](STM32_UPDATE_NEGOTIATION.md) закрывает RAM lifecycle/
+fresh counter gap внутри сохранённого boot pair. Boot epoch provenance/persistence/
+collision policy, authentication/capabilities и raw wire остаются открытыми.
+Полностью matching forged reply может пройти; это не защита от attacker.
 
 | ID | Что нужно подтвердить/решить | Блокирует |
 |---|---|---|
@@ -29,6 +34,7 @@ version handshake F407. STM32/CAN версии намеренно остаютс
 | NET-01 | Базовые подключение/DHCP подтверждены на b93cf3b; owner HMI/Wi-Fi PASS после возврата ordinary8f0d899. Остаются неверный пароль, забывание/профили/reconnect/NVS power-cycle stress | Полная аппаратная проверка Wi-Fi lifecycle; новый local info UI её не заменяет |
 | CAN-01 | Получение трансиверов, схема линка, уровни/termination/длины, USB/CAN mux и допустимый маршрут на Rev 1.2 | Physical CAN; до этого только host transport |
 | CAN-02 | Документированное owner decision по IDs/bitrate/GPIO, production versions/capabilities, timeouts, safe-state/ACK semantics | Реальный driver и протокол; 4-byte v1/500 мс не согласованный wire protocol |
+| CAN-IDENTITY-01 | Reviewed unique boot epoch provider, counter continuity при peer reset, persistence/collision/authentication и compatibility-tag provenance | Runtime negotiation/replay claims; PR-07f volatile pools не доказывают uniqueness после reset или доверие CAN |
 | SD-01 | Наличие/тип карты, FAT32, фактическая шина/CS/card detect и извлечение конкретной Rev 1.2; лимиты/имена/ошибки/политика файлов | PR-06; не назначать пины по аналогии |
 | OTA-ESP-01 | Review candidate 16 МиБ layout, recovery size, оба SDK partition parser, backup/USB migration/recovery trials | PR-04; текущий factory 2 МиБ не менять в PR-01 |
 | OTA-KEY-01 | Owner-provisioned public key/fingerprint, signer custody, алгоритм/encoding/test vectors/key rotation, manifest schema/min versions | Любая доверенная установка; приватных ключей в Git/логах нет |

@@ -1,6 +1,6 @@
 # Следующий этап: release context и STM32 board contract
 
-Задание20ноября2026. База main `b56986f`, PR #1–34 слиты, пять workflow PASS.
+21 ноября2026. База main `f0bd866`, PR #1–35 слиты, пять workflow PASS.
 ESP32 HMI/Wi-Fi/OTA primitives/candidates и STM32 transport/admission существуют;
 не создавать их заново. Данный план не разрешает доступ к устройствам или merge.
 
@@ -65,7 +65,7 @@ local ESP-IDF6.1.1 headless/rev12 PASS; прежние STM32 gates и SDK matrix
 Это проверка HMI contract, не production Motion schema, key/version provisioning
 или разрешение установки. [Evidence](evidence/build/release-policy-review/README.md).
 
-## Текущая ветка PR-08a
+## Слитая часть PR-08a, PR #35
 
 [Local firmware info UI](FIRMWARE_INFO_UI.md): «Параметры» → Wi-Fi / ПО,
 build/SDK/profile из local descriptor, unknown STM32/CAN, отсутствие настроенного
@@ -74,6 +74,16 @@ sanitizers30, две render formats/64 navigation cycles и local SDK6.1.1 headl
 rev12 PASS; [evidence](evidence/build/firmware-info/README.md). Не создаёт
 runtime HTTPS/verifier/session/install caller или новое устройство доверия.
 
+## Текущая ветка PR-07f
+
+[Fresh logical negotiation](STM32_UPDATE_NEGOTIATION.md): boot-pair pool,
+REQUEST/OFFER/ACCEPT/CONFIRM, monotonic counters/high-water, fixed deadline,
+bounded replies и однократный take для DATA.1024 sequential sessions и6 новых
+signed full chains/3 negative bindings, host31/sanitizers31/standalone8,
+ARM/static/source/image/output PASS — [evidence](evidence/build/stm32-update-negotiation/README.md).
+Не создаёт runtime caller, production wire/capabilities/entropy provider,
+authentication или install/physical authority. DATA deadlines прежние.
+
 ## Что делать дальше программно
 
 1. HMI SemVer/channel/component/local unknowns проверены PR-05b. Дальше review
@@ -81,8 +91,9 @@ runtime HTTPS/verifier/session/install caller или новое устройст
    profile↔image binding на загрузчике. Draft counters не переводить в SemVer,
    HMI success не заменяет независимый verifier. Actual local versions/key
    provisioning/signing authority по-прежнему отдельный owner gate.
-2. Review production negotiation/boot identity/replay и raw CAN fragmentation/
-   codec/IDs/bitrate. Logical terminal outcome уже есть; он не authenticated и
+2. PR-07f проверяет volatile logical negotiation, но production boot epoch
+   provider/persistence/collision/authentication, capabilities/version и raw CAN
+   fragmentation/codec/IDs/bitrate требуют review. Logical terminal outcome уже есть; он не authenticated и
    не переносит candidate через ожидание оператора. Для следующей операции
    проверять saved bytes полностью и подтверждать новый session/context.
    Текущий DATA RX deadline не продлевать молча.

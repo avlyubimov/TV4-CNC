@@ -48,3 +48,11 @@ clear/restart. Borrowed context живёт до конца wrapper start/poll (�
 guard). Peer outcome/ACK не аутентифицированы и не install/quiescent/ARM authority.
 Никаких runtime/Flash/wire/real MCU profile actions; будущий install проверяет
 saved bytes и свежие physical/operator/recovery условия заново.
+
+## PR-07f — negotiated transport fixture
+
+Читать docs/STM32_UPDATE_NEGOTIATION.md. Production admission/handoff/completion
+не меняются; host tests начинают свежий DATA из one-time negotiated params,
+затем выполняют настоящие independent P-256/SHA/model/cleanup/outcome проверки.
+Opaque request/tag/counter не подменяет их. Нельзя зашивать fixture epochs или
+принимать HMI handshake success как signature/install/physical permission.
