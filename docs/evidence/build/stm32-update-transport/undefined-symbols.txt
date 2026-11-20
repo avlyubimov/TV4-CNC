@@ -1,0 +1,6 @@
+
+update_session.c.obj:
+         U memcmp
+         U memcpy
+         U memmove
+         U memset

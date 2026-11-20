@@ -1,0 +1,21 @@
+{
+  "recorded_utc": "2026-11-19T18:41:32.390583+00:00",
+  "source_base": "74a7af9fb9a84ffee5587f4956ccb485e725b848",
+  "host_compiler": "gcc (Ubuntu 15.2.0-16ubuntu1) 15.2.0",
+  "arm_compiler": "arm-none-eabi-gcc (15:14.2.rel1-1) 14.2.1 20241119",
+  "arm_linker": "GNU ld (2.45.50.20251209-1ubuntu1+23build1) 2.45.50.20251209",
+  "cmake": "cmake version 4.2.3",
+  "ninja": "1.13.2",
+  "python": "Python 3.14.4",
+  "host_sha_oracle": "OpenSSL 3.5.5 27 Jan 2026 (Library: OpenSSL 3.5.5 27 Jan 2026)",
+  "lvgl": {
+    "version": "9.2.2",
+    "commit": "7f07a129e8d77f4984fff8e623fd5be18ff42e74"
+  },
+  "new_embedded_dependencies": [],
+  "ci_toolchain": "ARM GNU 14.2.Rel1, existing official archive SHA-256 unchanged",
+  "local_toolchain_note": "Ubuntu GCC 14.2.1 package; local Binutils differs from official CI archive",
+  "device_access": false,
+  "deployable_firmware_generated": false,
+  "runtime_callers_added": false
+}

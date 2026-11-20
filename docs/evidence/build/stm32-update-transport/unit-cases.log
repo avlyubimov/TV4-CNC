@@ -1,0 +1,18 @@
+PASS checksum_vectors
+PASS invalid_limits
+PASS begin_and_exclusivity
+PASS two_phase_and_exact_duplicates
+PASS malformed_blocks
+PASS conflicting_duplicate
+PASS crc_collision_does_not_match_duplicate
+PASS consumer_failure_is_sticky
+PASS sender_retry_budget
+PASS receiver_retry_budget
+PASS ack_validation
+PASS deadline_boundaries
+PASS total_deadline
+PASS clocks_and_wraparound
+PASS abort_and_reboot
+PASS null_and_output_contracts
+PASS retry_counter_boundary
+PASS 17 unit groups; rx=384 tx=384 bytes; no device access

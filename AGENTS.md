@@ -109,15 +109,19 @@ PR и Actions; не копировать код уже открытого PR. Д
 
 ## Текущее задание
 
-PR #1–27 слиты, mainb19a40b CI зелёный, открытых PR перед работой нет.
-Текущее задание: owner F407 SWD facts и PR-02b startup foundation; см.
-docs/STM32_STARTUP.md, NEXT_STAGE.md и docs/plans/PR02B_STM32_STARTUP.md.
+PR #1–28 слиты, main `74a7af9` CI зелёный, открытых PR перед работой нет.
+PR-02b owner facts/startup слит. Продолжение: PR-07a logical update transport;
+читать docs/STM32_UPDATE_TRANSPORT.md, NEXT_STAGE.md и scoped protocol/can rules.
+Sender/receiver проверяются только на ПК; нет runtime caller, wire format,
+CAN driver, Flash backend, crypto/physical quiescent gate, COMMIT или jump.
+COMPLETE_UNVERIFIED/opaque hash/CRC/consumer ACK не означают trusted firmware,
+остановленный станок или разрешение установки. Boot/transfer uniqueness
+требует будущей negotiation; reinit не разрешает replay прежнего session.
 Не повторять device access и не читать/публиковать raw dump. Owner1MiB не
-задаёт RAM/sector/bootloader layout. Generic reset/support/no-I/O и linker
-sections проверяются только opt-in synthetic probe; его ROM/RAM/stack/core
-vectors не являются F407 profile. BOARD_IMAGE=ON всегда fail; no .bin/ELF upload.
-No-I/O inhibit=false/watchdog unavailable, нельзя объявлять physical safe state.
-Host/sanitizers20suites, ARM/static/positive-negative link/board gates и CI;
+задаёт RAM/sector/bootloader layout. Startup synthetic fixture не является
+F407 profile. BOARD_IMAGE=ON всегда fail; no .bin/ELF upload. No-I/O adapter
+inhibit=false/watchdog unavailable; нельзя объявлять physical safe state.
+Host/sanitizers22suites, ARM/static/positive-negative link/board gates и CI;
 существующая ESP SDK matrix сохраняется. HMI/config/board/locks/security прежние.
 PR-05 candidates остаются metadata-only, CI exact workspace trust без wildcard.
 Runtime ESP resource budget/load/fault/soak/installer gates ещё открыты.

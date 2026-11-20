@@ -53,6 +53,11 @@ RAM/CCM, package pins, HSE или возможность двух OTA slots. Raw
 Synthetic link fixture не использует эту1MiB как production layout и не резервирует
 bootloader/app addresses. Hardware startup/clock/GPIO/CAN остаются открытыми.
 
+[PR-07a logical transport](STM32_UPDATE_TRANSPORT.md) проверяется только
+на ПК/RAM и не добавляет аппаратных результатов. Нет CAN/Flash operations,
+crypto/install/commit или physical safe-state proof. Owner facts выше сохранены;
+новое чтение MCU или бэкапа агентом не выполнялось.
+
 ## Границы доказательств
 
 - Компиляция обоих SDK/профилей и host render — программные результаты.

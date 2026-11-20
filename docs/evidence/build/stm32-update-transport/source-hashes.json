@@ -1,0 +1,14 @@
+{
+  "source_base": "74a7af9fb9a84ffee5587f4956ccb485e725b848",
+  "sha256": {
+    "CMakeLists.txt": "661a7faa7c7c275f13faf07f59072d8ed330eafefad4990834780e1c914f105e",
+    ".github/workflows/motion.yml": "33391dadadf2353c5c169ea7ab7cfe39fd5cbb2cddf1684672afdd0fc5d18685",
+    "protocol/can/CMakeLists.txt": "b54d84b5aca5d3075c3b2579ec9c486daf6c9fc3dc418ed538f65bc3830cd3e3",
+    "protocol/can/update_session.h": "7c7d92172177a2f0251abac55ba31adc01e5de064e22f674c5b23cf1ef0ec092",
+    "protocol/can/update_session.c": "60f0bde522f807375243287d0fae7f6260c86072a7cf79d1af658ad2a002aa18",
+    "protocol/can/tests/session_tests.c": "b6b4e9f6ed4df40048a0a61cea9c550e45e72fea7381db616429866a70023d83",
+    "protocol/can/tests/loopback_tests.c": "ac9fc2b9f2a4e3f9e74092b3a0d533ab5215196584b169179fed245191e50b91",
+    "firmware/stm32-motion/cmake/arm-none-eabi.cmake": "c4e3d2e4c9149b70d1295aeb925dea46f2a945711aafc9aa9d585ff8cd3c3408",
+    "tools/check_motion_size.py": "dc6a279df4ea8d8e04878394e776b87ed3e0f48e3e1d5005d1328f9d13189e94"
+  }
+}

@@ -1,6 +1,6 @@
 # Открытые вопросы и блокирующие решения
 
-Обновлено после mainb19a40b, 19 ноября2026. Единственный свод аппаратных фактов —
+Обновлено после main `74a7af9`, 19 ноября 2026. Единственный свод аппаратных фактов —
 [HARDWARE_STATUS.md](HARDWARE_STATUS.md). Не заполнять неизвестные поля
 типовыми данными семейства, USB VID/PID, старым заказом или host mock.
 
@@ -59,6 +59,12 @@
 [NEXT_STAGE.md](NEXT_STAGE.md), [STM32_STARTUP.md](STM32_STARTUP.md).
 Закрыт blocker SWD access/Flash capacity **по сообщению владельца**, а не все
 условия deployment. Physical inhibit, production CAN/bootloader и motion запрещены.
+
+[PR-07a transport](STM32_UPDATE_TRANSPORT.md) проверяет только bounded logical
+sender/receiver в памяти. CAN-01/02, OTA-F407-01, OTA-STATE-01, keys/context и
+recovery не закрыты. Unique boot/transfer, raw CAN framing/reassembly, независимая
+подпись/SHA/compatibility и fresh quiescent proof требуют последующего review.
+COMPLETE_UNVERIFIED/CRC/consumer ACK не являются доказательством этих условий.
 
 ## После baseline b93cf3b
 

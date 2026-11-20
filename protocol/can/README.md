@@ -1,4 +1,4 @@
-# CAN: только интерфейс стендовой заглушки
+# CAN: стендовый heartbeat и подготовка update transport
 
 CAN ID, скорость и аппаратный драйвер не назначены. Передача всегда возвращает false.
 `model_receive` принимает только тестовый heartbeat: ровно 4 байта
@@ -21,6 +21,25 @@ CAN bootloader требует session/sequence/offset/length/integrity, bounded
 fragmentation/ACK/retry, подтверждённого safe state, полного SHA и подписи
 в самом F407 bootloader. Пока только план/host моделирование, без Flash driver
 и без физической передачи. CAN не является safety chain.
+
+## PR-07a: логический update-сеанс на ПК
+
+[update_session.h](update_session.h) и [контракт](../../docs/STM32_UPDATE_TRANSPORT.md):
+portable sender/receiver, stop-and-wait, explicit limits, CRC-32C, двухфазный
+consumer/ACK, bounded retries, stale-session/reorder/deadline failure tests.
+Нет wire format, CAN driver/IDs/bitrate, Flash, подписи, COMMIT или jump.
+Конечный статус — COMPLETE_UNVERIFIED, не доверенная/установленная прошивка.
+Модуль независим от motion, вызывается только memory host tests.
+
+```bash
+cmake -S protocol/can -B build-update-host -G Ninja
+cmake --build build-update-host
+ctest --test-dir build-update-host --output-on-failure
+```
+
+Новых embedded зависимостей нет; стандартный OpenSSL3 нужен только host SHA
+oracle. Отдельная ARM compile-only библиотека использует уже закреплённый
+toolchain из STM32 foundation и не создаёт board image.
 
 [AGENTS.md](AGENTS.md), [OTA architecture](../../docs/OTA_ARCHITECTURE.md),
 [открытые решения](../../docs/OPEN_QUESTIONS.md), [roadmap](../../docs/ROADMAP.md).

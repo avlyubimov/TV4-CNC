@@ -34,6 +34,7 @@ if(DEFINED LVGL_DIR)
 endif()
 # Independent motion supervisor is exercised by the existing host/sanitizer matrix.
 add_subdirectory(firmware/stm32-motion)
+add_subdirectory(protocol/can)
 
 add_executable(diagnostics_tests tests/diagnostics_tests.c)
 target_link_libraries(diagnostics_tests PRIVATE tv4_core)

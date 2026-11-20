@@ -1,10 +1,15 @@
 # Реализация: main, открытые PR и аппаратные границы
 
-Актуализация после mainb19a40b / PR #27: owner SWD F407/core/Flash1024KiB/
+Актуализация после main `74a7af9` / PR #28: owner SWD F407/core/Flash1024KiB/
 backup подтверждены в [HARDWARE_STATUS](HARDWARE_STATUS.md). PR-02b добавляет
 [startup/sections/no-I/O building blocks](STM32_STARTUP.md), synthetic ARM link
 checks и сохраняет board image gate; физического запуска/Flash writer нет.
 Следующий этап — [NEXT_STAGE](NEXT_STAGE.md). Ниже сохранены исторические снимки.
+
+В текущей ветке PR-07a добавляет [sender/receiver update session](STM32_UPDATE_TRANSPORT.md)
+с ограниченными buffers/retries/deadlines и host fault tests. Это logical
+transport, а не CAN driver/bootloader. COMPLETE_UNVERIFIED не включает подпись,
+Flash commit, jump или motion. STM32/ESP32 runtime caller не добавлен.
 
 Снимок PR-01 от 18 ноября 2026. База: main
 `0c4168e864d4c867ba0f49a86eba72c0d59205a1`. Это не утверждение, что все
