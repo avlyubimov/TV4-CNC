@@ -109,13 +109,17 @@ PR и Actions; не копировать код уже открытого PR. Д
 
 ## Текущее задание
 
-PR #1–33 слиты, база main `455ccc6`; пять workflow PASS, открытых PR перед
-работой нет. Startup/DATA/crypto/handoff/preflight/completion/outcome существуют.
-PR-05b: читать RELEASE_POLICY_REVIEW.md и NEXT_STAGE.md. Только review существующего
-HMI release contract, исправления Unicode/Base64, signed C/Python conformance и CI.
-Не добавлять production Motion schema, actual SemVer/keys/provisioning или runtime
-OTA caller. Draft counters не переводить в SemVer; HMI success не заменяет
-независимый bootloader verifier. Owner повторил VGT6, full marking/HSE неизвестны.
+PR #1–34 слиты, база main `b56986f`; пять workflow PASS, открытых PR перед
+работой нет. Startup/DATA/crypto/handoff/preflight/completion/outcome и PR-05b
+release policy review существуют. PR-08a: читать FIRMWARE_INFO_UI.md/NEXT_STAGE.md.
+Только settings menu + read-only local build/SDK/profile UI. Snapshot72bytes,
+origin UNKNOWN/DEVICE/SIMULATOR; unknown peer/protocol не заменять test versions.
+SDK app descriptor — display metadata, не trusted installed OTA context.
+Новые панели lazy-create/delete; callbacks только navigation requests. Нет новых
+runtime HTTPS/verifier/session/install callers, production Motion schema,
+actual SemVer/keys/provisioning. Draft counters не переводить в SemVer; HMI
+success не заменяет независимый bootloader verifier. Owner повторил VGT6,
+full marking/HSE неизвестны.
 Worker completion -> clean lease close -> historical outcome/ACK уже реализованы;
 pending release не positive; quarantine держит handle.
 Peer report не authenticated/local verified/install/quiescent/ARM authority.
@@ -131,8 +135,10 @@ quarantine, clear/reopen его не скрывают. RX deadline не прод
 задаёт RAM/sector/bootloader layout. Startup synthetic fixture не является
 F407 profile. BOARD_IMAGE=ON всегда fail; no .bin/ELF upload. No-I/O adapter
 inhibit=false/watchdog unavailable; нельзя объявлять physical safe state.
-Host/sanitizers29 suites, standalone7 прежний, ARM/static/board/output gates; прежняя
+Host/sanitizers30 suites, standalone7 прежний, ARM/static/board/output gates; прежняя
 ESP SDK matrix8 сохраняется. HMI UI/config/board/dependency locks/security прежние.
+Исключение UI — новый локальный экран PR-08a и меню; active dashboard/Wi-Fi/STOP
+сохранены. Новых update/download/install buttons/history или ложной readiness нет.
 Native JSON encoding gate усилен без изменения pinned cJSON или UI callbacks.
 Host-only test signing driver не включать в ESP32/STM32 firmware или artifacts.
 PR-05 candidates остаются metadata-only, CI exact workspace trust без wildcard.

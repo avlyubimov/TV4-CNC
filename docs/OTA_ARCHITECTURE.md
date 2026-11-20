@@ -195,6 +195,10 @@ boot/transfer/policy/source при выдаче receipt. RX/local deadline ос�
 конечными; release failure сохраняет ресурс до bounded retry/quarantine. Нет
 производственного storage/Flash writer, install permission или новых адресов.
 
+PR-08a [local firmware info UI](FIRMWARE_INFO_UI.md) показывает только текущие
+build/SDK/profile и unknown STM32/CAN. Runtime discovery/install ещё не настроены;
+SDK descriptor не подменяет trusted version/key context. Целевой полный UI ниже:
+
 Параметры → Обновления: installed HMI/Motion/protocol, доступный релиз/канал,
 changelog, hardware compatibility, размер, стадии download/install/verification,
 результат/ошибки и история. Неизвестная версия отображается как «нет данных»,

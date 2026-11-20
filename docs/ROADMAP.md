@@ -1,6 +1,6 @@
 # План последовательной разработки TV4-CNC
 
-Обновлено от main `455ccc6`, 20 ноября 2026; PR #1–33 слиты, пять main workflow PASS.
+Обновлено от main `b56986f`, задание20ноября2026; PR #1–34 слиты, пять main workflow PASS.
 История и текущее ПО — [IMPLEMENTATION.md](IMPLEMENTATION.md); следующий
 STM32 этап — [NEXT_STAGE.md](NEXT_STAGE.md). Рабочий HMI не переписывать заново.
 Все новые этапы — отдельные ветки/небольшие PR, merge только с разрешения
@@ -16,7 +16,7 @@ STM32 этап — [NEXT_STAGE.md](NEXT_STAGE.md). Рабочий HMI не пе�
 | PR-05 GitHub Release Pipeline | Build matrix, versioned artifacts, signed manifest, checksums, release notes, prerelease/stable | Публикация только после CI и явного owner approval на SHA/tag/канал/артефакты; secrets/protected environment design; никакой фиктивной STM32 bin | PR-05a: metadata-only bundles/exact source/pinned Actions. PR-05b: encoding fixes/shared signed C/Python policy corpus; actual versions/keys/signing/publication ещё открыты |
 | PR-06 microSD Support | FAT32, detect/mount/read/write/free-space/eject/error handling; G-code files, logs/settings export, OTA cache | Подтверждённая разводка Rev 1.2 и схема USB/CAN/SD; отсутствие/извлечение/повреждение не блокирует HMI; file I/O только worker | Не реализован |
 | PR-07 STM32 CAN Bootloader | Независимый bootloader, sequence/chunks/ACK/retry, SHA/signature, hardware/protocol checks, recovery | Flash geometry и A/B либо staging/recovery решение; сначала host transport. SWD initial install и CAN hardware только по отдельному разрешению | PR #29–33 DATA/crypto/handoff/preflight/completion/lease close и historical outcome/ACK слиты. Production metadata/Flash/recovery/physical CAN/install ещё не реализованы |
-| PR-08 Unified Firmware Update UI | Параметры → Обновления: версии HMI/Motion/protocol, compatibility, changelog, размер, progress/result/history, check/download/install/cancel | Worker APIs PR-04/05/07; auto-check можно, auto-install нельзя. STM32 install только после подтверждённого quiescent state | Не реализован |
+| PR-08 Unified Firmware Update UI | Параметры → Обновления: версии HMI/Motion/protocol, compatibility, changelog, размер, progress/result/history, check/download/install/cancel | Worker APIs PR-04/05/07; auto-check можно, auto-install нельзя. STM32 install только после подтверждённого quiescent state | PR-08a: local build/SDK/profile info/settings menu; unknown STM32/CAN. Runtime check/download/install/history ещё не реализованы |
 
 PR-04 не обязан ждать физического motion: ESP32 обновляется на изолированном
 стенде. Но неподтверждённая механика никогда не компенсируется OTA/CI. PR-07
@@ -26,6 +26,15 @@ UI-каркас обновлений допустим в своём PR, но н�
 версии motion, проверенные подписи или завершённую установку.
 
 ## Сохранённые инженерные milestones
+
+### PR-08a — локальные сведения о ПО от mainb56986f
+
+[Экран](FIRMWARE_INFO_UI.md): parameters menu + build/SDK/profile, explicit
+simulator/unknown provenance, no runtime OTA caller. Lazy-create/delete panels,
+64 host navigation cycles с одинаковым pool free и object count, persistent
+STOP/fault/keyboard cleanup. Host30/sanitizers30 и local SDK6.1.1 headless/rev12
+PASS; CI matrix8/STM32 gates сохранены. Не закрывает production context,
+resource/soak/installer или physical F407/CAN gates.
 
 ### PR-05b — release metadata policy review от main455ccc6
 

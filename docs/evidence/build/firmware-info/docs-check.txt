@@ -1,0 +1,3 @@
+Local links in changed/new Markdown: 205 PASS
+Source/config/dependency hashes: 39
+Two RGB565 PNG previews,800x480, simulator fixtures; no private data/device access.

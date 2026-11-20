@@ -1,6 +1,6 @@
 # Открытые вопросы и блокирующие решения
 
-Обновлено от main `455ccc6`, 20 ноября2026. Единственный свод аппаратных фактов —
+Обновлено от main `b56986f`, задание20ноября2026. Единственный свод аппаратных фактов —
 [HARDWARE_STATUS.md](HARDWARE_STATUS.md). Не заполнять неизвестные поля
 типовыми данными семейства, USB VID/PID, старым заказом или host mock.
 
@@ -8,6 +8,10 @@
 PR-05b [release policy review](RELEASE_POLICY_REVIEW.md) проверяет существующий
 HMI contract и закрывает два encoding расхождения; actual local SemVer/key context,
 production Motion metadata, CAN и hardware gates ниже остаются открытыми.
+
+PR-08a [local info UI](FIRMWARE_INFO_UI.md) показывает build/SDK/profile; это
+не закрывает OTA-CONTEXT-01, доверие/installer/resource gates или физический
+version handshake F407. STM32/CAN версии намеренно остаются unknown.
 
 | ID | Что нужно подтвердить/решить | Блокирует |
 |---|---|---|
@@ -22,7 +26,7 @@ production Motion metadata, CAN и hardware gates ниже остаются от
 | HW-MACHINE-01 | Ходы X/Z, ШВП/передачи, направления/люфт/пределы, X radius/diameter, homing sequence/концевики | Реальные координаты/planner/soft limits; ±1000 мм сейчас только simulation |
 | HW-SPINDLE-01 | Привод/торможение шпинделя, прямой энкодер/разрешение/направление/крепление | Feedback, threading/C-axis/индексация/фрезерная приставка |
 | HW-HMI-01 | Полные PSRAM runtime/stress, GT911 углы/ориентация/ошибки, tearing и стабильность RGB/сети | Подтверждение работоспособности всего HMI, не блокирует host/docs работу |
-| NET-01 | Успешное подключение после исправления 263, DHCP, забывание/профили/автоподключение после reboot | Закрытие аппаратной проверки Wi-Fi; исправление PR #5 уже в main, аппаратная проверка ещё нужна |
+| NET-01 | Базовые подключение/DHCP подтверждены на b93cf3b; owner HMI/Wi-Fi PASS после возврата ordinary8f0d899. Остаются неверный пароль, забывание/профили/reconnect/NVS power-cycle stress | Полная аппаратная проверка Wi-Fi lifecycle; новый local info UI её не заменяет |
 | CAN-01 | Получение трансиверов, схема линка, уровни/termination/длины, USB/CAN mux и допустимый маршрут на Rev 1.2 | Physical CAN; до этого только host transport |
 | CAN-02 | Документированное owner decision по IDs/bitrate/GPIO, production versions/capabilities, timeouts, safe-state/ACK semantics | Реальный driver и протокол; 4-byte v1/500 мс не согласованный wire protocol |
 | SD-01 | Наличие/тип карты, FAT32, фактическая шина/CS/card detect и извлечение конкретной Rev 1.2; лимиты/имена/ошибки/политика файлов | PR-06; не назначать пины по аналогии |

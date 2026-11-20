@@ -1,6 +1,6 @@
 # Следующий этап: release context и STM32 board contract
 
-20 ноября 2026. База main `455ccc6`, PR #1–33 слиты, пять workflow PASS.
+Задание20ноября2026. База main `b56986f`, PR #1–34 слиты, пять workflow PASS.
 ESP32 HMI/Wi-Fi/OTA primitives/candidates и STM32 transport/admission существуют;
 не создавать их заново. Данный план не разрешает доступ к устройствам или merge.
 
@@ -56,7 +56,7 @@ held image после signature/SHA. Unknown profile отклоняется; PRO
 Host27/sanitizers27/standalone7 и ARM/static/source/image/output —
 [evidence](evidence/build/stm32-update-outcome/README.md). Actual board/Flash gates прежние.
 
-## Текущая ветка PR-05b
+## Слитая часть PR-05b, PR #34
 
 [Release policy review](RELEASE_POLICY_REVIEW.md): исправлены malformed Unicode
 escapes в native gate и noncanonical Base64 offline; общий signed corpus115,
@@ -64,6 +64,15 @@ SemVer2809 comparisons/Unicode65536. Host29/sanitizers29, actual analyzer3units,
 local ESP-IDF6.1.1 headless/rev12 PASS; прежние STM32 gates и SDK matrix8 сохранены.
 Это проверка HMI contract, не production Motion schema, key/version provisioning
 или разрешение установки. [Evidence](evidence/build/release-policy-review/README.md).
+
+## Текущая ветка PR-08a
+
+[Local firmware info UI](FIRMWARE_INFO_UI.md): «Параметры» → Wi-Fi / ПО,
+build/SDK/profile из local descriptor, unknown STM32/CAN, отсутствие настроенного
+updater. Panels создаются по требованию и освобождаются при выходе. Host30/
+sanitizers30, две render formats/64 navigation cycles и local SDK6.1.1 headless/
+rev12 PASS; [evidence](evidence/build/firmware-info/README.md). Не создаёт
+runtime HTTPS/verifier/session/install caller или новое устройство доверия.
 
 ## Что делать дальше программно
 
@@ -81,6 +90,10 @@ local ESP-IDF6.1.1 headless/rev12 PASS; прежние STM32 gates и SDK matrix
    отсутствие движения/шпинделя/программы, operator exact-image approval,
    reviewed recovery/vector/erase gate. Не вводить permissive boolean stub,
    который открывает Flash writer или изображает physical inhibit.
+4. Для активной проверки обновлений из нового UI нужны approved local key/
+   version/layout/time context, runtime resource/load/fault/soak budget и
+   отдельный bounded worker/snapshot contract. Не превращать local build
+   descriptor в SemVer/release trust и не показывать фиктивную историю/progress.
 
 ## Что блокирует настоящий board image
 
