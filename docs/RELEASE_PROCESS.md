@@ -7,6 +7,10 @@ compile-only; полноценного F407 image нет. Подпись, binary
 не является разрешением владельца на его выпуск. Лицензия приложения ещё не
 выбрана (LICENSE-NOTICE.md); public CI review artifact не содержит binary.
 
+PR-05b: [review существующего release contract](RELEASE_POLICY_REVIEW.md),
+общие signed C/Python scenarios и исправления Unicode/Base64 decoding. Это
+не назначает actual versions/keys, production Motion schema или release approval.
+
 ## Версии и публикация
 
 - Версионировать отдельно HMI, Motion, CAN protocol и manifest schema/layout.

@@ -1,0 +1,1 @@
+JSON escape oracle PASS: BMP=65536, accepted=63487, invalid hex=420; surrogate/escape/duplicate/truncation cases PASS

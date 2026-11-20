@@ -1,11 +1,14 @@
 # Реализация: main, открытые PR и аппаратные границы
 
-Актуализация от main `e0bd84e`, 20 ноября2026: PR #1–32 слиты. Owner SWD
+Актуализация от main `455ccc6`, 20 ноября2026: PR #1–33 слиты. Owner SWD
 F407/core/Flash1024KiB/backup — [HARDWARE_STATUS](HARDWARE_STATUS.md).
-Startup/DATA/admission/handoff/preflight уже в main. Текущая ветка PR-07e
+Startup/DATA/admission/handoff/preflight и PR-07e уже в main:
 [completion/outcome](STM32_UPDATE_OUTCOME.md) связывает full checks с lease close
 и bounded report/ACK; historical report не является install/physical authority.
-Host/LVGL27, sanitizers27, standalone7 и ARM gates — [evidence](evidence/build/stm32-update-outcome/README.md).
+Исторические Host/LVGL27, sanitizers27, standalone7 и ARM gates — [evidence](evidence/build/stm32-update-outcome/README.md).
+Текущая ветка PR-05b [release policy review](RELEASE_POLICY_REVIEW.md) исправляет
+Unicode/Base64 и проверяет общий signed C/Python corpus: host29/sanitizers29,
+native analyzer3units и local SDK6.1.1 headless/rev12 PASS. CI matrix8 сохранена.
 Нет runtime caller, Flash writer/map/commit/jump или физического safe-state proof.
 Следующий этап — [NEXT_STAGE](NEXT_STAGE.md). Ниже исторические снимки отдельных PR;
 их старые counts/«не реализовано» не заменяют текущий статус этого абзаца.

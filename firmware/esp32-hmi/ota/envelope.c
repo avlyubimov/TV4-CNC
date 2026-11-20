@@ -44,7 +44,9 @@ tv4_ota_result tv4_ota_signed_manifest_read(const uint8_t *raw,size_t raw_length
         else if(!strcmp(p->string,"signature"))signature=p;
     }
     uint8_t der[72];size_t der_length=0;
-    if(fields==3 && cJSON_IsString(id) && cJSON_IsString(algorithm) && cJSON_IsString(signature)) {
+    if(fields==3 && id && algorithm && signature &&
+       cJSON_IsString(id) && cJSON_IsString(algorithm) && cJSON_IsString(signature) &&
+       id->valuestring && algorithm->valuestring && signature->valuestring) {
         if(strcmp(id->valuestring,ctx->key_id))result=TV4_OTA_NO_TRUST;
         else if(!strcmp(algorithm->valuestring,"ECDSA-P256-SHA256") && decode(signature->valuestring,der,&der_length))result=TV4_OTA_OK;
     }

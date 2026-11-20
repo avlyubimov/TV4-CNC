@@ -63,6 +63,20 @@ target_link_libraries(ota_manifest_tests PRIVATE tv4_ota_verification)
 target_compile_options(ota_manifest_tests PRIVATE -Wall -Wextra -Werror -UNDEBUG)
 add_test(NAME ota_manifest COMMAND ota_manifest_tests)
 
+add_executable(ota_json_tests tests/ota_json_tests.c)
+target_link_libraries(ota_json_tests PRIVATE tv4_ota_verification)
+target_compile_options(ota_json_tests PRIVATE -Wall -Wextra -Werror -UNDEBUG)
+add_test(NAME ota_json COMMAND ota_json_tests)
+set_tests_properties(ota_json PROPERTIES TIMEOUT 15)
+
+add_executable(ota_policy_driver tests/ota_policy_driver.c)
+target_link_libraries(ota_policy_driver PRIVATE tv4_ota_verification)
+target_compile_options(ota_policy_driver PRIVATE -Wall -Wextra -Werror -UNDEBUG)
+add_test(NAME ota_policy_conformance COMMAND ${Python3_EXECUTABLE}
+  ${CMAKE_CURRENT_SOURCE_DIR}/tests/ota_policy_conformance_tests.py
+  --driver $<TARGET_FILE:ota_policy_driver>)
+set_tests_properties(ota_policy_conformance PROPERTIES TIMEOUT 60)
+
 add_executable(ota_stream_tests tests/ota_stream_tests.c)
 target_link_libraries(ota_stream_tests PRIVATE tv4_ota_verification)
 target_compile_options(ota_stream_tests PRIVATE -Wall -Wextra -Werror -UNDEBUG)

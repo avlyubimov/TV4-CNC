@@ -1,6 +1,6 @@
-# Следующий этап: завершение проверки и STM32 board contract
+# Следующий этап: release context и STM32 board contract
 
-20 ноября 2026. База main `e0bd84e`, PR #1–32 слиты, пять workflow PASS.
+20 ноября 2026. База main `455ccc6`, PR #1–33 слиты, пять workflow PASS.
 ESP32 HMI/Wi-Fi/OTA primitives/candidates и STM32 transport/admission существуют;
 не создавать их заново. Данный план не разрешает доступ к устройствам или merge.
 
@@ -47,7 +47,7 @@ held image после signature/SHA. Unknown profile отклоняется; PRO
 Исторические Host26/sanitizers26/standalone6 и ARM/static/source/image/output gates —
 [evidence](evidence/build/stm32-image-preflight/README.md). Hardware gates ниже прежние.
 
-## Текущая ветка PR-07e
+## Слитая часть PR-07e, PR #33
 
 [Completion/outcome](STM32_UPDATE_OUTCOME.md) выполняет существующие проверки,
 закрывает lease и возвращает historical result через bounded report/ACK.
@@ -56,11 +56,22 @@ held image после signature/SHA. Unknown profile отклоняется; PRO
 Host27/sanitizers27/standalone7 и ARM/static/source/image/output —
 [evidence](evidence/build/stm32-update-outcome/README.md). Actual board/Flash gates прежние.
 
+## Текущая ветка PR-05b
+
+[Release policy review](RELEASE_POLICY_REVIEW.md): исправлены malformed Unicode
+escapes в native gate и noncanonical Base64 offline; общий signed corpus115,
+SemVer2809 comparisons/Unicode65536. Host29/sanitizers29, actual analyzer3units,
+local ESP-IDF6.1.1 headless/rev12 PASS; прежние STM32 gates и SDK matrix8 сохранены.
+Это проверка HMI contract, не production Motion schema, key/version provisioning
+или разрешение установки. [Evidence](evidence/build/release-policy-review/README.md).
+
 ## Что делать дальше программно
 
-1. Review production release metadata/SemVer/channel/component binding и
-   локального version/key context. Draft/counters/test IDs не переносить в
-   реальный release manifest; provisioning/signing authority — отдельный owner gate.
+1. HMI SemVer/channel/component/local unknowns проверены PR-05b. Дальше review
+   production Motion schema и независимого signed release↔component↔target/
+   profile↔image binding на загрузчике. Draft counters не переводить в SemVer,
+   HMI success не заменяет независимый verifier. Actual local versions/key
+   provisioning/signing authority по-прежнему отдельный owner gate.
 2. Review production negotiation/boot identity/replay и raw CAN fragmentation/
    codec/IDs/bitrate. Logical terminal outcome уже есть; он не authenticated и
    не переносит candidate через ожидание оператора. Для следующей операции
@@ -76,6 +87,7 @@ Host27/sanitizers27/standalone7 и ARM/static/source/image/output —
 1. Проверить физическую маркировку/package/board revision, RAM/CCM bounds и
    полный device IRQ/vector contract по согласованным reference sources.
    Device ID/suffix и1MiB capacity не заменяют эту проверку.
+   Новый ответ владельца20ноября повторяет только VGT6; HSE/полной маркировки нет.
 2. Утвердить clock/reset policy. Возможен отдельный минимальный HSI-only путь;
    неизвестный HSE блокирует HSE/PLL, фактические частоты/пригодность CAN ещё
    нужно измерить. Текущий код clock не устанавливает.

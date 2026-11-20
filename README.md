@@ -65,11 +65,15 @@ production TLS/OTA gate требует review; остальные
 
 ## Обязательные следующие подсистемы
 
-PR #29–32 DATA/admission/handoff/model preflight слиты в main `e0bd84e`.
-Текущая ветка [PR-07e completion/outcome](docs/STM32_UPDATE_OUTCOME.md) связывает
+PR #29–33 DATA/admission/handoff/model preflight/completion слиты в main `455ccc6`.
+[PR-07e completion/outcome](docs/STM32_UPDATE_OUTCOME.md) связывает
 проверку signed image с clean lease close и bounded доставкой исторического
 результата/ACK отправителю. Pending cleanup не даёт success, quarantine не
 забывает resource. Peer report не аутентифицирован и не разрешает install/motion.
+
+Текущая ветка [PR-05b release policy review](docs/RELEASE_POLICY_REVIEW.md): strict
+Unicode/Base64, общий signed C/Python corpus, версии/каналы/component/local-context
+проверки. Это не production Motion manifest, назначение версий/ключей или installer.
 
 [OTA ESP32 A/B и F407 по CAN](docs/OTA_ARCHITECTURE.md),
 [GitHub Releases/подписи/owner approval](docs/RELEASE_PROCESS.md),

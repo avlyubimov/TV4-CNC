@@ -99,6 +99,8 @@ int main(void) {
     replace("\"schema_version\":1","\"schema_version\":1,\"schema_version\":1",TV4_OTA_BAD_JSON);
     replace("\"schema_version\":1","\"schema_version\":1,\"schema_versi\\u006fn\":1",TV4_OTA_BAD_JSON);
     replace("\"chip\":\"esp32s3\"","\"chip\":\"esp32s3\\u0000evil\"",TV4_OTA_BAD_JSON);
+    replace("\"chip\":\"esp32s3\"","\"chip\":\"esp32s3\\u00g0evil\"",TV4_OTA_BAD_JSON);
+    replace("Проверка\\nJSON","before\\uX123after",TV4_OTA_BAD_JSON);
     replace("\"chip\":\"esp32s3\"","\"chip\":\"esp32\"",TV4_OTA_WRONG_TARGET);
     replace("\"profile\":\"rev12\"","\"profile\":\"headless\"",TV4_OTA_WRONG_TARGET);
     replace("\"size_bytes\":512","\"unknown\":1,\"size_bytes\":512",TV4_OTA_BAD_SCHEMA);

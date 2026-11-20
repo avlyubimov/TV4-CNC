@@ -109,11 +109,15 @@ PR и Actions; не копировать код уже открытого PR. Д
 
 ## Текущее задание
 
-PR #1–32 слиты, база main `e0bd84e`; пять workflow PASS, открытых PR перед
-работой нет. Startup/DATA transport/crypto/handoff/model preflight уже существуют.
-Продолжение PR-07e: читать STM32_UPDATE_OUTCOME.md, NEXT_STAGE.md и scoped rules.
-Только worker completion -> clean lease close -> historical outcome/ACK с bounded
-retries/deadlines/linger. Pending release не positive; quarantine держит handle.
+PR #1–33 слиты, база main `455ccc6`; пять workflow PASS, открытых PR перед
+работой нет. Startup/DATA/crypto/handoff/preflight/completion/outcome существуют.
+PR-05b: читать RELEASE_POLICY_REVIEW.md и NEXT_STAGE.md. Только review существующего
+HMI release contract, исправления Unicode/Base64, signed C/Python conformance и CI.
+Не добавлять production Motion schema, actual SemVer/keys/provisioning или runtime
+OTA caller. Draft counters не переводить в SemVer; HMI success не заменяет
+независимый bootloader verifier. Owner повторил VGT6, full marking/HSE неизвестны.
+Worker completion -> clean lease close -> historical outcome/ACK уже реализованы;
+pending release не positive; quarantine держит handle.
 Peer report не authenticated/local verified/install/quiescent/ARM authority.
 Перед будущим действием нужна fresh negotiation/full saved-byte verification.
 Не вводить actual F407 map, default addresses/IRQ/alignment; policy generation
@@ -127,8 +131,10 @@ quarantine, clear/reopen его не скрывают. RX deadline не прод
 задаёт RAM/sector/bootloader layout. Startup synthetic fixture не является
 F407 profile. BOARD_IMAGE=ON всегда fail; no .bin/ELF upload. No-I/O adapter
 inhibit=false/watchdog unavailable; нельзя объявлять physical safe state.
-Host/sanitizers27 suites, standalone7, ARM/static/board/output gates; прежняя
-ESP SDK matrix8 сохраняется. HMI/config/board/dependency locks/security прежние.
+Host/sanitizers29 suites, standalone7 прежний, ARM/static/board/output gates; прежняя
+ESP SDK matrix8 сохраняется. HMI UI/config/board/dependency locks/security прежние.
+Native JSON encoding gate усилен без изменения pinned cJSON или UI callbacks.
+Host-only test signing driver не включать в ESP32/STM32 firmware или artifacts.
 PR-05 candidates остаются metadata-only, CI exact workspace trust без wildcard.
 Runtime ESP resource budget/load/fault/soak/installer gates ещё открыты.
 На плате ordinary8f0d899,owner HMI/touch/Wi-Fi PASS; разрешения исполнены.

@@ -77,7 +77,24 @@ def version(text):
             tuple((0, int(x)) if x.isdigit() else (1, x) for x in pre.split('.')) if pre else ())
 
 
-def verify(args):
+def decode_signature(text):
+    # Same canonical Base64 bounds as native envelope.c; validate=True alone
+    # accepts nonzero pad bits and some surplus padding spellings.
+    require(isinstance(text, str) and 12 <= len(text) <= 96 and len(text) % 4 == 0,
+            'invalid signature encoding')
+    signature = base64.b64decode(text, validate=True)
+    require(8 <= len(signature) <= 72, 'invalid signature length')
+    require(base64.b64encode(signature).decode('ascii') == text,
+            'noncanonical signature encoding')
+    return signature
+
+
+def read_metadata(args):
+    """Read-only signed metadata policy; a candidate is not install authority.
+
+    Kept separate from image reads so tests can compare the same layer with
+    native manifest_read. The public CLI still requires full image validation.
+    """
     require(isinstance(args.trusted_key_id, str) and 0 < len(args.trusted_key_id.encode('utf-8')) <= 64,
             'invalid local key id')
     raw = bounded_read(args.manifest, MANIFEST_MAX)
@@ -86,9 +103,7 @@ def verify(args):
     require(envelope['key_id'] == args.trusted_key_id and args.trusted_key_id,
             'unknown trusted key id')
     require(envelope['algorithm'] == 'ECDSA-P256-SHA256', 'unsupported signature algorithm')
-    require(isinstance(envelope['signature'], str), 'invalid signature encoding')
-    signature = base64.b64decode(envelope['signature'], validate=True)
-    require(8 <= len(signature) <= 72, 'invalid signature length')
+    signature = decode_signature(envelope['signature'])
     key = bounded_read(args.public_key, 91)
     require(len(key) == 91 and key.startswith(P256_PREFIX), 'expected canonical P-256 DER SPKI')
     with tempfile.TemporaryDirectory(prefix='tv4-verify-') as directory:
@@ -142,6 +157,14 @@ def verify(args):
     prefix = 'https://github.com/avlyubimov/TV4-CNC/releases/download/v' + manifest['release_version'] + '/'
     asset = 'tv4-hmi-esp32s3-v' + app['version'] + '.bin'
     require(app['url'] == prefix + asset, 'unapproved release URL')
+    return dict(release=manifest['release_version'], version=app['version'],
+                url=app['url'], notes=manifest['release_notes'],
+                size_bytes=app['size_bytes'], sha256=app['sha256'],
+                key_sha256=hashlib.sha256(key).hexdigest())
+
+
+def verify(args):
+    candidate = read_metadata(args)
     total = 0
     header = b''
     digest = hashlib.sha256()
@@ -149,13 +172,13 @@ def verify(args):
         while chunk := stream.read(4096):
             if not total: header = chunk[:24]
             total += len(chunk)
-            require(total <= app['size_bytes'], 'image exceeds signed size')
+            require(total <= candidate['size_bytes'], 'image exceeds signed size')
             digest.update(chunk)
-    require(total == app['size_bytes'] and digest.hexdigest() == app['sha256'], 'image hash/length rejected')
+    require(total == candidate['size_bytes'] and digest.hexdigest() == candidate['sha256'], 'image hash/length rejected')
     require(len(header) == 24 and header[0] == 0xe9 and header[3] >> 4 == 4
             and struct.unpack_from('<H', header, 12)[0] == 9, 'image header incompatible')
     return {'status': 'verified-offline-only', 'schema_version': 1, 'image_bytes': total,
-            'sha256': digest.hexdigest(), 'key_sha256': hashlib.sha256(key).hexdigest(),
+            'sha256': digest.hexdigest(), 'key_sha256': candidate['key_sha256'],
             'device_access': False, 'install_enabled': False}
 
 

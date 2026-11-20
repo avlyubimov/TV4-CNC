@@ -1,0 +1,63 @@
+Test project /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/release-policy-review/build-policy-sanitize
+      Start  1: build_validation
+ 1/29 Test  #1: build_validation .................   Passed    0.03 sec
+      Start  2: build_candidate
+ 2/29 Test  #2: build_candidate ..................   Passed    0.39 sec
+      Start  3: core
+ 3/29 Test  #3: core .............................   Passed    0.00 sec
+      Start  4: wifi_profiles
+ 4/29 Test  #4: wifi_profiles ....................   Passed    0.00 sec
+      Start  5: render
+ 5/29 Test  #5: render ...........................   Passed    1.44 sec
+      Start  6: render_rgb565
+ 6/29 Test  #6: render_rgb565 ....................   Passed    1.39 sec
+      Start  7: diagnostics
+ 7/29 Test  #7: diagnostics ......................   Passed    0.00 sec
+      Start  8: ota_crypto
+ 8/29 Test  #8: ota_crypto .......................   Passed    0.01 sec
+      Start  9: ota_candidate
+ 9/29 Test  #9: ota_candidate ....................   Passed    0.19 sec
+      Start 10: ota_manifest
+10/29 Test #10: ota_manifest .....................   Passed    0.14 sec
+      Start 11: ota_json
+11/29 Test #11: ota_json .........................   Passed    0.05 sec
+      Start 12: ota_policy_conformance
+12/29 Test #12: ota_policy_conformance ...........   Passed    0.32 sec
+      Start 13: ota_stream
+13/29 Test #13: ota_stream .......................   Passed    0.01 sec
+      Start 14: ota_http
+14/29 Test #14: ota_http .........................   Passed    0.00 sec
+      Start 15: ota_session
+15/29 Test #15: ota_session ......................   Passed    0.03 sec
+      Start 16: ota_memory
+16/29 Test #16: ota_memory .......................   Passed    0.01 sec
+      Start 17: ota_time
+17/29 Test #17: ota_time .........................   Passed    0.00 sec
+      Start 18: ota_sntp
+18/29 Test #18: ota_sntp .........................   Passed    0.00 sec
+      Start 19: ota_tls_probe
+19/29 Test #19: ota_tls_probe ....................   Passed    0.00 sec
+      Start 20: ota_resource
+20/29 Test #20: ota_resource .....................   Passed    0.00 sec
+      Start 21: motion_supervisor
+21/29 Test #21: motion_supervisor ................   Passed    0.01 sec
+      Start 22: motion_startup_noio
+22/29 Test #22: motion_startup_noio ..............   Passed    0.00 sec
+      Start 23: update_session
+23/29 Test #23: update_session ...................   Passed    0.00 sec
+      Start 24: update_loopback
+24/29 Test #24: update_loopback ..................   Passed    0.08 sec
+      Start 25: update_outcome
+25/29 Test #25: update_outcome ...................   Passed    0.01 sec
+      Start 26: boot_image_admission
+26/29 Test #26: boot_image_admission .............   Passed    0.35 sec
+      Start 27: boot_crypto_source
+27/29 Test #27: boot_crypto_source ...............   Passed    0.09 sec
+      Start 28: boot_update_handoff
+28/29 Test #28: boot_update_handoff ..............   Passed    0.74 sec
+      Start 29: boot_image_profile
+29/29 Test #29: boot_image_profile ...............   Passed    0.01 sec
+
+100% tests passed, 0 tests failed out of 29
+
+Total Test time (real) =   5.35 sec
