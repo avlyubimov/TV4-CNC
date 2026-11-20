@@ -17,3 +17,14 @@ docs/STM32_IMAGE_ADMISSION.md и docs/OTA_ARCHITECTURE.md.
   не подтверждённый резерв RAM платы. CPU/stack/latency ещё измерять на стенде.
 - Любые реальные device/Flash/reset/serial/option bytes и merge — отдельно
   разрешённые операции; данный этап их не выполняет.
+
+## PR-07c — local transport/source handoff
+
+Читать docs/STM32_UPDATE_HANDOFF.md. Только read lease, borrow live receiver,
+boot/transfer/policy/source generations и существующая независимая crypto.
+Immutable/exclusive snapshot гарантирует reviewed backend, не generation число.
+Не терять handle при release failure; bounded retries/quarantine без force reset.
+Receipt временный, не install/ARM/START token; copied receipt нельзя считать
+действительным без проверки живого coordinator. RX deadline не продлевать.
+Нет storage writer/Flash layout или physical quiescent proof. Memory mock не
+закрывает persistent recovery/physical inhibit/операторское подтверждение.

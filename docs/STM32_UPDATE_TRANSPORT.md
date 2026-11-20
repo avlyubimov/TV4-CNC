@@ -1,10 +1,11 @@
 # PR-07a — сеанс передачи образа без установки
 
-База: main `74a7af9`, PR #1–28 слиты. В этой ветке добавлена независимая
-portable C11 библиотека [update_session](../protocol/can/update_session.h).
+Исторический контракт PR-07a от main `74a7af9`; PR #29 теперь слит.
+В main `28fe7bc` есть независимая portable C11 библиотека [update_session](../protocol/can/update_session.h).
 Это программная часть будущего CAN bootloader: отправитель, приёмник и
-ограниченный stop-and-wait. Сейчас её вызывают только host-тесты. Ни ESP32
-runtime, ни STM32 startup/supervisor её не запускают.
+ограниченный stop-and-wait. Новый [read-only handoff](STM32_UPDATE_HANDOFF.md)
+вызывает RX poll в software tests, не меняя transport API/deadlines. Ни ESP32
+runtime, ни STM32 startup/supervisor эти библиотеки не запускают.
 
 ## Что подтверждает результат
 

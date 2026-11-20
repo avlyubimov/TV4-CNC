@@ -1,7 +1,9 @@
 # PR-07b — read-only admission образа STM32
 
-20 ноября 2026. База main `74a7af9`, PR #28 слит. PR #29 с transport остаётся
-отдельным открытым PR: его код сюда не копируется, зависимости на него нет.
+Исторический контракт PR-07b от main `74a7af9`, 20 ноября2026. При подготовке
+PR #29 был открыт; теперь #29/30 слиты в main `28fe7bc`. Сам verifier остаётся
+независимым. Новый [handoff coordinator](STM32_UPDATE_HANDOFF.md) использует его
+снаружи, не меняя draft metadata, crypto config или pinned dependency.
 [План](plans/PR07B_IMAGE_ADMISSION.md), [API](../firmware/stm32-bootloader/include/admission.h),
 [результаты](evidence/build/stm32-image-admission/README.md).
 

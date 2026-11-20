@@ -189,6 +189,12 @@ image SHA/EOF. Он использует явно экспериментальн
 Receipt относится к проверенному snapshot и не является install permission;
 сохранённый образ перед commit/jump потребуется проверять снова.
 
+PR-07c [source/session handoff](STM32_UPDATE_HANDOFF.md) удерживает immutable
+lease после verify, сверяет descriptor с signed length/SHA и повторно проверяет
+boot/transfer/policy/source при выдаче receipt. RX/local deadline остаются
+конечными; release failure сохраняет ресурс до bounded retry/quarantine. Нет
+производственного storage/Flash writer, install permission или новых адресов.
+
 Параметры → Обновления: installed HMI/Motion/protocol, доступный релиз/канал,
 changelog, hardware compatibility, размер, стадии download/install/verification,
 результат/ошибки и история. Неизвестная версия отображается как «нет данных»,
@@ -263,8 +269,8 @@ stop-and-wait, relative offset/sequence, CRC-32C, bounded retries/deadlines,
 ESP32/STM32 и не задаёт production wire protocol. Нет Flash map/writer/commit,
 signature/SHA verification на MCU, physical safe-state detector или jump.
 
-COMPLETE_UNVERIFIED означает только transport completion. Нужны независимые
-bootloader-local trusted metadata/image checks и свежий quiescent gate до
+COMPLETE_UNVERIFIED означает только transport completion. PR #30 добавил независимые
+bootloader-local trusted metadata/image checks; свежий quiescent gate нужен до
 интеграции writer; ACK доставки и opaque hash не заменяют их. Boot/transfer
 uniqueness после reset — будущая negotiation policy, не встроенная аутентификация.
 Существующие geometry/recovery/key/context/owner-install gates сохранены;

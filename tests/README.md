@@ -1,5 +1,13 @@
 # Host tests
 
+Текущий набор от main28fe7bc + PR-07c: **25 suites** (в main после #29/30 было24).
+Новая boot_update_handoff suite:10 групп,54 signed end-to-end RAM transfers с
+loss/duplicate и real Mbed TLS admission; boot/policy/source/RX invalidation,
+clock/cancel/cleanup/reentry/release/quarantine. Root normal/sanitizers25/25,
+standalone bootloader5/5. [Контракт](../docs/STM32_UPDATE_HANDOFF.md),
+[evidence](../docs/evidence/build/stm32-update-handoff/README.md).
+Далее сохранены исторические counts отдельных независимых PR.
+
 PR-07b от main74a7af9: root набор22 suites =20 ранее существовавших +
 boot_image_admission и boot_crypto_source. Отдельный PR #29 сюда не копируется.
 Admission содержит14 групп с реальными ephemeral OpenSSL подписями против

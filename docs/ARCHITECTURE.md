@@ -74,6 +74,12 @@ Draft metadata/counters не задают production release format или CAN v
 VERIFIED_CANDIDATE не подтверждает SP/PC, physical quiescent/recovery/permission;
 самостоятельные bootloader writer/commit/jump ещё отсутствуют.
 
+PR-07c [handoff](STM32_UPDATE_HANDOFF.md) связывает completed receiver и verifier
+через immutable read lease, local boot/policy generation и bounded deadline.
+Candidate удерживает lease и отзывается при изменении контекста; cleanup failure
+не теряет handle. Это software lifetime contract, не Flash backend/install token
+или physical quiescent proof. Runtime callers по-прежнему отсутствуют.
+
 OTA обязательно для ESP32 и F407 в штатной эксплуатации без USB. Пока оно
 не реализовано. [OTA_ARCHITECTURE.md](OTA_ARCHITECTURE.md) задаёт подпись
 манифеста/образы, независимые состояния обновления, A/B, health confirmation,
@@ -97,7 +103,8 @@ GPIO/CAN не подтверждены; board image/bootloader/motion не ак�
 consumer, без зависимости от motion или hardware backend. ACK подтверждает
 cursor, а COMPLETE_UNVERIFIED — получение байтов; оба не являются доверенной
 проверкой образа, physical quiescent proof или install/START. Production wire
-negotiation/identity uniqueness и bootloader-local crypto/recovery ещё нужны.
+negotiation/identity uniqueness и production context/recovery ещё нужны.
+Bootloader-local crypto и software source/session handoff описаны выше.
 
 Частоты RGB scanout, LVGL redraw и coordinate updates различаются. Цели:
 feedback <50 мс, 30+ FPS где достижимо, координаты 20–30 Гц; это не результаты.

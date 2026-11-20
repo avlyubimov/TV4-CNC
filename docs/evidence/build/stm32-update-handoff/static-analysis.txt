@@ -1,0 +1,1 @@
+PASS GCC15.2.0 -fanalyzer -c admission.c metadata.c update_handoff.c; -Wall -Wextra -Werror -Wconversion -Wshadow -Wstrict-prototypes; all exit0. Compiled objects remain ignored build-static-analysis/. No device access.

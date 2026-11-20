@@ -149,3 +149,11 @@ sampler только compiled/linked. Новых device/serial/reset/SNTP/HEAD �
 и ARM compile. Новых hardware результатов/доступа к платам/backup reads нет.
 RAM arena и code/frame metrics не подтверждают карту памяти или готовый
 bootloader. Все package/HSE/erase/GPIO/CAN/recovery unknowns сохранены.
+
+## Software PR-07c — 20 ноября2026
+
+[Session/source handoff](STM32_UPDATE_HANDOFF.md) проверен в RAM и ARM compile,
+без device/SWD/serial/reset/Flash operations. Owner факты SWD/core/rawID/Flash
+1024KiB/3,252V/backup1048576bytes/vector structure остаются принятыми. Lease/
+generation/receipt не подтверждают physical inhibit, RAM/CCM/erase/protection,
+HSE/package/pinout/GPIO/CAN/restore. На ESP32 ordinary8f0d899 без новых записей.
