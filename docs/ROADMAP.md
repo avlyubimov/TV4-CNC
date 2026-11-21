@@ -1,21 +1,31 @@
 # План реализации TV4-CNC: функциональные приоритеты P0–P5
 
-22 ноября 2026. База main `610f1745d892d5904ea183b50617a20d8ce755bb`;
-PR #1–55 слиты, main CI5/5 PASS. PR #55 priorities уже завершён.
-История — [IMPLEMENTATION.md](IMPLEMENTATION.md), текущая задача —
-[NEXT_STAGE.md](NEXT_STAGE.md), приёмка — [IMPLEMENTATION_PRIORITIES.md](IMPLEMENTATION_PRIORITIES.md).
+22 ноября 2026, main `4fe84f10a70228b9f440f41c6ccc50869919042a`, PR #1–56 слиты.
+Первый реальный c09a20e был записан и verify прошёл, но boot bench завершился
+**FAULT/error8 (IWDG_TIMEOUT)**. После восстановления SWD с DBG_SLEEP полный
+проверенный снимок1MiB записан обратно, verify/reset-run успешны.
+**Сейчас на плате прежнее ПО, не c09a20e.** Все пять аппаратных сеансов завершены.
+Надпись STM32F407VGT6 сверена владельцем; Flash1024KiB/driver12sectors/RDP0/
+nWRP0xFFF прочитаны. Current backup2×1MiB и SHA-проверенная копия на другом
+физическом NVMe сохранены приватно. NRST к ST-Link не подключён; RESET отпущен.
+
+Исправлены IWDG start-before-sync и DBG_SLEEP в OpenOCD, обновлены
+регрессионные тесты и runbook. Новый ELF/BIN программно проверен; его работу
+на плате ещё не подтверждали. После CI/review потребуется **новое разрешение
+на точный образ и стендовые действия**. Watchdog/UsageFault/CCM/guards/progress
+пока не прошли; нет GPIO/CAN/motion, option-byte/OTP или изменений ESP32.
+
+[аппаратные факты и логи](evidence/hardware/2026-11-22-f407-swd-preflight/README.md). [Задача](NEXT_STAGE.md), [порядок](IMPLEMENTATION_PRIORITIES.md).
 
 **Приоритет функциональных результатов выше создания новых абстракций.**
-Текущий P0 даёт настоящий [ELF/BIN](STM32_FIRST_IMAGE.md) и
-[ST-Link install/restore runbook](STM32_STLINK_RUNBOOK.md), не новую библиотеку.
-Создать отдельный PR и остановиться без merge/аппаратных операций.
-После review следующий измеримый шаг — отдельно разрешённый F407 bench.
+Первый рабочий boot остаётся текущей целью; физический CAN и защита приводов —
+отдельные результаты.
 
 ## Порядок и критерии результата
 
 | Приоритет | Законченный результат | Зависимости и приёмка | Текущий статус |
 |---|---|---|---|
-| P0 — STM32F407 firmware | Настоящий ELF/BIN на HSI с RAM/SWD diagnostics, exception/watchdog handling, без активации motion outputs | Официальная карта VGT6/SRAM/CCM/Flash sectors/vectors; real startup/linker; map/size/hash/source и memory/vector CI; ST-Link install/restore runbook; запись только отдельно разрешена | Образ/profile/linker/startup/HSI/watchdog/SWD diagnostics и CI подготовлены; BIN2596 bytes, реальные memory/vector/negative/repro проверки. Готов к отдельно разрешённому стенду; hardware test не выполнен |
+| P0 — STM32F407 firmware | Настоящий ELF/BIN на HSI с RAM/SWD diagnostics, exception/watchdog handling, без активации motion outputs | Официальная карта VGT6/SRAM/CCM/Flash sectors/vectors; real startup/linker; map/size/hash/source и memory/vector CI; ST-Link install/restore runbook; запись только отдельно разрешена | c09a20e program/verify PASS, boot FAULT8; полный snapshot restore/verify/reset PASS. IWDG sequence/DBG_SLEEP исправлены; новый ELF/BIN/host77/sanitizers77 проверены, exact-head CI и повторный bench — отдельно |
 | P1 — ESP32 OTA | Установка проверенного образа в неактивный слот, boot self-test, подтверждение или rollback с работающими LVGL/GT911/Wi-Fi | Расчёт/утверждение 16 МиБ factory recovery+otadata+двух OTA-слотов; отдельная USB-миграция; existing HTTPS/signature/local key/SHA/size/hardware checks; Wi-Fi/power-loss tests; реальные SRAM/PSRAM/stack измерения | Existing verification/HTTPS/session есть; runtime install/rollback/migration ещё не завершены. Текущая разметка не меняется в этом PR |
 | P2 — Releases | Настоящие воспроизводимые бинарники, SemVer/source binding, signed manifest/SHA-256, prerelease/stable, экран «ПО и обновления» | Рабочий OTA P1; проверка воспроизводимости, trust/signer/licensing; ручное утверждение владельцем exact SHA/tag/channel/assets; push/merge не выпускают release | CI/metadata-only review база существует; production signing/publication/runtime update UI ещё нет. Фиктивный STM32 BIN запрещён |
 | P3 — physical CAN | Минимальный проверенный обмен ESP32-S3↔STM32F407 с ошибками/тайм-аутами/восстановлением | Получить трансиверы; проверить уровни/терминаторы/pinout/mux/IDs/bitrate на изолированном стенде; отдельное hardware permission | Физический CAN не проверен. Существующий протокол сохраняется; новые слои только для конкретной интеграции |

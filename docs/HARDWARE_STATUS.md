@@ -1,6 +1,34 @@
 # Аппаратный статус TV4-CNC
 
-## Текущий P0: спецификация проверена, нового аппаратного результата нет
+## 22 ноября: первый запуск F407 завершился отказом, snapshot восстановлен
+
+22 ноября 2026, main `4fe84f10a70228b9f440f41c6ccc50869919042a`, PR #1–56 слиты.
+Первый реальный c09a20e был записан и verify прошёл, но boot bench завершился
+**FAULT/error8 (IWDG_TIMEOUT)**. После восстановления SWD с DBG_SLEEP полный
+проверенный снимок1MiB записан обратно, verify/reset-run успешны.
+**Сейчас на плате прежнее ПО, не c09a20e.** Все пять аппаратных сеансов завершены.
+Надпись STM32F407VGT6 сверена владельцем; Flash1024KiB/driver12sectors/RDP0/
+nWRP0xFFF прочитаны. Current backup2×1MiB и SHA-проверенная копия на другом
+физическом NVMe сохранены приватно. NRST к ST-Link не подключён; RESET отпущен.
+
+Исправлены IWDG start-before-sync и DBG_SLEEP в OpenOCD, обновлены
+регрессионные тесты и runbook. Новый ELF/BIN программно проверен; его работу
+на плате ещё не подтверждали. После CI/review потребуется **новое разрешение
+на точный образ и стендовые действия**. Watchdog/UsageFault/CCM/guards/progress
+пока не прошли; нет GPIO/CAN/motion, option-byte/OTP или изменений ESP32.
+
+[аппаратные факты и логи](evidence/hardware/2026-11-22-f407-swd-preflight/README.md). В recovery прочитаны state5/error8, watchdog_started0,
+ticks/heartbeat/feed0, history previous_reason8. Эти нули означают, что boot
+self-tests не достигнуты; они не доказывают дефект SRAM/CCM. Debug CR0→1 и
+доступ после ручного RESET зафиксированы. Полное восстановление1MiB имеет
+Verified OK и marker VERIFIED_SNAPSHOT_RESTORED, общий bench exit1 сохранён.
+Probe samples3.257257/3.260437V — не calibrated/load test. REV_ID0x101f означает
+silicon5 или6 по ST, exact revision ещё неизвестен; core r0p1 — другое поле.
+Snapshot проверен как текущее ПО до стенда, его original factory identity не доказана.
+HSE/точность HSI-LSI, полные RAM/CCM/stack stress, pinout/GPIO/CAN/inhibit остаются
+неподтверждёнными. Ни один сеанс не менял option bytes/OTP/CAN/motion.
+
+## Исторический программный snapshot P0 (до разрешённого SWD preflight)
 
 22 ноября 2026, от main610f174 (PR #55 слит). Подготовлен настоящий
 [STM32F407VG HSI bench](STM32_FIRST_IMAGE.md): ELF/BIN/map, официальный
@@ -120,8 +148,8 @@ Factory/A-B/profile mismatch остаются blockers; устройства/bac
 | GT911 | На b93cf3b владелец подтвердил касания, удобную клавиатуру и показ/скрытие пароля | Покрытие углов, multitouch/ошибки, latency, воспроизводимый полный тест сенсора |
 | Wi-Fi | Физический список SSID/RSSI виден на фото; владелец сообщил ошибку 263 | На b93cf3b владелец подтвердил подключение/IP, агент видел wifi_ip_events=1 в обоих запусках. Неверный пароль, полный reconnect/NVS power-cycle stress ещё не проверены |
 | Защита ESP32 | По переданному get-security-info Secure Boot и Flash Encryption Disabled | Это не разрешение менять eFuse; не утверждается защита от физического чтения паролей |
-| F407 | DevEBox STM32F4VX_M Ver. 2.0; владелец подтвердил SWD/ST-Link V2, Cortex-M4 r0p1, raw device ID **0x101f6413**, Flash **1024 КиБ**, напряжение **3,252 В**; [owner report](evidence/hardware/stm32f407-owner-swd/README.md) | Физическая маркировка корпуса (раньше сообщён suffix VGT6), HSE, RAM/CCM, pinout, bootloader erase geometry, физические GPIO/CAN и startup нового ПО не проверены |
-| Backup F407 | Владелец сообщил дамп **1 048 576 байт**, таблица векторов структурно проверена | SHA-256/повторное чтение/независимая копия/restore не сообщены; raw dump не включается в Git/CI. Структура vectors не доказывает RAM map или запуск |
+| F407 | DevEBox; надпись STM32F407VGT6 сверена owner22ноября; агент прочитал core r0p1/CPUID0x410fc241/ID0x101f6413/Flash1024KiB/driver12sectors/RDP0/nWRP0xFFF; c09 program/verify PASS, boot FAULT8; полный snapshot restore/verify/reset PASS | Исправленный boot/progress/CCM/watchdog/fault, HSE/частоты, RAM/stack stress, pinout/GPIO/CAN/inhibit и power-loss recovery неизвестны |
+| Backup F407 | Новый current snapshot2×1048576bytes byte/SHA/basic vectors PASS; independent copy на другом физическом NVMe SHA PASS; snapshot restore/verify/reset PASS. Старый owner dump не открывался | Factory provenance нового snapshot не доказана; power-loss recovery не испытан; dumps/их SHA и private пути не публикуются |
 | USB F407 | Владелец сообщил 0483:5720 Mass Storage Device | Принадлежность именно F407 плате нужна отдельная проверка; VID/PID не определяет part number/память/bootloader |
 | ST-Link V2 | По отчёту владельца работает с Blue Pill и с конкретной F407 по SWD | Версии probe/debugger для нового F407 сеанса и испытание restore не сообщены; доступ не разрешает новые device operations |
 | Blue Pill | STM32F103C8T6; OpenOCD 0.12.0 видит Cortex-M3, Flash 64 КиБ, SWD работает; отчёт владельца | CAN, таймеры, bootloader, подключение к станку не испытаны |

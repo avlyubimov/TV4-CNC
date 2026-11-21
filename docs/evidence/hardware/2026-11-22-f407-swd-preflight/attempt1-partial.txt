@@ -1,0 +1,61 @@
+Open On-Chip Debugger 0.12.0
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
+Info : The selected transport took over low-level target control. The results might differ compared to plain JTAG/SWD
+Info : clock speed 1000 kHz
+Info : STLINK V2J29S7 (API v2) VID:PID 0483:3748
+Info : Target voltage: 3.257257
+Info : [stm32f4x.cpu] Cortex-M4 r0p1 processor detected
+Info : [stm32f4x.cpu] target has 6 breakpoints, 4 watchpoints
+Info : gdb port disabled
+Info : Unable to match requested speed 1000 kHz, using 950 kHz
+Info : Unable to match requested speed 1000 kHz, using 950 kHz
+[stm32f4x.cpu] halted due to debug-request, current mode: Thread
+xPSR: 0x01000000 pc: 0x08000288 msp: 0x20005008
+TV4_PREFLIGHT CPUID=0x410fc241
+TV4_PREFLIGHT DBG_ID=0x101f6413 OWNER_ID_MATCH=1
+TV4_PREFLIGHT FLASH_KIB=1024
+Info : device id = 0x101f6413
+Info : flash size = 1024 KiB
+flash
+  flash bank bank_id driver_name base_address size_bytes chip_width_bytes
+            bus_width_bytes target [driver_options ...]
+  flash banks
+  flash erase_address ['pad'] ['unlock'] address length
+  flash erase_check bank_id
+  flash erase_sector bank_id first_sector_num (last_sector_num|'last')
+  flash fillb address value n
+  flash filld address value n
+  flash fillh address value n
+  flash fillw address value n
+  flash info bank_id ['sectors']
+  flash init
+  flash list
+  flash mdb address [count]
+  flash mdh address [count]
+  flash mdw address [count]
+  flash padded_value bank_id value
+  flash probe bank_id
+  flash protect bank_id first_block [last_block|'last'] ('on'|'off')
+  flash read_bank bank_id filename [offset [length]]
+  flash verify_bank bank_id filename [offset]
+  flash verify_image filename [offset [file_type]]
+  flash write_bank bank_id filename [offset]
+  flash write_image [erase] [unlock] filename [offset [file_type]]
+gdb_flash_program ('enable'|'disable')
+nand
+program <filename> [address] [pre-verify] [verify] [reset] [exit]
+stm32f2x
+  stm32f2x lock bank_id
+  stm32f2x mass_erase bank_id
+  stm32f2x unlock bank_id
+Info : Unable to match requested speed 1000 kHz, using 950 kHz
+Info : Unable to match requested speed 1000 kHz, using 950 kHz
+TV4_PREFLIGHT CURRENT_FIRMWARE_RESET_RUN_COMPLETE
+TV4_PREFLIGHT FAILED:
+shutdown command invoked
+<local-evidence>/preflight.tcl:29: Error:
+Traceback (most recent call last):
+  File "<local-evidence>/preflight.tcl", line 29, in script
+    flash protect_check 0

@@ -1,24 +1,26 @@
 # P0 — первый прошиваемый STM32F407VG bench
 
-База main `610f1745d892d5904ea183b50617a20d8ce755bb` (PR #55 слит).
-Один реальный standalone ELF/BIN, профиль `stm32f407vg-hsi-no-motion-v1`.
-Статус: **программно проверен, аппаратный запуск ещё не выполнен**.
-[План](plans/P0_STM32F407_FIRST_IMAGE.md), [проверки](evidence/build/stm32f407-first-image/README.md),
-[установка/восстановление](STM32_STLINK_RUNBOOK.md).
+База текущего исправления main `4fe84f10a70228b9f440f41c6ccc50869919042a`
+после PR #56. Один standalone ELF/BIN, профиль `stm32f407vg-hsi-no-motion-v1`.
+**Первый c09a20e прошёл запись/verify, но boot дал FAULT8; snapshot восстановлен.**
+Исправленный IWDG/DBG_SLEEP образ программно проверяется; новый аппаратный
+запуск ещё не выполнен. [Факты](evidence/hardware/2026-11-22-f407-swd-preflight/README.md),
+[программные проверки исправления](evidence/build/stm32f407-bringup-fix/README.md),
+[исходные проверки PR56](evidence/build/stm32f407-first-image/README.md),
+[runbook](STM32_STLINK_RUNBOOK.md), [план](plans/F407_SWD_PREFLIGHT.md).
 
 ## Что является исходными данными
 
-Владелец подтвердил SWD/ST-Link V2, Cortex-M4 r0p1, raw device ID
-`0x101f6413`, Flash 1024 КиБ, 3,252 В, полный дамп 1 048 576 байт и
-структурную проверку его векторов. Сообщён суффикс VGT6, плата DevEBox
-STM32F4VX_M Ver. 2.0. Это прежние [owner facts](HARDWARE_STATUS.md), без нового
-чтения платы/бэкапа. r0p1 — ревизия ядра, не доказательство silicon/package.
+Владелец сверил STM32F407VGT6. SWD/ST-Link V2/core/r0p1/ID0x101f6413 и
+Flash1024KiB подтверждены owner и агентом. Driver12sectors/RDP0/nWRP0xFFF
+прочитаны, current snapshot2×1MiB/SHA/independent NVMe copy проверены; полный
+snapshot restore/verify/reset выполнен. Подробные пределы — [HARDWARE_STATUS](HARDWARE_STATUS.md).
+REV_ID0x101f означает silicon5/6, не точную ревизию или package pinout.
 
-Выбранная ниже карта — **официальная спецификация заявленного STM32F407VGT6**,
-а не измерение RAM/CCM или стирания этого экземпляра. Full marking/package,
-фактический HSI/LSI/HSE, RAM/CCM, protection/option bytes, boot/reset/restore,
-GPIO/CAN и physical inhibit остаются аппаратными вопросами. Неизвестные HSE и
-пины приводов не мешают подготовить HSI/no-motion образ.
+Карта ниже — официальная спецификация выбранного устройства. Частоты HSI/LSI/HSE,
+RAM/CCM/stack stress, GPIO/CAN/physical inhibit и power-loss recovery неизвестны.
+Нулевые RAM/CCM pass fields у c09 означают, что self-test не достигнут из-за
+IWDG init timeout. Неизвестный HSE не блокирует HSI/no-motion сборку.
 
 ## Проверенная спецификация и происхождение
 
@@ -56,9 +58,10 @@ Flash sectors: 0–3 — по 16 КиБ с `0x08000000`; sector4 — 64 КиБ �
 `0x08010000`; sectors5–11 — по 128 КиБ с `0x08020000` до `0x08100000`.
 Все 12 точных адресов/размеров зафиксированы в
 [profile.json](../firmware/stm32-motion/board/stm32f407vg/profile.json).
-Это геометрия из RM0090; protection/erase конкретной платы не проверены.
+Геометрия RM0090 совпала с прочитанным driver report; protection snapshot
+и program/verify/full snapshot restore проверены. Это не erase-boundary/stress test.
 
-Текущий BIN 2596 байт помещается в sector0; SRAM static 268 байт, stacks+
+Исправленный BIN 2540 байт помещается в sector0; SRAM static 268 байт, stacks+
 guards 5184 байта, CCM probe 4 байта. Размеры проверяются из **самого ELF**,
 не из предположения по суффиксу/размеру дампа. Числа относятся к текущему GCC
 14.2.1 MinSizeRel; SHA финального clean commit — в его `image-check.json`.
@@ -88,14 +91,16 @@ word и guards; это минимальный boot self-test, **не полны�
 Нет GPIO/AF/TIM/DMA/CAN/STEP/DIR/ENABLE/spindle setup или Flash writer.
 `motion_outputs=0` — программный факт; физическая полярность/inhibit не известны.
 
-IWDG работает от LSI: divider64, reload1023; сначала ready/readback, затем
-start. Номинально 2,048 с при LSI32кГц; по диапазону LSI17–47кГц примерно
+IWDG работает от LSI: divider64, reload1023. **Start key перед настройкой и
+ожиданием PR/RLR sync**, сразу watchdog_started=1, затем bounded wait/readback
+и reload. Порядок сверён с ST HAL F4 v1.8.5 (reference only, без runtime HAL). Номинально 2,048 с при LSI32кГц; по диапазону LSI17–47кГц примерно
 1,39–3,86 с. Реальный timeout пока не измерен. Main обслуживает его каждые
 100 nominal ms только в RUNNING при целых guards и продвижении tick.
 SysTick ISR лишь увеличивает ticks; fault/halt/ISR watchdog не обслуживают.
-До успешного arm IWDG ошибка приводит к IRQ-masked halt; watchdog, уже
-запущенный option bytes, может при этом сбросить плату. После arm отказ
-ведёт к watchdog reset. Option bytes здесь только неизвестное исходное состояние.
+До start key ошибка приводит к IRQ-masked halt; hardware-started watchdog
+также может сбросить плату. После start key, включая sync/readback failure,
+ошибка не обслуживает активный IWDG и ведёт к reset. Readiness timeout не
+маскируется как watchdog_started0. Option bytes не изменяются.
 
 `DBGMCU_APB1_FZ.DBG_IWDG_STOP` намеренно замораживает IWDG при CPU HALT.
 Без остановки CPU watchdog действует; debugger halt не моделирует его timeout.
@@ -143,9 +148,14 @@ semihosting, main-only feed, emergency entry, compiler static frames ≤128 byte
 не измеренный total stack/high-water. Runtime integer-only, hard-float ABI
 сохранён; CPACR/FPU не требуется, float instructions отсутствуют.
 
+OpenOCD устанавливает DBG_SLEEP только для Sleep debug access и IWDG halt
+freeze. Проверка config требует обе настройки; missing DBG_SLEEP отклоняется.
+
 Root host/sanitizer suite компилирует **те же hardware/diagnostics/runtime C**
 с MMIO substitute. Проверяются bounded clock failures, watchdog sequence,
-reject-before-writes при неверных IDs, reset flags, warm history corruption,
+26 cold/debug-entry случаев, pending sync без старта, отдельные PVU/RVU
+timeouts, active-watchdog/no-feed при init fault, reject-before-writes при
+неверных IDs, reset flags, warm history corruption,
 frame bounds и gated feed. ARM contract tests повреждают реальные ELF/BIN/map,
 каждый vector, profile/reference и relink тех же объектов с overflow/ctor/orphan.
 Никакого ARM execution/emulator/device access. Default libraries и прежний
@@ -157,6 +167,7 @@ ELF/BIN byte-for-byte; checkout/action/archive SHA закреплены. Debug p
 проверяется в пределах одной точной toolchain; разные distro binutils не объявлены
 побитно эквивалентными. CI публикует **только текстовые результаты**, без ELF/BIN.
 
-До отдельного стенда не подтверждены исполнение startup/HSI/CCM, watchdog reset,
-fault context, SWD diagnostics и reset/recovery. Следующий результат — их
-измерение по [runbook](STM32_STLINK_RUNBOOK.md) после review/разрешения.
+Новый аппаратный стенд ещё должен подтвердить RUNNING/progress/CCM/guards,
+watchdog reset и fault capture. Старый c09 отказал до этих self-tests; его
+успешная запись и snapshot restore не заменяют исправленный boot bench.
+Новый образ разрешается отдельно по clean commit/ELF SHA и согласованному scope.

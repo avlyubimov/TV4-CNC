@@ -78,6 +78,7 @@ if(TV4_MOTION_BOARD_IMAGE)
     -Wl,--gc-sections,--no-undefined,--fatal-warnings,--orphan-handling=error,--build-id=none
     -Wl,-z,noexecstack)
   set_property(TARGET tv4_stm32f407_bench APPEND PROPERTY LINK_DEPENDS "${tv4_bench}/memory.ld"
+    "${tv4_bench}/openocd.cfg"
     "${tv4_bench}/profile.json" "${tv4_bench_root}/tools/check_stm32_bench.py"
     "${tv4_bench_root}/third_party/stm32f4-reference/origin.json"
     "${tv4_bench_root}/third_party/stm32f4-reference/startup_stm32f407xx.s")

@@ -1,0 +1,4 @@
+PASS gcc15.2 -fanalyzer -c actual hardware/diagnostics/runtime with TV4_BENCH_TEST_MMIO=1
+PASS ARM GCC14.2.1 -fanalyzer -c actual main.c with target flags/generated identity
+-Wall -Wextra -Werror -Wconversion -Wshadow -Wstrict-prototypes; no warning masks
+No device access, no emulation, no ARM execution.

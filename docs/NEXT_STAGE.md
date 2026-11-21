@@ -1,39 +1,34 @@
-# Следующий этап: P0 — первая прошиваемая сборка STM32F407
+# Следующий этап: P0 — исправленный первый запуск STM32F407
 
-22 ноября 2026. База main `610f1745d892d5904ea183b50617a20d8ce755bb`,
-PR #1–55 слиты; main CI5/5 PASS. PR #54 host и PR #55 priorities завершены.
-Текущая работа — одна интеграция **настоящего P0 образа**.
-[Контракт/реальные артефакты](STM32_FIRST_IMAGE.md),
-[проверки](evidence/build/stm32f407-first-image/README.md),
-[ST-Link runbook](STM32_STLINK_RUNBOOK.md),
-[порядок P0–P5](IMPLEMENTATION_PRIORITIES.md).
+22 ноября 2026, main `4fe84f10a70228b9f440f41c6ccc50869919042a`, PR #1–56 слиты.
+Первый реальный c09a20e был записан и verify прошёл, но boot bench завершился
+**FAULT/error8 (IWDG_TIMEOUT)**. После восстановления SWD с DBG_SLEEP полный
+проверенный снимок1MiB записан обратно, verify/reset-run успешны.
+**Сейчас на плате прежнее ПО, не c09a20e.** Все пять аппаратных сеансов завершены.
+Надпись STM32F407VGT6 сверена владельцем; Flash1024KiB/driver12sectors/RDP0/
+nWRP0xFFF прочитаны. Current backup2×1MiB и SHA-проверенная копия на другом
+физическом NVMe сохранены приватно. NRST к ST-Link не подключён; RESET отпущен.
 
-## Текущий результат и остановка
+Исправлены IWDG start-before-sync и DBG_SLEEP в OpenOCD, обновлены
+регрессионные тесты и runbook. Новый ELF/BIN программно проверен; его работу
+на плате ещё не подтверждали. После CI/review потребуется **новое разрешение
+на точный образ и стендовые действия**. Watchdog/UsageFault/CCM/guards/progress
+пока не прошли; нет GPIO/CAN/motion, option-byte/OTP или изменений ESP32.
 
-Подготовлен standalone `stm32f407vg-hsi-no-motion-v1`: ELF/BIN/map, HSI16MHz,
-98 vectors, SRAM/CCM, отдельный emergency stack, main-only IWDG, RAM/SWD diagnostics,
-image/MMIO/negative checks и CI. Размер BIN2596 bytes, SRAM static268 + stacks/
-guards5184, CCM probe4; точные source/hash/toolchain — в image-check.json.
-Образ **программно проверен**, фактическое исполнение на F407 не подтверждено.
-В этом PR нет hardware/SWD/reset/Flash/backup reads, merge или release.
-После проверки/создания PR остановиться.
+[аппаратные факты и логи](evidence/hardware/2026-11-22-f407-swd-preflight/README.md), [образ](STM32_FIRST_IMAGE.md),
+[runbook](STM32_STLINK_RUNBOOK.md),
+[новые программные проверки](evidence/build/stm32f407-bringup-fix/README.md).
+Измеримый следующий результат: RUNNING с продвижением ticks/heartbeat/feeds,
+data/BSS/CCM/guards PASS, watchdog reset и UsageFault context на новом exact image.
+До этого c09a20e не считать аппаратно рабочим. После этого сохраняется порядок P1–P5.
 
-Следующий измеримый аппаратный этап после review — отдельно разрешённый
-изолированный F407 bench: preflight protection/backup/marking, установка
-точного clean ELF SHA, исполнение startup/HSI/CCM/heartbeat, watchdog/fault
-и диагностический отчёт по runbook. До разрешения не подключаться к плате.
-Original SHA F407 backup/вторая копия/restore пока не подтверждены;
-это gates перед записью, не причина нового предварительного software PR.
+## Подтверждено и ещё неизвестно
 
-## Подтверждённые характеристики
-
-[Owner report](evidence/hardware/stm32f407-owner-swd/README.md): ST-Link V2/SWD
-работает, Cortex-M4r0p1, raw ID 0x101f6413, Flash 1024 КиБ, напряжение 3,252 В,
-backup 1 048 576 bytes, structural vector check PASS; сообщён VGT6/DevEBox
-STM32F4VX_M Ver. 2.0. Новых аппаратных или backup reads не было.
-Это не проверка полной маркировки/package, SRAM/CCM, clock/HSE, Flash geometry/
-protection/option bytes, GPIO/CAN или restore. ESP32 — прежний ordinary8f0d899,
-owner HMI/touch/Wi-Fi PASS; его factory backup 16 МиБ исторически проверен по SHA-256.
+ST-Link/SWD/core/raw ID/Flash/protection/driver sectors, physical marking owner
+и backup/independent copy/full restore подтверждены с пределами из evidence.
+RUNNING/CCM/watchdog/fault tests не достигнуты. Кварц HSE, package pin routing,
+physical GPIO/CAN/inhibit, полные RAM/stack/stress и power-loss recovery открыты.
+ESP32 ordinary8f0d899 не затронут, прежние HMI/touch/Wi-Fi PASS сохраняются.
 
 ## Состав текущей P0 интеграции
 
@@ -68,7 +63,8 @@ no-I/O/программный fault handler подтверждением physica
 Установка на плату требует отдельного разрешения на точные image/hash и
 SWD/write/reset/capture действия, проверки бэкапа/независимой копии и recovery
 процедуры. Публикация ELF/BIN в релиз и необратимые option bytes — отдельные
-решения; build/CI/PR не являются разрешением. Данный PR не запускает эти операции.
+решения; build/CI/PR не являются разрешением. Выполненные аппаратные сеансы описаны отдельно в evidence; новые действия
+эта документация не разрешает.
 
 ## Порядок после P0
 

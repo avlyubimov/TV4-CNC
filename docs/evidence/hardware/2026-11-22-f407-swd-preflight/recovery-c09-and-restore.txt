@@ -1,0 +1,59 @@
+Open On-Chip Debugger 0.12.0
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
+Info : The selected transport took over low-level target control. The results might differ compared to plain JTAG/SWD
+Info : clock speed 100 kHz
+Info : STLINK V2J29S7 (API v2) VID:PID 0483:3748
+Info : Target voltage: 3.260437
+Info : [stm32f4x.cpu] Cortex-M4 r0p1 processor detected
+Info : [stm32f4x.cpu] target has 6 breakpoints, 4 watchpoints
+TV4_DEBUG DBGMCU_CR_BEFORE=0x00000000 AFTER=0x00000001
+Info : gdb port disabled
+TV4_RECOVERY DEBUG_READY_KEEP_RESET_HELD
+[stm32f4x.cpu] halted due to debug-request, current mode: Thread
+xPSR: 0x21000000 pc: 0x080001d0 msp: 0x2001ffe0
+TV4_BENCH GUARD CPUID=0x410fc241 ID=0x101f6413 OPTCR=0x0fffaaed
+TV4_BENCH IDENTITY_C09_CLEAN_PASS
+TV4_RECOVERY EXISTING_C09_IDENTITY_CONFIRMED_NO_INITIAL_FLASH_WRITE
+TV4_RECOVERY FLASH_ACR=0x0 RCC_CR=0x7683 RCC_CFGR=0x0 DBG_CR=0x1
+TV4_DEBUG DBGMCU_CR_BEFORE=0x00000001 AFTER=0x00000001
+[stm32f4x.cpu] halted due to debug-request, current mode: Thread
+xPSR: 0xa1000000 pc: 0x080001d0 msp: 0x2001ffe0
+TV4_DIAG INITIAL 0x54563444 0x1 0xa8 0x5 0x8 0x3 0x1e000000 0x410fc241 0x101f6413 0x400 0xf42400 0x0 0x0 0x0 0x7683 0x0 0x0 0x0 0x1 0x0 0x0 0x0 0x0 0x1 0x8 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0
+TV4_BENCH FAILED: Diagnostic state/selftest mismatch at field 3
+Info : Unable to match requested speed 1000 kHz, using 950 kHz
+Info : Unable to match requested speed 1000 kHz, using 950 kHz
+Info : Unable to match requested speed 1000 kHz, using 950 kHz
+Info : Unable to match requested speed 1000 kHz, using 950 kHz
+TV4_DEBUG DBGMCU_CR_BEFORE=0x00000001 AFTER=0x00000001
+[stm32f4x.cpu] halted due to debug-request, current mode: Thread
+xPSR: 0x01000000 pc: 0x08000188 msp: 0x20020000
+TV4_BENCH GUARD CPUID=0x410fc241 ID=0x101f6413 OPTCR=0x0fffaaed
+Info : Unable to match requested speed 1000 kHz, using 950 kHz
+Info : Unable to match requested speed 1000 kHz, using 950 kHz
+TV4_DEBUG DBGMCU_CR_BEFORE=0x00000001 AFTER=0x00000001
+[stm32f4x.cpu] halted due to debug-request, current mode: Thread
+xPSR: 0x01000000 pc: 0x08000188 msp: 0x20020000
+Info : Unable to match requested speed 1000 kHz, using 950 kHz
+Info : Unable to match requested speed 1000 kHz, using 950 kHz
+** Programming Started **
+Info : device id = 0x101f6413
+Info : flash size = 1024 KiB
+** Programming Finished **
+** Verify Started **
+** Verified OK **
+** Resetting Target **
+Info : Unable to match requested speed 1000 kHz, using 950 kHz
+Info : Unable to match requested speed 1000 kHz, using 950 kHz
+TV4_DEBUG DBGMCU_CR_BEFORE=0x00000001 AFTER=0x00000001
+TV4_BENCH VERIFIED_SNAPSHOT_RESTORED
+shutdown command invoked
+<local-workspace>/outputs/stm32f407-first-bench/recover-bench.tcl:18: Error:
+Traceback (most recent call last):
+  File "<local-workspace>/outputs/stm32f407-first-bench/recover-bench.tcl", line 91, in script
+    tv4_snapshot INITIAL
+  File "<local-workspace>/outputs/stm32f407-first-bench/recover-bench.tcl", line 46, in tv4_snapshot
+    tv4_require {[lindex $d $index] == $value} {Diagnostic state/selftest mismatch at field 3}
+  File "<local-workspace>/outputs/stm32f407-first-bench/recover-bench.tcl", line 18, in tv4_require
+    error {Diagnostic state/selftest mismatch at field 3}

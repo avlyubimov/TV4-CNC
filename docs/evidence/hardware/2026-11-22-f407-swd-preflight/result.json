@@ -1,0 +1,210 @@
+{
+  "schema": "tv4-hardware-bringup-2",
+  "date_local": "2026-11-22",
+  "timezone": "Asia/Almaty",
+  "base_main": "4fe84f10a70228b9f440f41c6ccc50869919042a",
+  "candidate_commit": "c09a20e086a79a06099036540b87b66fd0b65c36",
+  "candidate_installed": false,
+  "owner_confirmed_isolated": true,
+  "permissions": [
+    {
+      "operation": "one <=60s SWD discover/reset-halt/ID-geometry-options reads/reset-run",
+      "result": "partial, unsupported command, reset-run completed"
+    },
+    {
+      "operation": "one additional <=60s corrected SWD session",
+      "result": "complete, reset-run completed"
+    },
+    {
+      "operation": "one additional <=180s SWD session, ID/RDP recheck, two full current-Flash reads, reset/run, private local SHA/byte/vector checks",
+      "result": "complete, two1048576-byte files identical, reset/run complete"
+    },
+    {
+      "operation": "one <=180s exact c09 clean ELF write/verify/reset/read tests, conditional one full snapshot restore if failed and SWD available; owner confirmed marking",
+      "result": "c09 write/verify/identity PASS; SWD lost after run; fallback stopped before snapshot write, exit1"
+    },
+    {
+      "operation": "one new <=180s manual RESET recovery, SWD100kHz, volatile DBG_SLEEP/IWDG freeze, existing c09 diagnostics/tests, conditional one full snapshot restore",
+      "result": "manual RESET released after debug ready; c09 FAULT/error8 read; complete snapshot program/verify/reset-run succeeded; overall bench exit1"
+    }
+  ],
+  "openocd": "0.12.0",
+  "probe": "STLINK V2J29S7 API2",
+  "probe_voltage_samples_v": [
+    3.257257,
+    3.260437
+  ],
+  "voltage_accuracy_or_load_test": false,
+  "swd_requested_khz": 1000,
+  "swd_selected_khz": 950,
+  "core": "Cortex-M4 r0p1",
+  "cpuid": "0x410fc241",
+  "device_id_raw": "0x101f6413",
+  "device_id_low12": "0x413",
+  "rev_id": "0x101f",
+  "silicon_revisions_per_st": [
+    5,
+    6
+  ],
+  "single_silicon_revision_resolved": false,
+  "flash_kib": 1024,
+  "flash_base": "0x08000000",
+  "flash_bytes": 1048576,
+  "flash_driver": "stm32f2x",
+  "flash_sectors": [
+    {
+      "number": 0,
+      "offset": 0,
+      "origin": 134217728,
+      "bytes": 16384
+    },
+    {
+      "number": 1,
+      "offset": 16384,
+      "origin": 134234112,
+      "bytes": 16384
+    },
+    {
+      "number": 2,
+      "offset": 32768,
+      "origin": 134250496,
+      "bytes": 16384
+    },
+    {
+      "number": 3,
+      "offset": 49152,
+      "origin": 134266880,
+      "bytes": 16384
+    },
+    {
+      "number": 4,
+      "offset": 65536,
+      "origin": 134283264,
+      "bytes": 65536
+    },
+    {
+      "number": 5,
+      "offset": 131072,
+      "origin": 134348800,
+      "bytes": 131072
+    },
+    {
+      "number": 6,
+      "offset": 262144,
+      "origin": 134479872,
+      "bytes": 131072
+    },
+    {
+      "number": 7,
+      "offset": 393216,
+      "origin": 134610944,
+      "bytes": 131072
+    },
+    {
+      "number": 8,
+      "offset": 524288,
+      "origin": 134742016,
+      "bytes": 131072
+    },
+    {
+      "number": 9,
+      "offset": 655360,
+      "origin": 134873088,
+      "bytes": 131072
+    },
+    {
+      "number": 10,
+      "offset": 786432,
+      "origin": 135004160,
+      "bytes": 131072
+    },
+    {
+      "number": 11,
+      "offset": 917504,
+      "origin": 135135232,
+      "bytes": 131072
+    }
+  ],
+  "geometry_matches_bench_profile": true,
+  "erase_geometry_tested": false,
+  "optcr_raw": "0x0fffaaed",
+  "rdp": "0xaa",
+  "rdp_level": 0,
+  "nwrp": "0xfff",
+  "write_protected_sectors": [],
+  "user_options_reported": "0xec",
+  "option_bytes_changed": false,
+  "flash_written_or_erased": true,
+  "otp_accessed": false,
+  "backup_read": true,
+  "current_firmware_reset_run_completed": true,
+  "hsiramwatchdog_bench_executed": true,
+  "can_or_motion": false,
+  "physical_inhibit_verified": false,
+  "original_backup_sha_verified": false,
+  "independent_second_copy_verified": true,
+  "full_package_marking_verified": true,
+  "current_flash_snapshot_sha_verified": true,
+  "backup_reads": 2,
+  "backup_bytes_each": 1048576,
+  "backup_byte_identical": true,
+  "basic_backup_vector_structure_pass": true,
+  "backup_files_share_filesystem": true,
+  "original_factory_backup_identity_verified": false,
+  "independent_copy_on_different_physical_nvme": true,
+  "host_copy_owner_instruction": "choose the folder yourself",
+  "candidate_was_programmed_and_verified": true,
+  "current_flash_state": "verified pre-bench full 1MiB snapshot restored; reset/run completed",
+  "owner_confirmed_physical_marking": "STM32F407VGT6",
+  "package_pinout_independently_verified": false,
+  "hsiramwatchdog_bench_pass": false,
+  "complete_boot_selftest_pass": false,
+  "ram_ccm_guards_test_reached": false,
+  "heartbeat_progress_verified": false,
+  "watchdog_reset_test_reached": false,
+  "usagefault_test_reached": false,
+  "snapshot_restored_and_verified": true,
+  "restore_reset_run_completed": true,
+  "all_authorized_hardware_sessions_finished": true,
+  "nrst_connected_to_probe": false,
+  "manual_reset_button_available": true,
+  "manual_reset_released": true,
+  "initial_install_exit_code": 1,
+  "recovery_bench_exit_code": 1,
+  "restore_suboperation_success": true,
+  "debug_sleep_recovery": {
+    "swd_khz": 100,
+    "dbg_mcu_cr_before": "0x00000000",
+    "dbg_mcu_cr_after": "0x00000001",
+    "existing_c09_clean_identity_confirmed": true
+  },
+  "diagnostic_observation": {
+    "state": 5,
+    "state_name": "FAULT",
+    "error": 8,
+    "error_name": "IWDG_TIMEOUT",
+    "boot_count": 3,
+    "reset_flags": "0x1e000000",
+    "hsi_nominal_hz_reported": 16000000,
+    "rcc_cr": "0x00007683",
+    "rcc_cfgr": "0x00000000",
+    "flash_acr": "0x00000000",
+    "watchdog_started": 0,
+    "ticks_ms": 0,
+    "heartbeat": 0,
+    "watchdog_feeds": 0,
+    "data_bss_pass": 0,
+    "ccm_probe_pass": 0,
+    "stack_guards_pass": 0,
+    "history_valid": 1,
+    "previous_reason": 8,
+    "iwdg_sr_raw_captured": false
+  },
+  "engineering_inference": "Missing DBG_SLEEP explains lost Sleep debug access; pre-start IWDG synchronization is the software defect inferred from error8 and official ST initialization sequence. New code is not hardware-tested.",
+  "c09_wfi_instruction_addresses": [
+    "0x080001ce",
+    "0x0800043e"
+  ],
+  "c09_es0182_2_2_5_all_preconditions_present": false,
+  "new_candidate_hardware_authorized": false
+}

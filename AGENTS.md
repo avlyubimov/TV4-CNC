@@ -49,7 +49,8 @@ PR и Actions; не копировать код уже открытого PR. Д
   CAN-коммуникации; **никакой генерации STEP на ESP32**.
 - STM32F407: DevEBox STM32F4VX_M Ver. 2.0; владелец сообщил STM32F407VGT6;
   owner SWD/ST-Link V2/Cortex-M4r0p1/raw ID0x101f6413/Flash1024KiB/3,252V/
-  backup1048576bytes/vector structure PASS подтверждены. Package/RAM/CCM/секторы/
+  backup1048576bytes/vector structure PASS подтверждены. Владелец сверил полную надпись STM32F407VGT6;
+  driver12sectors/RDP0 и полный snapshot restore проверены. SRAM/CCM runtime,
   кварц/распиновка/physical GPIO/CAN ещё не проверены. Только он отвечает за планирование, таймерный STEP/DIR,
   энкодеры, homing, watchdog и состояние реальной машины после commissioning.
 - Blue Pill STM32F103C8T6: отдельный стенд протокола/таймеров/загрузчиков;
@@ -135,31 +136,30 @@ PR и Actions; не копировать код уже открытого PR. Д
    теги, релизы, секреты CI и публикации под видом обычного push.
 6. Обновлять актуальный статус; исторические отчёты сохранять с явной пометкой.
 
-## Текущее задание: P0 — реальный STM32F407 bench image
+## Текущее задание: исправление первого аппаратного запуска F407
 
-База main `610f1745d892d5904ea183b50617a20d8ce755bb`, PR #1–55 слиты;
-PR #55 согласовал приоритеты, docs-only задача завершена. Следующее поручение
-«дальше» разрешило одну интеграцию P0, а не новый PR предварительного плана.
-Читать docs/STM32_FIRST_IMAGE.md, docs/STM32_STLINK_RUNBOOK.md и scoped правила.
+22 ноября 2026, main `4fe84f10a70228b9f440f41c6ccc50869919042a`, PR #1–56 слиты.
+Первый реальный c09a20e был записан и verify прошёл, но boot bench завершился
+**FAULT/error8 (IWDG_TIMEOUT)**. После восстановления SWD с DBG_SLEEP полный
+проверенный снимок1MiB записан обратно, verify/reset-run успешны.
+**Сейчас на плате прежнее ПО, не c09a20e.** Все пять аппаратных сеансов завершены.
+Надпись STM32F407VGT6 сверена владельцем; Flash1024KiB/driver12sectors/RDP0/
+nWRP0xFFF прочитаны. Current backup2×1MiB и SHA-проверенная копия на другом
+физическом NVMe сохранены приватно. NRST к ST-Link не подключён; RESET отпущен.
 
-Результат P0 — настоящий standalone ELF/BIN/map профиля
-`stm32f407vg-hsi-no-motion-v1`: официальный VGT6 Flash/SRAM/CCM/vector contract,
-HSI, exception/emergency stack, main-only watchdog, RAM/SWD diagnostics,
-реальные image/link/corruption/MMIO checks, воспроизводимость и CI.
-Default libraries/synthetic probe сохраняются; другие board profiles и
-CAN bootloader image по-прежнему отклоняются. Не добавлять новые transport
-абстракции вместо прошиваемого образа. В CI только текст, binary release gate
-и pending application license сохраняются.
+Исправлены IWDG start-before-sync и DBG_SLEEP в OpenOCD, обновлены
+регрессионные тесты и runbook. Новый ELF/BIN программно проверен; его работу
+на плате ещё не подтверждали. После CI/review потребуется **новое разрешение
+на точный образ и стендовые действия**. Watchdog/UsageFault/CCM/guards/progress
+пока не прошли; нет GPIO/CAN/motion, option-byte/OTP или изменений ESP32.
 
-Обновить статусы/evidence, создать отдельный PR и остановиться без merge.
-**Не подключаться/не прошивать устройства.** После review следующий аппаратный
-результат — отдельно разрешённый изолированный F407 SWD/install/diagnostic/
-watchdog/fault bench по точному clean image SHA и runbook. Сначала получить
-F407 backup original SHA/вторую копию/marking и разрешённый protection preflight.
-Unknown HSE не блокирует HSI build; неизвестные GPIO запрещают motion I/O.
-No-I/O/компиляция не physical inhibit. Bootloader/app/staging адреса не резервировать.
-После P0 порядок P1–P5 прежний; firmware update/движение/option bytes/merge/release
-требуют своих явных разрешений.
+Читать docs/STM32_STLINK_RUNBOOK.md,
+docs/evidence/hardware/2026-11-22-f407-swd-preflight/README.md и
+docs/evidence/build/stm32f407-bringup-fix/README.md.
+Разделять фактический FAULT8/restore и инженерную причину; raw IWDG_SR не читался.
+Получить новый clean exact-head ELF/BIN, negative/repro/host/sanitizer/CI results,
+создать отдельный PR без self-merge. Прошлые разрешения завершены и не покрывают
+новый образ. Не резервировать CAN loader layout и не заменять boot новой библиотекой.
 
 ## Исторические контракты слитых этапов
 

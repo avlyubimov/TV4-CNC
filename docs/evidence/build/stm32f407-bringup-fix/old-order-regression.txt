@@ -1,0 +1,5 @@
+PASS: the same updated MMIO test compiled against unchanged c09a20e hardware.c rejects the old wait-before-start sequence.
+Expected assertion failure; no hardware access.
+old-order-regression: <checkout>/firmware/stm32-motion/tests/bench_tests.c:105: hardware_paths: Assertion `tv4_bench_hardware_init(&d)==expected[i]' failed.
+
+returncode=-6

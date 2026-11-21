@@ -1,0 +1,10 @@
+Open On-Chip Debugger 0.12.0
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
+Info : The selected transport took over low-level target control. The results might differ compared to plain JTAG/SWD
+  stm32f2x options_read bank_id
+        Read and display device option bytes.
+  stm32f4x.cpu read_memory address width count ['phys']
+        Read Tcl list of 8/16/32/64 bit numbers from target memory
+shutdown command invoked

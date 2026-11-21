@@ -1,0 +1,51 @@
+UpdateCTestConfiguration  from :<checkout>/build-motion-host/DartConfiguration.tcl
+Test project <checkout>/build-motion-host
+Constructing a list of tests
+Done constructing a list of tests
+Updating test list for fixtures
+Added 0 tests to meet fixture requirements
+Checking test dependency graph...
+Checking test dependency graph end
+test 1
+    Start 1: motion_supervisor
+
+1: Test command: <checkout>/build-motion-host/motion_tests
+1: Working Directory: <checkout>/build-motion-host
+1: Test timeout computed to be: 10
+1: 7 motion supervisor scenarios PASS (including 99,999 fault-injection cycles)
+1/4 Test #1: motion_supervisor ................   Passed    0.00 sec
+test 2
+    Start 2: motion_startup_noio
+
+2: Test command: <checkout>/build-motion-host/motion_startup_tests
+2: Working Directory: <checkout>/build-motion-host
+2: Test timeout computed to be: 10
+2/4 Test #2: motion_startup_noio ..............   Passed    0.00 sec
+test 3
+    Start 3: stm32_bench_hardware_model
+
+3: Test command: <checkout>/build-motion-host/stm32_bench_tests
+3: Working Directory: <checkout>/build-motion-host
+3: Test timeout computed to be: 10
+3: PASS26 actual-source MMIO cases: cold/debug-PLL entry, pending IWDG sync requires start, independent PVU/RVU timeout/readback, active watchdog on init fault/no feed, bounded waits, HSI-only writes/no motion registers
+3: PASS diagnostic warm-reset/fault/torn-record/boot saturation +672 independent single-bit CRC refusals; no durable identity/physical authority
+3: PASS valid basic/extended MSP frames; invalid/stack-fault/out-of-range/PSP never dereferenced; main-progress+guard gated watchdog feed/wrap/fault no-feed
+3: PASS freestanding compiler memset primitive vs host oracle, guards/zero length/all-byte values; no libc/heap needed by ARM image
+3/4 Test #3: stm32_bench_hardware_model .......   Passed    0.00 sec
+test 4
+    Start 4: stm32_bench_reference
+
+4: Test command: /home/avlyubimov/.local/bin/python3.14 "<checkout>/firmware/stm32-motion/../../tools/check_stm32_bench.py" "--references"
+4: Working Directory: <checkout>/build-motion-host
+4: Test timeout computed to be: 10
+4: {
+4:   "status": "PASS",
+4:   "profile": "stm32f407vg-hsi-no-motion-v1",
+4:   "reference_only": true,
+4:   "device_access": false
+4: }
+4/4 Test #4: stm32_bench_reference ............   Passed    0.03 sec
+
+100% tests passed, 0 tests failed out of 4
+
+Total Test time (real) =   0.03 sec
