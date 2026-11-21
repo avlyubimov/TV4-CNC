@@ -103,11 +103,17 @@ monotonic tokens/high-water и проверка через реальные sign
 sanitizers36/standalone13 PASS. Volatile RAM не выбирает production medium,
 не подтверждает RAM F407 и не добавляет runtime/Flash/device actions.
 
-Текущая ветка от main `2c06cdc`: [PR-05c offline release review](docs/RELEASE_COHORT_REVIEW.md).
+Слитый PR #40 от main `2c06cdc`: [PR-05c offline release review](docs/RELEASE_COHORT_REVIEW.md).
 Независимые signed HMI/Motion документы и полные images сверяются по local
 selection/source/channel, descriptor и prospective peer range. HMI-only допустим.
 Host38/sanitizers38/standalone13 PASS; report metadata-only, все authority gates
 закрыты. Production bundle/context/installer и аппаратная проверка ещё открыты.
+
+Текущая ветка от main `aa06833`: [PR-05d build binding audit](docs/RELEASE_BUILD_BINDING.md).
+Unsigned CI candidate связывается по explicit external pin/full image/ELF с
+тем же signed cohort. Factory/A-B и test/ordinary profile mismatch отображаются
+как blockers; metadata pin не CI/source attestation. Новый audit всегда blocked,
+все install/publish gates закрыты. Старые CLI reports/firmware/settings прежние.
 
 [OTA ESP32 A/B и F407 по CAN](docs/OTA_ARCHITECTURE.md),
 [GitHub Releases/подписи/owner approval](docs/RELEASE_PROCESS.md),

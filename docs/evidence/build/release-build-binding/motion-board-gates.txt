@@ -1,0 +1,1 @@
+PASS actual board image rejected with/without synthetic probe; no device image generated

@@ -121,3 +121,15 @@ CI candidate/provenance workflow. Она не назначает PROJECT_VER/Sem
 публикует images и не делает current factory candidate пригодным к OTA.
 Source claim в подписи/report не является доказательством build origin;
 approved candidate→signer→exact bytes linkage ещё требует production review.
+
+## PR-05d — дополнительный pin и blocked binding audit
+
+`verify --candidate-sha256` проверяет explicit expected candidate.json SHA-256,
+старый JSON report прежний. Все8 CI jobs сохраняют candidate-pin.sha256 и
+проверяют этот pin. Сгенерированный тем же job pin — только integrity check,
+не внешнее approval/CI/source authentication.
+
+[Build binding audit](RELEASE_BUILD_BINDING.md) повторно проверяет current
+candidate/full HMI image/ELF и signed cohort из private snapshots. Несовпадение
+factory/A-B или test/ordinary profile явно остаётся blocker. Report всегда
+blocked/exit3; production версии/разметка/signing/provenance не назначаются.

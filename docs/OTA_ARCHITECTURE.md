@@ -1,5 +1,11 @@
 # OTA TV4-CNC — проект архитектуры
 
+PR-05d: [offline build binding audit](RELEASE_BUILD_BINDING.md) связывает
+existing unsigned candidate/full HMI/ELF digest с signed cohort. External pin
+фиксирует bytes, не CI/source authentication. Factory/A-B/profile mismatch и
+missing Motion build evidence не снимаются; report всегда blocked/exit3.
+Production manifest/context/keys/runtime/installer/layout gates остаются открыты.
+
 Статус: целевая архитектура. PR-04a добавляет [verification foundation](OTA_VERIFICATION.md),
 но downloader/installer/A-B/rollback ещё не реализованы. PR-01 не меняет partitions.csv,
 sdkconfig, bootloader или исполняемый код. PR-04/05/07/08 реализуют и проверяют

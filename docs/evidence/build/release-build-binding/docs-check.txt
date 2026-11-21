@@ -1,0 +1,2 @@
+PASS 706 local Markdown file links; external URLs/anchors not fetched
+PASS 78 source SHA-256 records; evidence excluded to avoid circular hashing

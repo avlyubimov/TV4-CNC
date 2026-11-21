@@ -1,6 +1,6 @@
 # Открытые вопросы и блокирующие решения
 
-Обновлено от main `2c06cdc`,21ноября2026. Единственный свод аппаратных фактов —
+Обновлено от main `aa06833`,21ноября2026. Единственный свод аппаратных фактов —
 [HARDWARE_STATUS.md](HARDWARE_STATUS.md). Не заполнять неизвестные поля
 типовыми данными семейства, USB VID/PID, старым заказом или host mock.
 
@@ -61,7 +61,7 @@ trusted installed-state/key provider, build attestation или install authority
 | OTA-TLS-01 | Правильное время для TLS, CA bundle/host allowlist/redirect bounds GitHub, отсутствие insecure fallback | Реальный HTTPS download; статичные часы HMI не источник доверенного времени |
 | OTA-F407-01 | По подтверждённым секторам и RAM budget выбрать staging medium/A-B/recovery; metadata/vector/commit/power-loss план | PR-07i RAM backend не утверждает размер RAM/full-image fit и не даёт durable recovery; кэш ESP32 не заменяет решение |
 | OTA-STATE-01 | Fresh подтверждение F407 без движения/оборотов/программы, session lifecycle и повтор после reboot; согласованный safe state | CAN install; симуляция/heartbeat/ACK доставки не подтверждают останов |
-| RELEASE-01 | Версии/каналы/tag policy, signing authority и owner gate для exact SHA/digests, доступность environment protections | PR-05 и любой релиз; main push не разрешение |
+| RELEASE-01 | Версии/каналы/tag policy, signing authority, independent CI/source provenance/candidate digest selection и owner gate для exact SHA/digests, доступность environment protections | PR-05d связывает unsigned candidate и signed bytes, но не подтверждает CI identity/автора; factory/A-B/profile blockers не закрыты. Main push не разрешение |
 | RELEASE-LICENSE-01 | Владелец выбирает лицензию приложения, review прав на распространяемые assets/библиотеки; LICENSE-NOTICE.md пока оставляет решение открытым | Внешнее распространение app binary/source release; PR-05a публикует только review metadata |
 | PERF-01 | Реальные LVGL/CPU/heap/PSRAM/stacks/reset/watchdog/queues/reconnect/CAN timeout measurements, touch-to-display и soak methodology | PR-03 acceptance, заявления о <50 мс/30 FPS/20–30 Гц |
 | RECOVERY-01 | Независимая копия ESP32 backup, испытание восстановления; данные/отчёт по восстановлению Blue Pill | Аппаратная migration/bootloader уверенность, не permission на запись |

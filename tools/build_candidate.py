@@ -183,13 +183,23 @@ def create(repo, build, output, sdk, profile, expected):
                 app_sha256=app['sha256'], binary_uploaded=False, **POLICY)
 
 
-def verify(directory, expected, sdk, profile, image=None):
+def verify_with_metadata(directory, expected, sdk, profile, image=None, expected_candidate_sha256=None):
+    """Return checked fields from the same bounded snapshot, never a reopened file.
+
+    An externally selected digest pins unsigned bytes; it does not authenticate
+    the workflow, builder, source checkout, or the person supplying that digest.
+    """
     commit(expected)
     require(sdk in SDK_IMAGES and profile in PROFILES, 'unsupported SDK/profile')
     directory = Path(directory)
     require(not directory.is_symlink() and directory.is_dir(), 'expected bundle directory')
     require({p.name for p in directory.iterdir()} == FILES, 'unexpected/missing review files')
     files = {name: regular_read(directory / name, META_MAX) for name in FILES}
+    candidate_sha256 = hashlib.sha256(files['candidate.json']).hexdigest()
+    if expected_candidate_sha256 is not None:
+        require(sha(expected_candidate_sha256) and expected_candidate_sha256 != '0' * 64,
+                'expected nonzero lowercase candidate SHA-256')
+        require(candidate_sha256 == expected_candidate_sha256, 'candidate SHA-256 pin mismatch')
     checksum = files.pop('checksums.sha256')
     require(checksum == inventory(files), 'review inventory checksum mismatch')
     c = strict_json(files['candidate.json'])
@@ -230,8 +240,16 @@ def verify(directory, expected, sdk, profile, image=None):
     require(sha(a['elf_sha256']) and a['elf_sha256'] == c['elf']['sha256'], 'ELF identity mismatch')
     if image is not None:
         require(inspect_app(regular_read(image, APP_MAX), sdk) == a, 'local app does not match review')
-    return dict(status='verified-metadata-only', source_commit=expected, sdk=sdk, profile=profile,
-                image_checked=image is not None, **POLICY)
+    report = dict(status='verified-metadata-only', source_commit=expected, sdk=sdk, profile=profile,
+                  image_checked=image is not None, **POLICY)
+    captured = dict(candidate=c, candidate_sha256=candidate_sha256,
+                    inventory_sha256=hashlib.sha256(checksum).hexdigest())
+    return report, captured
+
+
+def verify(directory, expected, sdk, profile, image=None, expected_candidate_sha256=None):
+    # Preserve the public report and positional API used by existing CI/users.
+    return verify_with_metadata(directory, expected, sdk, profile, image, expected_candidate_sha256)[0]
 
 
 def main():
@@ -249,12 +267,13 @@ def main():
         else:
             q.add_argument('--candidate', required=True, type=Path)
             q.add_argument('--image', type=Path)
+            q.add_argument('--candidate-sha256', help='external expected candidate.json SHA-256; not authentication')
     a = p.parse_args()
     try:
         if a.action == 'create':
             result = create(a.repo, a.build, a.output, a.sdk, a.profile, a.source_commit)
         else:
-            result = verify(a.candidate, a.source_commit, a.sdk, a.profile, a.image)
+            result = verify(a.candidate, a.source_commit, a.sdk, a.profile, a.image, a.candidate_sha256)
     except (ValueError, TypeError, KeyError, AttributeError, RecursionError, OSError, subprocess.SubprocessError) as error:
         raise SystemExit('Build candidate rejected: ' + str(error)) from None
     print(json.dumps(result, sort_keys=True, indent=2))

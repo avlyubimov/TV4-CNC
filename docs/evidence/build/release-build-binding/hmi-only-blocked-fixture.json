@@ -1,0 +1,136 @@
+{
+  "blockers": [
+    "unsigned-build-provenance",
+    "production-authority-gates-open",
+    "hmi-build-layout-mismatch"
+  ],
+  "build_provenance_verified": false,
+  "candidate_pin_checked": true,
+  "ci_identity_verified": false,
+  "device_access": false,
+  "elf_digest_checked": true,
+  "elf_format_checked": false,
+  "gates": {
+    "actual_installed_context": false,
+    "actual_layout": false,
+    "build_provenance": false,
+    "exact_release_owner_approval": false,
+    "install": false,
+    "key_provisioning": false,
+    "license_selection": false,
+    "live_source": false,
+    "motion_vectors": false,
+    "physical_quiescent": false,
+    "protocol_mapping": false,
+    "publish": false,
+    "recovery": false,
+    "runtime_resource_budget": false
+  },
+  "hmi_build": {
+    "application": {
+      "bytes": 336,
+      "chip_revision_max": 65535,
+      "chip_revision_min": 0,
+      "elf_sha256": "21dc602715820e5137b9119741064fea5e77e474ec3246eccb0575c43a97a9bf",
+      "flash_bytes": 16777216,
+      "flash_frequency_mhz": 80,
+      "flash_mode": "dio",
+      "idf_version": "v6.1.1",
+      "project": "tv4_hmi",
+      "segments": 1,
+      "sha256": "b2a163900bfe7e6c8b35072eb61dfc46f40123167f8f3307e7f9619283670e3f",
+      "version": "2.1.0"
+    },
+    "candidate_sha256": "43142282bd68bd3a2f3aca02a53c649243a233fa3fee056676841b4795eade05",
+    "elf": {
+      "bytes": 23,
+      "sha256": "21dc602715820e5137b9119741064fea5e77e474ec3246eccb0575c43a97a9bf"
+    },
+    "inventory_sha256": "c3f71e5a952a3f33305fdc5039067980cbb5050f060bf6cb8695b5501db3a2da",
+    "layout": {
+      "app_bytes": 2097152,
+      "app_offset": 65536,
+      "id": "factory-single-2m",
+      "ota_slots": 0
+    },
+    "partition_table": {
+      "bytes": 96,
+      "sha256": "fd1b4b686b31c339b0746468028fa428eb2f5ebd2b82206b2518e9f06f3c9c21"
+    },
+    "profile": "rev12",
+    "sdk": "6.1.1",
+    "sdkconfig": {
+      "bytes": 39,
+      "sha256": "a4ef200027c52a46c1bf74a720736d113f50a47eeaebdce1fbb1d8312bd65b2d"
+    },
+    "signed_layout_id": "tv4-16m-ab-v1",
+    "signed_profile": "rev12",
+    "source_commit": "aba3d71290baf5edfc4a980ba114d0e2e7f3f33d",
+    "source_tree": "bed07e3d4f8af5b4152f80574ae7c1c58b38ae92",
+    "supporting_files": {
+      "LICENSE-NOTICE.md": {
+        "bytes": 991,
+        "sha256": "1e0853edc3b1d848f63ed8f72c1be745ea9b4bdc62cb660e8c6c67678ee3b864"
+      },
+      "dependencies.lock": {
+        "bytes": 1237,
+        "sha256": "d09551b18bfceae3a3f4c5c50583d81907bc7f2e47e3629182cbf1d1914a10b1"
+      },
+      "validation.json": {
+        "bytes": 1037,
+        "sha256": "3dea2ac8e75837aa653ae39d4df53de8ec1fbf418eabdf32cf6da3079c2c0c77"
+      }
+    }
+  },
+  "image_checked": true,
+  "install_enabled": false,
+  "layout_match": false,
+  "profile_match": true,
+  "release_published": false,
+  "schema": "tv4-release-build-review-draft-1",
+  "signed_cohort": {
+    "channel": "stable",
+    "components": [
+      {
+        "app_descriptor_checked": true,
+        "component_version": "2.1.0",
+        "image_bytes": 336,
+        "key_id": "test-only",
+        "key_sha256": "f637c95e6fcdf521b099047cfc39ef7a7ffb350ec14e63966cca7639ee10e7ff",
+        "metadata_sha256": "fe16fcd1d46fe8627f09185f6f8084030694b366551514a7ef89cb308b0d303c",
+        "name": "hmi",
+        "sdk": "6.1.1",
+        "sha256": "b2a163900bfe7e6c8b35072eb61dfc46f40123167f8f3307e7f9619283670e3f",
+        "signature_sha256": "f22646132b5e69a29e06c8a4e188b772995c0a50bcd6185e7ecb8f5d0a16cf53"
+      }
+    ],
+    "device_access": false,
+    "gates": {
+      "actual_installed_context": false,
+      "actual_layout": false,
+      "build_provenance": false,
+      "exact_release_owner_approval": false,
+      "install": false,
+      "key_provisioning": false,
+      "license_selection": false,
+      "live_source": false,
+      "motion_vectors": false,
+      "physical_quiescent": false,
+      "protocol_mapping": false,
+      "publish": false,
+      "recovery": false,
+      "runtime_resource_budget": false
+    },
+    "install_enabled": false,
+    "local_context_sha256": "69908d2c8703127514805c6ce3df7122ac58efbf64061e31dab2b22abc3792d6",
+    "motion_present": false,
+    "prospective_peer_checked": false,
+    "protocol_semver": "1.0.0",
+    "release_published": false,
+    "release_version": "3.0.0",
+    "schema": "tv4-release-cohort-review-draft-1",
+    "source_commit": "aba3d71290baf5edfc4a980ba114d0e2e7f3f33d",
+    "status": "consistent-offline-review-only"
+  },
+  "status": "blocked-build-review-only"
+}

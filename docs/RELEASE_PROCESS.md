@@ -167,3 +167,14 @@ keys/context/protocol mapping/layout/лицензия/публикация ос�
 PROJECT_VER/CI candidates остаются прежними; новый инструмент не назначает
 release versions и не публикует binaries/tags/releases. Production format и
 связь с approved CI artifacts/signing custody — следующий отдельный этап.
+
+## PR-05d — связывание exact bytes без release authority
+
+[Build binding audit](RELEASE_BUILD_BINDING.md) добавляет explicit external
+candidate.json SHA pin, повторные unsigned candidate/full HMI/ELF digest checks
+и existing signed cohort verification. Bindings используют captured snapshots.
+Factory/A-B и headless/bench/ordinary mismatches явно остаются blockers;
+Motion build provenance ещё отсутствует. Новый JSON всегда blocked/exit3,
+не manifest/approval/installer input. CI pin данного job не authentication;
+source/build/signer custody и production bundle/context/keys/layout/license/
+runtime/recovery/exact owner approval по-прежнему требуют отдельного review.
