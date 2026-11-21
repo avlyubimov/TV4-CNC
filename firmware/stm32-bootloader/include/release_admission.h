@@ -38,7 +38,7 @@ typedef struct {
  * Valid disjoint typed objects required. Failure clears output except invalid
  * aliases/BUSY (untouched). There is no live lease/generation/vector check here;
  * this standalone result is historical, not permission to install/ARM/jump.
- * No runtime coordinator calls this entry point yet. */
+ * release_handoff.h provides an opt-in live coordinator; no runtime caller. */
 tv4_boot_result tv4_boot_admit_release(const tv4_boot_release_policy *policy,
     const tv4_boot_request *request, tv4_boot_workspace *workspace,
     tv4_boot_release_candidate *candidate);

@@ -109,47 +109,34 @@ PR и Actions; не копировать код уже открытого PR. Д
 
 ## Текущее задание
 
-PR #1–36 слиты, база main `3381236`; пять workflow PASS, открытых PR перед
-работой нет. Startup/DATA/crypto/handoff/preflight/completion/outcome, release
-policy review/local firmware info UI и negotiation существуют. PR-07g: читать
-STM32_RELEASE_BINDING.md/NEXT_STAGE.md и bootloader scoped rules. Новый opt-in
-release-draft-1 API проверяет raw signature/release selection/component SemVer/
-channel/source/target/image через тот же bounded independent crypto engine.
-Legacy admission-draft-1 остаётся strict11 fields; новый draft15 fields не
-становится production HMI/CAN/bundle ABI. Numeric counters не переводить в SemVer.
-No actual keys/versions/context/profile/Flash addresses или runtime caller.
-Новый API ещё не вызывается source-lease/handoff/completion coordinator; нельзя
-обходить его live context/vector/deadline gates ради нового signed document.
-Boot identity/persistence/authentication/raw wire provider по-прежнему отсутствует.
-Matching forged handshake может пройти; это не install/physical authority.
-DATA/outcome APIs/deadlines прежние. Не копировать live pool/coordinator;
-clear не сбрасывает replay counters и не reconfigure.
-UI snapshot72bytes/UNKNOWN/DEVICE/SIMULATOR прежний; app descriptor не trusted
-OTA context. Draft counters не переводить в SemVer; HMI success не заменяет
-независимый verifier. Owner повторил VGT6, full marking/HSE неизвестны.
-Worker completion -> clean lease close -> historical outcome/ACK уже реализованы;
-pending release не positive; quarantine держит handle.
-Peer report не authenticated/local verified/install/quiescent/ARM authority.
-Перед будущим действием нужна fresh negotiation/full saved-byte verification.
-Не вводить actual F407 map, default addresses/IRQ/alignment; policy generation
-меняется с profile/keys/context. Нет runtime caller, CAN wire driver,
-Flash map/writer, physical quiescent proof, install/COMMIT/jump или ARM/START.
-Candidate/CRC/ACK/generation не являются install token или остановленным станком.
-Immutable lease гарантирует backend; failed release удерживает handle/retry/
-quarantine, clear/reopen его не скрывают. RX deadline не продлевать.
+PR #1–37 слиты, база main `c17e89c`; пять workflow PASS, открытых PR перед
+работой нет. PR-07h: читать STM32_RELEASE_HANDOFF.md/NEXT_STAGE.md и scoped rules.
+Явный caller-owned adapter связывает PR-07g release15 verifier с прежними live
+lease/owner/source/RX/deadline/vector guards и completion/outcome. Не копировать
+state machine/crypto; shared helpers private, нет verifier callback/success stub.
+Mode выбирает local typed API, не JSON/HMI/CRC/ACK. Legacy11 APIs/footprint и
+workspace17664/dependency pins/crypto owner прежние; numeric counters не SemVer.
+Adapter/core/RX/context один owner/alive до clear; completion active нельзя
+обслуживать независимо. При pending release нет positive, quarantine удерживает
+handle и запрещает clear/reopen. Policy generation меняется с release selection/
+versions/keys/profile/context; число не предоставляет immutable lock/provenance.
+Raw signed metadata SHA должен совпасть с negotiation. Receipt/outcome history
+не install/physical authority; новая операция требует fresh saved-byte verify.
 
-Не повторять device access и не читать/публиковать raw dump. Owner1MiB не
-задаёт RAM/sector/bootloader layout. Startup synthetic fixture не является
-F407 profile. BOARD_IMAGE=ON всегда fail; no .bin/ELF upload. No-I/O adapter
-inhibit=false/watchdog unavailable; нельзя объявлять physical safe state.
-Host/sanitizers33 suites, standalone10, ARM/static/board/output gates; прежняя
-ESP SDK matrix8 сохраняется. HMI UI/config/board/dependency locks/security прежние.
-Слитый UI PR-08a/меню/dashboard/Wi-Fi/STOP сохранять. Новых update/download/
-install buttons/history или ложной readiness нет.
-Native JSON encoding gate усилен без изменения pinned cJSON или UI callbacks.
-Host-only test signing driver не включать в ESP32/STM32 firmware или artifacts.
-PR-05 candidates остаются metadata-only, CI exact workspace trust без wildcard.
-Runtime ESP resource budget/load/fault/soak/installer gates ещё открыты.
-На плате ordinary8f0d899,owner HMI/touch/Wi-Fi PASS; разрешения исполнены.
-Новых device/flash/reset/serial/UTC/network probes без отдельного exact-image
-согласования не выполнять. Нет keys/release/eFuse/CAN/motion и auto-merge PR.
+Нет production bundle/component linkage, actual keys/versions/local-context
+provider, immutable backend/runtime caller, boot identity/persistence/authentication,
+CAN wire/IDs/bitrate, MCU map/Flash writer/COMMIT/jump/ARM/START. DATA deadlines
+не продлевать. Matching forged handshake может пройти; это не authentication.
+Owner F407 SWD/core/rawID/Flash1MiB/3,252V/backup/vector facts прежние; повторён
+только VGT6. Full marking/HSE/RAM/CCM/IRQ/sector/protection/GPIO/CAN/restore unknown.
+BOARD_IMAGE=ON fail, synthetic startup не actual profile; no-I/O inhibit=false/
+watchdog unavailable не physical safe. Не повторять device access/backup reads.
+
+Host/sanitizers34 suites, standalone11, ARM/static7/source/board/output gates;
+прежняя ESP SDK matrix8. HMI/board/config/partition/dependency/security прежние;
+UI PR-08a/dashboard/Wi-Fi/STOP сохранять. Нет новых download/install buttons.
+Host-only test keys только в RAM, не в firmware/artifacts. PR-05 candidates
+metadata-only/exact workspace trust прежний. Runtime ESP budget/fault/soak/
+installer gates открыты. На плате ordinary8f0d899, owner HMI/touch/Wi-Fi PASS;
+разрешения исполнены. Нет devices/SWD/UART/reset/Flash/network probes без
+отдельного exact-image согласования. Нет keys/release/eFuse/CAN/motion/self-merge.

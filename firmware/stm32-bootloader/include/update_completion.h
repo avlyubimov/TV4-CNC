@@ -2,6 +2,7 @@
 #define TV4_BOOT_UPDATE_COMPLETION_H
 
 #include "update_handoff.h"
+#include "release_handoff.h"
 #include "update_outcome.h"
 
 typedef enum {
@@ -45,6 +46,13 @@ typedef struct {
 bool tv4_boot_completion_start(tv4_boot_completion *completion, tv4_boot_handoff *handoff,
     const tv4_update_binding *expected, const tv4_boot_image_profile *profile,
     tv4_boot_workspace *scratch);
+/* Explicit release-draft path: uses the adapter's captured selection/policy,
+ * same raw negotiated metadata binding, live guards/model/close algorithm.
+ * Historical report is unchanged and carries no install/ARM authority. Adapter
+ * and core remain under this one owner's control until READY/quarantine;
+ * do not clear or independently operate them while completion is active. */
+bool tv4_boot_completion_start_release(tv4_boot_completion *completion, tv4_boot_release_handoff *adapter,
+    const tv4_update_binding *expected, const tv4_boot_image_profile *profile, tv4_boot_workspace *scratch);
 bool tv4_boot_completion_poll(tv4_boot_completion *completion);
 void tv4_boot_completion_abort(tv4_boot_completion *completion);
 /* Pure copy of a HISTORICAL report; no lease/candidate/physical/install token.

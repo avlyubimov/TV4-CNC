@@ -111,3 +111,10 @@ production profile/metadata/version/keys и real physical quiescent proof отк
 Нет actual F407 profile, Flash address reservation, CAN hardware, device/SWD/
 UART/reset/Flash/option bytes/backup reads/network bench/motion/release/merge.
 На ESP32 остаётся ordinary8f0d899. Откат — revert PR, без миграции устройства.
+
+## PR-07h — отдельный release-aware путь
+
+[Release handoff](STM32_RELEASE_HANDOFF.md) использует эти же guards/cleanup/
+model/completion алгоритмы для strict15-field signed release draft. Explicit
+local API выбирает режим; legacy strict11 path не переключается по JSON.
+Raw metadata SHA связан с negotiation; production runtime/installer нет.

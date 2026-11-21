@@ -1,6 +1,6 @@
 # Реализация: main, открытые PR и аппаратные границы
 
-Актуализация от main `3381236`, 21 ноября2026: PR #1–36 слиты. Owner SWD
+Актуализация от main `c17e89c`, 21 ноября2026: PR #1–37 слиты. Owner SWD
 F407/core/Flash1024KiB/backup — [HARDWARE_STATUS](HARDWARE_STATUS.md).
 Startup/DATA/admission/handoff/preflight и PR-07e уже в main:
 [completion/outcome](STM32_UPDATE_OUTCOME.md) связывает full checks с lease close
@@ -18,12 +18,17 @@ REQUEST/OFFER/ACCEPT/CONFIRM, volatile monotonic pool/peer high-water и bounded
 one-time DATA setup. Host31/sanitizers31/standalone8, ARM/static/source/image/
 output PASS;1024 sessions +6 new signed chains/3 negatives. Нет identity provider,
 wire/CAN authentication, actual keys/context или install/physical permission.
-Текущая ветка PR-07g [independent release binding](STM32_RELEASE_BINDING.md):
+Слитый PR #37, PR-07g [independent release binding](STM32_RELEASE_BINDING.md):
 отдельный signed Motion draft с release/component SemVer/channel/source и
 target/counter/image checks через прежний engine. Host33/sanitizers33/standalone10,
 2745 version comparisons и ARM/static/source/image/output PASS; workspace17664
-прежний. Новый API ещё не подключён к lease/coordinator/runtime и не задаёт
-production bundle/schema/keys/installed context. Legacy strict11-field API прежний.
+прежний. Это исторический standalone этап; production bundle/schema/keys/
+installed context не задаёт. Legacy strict11-field API прежний.
+Текущая ветка PR-07h [release handoff](STM32_RELEASE_HANDOFF.md) соединяет release
+verifier с прежними live lease/context/vector/deadline guards и completion/outcome.
+Host34/sanitizers34/standalone11,6 новых full signed chains, ARM/static7/source/
+board/output PASS; прежние footprint/crypto/deadlines/SDK matrix8 сохранены.
+Production bundle/context/runtime/wire/installer/hardware readiness не добавлены.
 Push CI также обнаружил старый build-candidate flaky fixture: constant `x` мог
 совпасть с SHA tail. Теперь test XOR1 гарантированно меняет байт; verifier прежний.
 Нет runtime caller, Flash writer/map/commit/jump или физического safe-state proof.

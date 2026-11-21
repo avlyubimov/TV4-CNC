@@ -9,7 +9,7 @@ Motion document связывает release/component/target/profile/image одн
 ## Два явных API и domain separation
 
 - `tv4_boot_admit` по-прежнему принимает только прежние11 полей и schema
-  `tv4-motion-admission-draft-1`. Существующие handoff/completion вызывают его.
+  `tv4-motion-admission-draft-1`. Legacy handoff/completion вызывают его.
 - Новый [tv4_boot_admit_release](../firmware/stm32-bootloader/include/release_admission.h)
   принимает только15 полей и schema `tv4-motion-release-draft-1`. Нет fallback
   между схемами, автоматического определения API по скачанному JSON или
@@ -18,10 +18,10 @@ Motion document связывает release/component/target/profile/image одн
   **до parser**, затем policy, полный image SHA/length/EOF и cleanup. Новых
   crypto/dependency/allocator instances, heap или скрытого второго image pass нет.
 
-Это standalone candidate API. Новый путь ещё **не подключён к source lease/
-negotiation/handoff/completion или runtime**. Их lifetime/generation/deadline
-правила сохранены. Будущий adapter требует отдельного review signed document
-binding и живого immutable source context. Historical candidate не переносится
+В PR #37 это standalone candidate API. Последующий PR-07h
+[release handoff](STM32_RELEASE_HANDOFF.md) добавляет explicit live lease/
+negotiation/completion path через те же lifetime/generation/deadline/vector
+правила. Runtime caller и production backend пока отсутствуют. Historical candidate не переносится
 через operator wait, reboot, смену policy/source или последующую установку.
 
 ## Строгий подписанный документ

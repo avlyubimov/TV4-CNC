@@ -122,3 +122,10 @@ PR-07e [completion/outcome](STM32_UPDATE_OUTCOME.md) использует сущ
 handoff/model checks, закрывает lease и экспортирует только historical result.
 Pending/quarantine не создают positive и не забывают ownership; input/report
 не является permission на будущую установку.
+
+## PR-07h — отдельный release-aware путь
+
+[Release handoff](STM32_RELEASE_HANDOFF.md) использует эти же guards/cleanup/
+model/completion алгоритмы для strict15-field signed release draft. Explicit
+local API выбирает режим; legacy strict11 path не переключается по JSON.
+Raw metadata SHA связан с negotiation; production runtime/installer нет.

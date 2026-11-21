@@ -75,6 +75,7 @@ typedef struct {
     tv4_boot_image_result preflight_result;
     bool busy, held, cancel_requested, admission_attempted, preflight_attempted;
     uint8_t release_attempts, release_attempt_limit;
+    bool release_document; /* explicit local mode, uses former padding */
     uint32_t started_ms, observed_ms, lifetime_ms, rx_started_ms, rx_progress_ms;
     tv4_update_rx *rx;
     tv4_update_descriptor descriptor;
