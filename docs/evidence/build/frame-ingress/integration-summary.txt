@@ -1,0 +1,7 @@
+PASS host-tests.txt: 71/71, 5.37s
+INGRESS host-tests.txt {"container_bytes": 4798, "driver_claims": 12066, "driver_rejected_callbacks": 706, "driver_returns": 12066, "drops": 80, "event_posts": 12066, "event_services": 12066, "frames": 12066, "ingress_checks": 12730, "ingress_offers": 12730, "longest_synthetic_ms": 4740, "signature_max": 72, "signature_min": 70}
+PASS sanitizer-tests.txt: 71/71, 11.58s
+INGRESS sanitizer-tests.txt {"container_bytes": 4799, "driver_claims": 12067, "driver_rejected_callbacks": 706, "driver_returns": 12067, "drops": 80, "event_posts": 12067, "event_services": 12067, "frames": 12067, "ingress_checks": 12731, "ingress_offers": 12731, "longest_synthetic_ms": 4740, "signature_max": 72, "signature_min": 70}
+PASS standalone-tests.txt: 45/45, 2.27s
+INGRESS standalone-tests.txt {"container_bytes": 4803, "driver_claims": 12067, "driver_rejected_callbacks": 706, "driver_returns": 12067, "drops": 80, "event_posts": 12067, "event_services": 12067, "frames": 12067, "ingress_checks": 12731, "ingress_offers": 12731, "longest_synthetic_ms": 4740, "signature_max": 72, "signature_min": 71}
+PASS thread-sanitizer.txt: 6/6, 1.35s

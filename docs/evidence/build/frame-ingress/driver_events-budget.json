@@ -1,0 +1,37 @@
+{
+  "scope": "opt-in bound egress/driver event inbox static archive, not firmware",
+  "objects": {
+    "text": 768,
+    "data": 0,
+    "bss": 0
+  },
+  "unresolved_imports": [
+    "memset",
+    "tv4_update_egress_advance",
+    "tv4_update_egress_begin",
+    "tv4_update_egress_cancel",
+    "tv4_update_egress_claim",
+    "tv4_update_egress_clear",
+    "tv4_update_egress_complete",
+    "tv4_update_egress_init",
+    "tv4_update_egress_poll",
+    "tv4_update_egress_pump"
+  ],
+  "exported_functions": [
+    "tv4_driver_events_advance",
+    "tv4_driver_events_begin",
+    "tv4_driver_events_cancel",
+    "tv4_driver_events_claim",
+    "tv4_driver_events_clear",
+    "tv4_driver_events_init",
+    "tv4_driver_events_poll",
+    "tv4_driver_events_post",
+    "tv4_driver_events_pump",
+    "tv4_driver_events_service"
+  ],
+  "max_individual_frame": 56,
+  "full_stack_verified": false,
+  "board_memory_verified": false,
+  "runtime_caller": false,
+  "device_access": false
+}

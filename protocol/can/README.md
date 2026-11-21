@@ -1,5 +1,12 @@
 # CAN: стендовый heartbeat и подготовка update transport
 
+PR-07t: [bounded owned frame ingress](../../docs/STM32_FRAME_INGRESS.md) добавляет
+SPSC RX copies/original capture age/retained full retry и sticky loss/fault.
+Stage token не содержит payload; fresh check выдаёт owned UNVERIFIED frame.
+Signed HOST path также использует слитые [dispatch](../../docs/STM32_DRIVER_DISPATCH.md)
+и [completion mailbox](../../docs/STM32_COMPLETION_MAILBOX.md). Нет реального
+CAN/ISR/RTOS/cache/DMA/clock/runtime или producer-stop/phase-cutover approval.
+
 PR-07m: [opt-in metadata container/RX](../../docs/STM32_METADATA_TRANSPORT.md)
 переносит raw document/signature/key ID через отдельный logical DATA stream.
 Original image ID/binding и metadata ID различаются, high-water/time сохраняются.

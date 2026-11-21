@@ -1,0 +1,54 @@
+[1/53] Building C object update-transport/CMakeFiles/tv4_frame_ingress.dir/frame_ingress.c.o
+[2/53] cd /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/frame-ingress/build-boot-host && /home/avlyubimov/.local/bin/python3.14 /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/frame-ingress/tools/check_boot_crypto_source.py --source /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/frame-ingress/build-boot-host/_deps/tv4_boot_mbedtls-src --lock /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/frame-ingress/third_party/mbedtls/origin.json
+PASS pinned Mbed TLS source: {"files": 178, "tree_sha256": "2087a1191bd838ec63bc7d97452337888fef6247eac6ba782554d58408041310", "version": "3.6.7"}
+[3/53] Building C object update-transport/CMakeFiles/tv4_fragment_test_link.dir/tests/fragment_test_link.c.o
+[4/53] Building C object update-transport/CMakeFiles/update_session_tests.dir/tests/session_tests.c.o
+[5/53] Linking C static library update-transport/libtv4_frame_ingress.a
+[6/53] Building C object CMakeFiles/boot_motion_review.dir/tools/motion_review.c.o
+[7/53] Building C object CMakeFiles/boot_staging_tests.dir/tests/staging_tests.c.o
+[8/53] Building C object CMakeFiles/boot_profile_tests.dir/tests/image_profile_tests.c.o
+[9/53] Building C object CMakeFiles/boot_admission_tests.dir/tests/admission_tests.c.o
+[10/53] Building C object update-transport/CMakeFiles/update_outcome_tests.dir/tests/outcome_tests.c.o
+[11/53] Building C object update-transport/CMakeFiles/update_loopback_tests.dir/tests/loopback_tests.c.o
+[12/53] Building C object CMakeFiles/boot_release_tests.dir/tests/release_tests.c.o
+[13/53] Building C object update-transport/CMakeFiles/update_wire_tests.dir/tests/wire_tests.c.o
+[14/53] Building C object update-transport/CMakeFiles/update_negotiation_tests.dir/tests/negotiation_tests.c.o
+[15/53] Building C object update-transport/CMakeFiles/update_fragment_tests.dir/tests/fragment_tests.c.o
+[16/53] Building C object update-transport/CMakeFiles/update_fragment_timing_tests.dir/tests/fragment_timing_tests.c.o
+[17/53] Linking C static library update-transport/libtv4_fragment_test_link.a
+[18/53] Building C object update-transport/CMakeFiles/update_metadata_tests.dir/tests/metadata_tests.c.o
+[19/53] Building C object update-transport/CMakeFiles/update_frame_queue_tests.dir/tests/frame_queue_tests.c.o
+[20/53] Building C object update-transport/CMakeFiles/update_egress_tests.dir/tests/egress_tests.c.o
+[21/53] Building C object update-transport/CMakeFiles/update_completion_mailbox_tests.dir/tests/completion_mailbox_tests.c.o
+[22/53] Building C object update-transport/CMakeFiles/update_driver_events_tests.dir/tests/driver_events_tests.c.o
+[23/53] Building C object update-transport/CMakeFiles/update_completion_owner_tests.dir/tests/completion_owner_tests.c.o
+[24/53] Building C object CMakeFiles/boot_handoff_tests.dir/tests/handoff_tests.c.o
+[25/53] Building C object update-transport/CMakeFiles/update_fragment_raw_tests.dir/tests/fragment_raw_tests.c.o
+[26/53] Building C object update-transport/CMakeFiles/update_driver_dispatch_tests.dir/tests/driver_dispatch_tests.c.o
+[27/53] Building C object update-transport/CMakeFiles/update_channel_tests.dir/tests/channel_tests.c.o
+[28/53] Building C object update-transport/CMakeFiles/update_frame_ingress_tests.dir/tests/frame_ingress_tests.c.o
+[29/53] Linking C executable boot_motion_review
+[30/53] Linking C executable boot_staging_tests
+[31/53] Linking C executable boot_profile_tests
+[32/53] Linking C executable boot_admission_tests
+[33/53] Building C object update-transport/CMakeFiles/update_metadata_setup_tests.dir/tests/metadata_setup_tests.c.o
+[34/53] Linking C executable update-transport/update_session_tests
+[35/53] Linking C executable boot_handoff_tests
+[36/53] Linking C executable update-transport/update_outcome_tests
+[37/53] Linking C executable update-transport/update_negotiation_tests
+[38/53] Linking C executable boot_release_tests
+[39/53] Linking C executable update-transport/update_wire_tests
+[40/53] Linking C executable update-transport/update_fragment_tests
+[41/53] Linking C executable update-transport/update_loopback_tests
+[42/53] Linking C executable update-transport/update_metadata_tests
+[43/53] Linking C executable update-transport/update_fragment_timing_tests
+[44/53] Linking C executable update-transport/update_frame_queue_tests
+[45/53] Linking C executable update-transport/update_egress_tests
+[46/53] Linking C executable update-transport/update_completion_mailbox_tests
+[47/53] Linking C executable update-transport/update_driver_events_tests
+[48/53] Linking C executable update-transport/update_completion_owner_tests
+[49/53] Linking C executable update-transport/update_driver_dispatch_tests
+[50/53] Linking C executable update-transport/update_frame_ingress_tests
+[51/53] Linking C executable update-transport/update_channel_tests
+[52/53] Linking C executable update-transport/update_fragment_raw_tests
+[53/53] Linking C executable update-transport/update_metadata_setup_tests

@@ -1,0 +1,5 @@
+PASS 52 Markdown files / 471 local links resolve
+PASS 158 exact source/config/document SHA-256 entries
+PASS 50 text-only evidence files <300000 bytes, no private PEM/binary outputs
+PASS scoped optional protocol/host pthread/tests/guards/CI/docs; no SDK/dependency locks/pin/partition/device changes
+PASS no executable code changed after full checks; captured whitespace normalized only; all CTest rows retained

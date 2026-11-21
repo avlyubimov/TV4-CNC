@@ -1,6 +1,13 @@
 # PR-02 — STM32 Motion Foundation
 
-PR-07s от main `db50840`: [owned driver dispatch](STM32_DRIVER_DISPATCH.md) связывает actual
+PR-07t от main `25e635c`: [очередь входящих кадров](STM32_FRAME_INGRESS.md) добавляет bounded owned
+SPSC capture/stage/fresh-check, сохранение original capture time при full/retry
+и sticky clock/expiry/overrun/exhaustion. Host71/sanitizers71/standalone45/TSan6
+PASS. ARM1060text/data0/bss0/frame48 отдельно, прежние budgets/SDK pins сохранены.
+FRAME не verified; empty не producer-stop/phase-cutover. Реальные target port/
+clock/backend/identity/runtime/installer и hardware gates открыты. Устройств не касались.
+
+Слитый PR #51, PR-07s от main `db50840`: [owned driver dispatch](STM32_DRIVER_DISPATCH.md) связывает actual
 claimed frame, bounded publication/take/fresh check и correlated return. Untaken/
 taken jobs и первый pending report сохраняются при cancel/timeout/full. Host68/
 sanitizers68/standalone42/TSan4 PASS. Software revocation не physical inhibit;

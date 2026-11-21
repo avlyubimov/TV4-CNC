@@ -1620,7 +1620,7 @@ static size_t timed_metadata_impl(fixture *f,tv4_test_link *link,tv4_metadata_do
 }
 static size_t timed_metadata(fixture *f,tv4_test_link *link,tv4_metadata_document *downloaded)
 {return timed_metadata_impl(f,link,downloaded,NULL);}
-typedef enum {META_DIRECT,META_SETUP,META_CHANNEL,META_EGRESS,META_EVENTS,META_MAILBOX,META_DISPATCH} metadata_link_mode;
+typedef enum {META_DIRECT,META_SETUP,META_CHANNEL,META_EGRESS,META_EVENTS,META_MAILBOX,META_DISPATCH,META_INGRESS} metadata_link_mode;
 static void metadata_signed_chains(metadata_link_mode mode)
 {
     bool setup_mode=mode>=META_SETUP,channel_mode=mode>=META_CHANNEL,egress_mode=mode>=META_EGRESS,event_mode=mode>=META_EVENTS;
@@ -1631,7 +1631,7 @@ static void metadata_signed_chains(metadata_link_mode mode)
         if(channel_mode)mask=(uint16_t)(mask|TV4_TEST_LINK_MS_DROP_MASK);
         tv4_test_link_config cfg=timed_config(mask,(uint16_t)(i%3u));cfg.multiplexed=channel_mode;cfg.egress=egress_mode;
         if(egress_mode)cfg.custody=(tv4_frame_queue_limits){16,2};
-        if(event_mode){cfg.driver_events=true;cfg.event_capacity=2;cfg.event_service_ms=1;cfg.fragments.total_timeout_ms=256;cfg.completion_mailbox=mode>=META_MAILBOX;cfg.driver_dispatch=mode==META_DISPATCH;}
+        if(event_mode){cfg.driver_events=true;cfg.event_capacity=2;cfg.event_service_ms=1;cfg.fragments.total_timeout_ms=256;cfg.completion_mailbox=mode>=META_MAILBOX;cfg.driver_dispatch=mode>=META_DISPATCH;if(mode==META_INGRESS){cfg.frame_ingress=true;cfg.ingress_capacity=2;cfg.ingress_residency_ms=8;cfg.ingress_service_ms=1;}}
         tv4_test_link_init(&link,&f.now,&cfg);
         uint32_t started=f.now;tv4_metadata_document downloaded;
         if(setup_mode) {
@@ -1653,7 +1653,7 @@ static void metadata_signed_chains(metadata_link_mode mode)
         if(channel_mode) {
             unsigned attempts=0,counters=0;for(unsigned k=1;k<=12;++k)attempts+=link.attempts[k];
             for(unsigned d=0;d<2;++d) {
-                const tv4_channel_tx *tx=mode==META_DISPATCH?&link.direction[d].dispatch.completion.events.egress.channel:mode==META_MAILBOX?&link.direction[d].completion.events.egress.channel:event_mode?&link.direction[d].events.egress.channel:egress_mode?&link.direction[d].egress.channel:&link.direction[d].channel_tx;
+                const tv4_channel_tx *tx=mode>=META_DISPATCH?&link.direction[d].dispatch.completion.events.egress.channel:mode==META_MAILBOX?&link.direction[d].completion.events.egress.channel:event_mode?&link.direction[d].events.egress.channel:egress_mode?&link.direction[d].egress.channel:&link.direction[d].channel_tx;
                 assert(tx->policy.phase==TV4_CHANNEL_NEGOTIATION);
                 assert(tx->fragments.storage.counter==link.direction[d].channel_rx.fragments.storage.counter);
                 counters+=tx->fragments.storage.counter;
@@ -1662,10 +1662,10 @@ static void metadata_signed_chains(metadata_link_mode mode)
             if(egress_mode) {
                 unsigned tickets=0;
                 for(unsigned d=0;d<2;++d) {
-                    const tv4_update_egress *owner=mode==META_DISPATCH?&link.direction[d].dispatch.completion.events.egress:mode==META_MAILBOX?&link.direction[d].completion.events.egress:event_mode?&link.direction[d].events.egress:&link.direction[d].egress;
+                    const tv4_update_egress *owner=mode>=META_DISPATCH?&link.direction[d].dispatch.completion.events.egress:mode==META_MAILBOX?&link.direction[d].completion.events.egress:event_mode?&link.direction[d].events.egress:&link.direction[d].egress;
                     assert(owner->queue.count==0 && owner->queue.flight==0);
-                    assert(!event_mode || (mode==META_DISPATCH?link.direction[d].dispatch.completion.events.count:mode==META_MAILBOX?link.direction[d].completion.events.count:link.direction[d].events.count)==0);
-                    if(mode==META_DISPATCH)assert(atomic_load(&link.direction[d].dispatch.state)==TV4_DISPATCH_EMPTY && !link.direction[d].dispatch.completion.has_pending && tv4_completion_mailbox_empty(&link.direction[d].dispatch.completion.mailbox)==TV4_QUEUE_OK);
+                    assert(!event_mode || (mode>=META_DISPATCH?link.direction[d].dispatch.completion.events.count:mode==META_MAILBOX?link.direction[d].completion.events.count:link.direction[d].events.count)==0);
+                    if(mode>=META_DISPATCH)assert(atomic_load(&link.direction[d].dispatch.state)==TV4_DISPATCH_EMPTY && !link.direction[d].dispatch.completion.has_pending && tv4_completion_mailbox_empty(&link.direction[d].dispatch.completion.mailbox)==TV4_QUEUE_OK);
                     if(mode==META_MAILBOX)assert(!link.direction[d].completion.has_pending && tv4_completion_mailbox_empty(&link.direction[d].completion.mailbox)==TV4_QUEUE_OK);
                     tickets+=owner->queue.last_issued;
                 }
@@ -1675,9 +1675,12 @@ static void metadata_signed_chains(metadata_link_mode mode)
                     link.driver_claims,link.driver_returns,link.driver_held_ticks,link.driver_max_pending);
                 if(event_mode) {
                     assert(link.event_posts==link.event_services && link.event_held_ticks>0);
-                    if(mode==META_DISPATCH) {
+                    if(mode>=META_DISPATCH) {
                         assert(link.event_stales==0 && link.event_max_pending==1 && link.dispatch_publications==link.frames && link.dispatch_rejected_callbacks>0);
                         printf("DISPATCH published=%u driver-rejected-callbacks=%u; original admission/fresh check/exact terminal/slot reuse, no driver-copy gap\n",link.dispatch_publications,link.dispatch_rejected_callbacks);
+                        if(mode==META_INGRESS){assert(link.ingress_posts==link.ingress_checks && link.ingress_checks==link.delivered_frames);
+                            for(unsigned d=0;d<2;++d)assert(tv4_frame_ingress_empty(&link.direction[d].ingress)==TV4_INGRESS_WAIT && tv4_frame_ingress_faults(&link.direction[d].ingress)==0);
+                            printf("INGRESS owned copies=%u checked=%u; capture age/current service time, one-frame service budget\n",link.ingress_posts,link.ingress_checks);}
                     }else assert(link.event_stales>0 && link.event_max_pending==2);
                     assert(link.event_services==link.driver_returns+link.event_stales);
                     printf("EVENTS posted=%u serviced=%u stale=%u wait-ticks=%u max-pending=%u; owned copies, one-event budget/current service time\n",
@@ -1701,7 +1704,7 @@ static void metadata_admission_refusals(metadata_link_mode mode)
         tv4_test_link_config cfg=timed_config((uint16_t)((1u<<5)|(1u<<6)|(channel_mode?TV4_TEST_LINK_MS_DROP_MASK:0u)),1);
         cfg.multiplexed=channel_mode;cfg.egress=egress_mode;
         if(egress_mode)cfg.custody=(tv4_frame_queue_limits){16,2};
-        if(event_mode){cfg.driver_events=true;cfg.event_capacity=2;cfg.event_service_ms=1;cfg.fragments.total_timeout_ms=256;cfg.completion_mailbox=mode>=META_MAILBOX;cfg.driver_dispatch=mode==META_DISPATCH;}
+        if(event_mode){cfg.driver_events=true;cfg.event_capacity=2;cfg.event_service_ms=1;cfg.fragments.total_timeout_ms=256;cfg.completion_mailbox=mode>=META_MAILBOX;cfg.driver_dispatch=mode>=META_DISPATCH;if(mode==META_INGRESS){cfg.frame_ingress=true;cfg.ingress_capacity=2;cfg.ingress_residency_ms=8;cfg.ingress_service_ms=1;}}
         tv4_test_link_init(&link,&f.now,&cfg);
         timed_image_session image={0};
         if(setup_mode)timed_negotiate_impl(&f,&link,256,&image);else timed_negotiate(&f,&link,31);
@@ -1810,13 +1813,14 @@ static void driver_event_lifetime_refusals(bool mailbox)
     }
     puts("PASS2 delayed queued terminal/uncertain event refusals: original image timeout retained; current-time service reclaims only, no RX/admission revival");
 }
-static void dispatch_lifetime_refusals(void)
+static void dispatch_lifetime_refusals(bool ingress)
 {
     for(unsigned which=0;which<2;++which) {
         fixture f;release_fixture(&f,33);f.use_stage=true;tv4_test_link link={0};
         tv4_test_link_config cfg=timed_config(TV4_TEST_LINK_MS_DROP_MASK,1);
         cfg.multiplexed=true;cfg.egress=true;cfg.driver_events=true;cfg.completion_mailbox=true;cfg.driver_dispatch=true;
         cfg.custody=(tv4_frame_queue_limits){16,2};cfg.event_capacity=2;cfg.event_service_ms=1;cfg.fragments.total_timeout_ms=256;
+        if(ingress){cfg.frame_ingress=true;cfg.ingress_capacity=2;cfg.ingress_residency_ms=8;cfg.ingress_service_ms=1;}
         tv4_test_link_init(&link,&f.now,&cfg);timed_image_session image={0};timed_negotiate_impl(&f,&link,256,&image);
         tv4_metadata_document downloaded;(void)timed_metadata_impl(&f,&link,&downloaded,&image);
         uint32_t started=f.rx.context.started_ms,progress=f.rx.context.progress_ms;
@@ -1827,6 +1831,10 @@ static void dispatch_lifetime_refusals(void)
         assert(tv4_driver_dispatch_publish(dispatch,link.generation[0],f.now)==TV4_QUEUE_ADMITTED);
         tv4_dispatch_delivery token,checked;assert(tv4_driver_dispatch_take(dispatch,&token)==TV4_DISPATCH_UNCHECKED);
         assert(tv4_driver_dispatch_check(dispatch,token.delivery.ticket,&checked,f.now)==TV4_DISPATCH_SENDABLE);
+        tv4_ingress_token incoming={0};
+        if(ingress){assert(tv4_frame_ingress_offer(&link.direction[0].ingress,1,link.generation[0],&checked.delivery.frame,f.now,f.now)==TV4_INGRESS_ADMITTED);
+            assert(tv4_frame_ingress_stage(&link.direction[0].ingress,&incoming)==TV4_INGRESS_UNCHECKED);
+            if(which==1)assert(tv4_frame_ingress_lost(&link.direction[0].ingress)==TV4_INGRESS_FAULT);}
         tv4_driver_event report={token.delivery.ticket,TV4_FRAME_OWNERSHIP_UNCERTAIN};
         if(which==0)assert(tv4_driver_dispatch_report(dispatch,&report)==TV4_QUEUE_ADMITTED);
         report.result=TV4_FRAME_SENT_LOCAL;assert(tv4_driver_dispatch_report(dispatch,&report)==TV4_QUEUE_ADMITTED);memset(&report,0,sizeof(report));
@@ -1837,6 +1845,9 @@ static void dispatch_lifetime_refusals(void)
         }
         assert(f.rx.context.state==TV4_UPDATE_FAILED && f.rx.context.error==TV4_UPDATE_ERROR_PROGRESS_TIMEOUT);
         assert(f.rx.context.started_ms==started && f.rx.context.progress_ms==progress && f.rx.context.next_offset==0);
+        if(ingress){tv4_fragment_frame refused;assert(tv4_frame_ingress_check(&link.direction[0].ingress,incoming,&refused,f.now)==TV4_INGRESS_FAULT && zero(&refused,sizeof(refused)));
+            assert((tv4_frame_ingress_faults(&link.direction[0].ingress)&(which==0?TV4_INGRESS_EXPIRED:TV4_INGRESS_OVERRUN))!=0);
+            (void)tv4_channel_rx_cancel(&link.direction[0].channel_rx,link.generation[0],f.now);}
         assert(tv4_driver_dispatch_clear(dispatch,link.generation[0],f.now)==TV4_QUEUE_HELD);
         if(which==0)assert(tv4_driver_dispatch_service(dispatch,link.generation[0],f.now)==TV4_QUEUE_HELD);
         assert(tv4_driver_dispatch_service(dispatch,link.generation[0],f.now)==TV4_QUEUE_RECLAIMED_FAILED);
@@ -1847,13 +1858,17 @@ static void dispatch_lifetime_refusals(void)
         assert(!tv4_boot_release_handoff_begin(&f.release_adapter,&f.session,&f.release_config,&f.rx));assert(f.acquired==0 && f.rx.context.state==TV4_UPDATE_FAILED);
         release_clear(&f);memset(&downloaded,0,sizeof(downloaded));finish(&f);
     }
-    puts("PASS2 dispatch/completion retained through original image expiry; late correlated return reclaims slot only, no RX/admission revival");
+    if(ingress)puts("PASS2 ingress expiry/overrun refuses staged payload, original image deadline retained, no RX/admission revival");
+    else puts("PASS2 dispatch/completion retained through original image expiry; late correlated return reclaims slot only, no RX/admission revival");
 }
 #define RUN(name) do { name(); puts("PASS " #name); } while (0)
 int main(int argc,char **argv)
 {
+    if(argc==2 && strcmp(argv[1],"--frame-ingress-staging")==0) {
+        metadata_signed_chains(META_INGRESS);metadata_admission_refusals(META_INGRESS);dispatch_lifetime_refusals(true);return 0;
+    }
     if(argc==2 && strcmp(argv[1],"--driver-dispatch-staging")==0) {
-        metadata_signed_chains(META_DISPATCH);metadata_admission_refusals(META_DISPATCH);dispatch_lifetime_refusals();return 0;
+        metadata_signed_chains(META_DISPATCH);metadata_admission_refusals(META_DISPATCH);dispatch_lifetime_refusals(false);return 0;
     }
     if(argc==2 && strcmp(argv[1],"--completion-mailbox-staging")==0) {
         metadata_signed_chains(META_MAILBOX);metadata_admission_refusals(META_MAILBOX);driver_event_lifetime_refusals(true);return 0;
