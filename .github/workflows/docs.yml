@@ -16,6 +16,10 @@ jobs:
           test -s README.md
           test -s docs/CODEX_TASK_001.md
           test -s docs/ARCHITECTURE.md
+          test -s docs/IMPLEMENTATION_PRIORITIES.md
+          test -s docs/STM32_FIRST_IMAGE.md
+          test -s docs/STM32_STLINK_RUNBOOK.md
+          test -s docs/plans/P0_STM32F407_FIRST_IMAGE.md
           test -s docs/STM32_IMAGE_ADMISSION.md
           test -s docs/STM32_UPDATE_HANDOFF.md
           test -s docs/STM32_IMAGE_PREFLIGHT.md

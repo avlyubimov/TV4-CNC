@@ -1,0 +1,24 @@
+UpdateCTestConfiguration  from :/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32f407-first-image/build-motion-probe/DartConfiguration.tcl
+Test project /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32f407-first-image/build-motion-probe
+Constructing a list of tests
+Done constructing a list of tests
+Updating test list for fixtures
+Added 0 tests to meet fixture requirements
+Checking test dependency graph...
+Checking test dependency graph end
+test 1
+    Start 1: motion_link_contract
+
+1: Test command: /home/avlyubimov/.local/bin/python3.14 "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32f407-first-image/firmware/stm32-motion/tests/link_contract_tests.py" "--elf" "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32f407-first-image/build-motion-probe/tv4_motion_link_probe.elf" "--compiler" "/usr/bin/arm-none-eabi-gcc" "--objects" "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32f407-first-image/build-motion-probe/probe-inputs.txt" "--sections" "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32f407-first-image/firmware/stm32-motion/linker/sections.ld" "--memory" "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32f407-first-image/firmware/stm32-motion/tests/link_fixture/memory.ld"
+1: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/stm32f407-first-image/build-motion-probe
+1: Test timeout computed to be: 45
+1: ...........
+1: ----------------------------------------------------------------------
+1: Ran 11 tests in 0.038s
+1:
+1: OK
+1/1 Test #1: motion_link_contract .............   Passed    0.08 sec
+
+100% tests passed, 0 tests failed out of 1
+
+Total Test time (real) =   0.08 sec

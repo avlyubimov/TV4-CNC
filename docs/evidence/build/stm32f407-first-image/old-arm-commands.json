@@ -1,0 +1,122 @@
+[
+  {
+    "check": "wire",
+    "negative": [
+      "python3",
+      "protocol/can/tests/wire_budget_tests.py",
+      "--build",
+      "build-boot-arm/update-transport"
+    ],
+    "exit": 0
+  },
+  {
+    "check": "fragment",
+    "negative": [
+      "python3",
+      "protocol/can/tests/wire_budget_tests.py",
+      "--build",
+      "build-boot-arm/update-transport",
+      "--fragments"
+    ],
+    "exit": 0
+  },
+  {
+    "check": "metadata",
+    "negative": [
+      "python3",
+      "protocol/can/tests/wire_budget_tests.py",
+      "--build",
+      "build-boot-arm/update-transport",
+      "--metadata"
+    ],
+    "exit": 0
+  },
+  {
+    "check": "setup",
+    "negative": [
+      "python3",
+      "protocol/can/tests/wire_budget_tests.py",
+      "--build",
+      "build-boot-arm/update-transport",
+      "--setup"
+    ],
+    "exit": 0
+  },
+  {
+    "check": "channel",
+    "negative": [
+      "python3",
+      "protocol/can/tests/wire_budget_tests.py",
+      "--build",
+      "build-boot-arm/update-transport",
+      "--channel"
+    ],
+    "exit": 0
+  },
+  {
+    "check": "egress",
+    "negative": [
+      "python3",
+      "protocol/can/tests/wire_budget_tests.py",
+      "--build",
+      "build-boot-arm/update-transport",
+      "--egress"
+    ],
+    "exit": 0
+  },
+  {
+    "check": "driver-events",
+    "negative": [
+      "python3",
+      "protocol/can/tests/wire_budget_tests.py",
+      "--build",
+      "build-boot-arm/update-transport",
+      "--driver-events"
+    ],
+    "exit": 0
+  },
+  {
+    "check": "completion-mailbox",
+    "negative": [
+      "python3",
+      "protocol/can/tests/wire_budget_tests.py",
+      "--build",
+      "build-boot-arm/update-transport",
+      "--completion-mailbox"
+    ],
+    "exit": 0
+  },
+  {
+    "check": "driver-dispatch",
+    "negative": [
+      "python3",
+      "protocol/can/tests/wire_budget_tests.py",
+      "--build",
+      "build-boot-arm/update-transport",
+      "--driver-dispatch"
+    ],
+    "exit": 0
+  },
+  {
+    "check": "frame-ingress",
+    "negative": [
+      "python3",
+      "protocol/can/tests/wire_budget_tests.py",
+      "--build",
+      "build-boot-arm/update-transport",
+      "--frame-ingress"
+    ],
+    "exit": 0
+  },
+  {
+    "check": "ingress-owner",
+    "negative": [
+      "python3",
+      "protocol/can/tests/wire_budget_tests.py",
+      "--build",
+      "build-boot-arm/update-transport",
+      "--ingress-owner"
+    ],
+    "exit": 0
+  }
+]

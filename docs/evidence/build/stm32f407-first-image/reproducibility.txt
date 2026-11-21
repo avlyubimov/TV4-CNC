@@ -1,0 +1,2 @@
+PASS tv4_stm32f407_bench.bin: 2596 bytes SHA-256 f1a8c91ac4ca29cedac9af1db24bc7d245edeff81c63feab9683e7d918552305, byte-identical in two build directories; base610f174/dirty1 identity. Final clean exact-head candidate rebuilt separately.
+PASS tv4_stm32f407_bench.elf: 163712 bytes SHA-256 cabd796259b435360b180a6901f539f1885817b32fd53d06b5dac41dbc7dcc25, byte-identical in two build directories; base610f174/dirty1 identity. Final clean exact-head candidate rebuilt separately.

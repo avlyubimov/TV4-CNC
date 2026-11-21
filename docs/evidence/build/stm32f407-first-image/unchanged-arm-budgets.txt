@@ -1,0 +1,12 @@
+boot: complete parsed budget/import/export/frame/atomic/scope JSON equals PR54 evidence
+wire: complete parsed budget/import/export/frame/atomic/scope JSON equals PR54 evidence
+fragment: complete parsed budget/import/export/frame/atomic/scope JSON equals PR54 evidence
+metadata: complete parsed budget/import/export/frame/atomic/scope JSON equals PR54 evidence
+setup: complete parsed budget/import/export/frame/atomic/scope JSON equals PR54 evidence
+channel: complete parsed budget/import/export/frame/atomic/scope JSON equals PR54 evidence
+egress: complete parsed budget/import/export/frame/atomic/scope JSON equals PR54 evidence
+driver-events: complete parsed budget/import/export/frame/atomic/scope JSON equals PR54 evidence
+completion-mailbox: complete parsed budget/import/export/frame/atomic/scope JSON equals PR54 evidence
+driver-dispatch: complete parsed budget/import/export/frame/atomic/scope JSON equals PR54 evidence
+frame-ingress: complete parsed budget/import/export/frame/atomic/scope JSON equals PR54 evidence
+ingress-owner: complete parsed budget/import/export/frame/atomic/scope JSON equals PR54 evidence

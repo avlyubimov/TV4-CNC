@@ -1,0 +1,100 @@
+[
+  {
+    "name": "host",
+    "command": [
+      "cmake",
+      "-S",
+      "firmware/stm32-motion",
+      "-B",
+      "build-bench-refused-host",
+      "-DTV4_MOTION_BOARD_IMAGE=ON",
+      "-DTV4_MOTION_BOARD_PROFILE=stm32f407vg-hsi-no-motion-v1"
+    ],
+    "exit": 1,
+    "expected": "requires the pinned ARM toolchain"
+  },
+  {
+    "name": "unknown",
+    "command": [
+      "cmake",
+      "-S",
+      "firmware/stm32-motion",
+      "-B",
+      "build-bench-refused-unknown",
+      "-DTV4_MOTION_BOARD_IMAGE=ON",
+      "-DTV4_MOTION_BOARD_PROFILE=unknown",
+      "-DCMAKE_TOOLCHAIN_FILE=cmake/arm-none-eabi.cmake"
+    ],
+    "exit": 1,
+    "expected": "F407 board image blocked"
+  },
+  {
+    "name": "mixed",
+    "command": [
+      "cmake",
+      "-S",
+      "firmware/stm32-motion",
+      "-B",
+      "build-bench-refused-mixed",
+      "-DTV4_MOTION_BOARD_IMAGE=ON",
+      "-DTV4_MOTION_BOARD_PROFILE=stm32f407vg-hsi-no-motion-v1",
+      "-DCMAKE_TOOLCHAIN_FILE=cmake/arm-none-eabi.cmake",
+      "-DTV4_MOTION_LINK_PROBE=ON"
+    ],
+    "exit": 1,
+    "expected": "cannot combine"
+  },
+  {
+    "name": "default",
+    "command": [
+      "cmake",
+      "-S",
+      "firmware/stm32-motion",
+      "-B",
+      "build-bench-refused-default",
+      "-DTV4_MOTION_BOARD_IMAGE=ON"
+    ],
+    "exit": 1,
+    "expected": "F407 board image blocked"
+  },
+  {
+    "name": "default-probe",
+    "command": [
+      "cmake",
+      "-S",
+      "firmware/stm32-motion",
+      "-B",
+      "build-bench-refused-default-probe",
+      "-DTV4_MOTION_BOARD_IMAGE=ON",
+      "-DTV4_MOTION_LINK_PROBE=ON"
+    ],
+    "exit": 1,
+    "expected": "F407 board image blocked"
+  },
+  {
+    "name": "host-probe",
+    "command": [
+      "cmake",
+      "-S",
+      "firmware/stm32-motion",
+      "-B",
+      "build-bench-refused-host-probe",
+      "-DTV4_MOTION_LINK_PROBE=ON"
+    ],
+    "exit": 1,
+    "expected": "requires the pinned ARM toolchain"
+  },
+  {
+    "name": "bootloader",
+    "command": [
+      "cmake",
+      "-S",
+      "firmware/stm32-bootloader",
+      "-B",
+      "build-bench-refused-bootloader",
+      "-DTV4_BOOT_BOARD_IMAGE=ON"
+    ],
+    "exit": 1,
+    "expected": "STM32 bootloader image blocked"
+  }
+]

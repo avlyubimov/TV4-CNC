@@ -1,19 +1,29 @@
 # Следующий этап: P0 — первая прошиваемая сборка STM32F407
 
-21 ноября 2026. База main `951ff0f59736685591f6b5ae67e93a6a482d35f1`,
-PR #1–54 слиты, main CI5/5 PASS. PR #54 завершён и больше не активная задача.
-Новый порядок и подробная приёмка — [IMPLEMENTATION_PRIORITIES.md](IMPLEMENTATION_PRIORITIES.md),
-свод — [ROADMAP.md](ROADMAP.md).
+22 ноября 2026. База main `610f1745d892d5904ea183b50617a20d8ce755bb`,
+PR #1–55 слиты; main CI5/5 PASS. PR #54 host и PR #55 priorities завершены.
+Текущая работа — одна интеграция **настоящего P0 образа**.
+[Контракт/реальные артефакты](STM32_FIRST_IMAGE.md),
+[проверки](evidence/build/stm32f407-first-image/README.md),
+[ST-Link runbook](STM32_STLINK_RUNBOOK.md),
+[порядок P0–P5](IMPLEMENTATION_PRIORITIES.md).
 
-## Текущая задача и остановка
+## Текущий результат и остановка
 
-Сейчас — отдельный PR только для AGENTS.md, NEXT_STAGE.md, ROADMAP.md и
-IMPLEMENTATION_PRIORITIES.md. Проверить документацию/ссылки/согласованность/scope,
-создать PR и остановиться. Firmware, linker/startup, CI, partitions, keys не
-меняются. Не выполнять hardware operations, merge или начинать реализацию P0
-в этой же задаче.
-При следующем поручении продолжать разработку выполнять P0 отдельным PR;
-повторный PR предварительного планирования не является следующим этапом.
+Подготовлен standalone `stm32f407vg-hsi-no-motion-v1`: ELF/BIN/map, HSI16MHz,
+98 vectors, SRAM/CCM, отдельный emergency stack, main-only IWDG, RAM/SWD diagnostics,
+image/MMIO/negative checks и CI. Размер BIN2596 bytes, SRAM static268 + stacks/
+guards5184, CCM probe4; точные source/hash/toolchain — в image-check.json.
+Образ **программно проверен**, фактическое исполнение на F407 не подтверждено.
+В этом PR нет hardware/SWD/reset/Flash/backup reads, merge или release.
+После проверки/создания PR остановиться.
+
+Следующий измеримый аппаратный этап после review — отдельно разрешённый
+изолированный F407 bench: preflight protection/backup/marking, установка
+точного clean ELF SHA, исполнение startup/HSI/CCM/heartbeat, watchdog/fault
+и диагностический отчёт по runbook. До разрешения не подключаться к плате.
+Original SHA F407 backup/вторая копия/restore пока не подтверждены;
+это gates перед записью, не причина нового предварительного software PR.
 
 ## Подтверждённые характеристики
 
@@ -25,7 +35,7 @@ STM32F4VX_M Ver. 2.0. Новых аппаратных или backup reads не �
 protection/option bytes, GPIO/CAN или restore. ESP32 — прежний ordinary8f0d899,
 owner HMI/touch/Wi-Fi PASS; его factory backup 16 МиБ исторически проверен по SHA-256.
 
-## Следующий отдельный PR: P0
+## Состав текущей P0 интеграции
 
 **Результат — настоящий программно проверенный ELF/BIN STM32F407, готовый
 к отдельно разрешённому стендовому запуску.** Существующие synthetic link probe
@@ -40,15 +50,15 @@ owner HMI/touch/Wi-Fi PASS; его factory backup 16 МиБ историческ
 | Реальные артефакты и CI | ELF↔BIN↔map/size/SHA-256/source/toolchain identity; границы/overlap/overflow Flash/SRAM/CCM/stack, entry/SP/Thumb/reserved/IRQ vectors и отрицательные проверки |
 | Установка и recovery | Конкретный ST-Link install/verify/restore runbook с проверкой бэкапа/платы/защиты и exact-image gate перед отдельно разрешённой операцией |
 
-Эти части реализовать вместе; не подменять P0 новой библиотекой или подготовительным
+Эти части реализованы вместе в текущем P0; не подменять P0 новой библиотекой или подготовительным
 PR модели. В том же PR обновить нужные scoped instructions/профиль/CI guards,
 чтобы проверенный реальный образ собирался, а неподдерживаемые карты отклонялись.
-Новые внешние зависимости использовать только при необходимости, фиксируя
-официальный источник, точную версию и лицензию.
+ST startup используется как pinned Apache-2.0 reference only; новых runtime
+CMSIS/HAL/LL зависимостей нет.
 
 ## Сборка, стенд и будущий bootloader
 
-Официальная карта выбранного VGT6 проверяется в P0; аппаратная проверка
+Официальная карта выбранного VGT6 проверена по ST в P0; аппаратная проверка
 конкретного экземпляра и поведения clock/RAM/watchdog остаётся отдельным стендом.
 Неизвестный HSE не блокирует подготовку HSI образа, неизвестный motion pinout
 запрещает выводы движения. Не угадывать безопасные уровни и не объявлять

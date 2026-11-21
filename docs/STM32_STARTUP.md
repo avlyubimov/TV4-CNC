@@ -1,5 +1,15 @@
 # PR-02b — startup/sections/no-I/O foundation
 
+**Исторический PR-02b.** Его synthetic addresses/clock-free adapter ниже
+сохранены как отдельный тест, не текущий board contract. После PR #55 текущий
+P0 добавляет [реальный STM32F407VG HSI ELF/BIN](STM32_FIRST_IMAGE.md),
+98-vector table, официальный linker MEMORY, HSI/CCM/main watchdog и emergency
+fault stack. Only explicit reviewed profile допускает BOARD_IMAGE=ON;
+прочие/host/mixed configs fail. [Проверки](evidence/build/stm32f407-first-image/README.md)
+не означают hardware boot/RAM/clock/CAN/physical inhibit. Нового доступа к устройству
+нет; [install/restore](STM32_STLINK_RUNBOOK.md) требует отдельного разрешения.
+
+
 База mainb19a40b, PR #1–27 слиты. [План](plans/PR02B_STM32_STARTUP.md),
 [owner SWD evidence](evidence/hardware/stm32f407-owner-swd/README.md),
 [следующий этап](NEXT_STAGE.md). Существующий supervisor PR #7 сохраняется.

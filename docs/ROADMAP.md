@@ -1,28 +1,21 @@
 # План реализации TV4-CNC: функциональные приоритеты P0–P5
 
-21 ноября 2026. Актуальная база main `951ff0f59736685591f6b5ae67e93a6a482d35f1`,
-PR #1–54 слиты, main CI5/5 PASS. PR #54 — завершённая host-проверка, не текущая задача.
-Приоритеты владельца заменяют прежнюю последовательность подготовительных PR.
-История реализации — [IMPLEMENTATION.md](IMPLEMENTATION.md), текущая задача —
-[NEXT_STAGE.md](NEXT_STAGE.md), полная приёмка — [IMPLEMENTATION_PRIORITIES.md](IMPLEMENTATION_PRIORITIES.md).
+22 ноября 2026. База main `610f1745d892d5904ea183b50617a20d8ce755bb`;
+PR #1–55 слиты, main CI5/5 PASS. PR #55 priorities уже завершён.
+История — [IMPLEMENTATION.md](IMPLEMENTATION.md), текущая задача —
+[NEXT_STAGE.md](NEXT_STAGE.md), приёмка — [IMPLEMENTATION_PRIORITIES.md](IMPLEMENTATION_PRIORITIES.md).
 
 **Приоритет функциональных результатов выше создания новых абстракций.**
-Небольшие PR закрывают законченные интеграции; нужные startup/linker/driver/CI
-изменения не разбивать на неограниченную цепочку предварительных библиотек.
-Готовые HMI/HTTPS/crypto/protocol и содержательные tests использовать повторно.
-
-## Текущий PR — только согласование плана
-
-Разрешённый diff: AGENTS.md, NEXT_STAGE.md, ROADMAP.md и
-IMPLEMENTATION_PRIORITIES.md. Проверить документацию, создать отдельный PR
-и остановиться; firmware/CI/layout/keys/devices не менять, merge не выполнять.
-**Следующий отдельный PR — P0, первая безопасная прошиваемая сборка STM32F407.**
+Текущий P0 даёт настоящий [ELF/BIN](STM32_FIRST_IMAGE.md) и
+[ST-Link install/restore runbook](STM32_STLINK_RUNBOOK.md), не новую библиотеку.
+Создать отдельный PR и остановиться без merge/аппаратных операций.
+После review следующий измеримый шаг — отдельно разрешённый F407 bench.
 
 ## Порядок и критерии результата
 
 | Приоритет | Законченный результат | Зависимости и приёмка | Текущий статус |
 |---|---|---|---|
-| P0 — STM32F407 firmware | Настоящий ELF/BIN на HSI с RAM/SWD diagnostics, exception/watchdog handling, без активации motion outputs | Официальная карта VGT6/SRAM/CCM/Flash sectors/vectors; real startup/linker; map/size/hash/source и memory/vector CI; ST-Link install/restore runbook; запись только отдельно разрешена | Следующий отдельный PR. SWD/core/Flash1024KiB/backup подтверждены владельцем, нового образа и его hardware test ещё нет |
+| P0 — STM32F407 firmware | Настоящий ELF/BIN на HSI с RAM/SWD diagnostics, exception/watchdog handling, без активации motion outputs | Официальная карта VGT6/SRAM/CCM/Flash sectors/vectors; real startup/linker; map/size/hash/source и memory/vector CI; ST-Link install/restore runbook; запись только отдельно разрешена | Образ/profile/linker/startup/HSI/watchdog/SWD diagnostics и CI подготовлены; BIN2596 bytes, реальные memory/vector/negative/repro проверки. Готов к отдельно разрешённому стенду; hardware test не выполнен |
 | P1 — ESP32 OTA | Установка проверенного образа в неактивный слот, boot self-test, подтверждение или rollback с работающими LVGL/GT911/Wi-Fi | Расчёт/утверждение 16 МиБ factory recovery+otadata+двух OTA-слотов; отдельная USB-миграция; existing HTTPS/signature/local key/SHA/size/hardware checks; Wi-Fi/power-loss tests; реальные SRAM/PSRAM/stack измерения | Existing verification/HTTPS/session есть; runtime install/rollback/migration ещё не завершены. Текущая разметка не меняется в этом PR |
 | P2 — Releases | Настоящие воспроизводимые бинарники, SemVer/source binding, signed manifest/SHA-256, prerelease/stable, экран «ПО и обновления» | Рабочий OTA P1; проверка воспроизводимости, trust/signer/licensing; ручное утверждение владельцем exact SHA/tag/channel/assets; push/merge не выпускают release | CI/metadata-only review база существует; production signing/publication/runtime update UI ещё нет. Фиктивный STM32 BIN запрещён |
 | P3 — physical CAN | Минимальный проверенный обмен ESP32-S3↔STM32F407 с ошибками/тайм-аутами/восстановлением | Получить трансиверы; проверить уровни/терминаторы/pinout/mux/IDs/bitrate на изолированном стенде; отдельное hardware permission | Физический CAN не проверен. Существующий протокол сохраняется; новые слои только для конкретной интеграции |
@@ -37,7 +30,7 @@ IMPLEMENTATION_PRIORITIES.md. Проверить документацию, со�
 без отдельного разрешения. Boot/reset/reconnect/OTA не разрешают движение.
 
 [HARDWARE_STATUS.md](HARDWARE_STATUS.md) остаётся источником owner facts.
-Официальный device memory/vector contract изучается внутри P0; измерения на
+Официальный device memory/vector contract проверен программно внутри P0; измерения на
 экземпляре, physical GPIO/CAN и backup restore отмечаются отдельно. Неизвестный
 HSE не препятствует HSI-only сборке. Новую аппаратную проверку или размер памяти
 не объявлять по успешной компиляции/host test.

@@ -1,8 +1,12 @@
 # Открытые вопросы и блокирующие решения
 
-Обновлено от main `5e76626`,21ноября2026. Единственный свод аппаратных фактов —
-[HARDWARE_STATUS.md](HARDWARE_STATUS.md). Не заполнять неизвестные поля
-типовыми данными семейства, USB VID/PID, старым заказом или host mock.
+Обновлено22ноября2026 от main610f174 (PR #55 слит).
+[HARDWARE_STATUS.md](HARDWARE_STATUS.md) — единственный свод owner facts.
+P0 [реальный образ](STM32_FIRST_IMAGE.md) закрывает **software** пробел
+официального memory/vector/HSI/startup contract; это не новое аппаратное
+подтверждение SRAM/CCM/clock/erase. Новых device/backup операций нет.
+[Runbook](STM32_STLINK_RUNBOOK.md) перечисляет preflight перед отдельно
+разрешённой первой записью. Вопросы runtime CAN/OTA не заменяют этот bench.
 
 Ответ владельца20ноября повторил только VGT6; full physical marking/HSE неизвестны.
 PR-05b [release policy review](RELEASE_POLICY_REVIEW.md) проверяет существующий
@@ -110,10 +114,10 @@ stop/join не освобождает actual claim. Верхние image/crypto/
 
 | ID | Что нужно подтвердить/решить | Блокирует |
 |---|---|---|
-| HW-F407-01 | Owner SWD/core/device ID/Flash1024KiB подтверждены; остаются физическая маркировка/package и согласование reference documentation. Device ID не заменяет package check | Выбор полного device vector/CMSIS/board profile; raw device ID0x101f6413 не даёт адресов bootloader |
-| HW-F407-02 | HSE/PLL/реальная частота, schematic/pinout/boot-reset/recovery. SWD работает;3,252V — один owner sample | Physical clock/timer/DMA/CAN. HSE не обязателен для будущего reviewed HSI-only startup, но HSI/частоты пока не измерены |
-| HW-F407-03 | Фактические RAM/CCM bounds/availability, stack/heap budget и утверждённый полный vector/memory contract | Настоящий linker/board image; synthetic link probe не подтверждает размер/работу RAM |
-| HW-F407-04 | Sector/erase geometry и protection/option byte state до отдельного Flash writer/bootloader решения | PR-07 layout/write/recovery; Flash1024KiB не доказывает sector map или пригодность A/B |
+| HW-F407-01 | Owner SWD/core/device ID/Flash1024KiB подтверждены; остаются физическая маркировка/package. Официальные DS8626/RM0090/PM0214/ST vectors закреплены в P0; Device ID не заменяет package check | Preflight первого стенда; software board profile уже есть, raw ID не определяет bootloader layout |
+| HW-F407-02 | HSE/PLL/реальная частота, schematic/pinout/boot-reset/recovery. SWD работает;3,252V — один owner sample | Physical clock/timer/DMA/CAN. HSI-only image уже собран; HSE не блокирует его сборку, реальные HSI/LSI/reset/tick ещё не измерены |
+| HW-F407-03 | Фактическая RAM/CCM availability, runtime stack high-water/stress. Документированный SRAM112+16KiB/CCM64KiB/98vectors contract и linker проверены программно | Исполнение/измерения на плате; ELF/BIN уже есть. Минимальный cookie/probe не полный RAM test |
+| HW-F407-04 | Спецификация12sectors рассмотрена в P0, но erase/protection/option-byte state экземпляра и restore не проверены | Первый Flash preflight и отдельный P4 loader layout/write/recovery; A/B по-прежнему не выбран |
 | HW-F407-05 | Физические GPIO/CAN, transceiver/pin routing, безопасные уровни/полярности ENABLE/STEP/DIR/шпинделя | Любой physical adapter/drive commissioning; no-I/O adapter не подтверждает physical inhibit |
 | HW-USB-01 | Отдельно подтвердить, что устройство 0483:5720 принадлежит именно F407 стенду | Идентификация; VID/PID не доказывает MCU/Flash/прошивку |
 | HW-DRIVE-01 | Получение первого NEMA23, точные двигатель/драйвер/питание, STEP/DIR/ENABLE polarity, encoder/alarm, второй привод | Любые испытания приводов/осей |

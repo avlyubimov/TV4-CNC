@@ -1,0 +1,78 @@
+gcc (Ubuntu 15.2.0-16ubuntu1) 15.2.0
+Copyright (C) 2025 Free Software Foundation, Inc.
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+COMMAND gcc -std=c11 -Wall -Wextra -Werror -Wconversion -Wshadow -Wstrict-prototypes -fanalyzer -Ifirmware/stm32-motion/core -Ifirmware/stm32-motion/startup -Ifirmware/stm32-motion/board -c firmware/stm32-motion/core/supervisor.c -o build-static-analysis/unit-0.o
+PASS actual-source firmware/stm32-motion/core/supervisor.c
+COMMAND gcc -std=c11 -Wall -Wextra -Werror -Wconversion -Wshadow -Wstrict-prototypes -fanalyzer -Ifirmware/stm32-motion/core -Ifirmware/stm32-motion/startup -Ifirmware/stm32-motion/board -c firmware/stm32-motion/startup/memory_init.c -o build-static-analysis/unit-1.o
+PASS actual-source firmware/stm32-motion/startup/memory_init.c
+COMMAND gcc -std=c11 -Wall -Wextra -Werror -Wconversion -Wshadow -Wstrict-prototypes -fanalyzer -Ifirmware/stm32-motion/core -Ifirmware/stm32-motion/startup -Ifirmware/stm32-motion/board -c firmware/stm32-motion/board/noio.c -o build-static-analysis/unit-2.o
+PASS actual-source firmware/stm32-motion/board/noio.c
+COMMAND gcc -std=c11 -Wall -Wextra -Werror -Wconversion -Wshadow -Wstrict-prototypes -fanalyzer -DTV4_BENCH_TEST_MMIO=1 -Ifirmware/stm32-motion/board/stm32f407vg -c firmware/stm32-motion/board/stm32f407vg/hardware.c -o build-static-analysis/unit-3.o
+PASS actual-source firmware/stm32-motion/board/stm32f407vg/hardware.c
+COMMAND gcc -std=c11 -Wall -Wextra -Werror -Wconversion -Wshadow -Wstrict-prototypes -fanalyzer -DTV4_BENCH_TEST_MMIO=1 -Ifirmware/stm32-motion/board/stm32f407vg -c firmware/stm32-motion/board/stm32f407vg/diagnostics.c -o build-static-analysis/unit-4.o
+PASS actual-source firmware/stm32-motion/board/stm32f407vg/diagnostics.c
+COMMAND gcc -std=c11 -Wall -Wextra -Werror -Wconversion -Wshadow -Wstrict-prototypes -fanalyzer -DTV4_BENCH_TEST_MMIO=1 -Ifirmware/stm32-motion/board/stm32f407vg -c firmware/stm32-motion/board/stm32f407vg/runtime.c -o build-static-analysis/unit-5.o
+PASS actual-source firmware/stm32-motion/board/stm32f407vg/runtime.c
+COMMAND gcc -std=c11 -Wall -Wextra -Werror -Wconversion -Wshadow -Wstrict-prototypes -fanalyzer -Iprotocol/can -c protocol/can/update_session.c -o build-static-analysis/unit-6.o
+PASS actual-source protocol/can/update_session.c
+COMMAND gcc -std=c11 -Wall -Wextra -Werror -Wconversion -Wshadow -Wstrict-prototypes -fanalyzer -Iprotocol/can -c protocol/can/update_outcome.c -o build-static-analysis/unit-7.o
+PASS actual-source protocol/can/update_outcome.c
+COMMAND gcc -std=c11 -Wall -Wextra -Werror -Wconversion -Wshadow -Wstrict-prototypes -fanalyzer -Iprotocol/can -c protocol/can/update_negotiation.c -o build-static-analysis/unit-8.o
+PASS actual-source protocol/can/update_negotiation.c
+COMMAND gcc -std=c11 -Wall -Wextra -Werror -Wconversion -Wshadow -Wstrict-prototypes -fanalyzer -Iprotocol/can -c protocol/can/update_wire.c -o build-static-analysis/unit-9.o
+PASS actual-source protocol/can/update_wire.c
+COMMAND gcc -std=c11 -Wall -Wextra -Werror -Wconversion -Wshadow -Wstrict-prototypes -fanalyzer -Iprotocol/can -c protocol/can/update_fragments.c -o build-static-analysis/unit-10.o
+PASS actual-source protocol/can/update_fragments.c
+COMMAND gcc -std=c11 -Wall -Wextra -Werror -Wconversion -Wshadow -Wstrict-prototypes -fanalyzer -Iprotocol/can -c protocol/can/update_metadata.c -o build-static-analysis/unit-11.o
+PASS actual-source protocol/can/update_metadata.c
+COMMAND gcc -std=c11 -Wall -Wextra -Werror -Wconversion -Wshadow -Wstrict-prototypes -fanalyzer -Iprotocol/can -c protocol/can/update_metadata_setup.c -o build-static-analysis/unit-12.o
+PASS actual-source protocol/can/update_metadata_setup.c
+COMMAND gcc -std=c11 -Wall -Wextra -Werror -Wconversion -Wshadow -Wstrict-prototypes -fanalyzer -Iprotocol/can -c protocol/can/update_channel.c -o build-static-analysis/unit-13.o
+PASS actual-source protocol/can/update_channel.c
+COMMAND gcc -std=c11 -Wall -Wextra -Werror -Wconversion -Wshadow -Wstrict-prototypes -fanalyzer -Iprotocol/can -c protocol/can/frame_queue.c -o build-static-analysis/unit-14.o
+PASS actual-source protocol/can/frame_queue.c
+COMMAND gcc -std=c11 -Wall -Wextra -Werror -Wconversion -Wshadow -Wstrict-prototypes -fanalyzer -Iprotocol/can -c protocol/can/update_egress.c -o build-static-analysis/unit-15.o
+PASS actual-source protocol/can/update_egress.c
+COMMAND gcc -std=c11 -Wall -Wextra -Werror -Wconversion -Wshadow -Wstrict-prototypes -fanalyzer -Iprotocol/can -c protocol/can/update_driver_events.c -o build-static-analysis/unit-16.o
+PASS actual-source protocol/can/update_driver_events.c
+COMMAND gcc -std=c11 -Wall -Wextra -Werror -Wconversion -Wshadow -Wstrict-prototypes -fanalyzer -Iprotocol/can -c protocol/can/completion_mailbox.c -o build-static-analysis/unit-17.o
+PASS actual-source protocol/can/completion_mailbox.c
+COMMAND gcc -std=c11 -Wall -Wextra -Werror -Wconversion -Wshadow -Wstrict-prototypes -fanalyzer -Iprotocol/can -c protocol/can/driver_dispatch.c -o build-static-analysis/unit-18.o
+PASS actual-source protocol/can/driver_dispatch.c
+COMMAND gcc -std=c11 -Wall -Wextra -Werror -Wconversion -Wshadow -Wstrict-prototypes -fanalyzer -Iprotocol/can -c protocol/can/frame_ingress.c -o build-static-analysis/unit-19.o
+PASS actual-source protocol/can/frame_ingress.c
+COMMAND gcc -std=c11 -Wall -Wextra -Werror -Wconversion -Wshadow -Wstrict-prototypes -fanalyzer -Iprotocol/can -c protocol/can/ingress_owner.c -o build-static-analysis/unit-20.o
+PASS actual-source protocol/can/ingress_owner.c
+COMMAND gcc -std=c11 -Wall -Wextra -Werror -Wconversion -Wshadow -Wstrict-prototypes -fanalyzer -DMBEDTLS_CONFIG_FILE="tv4_boot_mbedtls_config.h" -Ifirmware/stm32-bootloader/include -Ifirmware/stm32-bootloader/core -Ifirmware/stm32-bootloader/config -Iprotocol/can -Ibuild-boot-arm/_deps/tv4_boot_mbedtls-src/include -c firmware/stm32-bootloader/core/admission.c -o build-static-analysis/unit-21.o
+PASS actual-source firmware/stm32-bootloader/core/admission.c
+COMMAND gcc -std=c11 -Wall -Wextra -Werror -Wconversion -Wshadow -Wstrict-prototypes -fanalyzer -DMBEDTLS_CONFIG_FILE="tv4_boot_mbedtls_config.h" -Ifirmware/stm32-bootloader/include -Ifirmware/stm32-bootloader/core -Ifirmware/stm32-bootloader/config -Iprotocol/can -Ibuild-boot-arm/_deps/tv4_boot_mbedtls-src/include -c firmware/stm32-bootloader/core/metadata.c -o build-static-analysis/unit-22.o
+PASS actual-source firmware/stm32-bootloader/core/metadata.c
+COMMAND gcc -std=c11 -Wall -Wextra -Werror -Wconversion -Wshadow -Wstrict-prototypes -fanalyzer -DMBEDTLS_CONFIG_FILE="tv4_boot_mbedtls_config.h" -Ifirmware/stm32-bootloader/include -Ifirmware/stm32-bootloader/core -Ifirmware/stm32-bootloader/config -Iprotocol/can -Ibuild-boot-arm/_deps/tv4_boot_mbedtls-src/include -c firmware/stm32-bootloader/core/release_policy.c -o build-static-analysis/unit-23.o
+PASS actual-source firmware/stm32-bootloader/core/release_policy.c
+COMMAND gcc -std=c11 -Wall -Wextra -Werror -Wconversion -Wshadow -Wstrict-prototypes -fanalyzer -DMBEDTLS_CONFIG_FILE="tv4_boot_mbedtls_config.h" -Ifirmware/stm32-bootloader/include -Ifirmware/stm32-bootloader/core -Ifirmware/stm32-bootloader/config -Iprotocol/can -Ibuild-boot-arm/_deps/tv4_boot_mbedtls-src/include -c firmware/stm32-bootloader/core/image_profile.c -o build-static-analysis/unit-24.o
+PASS actual-source firmware/stm32-bootloader/core/image_profile.c
+COMMAND gcc -std=c11 -Wall -Wextra -Werror -Wconversion -Wshadow -Wstrict-prototypes -fanalyzer -DMBEDTLS_CONFIG_FILE="tv4_boot_mbedtls_config.h" -Ifirmware/stm32-bootloader/include -Ifirmware/stm32-bootloader/core -Ifirmware/stm32-bootloader/config -Iprotocol/can -Ibuild-boot-arm/_deps/tv4_boot_mbedtls-src/include -c firmware/stm32-bootloader/core/update_handoff.c -o build-static-analysis/unit-25.o
+PASS actual-source firmware/stm32-bootloader/core/update_handoff.c
+COMMAND gcc -std=c11 -Wall -Wextra -Werror -Wconversion -Wshadow -Wstrict-prototypes -fanalyzer -DMBEDTLS_CONFIG_FILE="tv4_boot_mbedtls_config.h" -Ifirmware/stm32-bootloader/include -Ifirmware/stm32-bootloader/core -Ifirmware/stm32-bootloader/config -Iprotocol/can -Ibuild-boot-arm/_deps/tv4_boot_mbedtls-src/include -c firmware/stm32-bootloader/core/update_completion.c -o build-static-analysis/unit-26.o
+PASS actual-source firmware/stm32-bootloader/core/update_completion.c
+COMMAND gcc -std=c11 -Wall -Wextra -Werror -Wconversion -Wshadow -Wstrict-prototypes -fanalyzer -DMBEDTLS_CONFIG_FILE="tv4_boot_mbedtls_config.h" -Ifirmware/stm32-bootloader/include -Ifirmware/stm32-bootloader/core -Ifirmware/stm32-bootloader/config -Iprotocol/can -Ibuild-boot-arm/_deps/tv4_boot_mbedtls-src/include -c firmware/stm32-bootloader/core/release_handoff.c -o build-static-analysis/unit-27.o
+PASS actual-source firmware/stm32-bootloader/core/release_handoff.c
+COMMAND gcc -std=c11 -Wall -Wextra -Werror -Wconversion -Wshadow -Wstrict-prototypes -fanalyzer -DMBEDTLS_CONFIG_FILE="tv4_boot_mbedtls_config.h" -Ifirmware/stm32-bootloader/include -Ifirmware/stm32-bootloader/core -Ifirmware/stm32-bootloader/config -Iprotocol/can -Ibuild-boot-arm/_deps/tv4_boot_mbedtls-src/include -c firmware/stm32-bootloader/core/staging_source.c -o build-static-analysis/unit-28.o
+PASS actual-source firmware/stm32-bootloader/core/staging_source.c
+COMMAND gcc -std=c11 -Wall -Wextra -Werror -Wconversion -Wshadow -Wstrict-prototypes -fanalyzer -D_POSIX_C_SOURCE=200809L -Ifirmware/stm32-bootloader/include -c firmware/stm32-bootloader/tools/motion_review.c -o build-static-analysis/unit-29.o
+PASS actual-source firmware/stm32-bootloader/tools/motion_review.c
+COMMAND gcc -std=c11 -Wall -Wextra -Werror -Wconversion -Wshadow -Wstrict-prototypes -fanalyzer -Iprotocol/can -c protocol/can/tests/fragment_test_link.c -o build-static-analysis/unit-30.o
+PASS actual-source protocol/can/tests/fragment_test_link.c
+COMMAND gcc -std=c11 -Wall -Wextra -Werror -Wconversion -Wshadow -Wstrict-prototypes -fanalyzer -pthread -Iprotocol/can -c protocol/can/tests/threaded_test_link.c -o build-static-analysis/unit-31.o
+PASS actual-source protocol/can/tests/threaded_test_link.c
+COMMAND gcc -std=c11 -Wall -Wextra -Werror -Wconversion -Wshadow -Wstrict-prototypes -fanalyzer -Ifirmware/esp32-hmi/ota -Ithird_party/cjson -c firmware/esp32-hmi/ota/json_guard.c -o build-static-analysis/unit-32.o
+PASS actual-source firmware/esp32-hmi/ota/json_guard.c
+COMMAND gcc -std=c11 -Wall -Wextra -Werror -Wconversion -Wshadow -Wstrict-prototypes -fanalyzer -Ifirmware/esp32-hmi/ota -Ithird_party/cjson -c firmware/esp32-hmi/ota/envelope.c -o build-static-analysis/unit-33.o
+PASS actual-source firmware/esp32-hmi/ota/envelope.c
+COMMAND gcc -std=c11 -Wall -Wextra -Werror -Wconversion -Wshadow -Wstrict-prototypes -fanalyzer -Ifirmware/esp32-hmi/ota -Ithird_party/cjson -c firmware/esp32-hmi/ota/manifest.c -o build-static-analysis/unit-34.o
+PASS actual-source firmware/esp32-hmi/ota/manifest.c
+COMMAND gcc -std=c11 -Wall -Wextra -Werror -Wconversion -Wshadow -Wstrict-prototypes -fanalyzer -Ifirmware/esp32-hmi/core -c firmware/esp32-hmi/core/firmware_info.c -o build-static-analysis/unit-35.o
+PASS actual-source firmware/esp32-hmi/core/firmware_info.c
+Total 36 actual C units; no diagnostics suppressed.

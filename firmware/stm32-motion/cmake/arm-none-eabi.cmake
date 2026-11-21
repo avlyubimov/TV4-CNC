@@ -1,4 +1,4 @@
-# Cortex-M4F compile-only ABI; optional synthetic link probe, never board .bin.
+# Pinned Cortex-M4F ABI for libraries, synthetic probe and explicit P0 bench.
 set(CMAKE_SYSTEM_NAME Generic)
 set(CMAKE_SYSTEM_PROCESSOR arm)
 set(CMAKE_TRY_COMPILE_TARGET_TYPE STATIC_LIBRARY)
