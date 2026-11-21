@@ -162,6 +162,7 @@ def read_metadata(args):
                 size_bytes=app['size_bytes'], sha256=app['sha256'],
                 key_sha256=hashlib.sha256(key).hexdigest(),
                 source_commit=manifest['source_commit'], channel=manifest['channel'],
+                profile=app['profile'], layout_id=app['layout_id'],
                 metadata_sha256=hashlib.sha256(raw).hexdigest(),
                 protocol=dict(manifest['protocol']),
                 compatible_peer_versions=dict(app['compatible_peer_versions'])

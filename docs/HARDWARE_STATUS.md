@@ -1,5 +1,10 @@
 # Аппаратный статус TV4-CNC
 
+PR-05d [build binding audit](RELEASE_BUILD_BINDING.md) — только host tooling,
+не новые измерения. Unsigned build pin/full bytes/signature consistency не
+подтверждают actual layout, F407 RAM/HSE/Flash geometry/GPIO/CAN или recovery.
+Factory/A-B/profile mismatch остаются blockers; устройства/backup не читались.
+
 Актуализация20ноября2026: владелец повторил только суффикс VGT6, новых аппаратных
 измерений нет. Остальной снимок на19ноября2026. Источники: сообщения/фотографии/терминальные журналы
 владельца и проверенные файлы репозитория. В PR-01 агент не подключался

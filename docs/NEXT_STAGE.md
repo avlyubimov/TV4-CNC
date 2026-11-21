@@ -1,6 +1,6 @@
 # Следующий этап: release context и STM32 board contract
 
-21 ноября2026. База main `2c06cdc`, PR #1–39 слиты, пять workflow PASS.
+21 ноября2026. База main `aa06833`, PR #1–40 слиты, main CI5/5 PASS.
 ESP32 HMI/Wi-Fi/OTA primitives/candidates и STM32 transport/admission существуют;
 не создавать их заново. Данный план не разрешает доступ к устройствам или merge.
 
@@ -115,7 +115,7 @@ source/board/output PASS — [evidence](evidence/build/stm32-staging-source/READ
 помещается только в явно заданный buffer; production RAM/staging medium/durable
 recovery ещё не утверждены.
 
-## Текущая ветка PR-05c
+## Слитая часть PR-05c, PR #40
 
 [Offline cohort review](RELEASE_COHORT_REVIEW.md) проверяет существующие signed
 HMI и optional Motion документы/полные образы как один expected release/source/
@@ -125,11 +125,23 @@ analyzer8 embedded+1 host и ARM/source/board/output/scope gates PASS —
 [evidence](evidence/build/release-cohort-review/README.md). Report metadata-only;
 production manifest/context/protocol mapping/runtime/install gates не закрыты.
 
+## Текущая ветка PR-05d
+
+[Build binding audit](RELEASE_BUILD_BINDING.md) соединяет external-pinned unsigned
+candidate/full HMI bytes/ELF digest с existing signed cohort. Factory/A-B layout
+и headless/bench/ordinary profile mismatch явно блокируют, Motion build evidence
+не создаётся. Captured metadata не перечитывается; новый audit всегда blocked,
+exit3 и все authority gates false. Host39/sanitizers39/standalone13, новая suite
+13methods, прежние ARM gates и CI SDK matrix8 с candidate integrity pin checks.
+Unsigned metadata pin не authentication/CI attestation; actual SemVer/keys/layout/
+provenance/runtime/installer не настроены. Hardware действий/новых измерений нет.
+
 ## Что делать дальше программно
 
 1. HMI policy проверена PR-05b; PR-07g проверяет independent release/component/
-   target/profile/image draft; PR-05c добавляет offline signed cohort link.
-   Дальше review production bundle↔component contract и
+   target/profile/image draft; PR-05c добавляет offline signed cohort link,
+   PR-05d проверяет его связь с explicit-pinned unsigned build claims/bytes и
+   показывает blockers. Дальше review production bundle↔component contract и
    schema, доверенного local context и production immutable backend. PR-07h
    закрывает software live coordinator adapter; PR-07i добавляет RAM backend.
    Production staging medium/RAM budget/durable provider и runtime ещё требуют
@@ -137,6 +149,10 @@ production manifest/context/protocol mapping/runtime/install gates не закр
    Не принимать standalone historical candidate вместо lease/vector/deadline
    checks, не менять RX lifetime. Draft counters не переводить в SemVer;
    actual local versions/key provisioning/signing authority — owner gate.
+   Candidate digest брать из independently reviewed run, не из самого unknown
+   artifact; self-generated CI integrity pin не доказывает происхождение. Для
+   production нужны approved source/build/signer custody и actual target layout,
+   не подавление factory/A-B blocker или замена current PROJECT_VER.
 2. PR-07f проверяет volatile logical negotiation, но production boot epoch
    provider/persistence/collision/authentication, capabilities/version и raw CAN
    fragmentation/codec/IDs/bitrate требуют review. Logical terminal outcome уже есть; он не authenticated и

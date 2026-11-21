@@ -78,10 +78,14 @@ jobs:
             --build 'build-idf-${{ matrix.sdk }}-${{ matrix.profile }}' \
             --output build-ci-candidate --source-commit "$TV4_SOURCE_SHA" \
             --sdk '${{ matrix.sdk }}' --profile '${{ matrix.profile }}' > build-ci-evidence/candidate-create.json
+          # Integrity pin of this job's unsigned metadata, not CI authentication.
+          sha256sum build-ci-candidate/candidate.json > build-ci-evidence/candidate-pin.sha256
+          read -r candidate_pin _ < build-ci-evidence/candidate-pin.sha256
           python tools/build_candidate.py verify --candidate build-ci-candidate \
             --image 'build-idf-${{ matrix.sdk }}-${{ matrix.profile }}/tv4_hmi.bin' \
             --source-commit "$TV4_SOURCE_SHA" --sdk '${{ matrix.sdk }}' \
-            --profile '${{ matrix.profile }}' > build-ci-evidence/candidate-verify.json
+            --profile '${{ matrix.profile }}' --candidate-sha256 "$candidate_pin" \
+            > build-ci-evidence/candidate-verify.json
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         if: always()
         with:

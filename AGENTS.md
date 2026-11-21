@@ -109,8 +109,22 @@ PR и Actions; не копировать код уже открытого PR. Д
 
 ## Текущее задание
 
-PR #1–39 слиты, база main `2c06cdc`; пять workflow PASS, открытых PR перед
-работой нет. PR-05c: читать RELEASE_COHORT_REVIEW.md/NEXT_STAGE.md/scoped rules.
+PR #1–40 слиты, база main `aa06833`, main CI5/5 PASS,
+открытых PR перед работой нет.
+PR-05d: читать RELEASE_BUILD_BINDING.md/NEXT_STAGE.md/scoped rules. Связать
+unsigned CI candidate с тем же signed cohort/full HMI bytes/ELF digest через
+explicit external candidate SHA pin. Pin не CI/source authentication; config/
+partition/tree/license hashes остаются unsigned claims. Проверенные fields
+возвращать из того же snapshot, не перечитывать paths после проверки.
+Старые build/cohort CLI reports прежние. Новый audit всегда BLOCKED/exit3;
+layout/profile mismatch, missing Motion build evidence и все authority gates
+открыто показывать. Нельзя менять factory/PROJECT_VER/SDK/profile ради PASS,
+превращать metadata-only report в manifest/installer/approval или добавлять keys.
+CI сохраняет matrix8, пишет self-generated integrity pin каждого candidate;
+это не owner approval. Host39/sanitizers39/standalone13 и прежние ARM/static/
+source/scope/board/output gates; firmware footprint/config/dependencies прежние.
+
+Слитый PR-05c: читать RELEASE_COHORT_REVIEW.md при изменении signed cohort.
 Offline tool проверяет existing signed HMI/Motion formats/full images, explicit
 local selection/source/channel, ESP app descriptor и prospective HMI peer range.
 Motion frontend вызывает прежний independent Mbed verifier, только HOST; нет

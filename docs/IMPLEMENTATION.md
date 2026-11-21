@@ -1,6 +1,6 @@
 # Реализация: main, открытые PR и аппаратные границы
 
-Актуализация от main `2c06cdc`, 21 ноября2026: PR #1–39 слиты. Owner SWD
+Актуализация от main `aa06833`, 21 ноября2026: PR #1–40 слиты. Owner SWD
 F407/core/Flash1024KiB/backup — [HARDWARE_STATUS](HARDWARE_STATUS.md).
 Startup/DATA/admission/handoff/preflight и PR-07e уже в main:
 [completion/outcome](STM32_UPDATE_OUTCOME.md) связывает full checks с lease close
@@ -35,13 +35,20 @@ idempotent release, counters/high-water сохраняются при discard. H
 sanitizers36/standalone13,45 variants/1536 cycles/8 actual signed backend chains,
 ARM/static8/source/board/output PASS. Buffer задаёт caller; нет default RAM
 reserve/MCU addresses, persistent recovery/identity, runtime/Flash/device actions.
-Текущая ветка PR-05c [offline cohort review](RELEASE_COHORT_REVIEW.md) связывает
+Слитый PR #40, PR-05c [offline cohort review](RELEASE_COHORT_REVIEW.md) связывает
 существующие independent signed HMI/Motion проверки с local selection/source/
 channel, full images/ESP descriptor и prospective HMI peer range. Legacy HMI
 CLI report прежний; fields берутся из одного authenticated snapshot. Host38/
 sanitizers38/standalone13 и analyzer8 embedded+1 host/ARM/source/scope gates PASS.
 Новый frontend только для host, firmware libraries/frames/configs не изменены.
 Production bundle/context/keys/protocol mapping/install authority ещё открыты.
+Текущая ветка PR-05d [build binding audit](RELEASE_BUILD_BINDING.md) связывает
+external-pinned unsigned candidate/full HMI image/ELF с тем же signed cohort.
+Captured fields не перечитываются; factory/A-B и headless/bench/rev12 mismatch
+не скрываются. Report только blocked/exit3, pin/unsigned source claims не дают
+provenance/CI/install authority. Host39/sanitizers39, standalone13 и прежние ARM
+gates; matrix8 проверяет self-generated candidate integrity pins. Firmware
+код/settings/dependencies прежние; hardware results не добавлены.
 Push CI также обнаружил старый build-candidate flaky fixture: constant `x` мог
 совпасть с SHA tail. Теперь test XOR1 гарантированно меняет байт; verifier прежний.
 Нет runtime caller, Flash writer/map/commit/jump или физического safe-state proof.

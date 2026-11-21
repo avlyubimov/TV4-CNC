@@ -131,3 +131,8 @@ foreach(group cli cohort)
     --driver $<TARGET_FILE:boot_motion_review> --signer $<TARGET_FILE:ota_policy_driver> --group ${group})
   set_tests_properties(release_review_${group} PROPERTIES TIMEOUT 60)
 endforeach()
+
+add_test(NAME release_build_binding COMMAND ${Python3_EXECUTABLE}
+  ${CMAKE_CURRENT_SOURCE_DIR}/tests/release_build_tests.py
+  --driver $<TARGET_FILE:boot_motion_review> --signer $<TARGET_FILE:ota_policy_driver>)
+set_tests_properties(release_build_binding PROPERTIES TIMEOUT 60)

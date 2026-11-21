@@ -105,7 +105,8 @@ def motion_verify(driver, m, paths, selection, raw):
     return v
 
 
-def review(args):
+def review_with_details(args):
+    """Internal captured fields for subsequent read-only audits; not authority."""
     ota.version(args.release_version)
     require(isinstance(args.source_commit, str) and re.fullmatch('[0-9a-f]{40}', args.source_commit) and
             args.source_commit != '0' * 40, 'explicit nonzero reviewed source SHA required')
@@ -175,7 +176,12 @@ def review(args):
         protocol_semver=local['hmi']['protocol_version'])
     if motion:
         report.update(protocol_counter=local['motion']['protocol'], host_motion_driver_sha256=driver_digest)
-    return report
+    return report, dict(hmi_signed=signed, hmi_application=app)
+
+
+def review(args):
+    # Existing cohort CLI/report remains unchanged.
+    return review_with_details(args)[0]
 
 
 def parser():
