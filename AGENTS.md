@@ -109,9 +109,26 @@ PR и Actions; не копировать код уже открытого PR. Д
 
 ## Текущее задание
 
-PR #1–45 слиты, база main `d18cf93`, main CI5/5 PASS,
+PR #1–46 слиты, база main `389de77`, main CI5/5 PASS,
 открытых PR перед работой нет.
-PR-07n: читать docs/STM32_METADATA_SETUP.md. Opt-in setup/shared volatile role
+PR-07o: читать docs/STM32_UPDATE_CHANNEL.md. Opt-in mixed TU/MS channel,
+owned one-frame TX outbox/exact local commit; last queued frame bounded even
+when lower TX IDLE. Shared fragment counter through local phases, no reset.
+Advance only locally quiescent/sequential, paired role IDs; this traffic filter
+не доказывает upper success/auth/remote queue drain. Caller retains original
+negotiation/setup/DATA/crypto/live lease/model/deadline/clean-close gates.
+RX strict single selected codec/no fallback, single owned TAKEN_UNVERIFIED,
+wrong phase/ID no dispatch/output zero; context/clock/exhaustion sticky. Host-only
+shared link now covers all phases/12 kinds with actual signed payloads, no new
+wire bytes/IDs/bitrate/runtime/heap/crypto owner/hardware/Flash defaults. Host56/
+sanitizers56/standalone30;512 cycles/7168 messages/8 positive+3 refused chains.
+Analyzer16 embedded+2 host, guards5×6; channel1940text/data0/bss0/frame56 separately,
+4096/frame128 ceiling. Old ARM libs/codecs/limits/workspace/SDK pins unchanged.
+TX696/RX664/snapshot288 host bytes не board RAM reserve/full stack approval.
+External queue lifetime/flush/routing/authentication/persistent epoch/runtime/
+resource/physical/installer gates open. No devices or self-merge.
+
+Слитый PR #46, PR-07n: читать docs/STM32_METADATA_SETUP.md. Opt-in setup/shared volatile role
 namespace, paired image+1 allocation без wrap/rollback из того же pool. CLOSED
 image negotiation сохраняет request/offer до clear; no-I/O/runtime/device gates
 прежние. Borrow actual CLOSED image + empty live TX/RX; poll original windows,

@@ -1,6 +1,6 @@
 # Открытые вопросы и блокирующие решения
 
-Обновлено от main `d18cf93`,21ноября2026. Единственный свод аппаратных фактов —
+Обновлено от main `389de77`,21ноября2026. Единственный свод аппаратных фактов —
 [HARDWARE_STATUS.md](HARDWARE_STATUS.md). Не заполнять неизвестные поля
 типовыми данными семейства, USB VID/PID, старым заказом или host mock.
 
@@ -63,6 +63,11 @@ ID allocation из общего fixed volatile pool и setup/metadata phase owne
 MS/raw mode local fixture не даёт reboot replay isolation; original image windows
 продолжаются, independent verifier обязателен. Full MCU RAM/stack/worker/physical
 CAN/Flash/installer gates ниже остаются открытыми.
+
+PR-07o [shared channel](STM32_UPDATE_CHANNEL.md) закрывает bounded local TU/MS
+multiplexing/outbox/phase filtering, не remote delivery/queue drain/driver или
+upper authority. Phase/generation не сериализованы; reboot/authentication/
+production epoch/routing/worker/medium/RAM/installer и physical gates ниже open.
 
 | ID | Что нужно подтвердить/решить | Блокирует |
 |---|---|---|

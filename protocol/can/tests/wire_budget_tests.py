@@ -69,6 +69,7 @@ if __name__ == '__main__':
     mode.add_argument('--fragments', action='store_true')
     mode.add_argument('--metadata', action='store_true')
     mode.add_argument('--setup', action='store_true')
+    mode.add_argument('--channel', action='store_true')
     args = parser.parse_args()
     BUILD = args.build.absolute()
     if args.fragments:
@@ -94,6 +95,13 @@ if __name__ == '__main__':
         EXPORTS = tuple('tv4_metadata_setup_' + suffix for suffix in (
             'encode', 'decode', 'init', 'request', 'respond', 'receive', 'next', 'poll',
             'take', 'close_tx', 'close_rx', 'abort', 'clear'))
+    if args.channel:
+        import check_update_channel_build as guard
+        ARCHIVE = 'libtv4_update_channel.a'
+        TARGET = 'tv4_update_channel'
+        EXPORTS = tuple('tv4_channel_' + suffix for suffix in (
+            'tx_init', 'rx_init', 'tx_begin', 'tx_peek', 'tx_commit', 'rx_receive', 'rx_take',
+            'tx_poll', 'rx_poll', 'tx_advance', 'rx_advance', 'tx_cancel', 'rx_cancel', 'tx_clear', 'rx_clear'))
     result = unittest.TextTestRunner(verbosity=2).run(unittest.defaultTestLoader.loadTestsFromTestCase(Budget))
     if not result.wasSuccessful(): raise SystemExit(1)
     print('PASS6 ARM budget guard cases; temporary negative objects removed, no board image or execution')

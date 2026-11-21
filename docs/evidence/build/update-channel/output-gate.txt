@@ -1,0 +1,2 @@
+PASS unexpected .bin rejected by actual guard
+PASS compile-only outputs restored; no firmware image

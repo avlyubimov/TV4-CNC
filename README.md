@@ -1,5 +1,12 @@
 # TV4 CNC
 
+PR-07o от main `389de77`: [shared update channel](docs/STM32_UPDATE_CHANNEL.md)
+объединяет TU/MS в одном bounded software link с retained counters, owned frame
+queue и local phase/role filters. Host56/sanitizers56/standalone30 и independent
+signed chains проходят; original image windows/verifier/lease/model/close прежние.
+Local queue empty не remote delivery/flush/auth/install proof. Runtime/driver/
+identity/resources и все hardware blockers остаются открытыми; устройств нет.
+
 PR-07n от main `d18cf93`: [metadata setup/shared namespace](docs/STM32_METADATA_SETUP.md)
 связывает original CLOSED image negotiation, live empty image endpoints и
 metadata DATA. Paired ID выделяется из общего volatile pool, raw MS exchange

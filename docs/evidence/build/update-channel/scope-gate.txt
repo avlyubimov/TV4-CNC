@@ -1,0 +1,5 @@
+PASS build-boot-arm host fixture/review/test targets absent
+PASS build-update-arm host fixture/review/test targets absent
+PASS actual production handoff target has no channel/setup/fragment/helper dependency
+PASS no channel runtime caller/header in HMI/motion/production bootloader
+PASS only HOST helper selects phase after actual upper negotiation/metadata/image/outcome states and drains fixture queues

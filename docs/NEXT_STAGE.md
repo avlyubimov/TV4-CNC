@@ -1,6 +1,6 @@
 # Следующий этап: release context и STM32 board contract
 
-21 ноября2026. База main `d18cf93`, PR #1–45 слиты, main CI5/5 PASS.
+21 ноября2026. База main `389de77`, PR #1–46 слиты, main CI5/5 PASS.
 ESP32 HMI/Wi-Fi/OTA primitives/candidates и STM32 transport/admission существуют;
 не создавать их заново. Данный план не разрешает доступ к устройствам или merge.
 
@@ -180,7 +180,7 @@ ARM separate metadata1568text/data0/bss0/frame48; old libs прежние. Trans
 setup ещё local input, не authenticated wire exchange/runtime/installer.
 [Evidence](evidence/build/update-metadata-stage/README.md).
 
-## Текущая ветка PR-07n
+## Слитый PR #46, PR-07n
 
 [Metadata setup/shared namespace](STM32_METADATA_SETUP.md) закрывает bounded
 volatile paired role allocation и phase ownership, original image deadline
@@ -189,6 +189,15 @@ TX/RX дают concrete close; delivered snapshots проходят прежни
 verifier/lease/model/clean close. Host54/sanitizers54/standalone28; full text
 [evidence](evidence/build/metadata-setup/README.md). Authentication/persistent
 identity/routing/storage/worker/runtime/install/hardware остаются open.
+
+## Текущая ветка PR-07o
+
+[Shared channel](STM32_UPDATE_CHANNEL.md): один mixed TU/MS fragment/queue path
+через все update phases, local quiescence/role IDs, exact owned outbox commit и
+bounded last frame. Real upper states и existing independent verifier/lease/
+model/close остаются отдельными обязательствами. Host56/sanitizers56/standalone30,
+[evidence](evidence/build/update-channel/README.md); external queue drain/identity/
+authentication/routing/runtime/resources/hardware/install open.
 
 ## Что делать дальше программно
 
@@ -216,8 +225,10 @@ identity/routing/storage/worker/runtime/install/hardware остаются open.
    synthetic шкале. PR-07m добавляет bounded raw metadata/signature container и
    receiver с distinct DATA ID/single owned snapshot/original request binding.
    PR-07n добавляет bounded metadata setup, shared volatile role IDs и phase
-   ownership на original image windows. Дальше review phase/queue arbitration
-   после setup и authenticated production codebook/adoption. Production routing/reboot
+   ownership на original image windows. PR-07o добавляет bounded shared channel
+   и local phase/outbox filters, не actual runtime owner/remote queue flush.
+   Дальше review production identity/capabilities/codebook и external queue
+   lifetime/drain/clock/worker budgets перед runtime adoption. Production routing/reboot
    identity/authentication, durable ownership и measured worker/bus/crypto budgets
    остаются blockers, не implicit defaults или permissive setup stub.
    Decode OK не обновляет context или timeouts; owner poll остаётся обязательным.
