@@ -109,9 +109,33 @@ PR и Actions; не копировать код уже открытого PR. Д
 
 ## Текущее задание
 
-PR #1–49 слиты, база main `2c6fd1c`, main CI5/5 PASS,
+PR #1–50 слиты, база main `db50840`, main CI5/5 PASS,
 открытых PR перед работой нет.
-PR-07r: читать docs/STM32_COMPLETION_MAILBOX.md. Optional C11 SPSC owned-report
+PR-07s: читать docs/STM32_DRIVER_DISPATCH.md. Actual completion owner + one owned
+frame dispatch slot, protocol actor publish/consumer APIs vs driver actor take/
+check/report/retry. Externally publish init/stable lifetime/stop+join; no live
+copy/move/reinit/flush/inner mutable APIs. Producer never reads mutable protocol
+state; owner never reads driver-private fields. Actual claim/original admission
+copied before release READY; take acquire copies to private snapshot, returns
+zero-payload UNCHECKED token. Read time AFTER take; fresh check before exposure/
+backend. Refusal output zero, clock sticky, no implicit current-frame callback.
+Exact ticket required; full retains first report for retry, no uncertain→terminal
+overwrite. Terminal report admission publishes RETURNED; actual consumer cleanup
+AND RETURNED required for slot EMPTY/reuse. Cancel retains untaken/taken/pending/
+claim; no synthesized terminal or force-forget. Late SENT after exposure can
+reclaim only; original upper deadlines/crypto/lease/model/close gates unchanged.
+Owner clear retains IDs/phase/time/mailbox positions, cannot reset driver clock
+fault. Software revoke/check not atomic hardware cancel/physical inhibit.
+Host68/sanitizers68/standalone42/TSan4;256 actual messages/8448 frames/1056 rejected
+callbacks +4 controlled thread faults;8 signed positives+3 independent+2 lifetime
+refusals. Analyzer21+2/guards7×6+2×7/source178/synthetic/board/output/scope PASS.
+Separate ARM1324text/data0/bss0/frame72,13 exports/14 DMB/no atomic helpers,
+4096/frame128 ceiling. Old archives/budgets/SDK/workspace/arena unchanged; host
+1360/delivery48 not MCU RAM/full stack/latency approval. Target ISR/RTOS/cache/
+DMA/clock/backend truth/reset/identity/resources/runtime/install/physical open.
+No device/SWD/UART/reset/Flash/CAN/motion/merge/release actions.
+
+Слитый PR #50, PR-07r: читать docs/STM32_COMPLETION_MAILBOX.md. Optional C11 SPSC owned-report
 mailbox + actual bound consumer. One producer post ONLY, one consumer other APIs;
 producer reads immutable binding only. Init externally published before actors,
 stable lifetime/stop+join before destruction, no live copy/move/reinit/flush/reset.

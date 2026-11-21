@@ -1,0 +1,56 @@
+UpdateCTestConfiguration  from :/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/driver-dispatch/build-thread-sanitize/DartConfiguration.tcl
+Test project /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/driver-dispatch/build-thread-sanitize
+Constructing a list of tests
+Done constructing a list of tests
+Updating test list for fixtures
+Added 0 tests to meet fixture requirements
+Checking test dependency graph...
+Checking test dependency graph end
+test 1
+    Start  1: update_driver_dispatch_threads
+
+1: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/driver-dispatch/build-thread-sanitize/update_driver_dispatch_tests "--threads"
+1: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/driver-dispatch/build-thread-sanitize
+1: Test timeout computed to be: 60
+1: PASS two real actors bidirectional publication/take/fresh-check/peer-RX/exact-return/service: 256 messages/8448 frames/1056 stale callbacks, capacities1..4/clock wrap
+1: PASS4 controlled two-actor cancellations before/after take, driver expiry and full uncertain→retained terminal retry; exact claim reclaimed only
+1/4 Test  #1: update_driver_dispatch_threads ......   Passed    0.06 sec
+test 2
+    Start  2: update_completion_mailbox_threads
+
+2: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/driver-dispatch/build-thread-sanitize/update_completion_mailbox_tests "--threads"
+2: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/driver-dispatch/build-thread-sanitize
+2: Test timeout computed to be: 60
+2: PASS two real pthread actors/1200000 ordered reports/capacities1..4, producer retries=221121; no claim/driver/auth authority
+2/4 Test  #2: update_completion_mailbox_threads ...   Passed    0.58 sec
+test 22
+    Start 22: update_completion_owner
+
+22: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/driver-dispatch/build-thread-sanitize/update_completion_owner_tests
+22: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/driver-dispatch/build-thread-sanitize
+22: Test timeout computed to be: 20
+22: PASS full retained terminal retry/current-time timeout/uncertain/cancel/sticky cleanup; atomic positions and protocol IDs retained, no force-forget
+22: PASS actual mailbox blocks phase/begin/claim with inner owner IDLE and ledger empty; stale duplicate consumed explicitly
+22: PASS concurrent actual channel/claim/local-driver-report/service/RX:256 messages/8448 frames/9504 reports/1056 stale duplicates, capacities1..4/clock wrap
+22: Host storage only: bound completion owner=1208; no MCU memory/ISR/RTOS/driver truth approval
+3/4 Test #22: update_completion_owner .............   Passed    0.05 sec
+test 23
+    Start 23: update_driver_dispatch
+
+23: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/driver-dispatch/build-thread-sanitize/update_driver_dispatch_tests
+23: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/driver-dispatch/build-thread-sanitize
+23: Test timeout computed to be: 20
+23: PASS published untaken/taken claims survive cancel/expiry/context/driver-clock fault; fresh check required, original admission retained, late SENT cleanup only
+23: PASS full completion retains first terminal for retry; uncertain never overwritten, old callback cannot free next claim after clear, no implicit-current callback
+23: Host storage only: dispatch=1360 delivery=48; no target RAM/ISR/RTOS/backend or physical authority
+4/4 Test #23: update_driver_dispatch ..............   Passed    0.01 sec
+
+The following tests passed:
+	update_driver_dispatch_threads
+	update_completion_mailbox_threads
+	update_completion_owner
+	update_driver_dispatch
+
+100% tests passed, 0 tests failed out of 4
+
+Total Test time (real) =   0.70 sec

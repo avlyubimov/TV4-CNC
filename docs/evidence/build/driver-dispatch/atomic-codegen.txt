@@ -1,0 +1,558 @@
+In archive build-update-arm/libtv4_driver_dispatch.a:
+
+driver_dispatch.c.obj:     file format elf32-littlearm
+
+
+Disassembly of section .text.reconcile:
+
+00000000 <reconcile>:
+   0:	b538      	push	{r3, r4, r5, lr}
+   2:	f890 3321 	ldrb.w	r3, [r0, #801]	@ 0x321
+   6:	4604      	mov	r4, r0
+   8:	b123      	cbz	r3, 14 <reconcile+0x14>
+   a:	f3bf 8f5b 	dmb	ish
+   e:	2301      	movs	r3, #1
+  10:	f8c0 34d4 	str.w	r3, [r0, #1236]	@ 0x4d4
+  14:	f8d4 34d0 	ldr.w	r3, [r4, #1232]	@ 0x4d0
+  18:	f3bf 8f5b 	dmb	ish
+  1c:	2b03      	cmp	r3, #3
+  1e:	d118      	bne.n	52 <reconcile+0x52>
+  20:	f8d4 3314 	ldr.w	r3, [r4, #788]	@ 0x314
+  24:	b9ab      	cbnz	r3, 52 <reconcile+0x52>
+  26:	f894 33aa 	ldrb.w	r3, [r4, #938]	@ 0x3aa
+  2a:	b993      	cbnz	r3, 52 <reconcile+0x52>
+  2c:	f894 3498 	ldrb.w	r3, [r4, #1176]	@ 0x498
+  30:	b97b      	cbnz	r3, 52 <reconcile+0x52>
+  32:	f504 706c 	add.w	r0, r4, #944	@ 0x3b0
+  36:	f7ff fffe 	bl	0 <tv4_completion_mailbox_empty>
+  3a:	4605      	mov	r5, r0
+  3c:	b948      	cbnz	r0, 52 <reconcile+0x52>
+  3e:	4601      	mov	r1, r0
+  40:	2230      	movs	r2, #48	@ 0x30
+  42:	f504 6094 	add.w	r0, r4, #1184	@ 0x4a0
+  46:	f7ff fffe 	bl	0 <memset>
+  4a:	f3bf 8f5b 	dmb	ish
+  4e:	f8c4 54d0 	str.w	r5, [r4, #1232]	@ 0x4d0
+  52:	bd38      	pop	{r3, r4, r5, pc}
+
+Disassembly of section .text.tv4_driver_dispatch_init:
+
+00000000 <tv4_driver_dispatch_init>:
+   0:	b5f0      	push	{r4, r5, r6, r7, lr}
+   2:	b08b      	sub	sp, #44	@ 0x2c
+   4:	ad08      	add	r5, sp, #32
+   6:	e885 000c 	stmia.w	r5, {r2, r3}
+   a:	9f16      	ldr	r7, [sp, #88]	@ 0x58
+   c:	4604      	mov	r4, r0
+   e:	b910      	cbnz	r0, 16 <tv4_driver_dispatch_init+0x16>
+  10:	2000      	movs	r0, #0
+  12:	b00b      	add	sp, #44	@ 0x2c
+  14:	bdf0      	pop	{r4, r5, r6, r7, pc}
+  16:	f890 6530 	ldrb.w	r6, [r0, #1328]	@ 0x530
+  1a:	2e00      	cmp	r6, #0
+  1c:	d1f8      	bne.n	10 <tv4_driver_dispatch_init+0x10>
+  1e:	9b15      	ldr	r3, [sp, #84]	@ 0x54
+  20:	9305      	str	r3, [sp, #20]
+  22:	f8bd 3050 	ldrh.w	r3, [sp, #80]	@ 0x50
+  26:	9304      	str	r3, [sp, #16]
+  28:	e9dd 2312 	ldrd	r2, r3, [sp, #72]	@ 0x48
+  2c:	e9cd 2302 	strd	r2, r3, [sp, #8]
+  30:	9b11      	ldr	r3, [sp, #68]	@ 0x44
+  32:	9301      	str	r3, [sp, #4]
+  34:	9b10      	ldr	r3, [sp, #64]	@ 0x40
+  36:	9706      	str	r7, [sp, #24]
+  38:	9300      	str	r3, [sp, #0]
+  3a:	e895 000c 	ldmia.w	r5, {r2, r3}
+  3e:	f7ff fffe 	bl	0 <tv4_completion_owner_init>
+  42:	2800      	cmp	r0, #0
+  44:	d0e4      	beq.n	10 <tv4_driver_dispatch_init+0x10>
+  46:	f8c4 64d0 	str.w	r6, [r4, #1232]	@ 0x4d0
+  4a:	f8c4 64d4 	str.w	r6, [r4, #1236]	@ 0x4d4
+  4e:	2301      	movs	r3, #1
+  50:	f8c4 7528 	str.w	r7, [r4, #1320]	@ 0x528
+  54:	f884 3530 	strb.w	r3, [r4, #1328]	@ 0x530
+  58:	e7db      	b.n	12 <tv4_driver_dispatch_init+0x12>
+
+Disassembly of section .text.tv4_driver_dispatch_poll:
+
+00000000 <tv4_driver_dispatch_poll>:
+   0:	b537      	push	{r0, r1, r2, r4, r5, lr}
+   2:	4605      	mov	r5, r0
+   4:	b168      	cbz	r0, 22 <tv4_driver_dispatch_poll+0x22>
+   6:	f890 1530 	ldrb.w	r1, [r0, #1328]	@ 0x530
+   a:	b151      	cbz	r1, 22 <tv4_driver_dispatch_poll+0x22>
+   c:	9906      	ldr	r1, [sp, #24]
+   e:	9100      	str	r1, [sp, #0]
+  10:	f7ff fffe 	bl	0 <tv4_completion_owner_poll>
+  14:	4604      	mov	r4, r0
+  16:	4628      	mov	r0, r5
+  18:	f7ff fffe 	bl	0 <tv4_driver_dispatch_poll>
+  1c:	4620      	mov	r0, r4
+  1e:	b003      	add	sp, #12
+  20:	bd30      	pop	{r4, r5, pc}
+  22:	2408      	movs	r4, #8
+  24:	e7fa      	b.n	1c <tv4_driver_dispatch_poll+0x1c>
+
+Disassembly of section .text.tv4_driver_dispatch_service:
+
+00000000 <tv4_driver_dispatch_service>:
+   0:	b537      	push	{r0, r1, r2, r4, r5, lr}
+   2:	4605      	mov	r5, r0
+   4:	b168      	cbz	r0, 22 <tv4_driver_dispatch_service+0x22>
+   6:	f890 1530 	ldrb.w	r1, [r0, #1328]	@ 0x530
+   a:	b151      	cbz	r1, 22 <tv4_driver_dispatch_service+0x22>
+   c:	9906      	ldr	r1, [sp, #24]
+   e:	9100      	str	r1, [sp, #0]
+  10:	f7ff fffe 	bl	0 <tv4_completion_owner_service>
+  14:	4604      	mov	r4, r0
+  16:	4628      	mov	r0, r5
+  18:	f7ff fffe 	bl	0 <tv4_driver_dispatch_service>
+  1c:	4620      	mov	r0, r4
+  1e:	b003      	add	sp, #12
+  20:	bd30      	pop	{r4, r5, pc}
+  22:	2408      	movs	r4, #8
+  24:	e7fa      	b.n	1c <tv4_driver_dispatch_service+0x1c>
+
+Disassembly of section .text.tv4_driver_dispatch_begin:
+
+00000000 <tv4_driver_dispatch_begin>:
+   0:	e92d 41f3 	stmdb	sp!, {r0, r1, r4, r5, r6, r7, r8, lr}
+   4:	f8dd 8020 	ldr.w	r8, [sp, #32]
+   8:	4605      	mov	r5, r0
+   a:	4617      	mov	r7, r2
+   c:	461e      	mov	r6, r3
+   e:	460c      	mov	r4, r1
+  10:	b921      	cbnz	r1, 1c <tv4_driver_dispatch_begin+0x1c>
+  12:	2402      	movs	r4, #2
+  14:	4620      	mov	r0, r4
+  16:	b002      	add	sp, #8
+  18:	e8bd 81f0 	ldmia.w	sp!, {r4, r5, r6, r7, r8, pc}
+  1c:	f8cd 8000 	str.w	r8, [sp]
+  20:	f7ff fffe 	bl	0 <tv4_driver_dispatch_begin>
+  24:	b118      	cbz	r0, 2e <tv4_driver_dispatch_begin+0x2e>
+  26:	2808      	cmp	r0, #8
+  28:	d0f3      	beq.n	12 <tv4_driver_dispatch_begin+0x12>
+  2a:	2407      	movs	r4, #7
+  2c:	e7f2      	b.n	14 <tv4_driver_dispatch_begin+0x14>
+  2e:	f8d5 34d0 	ldr.w	r3, [r5, #1232]	@ 0x4d0
+  32:	f3bf 8f5b 	dmb	ish
+  36:	b993      	cbnz	r3, 5e <tv4_driver_dispatch_begin+0x5e>
+  38:	4621      	mov	r1, r4
+  3a:	f8cd 8000 	str.w	r8, [sp]
+  3e:	463a      	mov	r2, r7
+  40:	4633      	mov	r3, r6
+  42:	4628      	mov	r0, r5
+  44:	f7ff fffe 	bl	0 <tv4_completion_owner_begin>
+  48:	2807      	cmp	r0, #7
+  4a:	4604      	mov	r4, r0
+  4c:	d1e2      	bne.n	14 <tv4_driver_dispatch_begin+0x14>
+  4e:	f8cd 8000 	str.w	r8, [sp]
+  52:	463a      	mov	r2, r7
+  54:	4633      	mov	r3, r6
+  56:	4628      	mov	r0, r5
+  58:	f7ff fffe 	bl	0 <tv4_driver_dispatch_begin>
+  5c:	e7da      	b.n	14 <tv4_driver_dispatch_begin+0x14>
+  5e:	2406      	movs	r4, #6
+  60:	e7d8      	b.n	14 <tv4_driver_dispatch_begin+0x14>
+
+Disassembly of section .text.tv4_driver_dispatch_pump:
+
+00000000 <tv4_driver_dispatch_pump>:
+   0:	e92d 41f3 	stmdb	sp!, {r0, r1, r4, r5, r6, r7, r8, lr}
+   4:	f8dd 8020 	ldr.w	r8, [sp, #32]
+   8:	f8cd 8000 	str.w	r8, [sp]
+   c:	4605      	mov	r5, r0
+   e:	4617      	mov	r7, r2
+  10:	461e      	mov	r6, r3
+  12:	f7ff fffe 	bl	0 <tv4_driver_dispatch_pump>
+  16:	4604      	mov	r4, r0
+  18:	b950      	cbnz	r0, 30 <tv4_driver_dispatch_pump+0x30>
+  1a:	f8cd 8000 	str.w	r8, [sp]
+  1e:	463a      	mov	r2, r7
+  20:	4633      	mov	r3, r6
+  22:	4628      	mov	r0, r5
+  24:	f7ff fffe 	bl	0 <tv4_completion_owner_pump>
+  28:	4604      	mov	r4, r0
+  2a:	4628      	mov	r0, r5
+  2c:	f7ff fffe 	bl	0 <tv4_driver_dispatch_pump>
+  30:	4620      	mov	r0, r4
+  32:	b002      	add	sp, #8
+  34:	e8bd 81f0 	ldmia.w	sp!, {r4, r5, r6, r7, r8, pc}
+
+Disassembly of section .text.tv4_driver_dispatch_publish:
+
+00000000 <tv4_driver_dispatch_publish>:
+   0:	b5f0      	push	{r4, r5, r6, r7, lr}
+   2:	b08d      	sub	sp, #52	@ 0x34
+   4:	4606      	mov	r6, r0
+   6:	9f12      	ldr	r7, [sp, #72]	@ 0x48
+   8:	9700      	str	r7, [sp, #0]
+   a:	4615      	mov	r5, r2
+   c:	461c      	mov	r4, r3
+   e:	f7ff fffe 	bl	0 <tv4_driver_dispatch_publish>
+  12:	bb50      	cbnz	r0, 6a <tv4_driver_dispatch_publish+0x6a>
+  14:	f8d6 34d0 	ldr.w	r3, [r6, #1232]	@ 0x4d0
+  18:	f3bf 8f5b 	dmb	ish
+  1c:	bb3b      	cbnz	r3, 6e <tv4_driver_dispatch_publish+0x6e>
+  1e:	9700      	str	r7, [sp, #0]
+  20:	462a      	mov	r2, r5
+  22:	4623      	mov	r3, r4
+  24:	a902      	add	r1, sp, #8
+  26:	4630      	mov	r0, r6
+  28:	f7ff fffe 	bl	0 <tv4_completion_owner_claim>
+  2c:	2802      	cmp	r0, #2
+  2e:	d11c      	bne.n	6a <tv4_driver_dispatch_publish+0x6a>
+  30:	f896 3318 	ldrb.w	r3, [r6, #792]	@ 0x318
+  34:	f8d6 72f8 	ldr.w	r7, [r6, #760]	@ 0x2f8
+  38:	2214      	movs	r2, #20
+  3a:	fb02 6303 	mla	r3, r2, r3, r6
+  3e:	ac02      	add	r4, sp, #8
+  40:	f8d3 c2b8 	ldr.w	ip, [r3, #696]	@ 0x2b8
+  44:	cc0f      	ldmia	r4!, {r0, r1, r2, r3}
+  46:	f506 6594 	add.w	r5, r6, #1184	@ 0x4a0
+  4a:	c50f      	stmia	r5!, {r0, r1, r2, r3}
+  4c:	cc0f      	ldmia	r4!, {r0, r1, r2, r3}
+  4e:	c50f      	stmia	r5!, {r0, r1, r2, r3}
+  50:	e894 0003 	ldmia.w	r4, {r0, r1}
+  54:	e885 0003 	stmia.w	r5, {r0, r1}
+  58:	f8c6 c4c8 	str.w	ip, [r6, #1224]	@ 0x4c8
+  5c:	f8c6 74cc 	str.w	r7, [r6, #1228]	@ 0x4cc
+  60:	2001      	movs	r0, #1
+  62:	f3bf 8f5b 	dmb	ish
+  66:	f8c6 04d0 	str.w	r0, [r6, #1232]	@ 0x4d0
+  6a:	b00d      	add	sp, #52	@ 0x34
+  6c:	bdf0      	pop	{r4, r5, r6, r7, pc}
+  6e:	2006      	movs	r0, #6
+  70:	e7fb      	b.n	6a <tv4_driver_dispatch_publish+0x6a>
+
+Disassembly of section .text.tv4_driver_dispatch_advance:
+
+00000000 <tv4_driver_dispatch_advance>:
+   0:	e92d 43f0 	stmdb	sp!, {r4, r5, r6, r7, r8, r9, lr}
+   4:	b085      	sub	sp, #20
+   6:	e9dd 670c 	ldrd	r6, r7, [sp, #48]	@ 0x30
+   a:	f8dd 9038 	ldr.w	r9, [sp, #56]	@ 0x38
+   e:	ad02      	add	r5, sp, #8
+  10:	e885 000c 	stmia.w	r5, {r2, r3}
+  14:	f8cd 9000 	str.w	r9, [sp]
+  18:	4632      	mov	r2, r6
+  1a:	463b      	mov	r3, r7
+  1c:	4604      	mov	r4, r0
+  1e:	4688      	mov	r8, r1
+  20:	f7ff fffe 	bl	0 <tv4_driver_dispatch_advance>
+  24:	b130      	cbz	r0, 34 <tv4_driver_dispatch_advance+0x34>
+  26:	2808      	cmp	r0, #8
+  28:	bf14      	ite	ne
+  2a:	2007      	movne	r0, #7
+  2c:	2002      	moveq	r0, #2
+  2e:	b005      	add	sp, #20
+  30:	e8bd 83f0 	ldmia.w	sp!, {r4, r5, r6, r7, r8, r9, pc}
+  34:	f8d4 34d0 	ldr.w	r3, [r4, #1232]	@ 0x4d0
+  38:	f3bf 8f5b 	dmb	ish
+  3c:	b963      	cbnz	r3, 58 <tv4_driver_dispatch_advance+0x58>
+  3e:	e9cd 670c 	strd	r6, r7, [sp, #48]	@ 0x30
+  42:	f8cd 9038 	str.w	r9, [sp, #56]	@ 0x38
+  46:	e895 000c 	ldmia.w	r5, {r2, r3}
+  4a:	4641      	mov	r1, r8
+  4c:	4620      	mov	r0, r4
+  4e:	b005      	add	sp, #20
+  50:	e8bd 43f0 	ldmia.w	sp!, {r4, r5, r6, r7, r8, r9, lr}
+  54:	f7ff bffe 	b.w	0 <tv4_completion_owner_advance>
+  58:	2006      	movs	r0, #6
+  5a:	e7e8      	b.n	2e <tv4_driver_dispatch_advance+0x2e>
+
+Disassembly of section .text.tv4_driver_dispatch_cancel:
+
+00000000 <tv4_driver_dispatch_cancel>:
+   0:	b537      	push	{r0, r1, r2, r4, r5, lr}
+   2:	4604      	mov	r4, r0
+   4:	b190      	cbz	r0, 2c <tv4_driver_dispatch_cancel+0x2c>
+   6:	f890 1530 	ldrb.w	r1, [r0, #1328]	@ 0x530
+   a:	b179      	cbz	r1, 2c <tv4_driver_dispatch_cancel+0x2c>
+   c:	f3bf 8f5b 	dmb	ish
+  10:	2101      	movs	r1, #1
+  12:	f8c0 14d4 	str.w	r1, [r0, #1236]	@ 0x4d4
+  16:	9906      	ldr	r1, [sp, #24]
+  18:	9100      	str	r1, [sp, #0]
+  1a:	f7ff fffe 	bl	0 <tv4_completion_owner_cancel>
+  1e:	4605      	mov	r5, r0
+  20:	4620      	mov	r0, r4
+  22:	f7ff fffe 	bl	0 <tv4_driver_dispatch_cancel>
+  26:	4628      	mov	r0, r5
+  28:	b003      	add	sp, #12
+  2a:	bd30      	pop	{r4, r5, pc}
+  2c:	2508      	movs	r5, #8
+  2e:	e7fa      	b.n	26 <tv4_driver_dispatch_cancel+0x26>
+
+Disassembly of section .text.tv4_driver_dispatch_clear:
+
+00000000 <tv4_driver_dispatch_clear>:
+   0:	b5f7      	push	{r0, r1, r2, r4, r5, r6, r7, lr}
+   2:	9f08      	ldr	r7, [sp, #32]
+   4:	9700      	str	r7, [sp, #0]
+   6:	4604      	mov	r4, r0
+   8:	4616      	mov	r6, r2
+   a:	461d      	mov	r5, r3
+   c:	f7ff fffe 	bl	0 <tv4_driver_dispatch_clear>
+  10:	2808      	cmp	r0, #8
+  12:	d00f      	beq.n	34 <tv4_driver_dispatch_clear+0x34>
+  14:	f8d4 34d0 	ldr.w	r3, [r4, #1232]	@ 0x4d0
+  18:	f3bf 8f5b 	dmb	ish
+  1c:	b963      	cbnz	r3, 38 <tv4_driver_dispatch_clear+0x38>
+  1e:	9700      	str	r7, [sp, #0]
+  20:	4632      	mov	r2, r6
+  22:	462b      	mov	r3, r5
+  24:	4620      	mov	r0, r4
+  26:	f7ff fffe 	bl	0 <tv4_completion_owner_clear>
+  2a:	b918      	cbnz	r0, 34 <tv4_driver_dispatch_clear+0x34>
+  2c:	f3bf 8f5b 	dmb	ish
+  30:	f8c4 04d4 	str.w	r0, [r4, #1236]	@ 0x4d4
+  34:	b003      	add	sp, #12
+  36:	bdf0      	pop	{r4, r5, r6, r7, pc}
+  38:	200a      	movs	r0, #10
+  3a:	e7fb      	b.n	34 <tv4_driver_dispatch_clear+0x34>
+
+Disassembly of section .text.tv4_driver_dispatch_check:
+
+00000000 <tv4_driver_dispatch_check>:
+   0:	b082      	sub	sp, #8
+   2:	b570      	push	{r4, r5, r6, lr}
+   4:	e9dd 560a 	ldrd	r5, r6, [sp, #40]	@ 0x28
+   8:	a904      	add	r1, sp, #16
+   a:	e881 000c 	stmia.w	r1, {r2, r3}
+   e:	4604      	mov	r4, r0
+  10:	b125      	cbz	r5, 1c <tv4_driver_dispatch_check+0x1c>
+  12:	2230      	movs	r2, #48	@ 0x30
+  14:	2100      	movs	r1, #0
+  16:	4628      	mov	r0, r5
+  18:	f7ff fffe 	bl	0 <memset>
+  1c:	2c00      	cmp	r4, #0
+  1e:	d050      	beq.n	c2 <tv4_driver_dispatch_check+0xc2>
+  20:	f894 3530 	ldrb.w	r3, [r4, #1328]	@ 0x530
+  24:	2b00      	cmp	r3, #0
+  26:	d04c      	beq.n	c2 <tv4_driver_dispatch_check+0xc2>
+  28:	2d00      	cmp	r5, #0
+  2a:	d04a      	beq.n	c2 <tv4_driver_dispatch_check+0xc2>
+  2c:	f894 352c 	ldrb.w	r3, [r4, #1324]	@ 0x52c
+  30:	2b00      	cmp	r3, #0
+  32:	d048      	beq.n	c6 <tv4_driver_dispatch_check+0xc6>
+  34:	f8d4 24e8 	ldr.w	r2, [r4, #1256]	@ 0x4e8
+  38:	9b08      	ldr	r3, [sp, #32]
+  3a:	429a      	cmp	r2, r3
+  3c:	d143      	bne.n	c6 <tv4_driver_dispatch_check+0xc6>
+  3e:	f8d4 24e4 	ldr.w	r2, [r4, #1252]	@ 0x4e4
+  42:	9b07      	ldr	r3, [sp, #28]
+  44:	429a      	cmp	r2, r3
+  46:	d13e      	bne.n	c6 <tv4_driver_dispatch_check+0xc6>
+  48:	e9dd 1304 	ldrd	r1, r3, [sp, #16]
+  4c:	f8d4 04d8 	ldr.w	r0, [r4, #1240]	@ 0x4d8
+  50:	f8d4 24dc 	ldr.w	r2, [r4, #1244]	@ 0x4dc
+  54:	429a      	cmp	r2, r3
+  56:	bf08      	it	eq
+  58:	4288      	cmpeq	r0, r1
+  5a:	d134      	bne.n	c6 <tv4_driver_dispatch_check+0xc6>
+  5c:	f8d4 24e0 	ldr.w	r2, [r4, #1248]	@ 0x4e0
+  60:	9b06      	ldr	r3, [sp, #24]
+  62:	429a      	cmp	r2, r3
+  64:	d12f      	bne.n	c6 <tv4_driver_dispatch_check+0xc6>
+  66:	f894 352f 	ldrb.w	r3, [r4, #1327]	@ 0x52f
+  6a:	b923      	cbnz	r3, 76 <tv4_driver_dispatch_check+0x76>
+  6c:	f8d4 3528 	ldr.w	r3, [r4, #1320]	@ 0x528
+  70:	1af3      	subs	r3, r6, r3
+  72:	2b00      	cmp	r3, #0
+  74:	da07      	bge.n	86 <tv4_driver_dispatch_check+0x86>
+  76:	2301      	movs	r3, #1
+  78:	f884 352f 	strb.w	r3, [r4, #1327]	@ 0x52f
+  7c:	2006      	movs	r0, #6
+  7e:	e8bd 4070 	ldmia.w	sp!, {r4, r5, r6, lr}
+  82:	b002      	add	sp, #8
+  84:	4770      	bx	lr
+  86:	f8c4 6528 	str.w	r6, [r4, #1320]	@ 0x528
+  8a:	f8d4 34d4 	ldr.w	r3, [r4, #1236]	@ 0x4d4
+  8e:	f3bf 8f5b 	dmb	ish
+  92:	b9d3      	cbnz	r3, ca <tv4_driver_dispatch_check+0xca>
+  94:	f8d4 3500 	ldr.w	r3, [r4, #1280]	@ 0x500
+  98:	1af6      	subs	r6, r6, r3
+  9a:	d4ec      	bmi.n	76 <tv4_driver_dispatch_check+0x76>
+  9c:	f8d4 3504 	ldr.w	r3, [r4, #1284]	@ 0x504
+  a0:	42b3      	cmp	r3, r6
+  a2:	d914      	bls.n	ce <tv4_driver_dispatch_check+0xce>
+  a4:	2601      	movs	r6, #1
+  a6:	f884 652e 	strb.w	r6, [r4, #1326]	@ 0x52e
+  aa:	f504 649b 	add.w	r4, r4, #1240	@ 0x4d8
+  ae:	cc0f      	ldmia	r4!, {r0, r1, r2, r3}
+  b0:	c50f      	stmia	r5!, {r0, r1, r2, r3}
+  b2:	cc0f      	ldmia	r4!, {r0, r1, r2, r3}
+  b4:	c50f      	stmia	r5!, {r0, r1, r2, r3}
+  b6:	e894 000f 	ldmia.w	r4, {r0, r1, r2, r3}
+  ba:	e885 000f 	stmia.w	r5, {r0, r1, r2, r3}
+  be:	4630      	mov	r0, r6
+  c0:	e7dd      	b.n	7e <tv4_driver_dispatch_check+0x7e>
+  c2:	2007      	movs	r0, #7
+  c4:	e7db      	b.n	7e <tv4_driver_dispatch_check+0x7e>
+  c6:	2008      	movs	r0, #8
+  c8:	e7d9      	b.n	7e <tv4_driver_dispatch_check+0x7e>
+  ca:	2004      	movs	r0, #4
+  cc:	e7d7      	b.n	7e <tv4_driver_dispatch_check+0x7e>
+  ce:	2005      	movs	r0, #5
+  d0:	e7d5      	b.n	7e <tv4_driver_dispatch_check+0x7e>
+
+Disassembly of section .text.tv4_driver_dispatch_take:
+
+00000000 <tv4_driver_dispatch_take>:
+   0:	e92d 41f0 	stmdb	sp!, {r4, r5, r6, r7, r8, lr}
+   4:	4604      	mov	r4, r0
+   6:	4688      	mov	r8, r1
+   8:	b121      	cbz	r1, 14 <tv4_driver_dispatch_take+0x14>
+   a:	2230      	movs	r2, #48	@ 0x30
+   c:	2100      	movs	r1, #0
+   e:	4640      	mov	r0, r8
+  10:	f7ff fffe 	bl	0 <memset>
+  14:	2c00      	cmp	r4, #0
+  16:	d038      	beq.n	8a <tv4_driver_dispatch_take+0x8a>
+  18:	f894 3530 	ldrb.w	r3, [r4, #1328]	@ 0x530
+  1c:	b3ab      	cbz	r3, 8a <tv4_driver_dispatch_take+0x8a>
+  1e:	f1b8 0f00 	cmp.w	r8, #0
+  22:	d032      	beq.n	8a <tv4_driver_dispatch_take+0x8a>
+  24:	f894 752c 	ldrb.w	r7, [r4, #1324]	@ 0x52c
+  28:	bb8f      	cbnz	r7, 8e <tv4_driver_dispatch_take+0x8e>
+  2a:	f8d4 c4d0 	ldr.w	ip, [r4, #1232]	@ 0x4d0
+  2e:	f3bf 8f5b 	dmb	ish
+  32:	f1bc 0f01 	cmp.w	ip, #1
+  36:	d12c      	bne.n	92 <tv4_driver_dispatch_take+0x92>
+  38:	f504 6694 	add.w	r6, r4, #1184	@ 0x4a0
+  3c:	ce0f      	ldmia	r6!, {r0, r1, r2, r3}
+  3e:	f504 659b 	add.w	r5, r4, #1240	@ 0x4d8
+  42:	c50f      	stmia	r5!, {r0, r1, r2, r3}
+  44:	ce0f      	ldmia	r6!, {r0, r1, r2, r3}
+  46:	c50f      	stmia	r5!, {r0, r1, r2, r3}
+  48:	e896 000f 	ldmia.w	r6, {r0, r1, r2, r3}
+  4c:	e885 000f 	stmia.w	r5, {r0, r1, r2, r3}
+  50:	f884 c52c 	strb.w	ip, [r4, #1324]	@ 0x52c
+  54:	2302      	movs	r3, #2
+  56:	f3bf 8f5b 	dmb	ish
+  5a:	f8c4 34d0 	str.w	r3, [r4, #1232]	@ 0x4d0
+  5e:	f884 752e 	strb.w	r7, [r4, #1326]	@ 0x52e
+  62:	f504 649b 	add.w	r4, r4, #1240	@ 0x4d8
+  66:	cc0f      	ldmia	r4!, {r0, r1, r2, r3}
+  68:	4646      	mov	r6, r8
+  6a:	c60f      	stmia	r6!, {r0, r1, r2, r3}
+  6c:	cc0f      	ldmia	r4!, {r0, r1, r2, r3}
+  6e:	c60f      	stmia	r6!, {r0, r1, r2, r3}
+  70:	e895 000f 	ldmia.w	r5, {r0, r1, r2, r3}
+  74:	e886 000f 	stmia.w	r6, {r0, r1, r2, r3}
+  78:	2209      	movs	r2, #9
+  7a:	4639      	mov	r1, r7
+  7c:	f108 001c 	add.w	r0, r8, #28
+  80:	f7ff fffe 	bl	0 <memset>
+  84:	4638      	mov	r0, r7
+  86:	e8bd 81f0 	ldmia.w	sp!, {r4, r5, r6, r7, r8, pc}
+  8a:	2007      	movs	r0, #7
+  8c:	e7fb      	b.n	86 <tv4_driver_dispatch_take+0x86>
+  8e:	2003      	movs	r0, #3
+  90:	e7f9      	b.n	86 <tv4_driver_dispatch_take+0x86>
+  92:	2002      	movs	r0, #2
+  94:	e7f7      	b.n	86 <tv4_driver_dispatch_take+0x86>
+
+Disassembly of section .text.tv4_driver_dispatch_retry:
+
+00000000 <tv4_driver_dispatch_retry>:
+   0:	b5f8      	push	{r3, r4, r5, r6, r7, lr}
+   2:	4604      	mov	r4, r0
+   4:	b350      	cbz	r0, 5c <tv4_driver_dispatch_retry+0x5c>
+   6:	f890 3530 	ldrb.w	r3, [r0, #1328]	@ 0x530
+   a:	b33b      	cbz	r3, 5c <tv4_driver_dispatch_retry+0x5c>
+   c:	f890 352d 	ldrb.w	r3, [r0, #1325]	@ 0x52d
+  10:	b333      	cbz	r3, 60 <tv4_driver_dispatch_retry+0x60>
+  12:	f500 66a1 	add.w	r6, r0, #1288	@ 0x508
+  16:	4631      	mov	r1, r6
+  18:	f7ff fffe 	bl	0 <tv4_completion_owner_post>
+  1c:	2801      	cmp	r0, #1
+  1e:	4605      	mov	r5, r0
+  20:	d11a      	bne.n	58 <tv4_driver_dispatch_retry+0x58>
+  22:	f894 7520 	ldrb.w	r7, [r4, #1312]	@ 0x520
+  26:	4630      	mov	r0, r6
+  28:	2220      	movs	r2, #32
+  2a:	2100      	movs	r1, #0
+  2c:	f7ff fffe 	bl	0 <memset>
+  30:	2600      	movs	r6, #0
+  32:	2f04      	cmp	r7, #4
+  34:	f884 652d 	strb.w	r6, [r4, #1325]	@ 0x52d
+  38:	d00e      	beq.n	58 <tv4_driver_dispatch_retry+0x58>
+  3a:	2230      	movs	r2, #48	@ 0x30
+  3c:	4631      	mov	r1, r6
+  3e:	f504 609b 	add.w	r0, r4, #1240	@ 0x4d8
+  42:	f7ff fffe 	bl	0 <memset>
+  46:	f884 652c 	strb.w	r6, [r4, #1324]	@ 0x52c
+  4a:	f884 652e 	strb.w	r6, [r4, #1326]	@ 0x52e
+  4e:	2303      	movs	r3, #3
+  50:	f3bf 8f5b 	dmb	ish
+  54:	f8c4 34d0 	str.w	r3, [r4, #1232]	@ 0x4d0
+  58:	4628      	mov	r0, r5
+  5a:	bdf8      	pop	{r3, r4, r5, r6, r7, pc}
+  5c:	2508      	movs	r5, #8
+  5e:	e7fb      	b.n	58 <tv4_driver_dispatch_retry+0x58>
+  60:	2505      	movs	r5, #5
+  62:	e7f9      	b.n	58 <tv4_driver_dispatch_retry+0x58>
+
+Disassembly of section .text.tv4_driver_dispatch_report:
+
+00000000 <tv4_driver_dispatch_report>:
+   0:	b470      	push	{r4, r5, r6}
+   2:	460c      	mov	r4, r1
+   4:	4605      	mov	r5, r0
+   6:	2800      	cmp	r0, #0
+   8:	d041      	beq.n	8e <tv4_driver_dispatch_report+0x8e>
+   a:	f890 3530 	ldrb.w	r3, [r0, #1328]	@ 0x530
+   e:	2b00      	cmp	r3, #0
+  10:	d03d      	beq.n	8e <tv4_driver_dispatch_report+0x8e>
+  12:	2900      	cmp	r1, #0
+  14:	d03b      	beq.n	8e <tv4_driver_dispatch_report+0x8e>
+  16:	7e0b      	ldrb	r3, [r1, #24]
+  18:	1e5a      	subs	r2, r3, #1
+  1a:	2a03      	cmp	r2, #3
+  1c:	d837      	bhi.n	8e <tv4_driver_dispatch_report+0x8e>
+  1e:	f890 252c 	ldrb.w	r2, [r0, #1324]	@ 0x52c
+  22:	b37a      	cbz	r2, 84 <tv4_driver_dispatch_report+0x84>
+  24:	6909      	ldr	r1, [r1, #16]
+  26:	f8d0 24e8 	ldr.w	r2, [r0, #1256]	@ 0x4e8
+  2a:	4291      	cmp	r1, r2
+  2c:	d12a      	bne.n	84 <tv4_driver_dispatch_report+0x84>
+  2e:	68e1      	ldr	r1, [r4, #12]
+  30:	f8d0 24e4 	ldr.w	r2, [r0, #1252]	@ 0x4e4
+  34:	4291      	cmp	r1, r2
+  36:	d125      	bne.n	84 <tv4_driver_dispatch_report+0x84>
+  38:	f8d0 64d8 	ldr.w	r6, [r0, #1240]	@ 0x4d8
+  3c:	f8d0 14dc 	ldr.w	r1, [r0, #1244]	@ 0x4dc
+  40:	e9d4 0200 	ldrd	r0, r2, [r4]
+  44:	4291      	cmp	r1, r2
+  46:	bf08      	it	eq
+  48:	4286      	cmpeq	r6, r0
+  4a:	d11b      	bne.n	84 <tv4_driver_dispatch_report+0x84>
+  4c:	f8d5 14e0 	ldr.w	r1, [r5, #1248]	@ 0x4e0
+  50:	68a2      	ldr	r2, [r4, #8]
+  52:	4291      	cmp	r1, r2
+  54:	d116      	bne.n	84 <tv4_driver_dispatch_report+0x84>
+  56:	f895 252d 	ldrb.w	r2, [r5, #1325]	@ 0x52d
+  5a:	b9b2      	cbnz	r2, 8a <tv4_driver_dispatch_report+0x8a>
+  5c:	f895 252e 	ldrb.w	r2, [r5, #1326]	@ 0x52e
+  60:	b90a      	cbnz	r2, 66 <tv4_driver_dispatch_report+0x66>
+  62:	2b01      	cmp	r3, #1
+  64:	d013      	beq.n	8e <tv4_driver_dispatch_report+0x8e>
+  66:	cc0f      	ldmia	r4!, {r0, r1, r2, r3}
+  68:	f505 66a1 	add.w	r6, r5, #1288	@ 0x508
+  6c:	c60f      	stmia	r6!, {r0, r1, r2, r3}
+  6e:	e894 000f 	ldmia.w	r4, {r0, r1, r2, r3}
+  72:	e886 000f 	stmia.w	r6, {r0, r1, r2, r3}
+  76:	2301      	movs	r3, #1
+  78:	f885 352d 	strb.w	r3, [r5, #1325]	@ 0x52d
+  7c:	4628      	mov	r0, r5
+  7e:	bc70      	pop	{r4, r5, r6}
+  80:	f7ff bffe 	b.w	0 <tv4_driver_dispatch_report>
+  84:	2007      	movs	r0, #7
+  86:	bc70      	pop	{r4, r5, r6}
+  88:	4770      	bx	lr
+  8a:	2006      	movs	r0, #6
+  8c:	e7fb      	b.n	86 <tv4_driver_dispatch_report+0x86>
+  8e:	2008      	movs	r0, #8
+  90:	e7f9      	b.n	86 <tv4_driver_dispatch_report+0x86>

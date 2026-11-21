@@ -1,0 +1,45 @@
+27: PASS two real actors bidirectional publication/take/fresh-check/peer-RX/exact-return/service: 256 messages/8448 frames/1056 stale callbacks, capacities1..4/clock wrap
+27: PASS4 controlled two-actor cancellations before/after take, driver expiry and full uncertain→retained terminal retry; exact claim reclaimed only
+49: PASS published untaken/taken claims survive cancel/expiry/context/driver-clock fault; fresh check required, original admission retained, late SENT cleanup only
+49: PASS full completion retains first terminal for retry; uncertain never overwritten, old callback cannot free next claim after clear, no implicit-current callback
+49: Host storage only: dispatch=1360 delivery=48; no target RAM/ISR/RTOS/backend or physical authority
+61: SETUP frames=473 drops=4 elapsed=1189 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+61: EGRESS claims=1097 returns=1097 held-ticks=266 max-pending=2; local completion tickets, no driver-owned frame forgotten
+61: DISPATCH published=1097 driver-rejected-callbacks=64; original admission/fresh check/exact terminal/slot reuse, no driver-copy gap
+61: EVENTS posted=1097 serviced=1097 stale=0 wait-ticks=1097 max-pending=1; owned copies, one-event budget/current service time
+61: SETUP frames=473 drops=4 elapsed=1189 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+61: EGRESS claims=1331 returns=1331 held-ticks=324 max-pending=2; local completion tickets, no driver-owned frame forgotten
+61: DISPATCH published=1331 driver-rejected-callbacks=78; original admission/fresh check/exact terminal/slot reuse, no driver-copy gap
+61: EVENTS posted=1331 serviced=1331 stale=0 wait-ticks=1331 max-pending=1; owned copies, one-event budget/current service time
+61: SETUP frames=473 drops=4 elapsed=1185 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+61: EGRESS claims=1544 returns=1544 held-ticks=375 max-pending=2; local completion tickets, no driver-owned frame forgotten
+61: DISPATCH published=1544 driver-rejected-callbacks=90; original admission/fresh check/exact terminal/slot reuse, no driver-copy gap
+61: EVENTS posted=1544 serviced=1544 stale=0 wait-ticks=1544 max-pending=1; owned copies, one-event budget/current service time
+61: SETUP frames=473 drops=4 elapsed=1185 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+61: EGRESS claims=1778 returns=1778 held-ticks=432 max-pending=2; local completion tickets, no driver-owned frame forgotten
+61: DISPATCH published=1778 driver-rejected-callbacks=104; original admission/fresh check/exact terminal/slot reuse, no driver-copy gap
+61: EVENTS posted=1778 serviced=1778 stale=0 wait-ticks=1778 max-pending=1; owned copies, one-event budget/current service time
+61: SETUP frames=473 drops=4 elapsed=1185 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+61: EGRESS claims=1544 returns=1544 held-ticks=375 max-pending=2; local completion tickets, no driver-owned frame forgotten
+61: DISPATCH published=1544 driver-rejected-callbacks=90; original admission/fresh check/exact terminal/slot reuse, no driver-copy gap
+61: EVENTS posted=1544 serviced=1544 stale=0 wait-ticks=1544 max-pending=1; owned copies, one-event budget/current service time
+61: SETUP frames=473 drops=4 elapsed=1185 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+61: EGRESS claims=1778 returns=1778 held-ticks=432 max-pending=2; local completion tickets, no driver-owned frame forgotten
+61: DISPATCH published=1778 driver-rejected-callbacks=104; original admission/fresh check/exact terminal/slot reuse, no driver-copy gap
+61: EVENTS posted=1778 serviced=1778 stale=0 wait-ticks=1778 max-pending=1; owned copies, one-event budget/current service time
+61: SETUP frames=473 drops=4 elapsed=1185 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+61: EGRESS claims=1497 returns=1497 held-ticks=364 max-pending=2; local completion tickets, no driver-owned frame forgotten
+61: DISPATCH published=1497 driver-rejected-callbacks=88; original admission/fresh check/exact terminal/slot reuse, no driver-copy gap
+61: EVENTS posted=1497 serviced=1497 stale=0 wait-ticks=1497 max-pending=1; owned copies, one-event budget/current service time
+61: SETUP frames=473 drops=4 elapsed=1185 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+61: EGRESS claims=1498 returns=1498 held-ticks=364 max-pending=2; local completion tickets, no driver-owned frame forgotten
+61: DISPATCH published=1498 driver-rejected-callbacks=88; original admission/fresh check/exact terminal/slot reuse, no driver-copy gap
+61: EVENTS posted=1498 serviced=1498 stale=0 wait-ticks=1498 max-pending=1; owned copies, one-event budget/current service time
+61: PASS8 transported metadata signed chains: frames=12067 drops=80 container-bytes=4803 DER=70..72 longest=4715 synthetic ms; producer wiped, actual delivered signature/raw digest/lease/model/close, no image deadline reset
+61: SETUP frames=473 drops=4 elapsed=1189 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+61: SETUP frames=473 drops=4 elapsed=1189 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+61: SETUP frames=473 drops=4 elapsed=1189 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+61: PASS transported metadata does not bypass invalid signature, correctly re-signed wrong raw digest, or expired independent image RX
+61: SETUP frames=473 drops=4 elapsed=1189 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+61: SETUP frames=473 drops=4 elapsed=1189 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+61: PASS2 dispatch/completion retained through original image expiry; late correlated return reclaims slot only, no RX/admission revival

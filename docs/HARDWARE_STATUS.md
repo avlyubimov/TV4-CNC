@@ -1,6 +1,12 @@
 # Аппаратный статус TV4-CNC
 
-PR-07r от main `2c6fd1c`: [SPSC completion mailbox](STM32_COMPLETION_MAILBOX.md) добавляет bounded
+PR-07s от main `db50840`: [owned driver dispatch](STM32_DRIVER_DISPATCH.md) связывает actual
+claimed frame, bounded publication/take/fresh check и correlated return. Untaken/
+taken jobs и первый pending report сохраняются при cancel/timeout/full. Host68/
+sanitizers68/standalone42/TSan4 PASS. Software revocation не physical inhibit;
+target ISR/RTOS/cache/DMA/clock/backend и аппаратные gates открыты. Устройств не касались.
+
+Слитый PR #50, PR-07r от main `2c6fd1c`: [SPSC completion mailbox](STM32_COMPLETION_MAILBOX.md) добавляет bounded
 атомарную передачу owned reports от одного producer к одному consumer и actual
 bound owner. Host65/sanitizers65/standalone39, ThreadSanitizer2/2 PASS. Это C11
 software contract; target ISR/RTOS/cache/DMA/driver truth и аппаратные gates ещё

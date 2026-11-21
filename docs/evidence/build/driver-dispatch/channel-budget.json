@@ -1,0 +1,51 @@
+{
+  "scope": "opt-in mixed-codec channel static archive, not firmware",
+  "objects": {
+    "text": 1940,
+    "data": 0,
+    "bss": 0
+  },
+  "unresolved_imports": [
+    "memcmp",
+    "memset",
+    "tv4_fragment_rx_cancel",
+    "tv4_fragment_rx_clear",
+    "tv4_fragment_rx_init_raw",
+    "tv4_fragment_rx_poll",
+    "tv4_fragment_rx_receive",
+    "tv4_fragment_rx_take_raw",
+    "tv4_fragment_tx_begin_raw",
+    "tv4_fragment_tx_cancel",
+    "tv4_fragment_tx_clear",
+    "tv4_fragment_tx_commit",
+    "tv4_fragment_tx_init_raw",
+    "tv4_fragment_tx_peek",
+    "tv4_fragment_tx_poll",
+    "tv4_metadata_setup_decode",
+    "tv4_metadata_setup_encode",
+    "tv4_update_wire_decode",
+    "tv4_update_wire_encode"
+  ],
+  "exported_functions": [
+    "tv4_channel_rx_advance",
+    "tv4_channel_rx_cancel",
+    "tv4_channel_rx_clear",
+    "tv4_channel_rx_init",
+    "tv4_channel_rx_poll",
+    "tv4_channel_rx_receive",
+    "tv4_channel_rx_take",
+    "tv4_channel_tx_advance",
+    "tv4_channel_tx_begin",
+    "tv4_channel_tx_cancel",
+    "tv4_channel_tx_clear",
+    "tv4_channel_tx_commit",
+    "tv4_channel_tx_init",
+    "tv4_channel_tx_peek",
+    "tv4_channel_tx_poll"
+  ],
+  "max_individual_frame": 56,
+  "full_stack_verified": false,
+  "board_memory_verified": false,
+  "runtime_caller": false,
+  "device_access": false
+}
