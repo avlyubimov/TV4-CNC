@@ -1,6 +1,6 @@
 # Следующий этап: release context и STM32 board contract
 
-21 ноября2026. База main `aa06833`, PR #1–40 слиты, main CI5/5 PASS.
+21 ноября2026. База main `deace1c`, PR #1–41 слиты, main CI5/5 PASS.
 ESP32 HMI/Wi-Fi/OTA primitives/candidates и STM32 transport/admission существуют;
 не создавать их заново. Данный план не разрешает доступ к устройствам или merge.
 
@@ -125,7 +125,7 @@ analyzer8 embedded+1 host и ARM/source/board/output/scope gates PASS —
 [evidence](evidence/build/release-cohort-review/README.md). Report metadata-only;
 production manifest/context/protocol mapping/runtime/install gates не закрыты.
 
-## Текущая ветка PR-05d
+## Слитая часть PR-05d, PR #41
 
 [Build binding audit](RELEASE_BUILD_BINDING.md) соединяет external-pinned unsigned
 candidate/full HMI bytes/ELF digest с existing signed cohort. Factory/A-B layout
@@ -135,6 +135,17 @@ exit3 и все authority gates false. Host39/sanitizers39/standalone13, нов�
 13methods, прежние ARM gates и CI SDK matrix8 с candidate integrity pin checks.
 Unsigned metadata pin не authentication/CI attestation; actual SemVer/keys/layout/
 provenance/runtime/installer не настроены. Hardware действий/новых измерений нет.
+
+## Текущая ветка PR-07j
+
+[Update byte codec draft](STM32_UPDATE_WIRE.md): отдельная opt-in C11 library,
+8 existing kinds/exact bounded LE bytes/explicit enum codebook, no padding/tail.
+Shared shape validator не state/auth gate. Host42/sanitizers42/standalone16,
+golden12/65536 outcome pairs/200000 mutations и8 signed RAM chains через codec;
+analyzer12+1/budget guard6/ARM/source/board/output/scope PASS. ARM codec1219text,
+data/bss0/frame32 отдельно от existing4 archives43362text (+18). Полный stack/
+RAM/CPU budget не подтверждён. Нет production CAN version/IDs/bitrate/driver/
+fragmentation/metadata transfer/runtime/identity/install или hardware действий.
 
 ## Что делать дальше программно
 
@@ -155,7 +166,12 @@ provenance/runtime/installer не настроены. Hardware действий/
    не подавление factory/A-B blocker или замена current PROJECT_VER.
 2. PR-07f проверяет volatile logical negotiation, но production boot epoch
    provider/persistence/collision/authentication, capabilities/version и raw CAN
-   fragmentation/codec/IDs/bitrate требуют review. Logical terminal outcome уже есть; он не authenticated и
+   fragmentation/IDs/bitrate требуют review. PR-07j закрывает только experimental
+   complete-message codec, не production wire adoption. Дальше bounded
+   fragment/reassembly с routing/session identity, cancellation/deadline и
+   backpressure, передача signed metadata/signature и production codebook review.
+   Decode OK не обновляет context или timeouts; owner poll остаётся обязательным.
+   Logical terminal outcome уже есть; он не authenticated и
    не переносит candidate через ожидание оператора. Для следующей операции
    проверять saved bytes полностью и подтверждать новый session/context.
    Текущий DATA RX deadline не продлевать молча.

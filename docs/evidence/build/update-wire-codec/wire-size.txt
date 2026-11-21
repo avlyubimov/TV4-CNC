@@ -1,0 +1,2 @@
+   text	   data	    bss	    dec	    hex	filename
+   1219	      0	      0	   1219	    4c3	update_wire.c.obj (ex build-update-arm/libtv4_update_wire.a)

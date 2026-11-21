@@ -1,5 +1,11 @@
 # OTA TV4-CNC — проект архитектуры
 
+PR-07j [complete-message byte draft](STM32_UPDATE_WIRE.md) кодирует existing
+logical negotiation/DATA/outcome для host/ARM review. Codec не authentication,
+CAN frame/fragmentation/production version или runtime caller. Existing
+independent signature/lease/model/deadline/physical/recovery/install gates прежние;
+metadata transport, production framing/identity/driver ещё требуют review.
+
 PR-05d: [offline build binding audit](RELEASE_BUILD_BINDING.md) связывает
 existing unsigned candidate/full HMI/ELF digest с signed cohort. External pin
 фиксирует bytes, не CI/source authentication. Factory/A-B/profile mismatch и

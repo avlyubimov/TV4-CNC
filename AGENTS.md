@@ -109,9 +109,22 @@ PR и Actions; не копировать код уже открытого PR. Д
 
 ## Текущее задание
 
-PR #1–40 слиты, база main `aa06833`, main CI5/5 PASS,
+PR #1–41 слиты, база main `deace1c`, main CI5/5 PASS,
 открытых PR перед работой нет.
-PR-05d: читать RELEASE_BUILD_BINDING.md/NEXT_STAGE.md/scoped rules. Связать
+PR-07j: читать STM32_UPDATE_WIRE.md и protocol/can/AGENTS.md. Только отдельный
+opt-in byte codec draft: existing8 message kinds, exact bounded LE framing,
+explicit enum tokens, failure output zeroing. Не отправлять C memory layout/
+padding/tails. Shared negotiation shape helper не physical/session/auth gate;
+CRC проверяет прежний RX, independent crypto/lease/model/deadlines прежние.
+Codec OK не dispatch/install/COMMIT/jump/ARM authority. Нет production CAN
+version/IDs/bitrate/fragmentation/metadata transfer/runtime caller или устройств.
+Host42/sanitizers42/standalone16, golden12/65536 tokens/200000 mutations и
+8 signed RAM chains; strict analyzer12 embedded+1 host, wire budget guard6.
+ARM4 libraries43362text/data8/bss27 (+18text), отдельный codec1219text/data0/
+bss0/frame32; это не full stack/RAM/performance approval. Existing budgets
+не расширять, negative budget/object/import/frame checks сохранять.
+
+Слитый PR #41, PR-05d: читать RELEASE_BUILD_BINDING.md при изменении audit. Связать
 unsigned CI candidate с тем же signed cohort/full HMI bytes/ELF digest через
 explicit external candidate SHA pin. Pin не CI/source authentication; config/
 partition/tree/license hashes остаются unsigned claims. Проверенные fields

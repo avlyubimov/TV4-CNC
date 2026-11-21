@@ -1,5 +1,10 @@
 # PR-07f — свежий логический update-сеанс до DATA
 
+Последующий PR-07j: [opt-in byte draft](STM32_UPDATE_WIRE.md). Shared
+tv4_neg_message_valid возвращает прежний pure canonical shape check с NULL guard;
+live state/peer/tag/generation/counter/deadline policy остаётся здесь. Encoder
+не сериализует C layout. Production protocol/authentication не добавлены.
+
 21 ноября2026. База main `f0bd866`, PR #1–35 слиты, пять main workflows PASS.
 [План](plans/PR07F_UPDATE_NEGOTIATION.md),
 [evidence](evidence/build/stm32-update-negotiation/README.md).

@@ -68,6 +68,10 @@ typedef struct {
     bool configured;
 } tv4_negotiation;
 
+/* Pure shape check shared with the opt-in byte codec. Does not check a live
+ * peer, compatibility tag, state, freshness, policy, time or authenticity. */
+bool tv4_neg_message_valid(const tv4_neg_message *message);
+
 /* No defaults: 0<retry<total<=INT32_MAX, block1..256, size/send_limit>0.
  * last_issued is explicit trusted local state for a NEW boot pair; peer high
  * water starts0. Re-init fails untouched; clear/close never reset counters.

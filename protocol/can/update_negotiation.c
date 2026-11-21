@@ -80,9 +80,9 @@ static bool same(const tv4_neg_message *a,const tv4_neg_message *b)
         a->block_bytes==b->block_bytes && !memcmp(a->descriptor.image_sha256,b->descriptor.image_sha256,32) &&
         !memcmp(a->metadata_sha256,b->metadata_sha256,32) && !memcmp(a->compatibility_tag,b->compatibility_tag,32);
 }
-static bool canonical(const tv4_neg_message *m)
+bool tv4_neg_message_valid(const tv4_neg_message *m)
 {
-    if(m->kind<TV4_NEG_REQUEST || m->kind>TV4_NEG_CONFIRM || m->request_id.boot==0 ||
+    if(m==NULL || m->kind<TV4_NEG_REQUEST || m->kind>TV4_NEG_CONFIRM || m->request_id.boot==0 ||
         m->request_id.transfer==0 || m->responder_boot==0 || m->request_id.boot==m->responder_boot ||
         m->descriptor.image_bytes==0 || m->block_bytes==0 || m->block_bytes>TV4_UPDATE_BLOCK_MAX)return false;
     if(m->kind==TV4_NEG_REQUEST)return m->descriptor.id.boot==0 && m->descriptor.id.transfer==0;
@@ -179,7 +179,7 @@ tv4_neg_result tv4_neg_receive(tv4_negotiation *s,const tv4_neg_message *m,uint6
 {
     if(m==NULL)return TV4_NEG_REJECT_ARGUMENT;
     tv4_neg_result r=observe(s,generation,now);if(r!=TV4_NEG_OK)return r;
-    if(!canonical(m))return TV4_NEG_REJECT_CONTENT;
+    if(!tv4_neg_message_valid(m))return TV4_NEG_REJECT_CONTENT;
     uint32_t requester=s->role==TV4_NEG_REQUESTER?s->local_boot:s->peer_boot;
     uint32_t responder=s->role==TV4_NEG_REQUESTER?s->peer_boot:s->local_boot;
     if(m->request_id.boot!=requester || m->responder_boot!=responder)return TV4_NEG_REJECT_SESSION;
