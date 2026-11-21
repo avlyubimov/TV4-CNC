@@ -109,9 +109,26 @@ PR и Actions; не копировать код уже открытого PR. Д
 
 ## Текущее задание
 
-PR #1–43 слиты, база main `277801e`, main CI5/5 PASS,
+PR #1–44 слиты, база main `7640f43`, main CI5/5 PASS,
 открытых PR перед работой нет.
-PR-07l: читать STM32_UPDATE_TIMING.md. HOST-ONLY bounded test link, две one-frame
+PR-07m: читать STM32_METADATA_TRANSPORT.md. Opt-in metadata codec/RX поверх
+unchanged DATA/consumer/ACK. Отдельный globally fresh metadata ID, не image ID;
+current pair/high-water local checks не global provider/routing/authentication.
+Container98..1215, raw doc1..1024/signature8..72/key ID1..31. Descriptor setup
+explicit local input, не реализованный wire handshake. No new TU kinds/version.
+ACK после copy, single owned TAKEN_UNVERIFIED snapshot; raw SHA/signature не
+проверять здесь и не объявлять VERIFIED. Original independent verifier/metadata
+request binding/full image/lease/model/close обязательны. Image RX не reset после
+metadata delay; его original windows продолжаются. Discard сохраняет ID/time,
+CLOCK/CONTEXT sticky; last block только для bounded final ACK после take.
+No new crypto/heap/global/runtime/driver/board/Flash defaults. Host50/sanitizers50/
+standalone24; oracle2,1024 lengths,100000 mutations,8 delivered-metadata positive
+chains +3 refusal cases. DER variable => per-run counts, не fixed golden stats.
+ARM new separate1568text/data0/bss0/frame48, old libraries/limits прежние; metadata
+archive guard6/exact exports/import/frame scope обязателен. RX1728/snapshot1212
+host bytes не MCU RAM reserve/approval. Actual board/identity/install gates открыты.
+
+Слитый PR #44, PR-07l: читать STM32_UPDATE_TIMING.md. HOST-ONLY bounded test link, две one-frame
 queues, один caller clock для fragments/logical/lease/crypto. Никакого runtime
 owner/driver/identity provider/default timing/Flash. Не переносить helper из
 protocol/can/tests в ARM; targets/import/scope checks обязательны. Core C/API/

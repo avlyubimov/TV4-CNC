@@ -94,3 +94,17 @@ heap или driver. Не переносить target в ARM/runtime. Upper APIs/
 wire authentication/reboot replay isolation; негативный test сохраняет этот
 known blocker. CPU/bitrate/physical scheduling не измерены; synthetic timings
 не defaults. Source hashes/text evidence/host+sanitizers/scope gates обязательны.
+
+## PR-07m — metadata container/receiver
+
+Читать docs/STM32_METADATA_TRANSPORT.md. Отдельная opt-in library, no runtime.
+Distinct globally fresh metadata DATA ID и local image binding, no same-ID role
+mixing. High-water проверяет только собственный lifetime; shared namespace/
+persistence/authenticated descriptor setup/routing ещё external. Never lend its
+stream as image RX. ACK after copy, snapshot TAKEN_UNVERIFIED one time/owned;
+codec/descriptor SHA fields не integrity/authentication. Original independent
+raw digest/signature/image/lease/deadline gates обязательны. Image RX не reset
+после metadata. Discard не сбрасывает ID/time; context/clock sticky. Input/output
+valid/disjoint/exclusive, no in-place/threads/DMA aliases. Limits1024/72/31 согласованы
+с Motion verifier, не HMI16KiB. Separate ARM guard/import/frame/no globals и
+host+sanitizers/role/fault tests обязательны; crypto/IDs/Flash/pins не добавлять.

@@ -1,0 +1,3 @@
+PASS firmware/stm32-bootloader -DTV4_BOOT_BOARD_IMAGE=ON [] blocked
+PASS firmware/stm32-motion -DTV4_MOTION_BOARD_IMAGE=ON ['-DTV4_MOTION_LINK_PROBE=OFF'] blocked
+PASS firmware/stm32-motion -DTV4_MOTION_BOARD_IMAGE=ON ['-DTV4_MOTION_LINK_PROBE=ON'] blocked

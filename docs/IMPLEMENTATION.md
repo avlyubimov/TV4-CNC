@@ -1,6 +1,6 @@
 # Реализация: main, открытые PR и аппаратные границы
 
-Актуализация от main `277801e`, 21 ноября2026: PR #1–43 слиты. Owner SWD
+Актуализация от main `7640f43`, 21 ноября2026: PR #1–44 слиты. Owner SWD
 F407/core/Flash1024KiB/backup — [HARDWARE_STATUS](HARDWARE_STATUS.md).
 Startup/DATA/admission/handoff/preflight и PR-07e уже в main:
 [completion/outcome](STM32_UPDATE_OUTCOME.md) связывает full checks с lease close
@@ -69,13 +69,22 @@ analyzer13 embedded+1 host/ARM/source/scope/board/output PASS. ARM fragments
 1536text/data0/bss0/frame48 отдельно, old libraries/codec прежние. Это не
 production identity/routing/CAN driver/metadata transfer/runtime/installer;
 аппаратных действий или новых измерений нет.
-Текущая ветка PR-07l [shared-clock composition](STM32_UPDATE_TIMING.md):
+Слитый PR #44, PR-07l [shared-clock composition](STM32_UPDATE_TIMING.md):
 HOST-only scheduler с bounded queues/delays/drop/duplicate проверяет существующие
 fragment и logical APIs на одной шкале.34 DATA scenarios/8 signed positive chains/
 2 refusals, host47/sanitizers47/standalone21; actual analyzer13 embedded+2 host,
 ARM/source/board/output/scope gates PASS, core footprint прежний. Логические
 сроки не продлеваются при fragment recovery; replay после reboot остаётся
 открытым. Нет runtime/metadata transport/физических измерений/устройств.
+Текущая ветка PR-07m [metadata transport](STM32_METADATA_TRANSPORT.md): opt-in
+container codec/RX поверх прежнего DATA, globally fresh separate metadata ID,
+bounded raw document/signature/key ID, ACK после copy/single owned snapshot.
+Image RX lifetime не reset;8 delivered-metadata signed chains +3 refusals,
+host50/sanitizers50/standalone24, analyzer14 embedded+2 host и old+new ARM guards.
+New separate1568text/data0/bss0/frame48, old libraries/runtime/dependencies прежние.
+Metadata output UNVERIFIED; independent signature/raw request digest/full image/
+lease/model/physical/operator/install gates не заменены. Descriptor setup ещё
+local input; routing/identity/production worker и hardware readiness не добавлены.
 Следующий этап — [NEXT_STAGE](NEXT_STAGE.md). Ниже исторические снимки отдельных PR;
 их старые counts/«не реализовано» не заменяют текущий статус этого абзаца.
 

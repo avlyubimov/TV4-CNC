@@ -5,6 +5,7 @@
 #include "update_wire.h"
 #include "update_fragments.h"
 #include "fragment_test_link.h"
+#include "update_metadata.h"
 #include <assert.h>
 #include <inttypes.h>
 #include <openssl/evp.h>
@@ -13,6 +14,9 @@
 #include <string.h>
 
 enum { IMAGE_MAX = 2049 };
+_Static_assert(TV4_META_DOCUMENT_MAX==TV4_BOOT_METADATA_MAX,"Metadata verifier bound differs");
+_Static_assert(TV4_META_SIGNATURE_MAX==TV4_BOOT_SIGNATURE_MAX,"Signature verifier bound differs");
+_Static_assert(TV4_META_KEY_MAX+1u==TV4_BOOT_ID_BYTES,"Key ID verifier bound differs");
 /* Only --wire-staging opts into byte transport. Existing test modes keep their
  * typed path; no firmware/library runtime caller is introduced. */
 static bool wire_mode;
@@ -1352,7 +1356,8 @@ static void timed_transfer(fixture *f,tv4_test_link *link)
 {
     tv4_boot_stage_config stage={.buffer=f->staging,.capacity=sizeof(f->staging),.boot=f->owner.boot,.object=91};
     assert(tv4_boot_stage_init(&f->stage,&stage) && tv4_boot_stage_begin(&f->stage,&f->rx));
-    uint32_t started=f->now;tv4_wire_message pending_ack={0};bool ack_pending=false;unsigned ticks;
+    uint32_t started=f->rx.context.started_ms;tv4_wire_message pending_ack={0};bool ack_pending=false;unsigned ticks;
+    assert(f->tx.context.started_ms==started);
     for(ticks=0;ticks<10000;++ticks) {
         assert(tv4_update_tx_poll(&f->tx,f->now)==TV4_UPDATE_OK && tv4_update_rx_poll(&f->rx,f->now)==TV4_UPDATE_OK);
         tv4_wire_message packet;
@@ -1468,9 +1473,141 @@ static void one_clock_admission_refusals(void)
     }
     puts("PASS one-clock transfer success does not bypass independent signature or expired DATA live-receiver admission");
 }
+/* Metadata is a separate DATA identity. The container and both role descriptors
+ * are explicit local test inputs, not a production metadata setup handshake. */
+static size_t timed_metadata(fixture *f,tv4_test_link *link,tv4_metadata_document *downloaded)
+{
+    tv4_metadata_document source={.binding=f->expected};
+    assert(f->config.metadata_bytes<=TV4_META_DOCUMENT_MAX && f->config.signature_bytes<=TV4_META_SIGNATURE_MAX && f->config.key_id_bytes<=TV4_META_KEY_MAX);
+    source.document_bytes=(uint16_t)f->config.metadata_bytes;source.signature_bytes=(uint16_t)f->config.signature_bytes;
+    source.key_id_bytes=(uint16_t)f->config.key_id_bytes;
+    memcpy(source.document,f->config.metadata,source.document_bytes);memcpy(source.signature,f->config.signature,source.signature_bytes);
+    memcpy(source.key_id,f->config.key_id,source.key_id_bytes);
+    uint8_t raw[TV4_META_BUNDLE_MAX];size_t n=0;assert(tv4_metadata_encode(&source,raw,sizeof(raw),&n)==TV4_META_OK);
+    /* The verifier must later read the delivered snapshot, not producer arrays. */
+    memset(f->metadata,0,sizeof(f->metadata));memset(f->signature,0,sizeof(f->signature));memset(&source,0,sizeof(source));
+    assert(f->descriptor.id.transfer<UINT32_MAX);
+    tv4_update_descriptor descriptor={.id={f->owner.boot,f->descriptor.id.transfer+1u},.image_bytes=(uint32_t)n};
+    digest(raw,n,descriptor.image_sha256); /* local opaque container expectation */
+    tv4_update_limits limits={.max_image_bytes=TV4_META_BUNDLE_MAX,.ack_timeout_ms=200,.progress_timeout_ms=3000,
+        .total_timeout_ms=10000,.block_bytes=256,.retry_limit=4};
+    tv4_metadata_rx metadata={0};tv4_update_tx tx;
+    assert(tv4_metadata_rx_init(&metadata,limits,f->owner.boot,f->owner.policy_generation,0,f->now)==TV4_META_OK);
+    assert(tv4_metadata_rx_begin(&metadata,&descriptor,&f->expected,f->owner.policy_generation,f->now)==TV4_META_OK);
+    assert(tv4_update_tx_init(&tx,limits,f->owner.boot,f->now) && tv4_update_tx_begin(&tx,&descriptor,f->now)==TV4_UPDATE_OK);
+    tv4_update_block wrong={.id=f->descriptor.id,.length=1,.bytes={0x12}};tv4_update_ack ack;
+    assert(tv4_update_block_checksum(&wrong,&wrong.crc32c));
+    assert(tv4_metadata_rx_receive(&metadata,&wrong,&ack,f->owner.policy_generation,f->now)==TV4_UPDATE_REJECT_SESSION);
+    assert(metadata.stream.context.next_offset==0);
+    uint32_t image_started=f->rx.context.started_ms,image_progress=f->rx.context.progress_ms;
+    tv4_wire_message pending_ack={0};bool ack_pending=false,role_checked=false;unsigned ticks;
+    for(ticks=0;ticks<10000;++ticks) {
+        assert(tv4_update_rx_poll(&f->rx,f->now)==TV4_UPDATE_OK && tv4_update_tx_poll(&f->tx,f->now)==TV4_UPDATE_OK);
+        assert(tv4_update_tx_poll(&tx,f->now)==TV4_UPDATE_OK && tv4_metadata_rx_poll(&metadata,f->owner.policy_generation,f->now)==TV4_META_OK);
+        tv4_wire_message packet;
+        if(tv4_test_link_take(link,0,&packet)==TV4_FRAG_TAKEN) {
+            assert(packet.kind==TV4_WIRE_DATA);
+            if(!role_checked) {
+                assert(tv4_update_rx_receive(&f->rx,&packet.body.data,&ack,f->now)==TV4_UPDATE_REJECT_SESSION);
+                assert(f->rx.context.next_offset==0);role_checked=true;
+            }
+            assert(tv4_metadata_rx_receive(&metadata,&packet.body.data,&ack,f->owner.policy_generation,f->now)==TV4_UPDATE_ACK);
+            pending_ack=(tv4_wire_message){.kind=TV4_WIRE_DATA_ACK,.body.ack=ack};ack_pending=true;
+        }
+        if(tv4_test_link_take(link,1,&packet)==TV4_FRAG_TAKEN) {
+            assert(packet.kind==TV4_WIRE_DATA_ACK);
+            tv4_update_result r=tv4_update_tx_ack(&tx,&packet.body.ack,f->now);assert(r==TV4_UPDATE_OK || r==TV4_UPDATE_STALE_ACK);
+        }
+        if(tx.context.state==TV4_UPDATE_COMPLETE_UNVERIFIED)break;
+        if(ack_pending && tv4_test_link_can_send(link,1)) {
+            assert(tv4_test_link_send(link,1,&pending_ack)==TV4_FRAG_OK);ack_pending=false;
+        }
+        if(tv4_test_link_can_send(link,0)) {
+            if(tx.context.state==TV4_UPDATE_NEED_DATA) {
+                size_t count=n-tx.context.next_offset;if(count>256)count=256;
+                assert(tv4_update_tx_load(&tx,raw+tx.context.next_offset,count,f->now)==TV4_UPDATE_OK);
+            }
+            tv4_wire_message outgoing={.kind=TV4_WIRE_DATA};tv4_update_result r=tv4_update_tx_next(&tx,&outgoing.body.data,f->now);
+            if(r==TV4_UPDATE_OK)assert(tv4_test_link_send(link,0,&outgoing)==TV4_FRAG_OK);else assert(r==TV4_UPDATE_WAIT);
+        }
+        assert(f->rx.context.started_ms==image_started && f->rx.context.progress_ms==image_progress);
+        tv4_test_link_step(link);
+    }
+    assert(ticks<10000 && role_checked && f->acquired==0 && f->rx.context.next_offset==0);
+    assert(tv4_metadata_rx_take(&metadata,downloaded,f->owner.policy_generation,f->now)==TV4_META_TAKEN_UNVERIFIED);
+    assert(zero(metadata.bytes,sizeof(metadata.bytes)) && tv4_update_binding_equal(&downloaded->binding,&f->expected));
+    assert(tv4_metadata_rx_discard(&metadata,f->owner.policy_generation,f->now)==TV4_META_OK);
+    assert(metadata.last_transfer==descriptor.id.transfer);
+    f->config.metadata=downloaded->document;f->config.metadata_bytes=downloaded->document_bytes;
+    f->config.signature=downloaded->signature;f->config.signature_bytes=downloaded->signature_bytes;
+    f->config.key_id=downloaded->key_id;f->config.key_id_bytes=downloaded->key_id_bytes;
+    f->release_config.metadata=f->config.metadata;f->release_config.metadata_bytes=f->config.metadata_bytes;
+    f->release_config.signature=f->config.signature;f->release_config.signature_bytes=f->config.signature_bytes;
+    f->release_config.key_id=f->config.key_id;f->release_config.key_id_bytes=f->config.key_id_bytes;
+    assert(f->config.metadata!=f->metadata && f->config.signature!=f->signature);
+    timed_drain(f,link);memset(raw,0,sizeof(raw));return n;
+}
+static void metadata_signed_chains(void)
+{
+    unsigned frames=0,drops=0,container_bytes=0,sig_min=72,sig_max=0;uint32_t longest=0;
+    for(unsigned i=0;i<8;++i) {
+        fixture f;if(i<6)release_fixture(&f,i%2u?256:33);else vector_fixture(&f,33);
+        f.use_stage=true;tv4_test_link link={0};uint16_t mask=i<2?0u:510u;
+        tv4_test_link_config cfg=timed_config(mask,(uint16_t)(i%3u));tv4_test_link_init(&link,&f.now,&cfg);
+        uint32_t started=f.now;tv4_metadata_document downloaded;
+        timed_negotiate(&f,&link,i%2u?256u:31u);container_bytes+=(unsigned)timed_metadata(&f,&link,&downloaded);
+        unsigned signature=downloaded.signature_bytes;if(signature<sig_min)sig_min=signature;if(signature>sig_max)sig_max=signature;
+        timed_transfer(&f,&link);
+        if(i<6)release_begin(&f);else begin(&f);
+        f.inject=STAGE_LOCK;f.fragment=i%3u==0?1:i%3u==1?7:256;
+        bool ok=i<6?tv4_boot_completion_start_release(&f.completion,&f.release_adapter,&f.expected,&f.preflight_profile,&f.workspace):
+            tv4_boot_completion_start(&f.completion,&f.session,&f.expected,&f.preflight_profile,&f.workspace);
+        assert(ok);completed(&f,TV4_OUTCOME_CHECKED_CLOSED,TV4_OUTCOME_REASON_NONE);
+        assert(tv4_boot_stage_discard(&f.stage) && zero(f.staging,f.source_bytes));timed_outcome(&f,&link);
+        assert(link.dropped_kinds==mask && link.sticky_failures==0);
+        for(unsigned kind=1;kind<=8;++kind)assert(link.deliveries[kind]>0);
+        assert(tv4_boot_completion_clear(&f.completion));
+        if(i<6)release_clear(&f);else assert(tv4_boot_handoff_clear(&f.session));
+        if(f.now-started>longest)longest=f.now-started;
+        frames+=link.frames;drops+=link.dropped_frames;
+        memset(&downloaded,0,sizeof(downloaded));finish(&f);
+    }
+    printf("PASS8 transported metadata signed chains: frames=%u drops=%u container-bytes=%u DER=%u..%u longest=%u synthetic ms; producer wiped, actual delivered signature/raw digest/lease/model/close, no image deadline reset\n",frames,drops,container_bytes,sig_min,sig_max,longest);
+}
+static void metadata_admission_refusals(void)
+{
+    for(unsigned i=0;i<3;++i) {
+        fixture f;release_fixture(&f,33);f.use_stage=true;tv4_test_link link={0};tv4_metadata_document downloaded;
+        tv4_test_link_config cfg=timed_config((1u<<5)|(1u<<6),1);tv4_test_link_init(&link,&f.now,&cfg);
+        timed_negotiate(&f,&link,31);
+        if(i==0)f.signature[f.config.signature_bytes-1u]^=1;
+        if(i==1) {
+            uint8_t *field=(uint8_t *)strstr((char *)f.metadata,"\"image_counter\":3");assert(field);
+            field[strlen("\"image_counter\":")]='4';sign_metadata(&f); /* valid signature, wrong negotiated raw digest */
+        }
+        (void)timed_metadata(&f,&link,&downloaded);
+        if(i<2) {
+            timed_transfer(&f,&link);release_begin(&f);
+            assert(tv4_boot_completion_start_release(&f.completion,&f.release_adapter,&f.expected,&f.preflight_profile,&f.workspace));
+            completed(&f,i==0?TV4_OUTCOME_REJECTED_CLOSED:TV4_OUTCOME_FAILED_CLOSED,i==0?TV4_OUTCOME_SIGNATURE:TV4_OUTCOME_BINDING);
+            assert(tv4_boot_completion_clear(&f.completion) && tv4_boot_stage_discard(&f.stage));
+        }else {
+            uint32_t progress=f.rx.context.progress_ms;
+            while(f.now-progress<f.rx.context.limits.progress_timeout_ms)tv4_test_link_step(&link);
+            assert(tv4_update_rx_poll(&f.rx,f.now)==TV4_UPDATE_ERROR && f.rx.context.error==TV4_UPDATE_ERROR_PROGRESS_TIMEOUT);
+            assert(!tv4_boot_release_handoff_begin(&f.release_adapter,&f.session,&f.release_config,&f.rx));
+            assert(f.acquired==0 && f.rx.context.next_offset==0);
+        }
+        release_clear(&f);memset(&downloaded,0,sizeof(downloaded));finish(&f);
+    }
+    puts("PASS transported metadata does not bypass invalid signature, correctly re-signed wrong raw digest, or expired independent image RX");
+}
 #define RUN(name) do { name(); puts("PASS " #name); } while (0)
 int main(int argc,char **argv)
 {
+    if(argc==2 && strcmp(argv[1],"--metadata-staging")==0) {
+        RUN(metadata_signed_chains);RUN(metadata_admission_refusals);return 0;
+    }
     if(argc==2 && strcmp(argv[1],"--fragment-timing")==0) {
         RUN(one_clock_signed_chains);RUN(one_clock_admission_refusals);return 0;
     }
