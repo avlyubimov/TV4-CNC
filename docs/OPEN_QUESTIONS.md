@@ -1,6 +1,6 @@
 # Открытые вопросы и блокирующие решения
 
-Обновлено от main `389de77`,21ноября2026. Единственный свод аппаратных фактов —
+Обновлено от main `555007d`,21ноября2026. Единственный свод аппаратных фактов —
 [HARDWARE_STATUS.md](HARDWARE_STATUS.md). Не заполнять неизвестные поля
 типовыми данными семейства, USB VID/PID, старым заказом или host mock.
 
@@ -68,6 +68,11 @@ PR-07o [shared channel](STM32_UPDATE_CHANNEL.md) закрывает bounded loca
 multiplexing/outbox/phase filtering, не remote delivery/queue drain/driver или
 upper authority. Phase/generation не сериализованы; reboot/authentication/
 production epoch/routing/worker/medium/RAM/installer и physical gates ниже open.
+
+PR-07p [bound egress](STM32_UPDATE_EGRESS.md) закрывает local frame custody/
+ticket/phase guard gap в software API, не truth/reset/completion provenance
+реального adapter. Unknown ownership не force-cleared, late return не upper
+resume. Trusted driver/event/identity/routing/runtime/physical/install gates open.
 
 | ID | Что нужно подтвердить/решить | Блокирует |
 |---|---|---|

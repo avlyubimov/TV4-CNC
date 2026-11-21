@@ -7,13 +7,15 @@ void tv4_test_link_init(tv4_test_link *link, uint32_t *clock, const tv4_test_lin
 {
     assert(link!=NULL && clock!=NULL && config!=NULL && !link->configured);
     assert(!(config->raw_setup && config->multiplexed));
+    assert(!config->egress || config->multiplexed);
     assert(config->delivery_ms>0 && config->delivery_ms<=(uint32_t)INT32_MAX);
     assert(config->held_delivery_ms>=config->delivery_ms && config->held_delivery_ms<=(uint32_t)INT32_MAX);
     memset(link,0,sizeof(*link));link->config=*config;link->clock=clock;
     for(unsigned i=0;i<2;++i) {
         link->generation[i]=100u+i;
         if(config->multiplexed) {
-            assert(tv4_channel_tx_init(&link->direction[i].channel_tx,&config->fragments,i+1u,link->generation[i],0,*clock));
+            if(config->egress)assert(tv4_update_egress_init(&link->direction[i].egress,&config->fragments,config->custody,i+1u,link->generation[i],0,0,*clock));
+            else assert(tv4_channel_tx_init(&link->direction[i].channel_tx,&config->fragments,i+1u,link->generation[i],0,*clock));
             assert(tv4_channel_rx_init(&link->direction[i].channel_rx,&config->fragments,i+1u,link->generation[i],0,*clock));
             continue;
         }
@@ -32,6 +34,9 @@ bool tv4_test_link_can_send(const tv4_test_link *link, unsigned direction)
 {
     assert(link!=NULL && link->configured && direction<2);
     const tv4_test_link_direction *d=&link->direction[direction];
+    if(link->config.egress)return !d->occupied && !d->egress.channel.active && !d->egress.channel.queued &&
+        d->egress.channel.fragments.storage.state==TV4_FRAG_IDLE && d->egress.queue.count==0 &&
+        d->egress.queue.flight==0 && !d->egress.failed && !d->egress.queue.stopped;
     return !d->occupied && (link->config.multiplexed?
         (!d->channel_tx.active && !d->channel_tx.queued && d->channel_tx.fragments.storage.state==TV4_FRAG_IDLE):
         d->tx.storage.state==TV4_FRAG_IDLE);
@@ -43,7 +48,7 @@ bool tv4_test_link_idle(const tv4_test_link *link)
         if(!tv4_test_link_can_send(link,side))return false;
         if(link->config.multiplexed) {
             if(d->channel_rx.fragments.storage.state!=TV4_FRAG_IDLE ||
-                d->channel_tx.error!=TV4_CHANNEL_NO_ERROR || d->channel_rx.error!=TV4_CHANNEL_NO_ERROR)return false;
+                (link->config.egress?d->egress.channel.error:d->channel_tx.error)!=TV4_CHANNEL_NO_ERROR || d->channel_rx.error!=TV4_CHANNEL_NO_ERROR)return false;
         }else if(d->rx.storage.state!=TV4_FRAG_IDLE)return false;
     }
     return true;
@@ -52,7 +57,9 @@ void tv4_test_link_advance(tv4_test_link *link,tv4_channel_phase phase,tv4_updat
 {
     assert(link!=NULL && link->configured && link->config.multiplexed && tv4_test_link_idle(link));
     for(unsigned i=0;i<2;++i) {
-        assert(tv4_channel_tx_advance(&link->direction[i].channel_tx,phase,id,link->generation[i],*link->clock)==TV4_CHANNEL_OK);
+        assert((link->config.egress?
+            tv4_update_egress_advance(&link->direction[i].egress,phase,id,link->generation[i],*link->clock):
+            tv4_channel_tx_advance(&link->direction[i].channel_tx,phase,id,link->generation[i],*link->clock))==TV4_CHANNEL_OK);
         assert(tv4_channel_rx_advance(&link->direction[i].channel_rx,phase,id,link->generation[i],*link->clock)==TV4_CHANNEL_OK);
     }
 }
@@ -76,7 +83,9 @@ tv4_fragment_result tv4_test_link_send(tv4_test_link *link, unsigned direction, 
     tv4_fragment_result r;
     if(link->config.multiplexed) {
         tv4_channel_message m={.kind=TV4_CHANNEL_WIRE,.body.wire=*message};
-        r=channel_result(tv4_channel_tx_begin(&d->channel_tx,&m,link->generation[direction],*link->clock));
+        r=channel_result(link->config.egress?
+            tv4_update_egress_begin(&d->egress,&m,link->generation[direction],*link->clock):
+            tv4_channel_tx_begin(&d->channel_tx,&m,link->generation[direction],*link->clock));
     }else r=tv4_fragment_tx_begin(&d->tx,message,link->generation[direction],*link->clock);
     if(r!=TV4_FRAG_OK)return r;
     assert(message->kind>=TV4_WIRE_REQUEST && message->kind<=TV4_WIRE_OUTCOME_ACK);
@@ -90,6 +99,29 @@ static void timeout_recovery(tv4_test_link *link, unsigned side)
 {
     tv4_test_link_direction *d=&link->direction[side];
     uint64_t generation=link->generation[side];uint32_t now=*link->clock;
+    if(link->config.egress) {
+        tv4_frame_queue_result tx=tv4_update_egress_poll(&d->egress,generation,now);
+        tv4_fragment_result rx=tv4_channel_rx_poll(&d->channel_rx,generation,now);
+        if(tx==TV4_QUEUE_ERROR) {
+            tv4_fragment_error low=d->egress.channel.fragments.storage.error;
+            bool recover=link->config.recover_fragment_timeouts &&
+                (d->egress.queue.error==TV4_QUEUE_TIMEOUT || low==TV4_FRAG_PROGRESS_TIMEOUT || low==TV4_FRAG_TOTAL_TIMEOUT ||
+                 d->egress.channel.error==TV4_CHANNEL_QUEUE_PROGRESS || d->egress.channel.error==TV4_CHANNEL_QUEUE_TOTAL);
+            if(recover) {
+                tv4_frame_queue_result stopped=tv4_update_egress_cancel(&d->egress,generation,now);
+                if(stopped!=TV4_QUEUE_HELD) {
+                    assert(tv4_update_egress_clear(&d->egress,generation,now)==TV4_QUEUE_OK);++link->timeouts;
+                }
+            }else ++link->sticky_failures;
+        }
+        if(rx==TV4_FRAG_ERROR) {
+            tv4_fragment_error low=d->channel_rx.fragments.storage.error;
+            if(link->config.recover_fragment_timeouts && (low==TV4_FRAG_PROGRESS_TIMEOUT || low==TV4_FRAG_TOTAL_TIMEOUT)) {
+                assert(tv4_channel_rx_clear(&d->channel_rx,generation,now)==TV4_FRAG_OK);++link->timeouts;
+            }else ++link->sticky_failures;
+        }
+        return;
+    }
     tv4_fragment_result tx=link->config.multiplexed?tv4_channel_tx_poll(&d->channel_tx,generation,now):tv4_fragment_tx_poll(&d->tx,generation,now);
     tv4_fragment_result rx=link->config.multiplexed?tv4_channel_rx_poll(&d->channel_rx,generation,now):tv4_fragment_rx_poll(&d->rx,generation,now);
     tv4_fragment_error tx_error=link->config.multiplexed?d->channel_tx.fragments.storage.error:d->tx.storage.error;
@@ -118,21 +150,54 @@ static void deliver(tv4_test_link *link, unsigned side)
 {
     tv4_test_link_direction *d=&link->direction[side];
     if(!d->occupied || *link->clock-d->due>(uint32_t)INT32_MAX)return;
-    tv4_fragment_result r=link->config.multiplexed?
-        tv4_channel_rx_receive(&d->channel_rx,side+1u,&d->queued,link->generation[side],*link->clock):
-        tv4_fragment_rx_receive(&d->rx,side+1u,&d->queued,link->generation[side],*link->clock);
-    ++link->delivered_frames;
-    if(r==TV4_FRAG_DUPLICATE)++link->duplicate_frames;
-    if(r==TV4_FRAG_ORDER)++link->order_rejects;
-    if(r==TV4_FRAG_STALE)++link->stale_rejects;
-    if(r==TV4_FRAG_BUSY)++link->ready_busy;
-    if(!d->repeated && link->config.duplicate_every>0 && link->delivered_frames%link->config.duplicate_every==0) {
+    if(!d->drop_current) {
+        tv4_fragment_result r=link->config.multiplexed?
+            tv4_channel_rx_receive(&d->channel_rx,side+1u,&d->queued,link->generation[side],*link->clock):
+            tv4_fragment_rx_receive(&d->rx,side+1u,&d->queued,link->generation[side],*link->clock);
+        ++link->delivered_frames;
+        if(r==TV4_FRAG_DUPLICATE)++link->duplicate_frames;
+        if(r==TV4_FRAG_ORDER)++link->order_rejects;
+        if(r==TV4_FRAG_STALE)++link->stale_rejects;
+        if(r==TV4_FRAG_BUSY)++link->ready_busy;
+    }
+    if(!d->drop_current && !d->repeated && link->config.duplicate_every>0 && link->delivered_frames%link->config.duplicate_every==0) {
         d->repeated=true;d->due=*link->clock+link->config.delivery_ms;
-    }else { d->occupied=false;d->repeated=false;memset(&d->queued,0,sizeof(d->queued)); }
+    }else {
+        if(link->config.egress) {
+            tv4_frame_queue_result returned=tv4_update_egress_complete(&d->egress,d->ticket,TV4_FRAME_SENT_LOCAL,*link->clock);
+            assert(returned==TV4_QUEUE_LOCAL_COMPLETE_UNVERIFIED || returned==TV4_QUEUE_RECLAIMED_FAILED);
+            ++link->driver_returns;
+        }
+        d->occupied=false;d->repeated=false;d->drop_current=false;
+        memset(&d->queued,0,sizeof(d->queued));memset(&d->ticket,0,sizeof(d->ticket));
+    }
 }
 static void queue_next(tv4_test_link *link, unsigned side)
 {
     tv4_test_link_direction *d=&link->direction[side];
+    if(link->config.egress) {
+        tv4_frame_queue_result pumped=tv4_update_egress_pump(&d->egress,link->generation[side],*link->clock);
+        if(pumped==TV4_QUEUE_ADMITTED)++link->driver_admissions;
+        else if(pumped==TV4_QUEUE_BUSY)++link->queue_busy;
+        else if(pumped==TV4_QUEUE_ERROR)return;
+        else assert(pumped==TV4_QUEUE_WAIT);
+        if(d->egress.queue.count>link->driver_max_pending)link->driver_max_pending=d->egress.queue.count;
+        if(d->occupied){++link->driver_held_ticks;return;}
+        tv4_frame_delivery out;
+        tv4_frame_queue_result claimed=tv4_update_egress_claim(&d->egress,&out,link->generation[side],*link->clock);
+        if(claimed==TV4_QUEUE_WAIT)return;
+        assert(claimed==TV4_QUEUE_FRAME && out.route==side+1u);
+        d->queued=out.frame;d->ticket=out.ticket;d->occupied=true;d->repeated=false;
+        ++link->frames;++link->driver_claims;
+        d->drop_current=d->drop_message && d->index==link->config.drop_index;
+        if(d->drop_current) {
+            ++link->dropped_frames;link->dropped_kinds=(uint16_t)(link->dropped_kinds | (1u<<d->kind));
+        }
+        ++d->index;
+        uint32_t delay=link->config.hold_every>0 && link->frames%link->config.hold_every==0?
+            link->config.held_delivery_ms:link->config.delivery_ms;
+        d->due=*link->clock+delay;return;
+    }
     if(link->config.multiplexed?!d->channel_tx.active:d->tx.storage.state!=TV4_FRAG_SENDING)return;
     tv4_fragment_frame frame;
     assert((link->config.multiplexed?tv4_channel_tx_peek(&d->channel_tx,&frame,link->generation[side],*link->clock):
@@ -184,7 +249,9 @@ tv4_fragment_result tv4_test_link_send_setup(tv4_test_link *link,unsigned direct
     tv4_test_link_direction *d=&link->direction[direction];tv4_fragment_result r;
     if(link->config.multiplexed) {
         tv4_channel_message m={.kind=TV4_CHANNEL_MS,.body.setup=*message};
-        r=channel_result(tv4_channel_tx_begin(&d->channel_tx,&m,link->generation[direction],*link->clock));
+        r=channel_result(link->config.egress?
+            tv4_update_egress_begin(&d->egress,&m,link->generation[direction],*link->clock):
+            tv4_channel_tx_begin(&d->channel_tx,&m,link->generation[direction],*link->clock));
     }else {
         uint8_t raw[TV4_SETUP_MESSAGE_BYTES];size_t n=0;
         assert(tv4_metadata_setup_encode(message,raw,sizeof(raw),&n)==TV4_SETUP_OK);

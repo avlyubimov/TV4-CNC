@@ -109,9 +109,27 @@ PR и Actions; не копировать код уже открытого PR. Д
 
 ## Текущее задание
 
-PR #1–46 слиты, база main `389de77`, main CI5/5 PASS,
+PR #1–47 слиты, база main `555007d`, main CI5/5 PASS,
 открытых PR перед работой нет.
-PR-07o: читать docs/STM32_UPDATE_CHANNEL.md. Opt-in mixed TU/MS channel,
+PR-07p: читать docs/STM32_UPDATE_EGRESS.md. Opt-in bound channel TX + actual
+owned frame ledger, explicit capacity1..4/deadline, one exact owner/route/generation/serial
+claim. Channel commit after owned copy; phase/begin wait for correlated local
+terminal returns, no caller drain/success boolean. Local SENT_UNVERIFIED не
+remote ACK/auth/physical/upper completion. Timeout/cancel/uncertain retains actual
+claim; cancel drops only unclaimed entries. Late terminal return reclaims without
+success/revival; no force-forget. Clear retains IDs/tickets/phase/time; lower
+context/clock/exhaustion sticky. Callback events processed by owner at current
+clock, not old snapshot time; no ISR/threads/I/O/heap/runtime/driver/Flash defaults.
+Original crypto/lease/model/image deadlines unchanged. Host59/sanitizers59/
+standalone33;4096 FIFO cycles/10240 frames,8 signed positive+3 independent refusals
++2 driver lifetime refusals. Analyzer18 embedded+2 host, guards6×6; separate
+1972text/data0/bss0/frame88,4096/frame128 ceiling. Old libs/ceilings/workspace/
+SDK pins unchanged. Host queue128/delivery40/owner832 not MCU RAM/full stack proof.
+Real trusted driver completion/reset/queue contracts, remote auth/identity/
+persistence/routing/worker/resources/hardware/install gates open. No devices,
+no self-merge; exact claim may remain blocked until truthful adapter return.
+
+Слитый PR #47, PR-07o: читать docs/STM32_UPDATE_CHANNEL.md. Opt-in mixed TU/MS channel,
 owned one-frame TX outbox/exact local commit; last queued frame bounded even
 when lower TX IDLE. Shared fragment counter through local phases, no reset.
 Advance only locally quiescent/sequential, paired role IDs; this traffic filter

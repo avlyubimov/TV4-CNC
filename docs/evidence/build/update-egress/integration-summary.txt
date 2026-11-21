@@ -1,0 +1,32 @@
+39: Host storage only: setup=312 message=168; no MCU RAM/stack approval
+41: Host storage only: channel TX=696 RX=664 snapshot=288; no MCU RAM/stack approval
+42: PASS capacities1..4, 4096 FIFO cycles/10240 owned frames; full/claim/duplicate/stale tickets, retained serials and wrap clock
+42: PASS cross-queue identical generation/route/serial cannot free a different actual owner; terminal cleanup explicit
+42: Host storage only: frame queue=128 driver snapshot=40; no MCU RAM/physical queue approval
+43: PASS actual channel→owned queue→driver claim→correlated return→RX; 132 frames, capacities1..4, phase waits for driver return
+43: PASS actual final pending driver frame blocks phase despite inner IDLE; late completion reclaims, explicit clear retains counters/phase
+43: Host storage only: egress owner=832; no actual MCU RAM/driver/physical approval
+52: SETUP frames=473 drops=4 elapsed=1020 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+52: EGRESS claims=1097 returns=1097 held-ticks=266 max-pending=2; local completion tickets, no driver-owned frame forgotten
+52: SETUP frames=473 drops=4 elapsed=1020 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+52: EGRESS claims=1331 returns=1331 held-ticks=324 max-pending=2; local completion tickets, no driver-owned frame forgotten
+52: SETUP frames=473 drops=4 elapsed=1016 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+52: EGRESS claims=1544 returns=1544 held-ticks=375 max-pending=2; local completion tickets, no driver-owned frame forgotten
+52: SETUP frames=473 drops=4 elapsed=1016 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+52: EGRESS claims=1778 returns=1778 held-ticks=432 max-pending=2; local completion tickets, no driver-owned frame forgotten
+52: SETUP frames=473 drops=4 elapsed=1016 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+52: EGRESS claims=1544 returns=1544 held-ticks=375 max-pending=2; local completion tickets, no driver-owned frame forgotten
+52: SETUP frames=473 drops=4 elapsed=1016 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+52: EGRESS claims=1778 returns=1778 held-ticks=432 max-pending=2; local completion tickets, no driver-owned frame forgotten
+52: SETUP frames=473 drops=4 elapsed=1016 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+52: EGRESS claims=1497 returns=1497 held-ticks=364 max-pending=2; local completion tickets, no driver-owned frame forgotten
+52: SETUP frames=473 drops=4 elapsed=1016 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+52: EGRESS claims=1498 returns=1498 held-ticks=364 max-pending=2; local completion tickets, no driver-owned frame forgotten
+52: PASS8 transported metadata signed chains: frames=12067 drops=80 container-bytes=4797 DER=70..72 longest=3710 synthetic ms; producer wiped, actual delivered signature/raw digest/lease/model/close, no image deadline reset
+52: SETUP frames=473 drops=4 elapsed=1020 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+52: SETUP frames=473 drops=4 elapsed=1020 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+52: SETUP frames=473 drops=4 elapsed=1020 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+52: PASS transported metadata does not bypass invalid signature, correctly re-signed wrong raw digest, or expired independent image RX
+52: SETUP frames=473 drops=4 elapsed=1020 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+52: SETUP frames=473 drops=4 elapsed=1020 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+52: PASS2 driver uncertain/missing-completion refusals: actual claim retained through original image timeout; late return reclaims only, clear does not revive RX or admission

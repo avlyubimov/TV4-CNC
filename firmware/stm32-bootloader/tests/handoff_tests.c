@@ -1620,14 +1620,15 @@ static size_t timed_metadata_impl(fixture *f,tv4_test_link *link,tv4_metadata_do
 }
 static size_t timed_metadata(fixture *f,tv4_test_link *link,tv4_metadata_document *downloaded)
 {return timed_metadata_impl(f,link,downloaded,NULL);}
-static void metadata_signed_chains(bool setup_mode,bool channel_mode)
+static void metadata_signed_chains(bool setup_mode,bool channel_mode,bool egress_mode)
 {
     unsigned frames=0,drops=0,container_bytes=0,sig_min=72,sig_max=0;uint32_t longest=0;
     for(unsigned i=0;i<8;++i) {
         fixture f;if(i<6)release_fixture(&f,i%2u?256:33);else vector_fixture(&f,33);
         f.use_stage=true;tv4_test_link link={0};uint16_t mask=i<2?0u:510u;
         if(channel_mode)mask=(uint16_t)(mask|TV4_TEST_LINK_MS_DROP_MASK);
-        tv4_test_link_config cfg=timed_config(mask,(uint16_t)(i%3u));cfg.multiplexed=channel_mode;
+        tv4_test_link_config cfg=timed_config(mask,(uint16_t)(i%3u));cfg.multiplexed=channel_mode;cfg.egress=egress_mode;
+        if(egress_mode)cfg.custody=(tv4_frame_queue_limits){16,2};
         tv4_test_link_init(&link,&f.now,&cfg);
         uint32_t started=f.now;tv4_metadata_document downloaded;
         if(setup_mode) {
@@ -1649,11 +1650,23 @@ static void metadata_signed_chains(bool setup_mode,bool channel_mode)
         if(channel_mode) {
             unsigned attempts=0,counters=0;for(unsigned k=1;k<=12;++k)attempts+=link.attempts[k];
             for(unsigned d=0;d<2;++d) {
-                assert(link.direction[d].channel_tx.policy.phase==TV4_CHANNEL_NEGOTIATION);
-                assert(link.direction[d].channel_tx.fragments.storage.counter==link.direction[d].channel_rx.fragments.storage.counter);
-                counters+=link.direction[d].channel_tx.fragments.storage.counter;
+                const tv4_channel_tx *tx=egress_mode?&link.direction[d].egress.channel:&link.direction[d].channel_tx;
+                assert(tx->policy.phase==TV4_CHANNEL_NEGOTIATION);
+                assert(tx->fragments.storage.counter==link.direction[d].channel_rx.fragments.storage.counter);
+                counters+=tx->fragments.storage.counter;
             }
             assert(attempts==counters);
+            if(egress_mode) {
+                unsigned tickets=0;
+                for(unsigned d=0;d<2;++d) {
+                    assert(link.direction[d].egress.queue.count==0 && link.direction[d].egress.queue.flight==0);
+                    tickets+=link.direction[d].egress.queue.last_issued;
+                }
+                assert(link.driver_admissions==link.frames && link.driver_claims==link.frames && link.driver_returns==link.frames && tickets==link.frames);
+                assert(link.driver_max_pending==2 && link.driver_held_ticks>0);
+                printf("EGRESS claims=%u returns=%u held-ticks=%u max-pending=%u; local completion tickets, no driver-owned frame forgotten\n",
+                    link.driver_claims,link.driver_returns,link.driver_held_ticks,link.driver_max_pending);
+            }
         }
         assert(tv4_boot_completion_clear(&f.completion));
         if(i<6)release_clear(&f);else assert(tv4_boot_handoff_clear(&f.session));
@@ -1663,12 +1676,14 @@ static void metadata_signed_chains(bool setup_mode,bool channel_mode)
     }
     printf("PASS8 transported metadata signed chains: frames=%u drops=%u container-bytes=%u DER=%u..%u longest=%u synthetic ms; producer wiped, actual delivered signature/raw digest/lease/model/close, no image deadline reset\n",frames,drops,container_bytes,sig_min,sig_max,longest);
 }
-static void metadata_admission_refusals(bool setup_mode,bool channel_mode)
+static void metadata_admission_refusals(bool setup_mode,bool channel_mode,bool egress_mode)
 {
     for(unsigned i=0;i<3;++i) {
         fixture f;release_fixture(&f,33);f.use_stage=true;tv4_test_link link={0};tv4_metadata_document downloaded;
         tv4_test_link_config cfg=timed_config((uint16_t)((1u<<5)|(1u<<6)|(channel_mode?TV4_TEST_LINK_MS_DROP_MASK:0u)),1);
-        cfg.multiplexed=channel_mode;tv4_test_link_init(&link,&f.now,&cfg);
+        cfg.multiplexed=channel_mode;cfg.egress=egress_mode;
+        if(egress_mode)cfg.custody=(tv4_frame_queue_limits){16,2};
+        tv4_test_link_init(&link,&f.now,&cfg);
         timed_image_session image={0};
         if(setup_mode)timed_negotiate_impl(&f,&link,256,&image);else timed_negotiate(&f,&link,31);
         if(i==0)f.signature[f.config.signature_bytes-1u]^=1;
@@ -1693,17 +1708,58 @@ static void metadata_admission_refusals(bool setup_mode,bool channel_mode)
     }
     puts("PASS transported metadata does not bypass invalid signature, correctly re-signed wrong raw digest, or expired independent image RX");
 }
+static void egress_driver_lifetime_refusals(void)
+{
+    for(unsigned which=0;which<2;++which) {
+        fixture f;release_fixture(&f,33);f.use_stage=true;
+        tv4_test_link link={0};tv4_test_link_config cfg=timed_config(0,1);
+        cfg.multiplexed=true;cfg.egress=true;cfg.custody=(tv4_frame_queue_limits){16,2};
+        /* Setup must still exercise its four loss/retry phases. */
+        cfg.drop_kinds=TV4_TEST_LINK_MS_DROP_MASK;tv4_test_link_init(&link,&f.now,&cfg);
+        timed_image_session image={0};timed_negotiate_impl(&f,&link,256,&image);
+        tv4_metadata_document downloaded;(void)timed_metadata_impl(&f,&link,&downloaded,&image);
+        uint32_t image_started=f.rx.context.started_ms,image_progress=f.rx.context.progress_ms;
+        assert(tv4_update_tx_load(&f.tx,f.source,256,f.now)==TV4_UPDATE_OK);
+        tv4_wire_message packet={.kind=TV4_WIRE_DATA};
+        assert(tv4_update_tx_next(&f.tx,&packet.body.data,f.now)==TV4_UPDATE_OK);
+        assert(tv4_test_link_send(&link,0,&packet)==TV4_FRAG_OK);
+        tv4_update_egress *tx=&link.direction[0].egress;
+        assert(tv4_update_egress_pump(tx,link.generation[0],f.now)==TV4_QUEUE_ADMITTED);
+        tv4_frame_delivery held;assert(tv4_update_egress_claim(tx,&held,link.generation[0],f.now)==TV4_QUEUE_FRAME);
+        if(which==0)assert(tv4_update_egress_complete(tx,held.ticket,TV4_FRAME_OWNERSHIP_UNCERTAIN,f.now)==TV4_QUEUE_HELD);
+        while(f.now-image_progress<f.rx.context.limits.progress_timeout_ms) {
+            ++f.now;(void)tv4_update_egress_poll(tx,link.generation[0],f.now);
+            (void)tv4_update_rx_poll(&f.rx,f.now);(void)tv4_update_tx_poll(&f.tx,f.now);
+            assert(tx->queue.flight==held.ticket.serial && tx->queue.count==1);
+        }
+        assert(f.rx.context.state==TV4_UPDATE_FAILED && f.rx.context.error==TV4_UPDATE_ERROR_PROGRESS_TIMEOUT);
+        assert(f.rx.context.started_ms==image_started && f.rx.context.progress_ms==image_progress && f.rx.context.next_offset==0);
+        assert(tv4_update_egress_advance(tx,TV4_CHANNEL_OUTCOME,(tv4_update_id){0},link.generation[0],f.now)==TV4_CHANNEL_ERROR);
+        assert(tv4_update_egress_clear(tx,link.generation[0],f.now)==TV4_QUEUE_HELD);
+        assert(tv4_update_egress_complete(tx,held.ticket,which?TV4_FRAME_FAILED_LOCAL:TV4_FRAME_SENT_LOCAL,f.now)==TV4_QUEUE_RECLAIMED_FAILED);
+        uint32_t serial=tx->queue.last_issued;uint16_t fragments_issued=tx->channel.fragments.storage.counter;
+        assert(tv4_update_egress_clear(tx,link.generation[0],f.now)==TV4_QUEUE_OK);
+        assert(tx->queue.last_issued==serial && tx->channel.fragments.storage.counter==fragments_issued && tx->channel.policy.phase==TV4_CHANNEL_IMAGE);
+        assert(!tv4_boot_release_handoff_begin(&f.release_adapter,&f.session,&f.release_config,&f.rx));
+        assert(f.acquired==0 && f.rx.context.state==TV4_UPDATE_FAILED && f.rx.context.started_ms==image_started);
+        release_clear(&f);memset(&downloaded,0,sizeof(downloaded));finish(&f);
+    }
+    puts("PASS2 driver uncertain/missing-completion refusals: actual claim retained through original image timeout; late return reclaims only, clear does not revive RX or admission");
+}
 #define RUN(name) do { name(); puts("PASS " #name); } while (0)
 int main(int argc,char **argv)
 {
+    if(argc==2 && strcmp(argv[1],"--egress-staging")==0) {
+        metadata_signed_chains(true,true,true);metadata_admission_refusals(true,true,true);egress_driver_lifetime_refusals();return 0;
+    }
     if(argc==2 && strcmp(argv[1],"--channel-staging")==0) {
-        metadata_signed_chains(true,true);metadata_admission_refusals(true,true);return 0;
+        metadata_signed_chains(true,true,false);metadata_admission_refusals(true,true,false);return 0;
     }
     if(argc==2 && strcmp(argv[1],"--metadata-setup-staging")==0) {
-        metadata_signed_chains(true,false);metadata_admission_refusals(true,false);return 0;
+        metadata_signed_chains(true,false,false);metadata_admission_refusals(true,false,false);return 0;
     }
     if(argc==2 && strcmp(argv[1],"--metadata-staging")==0) {
-        metadata_signed_chains(false,false);metadata_admission_refusals(false,false);return 0;
+        metadata_signed_chains(false,false,false);metadata_admission_refusals(false,false,false);return 0;
     }
     if(argc==2 && strcmp(argv[1],"--fragment-timing")==0) {
         RUN(one_clock_signed_chains);RUN(one_clock_admission_refusals);return 0;
