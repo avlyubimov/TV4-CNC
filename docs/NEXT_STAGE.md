@@ -1,6 +1,6 @@
 # Следующий этап: release context и STM32 board contract
 
-21 ноября2026. База main `7640f43`, PR #1–44 слиты, main CI5/5 PASS.
+21 ноября2026. База main `d18cf93`, PR #1–45 слиты, main CI5/5 PASS.
 ESP32 HMI/Wi-Fi/OTA primitives/candidates и STM32 transport/admission существуют;
 не создавать их заново. Данный план не разрешает доступ к устройствам или merge.
 
@@ -169,7 +169,7 @@ late ACK/OFFER не оживляет expired layer. Host helper не входи�
 footprint прежние. Это не production timing/resource/identity approval.
 [Evidence](evidence/build/update-fragment-timing/README.md).
 
-## Текущая ветка PR-07m
+## Слитый PR #45, PR-07m
 
 [Metadata container/RX](STM32_METADATA_TRANSPORT.md): separate DATA identity,
 bounded raw document/signature/key ID, ACK после copy, one owned UNVERIFIED
@@ -179,6 +179,16 @@ signature/raw request digest/live image guards. Host50/sanitizers50/standalone24
 ARM separate metadata1568text/data0/bss0/frame48; old libs прежние. Transport
 setup ещё local input, не authenticated wire exchange/runtime/installer.
 [Evidence](evidence/build/update-metadata-stage/README.md).
+
+## Текущая ветка PR-07n
+
+[Metadata setup/shared namespace](STM32_METADATA_SETUP.md) закрывает bounded
+volatile paired role allocation и phase ownership, original image deadline
+composition, separate MS codec + explicit raw fragments. Actual metadata
+TX/RX дают concrete close; delivered snapshots проходят прежний independent
+verifier/lease/model/clean close. Host54/sanitizers54/standalone28; full text
+[evidence](evidence/build/metadata-setup/README.md). Authentication/persistent
+identity/routing/storage/worker/runtime/install/hardware остаются open.
 
 ## Что делать дальше программно
 
@@ -205,8 +215,9 @@ setup ещё local input, не authenticated wire exchange/runtime/installer.
    PR-07l проверяет whole-message retry/queue/deadline composition на одной
    synthetic шкале. PR-07m добавляет bounded raw metadata/signature container и
    receiver с distinct DATA ID/single owned snapshot/original request binding.
-   Дальше review metadata descriptor discovery/setup, shared image/metadata ID
-   namespace/phase lifetime и production codebook. Production routing/reboot
+   PR-07n добавляет bounded metadata setup, shared volatile role IDs и phase
+   ownership на original image windows. Дальше review phase/queue arbitration
+   после setup и authenticated production codebook/adoption. Production routing/reboot
    identity/authentication, durable ownership и measured worker/bus/crypto budgets
    остаются blockers, не implicit defaults или permissive setup stub.
    Decode OK не обновляет context или timeouts; owner poll остаётся обязательным.

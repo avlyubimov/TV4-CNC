@@ -1,0 +1,2 @@
+PASS unexpected .bin rejected by actual boot build guard
+PASS restored ordinary compile-only archives; no image output

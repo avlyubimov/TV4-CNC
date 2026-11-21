@@ -14,6 +14,7 @@ BUILD = None
 ARCHIVE = 'libtv4_update_wire.a'
 TARGET = 'tv4_update_wire'
 EXPORTS = ('tv4_update_wire_encode', 'tv4_update_wire_decode')
+TEXT_CEILING = 4096
 
 
 class Budget(unittest.TestCase):
@@ -53,7 +54,7 @@ class Budget(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'object budget'): guard.inspect(self.root)
 
     def test_excessive_code_or_rodata(self):
-        self.archive('const unsigned char tv4_test_rodata[4097]={1};\n')
+        self.archive(f'const unsigned char tv4_test_rodata[{TEXT_CEILING + 1}]={{1}};\n')
         with self.assertRaisesRegex(ValueError, 'object budget'): guard.inspect(self.root)
 
     def test_unreviewed_import(self):
@@ -67,6 +68,7 @@ if __name__ == '__main__':
     mode = parser.add_mutually_exclusive_group()
     mode.add_argument('--fragments', action='store_true')
     mode.add_argument('--metadata', action='store_true')
+    mode.add_argument('--setup', action='store_true')
     args = parser.parse_args()
     BUILD = args.build.absolute()
     if args.fragments:
@@ -75,7 +77,8 @@ if __name__ == '__main__':
         TARGET = 'tv4_update_fragments'
         EXPORTS = tuple('tv4_fragment_' + suffix for suffix in (
             'tx_init', 'rx_init', 'tx_begin', 'tx_peek', 'tx_commit', 'rx_receive',
-            'rx_take', 'tx_poll', 'rx_poll', 'tx_cancel', 'rx_cancel', 'tx_clear', 'rx_clear'))
+            'rx_take', 'tx_poll', 'rx_poll', 'tx_cancel', 'rx_cancel', 'tx_clear', 'rx_clear',
+            'tx_init_raw', 'rx_init_raw', 'tx_begin_raw', 'rx_take_raw'))
     if args.metadata:
         import check_update_metadata_build as guard
         ARCHIVE = 'libtv4_update_metadata.a'
@@ -83,6 +86,14 @@ if __name__ == '__main__':
         EXPORTS = ('tv4_metadata_encode', 'tv4_metadata_decode', 'tv4_metadata_rx_init',
                    'tv4_metadata_rx_begin', 'tv4_metadata_rx_poll', 'tv4_metadata_rx_receive',
                    'tv4_metadata_rx_take', 'tv4_metadata_rx_discard')
+    if args.setup:
+        import check_metadata_setup_build as guard
+        ARCHIVE = 'libtv4_metadata_setup.a'
+        TARGET = 'tv4_metadata_setup'
+        TEXT_CEILING = 4096
+        EXPORTS = tuple('tv4_metadata_setup_' + suffix for suffix in (
+            'encode', 'decode', 'init', 'request', 'respond', 'receive', 'next', 'poll',
+            'take', 'close_tx', 'close_rx', 'abort', 'clear'))
     result = unittest.TextTestRunner(verbosity=2).run(unittest.defaultTestLoader.loadTestsFromTestCase(Budget))
     if not result.wasSuccessful(): raise SystemExit(1)
     print('PASS6 ARM budget guard cases; temporary negative objects removed, no board image or execution')

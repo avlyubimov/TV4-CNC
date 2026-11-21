@@ -109,9 +109,27 @@ PR и Actions; не копировать код уже открытого PR. Д
 
 ## Текущее задание
 
-PR #1–44 слиты, база main `7640f43`, main CI5/5 PASS,
+PR #1–45 слиты, база main `d18cf93`, main CI5/5 PASS,
 открытых PR перед работой нет.
-PR-07m: читать STM32_METADATA_TRANSPORT.md. Opt-in metadata codec/RX поверх
+PR-07n: читать docs/STM32_METADATA_SETUP.md. Opt-in setup/shared volatile role
+namespace, paired image+1 allocation без wrap/rollback из того же pool. CLOSED
+image negotiation сохраняет request/offer до clear; no-I/O/runtime/device gates
+прежние. Borrow actual CLOSED image + empty live TX/RX; poll original windows,
+no reinit/deadline extension. Pools held через metadata transfer до concrete
+complete metadata TX / TAKEN metadata RX close. One take не auth/install/live
+receipt; independent signature/raw digest/full image/lease/model обязательны.
+MS172byte codec отдельно от TU; explicit immutable raw fragment mode, unchecked
+single take → selected codec before dispatch. Local route/mode/counters не
+serialized/authenticated; production identity/persistence/routing/replay/worker/
+physical/Flash/install gates открыты. Responder CONFIRM bounded retry после take;
+duplicates не reset time/sends. Context/clock sticky, clear retains IDs/time.
+Host54/sanitizers54/standalone28; analyzer15 embedded+2 host, oracle4/raw279/
+100000 mutations/8 signed positive+3 refusal chains. Separate setup3324text/
+data0/bss0/frame48,4096text/frame128 ceiling+6 negatives. Old4 text43600 (+238),
+fragments1904 (+368); old ceilings/frames/workspace/config/SDK pins прежние.
+Full MCU RAM/stack/CPU/physical throughput не измерены; не объявлять готовыми.
+
+Слитый PR #45, PR-07m: читать STM32_METADATA_TRANSPORT.md. Opt-in metadata codec/RX поверх
 unchanged DATA/consumer/ACK. Отдельный globally fresh metadata ID, не image ID;
 current pair/high-water local checks не global provider/routing/authentication.
 Container98..1215, raw doc1..1024/signature8..72/key ID1..31. Descriptor setup

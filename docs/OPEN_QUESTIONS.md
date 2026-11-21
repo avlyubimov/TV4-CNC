@@ -1,6 +1,6 @@
 # Открытые вопросы и блокирующие решения
 
-Обновлено от main `7640f43`,21ноября2026. Единственный свод аппаратных фактов —
+Обновлено от main `d18cf93`,21ноября2026. Единственный свод аппаратных фактов —
 [HARDWARE_STATUS.md](HARDWARE_STATUS.md). Не заполнять неизвестные поля
 типовыми данными семейства, USB VID/PID, старым заказом или host mock.
 
@@ -56,6 +56,13 @@ signature всё ещё проверяет independent engine. Setup descriptor 
 local input; discovery/authentication/global cross-role ID namespace/persistence/
 routing/phase ownership и runtime resource budgets ещё открыты. Current pair
 checks не заменяют provider и не дают reboot replay isolation/physical authority.
+
+PR-07n [metadata setup](STM32_METADATA_SETUP.md) закрывает bounded paired role
+ID allocation из общего fixed volatile pool и setup/metadata phase ownership.
+Это не production discovery/authentication/identity persistence/routing/runtime.
+MS/raw mode local fixture не даёт reboot replay isolation; original image windows
+продолжаются, independent verifier обязателен. Full MCU RAM/stack/worker/physical
+CAN/Flash/installer gates ниже остаются открытыми.
 
 | ID | Что нужно подтвердить/решить | Блокирует |
 |---|---|---|

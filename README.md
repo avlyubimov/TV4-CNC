@@ -1,5 +1,13 @@
 # TV4 CNC
 
+PR-07n от main `d18cf93`: [metadata setup/shared namespace](docs/STM32_METADATA_SETUP.md)
+связывает original CLOSED image negotiation, live empty image endpoints и
+metadata DATA. Paired ID выделяется из общего volatile pool, raw MS exchange
+проверен с потерями всех фаз, complete metadata endpoints закрывают pool.
+Host54/sanitizers54/standalone28, independent verifier/lease/model/close прежние.
+Это software local contract; authentication/persistent identity/runtime/installer
+и все physical F407 blockers открыты. Устройств не касались.
+
 Развиваемая система ЧПУ для ТВ-4-07-20 КА с сохранением ручного управления.
 **Инженерный прототип: реальное управление приводами ещё не реализовано
 и не введено в эксплуатацию.** Существующий HMI продолжается, не создаётся заново.
@@ -135,7 +143,7 @@ routing/metadata transport/driver/runtime/installer ещё не реализов
 Host47/sanitizers47/standalone21, embedded code/ARM footprint прежние. Это не
 измерения CAN/CPU или production runtime driver. [Evidence](docs/evidence/build/update-fragment-timing/README.md).
 
-Текущая ветка от main `7640f43`: [PR-07m metadata transport](docs/STM32_METADATA_TRANSPORT.md).
+Слитый PR #45 от main `7640f43`: [PR-07m metadata transport](docs/STM32_METADATA_TRANSPORT.md).
 Отдельный metadata DATA ID и bounded container raw document/signature/key ID,
 copy-before-ACK и один owned UNVERIFIED snapshot.8 signed RAM chains используют
 доставленные bytes после wipe producer; signature/raw digest/expired image RX

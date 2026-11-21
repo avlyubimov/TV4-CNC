@@ -1,0 +1,23 @@
+{
+  "scope": "opt-in byte codec static archive, not firmware",
+  "objects": {
+    "text": 1219,
+    "data": 0,
+    "bss": 0
+  },
+  "unresolved_imports": [
+    "memcpy",
+    "memset",
+    "tv4_neg_message_valid",
+    "tv4_update_outcome_valid"
+  ],
+  "exported_functions": [
+    "tv4_update_wire_decode",
+    "tv4_update_wire_encode"
+  ],
+  "max_individual_frame": 32,
+  "full_stack_verified": false,
+  "board_memory_verified": false,
+  "runtime_caller": false,
+  "device_access": false
+}

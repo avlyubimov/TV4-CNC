@@ -96,5 +96,12 @@ tv4_neg_result tv4_neg_take(tv4_negotiation *s,tv4_negotiated *out,uint64_t gene
  * total deadline. Already-started DATA has its own unchanged lifetime/gates. */
 tv4_neg_result tv4_neg_close(tv4_negotiation *s,uint64_t generation,uint32_t now_ms);
 tv4_neg_result tv4_neg_abort(tv4_negotiation *s,uint64_t generation,uint32_t now_ms);
+/* CLOSED retains request/offer for a following metadata setup until clear.
+ * Reserve exactly the next responder ID from this CLOSED image's pool, once.
+ * No time/auth/endpoint checks here: setup must guard actual live image first.
+ * Another reservation/negotiation consumes eligibility; never wrap/rollback.
+ * The original coordinator/pool must remain alive, exclusive and unmoved. */
+tv4_neg_result tv4_neg_reserve_metadata(const tv4_negotiation *s,
+    uint64_t generation,tv4_update_id *out);
 bool tv4_neg_clear(tv4_negotiation *s);
 #endif

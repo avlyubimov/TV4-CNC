@@ -1,0 +1,22 @@
+gcc (Ubuntu 15.2.0-16ubuntu1) 15.2.0
+Copyright (C) 2025 Free Software Foundation, Inc.
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+PASS actual-source -fanalyzer -c update_session
+PASS actual-source -fanalyzer -c update_outcome
+PASS actual-source -fanalyzer -c update_negotiation
+PASS actual-source -fanalyzer -c update_wire
+PASS actual-source -fanalyzer -c update_fragments
+PASS actual-source -fanalyzer -c update_metadata
+PASS actual-source -fanalyzer -c update_metadata_setup
+PASS actual-source -fanalyzer -c admission
+PASS actual-source -fanalyzer -c metadata
+PASS actual-source -fanalyzer -c release_policy
+PASS actual-source -fanalyzer -c image_profile
+PASS actual-source -fanalyzer -c update_handoff
+PASS actual-source -fanalyzer -c update_completion
+PASS actual-source -fanalyzer -c release_handoff
+PASS actual-source -fanalyzer -c staging_source
+PASS actual-source -fanalyzer -c firmware/stm32-bootloader/tools/motion_review.c (HOST ONLY)
+PASS actual-source -fanalyzer -c protocol/can/tests/fragment_test_link.c (HOST ONLY)

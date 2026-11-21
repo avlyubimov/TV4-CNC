@@ -1,0 +1,3 @@
+PASS 310 local Markdown links across 16 touched/mandatory docs
+PASS 118 source/config/dependency/document SHA-256 entries
+PASS working tree diff whitespace check; no new device actions or firmware outputs

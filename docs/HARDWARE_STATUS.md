@@ -1,5 +1,13 @@
 # Аппаратный статус TV4-CNC
 
+PR-07n от main `d18cf93`: [metadata setup/shared namespace](STM32_METADATA_SETUP.md)
+связывает original CLOSED image negotiation, live empty image endpoints и
+metadata DATA. Paired ID выделяется из общего volatile pool, raw MS exchange
+проверен с потерями всех фаз, complete metadata endpoints закрывают pool.
+Host54/sanitizers54/standalone28, independent verifier/lease/model/close прежние.
+Это software local contract; authentication/persistent identity/runtime/installer
+и все physical F407 blockers открыты. Устройств не касались.
+
 PR-07m [metadata transport](STM32_METADATA_TRANSPORT.md) — software host/ARM
 foundation, не новый аппаратный результат. RX1728/snapshot1212 host bytes и
 отдельный archive1568text не подтверждают F407 RAM/clock/CAN/bootloader reserve.

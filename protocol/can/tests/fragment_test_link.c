@@ -11,8 +11,14 @@ void tv4_test_link_init(tv4_test_link *link, uint32_t *clock, const tv4_test_lin
     memset(link,0,sizeof(*link));link->config=*config;link->clock=clock;
     for(unsigned i=0;i<2;++i) {
         link->generation[i]=100u+i;
-        assert(tv4_fragment_tx_init(&link->direction[i].tx,&config->fragments,i+1u,link->generation[i],0,*clock)==TV4_FRAG_OK);
-        assert(tv4_fragment_rx_init(&link->direction[i].rx,&config->fragments,i+1u,link->generation[i],0,*clock)==TV4_FRAG_OK);
+        tv4_fragment_result tx=config->raw_setup?
+            tv4_fragment_tx_init_raw(&link->direction[i].tx,&config->fragments,i+1u,link->generation[i],0,*clock):
+            tv4_fragment_tx_init(&link->direction[i].tx,&config->fragments,i+1u,link->generation[i],0,*clock);
+        assert(tx==TV4_FRAG_OK);
+        tv4_fragment_result rx=config->raw_setup?
+            tv4_fragment_rx_init_raw(&link->direction[i].rx,&config->fragments,i+1u,link->generation[i],0,*clock):
+            tv4_fragment_rx_init(&link->direction[i].rx,&config->fragments,i+1u,link->generation[i],0,*clock);
+        assert(rx==TV4_FRAG_OK);
     }
     link->configured=true;
 }
@@ -24,13 +30,13 @@ bool tv4_test_link_can_send(const tv4_test_link *link, unsigned direction)
 }
 tv4_fragment_result tv4_test_link_send(tv4_test_link *link, unsigned direction, const tv4_wire_message *message)
 {
-    assert(link!=NULL && link->configured && direction<2 && message!=NULL);
+    assert(link!=NULL && link->configured && direction<2 && message!=NULL && !link->config.raw_setup);
     if(!tv4_test_link_can_send(link,direction)){++link->queue_busy;return TV4_FRAG_BUSY;}
     tv4_test_link_direction *d=&link->direction[direction];
     tv4_fragment_result r=tv4_fragment_tx_begin(&d->tx,message,link->generation[direction],*link->clock);
     if(r!=TV4_FRAG_OK)return r;
     assert(message->kind>=TV4_WIRE_REQUEST && message->kind<=TV4_WIRE_OUTCOME_ACK);
-    d->kind=message->kind;d->index=0;
+    d->kind=(unsigned)message->kind;d->index=0;
     unsigned bit=1u<<(unsigned)message->kind;
     d->drop_message=(link->config.drop_kinds&bit)!=0 &&
         (link->config.drop_every_message || (link->dropped_kinds&bit)==0);
@@ -102,8 +108,34 @@ void tv4_test_link_step(tv4_test_link *link)
 }
 tv4_fragment_result tv4_test_link_take(tv4_test_link *link, unsigned direction, tv4_wire_message *out)
 {
-    assert(link!=NULL && link->configured && direction<2 && out!=NULL);
+    assert(link!=NULL && link->configured && direction<2 && out!=NULL && !link->config.raw_setup);
     tv4_fragment_result r=tv4_fragment_rx_take(&link->direction[direction].rx,out,link->generation[direction],*link->clock);
     if(r==TV4_FRAG_TAKEN){++link->takes;++link->deliveries[(unsigned)out->kind];}
+    return r;
+}
+
+tv4_fragment_result tv4_test_link_send_setup(tv4_test_link *link,unsigned direction,const tv4_metadata_setup_message *message)
+{
+    assert(link!=NULL && link->configured && direction<2 && message!=NULL && link->config.raw_setup);
+    if(!tv4_test_link_can_send(link,direction)){++link->queue_busy;return TV4_FRAG_BUSY;}
+    uint8_t raw[TV4_SETUP_MESSAGE_BYTES];size_t n=0;
+    assert(tv4_metadata_setup_encode(message,raw,sizeof(raw),&n)==TV4_SETUP_OK);
+    tv4_test_link_direction *d=&link->direction[direction];
+    tv4_fragment_result r=tv4_fragment_tx_begin_raw(&d->tx,raw,n,link->generation[direction],*link->clock);
+    if(r!=TV4_FRAG_OK)return r;
+    d->kind=(unsigned)message->kind;d->index=0;unsigned bit=1u<<d->kind;
+    d->drop_message=(link->config.drop_kinds&bit)!=0 &&
+        (link->config.drop_every_message || (link->dropped_kinds&bit)==0);
+    ++link->attempts[d->kind];return r;
+}
+tv4_fragment_result tv4_test_link_take_setup(tv4_test_link *link,unsigned direction,tv4_metadata_setup_message *out)
+{
+    assert(link!=NULL && link->configured && direction<2 && out!=NULL && link->config.raw_setup);
+    uint8_t raw[TV4_WIRE_MESSAGE_MAX];size_t n=0;
+    tv4_fragment_result r=tv4_fragment_rx_take_raw(&link->direction[direction].rx,raw,sizeof(raw),&n,link->generation[direction],*link->clock);
+    if(r==TV4_FRAG_RAW_TAKEN_UNCHECKED) {
+        assert(tv4_metadata_setup_decode(raw,n,out)==TV4_SETUP_OK);
+        ++link->takes;++link->deliveries[(unsigned)out->kind];
+    }else memset(out,0,sizeof(*out));
     return r;
 }

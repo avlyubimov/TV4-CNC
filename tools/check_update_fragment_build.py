@@ -30,7 +30,8 @@ def inspect(directory):
     if not imported <= allowed:
         raise ValueError('unreviewed fragment import: ' + repr(sorted(imported - allowed)))
     if exported != {
-        'tv4_fragment_tx_init', 'tv4_fragment_rx_init', 'tv4_fragment_tx_begin',
+        'tv4_fragment_tx_init_raw', 'tv4_fragment_rx_init_raw', 'tv4_fragment_tx_begin_raw',
+        'tv4_fragment_rx_take_raw', 'tv4_fragment_tx_init', 'tv4_fragment_rx_init', 'tv4_fragment_tx_begin',
         'tv4_fragment_tx_peek', 'tv4_fragment_tx_commit', 'tv4_fragment_rx_receive',
         'tv4_fragment_rx_take', 'tv4_fragment_tx_poll', 'tv4_fragment_rx_poll',
         'tv4_fragment_tx_cancel', 'tv4_fragment_rx_cancel', 'tv4_fragment_tx_clear', 'tv4_fragment_rx_clear'}:

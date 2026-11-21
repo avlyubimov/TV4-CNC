@@ -62,6 +62,7 @@ tv4_fragment_result tv4_fragment_tx_begin(tv4_fragment_tx *tx, const tv4_wire_me
     if(tx==NULL)return TV4_FRAG_ARGUMENT;
     tv4_fragment_storage *s=&tx->storage;
     tv4_fragment_result r=observe(s,generation,now);if(r!=TV4_FRAG_OK)return r;
+    if(s->raw_mode)return TV4_FRAG_STATE;
     if(s->state!=TV4_FRAG_IDLE)return TV4_FRAG_BUSY;
     if(message==NULL)return TV4_FRAG_ARGUMENT;
     if(s->counter==UINT16_MAX)return fail(s,TV4_FRAG_EXHAUSTED);
@@ -158,7 +159,7 @@ tv4_fragment_result tv4_fragment_rx_take(tv4_fragment_rx *rx, tv4_wire_message *
     if(rx==NULL || out==NULL)return TV4_FRAG_ARGUMENT;
     tv4_fragment_storage *s=&rx->storage;
     tv4_fragment_result r=observe(s,generation,now);if(r!=TV4_FRAG_OK)return r;
-    if(s->state!=TV4_FRAG_READY_BYTES_UNCHECKED)return TV4_FRAG_STATE;
+    if(s->raw_mode || s->state!=TV4_FRAG_READY_BYTES_UNCHECKED)return TV4_FRAG_STATE;
     if(tv4_update_wire_decode(s->bytes,s->total,out)!=TV4_WIRE_OK)return fail(s,TV4_FRAG_CODEC);
     wipe(s);s->state=TV4_FRAG_IDLE;return TV4_FRAG_TAKEN;
 }
@@ -188,3 +189,44 @@ tv4_fragment_result tv4_fragment_tx_clear(tv4_fragment_tx *tx, uint64_t generati
 { if(tx==NULL)return TV4_FRAG_ARGUMENT;tx->peeked=false;return clear(&tx->storage,generation,now); }
 tv4_fragment_result tv4_fragment_rx_clear(tv4_fragment_rx *rx, uint64_t generation, uint32_t now)
 { return rx==NULL?TV4_FRAG_ARGUMENT:clear(&rx->storage,generation,now); }
+
+tv4_fragment_result tv4_fragment_tx_init_raw(tv4_fragment_tx *tx,const tv4_fragment_config *config,
+    uint32_t route,uint64_t generation,uint16_t counter,uint32_t now)
+{
+    tv4_fragment_result r=tv4_fragment_tx_init(tx,config,route,generation,counter,now);
+    if(r==TV4_FRAG_OK)tx->storage.raw_mode=true;
+    return r;
+}
+tv4_fragment_result tv4_fragment_rx_init_raw(tv4_fragment_rx *rx,const tv4_fragment_config *config,
+    uint32_t route,uint64_t generation,uint16_t counter,uint32_t now)
+{
+    tv4_fragment_result r=tv4_fragment_rx_init(rx,config,route,generation,counter,now);
+    if(r==TV4_FRAG_OK)rx->storage.raw_mode=true;
+    return r;
+}
+tv4_fragment_result tv4_fragment_tx_begin_raw(tv4_fragment_tx *tx,const uint8_t *bytes,size_t length,
+    uint64_t generation,uint32_t now)
+{
+    if(tx==NULL || bytes==NULL)return TV4_FRAG_ARGUMENT;
+    tv4_fragment_storage *s=&tx->storage;
+    tv4_fragment_result r=observe(s,generation,now);if(r!=TV4_FRAG_OK)return r;
+    if(!s->raw_mode)return TV4_FRAG_STATE;
+    if(s->state!=TV4_FRAG_IDLE)return TV4_FRAG_BUSY;
+    if(length<TV4_WIRE_HEADER_BYTES || length>TV4_WIRE_MESSAGE_MAX ||
+        frames_for((uint16_t)length)>s->config.max_frames)return TV4_FRAG_LIMIT;
+    if(s->counter==UINT16_MAX)return fail(s,TV4_FRAG_EXHAUSTED);
+    memcpy(s->bytes,bytes,length);++s->counter;s->total=(uint16_t)length;s->cursor=0;
+    s->started=now;s->progress=now;s->state=TV4_FRAG_SENDING;tx->peeked=false;return TV4_FRAG_OK;
+}
+tv4_fragment_result tv4_fragment_rx_take_raw(tv4_fragment_rx *rx,uint8_t *bytes,size_t capacity,
+    size_t *written,uint64_t generation,uint32_t now)
+{
+    if(written!=NULL)*written=0;
+    if(rx==NULL || bytes==NULL || written==NULL)return TV4_FRAG_ARGUMENT;
+    tv4_fragment_storage *s=&rx->storage;
+    tv4_fragment_result r=observe(s,generation,now);if(r!=TV4_FRAG_OK)return r;
+    if(!s->raw_mode || s->state!=TV4_FRAG_READY_BYTES_UNCHECKED)return TV4_FRAG_STATE;
+    if(capacity<s->total)return TV4_FRAG_LIMIT;
+    *written=s->total;memcpy(bytes,s->bytes,s->total);wipe(s);s->state=TV4_FRAG_IDLE;
+    return TV4_FRAG_RAW_TAKEN_UNCHECKED;
+}
