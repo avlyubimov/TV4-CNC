@@ -176,3 +176,17 @@ Host helper explicit phases after real states + fixture queue drain; no tests
 in ARM. No counter/time/reinit reset for recovery. No new bytes/IDs/driver/heap/
 crypto owner/pins/Flash/device actions. Existing budgets unchanged; separate ARM
 imports/exports/frame/no globals guard + negatives, text evidence обязательны.
+
+## PR-07p — local egress custody
+
+Читать docs/STM32_UPDATE_EGRESS.md. Owned bound channel TX/actual queue; no
+external success/drain boolean. Exact queue owner/route/generation/serial local driver return,
+no remote ACK/auth/physical claim. Claim survives timeout/cancel/uncertain;
+cancel drops unclaimed only, late return reclaim never upper resume. No force
+forget/reinit/counter/time reset; context/clock/exhaustion sticky. Current owner
+time for completion events, no ISR callbacks. Existing independent crypto/lease/
+model/image deadline gates mandatory. Host-only simulated adapter, no real
+driver/runtime/IDs/bitrate/Flash/pins/heap/crypto owner/device or self-merge.
+Actual adapter truth/reset/event queues/persistent identity/resources/physical/
+installer open. New separate exact ARM imports/exports/frame/no globals+negative
+guard; old budgets/dependencies unchanged, text evidence required.

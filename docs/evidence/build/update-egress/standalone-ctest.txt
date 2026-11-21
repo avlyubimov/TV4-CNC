@@ -1,0 +1,36 @@
+ 1/33 Test  #1: boot_image_admission ..............   Passed    0.13 sec
+ 2/33 Test  #2: boot_crypto_source ................   Passed    0.10 sec
+ 3/33 Test  #3: boot_staging_source ...............   Passed    0.00 sec
+ 4/33 Test  #4: boot_update_handoff ...............   Passed    0.29 sec
+ 5/33 Test  #5: boot_staging_handoff ..............   Passed    0.03 sec
+ 6/33 Test  #6: boot_wire_handoff .................   Passed    0.03 sec
+ 7/33 Test  #7: boot_fragment_handoff .............   Passed    0.03 sec
+ 8/33 Test  #8: boot_fragment_timing ..............   Passed    0.02 sec
+ 9/33 Test  #9: boot_egress_handoff ...............   Passed    0.03 sec
+10/33 Test #10: boot_channel_handoff ..............   Passed    0.03 sec
+11/33 Test #11: boot_metadata_setup_handoff .......   Passed    0.03 sec
+12/33 Test #12: boot_metadata_handoff .............   Passed    0.02 sec
+13/33 Test #13: boot_release_handoff ..............   Passed    0.08 sec
+14/33 Test #14: boot_image_profile ................   Passed    0.00 sec
+15/33 Test #15: boot_release_admission ............   Passed    0.10 sec
+16/33 Test #16: boot_release_versions .............   Passed    0.04 sec
+17/33 Test #17: update_metadata_setup_reference ...   Passed    0.03 sec
+18/33 Test #18: update_wire_reference .............   Passed    0.04 sec
+19/33 Test #19: update_fragment_reference .........   Passed    0.03 sec
+20/33 Test #20: update_metadata_reference .........   Passed    0.03 sec
+21/33 Test #21: update_session ....................   Passed    0.00 sec
+22/33 Test #22: update_loopback ...................   Passed    0.04 sec
+23/33 Test #23: update_outcome ....................   Passed    0.01 sec
+24/33 Test #24: update_negotiation ................   Passed    0.00 sec
+25/33 Test #25: update_wire .......................   Passed    0.05 sec
+26/33 Test #26: update_fragment ...................   Passed    0.05 sec
+27/33 Test #27: update_fragment_timing ............   Passed    0.01 sec
+28/33 Test #28: update_metadata ...................   Passed    0.05 sec
+29/33 Test #29: update_metadata_setup .............   Passed    0.01 sec
+30/33 Test #30: update_fragment_raw ...............   Passed    0.01 sec
+31/33 Test #31: update_channel ....................   Passed    0.03 sec
+32/33 Test #32: update_frame_queue ................   Passed    0.00 sec
+33/33 Test #33: update_egress .....................   Passed    0.00 sec
+
+100% tests passed, 0 tests failed out of 33
+Total Test time (real) = 1.36 sec

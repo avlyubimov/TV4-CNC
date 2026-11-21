@@ -1,5 +1,12 @@
 # OTA TV4-CNC — проект архитектуры
 
+PR-07p от main `555007d`: [bound TX egress/driver tickets](STM32_UPDATE_EGRESS.md)
+добавляет bounded frame ledger и owned channel TX. Phase advance ждёт actual
+correlated local driver returns; timeout/uncertain сохраняют held claim. Host59/
+sanitizers59/standalone33 и independent signed chains проходят. Это local
+ownership contract, не real driver/remote ACK/auth/physical/install proof.
+Hardware facts/blocks прежние; устройств нет, Flash/pins не назначены.
+
 PR-07o от main `389de77`: [shared update channel](STM32_UPDATE_CHANNEL.md)
 объединяет TU/MS в одном bounded software link с retained counters, owned frame
 queue и local phase/role filters. Host56/sanitizers56/standalone30 и independent

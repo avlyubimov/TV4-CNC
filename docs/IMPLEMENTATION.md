@@ -1,6 +1,13 @@
 # Реализация: main, открытые PR и аппаратные границы
 
-PR-07o от main `389de77`: [shared update channel](STM32_UPDATE_CHANNEL.md)
+PR-07p от main `555007d`: [bound TX egress/driver tickets](STM32_UPDATE_EGRESS.md)
+добавляет bounded frame ledger и owned channel TX. Phase advance ждёт actual
+correlated local driver returns; timeout/uncertain сохраняют held claim. Host59/
+sanitizers59/standalone33 и independent signed chains проходят. Это local
+ownership contract, не real driver/remote ACK/auth/physical/install proof.
+Hardware facts/blocks прежние; устройств нет, Flash/pins не назначены.
+
+Слитый PR #47, PR-07o от main `389de77`: [shared update channel](STM32_UPDATE_CHANNEL.md)
 объединяет TU/MS в одном bounded software link с retained counters, owned frame
 queue и local phase/role filters. Host56/sanitizers56/standalone30 и independent
 signed chains проходят; original image windows/verifier/lease/model/close прежние.
@@ -15,7 +22,7 @@ Host54/sanitizers54/standalone28, independent verifier/lease/model/close пре�
 Это software local contract; authentication/persistent identity/runtime/installer
 и все physical F407 blockers открыты. Устройств не касались.
 
-Актуализация от main `389de77`, 21 ноября2026: PR #1–46 слиты. Owner SWD
+Актуализация от main `555007d`, 21 ноября2026: PR #1–47 слиты. Owner SWD
 F407/core/Flash1024KiB/backup — [HARDWARE_STATUS](HARDWARE_STATUS.md).
 Startup/DATA/admission/handoff/preflight и PR-07e уже в main:
 [completion/outcome](STM32_UPDATE_OUTCOME.md) связывает full checks с lease close

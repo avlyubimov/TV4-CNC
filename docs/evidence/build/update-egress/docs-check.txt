@@ -1,0 +1,4 @@
+PASS 44 Markdown files / 424 relative links resolve
+PASS 133 exact source/config/document SHA-256 entries
+PASS 33 text-only evidence files <300000 bytes; no private PEM or binary outputs
+PASS all new/modified paths scoped to egress/tests/guards/CI/docs; no SDK locks, pin maps, partitions or device operations changed

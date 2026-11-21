@@ -1,6 +1,6 @@
 # Следующий этап: release context и STM32 board contract
 
-21 ноября2026. База main `389de77`, PR #1–46 слиты, main CI5/5 PASS.
+21 ноября2026. База main `555007d`, PR #1–47 слиты, main CI5/5 PASS.
 ESP32 HMI/Wi-Fi/OTA primitives/candidates и STM32 transport/admission существуют;
 не создавать их заново. Данный план не разрешает доступ к устройствам или merge.
 
@@ -190,7 +190,7 @@ verifier/lease/model/clean close. Host54/sanitizers54/standalone28; full text
 [evidence](evidence/build/metadata-setup/README.md). Authentication/persistent
 identity/routing/storage/worker/runtime/install/hardware остаются open.
 
-## Текущая ветка PR-07o
+## Слитый PR #47, PR-07o
 
 [Shared channel](STM32_UPDATE_CHANNEL.md): один mixed TU/MS fragment/queue path
 через все update phases, local quiescence/role IDs, exact owned outbox commit и
@@ -198,6 +198,15 @@ bounded last frame. Real upper states и existing independent verifier/lease/
 model/close остаются отдельными обязательствами. Host56/sanitizers56/standalone30,
 [evidence](evidence/build/update-channel/README.md); external queue drain/identity/
 authentication/routing/runtime/resources/hardware/install open.
+
+## Текущая ветка PR-07p
+
+[Bound egress](STM32_UPDATE_EGRESS.md): actual channel TX/frame ledger, one driver
+claim/tickets, bounded residency/backpressure, held claim on timeout/cancel/
+uncertainty, late return reclaim only. Host59/sanitizers59/standalone33;
+[evidence](evidence/build/update-egress/README.md). No real driver/runtime/remote
+ACK/auth/upper/physical/install authority. Original image/crypto/lease deadlines
+preserved; real completion/reset/event queue/provider/resources gates open.
 
 ## Что делать дальше программно
 
@@ -227,8 +236,10 @@ authentication/routing/runtime/resources/hardware/install open.
    PR-07n добавляет bounded metadata setup, shared volatile role IDs и phase
    ownership на original image windows. PR-07o добавляет bounded shared channel
    и local phase/outbox filters, не actual runtime owner/remote queue flush.
-   Дальше review production identity/capabilities/codebook и external queue
-   lifetime/drain/clock/worker budgets перед runtime adoption. Production routing/reboot
+   PR-07p добавляет actual bound local custody queue/driver tickets, не real
+   driver/remote drain proof. Дальше review trusted adapter completion/reset/
+   reconciliation/event queues, production identity/capabilities/codebook и
+   worker/resource budgets перед runtime adoption. Production routing/reboot
    identity/authentication, durable ownership и measured worker/bus/crypto budgets
    остаются blockers, не implicit defaults или permissive setup stub.
    Decode OK не обновляет context или timeouts; owner poll остаётся обязательным.

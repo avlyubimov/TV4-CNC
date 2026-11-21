@@ -70,6 +70,7 @@ if __name__ == '__main__':
     mode.add_argument('--metadata', action='store_true')
     mode.add_argument('--setup', action='store_true')
     mode.add_argument('--channel', action='store_true')
+    mode.add_argument('--egress', action='store_true')
     args = parser.parse_args()
     BUILD = args.build.absolute()
     if args.fragments:
@@ -102,6 +103,14 @@ if __name__ == '__main__':
         EXPORTS = tuple('tv4_channel_' + suffix for suffix in (
             'tx_init', 'rx_init', 'tx_begin', 'tx_peek', 'tx_commit', 'rx_receive', 'rx_take',
             'tx_poll', 'rx_poll', 'tx_advance', 'rx_advance', 'tx_cancel', 'rx_cancel', 'tx_clear', 'rx_clear'))
+    if args.egress:
+        import check_update_egress_build as guard
+        ARCHIVE = 'libtv4_update_egress.a'
+        TARGET = 'tv4_update_egress'
+        EXPORTS = tuple('tv4_frame_queue_' + suffix for suffix in (
+            'init', 'admit', 'claim', 'complete', 'poll', 'cancel', 'clear', 'quiescent'))
+        EXPORTS += tuple('tv4_update_egress_' + suffix for suffix in (
+            'init', 'begin', 'pump', 'claim', 'complete', 'poll', 'advance', 'cancel', 'clear'))
     result = unittest.TextTestRunner(verbosity=2).run(unittest.defaultTestLoader.loadTestsFromTestCase(Budget))
     if not result.wasSuccessful(): raise SystemExit(1)
     print('PASS6 ARM budget guard cases; temporary negative objects removed, no board image or execution')

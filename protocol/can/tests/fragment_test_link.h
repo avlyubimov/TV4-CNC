@@ -3,6 +3,7 @@
 #include "update_fragments.h"
 #include "update_metadata_setup.h"
 #include "update_channel.h"
+#include "update_egress.h"
 
 /* HOST TEST FIXTURE ONLY. Not a driver, CAN schedule, identity provider or
  * production owner. One exclusive caller clock shared with all upper layers;
@@ -16,18 +17,21 @@ typedef struct {
     uint32_t delivery_ms, held_delivery_ms;
     unsigned hold_every, duplicate_every;
     uint16_t drop_kinds, drop_index;
-    bool drop_every_message, recover_fragment_timeouts, raw_setup, multiplexed;
+    bool drop_every_message, recover_fragment_timeouts, raw_setup, multiplexed, egress;
+    tv4_frame_queue_limits custody;
 } tv4_test_link_config;
 typedef struct {
     tv4_fragment_tx tx;
     tv4_fragment_rx rx;
     tv4_channel_tx channel_tx;
     tv4_channel_rx channel_rx;
+    tv4_update_egress egress;
+    tv4_frame_ticket ticket;
     tv4_fragment_frame queued;
     uint32_t due;
     uint16_t index;
     unsigned kind;
-    bool occupied, repeated, drop_message;
+    bool occupied, repeated, drop_message, drop_current;
 } tv4_test_link_direction;
 typedef struct {
     tv4_test_link_direction direction[2];
@@ -37,6 +41,7 @@ typedef struct {
     unsigned frames, delivered_frames, duplicate_frames, dropped_frames;
     unsigned queue_busy, repeated_peeks, order_rejects, stale_rejects, ready_busy;
     unsigned timeouts, sticky_failures, takes, attempts[13], deliveries[13];
+    unsigned driver_admissions,driver_claims,driver_returns,driver_held_ticks,driver_max_pending;
     uint16_t dropped_kinds;
     bool configured;
 } tv4_test_link;
