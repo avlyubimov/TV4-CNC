@@ -1620,8 +1620,10 @@ static size_t timed_metadata_impl(fixture *f,tv4_test_link *link,tv4_metadata_do
 }
 static size_t timed_metadata(fixture *f,tv4_test_link *link,tv4_metadata_document *downloaded)
 {return timed_metadata_impl(f,link,downloaded,NULL);}
-static void metadata_signed_chains(bool setup_mode,bool channel_mode,bool egress_mode,bool event_mode)
+typedef enum {META_DIRECT,META_SETUP,META_CHANNEL,META_EGRESS,META_EVENTS,META_MAILBOX} metadata_link_mode;
+static void metadata_signed_chains(metadata_link_mode mode)
 {
+    bool setup_mode=mode>=META_SETUP,channel_mode=mode>=META_CHANNEL,egress_mode=mode>=META_EGRESS,event_mode=mode>=META_EVENTS;
     unsigned frames=0,drops=0,container_bytes=0,sig_min=72,sig_max=0;uint32_t longest=0;
     for(unsigned i=0;i<8;++i) {
         fixture f;if(i<6)release_fixture(&f,i%2u?256:33);else vector_fixture(&f,33);
@@ -1629,7 +1631,7 @@ static void metadata_signed_chains(bool setup_mode,bool channel_mode,bool egress
         if(channel_mode)mask=(uint16_t)(mask|TV4_TEST_LINK_MS_DROP_MASK);
         tv4_test_link_config cfg=timed_config(mask,(uint16_t)(i%3u));cfg.multiplexed=channel_mode;cfg.egress=egress_mode;
         if(egress_mode)cfg.custody=(tv4_frame_queue_limits){16,2};
-        if(event_mode){cfg.driver_events=true;cfg.event_capacity=2;cfg.event_service_ms=1;cfg.fragments.total_timeout_ms=256;}
+        if(event_mode){cfg.driver_events=true;cfg.event_capacity=2;cfg.event_service_ms=1;cfg.fragments.total_timeout_ms=256;cfg.completion_mailbox=mode==META_MAILBOX;}
         tv4_test_link_init(&link,&f.now,&cfg);
         uint32_t started=f.now;tv4_metadata_document downloaded;
         if(setup_mode) {
@@ -1651,7 +1653,7 @@ static void metadata_signed_chains(bool setup_mode,bool channel_mode,bool egress
         if(channel_mode) {
             unsigned attempts=0,counters=0;for(unsigned k=1;k<=12;++k)attempts+=link.attempts[k];
             for(unsigned d=0;d<2;++d) {
-                const tv4_channel_tx *tx=event_mode?&link.direction[d].events.egress.channel:egress_mode?&link.direction[d].egress.channel:&link.direction[d].channel_tx;
+                const tv4_channel_tx *tx=mode==META_MAILBOX?&link.direction[d].completion.events.egress.channel:event_mode?&link.direction[d].events.egress.channel:egress_mode?&link.direction[d].egress.channel:&link.direction[d].channel_tx;
                 assert(tx->policy.phase==TV4_CHANNEL_NEGOTIATION);
                 assert(tx->fragments.storage.counter==link.direction[d].channel_rx.fragments.storage.counter);
                 counters+=tx->fragments.storage.counter;
@@ -1660,9 +1662,10 @@ static void metadata_signed_chains(bool setup_mode,bool channel_mode,bool egress
             if(egress_mode) {
                 unsigned tickets=0;
                 for(unsigned d=0;d<2;++d) {
-                    const tv4_update_egress *owner=event_mode?&link.direction[d].events.egress:&link.direction[d].egress;
+                    const tv4_update_egress *owner=mode==META_MAILBOX?&link.direction[d].completion.events.egress:event_mode?&link.direction[d].events.egress:&link.direction[d].egress;
                     assert(owner->queue.count==0 && owner->queue.flight==0);
-                    assert(!event_mode || link.direction[d].events.count==0);
+                    assert(!event_mode || (mode==META_MAILBOX?link.direction[d].completion.events.count:link.direction[d].events.count)==0);
+                    if(mode==META_MAILBOX)assert(!link.direction[d].completion.has_pending && tv4_completion_mailbox_empty(&link.direction[d].completion.mailbox)==TV4_QUEUE_OK);
                     tickets+=owner->queue.last_issued;
                 }
                 assert(link.driver_admissions==link.frames && link.driver_claims==link.frames && link.driver_returns==link.frames && tickets==link.frames);
@@ -1685,14 +1688,15 @@ static void metadata_signed_chains(bool setup_mode,bool channel_mode,bool egress
     }
     printf("PASS8 transported metadata signed chains: frames=%u drops=%u container-bytes=%u DER=%u..%u longest=%u synthetic ms; producer wiped, actual delivered signature/raw digest/lease/model/close, no image deadline reset\n",frames,drops,container_bytes,sig_min,sig_max,longest);
 }
-static void metadata_admission_refusals(bool setup_mode,bool channel_mode,bool egress_mode,bool event_mode)
+static void metadata_admission_refusals(metadata_link_mode mode)
 {
+    bool setup_mode=mode>=META_SETUP,channel_mode=mode>=META_CHANNEL,egress_mode=mode>=META_EGRESS,event_mode=mode>=META_EVENTS;
     for(unsigned i=0;i<3;++i) {
         fixture f;release_fixture(&f,33);f.use_stage=true;tv4_test_link link={0};tv4_metadata_document downloaded;
         tv4_test_link_config cfg=timed_config((uint16_t)((1u<<5)|(1u<<6)|(channel_mode?TV4_TEST_LINK_MS_DROP_MASK:0u)),1);
         cfg.multiplexed=channel_mode;cfg.egress=egress_mode;
         if(egress_mode)cfg.custody=(tv4_frame_queue_limits){16,2};
-        if(event_mode){cfg.driver_events=true;cfg.event_capacity=2;cfg.event_service_ms=1;cfg.fragments.total_timeout_ms=256;}
+        if(event_mode){cfg.driver_events=true;cfg.event_capacity=2;cfg.event_service_ms=1;cfg.fragments.total_timeout_ms=256;cfg.completion_mailbox=mode==META_MAILBOX;}
         tv4_test_link_init(&link,&f.now,&cfg);
         timed_image_session image={0};
         if(setup_mode)timed_negotiate_impl(&f,&link,256,&image);else timed_negotiate(&f,&link,31);
@@ -1756,13 +1760,13 @@ static void egress_driver_lifetime_refusals(void)
     }
     puts("PASS2 driver uncertain/missing-completion refusals: actual claim retained through original image timeout; late return reclaims only, clear does not revive RX or admission");
 }
-static void driver_event_lifetime_refusals(void)
+static void driver_event_lifetime_refusals(bool mailbox)
 {
     for(unsigned which=0;which<2;++which) {
         fixture f;release_fixture(&f,33);f.use_stage=true;
         tv4_test_link link={0};tv4_test_link_config cfg=timed_config(TV4_TEST_LINK_MS_DROP_MASK,1);
         cfg.multiplexed=true;cfg.egress=true;cfg.custody=(tv4_frame_queue_limits){16,2};
-        cfg.driver_events=true;cfg.event_capacity=2;cfg.event_service_ms=1;cfg.fragments.total_timeout_ms=256;
+        cfg.driver_events=true;cfg.event_capacity=2;cfg.event_service_ms=1;cfg.fragments.total_timeout_ms=256;cfg.completion_mailbox=mailbox;
         tv4_test_link_init(&link,&f.now,&cfg);timed_image_session image={0};
         timed_negotiate_impl(&f,&link,256,&image);tv4_metadata_document downloaded;
         (void)timed_metadata_impl(&f,&link,&downloaded,&image);
@@ -1771,25 +1775,28 @@ static void driver_event_lifetime_refusals(void)
         tv4_wire_message packet={.kind=TV4_WIRE_DATA};
         assert(tv4_update_tx_next(&f.tx,&packet.body.data,f.now)==TV4_UPDATE_OK);
         assert(tv4_test_link_send(&link,0,&packet)==TV4_FRAG_OK);
-        tv4_driver_events *events=&link.direction[0].events;
-        assert(tv4_driver_events_pump(events,link.generation[0],f.now)==TV4_QUEUE_ADMITTED);
-        tv4_frame_delivery held;assert(tv4_driver_events_claim(events,&held,link.generation[0],f.now)==TV4_QUEUE_FRAME);
+        tv4_completion_owner *completion=&link.direction[0].completion;
+        tv4_driver_events *events=mailbox?&completion->events:&link.direction[0].events;
+        assert((mailbox?tv4_completion_owner_pump(completion,link.generation[0],f.now):tv4_driver_events_pump(events,link.generation[0],f.now))==TV4_QUEUE_ADMITTED);
+        tv4_frame_delivery held;assert((mailbox?tv4_completion_owner_claim(completion,&held,link.generation[0],f.now):tv4_driver_events_claim(events,&held,link.generation[0],f.now))==TV4_QUEUE_FRAME);
         tv4_driver_event report={held.ticket,TV4_FRAME_OWNERSHIP_UNCERTAIN};
-        if(which==0)assert(tv4_driver_events_post(events,&report)==TV4_QUEUE_ADMITTED);
+        if(which==0)assert((mailbox?tv4_completion_owner_post(completion,&report):tv4_driver_events_post(events,&report))==TV4_QUEUE_ADMITTED);
         report.result=TV4_FRAME_SENT_LOCAL;
-        assert(tv4_driver_events_post(events,&report)==TV4_QUEUE_ADMITTED);memset(&report,0,sizeof(report));
+        assert((mailbox?tv4_completion_owner_post(completion,&report):tv4_driver_events_post(events,&report))==TV4_QUEUE_ADMITTED);memset(&report,0,sizeof(report));
         while(f.now-progress<f.rx.context.limits.progress_timeout_ms) {
-            ++f.now;(void)tv4_driver_events_poll(events,link.generation[0],f.now);
+            ++f.now;(void)(mailbox?tv4_completion_owner_poll(completion,link.generation[0],f.now):tv4_driver_events_poll(events,link.generation[0],f.now));
             (void)tv4_update_rx_poll(&f.rx,f.now);(void)tv4_update_tx_poll(&f.tx,f.now);
-            assert(events->egress.queue.flight==held.ticket.serial && events->count==(which==0?2u:1u));
+            assert(events->egress.queue.flight==held.ticket.serial);
+            if(mailbox)assert(tv4_completion_mailbox_empty(&completion->mailbox)==TV4_QUEUE_BUSY);
+            else assert(events->count==(which==0?2u:1u));
         }
         assert(f.rx.context.state==TV4_UPDATE_FAILED && f.rx.context.error==TV4_UPDATE_ERROR_PROGRESS_TIMEOUT);
         assert(f.rx.context.started_ms==started && f.rx.context.progress_ms==progress && f.rx.context.next_offset==0);
-        assert(tv4_driver_events_clear(events,link.generation[0],f.now)==TV4_QUEUE_HELD);
-        if(which==0)assert(tv4_driver_events_service(events,link.generation[0],f.now)==TV4_QUEUE_HELD);
-        assert(tv4_driver_events_service(events,link.generation[0],f.now)==TV4_QUEUE_RECLAIMED_FAILED);
+        assert((mailbox?tv4_completion_owner_clear(completion,link.generation[0],f.now):tv4_driver_events_clear(events,link.generation[0],f.now))==TV4_QUEUE_HELD);
+        if(which==0)assert((mailbox?tv4_completion_owner_service(completion,link.generation[0],f.now):tv4_driver_events_service(events,link.generation[0],f.now))==TV4_QUEUE_HELD);
+        assert((mailbox?tv4_completion_owner_service(completion,link.generation[0],f.now):tv4_driver_events_service(events,link.generation[0],f.now))==TV4_QUEUE_RECLAIMED_FAILED);
         uint32_t serial=events->egress.queue.last_issued;uint16_t counter=events->egress.channel.fragments.storage.counter;
-        assert(tv4_driver_events_clear(events,link.generation[0],f.now)==TV4_QUEUE_OK);
+        assert((mailbox?tv4_completion_owner_clear(completion,link.generation[0],f.now):tv4_driver_events_clear(events,link.generation[0],f.now))==TV4_QUEUE_OK);
         assert(events->count==0 && events->egress.queue.last_issued==serial && events->egress.channel.fragments.storage.counter==counter);
         assert(events->egress.channel.policy.phase==TV4_CHANNEL_IMAGE);
         assert(!tv4_boot_release_handoff_begin(&f.release_adapter,&f.session,&f.release_config,&f.rx));
@@ -1801,20 +1808,23 @@ static void driver_event_lifetime_refusals(void)
 #define RUN(name) do { name(); puts("PASS " #name); } while (0)
 int main(int argc,char **argv)
 {
+    if(argc==2 && strcmp(argv[1],"--completion-mailbox-staging")==0) {
+        metadata_signed_chains(META_MAILBOX);metadata_admission_refusals(META_MAILBOX);driver_event_lifetime_refusals(true);return 0;
+    }
     if(argc==2 && strcmp(argv[1],"--driver-events-staging")==0) {
-        metadata_signed_chains(true,true,true,true);metadata_admission_refusals(true,true,true,true);driver_event_lifetime_refusals();return 0;
+        metadata_signed_chains(META_EVENTS);metadata_admission_refusals(META_EVENTS);driver_event_lifetime_refusals(false);return 0;
     }
     if(argc==2 && strcmp(argv[1],"--egress-staging")==0) {
-        metadata_signed_chains(true,true,true,false);metadata_admission_refusals(true,true,true,false);egress_driver_lifetime_refusals();return 0;
+        metadata_signed_chains(META_EGRESS);metadata_admission_refusals(META_EGRESS);egress_driver_lifetime_refusals();return 0;
     }
     if(argc==2 && strcmp(argv[1],"--channel-staging")==0) {
-        metadata_signed_chains(true,true,false,false);metadata_admission_refusals(true,true,false,false);return 0;
+        metadata_signed_chains(META_CHANNEL);metadata_admission_refusals(META_CHANNEL);return 0;
     }
     if(argc==2 && strcmp(argv[1],"--metadata-setup-staging")==0) {
-        metadata_signed_chains(true,false,false,false);metadata_admission_refusals(true,false,false,false);return 0;
+        metadata_signed_chains(META_SETUP);metadata_admission_refusals(META_SETUP);return 0;
     }
     if(argc==2 && strcmp(argv[1],"--metadata-staging")==0) {
-        metadata_signed_chains(false,false,false,false);metadata_admission_refusals(false,false,false,false);return 0;
+        metadata_signed_chains(META_DIRECT);metadata_admission_refusals(META_DIRECT);return 0;
     }
     if(argc==2 && strcmp(argv[1],"--fragment-timing")==0) {
         RUN(one_clock_signed_chains);RUN(one_clock_admission_refusals);return 0;

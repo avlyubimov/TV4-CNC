@@ -1,0 +1,39 @@
+27: PASS two real pthread actors/1200000 ordered reports/capacities1..4, producer retries=668645; no claim/driver/auth authority
+46: PASS capacities1..4,16384 FIFO cycles/40960 owned reports, non-power-of-two ring wrap/full retry/no ledger mutation
+46: Host storage only: atomic mailbox=200; atomic_uint lock-free macro=2, no MCU ISR/RTOS approval
+47: PASS full retained terminal retry/current-time timeout/uncertain/cancel/sticky cleanup; atomic positions and protocol IDs retained, no force-forget
+47: PASS actual mailbox blocks phase/begin/claim with inner owner IDLE and ledger empty; stale duplicate consumed explicitly
+47: PASS concurrent actual channel/claim/local-driver-report/service/RX:256 messages/8448 frames/9504 reports/1056 stale duplicates, capacities1..4/clock wrap
+47: Host storage only: bound completion owner=1208; no MCU memory/ISR/RTOS/driver truth approval
+58: SETUP frames=473 drops=4 elapsed=1198 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+58: EGRESS claims=1097 returns=1097 held-ticks=266 max-pending=2; local completion tickets, no driver-owned frame forgotten
+58: EVENTS posted=1161 serviced=1161 stale=64 wait-ticks=1161 max-pending=2; owned copies, one-event budget/current service time
+58: SETUP frames=473 drops=4 elapsed=1198 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+58: EGRESS claims=1331 returns=1331 held-ticks=324 max-pending=2; local completion tickets, no driver-owned frame forgotten
+58: EVENTS posted=1409 serviced=1409 stale=78 wait-ticks=1409 max-pending=2; owned copies, one-event budget/current service time
+58: SETUP frames=473 drops=4 elapsed=1195 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+58: EGRESS claims=1544 returns=1544 held-ticks=375 max-pending=2; local completion tickets, no driver-owned frame forgotten
+58: EVENTS posted=1634 serviced=1634 stale=90 wait-ticks=1634 max-pending=2; owned copies, one-event budget/current service time
+58: SETUP frames=473 drops=4 elapsed=1195 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+58: EGRESS claims=1778 returns=1778 held-ticks=432 max-pending=2; local completion tickets, no driver-owned frame forgotten
+58: EVENTS posted=1882 serviced=1882 stale=104 wait-ticks=1882 max-pending=2; owned copies, one-event budget/current service time
+58: SETUP frames=473 drops=4 elapsed=1195 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+58: EGRESS claims=1544 returns=1544 held-ticks=375 max-pending=2; local completion tickets, no driver-owned frame forgotten
+58: EVENTS posted=1634 serviced=1634 stale=90 wait-ticks=1634 max-pending=2; owned copies, one-event budget/current service time
+58: SETUP frames=473 drops=4 elapsed=1195 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+58: EGRESS claims=1778 returns=1778 held-ticks=432 max-pending=2; local completion tickets, no driver-owned frame forgotten
+58: EVENTS posted=1882 serviced=1882 stale=104 wait-ticks=1882 max-pending=2; owned copies, one-event budget/current service time
+58: SETUP frames=473 drops=4 elapsed=1195 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+58: EGRESS claims=1497 returns=1497 held-ticks=364 max-pending=2; local completion tickets, no driver-owned frame forgotten
+58: EVENTS posted=1585 serviced=1585 stale=88 wait-ticks=1585 max-pending=2; owned copies, one-event budget/current service time
+58: SETUP frames=473 drops=4 elapsed=1195 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+58: EGRESS claims=1497 returns=1497 held-ticks=364 max-pending=2; local completion tickets, no driver-owned frame forgotten
+58: EVENTS posted=1585 serviced=1585 stale=88 wait-ticks=1585 max-pending=2; owned copies, one-event budget/current service time
+58: PASS8 transported metadata signed chains: frames=12066 drops=80 container-bytes=4798 DER=70..72 longest=4774 synthetic ms; producer wiped, actual delivered signature/raw digest/lease/model/close, no image deadline reset
+58: SETUP frames=473 drops=4 elapsed=1198 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+58: SETUP frames=473 drops=4 elapsed=1198 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+58: SETUP frames=473 drops=4 elapsed=1198 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+58: PASS transported metadata does not bypass invalid signature, correctly re-signed wrong raw digest, or expired independent image RX
+58: SETUP frames=473 drops=4 elapsed=1198 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+58: SETUP frames=473 drops=4 elapsed=1198 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+58: PASS2 delayed queued terminal/uncertain event refusals: original image timeout retained; current-time service reclaims only, no RX/admission revival

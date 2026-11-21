@@ -1,6 +1,12 @@
 # PR-02 — STM32 Motion Foundation
 
-PR-07q от main `efa2727`: [очередь событий завершения](STM32_DRIVER_EVENTS.md) связывает actual
+PR-07r от main `2c6fd1c`: [SPSC completion mailbox](STM32_COMPLETION_MAILBOX.md) добавляет bounded
+атомарную передачу owned reports от одного producer к одному consumer и actual
+bound owner. Host65/sanitizers65/standalone39, ThreadSanitizer2/2 PASS. Это C11
+software contract; target ISR/RTOS/cache/DMA/driver truth и аппаратные gates ещё
+не подтверждены. Аппаратных операций не выполняли.
+
+Слитый PR #49, PR-07q от main `efa2727`: [очередь событий завершения](STM32_DRIVER_EVENTS.md) связывает actual
 egress и owned event FIFO. Full означает backpressure/retry; current-time service
 обрабатывает максимум1 event, не продлевает deadlines. Host61/sanitizers61/
 standalone35 PASS. Это serialized software API; реальные ISR/RTOS/driver/reset,

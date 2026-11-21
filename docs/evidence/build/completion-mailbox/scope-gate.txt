@@ -1,0 +1,5 @@
+PASS build-boot-arm excludes host fixtures/review/pthread/tests
+PASS build-update-arm excludes host fixtures/review/pthread/tests
+PASS actual production handoff target has no mailbox/event/egress/channel/setup/fragment/test dependency
+PASS no completion mailbox runtime caller in HMI/motion/production bootloader
+PASS only local HOST threads/simulated adapter; no target ISR/RTOS/cache/DMA or real driver completion proof

@@ -34,6 +34,8 @@ jobs:
           test -s docs/STM32_UPDATE_CHANNEL.md
           test -s docs/STM32_UPDATE_EGRESS.md
           test -s docs/STM32_DRIVER_EVENTS.md
+          test -s docs/STM32_COMPLETION_MAILBOX.md
+          test -s docs/plans/PR07R_COMPLETION_MAILBOX.md
           test -s docs/plans/PR07Q_DRIVER_EVENTS.md
           test -s docs/plans/PR07P_UPDATE_EGRESS.md
           test -s docs/plans/PR07O_UPDATE_CHANNEL.md

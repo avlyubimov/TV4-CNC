@@ -1,0 +1,42 @@
+ 1/39 Test  #1: boot_image_admission ................   Passed    0.16 sec
+ 2/39 Test  #2: boot_crypto_source ..................   Passed    0.13 sec
+ 3/39 Test  #3: boot_staging_source .................   Passed    0.00 sec
+ 4/39 Test  #4: boot_update_handoff .................   Passed    0.35 sec
+ 5/39 Test  #5: boot_staging_handoff ................   Passed    0.04 sec
+ 6/39 Test  #6: boot_wire_handoff ...................   Passed    0.04 sec
+ 7/39 Test  #7: boot_fragment_handoff ...............   Passed    0.04 sec
+ 8/39 Test  #8: boot_fragment_timing ................   Passed    0.02 sec
+ 9/39 Test  #9: boot_egress_handoff .................   Passed    0.04 sec
+10/39 Test #10: boot_driver_events_handoff ..........   Passed    0.04 sec
+11/39 Test #11: boot_completion_mailbox_handoff .....   Passed    0.05 sec
+12/39 Test #12: boot_channel_handoff ................   Passed    0.03 sec
+13/39 Test #13: boot_metadata_setup_handoff .........   Passed    0.03 sec
+14/39 Test #14: boot_metadata_handoff ...............   Passed    0.03 sec
+15/39 Test #15: boot_release_handoff ................   Passed    0.09 sec
+16/39 Test #16: boot_image_profile ..................   Passed    0.00 sec
+17/39 Test #17: boot_release_admission ..............   Passed    0.12 sec
+18/39 Test #18: boot_release_versions ...............   Passed    0.04 sec
+19/39 Test #19: update_completion_mailbox_threads ...   Passed    0.20 sec
+20/39 Test #20: update_metadata_setup_reference .....   Passed    0.03 sec
+21/39 Test #21: update_wire_reference ...............   Passed    0.03 sec
+22/39 Test #22: update_fragment_reference ...........   Passed    0.03 sec
+23/39 Test #23: update_metadata_reference ...........   Passed    0.03 sec
+24/39 Test #24: update_session ......................   Passed    0.00 sec
+25/39 Test #25: update_loopback .....................   Passed    0.05 sec
+26/39 Test #26: update_outcome ......................   Passed    0.01 sec
+27/39 Test #27: update_negotiation ..................   Passed    0.00 sec
+28/39 Test #28: update_wire .........................   Passed    0.06 sec
+29/39 Test #29: update_fragment .....................   Passed    0.05 sec
+30/39 Test #30: update_fragment_timing ..............   Passed    0.01 sec
+31/39 Test #31: update_metadata .....................   Passed    0.05 sec
+32/39 Test #32: update_metadata_setup ...............   Passed    0.01 sec
+33/39 Test #33: update_fragment_raw .................   Passed    0.01 sec
+34/39 Test #34: update_channel ......................   Passed    0.03 sec
+35/39 Test #35: update_frame_queue ..................   Passed    0.00 sec
+36/39 Test #36: update_egress .......................   Passed    0.00 sec
+37/39 Test #37: update_driver_events ................   Passed    0.00 sec
+38/39 Test #38: update_completion_mailbox ...........   Passed    0.00 sec
+39/39 Test #39: update_completion_owner .............   Passed    0.01 sec
+
+100% tests passed, 0 tests failed out of 39
+Total Test time (real) = 1.85 sec

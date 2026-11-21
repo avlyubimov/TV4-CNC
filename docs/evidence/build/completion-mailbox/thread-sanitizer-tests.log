@@ -1,0 +1,35 @@
+UpdateCTestConfiguration  from :/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-thread-sanitize/DartConfiguration.tcl
+Test project /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-thread-sanitize
+Constructing a list of tests
+Done constructing a list of tests
+Updating test list for fixtures
+Added 0 tests to meet fixture requirements
+Checking test dependency graph...
+Checking test dependency graph end
+test 1
+    Start  1: update_completion_mailbox_threads
+
+1: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-thread-sanitize/update_completion_mailbox_tests "--threads"
+1: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-thread-sanitize
+1: Test timeout computed to be: 60
+1: PASS two real pthread actors/1200000 ordered reports/capacities1..4, producer retries=250808; no claim/driver/auth authority
+1/2 Test  #1: update_completion_mailbox_threads ...   Passed    0.60 sec
+test 21
+    Start 21: update_completion_owner
+
+21: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-thread-sanitize/update_completion_owner_tests
+21: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-thread-sanitize
+21: Test timeout computed to be: 20
+21: PASS full retained terminal retry/current-time timeout/uncertain/cancel/sticky cleanup; atomic positions and protocol IDs retained, no force-forget
+21: PASS actual mailbox blocks phase/begin/claim with inner owner IDLE and ledger empty; stale duplicate consumed explicitly
+21: PASS concurrent actual channel/claim/local-driver-report/service/RX:256 messages/8448 frames/9504 reports/1056 stale duplicates, capacities1..4/clock wrap
+21: Host storage only: bound completion owner=1208; no MCU memory/ISR/RTOS/driver truth approval
+2/2 Test #21: update_completion_owner .............   Passed    0.06 sec
+
+The following tests passed:
+	update_completion_mailbox_threads
+	update_completion_owner
+
+100% tests passed, 0 tests failed out of 2
+
+Total Test time (real) =   0.66 sec

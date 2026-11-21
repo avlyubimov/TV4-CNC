@@ -166,3 +166,19 @@ model/deadlines/budgets/SDK pins remain. New mode fragment total256 before init,
 old128/progress8/frame160 and all upper windows unchanged. Actual synchronization/
 provenance/reset/persistence/routing/resources/runtime/hardware/install remain open.
 Separate exact ARM guard/negative checks/text evidence mandatory. No devices/merge.
+
+## PR-07r — SPSC completion mailbox
+
+Читать docs/STM32_COMPLETION_MAILBOX.md. C11 one producer post / one consumer
+other APIs; immutable producer binding, external init publication/stable lifetime/
+stop+join. No live copy/move/reinit/reset/flush. Release/acquire protects owned
+copies and reuse; always-native uint32 atomic compile gate + ARM no-helper/DMB
+inspection. Actual target ISR/RTOS/cache/DMA/driver truth remain unverified.
+Bound consumer honors actual mailbox/pending/inner custody, current-time service
+<=1, retains pending until lower admission. Full retains external report/retry;
+cancel/clear never forget ownership, IDs/phase/time/atomic positions retained.
+Empty is observation, not producer-stop/physical drain. Original crypto/lease/
+model/image/close gates mandatory; all old modes/budgets/SDK pins unchanged.
+Host pthread/TSan tests never enter ARM/runtime. Separate imports/exports/frame/
+no globals/native atomic guard+negative cases/text evidence mandatory. No actual
+hardware/identity/persistence/routing/resource/install authority/devices/merge.
