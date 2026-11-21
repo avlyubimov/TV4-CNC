@@ -149,4 +149,6 @@ production bundle ABI; HMI по-прежнему принимает только
 Новый format/API не создаёт Motion artifact, keys/version defaults, signer или
 публикацию. Source commit в подписи не доказывает происхождение build; связь
 review candidate→signer→exact bytes остаётся отдельным pipeline/owner review.
-Live lease/coordinator adapter и installation/recovery/hardware gates открыты.
+PR-07h [release handoff](STM32_RELEASE_HANDOFF.md) закрывает software live
+lease/coordinator соединение; production bundle/context/runtime и
+installation/recovery/hardware gates открыты.

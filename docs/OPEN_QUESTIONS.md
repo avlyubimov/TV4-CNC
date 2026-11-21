@@ -1,6 +1,6 @@
 # Открытые вопросы и блокирующие решения
 
-Обновлено от main `3381236`,21ноября2026. Единственный свод аппаратных фактов —
+Обновлено от main `c17e89c`,21ноября2026. Единственный свод аппаратных фактов —
 [HARDWARE_STATUS.md](HARDWARE_STATUS.md). Не заполнять неизвестные поля
 типовыми данными семейства, USB VID/PID, старым заказом или host mock.
 
@@ -22,7 +22,9 @@ PR-07g [signed release binding](STM32_RELEASE_BINDING.md) проверяет о�
 experimental Motion document, явный local selection/SemVer/channel/target и
 полные signature/SHA/EOF. Это не final production bundle/schema, установленный
 context или реальный GitHub artifact. Source claim не доказывает build provenance;
-новый API ещё не подключён к live lease/coordinator или installer.
+PR-07h [release handoff](STM32_RELEASE_HANDOFF.md) теперь проверяет новый API
+в live lease/coordinator/completion цепочке. Production runtime/backend/installer
+ещё нет; аппаратные вопросы ниже не закрыты.
 
 | ID | Что нужно подтвердить/решить | Блокирует |
 |---|---|---|
@@ -45,7 +47,7 @@ context или реальный GitHub artifact. Source claim не доказы�
 | OTA-ESP-01 | Review candidate 16 МиБ layout, recovery size, оба SDK partition parser, backup/USB migration/recovery trials | PR-04; текущий factory 2 МиБ не менять в PR-01 |
 | OTA-KEY-01 | Owner-provisioned public key/fingerprint, signer custody, алгоритм/encoding/test vectors/key rotation, manifest schema/min versions | Любая доверенная установка; приватных ключей в Git/логах нет |
 | OTA-CONTEXT-01 | Утвердить SemVer HMI release вместо текущего git-derived project version; источник версии bootloader/production protocol/реального layout и peer compatibility | PR-04b policy готовит проверку, но не подставляет тестовые версии; installer заблокирован неизвестным context |
-| OTA-MOTION-01 | Утвердить production release/component schema и link общего signed bundle с Motion document, trusted installed context, numeric counter/boot/protocol policy и signer build provenance | PR-07g opt-in draft/SemVer/raw signature/image checks не закрывают production contract; legacy handoff принимает только прежний draft |
+| OTA-MOTION-01 | Утвердить production release/component schema и link общего signed bundle с Motion document, trusted installed context, numeric counter/boot/protocol policy и signer build provenance | PR-07g draft и PR-07h live release coordinator не закрывают production contract/context; legacy11 и explicit release15 paths раздельны |
 | OTA-TLS-01 | Правильное время для TLS, CA bundle/host allowlist/redirect bounds GitHub, отсутствие insecure fallback | Реальный HTTPS download; статичные часы HMI не источник доверенного времени |
 | OTA-F407-01 | По подтверждённым секторам выбрать A/B либо staging+recovery; metadata/vector/commit/power-loss план | PR-07, не заменяется кэшем microSD ESP32 |
 | OTA-STATE-01 | Fresh подтверждение F407 без движения/оборотов/программы, session lifecycle и повтор после reboot; согласованный safe state | CAN install; симуляция/heartbeat/ACK доставки не подтверждают останов |

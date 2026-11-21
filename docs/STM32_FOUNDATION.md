@@ -105,5 +105,6 @@ CAN/recovery по-прежнему требуют отдельных hardware/re
 [Signed release binding](STM32_RELEASE_BINDING.md) проверяет release/component/
 source/channel/target/image в отдельном opt-in API. Прежние workspace/crypto
 owner и legacy API сохраняются. Это не trusted installed-state provider,
-production bundle contract или новая функция live coordinator. Нет board image,
+production bundle contract. PR-07h [release handoff](STM32_RELEASE_HANDOFF.md)
+добавляет software live coordinator, без runtime caller. Нет board image,
 actual memory/vector/erase/clock/GPIO/CAN profile или устройств/движения.

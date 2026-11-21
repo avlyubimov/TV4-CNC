@@ -1,0 +1,35 @@
+PASS 54 signed end-to-end RAM transfers with lost DATA/final ACK and pending duplicate
+PASS end_to_end_sizes_and_fragments
+PASS snapshots_and_reentry
+PASS binding_is_not_transport_trust
+PASS changes_during_verification
+PASS revoke_after_success
+PASS acquire_and_release_failures
+PASS deadlines_before_verification_and_wrap
+PASS boundaries_and_final_cleanup
+PASS retained_ack_does_not_extend_handoff
+PASS rejected_inputs_and_aliases
+PASS 15 signed vector inspections with fragmented reads + captured local profile mutation
+PASS signed_vector_success_and_snapshot
+PASS valid_signature_invalid_vector_model
+PASS preflight_context_cleanup_and_reentry
+PASS 6 signed DATA -> crypto -> vectors -> close -> outcome/ACK sessions, lost report/final ACK; no lease retained
+PASS completion_end_to_end_history
+PASS completion_rejections
+PASS completion_release_and_late_context
+PASS completion_reentry_snapshot_and_arguments
+PASS 6 signed negotiation -> DATA -> P-256/SHA -> vectors -> close -> outcome/ACK chains; all four handshake losses, DATA/final ACK/report losses
+PASS negotiated_full_chain
+PASS 3 negotiated binding failures: changed image, invalid signature, valid re-signed metadata with mismatched raw SHA; no retained lease
+PASS negotiated_binding_still_requires_crypto
+PASS 19 handoff/completion groups; completion=568; state=2136 receipt=136 workspace=17664; RAM only, no install/device access
+PASS 6 release15 negotiation/DATA/signature/SHA/vector/close/outcome chains; handshake/DATA/ACK/report losses, exactly one release
+PASS release_full_chain
+PASS release_live_snapshot
+PASS release_live_revocation
+PASS release_completion_rejections
+PASS release_explicit_mode
+PASS release_cleanup_and_late_context
+PASS release_reentry_and_completion_snapshot
+PASS release_arguments_and_aliases
+PASS 8 release handoff groups; adapter=528 full_receipt=360 completion=568 core=2136 workspace=17664; RAM only, no install/device access

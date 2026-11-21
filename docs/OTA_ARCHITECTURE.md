@@ -310,8 +310,10 @@ hardware/profile/counter/protocol/image checks. Один raw signature + пол�
 image SHA/EOF проверяются существующей независимой Mbed TLS; local unknowns
 отклоняются. Legacy11-field draft/API и HMI manifest остаются прежними.
 
-Это standalone software candidate, пока без source-lease/handoff/coordinator
-adapter. Production bundle↔component linkage, local versions/keys/context и
+Первоначально PR #37 давал standalone software candidate. PR-07h
+[release handoff](STM32_RELEASE_HANDOFF.md) связывает его с live source/RX/owner/
+deadline/vector gates и прежним completion/outcome. Production bundle↔component
+linkage, local versions/keys/context и
 physical/operator/recovery/install gates ещё требуют review. Source commit —
 signer claim, не build provenance proof. Никаких actual Flash addresses, wire
 codec/IDs/bitrate, board image/keys/release или hardware actions.

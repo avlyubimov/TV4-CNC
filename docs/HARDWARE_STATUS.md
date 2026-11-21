@@ -52,6 +52,11 @@ PR-07g [independent release binding](STM32_RELEASE_BINDING.md) — host/ARM soft
 context, memory/erase map или readiness. Новых hardware действий нет; ordinary8f0d899
 и owner facts ниже сохраняются.
 
+PR-07h [release handoff](STM32_RELEASE_HANDOFF.md) — software integration нового
+signed document с live lease/RX/context/vector guards и historical completion.
+Host/sanitizer/ARM checks не подтверждают реальную память/Flash/GPIO/CAN или
+physical quiescent state. Новых измерений/подключений нет, аппаратные факты прежние.
+
 ## STM32F407 — подтверждение владельца после main b19a40b
 
 Приняты перечисленные в таблице результаты нового задания владельца:

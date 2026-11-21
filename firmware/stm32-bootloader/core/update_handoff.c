@@ -1,4 +1,5 @@
 #include "update_handoff.h"
+#include "update_handoff_internal.h"
 #include <limits.h>
 #include <string.h>
 
@@ -112,9 +113,15 @@ static bool config_valid(const tv4_boot_handoff *s, const tv4_boot_handoff_confi
         separate(s, sizeof(*s), c->signature, c->signature_bytes) && separate(s, sizeof(*s), c->key_id, c->key_id_bytes) &&
         separate(s, sizeof(*s), c->policy.keys, c->policy.key_count * sizeof(*c->policy.keys));
 }
-bool tv4_boot_handoff_begin(tv4_boot_handoff *s, const tv4_boot_handoff_config *c, tv4_update_rx *rx)
+bool tv4_handoff_can_begin(const tv4_boot_handoff *s, const tv4_boot_handoff_config *c, const tv4_update_rx *rx)
 {
-    if (s == NULL || s->busy || s->held || s->state != TV4_HANDOFF_EMPTY || !config_valid(s, c, rx)) return false;
+    return s != NULL && !s->busy && !s->held && !s->release_document &&
+        s->state == TV4_HANDOFF_EMPTY && config_valid(s, c, rx);
+}
+bool tv4_handoff_begin_mode(tv4_boot_handoff *s, const tv4_boot_handoff_config *c, tv4_update_rx *rx, bool release_document)
+{
+    if (!tv4_handoff_can_begin(s, c, rx)) return false;
+    s->release_document = release_document;
     s->policy = c->policy;
     memcpy(s->keys, c->policy.keys, c->policy.key_count * sizeof(*s->keys));
     s->policy.keys = s->keys;
@@ -139,6 +146,10 @@ bool tv4_boot_handoff_begin(tv4_boot_handoff *s, const tv4_boot_handoff_config *
     s->busy = false;
     return s->state == TV4_HANDOFF_BOUND;
 }
+bool tv4_boot_handoff_begin(tv4_boot_handoff *s, const tv4_boot_handoff_config *c, tv4_update_rx *rx)
+{
+    return tv4_handoff_begin_mode(s, c, rx, false);
+}
 static uint32_t admission_now(void *context) { return ((tv4_boot_handoff *)context)->observed_ms; }
 static bool admission_cancelled(void *context) { return !guard(context, true); }
 static bool admission_read(void *context, uint32_t offset, uint8_t *bytes, size_t capacity, size_t *count, bool *eof)
@@ -148,9 +159,11 @@ static bool admission_read(void *context, uint32_t offset, uint8_t *bytes, size_
     bool ok = s->ops.read(s->ops.context, s->source.token, offset, bytes, capacity, count, eof);
     return guard(s, true) && ok;
 }
-bool tv4_boot_handoff_verify(tv4_boot_handoff *s, tv4_boot_workspace *w)
+bool tv4_handoff_verify_mode(tv4_boot_handoff *s, tv4_boot_workspace *w,
+    const tv4_boot_release_policy *release_policy, tv4_boot_release_candidate *release_candidate)
 {
     if (s == NULL || s->busy || s->state != TV4_HANDOFF_BOUND || w == NULL ||
+        s->release_document != (release_policy != NULL) || (release_policy != NULL && release_candidate == NULL) ||
         !separate(s, sizeof(*s), w, sizeof(*w)) || !separate(s->rx, sizeof(*s->rx), w, sizeof(*w))) return false;
     s->busy = true;
     if (guard(s, true)) {
@@ -160,7 +173,11 @@ bool tv4_boot_handoff_verify(tv4_boot_handoff *s, tv4_boot_workspace *w)
             .signature = s->signature, .signature_bytes = s->signature_bytes, .key_id = s->key_id,
             .key_id_bytes = s->key_id_bytes, .arena_bytes = s->arena_bytes};
         s->admission_attempted = true;
-        s->admission_result = tv4_boot_admit(&s->policy, &request, w, &s->candidate);
+        if (release_policy == NULL) s->admission_result = tv4_boot_admit(&s->policy, &request, w, &s->candidate);
+        else {
+            s->admission_result = tv4_boot_admit_release(release_policy, &request, w, release_candidate);
+            if (s->admission_result == TV4_BOOT_VERIFIED_CANDIDATE) s->candidate = release_candidate->image;
+        }
         if (s->admission_result != TV4_BOOT_VERIFIED_CANDIDATE) fail(s, TV4_HANDOFF_ADMISSION);
         if (guard(s, true) && (s->candidate.image_bytes != s->descriptor.image_bytes ||
             memcmp(s->candidate.image_sha256, s->descriptor.image_sha256, TV4_UPDATE_HASH_BYTES) != 0))
@@ -170,6 +187,10 @@ bool tv4_boot_handoff_verify(tv4_boot_handoff *s, tv4_boot_workspace *w)
     else release_once(s);
     s->busy = false;
     return s->state == TV4_HANDOFF_VERIFIED;
+}
+bool tv4_boot_handoff_verify(tv4_boot_handoff *s, tv4_boot_workspace *w)
+{
+    return tv4_handoff_verify_mode(s, w, NULL, NULL);
 }
 bool tv4_boot_handoff_poll(tv4_boot_handoff *s)
 {
@@ -183,9 +204,9 @@ bool tv4_boot_handoff_poll(tv4_boot_handoff *s)
     s->busy = false;
     return ok;
 }
-bool tv4_boot_handoff_peek(tv4_boot_handoff *s, tv4_boot_handoff_receipt *out)
+bool tv4_handoff_peek_mode(tv4_boot_handoff *s, tv4_boot_handoff_receipt *out, bool release_document)
 {
-    if (s == NULL || s->busy || out == NULL || !separate(s, sizeof(*s), out, sizeof(*out)) ||
+    if (s == NULL || s->busy || s->release_document != release_document || out == NULL || !separate(s, sizeof(*s), out, sizeof(*out)) ||
         (s->rx != NULL && !separate(s->rx, sizeof(*s->rx), out, sizeof(*out)))) return false;
     *out = (tv4_boot_handoff_receipt){0};
     if (!tv4_boot_handoff_poll(s) || s->state != TV4_HANDOFF_VERIFIED) return false;
@@ -194,6 +215,10 @@ bool tv4_boot_handoff_peek(tv4_boot_handoff *s, tv4_boot_handoff_receipt *out)
         .source_generation = s->source.generation};
     return true;
 }
+bool tv4_boot_handoff_peek(tv4_boot_handoff *s, tv4_boot_handoff_receipt *out)
+{
+    return tv4_handoff_peek_mode(s, out, false);
+}
 bool tv4_boot_handoff_close(tv4_boot_handoff *s)
 {
     if (s == NULL || s->busy || s->state == TV4_HANDOFF_EMPTY || s->state == TV4_HANDOFF_QUARANTINED) return false;
@@ -201,11 +226,11 @@ bool tv4_boot_handoff_close(tv4_boot_handoff *s)
     s->busy = true; release_once(s); s->busy = false;
     return s->state == TV4_HANDOFF_CLOSED;
 }
-tv4_boot_image_result tv4_boot_handoff_preflight(tv4_boot_handoff *s,
-    const tv4_boot_image_profile *profile, tv4_boot_workspace *w, tv4_boot_handoff_image_report *out)
+tv4_boot_image_result tv4_handoff_preflight_mode(tv4_boot_handoff *s,
+    const tv4_boot_image_profile *profile, tv4_boot_workspace *w, tv4_boot_handoff_image_report *out, bool release_document)
 {
     if (s != NULL && s->busy) return TV4_IMAGE_BUSY;
-    if (s == NULL || profile == NULL || w == NULL || out == NULL) return TV4_IMAGE_ARGUMENT;
+    if (s == NULL || s->release_document != release_document || profile == NULL || w == NULL || out == NULL) return TV4_IMAGE_ARGUMENT;
     if (!separate(s, sizeof(*s), w, sizeof(*w)) || !separate(s, sizeof(*s), out, sizeof(*out)) ||
         !separate(s, sizeof(*s), profile, sizeof(*profile)) || !separate(w, sizeof(*w), out, sizeof(*out)) ||
         !separate(w, sizeof(*w), profile, sizeof(*profile)) || !separate(out, sizeof(*out), profile, sizeof(*profile)) ||
@@ -253,6 +278,11 @@ cleanup:
     s->busy = false;
     return result;
 }
+tv4_boot_image_result tv4_boot_handoff_preflight(tv4_boot_handoff *s,
+    const tv4_boot_image_profile *profile, tv4_boot_workspace *w, tv4_boot_handoff_image_report *out)
+{
+    return tv4_handoff_preflight_mode(s, profile, w, out, false);
+}
 void tv4_boot_handoff_abort(tv4_boot_handoff *s)
 {
     if (s == NULL || s->state == TV4_HANDOFF_EMPTY || s->state == TV4_HANDOFF_CLOSED || s->state == TV4_HANDOFF_QUARANTINED) return;
@@ -260,9 +290,14 @@ void tv4_boot_handoff_abort(tv4_boot_handoff *s)
     if (s->busy) return;
     s->busy = true; fail(s, TV4_HANDOFF_CANCELLED); release_once(s); s->busy = false;
 }
-bool tv4_boot_handoff_clear(tv4_boot_handoff *s)
+bool tv4_handoff_clear_mode(tv4_boot_handoff *s, bool release_document)
 {
-    if (s == NULL || s->busy || s->held || (s->state != TV4_HANDOFF_EMPTY && s->state != TV4_HANDOFF_CLOSED)) return false;
+    if (s == NULL || s->busy || s->release_document != release_document || s->held ||
+        (s->state != TV4_HANDOFF_EMPTY && s->state != TV4_HANDOFF_CLOSED)) return false;
     *s = (tv4_boot_handoff){0};
     return true;
+}
+bool tv4_boot_handoff_clear(tv4_boot_handoff *s)
+{
+    return tv4_handoff_clear_mode(s, false);
 }

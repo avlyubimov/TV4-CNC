@@ -66,6 +66,19 @@ Opaque request/tag/counter не подменяет их. Нельзя зашив
 installed/minimum component SemVer — local inputs, numeric counters отдельно.
 Нет defaults/provisioning/перевода git display версии в trusted context.
 Source commit signer claim не является build provenance proof. Новый standalone
-candidate не live receipt/install token; coordinator его пока не вызывает.
+candidate не live receipt/install token; PR-07h ниже добавляет explicit coordinator.
 Не менять workspace/dependency/heap/crypto owner или старые lifetime/vector/
 deadline gates. Нет actual board profile/map/writer/keys/runtime/device actions.
+
+## PR-07h — release-aware source/completion adapter
+
+Читать docs/STM32_RELEASE_HANDOFF.md. Explicit local API/mode, новый caller-owned
+adapter поверх того же core. Legacy positive APIs/clear не обходят release mode;
+legacy poll/abort/close только conservative guards/cleanup. Shared helpers private,
+нет caller verifier callback/success boolean и новых crypto/arena/heap instances.
+Полные release signature/selection/SemVer/image checks + live source/RX/owner/
+deadline/vector gates, raw metadata digest из negotiation, clean close до outcome.
+Adapter/core/RX/context один owner/disjoint/alive до clear. Пока completion active,
+не выполнять независимые adapter/core operations, отменять completion_abort.
+Не терять held handle при retries/quarantine, не продлевать DATA lifetime.
+Production bundle/local context/backend/runtime/hardware/installer gates открыты.

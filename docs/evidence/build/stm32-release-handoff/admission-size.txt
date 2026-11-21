@@ -1,0 +1,8 @@
+   text	   data	    bss	    dec	    hex	filename
+   2453	      0	      1	   2454	    996	admission.c.obj (ex build-boot-arm/libtv4_boot_admission.a)
+   1366	      0	      0	   1366	    556	metadata.c.obj (ex build-boot-arm/libtv4_boot_admission.a)
+   1126	      0	      0	   1126	    466	release_policy.c.obj (ex build-boot-arm/libtv4_boot_admission.a)
+    766	      0	      0	    766	    2fe	image_profile.c.obj (ex build-boot-arm/libtv4_boot_admission.a)
+   3034	      0	      0	   3034	    bda	update_handoff.c.obj (ex build-boot-arm/libtv4_boot_handoff.a)
+   1788	      0	      0	   1788	    6fc	update_completion.c.obj (ex build-boot-arm/libtv4_boot_handoff.a)
+   1122	      0	      0	   1122	    462	release_handoff.c.obj (ex build-boot-arm/libtv4_boot_handoff.a)

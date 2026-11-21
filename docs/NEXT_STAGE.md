@@ -1,6 +1,6 @@
 # Следующий этап: release context и STM32 board contract
 
-21 ноября2026. База main `3381236`, PR #1–36 слиты, пять workflow PASS.
+21 ноября2026. База main `c17e89c`, PR #1–37 слиты, пять workflow PASS.
 ESP32 HMI/Wi-Fi/OTA primitives/candidates и STM32 transport/admission существуют;
 не создавать их заново. Данный план не разрешает доступ к устройствам или merge.
 
@@ -84,7 +84,7 @@ ARM/static/source/image/output PASS — [evidence](evidence/build/stm32-update-n
 Не создаёт runtime caller, production wire/capabilities/entropy provider,
 authentication или install/physical authority. DATA deadlines прежние.
 
-## Текущая ветка PR-07g
+## Слитая часть PR-07g, PR #37
 
 [Independent release binding](STM32_RELEASE_BINDING.md): отдельный signed15-field
 Motion draft, release/component SemVer/channel/source selection и прежние
@@ -92,14 +92,24 @@ target/counter/full image checks через один existing crypto engine. Hos
 sanitizers33/standalone10,2745 SemVer comparisons, ARM/static/source/image/output
 PASS — [evidence](evidence/build/stm32-release-binding/README.md). Workspace17664
 прежний, candidate224/policy288 на host. Legacy strict11-field API сохраняется.
-Новый API standalone: не подключён к live lease/negotiation/handoff/completion,
-не production bundle/CAN ABI или доверенный installed context/installer.
+Это исторический standalone этап PR #37. Production bundle/CAN ABI и
+доверенный installed context/installer остаются открытыми.
+
+## Текущая ветка PR-07h
+
+[Release handoff](STM32_RELEASE_HANDOFF.md) соединяет signed15-field API с
+существующими live lease/owner/source/RX/deadline/vector guards и completion/
+outcome. Raw metadata SHA связан с negotiation; новый локальный режим явный,
+legacy strict11 path сохранён. Host34/sanitizers34/standalone11,6 новых full
+chains, ARM/static7/source/board/output PASS — [evidence](evidence/build/stm32-release-handoff/README.md).
+Нет runtime caller/production backend/context или install/physical authority.
 
 ## Что делать дальше программно
 
 1. HMI policy проверена PR-05b; PR-07g проверяет independent release/component/
    target/profile/image draft. Дальше review production bundle↔component link и
-   schema, доверенного local context и fresh live source/coordinator adapter.
+   schema, доверенного local context и production immutable backend. PR-07h
+   закрывает software live coordinator adapter, но не runtime/provider contract.
    Не принимать standalone historical candidate вместо lease/vector/deadline
    checks, не менять RX lifetime. Draft counters не переводить в SemVer;
    actual local versions/key provisioning/signing authority — owner gate.

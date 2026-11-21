@@ -1,4 +1,5 @@
 #include "update_completion.h"
+#include "update_handoff_internal.h"
 #include <limits.h>
 #include <string.h>
 
@@ -113,11 +114,13 @@ static void settle(tv4_boot_completion *c)
     }
     memset(&c->profile,0,sizeof(c->profile)); memset(&c->inspection,0,sizeof(c->inspection));
 }
-bool tv4_boot_completion_start(tv4_boot_completion *c, tv4_boot_handoff *s,
-    const tv4_update_binding *expected, const tv4_boot_image_profile *profile, tv4_boot_workspace *w)
+static bool start(tv4_boot_completion *c, tv4_boot_handoff *s,
+    const tv4_update_binding *expected, const tv4_boot_image_profile *profile, tv4_boot_workspace *w,
+    tv4_boot_release_handoff *release)
 {
     if (c == NULL || s == NULL || expected == NULL || profile == NULL || w == NULL || c->busy ||
-        c->state != TV4_COMPLETION_EMPTY || s->busy || s->state != TV4_HANDOFF_BOUND || !s->held || s->rx == NULL ||
+        c->state != TV4_COMPLETION_EMPTY || s->busy || s->release_document != (release != NULL) ||
+        s->state != TV4_HANDOFF_BOUND || !s->held || s->rx == NULL ||
         !separate(c,sizeof(*c),s,sizeof(*s)) || !separate(c,sizeof(*c),w,sizeof(*w)) ||
         !separate(c,sizeof(*c),expected,sizeof(*expected)) || !separate(c,sizeof(*c),profile,sizeof(*profile)) ||
         !separate(c,sizeof(*c),s->rx,sizeof(*s->rx)) || !separate(w,sizeof(*w),s,sizeof(*s)) ||
@@ -131,14 +134,30 @@ bool tv4_boot_completion_start(tv4_boot_completion *c, tv4_boot_handoff *s,
     c->transfer_started_ms=s->rx_started_ms; c->transfer_progress_ms=s->rx_progress_ms;
     c->state=TV4_COMPLETION_WORKING; c->busy=true;
     if (!observe(c)) { tv4_boot_handoff_abort(s); goto complete; }
-    if (!tv4_boot_handoff_verify(s,w)) goto complete;
-    if (!tv4_boot_handoff_peek(s,&c->inspection.receipt)) goto complete;
+    if (!tv4_handoff_verify_mode(s,w,release==NULL ? NULL : &release->policy,release==NULL ? NULL : &release->candidate)) goto complete;
+    if (!tv4_handoff_peek_mode(s,&c->inspection.receipt,release!=NULL)) goto complete;
     if (!matches(c)) { remember(c,TV4_OUTCOME_BINDING); tv4_boot_handoff_abort(s); goto complete; }
-    if (tv4_boot_handoff_preflight(s,&c->profile,w,&c->inspection) != TV4_IMAGE_PROFILE_MODEL_MATCH) goto complete;
+    if (tv4_handoff_preflight_mode(s,&c->profile,w,&c->inspection,release!=NULL) != TV4_IMAGE_PROFILE_MODEL_MATCH) goto complete;
     if (!matches(c)) { remember(c,TV4_OUTCOME_BINDING); tv4_boot_handoff_abort(s); goto complete; }
     (void)tv4_boot_handoff_close(s); /* exactly one initial attempt */
 complete:
     settle(c); c->busy=false; return true;
+}
+bool tv4_boot_completion_start(tv4_boot_completion *c, tv4_boot_handoff *s,
+    const tv4_update_binding *expected, const tv4_boot_image_profile *profile, tv4_boot_workspace *w)
+{
+    return start(c,s,expected,profile,w,NULL);
+}
+bool tv4_boot_completion_start_release(tv4_boot_completion *c, tv4_boot_release_handoff *a,
+    const tv4_update_binding *expected, const tv4_boot_image_profile *profile, tv4_boot_workspace *w)
+{
+    if (a==NULL || a->busy || a->handoff==NULL || a->handoff->busy || !a->handoff->release_document ||
+        !separate(a,sizeof(*a),c,sizeof(*c)) || !separate(a,sizeof(*a),expected,sizeof(*expected)) ||
+        !separate(a,sizeof(*a),profile,sizeof(*profile)) || !separate(a,sizeof(*a),w,sizeof(*w))) return false;
+    a->busy=true;
+    bool accepted=start(c,a->handoff,expected,profile,w,a);
+    if (accepted) tv4_release_handoff_refresh(a);
+    a->busy=false; return accepted;
 }
 bool tv4_boot_completion_poll(tv4_boot_completion *c)
 {
