@@ -34,10 +34,11 @@ jobs:
           python3 tools/check_boot_admission_build.py build-boot-arm > evidence/arm-budget.json
           python3 tools/check_update_wire_build.py build-boot-arm/update-transport > evidence/wire-budget.json
           python3 tools/check_update_fragment_build.py build-boot-arm/update-transport > evidence/fragment-budget.json
+          python3 tools/check_update_channel_build.py build-boot-arm/update-transport > evidence/channel-budget.json
           python3 tools/check_metadata_setup_build.py build-boot-arm/update-transport > evidence/metadata-setup-budget.json
           python3 tools/check_update_metadata_build.py build-boot-arm/update-transport > evidence/metadata-budget.json
           cmake --build build-boot-arm --target help > evidence/arm-targets.txt
-          if grep -Eq 'boot_motion_review|tv4_fragment_test_link|update_fragment_timing_tests|update_metadata_tests|update_metadata_setup_tests|update_fragment_raw_tests' evidence/arm-targets.txt; then
+          if grep -Eq 'boot_motion_review|tv4_fragment_test_link|update_fragment_timing_tests|update_metadata_tests|update_metadata_setup_tests|update_fragment_raw_tests|update_channel_tests' evidence/arm-targets.txt; then
             echo 'ERROR: host filesystem reviewer leaked into ARM targets'; exit 1
           fi
           echo 'PASS host Motion review and fragment fixture targets absent from ARM build' > evidence/host-review-scope.txt
@@ -86,6 +87,7 @@ jobs:
             evidence/fragment-budget.json
             evidence/metadata-budget.json
             evidence/metadata-setup-budget.json
+            evidence/channel-budget.json
             evidence/crypto-origin.json
             evidence/static-analysis.txt
             evidence/board-gate.txt

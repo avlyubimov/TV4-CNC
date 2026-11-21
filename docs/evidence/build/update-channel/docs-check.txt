@@ -1,0 +1,3 @@
+PASS 320 local Markdown links across 16 touched/mandatory documents
+PASS 124 source/config/dependency/document SHA-256 entries
+PASS diff whitespace and host/ARM-only scope checks; no device operations

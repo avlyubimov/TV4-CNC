@@ -163,3 +163,16 @@ No new crypto owner/heap/runtime/IDs/bitrate/Flash/pins/devices. Host-only fixtu
 не ARM. Scope/import/frame/global/negative guards, text evidence обязательны.
 Production authenticated identity/routing/persistence/staging/resources/installer
 и actual board hardware gates остаются открытыми. No self-merge.
+
+## PR-07o — shared channel
+
+Читать docs/STM32_UPDATE_CHANNEL.md. Opt-in local queue/phase filter, no runtime.
+One owned frame outbox/retained counters; last queued frame deadline even lower
+TX IDLE. RX single strict TU/MS codec/no fallback/owned UNVERIFIED take. Wrong
+phase/role ID no dispatch. Advance only locally idle; not upper protocol success
+or external driver queue drain/auth/physical/install proof. Original upper
+coordinators/CRC/independent crypto/lease/model/deadline/clean close обязательны.
+Host helper explicit phases after real states + fixture queue drain; no tests
+in ARM. No counter/time/reinit reset for recovery. No new bytes/IDs/driver/heap/
+crypto owner/pins/Flash/device actions. Existing budgets unchanged; separate ARM
+imports/exports/frame/no globals guard + negatives, text evidence обязательны.

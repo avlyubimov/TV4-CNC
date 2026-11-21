@@ -1281,11 +1281,7 @@ static tv4_test_link_config timed_config(uint16_t drops,uint16_t index)
         .drop_kinds=drops,.drop_index=index,.recover_fragment_timeouts=true};
 }
 static bool timed_idle(const tv4_test_link *link)
-{
-    for(unsigned side=0;side<2;++side)
-        if(!tv4_test_link_can_send(link,side) || link->direction[side].rx.storage.state!=TV4_FRAG_IDLE)return false;
-    return true;
-}
+{return tv4_test_link_idle(link);}
 typedef struct {tv4_neg_pool pool[2];tv4_negotiation n[2];} timed_image_session;
 static void timed_negotiate_impl(fixture *f,tv4_test_link *link,uint16_t block,timed_image_session *keep)
 {
@@ -1399,6 +1395,7 @@ static void timed_transfer(fixture *f,tv4_test_link *link)
 }
 static void timed_outcome(fixture *f,tv4_test_link *link)
 {
+    if(link->config.multiplexed)tv4_test_link_advance(link,TV4_CHANNEL_OUTCOME,(tv4_update_id){0});
     tv4_outcome_tx tx;tv4_outcome_rx rx;tv4_outcome_limits limits={200,500,2000,4};
     assert(tv4_outcome_tx_init(&tx,limits,f->owner.boot,f->now) && tv4_outcome_rx_init(&rx,limits,f->now));
     assert(tv4_outcome_tx_begin(&tx,&f->outcome,f->now)==TV4_OUTCOME_OK);
@@ -1430,6 +1427,7 @@ static void timed_outcome(fixture *f,tv4_test_link *link)
         tv4_test_link_step(link);
     }
     assert(ticks<2000 && deliveries==1);timed_drain(f,link);
+    if(link->config.multiplexed)tv4_test_link_advance(link,TV4_CHANNEL_NEGOTIATION,(tv4_update_id){0});
 }
 static void one_clock_signed_chains(void)
 {
@@ -1477,10 +1475,11 @@ static void one_clock_admission_refusals(void)
     }
     puts("PASS one-clock transfer success does not bypass independent signature or expired DATA live-receiver admission");
 }
-/* Metadata is a separate DATA identity. The container and both role descriptors
- * are explicit local test inputs, not a production metadata setup handshake. */
+/* Metadata uses a separate DATA identity. Legacy mode takes local descriptors;
+ * setup modes exchange them through bounded MS messages. This is not production
+ * authenticated discovery, hardware routing or install authority. */
 static void timed_setup(fixture *f,timed_image_session *image,tv4_metadata_setup setup[2],
-    tv4_update_descriptor *descriptor,uint16_t *block_bytes)
+    tv4_update_descriptor *descriptor,uint16_t *block_bytes,tv4_test_link *shared)
 {
     tv4_metadata_setup_limits limits={200,8000,TV4_META_BUNDLE_MAX,12};
     for(unsigned i=0;i<2;++i)assert(tv4_metadata_setup_init(&setup[i],&image->pool[i],
@@ -1488,8 +1487,14 @@ static void timed_setup(fixture *f,timed_image_session *image,tv4_metadata_setup
     assert(tv4_metadata_setup_request(&setup[0],&image->n[0],&f->tx,descriptor->image_bytes,
         descriptor->image_sha256,2001,f->now)==TV4_SETUP_OK);
     assert(tv4_metadata_setup_respond(&setup[1],&image->n[1],&f->rx,f->owner.policy_generation,f->now)==TV4_SETUP_OK);
-    tv4_test_link control={0};tv4_test_link_config cfg=timed_config(30,1);cfg.raw_setup=true;
-    tv4_test_link_init(&control,&f->now,&cfg);
+    tv4_test_link local={0};tv4_test_link *control;
+    if(shared->config.multiplexed) {
+        tv4_test_link_advance(shared,TV4_CHANNEL_SETUP,(tv4_update_id){0});control=shared;
+    }else {
+        tv4_test_link_config cfg=timed_config(30,1);cfg.raw_setup=true;
+        tv4_test_link_init(&local,&f->now,&cfg);control=&local;
+    }
+    unsigned frames_before=control->frames,drops_before=control->dropped_frames;
     uint32_t started=f->now,image_started=f->rx.context.started_ms,image_progress=f->rx.context.progress_ms;
     unsigned ticks;
     for(ticks=0;ticks<8000;++ticks) {
@@ -1497,25 +1502,26 @@ static void timed_setup(fixture *f,timed_image_session *image,tv4_metadata_setup
             uint64_t generation=side?f->owner.policy_generation:2001;
             assert(tv4_metadata_setup_poll(&setup[side],generation,f->now)==TV4_SETUP_OK);
             tv4_metadata_setup_message m;
-            if(tv4_test_link_take_setup(&control,side,&m)==TV4_FRAG_RAW_TAKEN_UNCHECKED) {
+            if(tv4_test_link_take_setup(control,side,&m)==TV4_FRAG_RAW_TAKEN_UNCHECKED) {
                 unsigned target=1u-side;tv4_metadata_setup_result r=tv4_metadata_setup_receive(&setup[target],&m,
                     target?f->owner.policy_generation:2001,f->now);
                 assert(r==TV4_SETUP_OK || r==TV4_SETUP_DUPLICATE);
             }
         }
         bool ready=setup[0].state==TV4_SETUP_READY && setup[1].state==TV4_SETUP_READY;
-        if(ready && timed_idle(&control))break;
-        if(!ready)for(unsigned side=0;side<2;++side)if(tv4_test_link_can_send(&control,side)) {
+        if(ready && timed_idle(control))break;
+        if(!ready)for(unsigned side=0;side<2;++side)if(tv4_test_link_can_send(control,side)) {
             tv4_metadata_setup_message m;tv4_metadata_setup_result r=tv4_metadata_setup_next(&setup[side],&m,
                 side?f->owner.policy_generation:2001,f->now);
-            if(r==TV4_SETUP_SENT)assert(tv4_test_link_send_setup(&control,side,&m)==TV4_FRAG_OK);
+            if(r==TV4_SETUP_SENT)assert(tv4_test_link_send_setup(control,side,&m)==TV4_FRAG_OK);
             else assert(r==TV4_SETUP_WAIT);
         }
         assert(setup[0].started==started && setup[1].started==started);
         assert(f->rx.context.started_ms==image_started && f->rx.context.progress_ms==image_progress);
-        tv4_test_link_step(&control);
+        tv4_test_link_step(control);
     }
-    assert(ticks<8000 && control.dropped_kinds==30 && control.sticky_failures==0);
+    assert(ticks<8000 && control->sticky_failures==0);
+    assert(shared->config.multiplexed?(control->dropped_kinds&TV4_TEST_LINK_MS_DROP_MASK)==TV4_TEST_LINK_MS_DROP_MASK:control->dropped_kinds==30);
     tv4_metadata_parameters params[2];
     for(unsigned i=0;i<2;++i) {
         assert(tv4_metadata_setup_take(&setup[i],&params[i],i?f->owner.policy_generation:2001,f->now)==TV4_SETUP_OK);
@@ -1525,7 +1531,8 @@ static void timed_setup(fixture *f,timed_image_session *image,tv4_metadata_setup
         params[0].metadata.id.transfer==image->pool[1].last_issued && params[0].block_bytes==params[1].block_bytes);
     *descriptor=params[0].metadata;*block_bytes=params[0].block_bytes;
     printf("SETUP frames=%u drops=%u elapsed=%u synthetic ms; paired ID=%u pools held, raw MS codec before dispatch\n",
-        control.frames,control.dropped_frames,f->now-started,descriptor->id.transfer);
+        control->frames-frames_before,control->dropped_frames-drops_before,f->now-started,descriptor->id.transfer);
+    if(shared->config.multiplexed)tv4_test_link_advance(shared,TV4_CHANNEL_METADATA,descriptor->id);
 }
 static size_t timed_metadata_impl(fixture *f,tv4_test_link *link,tv4_metadata_document *downloaded,timed_image_session *image)
 {
@@ -1542,7 +1549,7 @@ static size_t timed_metadata_impl(fixture *f,tv4_test_link *link,tv4_metadata_do
     tv4_update_descriptor descriptor={.id={f->owner.boot,f->descriptor.id.transfer+1u},.image_bytes=(uint32_t)n};
     digest(raw,n,descriptor.image_sha256); /* opaque source expectation, not verification */
     tv4_metadata_setup setup[2]={{0},{0}};uint16_t metadata_block=256;
-    if(image!=NULL)timed_setup(f,image,setup,&descriptor,&metadata_block);
+    if(image!=NULL)timed_setup(f,image,setup,&descriptor,&metadata_block,link);
     tv4_update_limits limits={.max_image_bytes=TV4_META_BUNDLE_MAX,.ack_timeout_ms=200,.progress_timeout_ms=3000,
         .total_timeout_ms=10000,.block_bytes=metadata_block,.retry_limit=4};
     tv4_metadata_rx metadata={0};tv4_update_tx tx;
@@ -1607,17 +1614,21 @@ static size_t timed_metadata_impl(fixture *f,tv4_test_link *link,tv4_metadata_do
     f->release_config.signature=f->config.signature;f->release_config.signature_bytes=f->config.signature_bytes;
     f->release_config.key_id=f->config.key_id;f->release_config.key_id_bytes=f->config.key_id_bytes;
     assert(f->config.metadata!=f->metadata && f->config.signature!=f->signature);
-    timed_drain(f,link);memset(raw,0,sizeof(raw));return n;
+    timed_drain(f,link);
+    if(link->config.multiplexed)tv4_test_link_advance(link,TV4_CHANNEL_IMAGE,f->descriptor.id);
+    memset(raw,0,sizeof(raw));return n;
 }
 static size_t timed_metadata(fixture *f,tv4_test_link *link,tv4_metadata_document *downloaded)
 {return timed_metadata_impl(f,link,downloaded,NULL);}
-static void metadata_signed_chains(bool setup_mode)
+static void metadata_signed_chains(bool setup_mode,bool channel_mode)
 {
     unsigned frames=0,drops=0,container_bytes=0,sig_min=72,sig_max=0;uint32_t longest=0;
     for(unsigned i=0;i<8;++i) {
         fixture f;if(i<6)release_fixture(&f,i%2u?256:33);else vector_fixture(&f,33);
         f.use_stage=true;tv4_test_link link={0};uint16_t mask=i<2?0u:510u;
-        tv4_test_link_config cfg=timed_config(mask,(uint16_t)(i%3u));tv4_test_link_init(&link,&f.now,&cfg);
+        if(channel_mode)mask=(uint16_t)(mask|TV4_TEST_LINK_MS_DROP_MASK);
+        tv4_test_link_config cfg=timed_config(mask,(uint16_t)(i%3u));cfg.multiplexed=channel_mode;
+        tv4_test_link_init(&link,&f.now,&cfg);
         uint32_t started=f.now;tv4_metadata_document downloaded;
         if(setup_mode) {
             timed_image_session image={0};timed_negotiate_impl(&f,&link,256,&image);
@@ -1634,7 +1645,16 @@ static void metadata_signed_chains(bool setup_mode)
         assert(ok);completed(&f,TV4_OUTCOME_CHECKED_CLOSED,TV4_OUTCOME_REASON_NONE);
         assert(tv4_boot_stage_discard(&f.stage) && zero(f.staging,f.source_bytes));timed_outcome(&f,&link);
         assert(link.dropped_kinds==mask && link.sticky_failures==0);
-        for(unsigned kind=1;kind<=8;++kind)assert(link.deliveries[kind]>0);
+        for(unsigned kind=1;kind<=(channel_mode?12u:8u);++kind)assert(link.deliveries[kind]>0);
+        if(channel_mode) {
+            unsigned attempts=0,counters=0;for(unsigned k=1;k<=12;++k)attempts+=link.attempts[k];
+            for(unsigned d=0;d<2;++d) {
+                assert(link.direction[d].channel_tx.policy.phase==TV4_CHANNEL_NEGOTIATION);
+                assert(link.direction[d].channel_tx.fragments.storage.counter==link.direction[d].channel_rx.fragments.storage.counter);
+                counters+=link.direction[d].channel_tx.fragments.storage.counter;
+            }
+            assert(attempts==counters);
+        }
         assert(tv4_boot_completion_clear(&f.completion));
         if(i<6)release_clear(&f);else assert(tv4_boot_handoff_clear(&f.session));
         if(f.now-started>longest)longest=f.now-started;
@@ -1643,11 +1663,12 @@ static void metadata_signed_chains(bool setup_mode)
     }
     printf("PASS8 transported metadata signed chains: frames=%u drops=%u container-bytes=%u DER=%u..%u longest=%u synthetic ms; producer wiped, actual delivered signature/raw digest/lease/model/close, no image deadline reset\n",frames,drops,container_bytes,sig_min,sig_max,longest);
 }
-static void metadata_admission_refusals(bool setup_mode)
+static void metadata_admission_refusals(bool setup_mode,bool channel_mode)
 {
     for(unsigned i=0;i<3;++i) {
         fixture f;release_fixture(&f,33);f.use_stage=true;tv4_test_link link={0};tv4_metadata_document downloaded;
-        tv4_test_link_config cfg=timed_config((1u<<5)|(1u<<6),1);tv4_test_link_init(&link,&f.now,&cfg);
+        tv4_test_link_config cfg=timed_config((uint16_t)((1u<<5)|(1u<<6)|(channel_mode?TV4_TEST_LINK_MS_DROP_MASK:0u)),1);
+        cfg.multiplexed=channel_mode;tv4_test_link_init(&link,&f.now,&cfg);
         timed_image_session image={0};
         if(setup_mode)timed_negotiate_impl(&f,&link,256,&image);else timed_negotiate(&f,&link,31);
         if(i==0)f.signature[f.config.signature_bytes-1u]^=1;
@@ -1675,11 +1696,14 @@ static void metadata_admission_refusals(bool setup_mode)
 #define RUN(name) do { name(); puts("PASS " #name); } while (0)
 int main(int argc,char **argv)
 {
+    if(argc==2 && strcmp(argv[1],"--channel-staging")==0) {
+        metadata_signed_chains(true,true);metadata_admission_refusals(true,true);return 0;
+    }
     if(argc==2 && strcmp(argv[1],"--metadata-setup-staging")==0) {
-        metadata_signed_chains(true);metadata_admission_refusals(true);return 0;
+        metadata_signed_chains(true,false);metadata_admission_refusals(true,false);return 0;
     }
     if(argc==2 && strcmp(argv[1],"--metadata-staging")==0) {
-        metadata_signed_chains(false);metadata_admission_refusals(false);return 0;
+        metadata_signed_chains(false,false);metadata_admission_refusals(false,false);return 0;
     }
     if(argc==2 && strcmp(argv[1],"--fragment-timing")==0) {
         RUN(one_clock_signed_chains);RUN(one_clock_admission_refusals);return 0;

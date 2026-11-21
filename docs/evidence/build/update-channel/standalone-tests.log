@@ -1,0 +1,434 @@
+UpdateCTestConfiguration  from :/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-channel/build-boot-host/DartConfiguration.tcl
+Test project /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-channel/build-boot-host
+Constructing a list of tests
+Done constructing a list of tests
+Updating test list for fixtures
+Added 0 tests to meet fixture requirements
+Checking test dependency graph...
+Checking test dependency graph end
+test 1
+      Start  1: boot_image_admission
+
+1: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-channel/build-boot-host/boot_admission_tests
+1: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-channel/build-boot-host
+1: Test timeout computed to be: 30
+1: PASS sha_vectors
+1: PASS success_and_fragmentation
+1: PASS invalid_signature_and_key
+1: PASS wrong_signer
+1: PASS compatibility_and_rollback
+1: PASS policy_errors
+1: PASS signed_malformed_metadata
+1: PASS stream_faults
+1: PASS deadlines_cancellation_and_wrap
+1: PASS arena_exhaustion_and_reuse
+1: PASS snapshot_and_reentry
+1: PASS arguments_and_limits
+1: PASS boundary_metadata_and_key_selection
+1: PASS storage_aliases_are_write_free
+1: PASS 14 admission groups; workspace=17664 bytes; ephemeral host signing keys; no device access
+ 1/30 Test  #1: boot_image_admission ..............   Passed    0.14 sec
+test 2
+      Start  2: boot_crypto_source
+
+2: Test command: /home/avlyubimov/.local/bin/python3.14 "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-channel/firmware/stm32-bootloader/tests/source_tests.py" "--source" "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-channel/build-boot-host/_deps/tv4_boot_mbedtls-src"
+2: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-channel/build-boot-host
+2: Test timeout computed to be: 15
+2: test_added_header (__main__.SourceTests.test_added_header) ... ok
+2: test_changed_code (__main__.SourceTests.test_changed_code) ... ok
+2: test_exact_source (__main__.SourceTests.test_exact_source) ... ok
+2: test_missing_header (__main__.SourceTests.test_missing_header) ... ok
+2: test_symlink (__main__.SourceTests.test_symlink) ... ok
+2:
+2: ----------------------------------------------------------------------
+2: Ran 5 tests in 0.073s
+2:
+2: OK
+ 2/30 Test  #2: boot_crypto_source ................   Passed    0.10 sec
+test 3
+      Start  3: boot_staging_source
+
+3: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-channel/build-boot-host/boot_staging_tests
+3: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-channel/build-boot-host
+3: Test timeout computed to be: 30
+3: PASS 45 RAM staging/read variants, 1..1025 bytes, blocks1/31/256, fragments1/7/256, pending/final duplicates
+3: PASS sizes_and_reads
+3: PASS lease_and_reuse
+3: PASS receiver_faults
+3: PASS deadlines_and_wrap
+3: PASS arguments_and_aliases
+3: PASS config_and_capacity
+3: PASS 1536 source cycles; discard retains high-water/generation/token counters; exhaustion never wraps
+3: PASS counters_and_exhaustion
+3: PASS 7 staging source groups; state=160 bytes plus explicit caller buffer; RAM only, not persistent/install/device access
+ 3/30 Test  #3: boot_staging_source ...............   Passed    0.00 sec
+test 4
+      Start  4: boot_update_handoff
+
+4: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-channel/build-boot-host/boot_handoff_tests
+4: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-channel/build-boot-host
+4: Test timeout computed to be: 30
+4: PASS 54 signed end-to-end RAM transfers with lost DATA/final ACK and pending duplicate
+4: PASS end_to_end_sizes_and_fragments
+4: PASS snapshots_and_reentry
+4: PASS binding_is_not_transport_trust
+4: PASS changes_during_verification
+4: PASS revoke_after_success
+4: PASS acquire_and_release_failures
+4: PASS deadlines_before_verification_and_wrap
+4: PASS boundaries_and_final_cleanup
+4: PASS retained_ack_does_not_extend_handoff
+4: PASS rejected_inputs_and_aliases
+4: PASS 15 signed vector inspections with fragmented reads + captured local profile mutation
+4: PASS signed_vector_success_and_snapshot
+4: PASS valid_signature_invalid_vector_model
+4: PASS preflight_context_cleanup_and_reentry
+4: PASS 6 signed DATA -> crypto -> vectors -> close -> outcome/ACK sessions, lost report/final ACK; no lease retained
+4: PASS completion_end_to_end_history
+4: PASS completion_rejections
+4: PASS completion_release_and_late_context
+4: PASS completion_reentry_snapshot_and_arguments
+4: PASS 6 signed negotiation -> DATA -> P-256/SHA -> vectors -> close -> outcome/ACK chains; all four handshake losses, DATA/final ACK/report losses
+4: PASS negotiated_full_chain
+4: PASS 3 negotiated binding failures: changed image, invalid signature, valid re-signed metadata with mismatched raw SHA; no retained lease
+4: PASS negotiated_binding_still_requires_crypto
+4: PASS 19 handoff/completion groups; completion=568; state=2136 receipt=136 workspace=17664; RAM only, no install/device access
+ 4/30 Test  #4: boot_update_handoff ...............   Passed    0.29 sec
+test 5
+      Start  5: boot_staging_handoff
+
+5: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-channel/build-boot-host/boot_handoff_tests "--staging"
+5: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-channel/build-boot-host
+5: Test timeout computed to be: 30
+5: PASS 8 signed chains through real RAM staging backend, 6 release15 + 2 legacy11; losses, locked writes, post-wipe outcome/ACK
+5: PASS staged_signed_chains
+5: PASS staged_crypto_rejections
+5: PASS staged_cleanup_and_revocation
+5: PASS staged_receiver_deadline
+5: PASS 4 staging integration groups; source=160 core=2136 completion=568 workspace=17664; no runtime/Flash/device access
+ 5/30 Test  #5: boot_staging_handoff ..............   Passed    0.03 sec
+test 6
+      Start  6: boot_wire_handoff
+
+6: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-channel/build-boot-host/boot_handoff_tests "--wire-staging"
+6: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-channel/build-boot-host
+6: Test timeout computed to be: 30
+6: PASS 8 signed chains through real RAM staging backend, 6 release15 + 2 legacy11; losses, locked writes, post-wipe outcome/ACK
+6: PASS staged_signed_chains
+6: PASS staged_crypto_rejections
+6: PASS staged_cleanup_and_revocation
+6: PASS staged_receiver_deadline
+6: PASS byte codec across existing signed RAM chains; kind counts: 1=39 2=22 3=22 4=17 5=1017 6=500 7=16 8=8; no wire/CRC success replaces signature/lease/model/deadline/cleanup or authorizes install
+ 6/30 Test  #6: boot_wire_handoff .................   Passed    0.03 sec
+test 7
+      Start  7: boot_fragment_handoff
+
+7: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-channel/build-boot-host/boot_handoff_tests "--fragment-staging"
+7: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-channel/build-boot-host
+7: Test timeout computed to be: 30
+7: PASS 8 signed chains through real RAM staging backend, 6 release15 + 2 legacy11; losses, locked writes, post-wipe outcome/ACK
+7: PASS staged_signed_chains
+7: PASS staged_crypto_rejections
+7: PASS staged_cleanup_and_revocation
+7: PASS staged_receiver_deadline
+7: PASS fragments across 8 actual signed RAM chains; kind counts: 1=39 2=22 3=22 4=17 5=1017 6=500 7=16 8=8; frames=22980 duplicates=1252; original logical/crypto/lease/model/deadline/cleanup gates unchanged
+ 7/30 Test  #7: boot_fragment_handoff .............   Passed    0.03 sec
+test 8
+      Start  8: boot_fragment_timing
+
+8: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-channel/build-boot-host/boot_handoff_tests "--fragment-timing"
+8: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-channel/build-boot-host
+8: Test timeout computed to be: 30
+8: PASS8 one-clock actual signed RAM chains: frames=7640 lost=48 timeout-clears=32 repeated-peeks=1611 longest=2551 synthetic ms; all8 kinds, no deadline resets or duplicate outcome delivery
+8: PASS one_clock_signed_chains
+8: PASS one-clock transfer success does not bypass independent signature or expired DATA live-receiver admission
+8: PASS one_clock_admission_refusals
+ 8/30 Test  #8: boot_fragment_timing ..............   Passed    0.02 sec
+test 9
+      Start  9: boot_channel_handoff
+
+9: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-channel/build-boot-host/boot_handoff_tests "--channel-staging"
+9: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-channel/build-boot-host
+9: Test timeout computed to be: 30
+9: SETUP frames=473 drops=4 elapsed=1020 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+9: SETUP frames=473 drops=4 elapsed=1020 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+9: SETUP frames=473 drops=4 elapsed=1016 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+9: SETUP frames=473 drops=4 elapsed=1016 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+9: SETUP frames=473 drops=4 elapsed=1016 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+9: SETUP frames=473 drops=4 elapsed=1016 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+9: SETUP frames=473 drops=4 elapsed=1016 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+9: SETUP frames=473 drops=4 elapsed=1016 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+9: PASS8 transported metadata signed chains: frames=12067 drops=80 container-bytes=4800 DER=70..72 longest=3710 synthetic ms; producer wiped, actual delivered signature/raw digest/lease/model/close, no image deadline reset
+9: SETUP frames=473 drops=4 elapsed=1020 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+9: SETUP frames=473 drops=4 elapsed=1020 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+9: SETUP frames=473 drops=4 elapsed=1020 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+9: PASS transported metadata does not bypass invalid signature, correctly re-signed wrong raw digest, or expired independent image RX
+ 9/30 Test  #9: boot_channel_handoff ..............   Passed    0.03 sec
+test 10
+      Start 10: boot_metadata_setup_handoff
+
+10: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-channel/build-boot-host/boot_handoff_tests "--metadata-setup-staging"
+10: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-channel/build-boot-host
+10: Test timeout computed to be: 30
+10: SETUP frames=473 drops=4 elapsed=1020 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+10: SETUP frames=473 drops=4 elapsed=1020 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+10: SETUP frames=473 drops=4 elapsed=1020 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+10: SETUP frames=473 drops=4 elapsed=1020 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+10: SETUP frames=473 drops=4 elapsed=1020 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+10: SETUP frames=473 drops=4 elapsed=1020 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+10: SETUP frames=473 drops=4 elapsed=1020 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+10: SETUP frames=473 drops=4 elapsed=1020 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+10: PASS8 transported metadata signed chains: frames=8283 drops=48 container-bytes=4800 DER=70..72 longest=3711 synthetic ms; producer wiped, actual delivered signature/raw digest/lease/model/close, no image deadline reset
+10: SETUP frames=473 drops=4 elapsed=1020 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+10: SETUP frames=473 drops=4 elapsed=1020 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+10: SETUP frames=473 drops=4 elapsed=1020 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+10: PASS transported metadata does not bypass invalid signature, correctly re-signed wrong raw digest, or expired independent image RX
+10/30 Test #10: boot_metadata_setup_handoff .......   Passed    0.03 sec
+test 11
+      Start 11: boot_metadata_handoff
+
+11: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-channel/build-boot-host/boot_handoff_tests "--metadata-staging"
+11: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-channel/build-boot-host
+11: Test timeout computed to be: 30
+11: PASS8 transported metadata signed chains: frames=9482 drops=48 container-bytes=4799 DER=70..72 longest=2804 synthetic ms; producer wiped, actual delivered signature/raw digest/lease/model/close, no image deadline reset
+11: PASS transported metadata does not bypass invalid signature, correctly re-signed wrong raw digest, or expired independent image RX
+11/30 Test #11: boot_metadata_handoff .............   Passed    0.02 sec
+test 12
+      Start 12: boot_release_handoff
+
+12: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-channel/build-boot-host/boot_handoff_tests "--release"
+12: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-channel/build-boot-host
+12: Test timeout computed to be: 30
+12: PASS 6 release15 negotiation/DATA/signature/SHA/vector/close/outcome chains; handshake/DATA/ACK/report losses, exactly one release
+12: PASS release_full_chain
+12: PASS release_live_snapshot
+12: PASS release_live_revocation
+12: PASS release_completion_rejections
+12: PASS release_explicit_mode
+12: PASS release_cleanup_and_late_context
+12: PASS release_reentry_and_completion_snapshot
+12: PASS release_arguments_and_aliases
+12: PASS 8 release handoff groups; adapter=528 full_receipt=360 completion=568 core=2136 workspace=17664; RAM only, no install/device access
+12/30 Test #12: boot_release_handoff ..............   Passed    0.08 sec
+test 13
+      Start 13: boot_image_profile
+
+13: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-channel/build-boot-host/boot_profile_tests
+13: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-channel/build-boot-host
+13: Test timeout computed to be: 15
+13: PASS 241 vector-table lengths, 16..256 entries; synthetic models only
+13: PASS all_table_lengths
+13: PASS unknown_and_invalid_profiles
+13: PASS stack_edges_and_gaps
+13: PASS every slot in 256-entry table; null/even/outside/table/RAM/truncated Thumb target rejected
+13: PASS every_handler_and_reserved_slot
+13: PASS full_uint32_arithmetic
+13: PASS lengths_aliases_and_zero_output
+13: PASS 6 profile groups; profile=116 inspection=44; model consistency only, no execution/device access
+13/30 Test #13: boot_image_profile ................   Passed    0.00 sec
+test 14
+      Start 14: boot_release_admission
+
+14: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-channel/build-boot-host/boot_release_tests
+14: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-channel/build-boot-host
+14: Test timeout computed to be: 30
+14: PASS maximum-width fields: document=604 padded=1024 workspace=17664 candidate=224 policy=288
+14: PASS 8 signed release admission groups; raw P-256/SHA, versions/selection/target/image, cleanup/faults; RAM only, no install/device access
+14/30 Test #14: boot_release_admission ............   Passed    0.10 sec
+test 15
+      Start 15: boot_release_versions
+
+15: Test command: /home/avlyubimov/.local/bin/python3.14 "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-channel/firmware/stm32-bootloader/tests/release_versions.py" "--driver" "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-channel/build-boot-host/boot_release_tests"
+15: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-channel/build-boot-host
+15: Test timeout computed to be: 30
+15: PASS 2745 independent bounded SemVer comparisons; 31-byte subset, numeric prerelease not truncated to uint32
+15/30 Test #15: boot_release_versions .............   Passed    0.04 sec
+test 16
+      Start 16: update_metadata_setup_reference
+
+16: Test command: /home/avlyubimov/.local/bin/python3.14 "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-channel/protocol/can/tests/metadata_setup_reference.py" "--driver" "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-channel/build-boot-host/update-transport/update_metadata_setup_tests"
+16: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-channel/build-boot-host/update-transport
+16: Test timeout computed to be: 15
+16: PASS4 independent setup vectors; SHA256=77da01788acccedaabd4bc0db47b508f53c009ad84670354ac35b0367d0200b7
+16/30 Test #16: update_metadata_setup_reference ...   Passed    0.02 sec
+test 17
+      Start 17: update_wire_reference
+
+17: Test command: /home/avlyubimov/.local/bin/python3.14 "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-channel/protocol/can/tests/wire_reference.py" "--driver" "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-channel/build-boot-host/update-transport/update_wire_tests"
+17: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-channel/build-boot-host/update-transport
+17: Test timeout computed to be: 15
+17: PASS12 independent Python LE golden messages,8 kinds/all5 outcome codes; concatenated_sha256=7c94f5fd561787851d86d23c8179a806b908cb94cf48a1d52580540cf1705426
+17/30 Test #17: update_wire_reference .............   Passed    0.03 sec
+test 18
+      Start 18: update_fragment_reference
+
+18: Test command: /home/avlyubimov/.local/bin/python3.14 "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-channel/protocol/can/tests/fragment_reference.py" "--driver" "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-channel/build-boot-host/update-transport/update_fragment_tests"
+18: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-channel/build-boot-host/update-transport
+18: Test timeout computed to be: 15
+18: PASS3 independent vectors: ACK24/6, DATA31/8, DATA286/72 frames; partial DLC7/6; SHA256=0e2abb4d14cacfd05d66f9c4e021efab0395643230ed6e689bc7b00364b9ec8a
+18/30 Test #18: update_fragment_reference .........   Passed    0.02 sec
+test 19
+      Start 19: update_metadata_reference
+
+19: Test command: /home/avlyubimov/.local/bin/python3.14 "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-channel/protocol/can/tests/metadata_reference.py" "--driver" "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-channel/build-boot-host/update-transport/update_metadata_tests"
+19: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-channel/build-boot-host/update-transport
+19: Test timeout computed to be: 15
+19: PASS2 independent metadata bundles98/1215 bytes; SHA256=e8bffb2885cc650c2be225dfb8f1956f8f2244e081361c8fd11ed7c67603e8d0
+19/30 Test #19: update_metadata_reference .........   Passed    0.02 sec
+test 20
+      Start 20: update_session
+
+20: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-channel/build-boot-host/update-transport/update_session_tests
+20: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-channel/build-boot-host/update-transport
+20: Test timeout computed to be: 20
+20: PASS checksum_vectors
+20: PASS invalid_limits
+20: PASS begin_and_exclusivity
+20: PASS two_phase_and_exact_duplicates
+20: PASS malformed_blocks
+20: PASS conflicting_duplicate
+20: PASS crc_collision_does_not_match_duplicate
+20: PASS consumer_failure_is_sticky
+20: PASS sender_retry_budget
+20: PASS receiver_retry_budget
+20: PASS ack_validation
+20: PASS deadline_boundaries
+20: PASS total_deadline
+20: PASS clocks_and_wraparound
+20: PASS abort_and_reboot
+20: PASS null_and_output_contracts
+20: PASS retry_counter_boundary
+20: PASS 17 unit groups; rx=384 tx=384 bytes; no device access
+20/30 Test #20: update_session ....................   Passed    0.00 sec
+test 21
+      Start 21: update_loopback
+
+21: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-channel/build-boot-host/update-transport/update_loopback_tests
+21: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-channel/build-boot-host/update-transport
+21: Test timeout computed to be: 20
+21: PASS 2049 memory transfers; lost DATA=4318 ACK=4360 (final=397) corrupt=3924 reorder=4338 pending duplicates=4004
+21: PASS altered payload + valid CRC completes transport only; SHA oracle rejects image
+21: PASS 10 volatile reset cut cases; stale sessions/ACK rejected; no resume
+21: PASS truncated stream / partial RAM consumer never reach completion
+21/30 Test #21: update_loopback ...................   Passed    0.04 sec
+test 22
+      Start 22: update_outcome
+
+22: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-channel/build-boot-host/update-transport/update_outcome_tests
+22: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-channel/build-boot-host/update-transport
+22: Test timeout computed to be: 20
+22: PASS 1001 outcome sessions, 1001 deliveries; lost report/final ACK; duplicates not redelivered
+22: PASS loss_duplicate_and_history
+22: PASS binding_and_ack_validation
+22: PASS conflicts_invalid_reports_and_forgery_boundary
+22: PASS deadlines_retries_and_late_begin
+22: PASS transport_reboot_abort_and_clock
+22: PASS config_and_canonical_codes
+22: PASS 6 outcome groups; report=84 TX=128 RX=224; no authentication/install/device access
+22/30 Test #22: update_outcome ....................   Passed    0.01 sec
+test 23
+      Start 23: update_negotiation
+
+23: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-channel/build-boot-host/update-transport/update_negotiation_tests
+23: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-channel/build-boot-host/update-transport
+23: Test timeout computed to be: 20
+23: PASS 7 negotiation groups/1024 sessions; state=368 pool=32 message=128. Opaque bindings only; no CAN/authentication/install/device access.
+23/30 Test #23: update_negotiation ................   Passed    0.00 sec
+test 24
+      Start 24: update_wire
+
+24: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-channel/build-boot-host/update-transport/update_wire_tests
+24: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-channel/build-boot-host/update-transport
+24: Test timeout computed to be: 20
+24: PASS 65536 outcome code/reason byte combinations; unknown and incompatible tokens reject with zero output
+24: PASS all256 DATA lengths; uint32 offset overflow, tail zeroing and no padding/tail emission
+24: PASS 200000 deterministic malformed/mutation cases: accepted=113410 canonical, rejected=86590 zeroed; structural only
+24: PASS corrupted DATA structurally decodes but existing RX rejects CRC before progress; consumer ACK still mandatory
+24: PASS wire draft:8 message kinds, max=286 caller_message=284; no CAN/device/installation
+24/30 Test #24: update_wire .......................   Passed    0.06 sec
+test 25
+      Start 25: update_fragment
+
+25: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-channel/build-boot-host/update-transport/update_fragment_tests
+25: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-channel/build-boot-host/update-transport
+25: Test timeout computed to be: 20
+25: PASS263 all 8 kinds / DATA lengths1..256 / <=72 frames / single delivery; tx=360 rx=352 bytes (host only)
+25: PASS all_kinds_and_lengths
+25: PASS all DLC256, START32768, continuation65536 fields; no padding or guessed order
+25: PASS malformed_envelopes
+25: PASS loss/order/retry/duplicate conflicts, route isolation, READY backpressure and exactly-once take
+25: PASS duplicates_order_and_pressure
+25: PASS owned TX snapshot, deterministic repeated peek, exact queue commit, stale commit and cancellation
+25: PASS tx_queue_and_snapshot
+25: PASS whole-message loss requires explicit timeout/clear and fresh counter; no implicit restart or remote ACK claim
+25: PASS lost_message_retry
+25: PASS exact progress/total/READY deadlines, drip duplicates, wrap, backward clock, generation revocation and sticky clear
+25: PASS deadlines_and_context
+25: PASS explicit config, frame quotas, exhaustion without wrap, no reinit/reset bypass, failure output zeroing
+25: PASS budgets_counters_and_arguments
+25: PASS READY is unchecked, malformed inner zeroes output, corrupted DATA still requires unchanged logical RX CRC
+25: PASS invalid_inner_and_crc
+25: PASS100000 deterministic drop/mutation/DLC/duplicate chains: taken=34470 structural only, rejected=65530 zero output, bounded cleanup
+25: PASS fault_corpus
+25/30 Test #25: update_fragment ...................   Passed    0.04 sec
+test 26
+      Start 26: update_fragment_timing
+
+26: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-channel/build-boot-host/update-transport/update_fragment_timing_tests
+26: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-channel/build-boot-host/update-transport
+26: Test timeout computed to be: 20
+26: PASS shared clock: whole-message retries, missing START/middle/final, lost ACK, bounded queue, exact consumer writes, wrap and retry exhaustion
+26: PASS READY exact total deadline, queue stall exact progress deadline, peek/busy cannot reset time/counters
+26: PASS sticky context/backward-clock cancellation; old START accepted by fresh generation proves reboot replay isolation is NOT provided
+26: PASS fragment progress/late valid OFFER cannot extend or revive exact50ms negotiation lifetime
+26: PASS timing data scenarios=34 frames=40700 dropped=43 timeout-clears=31 repeated-peeks=8464; HOST simulation, no bus/CPU/default timing claim
+26/30 Test #26: update_fragment_timing ............   Passed    0.01 sec
+test 27
+      Start 27: update_metadata
+
+27: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-channel/build-boot-host/update-transport/update_metadata_tests
+27: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-channel/build-boot-host/update-transport
+27: Test timeout computed to be: 20
+27: PASS1024 document lengths, duplicate/final-ACK loss/copy-before-ACK/single take, fresh IDs/no reinit/wrap; rx=1728 snapshot=1212 host bytes
+27: PASS exact length/header/reserved/binding/field ranges; modified raw document structurally decodes and still needs independent signature/digest verification
+27: PASS image/metadata role separation, CRC, exact active/ready deadlines, wrap/backward/context/sticky cancellation and cache wipe
+27: PASS malformed complete container zeroes/wipes before delivery; fresh-ID recovery and exact total deadline despite slow progress
+27: PASS100000 mutations: structurally accepted=61930 rejected/zeroed=38070; no raw SHA/signature authority
+27/30 Test #27: update_metadata ...................   Passed    0.05 sec
+test 28
+      Start 28: update_metadata_setup
+
+28: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-channel/build-boot-host/update-transport/update_metadata_setup_tests
+28: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-channel/build-boot-host/update-transport
+28: Test timeout computed to be: 20
+28: PASS4 setup kinds; capacities/truncation/tails; 100000 mutations: 82504 structural, 17496 zero-output refusals
+28: PASS invalid config/bounds/stale session/role/generation; rejection does not allocate or restart
+28: PASS8 sequential image/metadata pairs, shared namespace ownership, no wrap/reuse; concrete close
+28: PASS4 lost setup phases, responder early take + lost CONFIRM recovery; no deadline restart
+28: PASS context/clock/owner/image/progress/content/timeout/send faults, ID retained, sticky guards
+28: Host storage only: setup=312 message=168; no MCU RAM/stack approval
+28/30 Test #28: update_metadata_setup .............   Passed    0.01 sec
+test 29
+      Start 29: update_fragment_raw
+
+29: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-channel/build-boot-host/update-transport/update_fragment_raw_tests
+29: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-channel/build-boot-host/update-transport
+29: Test timeout computed to be: 20
+29: PASS279 raw lengths8..286, all undersized capacities, mode isolation, single take, retained IDs
+29: PASS raw/typed codec mismatch, context/clock/timeout/exhaustion; no authority from raw bytes
+29/30 Test #29: update_fragment_raw ...............   Passed    0.01 sec
+test 30
+      Start 30: update_channel
+
+30: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-channel/build-boot-host/update-transport/update_channel_tests
+30: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-channel/build-boot-host/update-transport
+30: Test timeout computed to be: 20
+30: PASS512 phase cycles, 7168 mixed TU/MS messages, shared retained counters, exact queue commit/single owned take/wrap clock
+30: PASS phase order/pair IDs/late control/old metadata ACK filtering; strict prefix/version/reserved refusal, no decoder fallback
+30: PASS final queued frame progress/total timeout, exact backpressure, cancel/clear retained policy/counters; sticky context/clock/exhaustion
+30: Host storage only: channel TX=696 RX=664 snapshot=288; no MCU RAM/stack approval
+30/30 Test #30: update_channel ....................   Passed    0.03 sec
+
+100% tests passed, 0 tests failed out of 30
+
+Total Test time (real) =   1.31 sec

@@ -1,0 +1,32 @@
+41: PASS512 phase cycles, 7168 mixed TU/MS messages, shared retained counters, exact queue commit/single owned take/wrap clock
+41: PASS phase order/pair IDs/late control/old metadata ACK filtering; strict prefix/version/reserved refusal, no decoder fallback
+41: PASS final queued frame progress/total timeout, exact backpressure, cancel/clear retained policy/counters; sticky context/clock/exhaustion
+41: Host storage only: channel TX=696 RX=664 snapshot=288; no MCU RAM/stack approval
+50: SETUP frames=473 drops=4 elapsed=1020 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+50: SETUP frames=473 drops=4 elapsed=1020 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+50: SETUP frames=473 drops=4 elapsed=1016 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+50: SETUP frames=473 drops=4 elapsed=1016 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+50: SETUP frames=473 drops=4 elapsed=1016 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+50: SETUP frames=473 drops=4 elapsed=1016 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+50: SETUP frames=473 drops=4 elapsed=1016 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+50: SETUP frames=473 drops=4 elapsed=1016 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+50: PASS8 transported metadata signed chains: frames=12066 drops=80 container-bytes=4799 DER=70..72 longest=3710 synthetic ms; producer wiped, actual delivered signature/raw digest/lease/model/close, no image deadline reset
+50: SETUP frames=473 drops=4 elapsed=1020 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+50: SETUP frames=473 drops=4 elapsed=1020 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+50: SETUP frames=473 drops=4 elapsed=1020 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+50: PASS transported metadata does not bypass invalid signature, correctly re-signed wrong raw digest, or expired independent image RX
+51: SETUP frames=473 drops=4 elapsed=1020 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+51: SETUP frames=473 drops=4 elapsed=1020 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+51: SETUP frames=473 drops=4 elapsed=1020 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+51: SETUP frames=473 drops=4 elapsed=1020 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+51: SETUP frames=473 drops=4 elapsed=1020 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+51: SETUP frames=473 drops=4 elapsed=1020 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+51: SETUP frames=473 drops=4 elapsed=1020 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+51: SETUP frames=473 drops=4 elapsed=1020 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+51: PASS8 transported metadata signed chains: frames=8282 drops=48 container-bytes=4799 DER=70..72 longest=3711 synthetic ms; producer wiped, actual delivered signature/raw digest/lease/model/close, no image deadline reset
+51: SETUP frames=473 drops=4 elapsed=1020 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+51: SETUP frames=473 drops=4 elapsed=1020 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+51: SETUP frames=473 drops=4 elapsed=1020 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+51: PASS transported metadata does not bypass invalid signature, correctly re-signed wrong raw digest, or expired independent image RX
+52: PASS8 transported metadata signed chains: frames=9484 drops=48 container-bytes=4801 DER=70..72 longest=2804 synthetic ms; producer wiped, actual delivered signature/raw digest/lease/model/close, no image deadline reset
+52: PASS transported metadata does not bypass invalid signature, correctly re-signed wrong raw digest, or expired independent image RX
