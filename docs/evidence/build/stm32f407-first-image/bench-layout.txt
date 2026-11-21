@@ -1,0 +1,54 @@
+There are 23 section headers, starting at offset 0x27be8:
+
+Section Headers:
+  [Nr] Name              Type            Addr     Off    Size   ES Flg Lk Inf Al
+  [ 0]                   NULL            00000000 000000 000000 00      0   0  0
+  [ 1] .isr_vector       PROGBITS        08000000 010000 000188 00   A  0   0 512
+  [ 2] .text             PROGBITS        08000188 010188 00082a 00  AX  0   0  4
+  [ 3] .rodata           PROGBITS        080009b4 0109b4 000068 00   A  0   0  4
+  [ 4] .data             PROGBITS        20000000 020000 000008 00  WA  0   0  4
+  [ 5] .bss              NOBITS          20000008 020008 0000b0 00  WA  0   0  4
+  [ 6] .noinit           NOBITS          200000b8 0200b8 000054 00  WA  0   0  4
+  [ 7] .ccm_bss          NOBITS          10000000 030000 000004 00  WA  0   0  4
+  [ 8] .stacks           NOBITS          2001ebc0 02ebc0 001440 00  WA  0   0  8
+  [ 9] .forbidden        PROGBITS        00000000 020008 000000 00  WX  0   0  4
+  [10] .ARM.attributes   ARM_ATTRIBUTES  00000000 020008 000035 00      0   0  1
+  [11] .comment          PROGBITS        00000000 02003d 000026 01  MS  0   0  1
+  [12] .debug_info       PROGBITS        00000000 020063 00285e 00      0   0  1
+  [13] .debug_abbrev     PROGBITS        00000000 0228c1 00095c 00      0   0  1
+  [14] .debug_aranges    PROGBITS        00000000 02321d 000118 00      0   0  1
+  [15] .debug_ranges     PROGBITS        00000000 023335 000378 00      0   0  1
+  [16] .debug_line       PROGBITS        00000000 0236ad 0015e6 00      0   0  1
+  [17] .debug_str        PROGBITS        00000000 024c93 000884 01  MS  0   0  1
+  [18] .debug_loc        PROGBITS        00000000 025517 0017f0 00      0   0  1
+  [19] .debug_frame      PROGBITS        00000000 026d08 00022c 00      0   0  4
+  [20] .symtab           SYMTAB          00000000 026f34 000810 10     21  86  4
+  [21] .strtab           STRTAB          00000000 027744 0003c1 00      0   0  1
+  [22] .shstrtab         STRTAB          00000000 027b05 0000e3 00      0   0  1
+Key to Flags:
+  W (write), A (alloc), X (execute), M (merge), S (strings), I (info),
+  L (link order), O (extra OS processing required), G (group), T (TLS),
+  C (compressed), x (unknown), o (OS specific), E (exclude),
+  D (mbind), y (purecode), p (processor specific)
+
+Elf file type is EXEC (Executable file)
+Entry point 0x8000189
+There are 6 program headers, starting at offset 52
+
+Program Headers:
+  Type           Offset   VirtAddr   PhysAddr   FileSiz MemSiz  Flg Align
+  LOAD           0x010000 0x08000000 0x08000000 0x00a1c 0x00a1c R E 0x10000
+  LOAD           0x020000 0x20000000 0x08000a1c 0x00008 0x000b8 RW  0x10000
+  LOAD           0x0000b8 0x200000b8 0x08000a24 0x00000 0x00054 RW  0x10000
+  LOAD           0x010000 0x10000000 0x10000000 0x00000 0x00004 RW  0x10000
+  LOAD           0x00ebc0 0x2001ebc0 0x2001ebc0 0x00000 0x01440 RW  0x10000
+  GNU_STACK      0x000000 0x00000000 0x00000000 0x00000 0x00000 RW  0x10
+
+ Section to Segment mapping:
+  Segment Sections...
+   00     .isr_vector .text .rodata
+   01     .data .bss
+   02     .noinit
+   03     .ccm_bss
+   04     .stacks
+   05

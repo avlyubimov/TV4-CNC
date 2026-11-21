@@ -1,5 +1,21 @@
 # Аппаратный статус TV4-CNC
 
+## Текущий P0: спецификация проверена, нового аппаратного результата нет
+
+22 ноября 2026, от main610f174 (PR #55 слит). Подготовлен настоящий
+[STM32F407VG HSI bench](STM32_FIRST_IMAGE.md): ELF/BIN/map, официальный
+Flash1MiB/SRAM112+16KiB/CCM64KiB/12sectors/98vectors contract, watchdog и
+RAM/SWD diagnostics. Это программная подготовка, **не исполнение на плате**.
+SWD/serial/USB/read/reset/Flash/backup действия не выполнялись.
+Суффикс VGT6 и owner facts ниже прежние; full physical marking/package,
+реальные HSI/LSI/HSE/RAM/CCM/reset/watchdog/protection/erase/restore/GPIO/CAN
+не подтверждены. Официальные адреса теперь рассмотрены и не являются unknown
+для software bench profile; это не подтверждает экземпляр или CAN loader layout.
+Перед первой записью — [отдельное разрешение и runbook](STM32_STLINK_RUNBOOK.md),
+original F407 backup SHA/независимая копия/protection preflight. Установленный
+ESP32 ordinary8f0d899 не менялся. Всё ниже — факты владельца и история этапов.
+
+
 PR-07v от main `5e76626`: [threaded signed HOST tests](STM32_THREADED_LINK.md)
 добавляют программную проверку отдельного driver actor, не аппаратное испытание.
 Owner SWD/core/Flash1024KiB/3,252V/backup/vector facts ниже прежние; новых
@@ -166,7 +182,8 @@ RAM/CCM, package pins, HSE или возможность двух OTA slots. Raw
 один сообщённый результат, не проверка питания под нагрузкой. Подробные пределы
 доказательств — [owner report](evidence/hardware/stm32f407-owner-swd/README.md).
 
-Следующая программная часть — [startup/sections/no-I/O foundation](STM32_STARTUP.md).
+Исторический следующий шаг этого owner report — [startup/sections/no-I/O foundation](STM32_STARTUP.md).
+Текущий P0 образ и актуальные аппаратные gates описаны в начале документа.
 Synthetic link fixture не использует эту1MiB как production layout и не резервирует
 bootloader/app addresses. Hardware startup/clock/GPIO/CAN остаются открытыми.
 

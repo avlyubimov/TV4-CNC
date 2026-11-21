@@ -1,0 +1,26 @@
+PASS local Markdown links AGENTS.md
+PASS local Markdown links LICENSE-NOTICE.md
+PASS local Markdown links README.md
+PASS local Markdown links docs/HARDWARE_STATUS.md
+PASS local Markdown links docs/IMPLEMENTATION.md
+PASS local Markdown links docs/IMPLEMENTATION_PRIORITIES.md
+PASS local Markdown links docs/NEXT_STAGE.md
+PASS local Markdown links docs/OPEN_QUESTIONS.md
+PASS local Markdown links docs/ROADMAP.md
+PASS local Markdown links docs/STM32_FIRST_IMAGE.md
+PASS local Markdown links docs/STM32_FOUNDATION.md
+PASS local Markdown links docs/STM32_STARTUP.md
+PASS local Markdown links docs/STM32_STLINK_RUNBOOK.md
+PASS local Markdown links docs/plans/P0_STM32F407_FIRST_IMAGE.md
+PASS local Markdown links firmware/stm32-motion/AGENTS.md
+PASS local Markdown links third_party/stm32f4-reference/LICENSE.md
+PASS local Markdown links third_party/stm32f4-reference/README.md
+PASS local Markdown links docs/evidence/build/stm32f407-first-image/README.md
+PASS local Markdown links docs/evidence/build/stm32f407-first-image/commands.md
+PASS YAML + bash -n every run step .github/workflows/motion.yml
+PASS YAML + bash -n every run step .github/workflows/host.yml
+PASS YAML + bash -n every run step .github/workflows/docs.yml
+PASS exact checkout/source identity, two-directory real ELF/BIN comparison, strict frame/BIN guard
+PASS all actions retain exact40 SHA; SDK8/dependency locks unchanged
+PASS no hardware/backend/Flash writer or future bootloader reservation; no binary upload/release/merge
+PASS diff scope: one integrated P0; existing ESP32/protocol/bootloader source unchanged; no backup/keys/binaries

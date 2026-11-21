@@ -1,0 +1,54 @@
+00000020 A __guard_bytes__
+00000400 A __fault_stack_bytes__
+00001000 A __main_stack_bytes__
+00004000 A __bench_flash_budget__
+08000000 00000188 R tv4_bench_vectors
+08000188 00000018 T Reset_Handler
+080001a4 00000022 T tv4_bench_fault_entry
+080001cc 00000006 T tv4_bench_halt
+080001d4 00000030 t guards_ok
+08000204 00000030 t fail
+08000234 00000010 T SysTick_Handler
+08000244 00000090 T tv4_bench_fault_capture
+080002d4 000001e8 T tv4_bench_entry
+080004bc 0000001c t wait_bits
+080004d8 000001bc T tv4_bench_hardware_init
+08000694 00000016 T tv4_bench_tick_start
+080006ac 00000010 T tv4_bench_watchdog_feed
+080006bc 0000001c t crc_word
+080006d8 0000007e t record_crc
+08000758 00000030 T tv4_bench_record_valid
+08000788 00000050 T tv4_bench_record_save
+080007d8 0000006c T tv4_bench_diag_begin
+08000844 00000060 T tv4_bench_frame_span
+080008a4 00000028 T tv4_bench_feed_due
+080008cc 00000010 T memset
+080008cc 00000010 T tv4_bench_memset
+080008dc 00000020 t overlaps
+080008fc 00000028 t valid_span
+08000924 0000008e T tv4_startup_memory_init
+080009b4 00000068 R tv4_bench_build
+08000a1c A __data_load__
+08000a1c R __text_end__
+08000a24 A __image_end__
+10000000 B __ccm_start__
+10000000 00000004 b ccm_probe
+10000004 B __ccm_end__
+20000000 00000004 D SystemCoreClock
+20000000 D __data_start__
+20000004 00000004 d data_cookie
+20000008 B __bss_start__
+20000008 D __data_end__
+20000008 00000004 b fault_latched
+2000000c 00000004 b bss_cookie
+20000010 000000a8 B tv4_bench_diag
+200000b8 B __bss_end__
+200000b8 B __noinit_start__
+200000b8 00000054 B tv4_bench_history
+2000010c B __noinit_end__
+2001ebc0 A __fault_guard_start__
+2001ebe0 A __fault_stack_bottom__
+2001efe0 A __fault_stack_top__
+2001efe0 A __main_guard_start__
+2001f000 A __stack_bottom__
+20020000 R __stack_top__

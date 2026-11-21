@@ -1,0 +1,4 @@
+   text	   data	    bss	    dec	    hex	filename
+    214	      0	      0	    214	     d6	memory_init.c.obj (ex build-motion-probe/libtv4_motion_boot_support.a)
+     20	      0	      0	     20	     14	noio.c.obj (ex build-motion-probe/libtv4_motion_boot_support.a)
+PASS: static object budget only; no board Flash/RAM usage claim

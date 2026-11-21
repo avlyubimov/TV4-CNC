@@ -58,6 +58,13 @@ jobs:
             -fanalyzer -pthread -Iprotocol/can -c protocol/can/tests/threaded_test_link.c \
             -o build/policy-analysis/threaded_test_link.o >> build/policy-analysis.log 2>&1
           printf 'host threaded_test_link: actual-source analyzer PASS\n' >> build/policy-analysis.log
+          for name in hardware diagnostics runtime; do
+            gcc -std=c11 -Wall -Wextra -Werror -Wconversion -Wshadow -Wstrict-prototypes \
+              -fanalyzer -DTV4_BENCH_TEST_MMIO=1 -Ifirmware/stm32-motion/board/stm32f407vg \
+              -c "firmware/stm32-motion/board/stm32f407vg/$name.c" \
+              -o "build/policy-analysis/bench-$name.o" >> build/policy-analysis.log 2>&1
+            printf 'bench %s: actual-source analyzer PASS\n' "$name" >> build/policy-analysis.log
+          done
       - name: Race-check completion, dispatch, ingress, RX pause and signed update
         if: matrix.sanitizer == false
         shell: bash

@@ -1,5 +1,18 @@
 # PR-02 — STM32 Motion Foundation
 
+## Текущий P0 после PR #55
+
+[Первый настоящий образ](STM32_FIRST_IMAGE.md) добавлен отдельным opt-in
+`stm32f407vg-hsi-no-motion-v1`: standalone ELF/BIN, официальный memory/vector
+contract, HSI, emergency faults/main watchdog и pinless RAM/SWD diagnostics.
+[ST-Link процедура](STM32_STLINK_RUNBOOK.md),
+[программные проверки](evidence/build/stm32f407-first-image/README.md).
+Default libraries и synthetic probe остаются отдельными. Ни один GPIO/AF/
+STEP/DIR/ENABLE/spindle/CAN не назначен; physical inhibit не подтверждён.
+Новых hardware/backup действий нет; pending stand-alone bench не CAN loader.
+Далее сохранена история PR-02…PR-07v, не текущее отсутствие образа.
+
+
 PR-07v от main `5e76626`: [подписанный threaded HOST link](STM32_THREADED_LINK.md)
 передаёт full signed update через отдельный driver pthread и concurrent RX.
 Host75/sanitizers75/standalone49/TSan8+1 PASS; upper windows, independent crypto/

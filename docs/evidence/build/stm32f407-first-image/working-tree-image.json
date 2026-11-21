@@ -1,0 +1,51 @@
+{
+  "status": "software-checked-standalone-bench",
+  "profile": "stm32f407vg-hsi-no-motion-v1",
+  "source_commit": "610f1745d892d5904ea183b50617a20d8ce755bb",
+  "source_dirty": true,
+  "elf_sha256": "cabd796259b435360b180a6901f539f1885817b32fd53d06b5dac41dbc7dcc25",
+  "bin_sha256": "f1a8c91ac4ca29cedac9af1db24bc7d245edeff81c63feab9683e7d918552305",
+  "map_sha256": "641204f60716d4be6d0117730944aab8a0f4a4b06b6f89bbc5d5668c62ba383b",
+  "bin_bytes": 2596,
+  "flash_budget_bytes": 16384,
+  "vectors": 98,
+  "reserved_indices": [
+    7,
+    8,
+    9,
+    10,
+    13,
+    95
+  ],
+  "hsi_hz": 16000000,
+  "main_stack_bytes": 4096,
+  "fault_stack_bytes": 1024,
+  "guard_bytes": 32,
+  "sram_static_bytes": 268,
+  "ccm_bytes": 4,
+  "diagnostic_address": 536870928,
+  "diagnostic_bytes": 168,
+  "history_address": 536871096,
+  "hardware_tested": false,
+  "physical_inhibit_verified": false,
+  "motion_outputs": false,
+  "can": false,
+  "flash_writer": false,
+  "bootloader_reservation": null,
+  "device_access": false,
+  "install_authorized": false,
+  "binary_release_authorized": false,
+  "code_check": {
+    "integer_only": true,
+    "semihosting": false,
+    "main_only_watchdog_feed": true,
+    "emergency_fault_stack": true
+  },
+  "build_check": {
+    "compiler_frames": 20,
+    "max_compiler_frame_bytes": 88,
+    "individual_frame_budget_bytes": 128,
+    "measured_stack_high_water": false,
+    "bin_allowlist": true
+  }
+}

@@ -8,6 +8,8 @@ jobs:
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4, reviewed 2026-11-19
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
       - name: Install exact ARM GNU Toolchain 14.2.Rel1
         shell: bash
         run: |
@@ -22,8 +24,8 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          mkdir -p evidence
-          arm-none-eabi-gcc --version | tee evidence/compiler.txt
+          mkdir -p build-motion-evidence
+          arm-none-eabi-gcc --version | tee build-motion-evidence/compiler.txt
           cmake -S firmware/stm32-motion -B build-motion-arm -G Ninja \
             -DCMAKE_TOOLCHAIN_FILE=cmake/arm-none-eabi.cmake -DCMAKE_BUILD_TYPE=MinSizeRel
           cmake --build build-motion-arm
@@ -31,8 +33,8 @@ jobs:
             -Ifirmware/stm32-motion/core -Ifirmware/stm32-motion/startup -Ifirmware/stm32-motion/board \
             firmware/stm32-motion/core/supervisor.c firmware/stm32-motion/startup/memory_init.c \
             firmware/stm32-motion/board/noio.c
-          python3 tools/check_motion_size.py build-motion-arm/libtv4_motion_core.a | tee evidence/core-size.txt
-          python3 tools/check_motion_size.py build-motion-arm/libtv4_motion_boot_support.a | tee evidence/boot-support-size.txt
+          python3 tools/check_motion_size.py build-motion-arm/libtv4_motion_core.a | tee build-motion-evidence/core-size.txt
+          python3 tools/check_motion_size.py build-motion-arm/libtv4_motion_boot_support.a | tee build-motion-evidence/boot-support-size.txt
       - name: Compile bounded update transport (no CAN or Flash backend)
         shell: bash
         run: |
@@ -41,49 +43,49 @@ jobs:
             -DCMAKE_TOOLCHAIN_FILE="$PWD/firmware/stm32-motion/cmake/arm-none-eabi.cmake" \
             -DCMAKE_BUILD_TYPE=MinSizeRel
           cmake --build build-update-arm
-          cmake --build build-update-arm --target help > evidence/update-arm-targets.txt
-          if grep -Eq 'tv4_fragment_test_link|update_fragment_timing_tests|update_metadata_tests|update_metadata_setup_tests|update_fragment_raw_tests|update_channel_tests|update_frame_queue_tests|update_egress_tests|update_driver_events_tests|update_completion_mailbox_tests|update_completion_owner_tests|update_driver_dispatch_tests|update_frame_ingress_tests|update_ingress_owner_tests' evidence/update-arm-targets.txt; then
+          cmake --build build-update-arm --target help > build-motion-evidence/update-arm-targets.txt
+          if grep -Eq 'tv4_fragment_test_link|update_fragment_timing_tests|update_metadata_tests|update_metadata_setup_tests|update_fragment_raw_tests|update_channel_tests|update_frame_queue_tests|update_egress_tests|update_driver_events_tests|update_completion_mailbox_tests|update_completion_owner_tests|update_driver_dispatch_tests|update_frame_ingress_tests|update_ingress_owner_tests' build-motion-evidence/update-arm-targets.txt; then
             echo 'ERROR: host fragment fixture leaked into ARM targets'; exit 1
           fi
-          echo 'PASS host fragment fixture absent from ARM build' > evidence/fragment-test-scope.txt
+          echo 'PASS host fragment fixture absent from ARM build' > build-motion-evidence/fragment-test-scope.txt
           mkdir -p build-update-static
-          gcc --version > evidence/update-static-analysis.txt
+          gcc --version > build-motion-evidence/update-static-analysis.txt
           for source in update_session update_outcome update_negotiation update_wire update_fragments update_metadata update_metadata_setup update_channel frame_queue update_egress update_driver_events completion_mailbox driver_dispatch frame_ingress ingress_owner; do
             gcc -std=c11 -Wall -Wextra -Werror -Wconversion -Wshadow -Wstrict-prototypes \
               -fanalyzer -Iprotocol/can -c "protocol/can/$source.c" -o "build-update-static/$source.o"
-            printf 'PASS actual-source -fanalyzer -c %s\n' "$source" >> evidence/update-static-analysis.txt
+            printf 'PASS actual-source -fanalyzer -c %s\n' "$source" >> build-motion-evidence/update-static-analysis.txt
           done
-          python3 tools/check_update_wire_build.py build-update-arm > evidence/wire-budget.json
-          python3 protocol/can/tests/wire_budget_tests.py --build build-update-arm > evidence/wire-budget-negative.txt 2>&1
-          python3 tools/check_update_fragment_build.py build-update-arm > evidence/fragment-budget.json
-          python3 protocol/can/tests/wire_budget_tests.py --fragments --build build-update-arm > evidence/fragment-budget-negative.txt 2>&1
-          python3 tools/check_update_egress_build.py build-update-arm > evidence/egress-budget.json
-          python3 tools/check_driver_events_build.py build-update-arm > evidence/driver-events-budget.json
-          python3 tools/check_completion_mailbox_build.py build-update-arm > evidence/completion-mailbox-budget.json
-          python3 tools/check_driver_dispatch_build.py build-update-arm > evidence/driver-dispatch-budget.json
-          python3 tools/check_frame_ingress_build.py build-update-arm > evidence/frame-ingress-budget.json
-          python3 tools/check_ingress_owner_build.py build-update-arm > evidence/ingress-owner-budget.json
-          python3 protocol/can/tests/wire_budget_tests.py --egress --build build-update-arm > evidence/egress-budget-negative.txt 2>&1
-          python3 protocol/can/tests/wire_budget_tests.py --driver-events --build build-update-arm > evidence/driver-events-budget-negative.txt 2>&1
-          python3 protocol/can/tests/wire_budget_tests.py --completion-mailbox --build build-update-arm > evidence/completion-mailbox-budget-negative.txt 2>&1
-          python3 protocol/can/tests/wire_budget_tests.py --driver-dispatch --build build-update-arm > evidence/driver-dispatch-budget-negative.txt 2>&1
-          python3 protocol/can/tests/wire_budget_tests.py --frame-ingress --build build-update-arm > evidence/frame-ingress-budget-negative.txt 2>&1
-          python3 protocol/can/tests/wire_budget_tests.py --ingress-owner --build build-update-arm > evidence/ingress-owner-budget-negative.txt 2>&1
-          python3 tools/check_update_channel_build.py build-update-arm > evidence/channel-budget.json
-          python3 protocol/can/tests/wire_budget_tests.py --channel --build build-update-arm > evidence/channel-budget-negative.txt 2>&1
-          python3 tools/check_metadata_setup_build.py build-update-arm > evidence/metadata-setup-budget.json
-          python3 protocol/can/tests/wire_budget_tests.py --setup --build build-update-arm > evidence/metadata-setup-budget-negative.txt 2>&1
-          python3 tools/check_update_metadata_build.py build-update-arm > evidence/metadata-budget.json
-          python3 protocol/can/tests/wire_budget_tests.py --metadata --build build-update-arm > evidence/metadata-budget-negative.txt 2>&1
-          python3 tools/check_motion_size.py build-update-arm/libtv4_update_transport.a | tee evidence/update-size.txt
-          arm-none-eabi-nm --undefined-only build-update-arm/libtv4_update_transport.a | tee evidence/update-symbols.txt
-          cat build-update-arm/CMakeFiles/tv4_update_transport.dir/*.su > evidence/update-stack.txt
+          python3 tools/check_update_wire_build.py build-update-arm > build-motion-evidence/wire-budget.json
+          python3 protocol/can/tests/wire_budget_tests.py --build build-update-arm > build-motion-evidence/wire-budget-negative.txt 2>&1
+          python3 tools/check_update_fragment_build.py build-update-arm > build-motion-evidence/fragment-budget.json
+          python3 protocol/can/tests/wire_budget_tests.py --fragments --build build-update-arm > build-motion-evidence/fragment-budget-negative.txt 2>&1
+          python3 tools/check_update_egress_build.py build-update-arm > build-motion-evidence/egress-budget.json
+          python3 tools/check_driver_events_build.py build-update-arm > build-motion-evidence/driver-events-budget.json
+          python3 tools/check_completion_mailbox_build.py build-update-arm > build-motion-evidence/completion-mailbox-budget.json
+          python3 tools/check_driver_dispatch_build.py build-update-arm > build-motion-evidence/driver-dispatch-budget.json
+          python3 tools/check_frame_ingress_build.py build-update-arm > build-motion-evidence/frame-ingress-budget.json
+          python3 tools/check_ingress_owner_build.py build-update-arm > build-motion-evidence/ingress-owner-budget.json
+          python3 protocol/can/tests/wire_budget_tests.py --egress --build build-update-arm > build-motion-evidence/egress-budget-negative.txt 2>&1
+          python3 protocol/can/tests/wire_budget_tests.py --driver-events --build build-update-arm > build-motion-evidence/driver-events-budget-negative.txt 2>&1
+          python3 protocol/can/tests/wire_budget_tests.py --completion-mailbox --build build-update-arm > build-motion-evidence/completion-mailbox-budget-negative.txt 2>&1
+          python3 protocol/can/tests/wire_budget_tests.py --driver-dispatch --build build-update-arm > build-motion-evidence/driver-dispatch-budget-negative.txt 2>&1
+          python3 protocol/can/tests/wire_budget_tests.py --frame-ingress --build build-update-arm > build-motion-evidence/frame-ingress-budget-negative.txt 2>&1
+          python3 protocol/can/tests/wire_budget_tests.py --ingress-owner --build build-update-arm > build-motion-evidence/ingress-owner-budget-negative.txt 2>&1
+          python3 tools/check_update_channel_build.py build-update-arm > build-motion-evidence/channel-budget.json
+          python3 protocol/can/tests/wire_budget_tests.py --channel --build build-update-arm > build-motion-evidence/channel-budget-negative.txt 2>&1
+          python3 tools/check_metadata_setup_build.py build-update-arm > build-motion-evidence/metadata-setup-budget.json
+          python3 protocol/can/tests/wire_budget_tests.py --setup --build build-update-arm > build-motion-evidence/metadata-setup-budget-negative.txt 2>&1
+          python3 tools/check_update_metadata_build.py build-update-arm > build-motion-evidence/metadata-budget.json
+          python3 protocol/can/tests/wire_budget_tests.py --metadata --build build-update-arm > build-motion-evidence/metadata-budget-negative.txt 2>&1
+          python3 tools/check_motion_size.py build-update-arm/libtv4_update_transport.a | tee build-motion-evidence/update-size.txt
+          arm-none-eabi-nm --undefined-only build-update-arm/libtv4_update_transport.a | tee build-motion-evidence/update-symbols.txt
+          cat build-update-arm/CMakeFiles/tv4_update_transport.dir/*.su > build-motion-evidence/update-stack.txt
           python3 - <<'PY'
           from pathlib import Path
-          symbols = Path('evidence/update-symbols.txt').read_text().splitlines()
+          symbols = Path('build-motion-evidence/update-symbols.txt').read_text().splitlines()
           undefined = {line.split()[-1] for line in symbols if line.split() and 'U' in line.split()}
           assert undefined <= {'memcmp', 'memcpy', 'memmove', 'memset'}, undefined
-          rows = [line.split('\t') for line in Path('evidence/update-stack.txt').read_text().splitlines()]
+          rows = [line.split('\t') for line in Path('build-motion-evidence/update-stack.txt').read_text().splitlines()]
           assert rows and all(len(row) == 3 and row[2] == 'static' and int(row[1]) <= 128 for row in rows), rows
           print('PASS: libc memory helpers only; individual compiler frames <=128 bytes, not total runtime stack')
           PY
@@ -95,22 +97,22 @@ jobs:
             -DCMAKE_TOOLCHAIN_FILE=cmake/arm-none-eabi.cmake -DCMAKE_BUILD_TYPE=MinSizeRel \
             -DTV4_MOTION_LINK_PROBE=ON
           cmake --build build-motion-probe
-          python3 tools/check_motion_link.py build-motion-probe/tv4_motion_link_probe.elf > evidence/link-probe.json
-          ctest --test-dir build-motion-probe --output-on-failure | tee evidence/link-contract.log
+          python3 tools/check_motion_link.py build-motion-probe/tv4_motion_link_probe.elf > build-motion-evidence/link-probe.json
+          ctest --test-dir build-motion-probe --output-on-failure | tee build-motion-evidence/link-contract.log
           arm-none-eabi-objdump -d --disassemble=Reset_Handler \
-            build-motion-probe/tv4_motion_link_probe.elf > evidence/reset-disassembly.txt
+            build-motion-probe/tv4_motion_link_probe.elf > build-motion-evidence/reset-disassembly.txt
           for probe in OFF ON; do
             if cmake -S firmware/stm32-motion -B "build-motion-blocked-$probe" \
-                -DTV4_MOTION_BOARD_IMAGE=ON -DTV4_MOTION_LINK_PROBE="$probe" > "evidence/board-gate-$probe.txt" 2>&1; then
+                -DTV4_MOTION_BOARD_IMAGE=ON -DTV4_MOTION_LINK_PROBE="$probe" > "build-motion-evidence/board-gate-$probe.txt" 2>&1; then
               echo 'ERROR: board image unexpectedly allowed'; exit 1
             fi
-            grep -q 'F407 board image blocked' "evidence/board-gate-$probe.txt"
+            grep -q 'F407 board image blocked' "build-motion-evidence/board-gate-$probe.txt"
           done
           if cmake -S firmware/stm32-motion -B build-motion-host-probe \
-              -DTV4_MOTION_LINK_PROBE=ON > evidence/host-probe-gate.txt 2>&1; then
+              -DTV4_MOTION_LINK_PROBE=ON > build-motion-evidence/host-probe-gate.txt 2>&1; then
             echo 'ERROR: host configure accepted ARM link probe'; exit 1
           fi
-          grep -q 'requires the pinned ARM toolchain' evidence/host-probe-gate.txt
+          grep -q 'requires the pinned ARM toolchain' build-motion-evidence/host-probe-gate.txt
           # CMake may name its internal compiler-ABI archive *.bin; that cache
           # file is not a board image and is excluded from the upload allowlist.
           python3 - <<'PY'
@@ -120,47 +122,102 @@ jobs:
                   assert path.name == 'CMakeDetermineCompilerABI_C.bin' and 'CMakeFiles' in path.parts, path
           print('No firmware .bin; only permitted CMake compiler-ABI cache')
           PY
+      - name: Build real pinless F407 HSI bench, reject corrupt images and reproduce
+        shell: bash
+        run: |
+          set -euo pipefail
+          for directory in build-stm32f407-bench build-stm32f407-repro; do
+            cmake -S firmware/stm32-motion -B "$directory" -G Ninja \
+              -DCMAKE_TOOLCHAIN_FILE=cmake/arm-none-eabi.cmake -DCMAKE_BUILD_TYPE=MinSizeRel \
+              -DTV4_MOTION_BOARD_IMAGE=ON -DTV4_MOTION_BOARD_PROFILE=stm32f407vg-hsi-no-motion-v1
+            cmake --build "$directory" -j4
+          done
+          ctest --test-dir build-stm32f407-bench -V --output-log "$PWD/build-motion-evidence/bench-contract.txt"
+          arm-none-eabi-gcc -std=c11 -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 \
+            -mgeneral-regs-only -ffreestanding -fno-builtin -Wall -Wextra -Werror \
+            -Wconversion -Wshadow -Wstrict-prototypes -fanalyzer \
+            -Ifirmware/stm32-motion/board/stm32f407vg -Ifirmware/stm32-motion/startup \
+            -Ibuild-stm32f407-bench/bench-generated \
+            -c firmware/stm32-motion/board/stm32f407vg/main.c \
+            -o build-stm32f407-bench/main-analysis.o > build-motion-evidence/bench-analysis.txt 2>&1
+          echo 'PASS actual ARM main -fanalyzer; no diagnostics suppressed' >> build-motion-evidence/bench-analysis.txt
+          cp build-stm32f407-bench/image-check.json build-motion-evidence/bench-image.json
+          arm-none-eabi-readelf -lSW build-stm32f407-bench/tv4_stm32f407_bench.elf > build-motion-evidence/bench-layout.txt
+          arm-none-eabi-nm -nS build-stm32f407-bench/tv4_stm32f407_bench.elf > build-motion-evidence/bench-symbols.txt
+          arm-none-eabi-objdump -d build-stm32f407-bench/tv4_stm32f407_bench.elf > build-motion-evidence/bench-disassembly.txt
+          cat build-stm32f407-bench/CMakeFiles/tv4_stm32f407_bench.dir/board/stm32f407vg/*.su \
+            build-stm32f407-bench/CMakeFiles/tv4_stm32f407_bench.dir/startup/*.su > build-motion-evidence/bench-stack.txt
+          python3 - <<'PY_CHECK'
+          from pathlib import Path
+          import hashlib, json, subprocess
+          check = json.loads(Path('build-motion-evidence/bench-image.json').read_text())
+          assert check['source_dirty'] is False, 'CI must build a clean exact source commit'
+          assert check['source_commit'] == subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()
+          rows = []
+          for extension in ('bin', 'elf'):
+              name = 'tv4_stm32f407_bench.' + extension
+              a = Path('build-stm32f407-bench', name).read_bytes()
+              b = Path('build-stm32f407-repro', name).read_bytes()
+              assert a == b, 'non-reproducible artifact: ' + name
+              rows.append(name + ' ' + hashlib.sha256(a).hexdigest() + ' byte-identical in two directories')
+          Path('build-motion-evidence/bench-reproducibility.txt').write_text('\n'.join(rows)+'\n')
+          PY_CHECK
+          for mode in host unknown mixed; do
+            options=(-DTV4_MOTION_BOARD_IMAGE=ON -DTV4_MOTION_BOARD_PROFILE=stm32f407vg-hsi-no-motion-v1)
+            case "$mode" in
+              host) expected='requires the pinned ARM toolchain';;
+              unknown) options+=(-DCMAKE_TOOLCHAIN_FILE=cmake/arm-none-eabi.cmake -DTV4_MOTION_BOARD_PROFILE=unknown); expected='F407 board image blocked';;
+              mixed) options+=(-DCMAKE_TOOLCHAIN_FILE=cmake/arm-none-eabi.cmake -DTV4_MOTION_LINK_PROBE=ON); expected='cannot combine';;
+            esac
+            if cmake -S firmware/stm32-motion -B "build-bench-refused-$mode" "${options[@]}" > "build-motion-evidence/bench-gate-$mode.txt" 2>&1; then
+              echo "ERROR: invalid bench configuration accepted: $mode"; exit 1
+            fi
+            grep -q "$expected" "build-motion-evidence/bench-gate-$mode.txt"
+          done
+          # No devices, firmware execution, emulation or binary publication.
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         if: always()
         with:
           name: motion-core-compile-evidence
-          # Text evidence only; never publish the synthetic ELF/archive as firmware.
+          # Text only: no ELF/BIN (including real bench), license/release gates remain.
           path: |
-            evidence/compiler.txt
-            evidence/core-size.txt
-            evidence/boot-support-size.txt
-            evidence/link-probe.json
-            evidence/link-contract.log
-            evidence/reset-disassembly.txt
-            evidence/board-gate-OFF.txt
-            evidence/board-gate-ON.txt
-            evidence/host-probe-gate.txt
-            evidence/update-size.txt
-            evidence/update-symbols.txt
-            evidence/update-stack.txt
-            evidence/update-static-analysis.txt
-            evidence/wire-budget.json
-            evidence/fragment-budget.json
-            evidence/fragment-test-scope.txt
-            evidence/wire-budget-negative.txt
-            evidence/fragment-budget-negative.txt
-            evidence/metadata-budget.json
-            evidence/metadata-setup-budget.json
-            evidence/channel-budget.json
-            evidence/egress-budget.json
-            evidence/driver-events-budget.json
-            evidence/completion-mailbox-budget.json
-            evidence/driver-dispatch-budget.json
-            evidence/frame-ingress-budget.json
-            evidence/ingress-owner-budget.json
-            evidence/metadata-budget-negative.txt
-            evidence/metadata-setup-budget-negative.txt
-            evidence/channel-budget-negative.txt
-            evidence/egress-budget-negative.txt
-            evidence/driver-events-budget-negative.txt
-            evidence/completion-mailbox-budget-negative.txt
-            evidence/driver-dispatch-budget-negative.txt
-            evidence/frame-ingress-budget-negative.txt
-            evidence/ingress-owner-budget-negative.txt
+            build-motion-evidence/bench-*.txt
+            build-motion-evidence/bench-image.json
+            build-motion-evidence/compiler.txt
+            build-motion-evidence/core-size.txt
+            build-motion-evidence/boot-support-size.txt
+            build-motion-evidence/link-probe.json
+            build-motion-evidence/link-contract.log
+            build-motion-evidence/reset-disassembly.txt
+            build-motion-evidence/board-gate-OFF.txt
+            build-motion-evidence/board-gate-ON.txt
+            build-motion-evidence/host-probe-gate.txt
+            build-motion-evidence/update-size.txt
+            build-motion-evidence/update-symbols.txt
+            build-motion-evidence/update-stack.txt
+            build-motion-evidence/update-static-analysis.txt
+            build-motion-evidence/wire-budget.json
+            build-motion-evidence/fragment-budget.json
+            build-motion-evidence/fragment-test-scope.txt
+            build-motion-evidence/wire-budget-negative.txt
+            build-motion-evidence/fragment-budget-negative.txt
+            build-motion-evidence/metadata-budget.json
+            build-motion-evidence/metadata-setup-budget.json
+            build-motion-evidence/channel-budget.json
+            build-motion-evidence/egress-budget.json
+            build-motion-evidence/driver-events-budget.json
+            build-motion-evidence/completion-mailbox-budget.json
+            build-motion-evidence/driver-dispatch-budget.json
+            build-motion-evidence/frame-ingress-budget.json
+            build-motion-evidence/ingress-owner-budget.json
+            build-motion-evidence/metadata-budget-negative.txt
+            build-motion-evidence/metadata-setup-budget-negative.txt
+            build-motion-evidence/channel-budget-negative.txt
+            build-motion-evidence/egress-budget-negative.txt
+            build-motion-evidence/driver-events-budget-negative.txt
+            build-motion-evidence/completion-mailbox-budget-negative.txt
+            build-motion-evidence/driver-dispatch-budget-negative.txt
+            build-motion-evidence/frame-ingress-budget-negative.txt
+            build-motion-evidence/ingress-owner-budget-negative.txt
           if-no-files-found: error
           retention-days: 14

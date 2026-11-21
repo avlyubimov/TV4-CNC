@@ -1,0 +1,189 @@
+{
+  "cjson": {
+    "version": "1.7.19",
+    "commit": "c859b25da02955fef659d658b8f324b5cde87be3",
+    "license": "MIT",
+    "provenance": "# cJSON provenance\n\nUpstream: https://github.com/DaveGamble/cJSON\nTag v1.7.19, commit `c859b25da02955fef659d658b8f324b5cde87be3`.\nMIT license in LICENSE. cJSON.c/h are unmodified upstream files.\nBuild sets CJSON_NESTING_LIMIT=8 and CJSON_HIDE_SYMBOLS.\nLocal tv4_namespace.h prefixes public symbols with tv4_ota_json_, avoiding SDK/global cJSON hook collisions.\nNo global hooks are installed; input/token/UTF-8 limits apply before parsing.\n\nUpstream cJSON.h:264 has a trailing space; LICENSE has a final blank line.\nThese upstream whitespace details are intentionally retained with the exact file hashes.\n"
+  },
+  "lvgl": {
+    "version": "9.2.2",
+    "commit": "7f07a129e8d77f4984fff8e623fd5be18ff42e74",
+    "license": "MIT"
+  },
+  "esp_idf": {
+    "version": "6.1.1",
+    "commit": "051e4c4eb20346e043cdd47bc388fde75ff8af63",
+    "license": "Apache-2.0"
+  },
+  "mbedtls": {
+    "version": "3.6.7",
+    "tag": "mbedtls-3.6.7",
+    "url": "https://github.com/Mbed-TLS/mbedtls/releases/download/mbedtls-3.6.7/mbedtls-3.6.7.tar.bz2",
+    "archive_sha256": "a7e8bcbec0e6f761b4af24f25677626b35f762f68eef79c08677a363212d11f6",
+    "license": "Apache-2.0 OR GPL-2.0-or-later",
+    "verification_profile_license": "Apache-2.0",
+    "crypto_sources": [
+      "asn1parse",
+      "asn1write",
+      "bignum",
+      "bignum_core",
+      "bignum_mod",
+      "bignum_mod_raw",
+      "constant_time",
+      "ecp",
+      "ecp_curves",
+      "ecp_curves_new",
+      "ecdsa",
+      "sha256",
+      "platform",
+      "platform_util",
+      "memory_buffer_alloc"
+    ],
+    "integrity_scope": [
+      "include/**/*.h",
+      "library/*.h",
+      "listed library/*.c",
+      "LICENSE"
+    ],
+    "tree_file_count": 178,
+    "tree_sha256": "2087a1191bd838ec63bc7d97452337888fef6247eac6ba782554d58408041310",
+    "archive_binary_test_inputs": {
+      "framework/data_files/base64/def_b64_ff.bin": "6ddff1c9506617bd8ff835154841f1c4553608ad96adaf0757694f5b3b17d8e8",
+      "framework/data_files/pkcs7_data.bin": "05ade08fcfb104f40b2536a14dfcd6e916d643f5cf8044b19028b607ae8f4908",
+      "framework/data_files/pkcs7_data_1.bin": "df4e26a04a444901b95afef44e4a96cfae34690fff2ad2c66389c70079cdff2b",
+      "framework/data_files/pkcs7_zerolendata.bin": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "ci_arm_release": "14.2.Rel1",
+  "ci_arm_archive_sha256": "62a63b981fe391a9cbad7ef51b17e49aeaa3e7b0d029b36ca1e9c3b2a9b78823",
+  "host_threads": {
+    "implementation": "glibc 2.43",
+    "license": "LGPL-2.1-or-later",
+    "library": "system POSIX pthread/glibc; tests only, not copied to repository or ARM"
+  },
+  "thread_sanitizer_runtime": {
+    "path": "/usr/lib/x86_64-linux-gnu/libtsan.so.2.0.0",
+    "sha256": "f0ce9b593b87933db0bc418269fc1489eb925fab0e21fa425ead64cbe0d47d8e",
+    "license": "NCSA (University of Illinois/NCSA Open Source License), libsanitizer terms in installed gcc-15-base copyright",
+    "license_source": "/usr/share/doc/gcc-15-base/copyright:152",
+    "license_source_sha256": "41a2d69df964174fb042b6513e99b72177318e94ca0c29a813e6f3155a9c5048",
+    "compiler_flags": "-fsanitize=thread -fno-omit-frame-pointer -g -O1",
+    "execution": "outside ptrace/default environment/no options/suppressions"
+  },
+  "base_main": "610f1745d892d5904ea183b50617a20d8ce755bb",
+  "stage": "P0 standalone pinless STM32F407VG HSI image",
+  "client_date": "2026-11-22",
+  "timezone": "Asia/Almaty",
+  "captured_utc": "2026-11-21T19:29:07.765955+00:00",
+  "working_tree_tested": true,
+  "test_counts": {
+    "host-tests.txt": 77,
+    "sanitizer-tests.txt": 77,
+    "standalone-tests.txt": 49,
+    "thread-sanitizer.txt": 8,
+    "threaded-signed-sanitizer.txt": 1,
+    "image-contract.txt": 1,
+    "probe-contract.txt": 1
+  },
+  "test_seconds": {
+    "host-tests.txt": 5.81,
+    "sanitizer-tests.txt": 12.55,
+    "standalone-tests.txt": 2.2,
+    "thread-sanitizer.txt": 1.31,
+    "threaded-signed-sanitizer.txt": 0.72,
+    "image-contract.txt": 0.14,
+    "probe-contract.txt": 0.08
+  },
+  "gcc": "gcc (Ubuntu 15.2.0-16ubuntu1) 15.2.0",
+  "arm_gcc": "arm-none-eabi-gcc (15:14.2.rel1-1) 14.2.1 20241119",
+  "arm_ld": "GNU ld (2.45.50.20251209-1ubuntu1+23build1) 2.45.50.20251209",
+  "cmake": "cmake version 4.2.3",
+  "ninja": "1.13.2",
+  "openssl": "OpenSSL 3.5.5 27 Jan 2026 (Library: OpenSSL 3.5.5 27 Jan 2026)",
+  "shell_python": {
+    "path": "/usr/bin/python3",
+    "version": "3.14.4"
+  },
+  "ctest_python": "/home/avlyubimov/.local/bin/python3.14",
+  "sanitizer_options": {
+    "ASAN_OPTIONS": null,
+    "LSAN_OPTIONS": null,
+    "UBSAN_OPTIONS": null,
+    "TSAN_OPTIONS": null
+  },
+  "sanitizer_execution": "outside ptrace / default environment / no options or suppressions",
+  "st_reference": {
+    "cmsis_device_f4": {
+      "repository": "https://github.com/STMicroelectronics/cmsis-device-f4",
+      "tag": "v2.6.11",
+      "commit": "0fa0e489e053fa1ca7790bb40b4d76458f64c55d",
+      "license": "Apache-2.0",
+      "role": "reference only, no HAL/CMSIS runtime linked"
+    },
+    "files": {
+      "startup_stm32f407xx.s": {
+        "url": "https://raw.githubusercontent.com/STMicroelectronics/cmsis-device-f4/0fa0e489e053fa1ca7790bb40b4d76458f64c55d/Source/Templates/gcc/startup_stm32f407xx.s",
+        "sha256": "430f14fd00db0f7aa88f354aee54064efb582ddc4cc264fb8e435dc7d7a2f53d",
+        "bytes": 22858
+      },
+      "stm32f407xx.h": {
+        "url": "https://raw.githubusercontent.com/STMicroelectronics/cmsis-device-f4/0fa0e489e053fa1ca7790bb40b4d76458f64c55d/Include/stm32f407xx.h",
+        "sha256": "bd21220ea8b6858c2d727cca1d2a5f1077f8a81717acdac583a1e9165d858160",
+        "bytes": 1193993
+      },
+      "system_stm32f4xx.c": {
+        "url": "https://raw.githubusercontent.com/STMicroelectronics/cmsis-device-f4/0fa0e489e053fa1ca7790bb40b4d76458f64c55d/Source/Templates/system_stm32f4xx.c",
+        "sha256": "a31929eab936ac98db060c18917118acf79dc96e1f03ed4b57d614535dd06d70",
+        "bytes": 26695
+      },
+      "LICENSE.md": {
+        "url": "https://raw.githubusercontent.com/STMicroelectronics/cmsis-device-f4/0fa0e489e053fa1ca7790bb40b4d76458f64c55d/LICENSE.md",
+        "sha256": "dadb755f51d36614173b28c5790cb4a991e8f4cc822e5b634fd66a4f4145824d",
+        "bytes": 9757
+      },
+      "DS8626": {
+        "url": "https://www.st.com/resource/en/datasheet/stm32f407vg.pdf",
+        "sha256": "1f41b4fa49a9960215ebb76cd0a75f20241db82eed60d308345a80463caeed22",
+        "bytes": 2792056
+      },
+      "RM0090": {
+        "url": "https://www.st.com/resource/en/reference_manual/rm0090-stm32f407-advanced-armbased-32bit-mcus-stmicroelectronics.pdf",
+        "sha256": "f3ff2322eec21f4e49081f68481b764506eee81dba6031bc767e2f8955b27cca",
+        "bytes": 21385881
+      },
+      "PM0214": {
+        "url": "https://www.st.com/resource/en/programming_manual/dm00046982-stm32-cortexm4-mcus-and-mpus-programming-manual-stmicroelectronics.pdf",
+        "sha256": "fb54012a46c674a26dee56bc8cdfa281315f78634f18998001144980b08d1b03",
+        "bytes": 2732268
+      }
+    },
+    "reviewed_manuals": {
+      "DS8626": "Rev12, March2026, memory map Fig21/table10 and HSI/LSI tables34/35",
+      "RM0090": "Rev22, section3.3/table5 (Flash), section7 (F405/407 RCC), section21 (IWDG), section38 (DBG)",
+      "PM0214": "Rev10, sections2.3/2.4 (exception frames),4.4.4 (VTOR),4.5 (SysTick)"
+    },
+    "vendored_reference_files": [
+      "startup_stm32f407xx.s",
+      "LICENSE.md"
+    ],
+    "runtime_dependency": false,
+    "manual_pdf_files_not_vendored": true,
+    "local_changes": "Startup reference: prominent notice added and trailing whitespace normalized only; never compiled.",
+    "vendored_sha256": {
+      "startup_stm32f407xx.s": "297aaac642e0b21a6268989e9a78722f53a24073225389eab279b661e42783f4",
+      "LICENSE.md": "dadb755f51d36614173b28c5790cb4a991e8f4cc822e5b634fd66a4f4145824d"
+    }
+  },
+  "bench_runtime_dependencies": [],
+  "scope": {
+    "real_image_built": true,
+    "elf_executed": false,
+    "device_access": false,
+    "backup_reread": false,
+    "binary_release": false,
+    "self_merge": false,
+    "new_local_esp_builds": false,
+    "unchanged_ci_sdk_profiles": 8,
+    "future_can_bootloader_layout": null
+  }
+}

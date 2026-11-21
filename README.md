@@ -1,5 +1,15 @@
 # TV4 CNC
 
+Текущий P0 после main610f174/PR #55: первый настоящий
+[STM32F407VG HSI bench ELF/BIN](docs/STM32_FIRST_IMAGE.md) с memory/vector
+checks, RAM/SWD diagnostics и watchdog подготовлен к отдельно разрешённому
+стенду. [Программные проверки](docs/evidence/build/stm32f407-first-image/README.md),
+[установка и восстановление ST-Link](docs/STM32_STLINK_RUNBOOK.md).
+Аппаратный запуск F407 ещё не выполнен, движения/CAN/Flash writer нет.
+Артефакты создаются локально, CI сохраняет текст; публичный binary release
+не разрешён. Следующие абзацы до общей архитектуры — история слитых этапов.
+
+
 PR-07v от main `5e76626`: [подписанный threaded HOST link](docs/STM32_THREADED_LINK.md)
 передаёт full signed update через отдельный driver pthread и concurrent RX.
 Host75/sanitizers75/standalone49/TSan8+1 PASS; upper windows, independent crypto/
@@ -74,7 +84,7 @@ Host54/sanitizers54/standalone28, independent verifier/lease/model/close пре�
   владелец подтвердил SWD/ST-Link V2, Cortex-M4r0p1, ID0x101f6413, Flash1024KiB,
   3,252V и backup1048576bytes/vector structure PASS. Package/RAM/CCM/HSE/
   секторы/pinout/GPIO/CAN ещё требуют проверки. STEP/DIR будет на таймерах STM32,
-  не на ESP32. PR #7 слит: переносимое ядро/host tests; board image пока нет.
+  не на ESP32. PR #7 core/host tests сохранены; явный P0 bench image программно подготовлен.
 - Blue Pill STM32F103C8T6 — отдельный bench: владелец подтвердил ST-Link V2,
   OpenOCD 0.12.0, SWD/64 КиБ Flash и локальный backup. Не замена F407.
 - Один closed-loop NEMA23 заказан и ещё не получен; второго двигателя и

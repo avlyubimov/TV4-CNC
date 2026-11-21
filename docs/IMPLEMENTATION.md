@@ -1,5 +1,18 @@
 # Реализация: main, открытые PR и аппаратные границы
 
+## Текущий P0 — первая прошиваемая сборка F407
+
+22 ноября 2026, от main610f174/слитого PR #55. Подготовлен
+[standalone STM32F407VG bench](STM32_FIRST_IMAGE.md), ELF/BIN/map с HSI16MHz,
+full98vectors/официальной памятью, main/emergency stacks, RAM diagnostics,
+bounded setup/main-only IWDG, без GPIO/CAN/motion/Flash writer. BIN2596bytes,
+SRAMstatic268 + stacks/guards5184, CCMprobe4; repeat ELF/BIN byte-identical
+в двух каталогах одной toolchain. [Evidence](evidence/build/stm32f407-first-image/README.md),
+[install/restore](STM32_STLINK_RUNBOOK.md). Программный результат не hardware test;
+новых SWD/serial/reset/write/readback/backup операций нет. CAN bootloader/map
+и OTA installer не добавлены. Дальше — история прежних этапов.
+
+
 PR-07v от main `5e76626`: [подписанный threaded HOST link](STM32_THREADED_LINK.md)
 передаёт full signed update через отдельный driver pthread и concurrent RX.
 Host75/sanitizers75/standalone49/TSan8+1 PASS; upper windows, independent crypto/
