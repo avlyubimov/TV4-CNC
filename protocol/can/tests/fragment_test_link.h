@@ -8,6 +8,7 @@
 #include "completion_mailbox.h"
 #include "driver_dispatch.h"
 #include "frame_ingress.h"
+#include "ingress_owner.h"
 
 /* HOST TEST FIXTURE ONLY. Not a driver, CAN schedule, identity provider or
  * production owner. One exclusive caller clock shared with all upper layers;
@@ -21,7 +22,7 @@ typedef struct {
     uint32_t delivery_ms, held_delivery_ms;
     unsigned hold_every, duplicate_every;
     uint16_t drop_kinds, drop_index;
-    bool drop_every_message, recover_fragment_timeouts, raw_setup, multiplexed, egress, driver_events, completion_mailbox, driver_dispatch, frame_ingress;
+    bool drop_every_message, recover_fragment_timeouts, raw_setup, multiplexed, egress, driver_events, completion_mailbox, driver_dispatch, frame_ingress, ingress_owner;
     tv4_frame_queue_limits custody;
     uint32_t event_service_ms;
     uint8_t event_capacity;
@@ -38,6 +39,7 @@ typedef struct {
     tv4_completion_owner completion;
     tv4_driver_dispatch dispatch;
     tv4_frame_ingress ingress;
+    tv4_ingress_owner owner;
     tv4_frame_ticket ticket;
     tv4_fragment_frame queued;
     uint32_t due,event_due,ingress_due;
@@ -57,6 +59,7 @@ typedef struct {
     unsigned event_posts,event_services,event_stales,event_held_ticks,event_max_pending;
     unsigned dispatch_publications,dispatch_rejected_callbacks;
     unsigned ingress_posts,ingress_checks;
+    unsigned owner_pauses,owner_advances,owner_recovers,owner_retirements;
     uint16_t dropped_kinds;
     bool configured;
 } tv4_test_link;

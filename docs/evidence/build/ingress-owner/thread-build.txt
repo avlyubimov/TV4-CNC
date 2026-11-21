@@ -1,0 +1,4 @@
+[1/4] Building C object CMakeFiles/tv4_ingress_owner.dir/ingress_owner.c.o
+[2/4] Linking C static library libtv4_ingress_owner.a
+[3/4] Building C object CMakeFiles/update_ingress_owner_tests.dir/tests/ingress_owner_tests.c.o
+[4/4] Linking C executable update_ingress_owner_tests

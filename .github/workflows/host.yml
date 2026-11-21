@@ -54,7 +54,7 @@ jobs:
             -fanalyzer -Iprotocol/can -c protocol/can/tests/fragment_test_link.c \
             -o build/policy-analysis/fragment_test_link.o >> build/policy-analysis.log 2>&1
           printf 'host fragment_test_link: actual-source analyzer PASS\n' >> build/policy-analysis.log
-      - name: Race-check SPSC completion, driver dispatch and frame ingress
+      - name: Race-check completion, dispatch, ingress and acknowledged RX pause
         if: matrix.sanitizer == false
         shell: bash
         run: |
@@ -62,8 +62,8 @@ jobs:
           cmake -S protocol/can -B build-thread-sanitize -G Ninja \
             -DCMAKE_C_FLAGS='-fsanitize=thread -fno-omit-frame-pointer -g -O1' \
             -DCMAKE_EXE_LINKER_FLAGS=-fsanitize=thread
-          cmake --build build-thread-sanitize --target update_completion_mailbox_tests update_completion_owner_tests update_driver_dispatch_tests update_frame_ingress_tests -j4
-          ctest --test-dir build-thread-sanitize -R '^(update_completion_mailbox_threads|update_completion_owner|update_driver_dispatch_threads|update_driver_dispatch|update_frame_ingress_threads|update_frame_ingress)$' \
+          cmake --build build-thread-sanitize --target update_completion_mailbox_tests update_completion_owner_tests update_driver_dispatch_tests update_frame_ingress_tests update_ingress_owner_tests -j4
+          ctest --test-dir build-thread-sanitize -R '^(update_completion_mailbox_threads|update_completion_owner|update_driver_dispatch_threads|update_driver_dispatch|update_frame_ingress_threads|update_frame_ingress|update_ingress_owner_threads|update_ingress_owner)$' \
             -V --output-log "$PWD/build/thread-sanitizer.log"
       - run: ctest --test-dir build --output-on-failure
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2

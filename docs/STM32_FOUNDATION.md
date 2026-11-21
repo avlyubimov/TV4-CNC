@@ -1,6 +1,13 @@
 # PR-02 — STM32 Motion Foundation
 
-PR-07t от main `25e635c`: [очередь входящих кадров](STM32_FRAME_INGRESS.md) добавляет bounded owned
+PR-07u от main `bc35a37`: [подтверждённая пауза приёма](STM32_INGRESS_OWNER.md) связывает actual
+ingress и channel RX. Смена фазы ждёт exact driver ACK и actual pending/staged/
+ring/RX drain; resume выдаёт новую epoch без сброса clocks/counters/IDs.
+Только lower fragment timeout восстанавливается после ACK+cleanup; sticky faults
+и original upper deadlines сохраняются. Software barrier не peripheral/IRQ/DMA/
+remote drain. Target port/identity/resources/runtime/install/hardware gates открыты.
+
+Слитый PR #52, PR-07t от main `25e635c`: [очередь входящих кадров](STM32_FRAME_INGRESS.md) добавляет bounded owned
 SPSC capture/stage/fresh-check, сохранение original capture time при full/retry
 и sticky clock/expiry/overrun/exhaustion. Host71/sanitizers71/standalone45/TSan6
 PASS. ARM1060text/data0/bss0/frame48 отдельно, прежние budgets/SDK pins сохранены.

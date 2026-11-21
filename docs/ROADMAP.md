@@ -1,6 +1,6 @@
 # План последовательной разработки TV4-CNC
 
-Обновлено от main `25e635c`,21ноября2026; PR #1–51 слиты, main CI5/5 PASS.
+Обновлено от main `bc35a37`,21ноября2026; PR #1–52 слиты, main CI5/5 PASS.
 История и текущее ПО — [IMPLEMENTATION.md](IMPLEMENTATION.md); следующий
 STM32 этап — [NEXT_STAGE.md](NEXT_STAGE.md). Рабочий HMI не переписывать заново.
 Все новые этапы — отдельные ветки/небольшие PR, merge только с разрешения
@@ -338,7 +338,7 @@ context/reboot/conflict и quarantine. Host27/sanitizers27/standalone7, ARM/stat
 source/output gates и8 SDK builds. Next: reviewed production negotiation/codec/
 identity и metadata/context, actual board/Flash/recovery; не activation по peer report.
 
-## Текущая часть PR-07t
+## Слитый PR #52, PR-07t
 
 [Очередь входящих кадров](STM32_FRAME_INGRESS.md) от main25e635c после PR #51:
 owned SPSC capture/retry/stage/fresh age check и sticky loss/clock/expiry/exhaustion,
@@ -346,3 +346,11 @@ actual signed host chains сохраняют original crypto/lease/model/close d
 Host71/sanitizers71/standalone45/TSan6; ARM1060/frame48 отдельно; no new devices,
 Flash map/pins/driver/runtime. Далее — actual producer-stop/phase-cutover, truthful
 backend loss/completion/reset/clock и reviewed resource/identity/runtime port.
+
+## Текущая часть PR-07u
+
+[Подтверждённая пауза RX](STM32_INGRESS_OWNER.md) от mainbc35a37 после PR #52:
+actual driver ACK + owned ingress/channel drain перед сменой фазы, epoch capture
+permits и bounded fragment-timeout recovery без reset clocks/counters/upper
+windows. Дальше actual target peripheral/IRQ/DMA/backend stop/route lifecycle,
+clock/resources/identity/runtime и physical/install gates; устройств/Flash/pins нет.

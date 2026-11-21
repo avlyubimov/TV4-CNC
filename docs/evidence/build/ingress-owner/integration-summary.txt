@@ -1,0 +1,7 @@
+PASS host-tests.txt: 74/74, 5.01s
+OWNER host-tests.txt {"container_bytes": 4799, "driver_claims": 12066, "driver_rejected_callbacks": 706, "driver_returns": 12066, "drops": 80, "event_posts": 12066, "event_services": 12066, "frames": 12066, "ingress_checks": 12730, "ingress_offers": 12730, "longest_synthetic_ms": 4740, "owned_retirements_without_dispatch": 48, "owner_advances": 80, "owner_pauses": 132, "signature_max": 72, "signature_min": 70, "timeout_recovers": 52}
+PASS sanitizer-tests.txt: 74/74, 11.63s
+OWNER sanitizer-tests.txt {"container_bytes": 4798, "driver_claims": 12066, "driver_rejected_callbacks": 706, "driver_returns": 12066, "drops": 80, "event_posts": 12066, "event_services": 12066, "frames": 12066, "ingress_checks": 12730, "ingress_offers": 12730, "longest_synthetic_ms": 4740, "owned_retirements_without_dispatch": 48, "owner_advances": 80, "owner_pauses": 132, "signature_max": 72, "signature_min": 70, "timeout_recovers": 52}
+PASS standalone-tests.txt: 48/48, 1.91s
+OWNER standalone-tests.txt {"container_bytes": 4798, "driver_claims": 12066, "driver_rejected_callbacks": 706, "driver_returns": 12066, "drops": 80, "event_posts": 12066, "event_services": 12066, "frames": 12066, "ingress_checks": 12730, "ingress_offers": 12730, "longest_synthetic_ms": 4740, "owned_retirements_without_dispatch": 48, "owner_advances": 80, "owner_pauses": 132, "signature_max": 72, "signature_min": 70, "timeout_recovers": 52}
+PASS thread-sanitizer.txt: 8/8, 1.28s

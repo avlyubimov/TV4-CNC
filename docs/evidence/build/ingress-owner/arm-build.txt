@@ -1,0 +1,55 @@
+[1/54] Building C object update-transport/CMakeFiles/tv4_update_wire.dir/update_wire.c.obj
+[2/54] Building C object update-transport/CMakeFiles/tv4_update_transport.dir/update_outcome.c.obj
+[3/54] Building C object update-transport/CMakeFiles/tv4_update_transport.dir/update_negotiation.c.obj
+[4/54] Building C object update-transport/CMakeFiles/tv4_update_transport.dir/update_session.c.obj
+[5/54] Building C object update-transport/CMakeFiles/tv4_update_metadata.dir/update_metadata.c.obj
+[6/54] Linking C static library update-transport/libtv4_update_transport.a
+[7/54] Linking C static library update-transport/libtv4_update_wire.a
+[8/54] Building C object update-transport/CMakeFiles/tv4_update_fragments.dir/update_fragments.c.obj
+[9/54] Linking C static library update-transport/libtv4_update_metadata.a
+[10/54] Linking C static library update-transport/libtv4_update_fragments.a
+[11/54] Building C object update-transport/CMakeFiles/tv4_update_channel.dir/update_channel.c.obj
+[12/54] Building C object update-transport/CMakeFiles/tv4_metadata_setup.dir/update_metadata_setup.c.obj
+[13/54] cd /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/ingress-owner/build-boot-arm && /home/avlyubimov/.local/bin/python3.14 /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/ingress-owner/tools/check_boot_crypto_source.py --source /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/ingress-owner/build-boot-arm/_deps/tv4_boot_mbedtls-src --lock /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/ingress-owner/third_party/mbedtls/origin.json
+PASS pinned Mbed TLS source: {"files": 178, "tree_sha256": "2087a1191bd838ec63bc7d97452337888fef6247eac6ba782554d58408041310", "version": "3.6.7"}
+[14/54] Linking C static library update-transport/libtv4_metadata_setup.a
+[15/54] Building C object update-transport/CMakeFiles/tv4_update_egress.dir/frame_queue.c.obj
+[16/54] Building C object update-transport/CMakeFiles/tv4_update_egress.dir/update_egress.c.obj
+[17/54] Linking C static library update-transport/libtv4_update_channel.a
+[18/54] Building C object CMakeFiles/tv4_boot_crypto.dir/_deps/tv4_boot_mbedtls-src/library/asn1parse.c.obj
+[19/54] Building C object CMakeFiles/tv4_boot_crypto.dir/_deps/tv4_boot_mbedtls-src/library/asn1write.c.obj
+[20/54] Building C object CMakeFiles/tv4_boot_crypto.dir/_deps/tv4_boot_mbedtls-src/library/bignum_mod_raw.c.obj
+[21/54] Building C object CMakeFiles/tv4_boot_crypto.dir/_deps/tv4_boot_mbedtls-src/library/bignum_mod.c.obj
+[22/54] Building C object CMakeFiles/tv4_boot_crypto.dir/_deps/tv4_boot_mbedtls-src/library/constant_time.c.obj
+[23/54] Building C object CMakeFiles/tv4_boot_crypto.dir/_deps/tv4_boot_mbedtls-src/library/ecp_curves.c.obj
+[24/54] Building C object CMakeFiles/tv4_boot_crypto.dir/_deps/tv4_boot_mbedtls-src/library/ecp_curves_new.c.obj
+[25/54] Building C object CMakeFiles/tv4_boot_crypto.dir/_deps/tv4_boot_mbedtls-src/library/bignum_core.c.obj
+[26/54] Building C object CMakeFiles/tv4_boot_crypto.dir/_deps/tv4_boot_mbedtls-src/library/ecdsa.c.obj
+[27/54] Building C object CMakeFiles/tv4_boot_crypto.dir/_deps/tv4_boot_mbedtls-src/library/platform.c.obj
+[28/54] Building C object CMakeFiles/tv4_boot_crypto.dir/_deps/tv4_boot_mbedtls-src/library/platform_util.c.obj
+[29/54] Building C object CMakeFiles/tv4_boot_crypto.dir/_deps/tv4_boot_mbedtls-src/library/sha256.c.obj
+[30/54] Building C object CMakeFiles/tv4_boot_crypto.dir/_deps/tv4_boot_mbedtls-src/library/bignum.c.obj
+[31/54] Building C object CMakeFiles/tv4_boot_crypto.dir/_deps/tv4_boot_mbedtls-src/library/memory_buffer_alloc.c.obj
+[32/54] Linking C static library update-transport/libtv4_update_egress.a
+[33/54] Building C object CMakeFiles/tv4_boot_crypto.dir/_deps/tv4_boot_mbedtls-src/library/ecp.c.obj
+[34/54] Building C object update-transport/CMakeFiles/tv4_update_driver_events.dir/update_driver_events.c.obj
+[35/54] Linking C static library libtv4_boot_crypto.a
+[36/54] Building C object CMakeFiles/tv4_boot_admission.dir/core/metadata.c.obj
+[37/54] Building C object CMakeFiles/tv4_boot_admission.dir/core/admission.c.obj
+[38/54] Building C object CMakeFiles/tv4_boot_admission.dir/core/release_policy.c.obj
+[39/54] Linking C static library update-transport/libtv4_update_driver_events.a
+[40/54] Building C object CMakeFiles/tv4_boot_admission.dir/core/image_profile.c.obj
+[41/54] Building C object update-transport/CMakeFiles/tv4_frame_ingress.dir/frame_ingress.c.obj
+[42/54] Building C object update-transport/CMakeFiles/tv4_completion_mailbox.dir/completion_mailbox.c.obj
+[43/54] Linking C static library libtv4_boot_admission.a
+[44/54] Building C object CMakeFiles/tv4_boot_handoff.dir/core/release_handoff.c.obj
+[45/54] Building C object CMakeFiles/tv4_boot_handoff.dir/core/update_handoff.c.obj
+[46/54] Building C object CMakeFiles/tv4_boot_handoff.dir/core/staging_source.c.obj
+[47/54] Building C object CMakeFiles/tv4_boot_handoff.dir/core/update_completion.c.obj
+[48/54] Linking C static library update-transport/libtv4_completion_mailbox.a
+[49/54] Linking C static library update-transport/libtv4_frame_ingress.a
+[50/54] Linking C static library libtv4_boot_handoff.a
+[51/54] Building C object update-transport/CMakeFiles/tv4_driver_dispatch.dir/driver_dispatch.c.obj
+[52/54] Building C object update-transport/CMakeFiles/tv4_ingress_owner.dir/ingress_owner.c.obj
+[53/54] Linking C static library update-transport/libtv4_driver_dispatch.a
+[54/54] Linking C static library update-transport/libtv4_ingress_owner.a

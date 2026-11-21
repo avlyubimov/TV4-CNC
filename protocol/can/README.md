@@ -1,5 +1,10 @@
 # CAN: стендовый heartbeat и подготовка update transport
 
+PR-07u: [acknowledged RX owner](../../docs/STM32_INGRESS_OWNER.md) связывает
+actual ingress/channel RX и ждёт exact driver pause ACK + actual owned drain
+перед сменой phase. Resume сохраняет clocks/counters/IDs, выдаёт fresh epoch.
+Это software barrier; actual backend/peripheral/IRQ/DMA/remote stop не проверены.
+
 PR-07t: [bounded owned frame ingress](../../docs/STM32_FRAME_INGRESS.md) добавляет
 SPSC RX copies/original capture age/retained full retry и sticky loss/fault.
 Stage token не содержит payload; fresh check выдаёт owned UNVERIFIED frame.

@@ -1,0 +1,34 @@
+{
+  "scope": "opt-in metadata container/receiver static archive, not firmware",
+  "objects": {
+    "text": 1568,
+    "data": 0,
+    "bss": 0
+  },
+  "unresolved_imports": [
+    "memcpy",
+    "memset",
+    "tv4_update_binding_equal",
+    "tv4_update_rx_abort",
+    "tv4_update_rx_begin",
+    "tv4_update_rx_consume",
+    "tv4_update_rx_init",
+    "tv4_update_rx_poll",
+    "tv4_update_rx_receive"
+  ],
+  "exported_functions": [
+    "tv4_metadata_decode",
+    "tv4_metadata_encode",
+    "tv4_metadata_rx_begin",
+    "tv4_metadata_rx_discard",
+    "tv4_metadata_rx_init",
+    "tv4_metadata_rx_poll",
+    "tv4_metadata_rx_receive",
+    "tv4_metadata_rx_take"
+  ],
+  "max_individual_frame": 48,
+  "full_stack_verified": false,
+  "board_memory_verified": false,
+  "runtime_caller": false,
+  "device_access": false
+}
