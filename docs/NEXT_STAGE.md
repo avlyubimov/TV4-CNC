@@ -1,6 +1,6 @@
 # Следующий этап: release context и STM32 board contract
 
-21 ноября2026. База main `deace1c`, PR #1–41 слиты, main CI5/5 PASS.
+21 ноября2026. База main `4db99df`, PR #1–42 слиты, main CI5/5 PASS.
 ESP32 HMI/Wi-Fi/OTA primitives/candidates и STM32 transport/admission существуют;
 не создавать их заново. Данный план не разрешает доступ к устройствам или merge.
 
@@ -136,7 +136,7 @@ exit3 и все authority gates false. Host39/sanitizers39/standalone13, нов�
 Unsigned metadata pin не authentication/CI attestation; actual SemVer/keys/layout/
 provenance/runtime/installer не настроены. Hardware действий/новых измерений нет.
 
-## Текущая ветка PR-07j
+## Слитый PR #42, PR-07j
 
 [Update byte codec draft](STM32_UPDATE_WIRE.md): отдельная opt-in C11 library,
 8 existing kinds/exact bounded LE bytes/explicit enum codebook, no padding/tail.
@@ -146,6 +146,18 @@ analyzer12+1/budget guard6/ARM/source/board/output/scope PASS. ARM codec1219text
 data/bss0/frame32 отдельно от existing4 archives43362text (+18). Полный stack/
 RAM/CPU budget не подтверждён. Нет production CAN version/IDs/bitrate/driver/
 fragmentation/metadata transfer/runtime/identity/install или hardware действий.
+
+## Текущая ветка PR-07k
+
+[Bounded fragments](STM32_UPDATE_FRAGMENTS.md) добавляют отдельную opt-in
+библиотеку вокруг codec:4-byte envelope header/1..4bytes chunk,286byte ceiling,
+retained counters, explicit route/generation, deadlines/cancel/backpressure и
+single take. Нет IDs/bitrate/driver/runtime или anti-replay после reboot;
+local identity не сериализуется и не аутентифицируется. Metadata/signature
+transport ещё не реализован. Host45/sanitizers45/standalone19, oracle3,
+100000 fault chains и8 actual signed RAM chains; ARM fragment1536text/data0/
+bss0/frame48 отдельно. Old4 archives43362text и codec1219 прежние. Нет новых
+аппаратных подтверждений/обращений к платам. [Evidence](evidence/build/update-fragments/README.md).
 
 ## Что делать дальше программно
 
@@ -167,9 +179,11 @@ fragmentation/metadata transfer/runtime/identity/install или hardware дей�
 2. PR-07f проверяет volatile logical negotiation, но production boot epoch
    provider/persistence/collision/authentication, capabilities/version и raw CAN
    fragmentation/IDs/bitrate требуют review. PR-07j закрывает только experimental
-   complete-message codec, не production wire adoption. Дальше bounded
-   fragment/reassembly с routing/session identity, cancellation/deadline и
-   backpressure, передача signed metadata/signature и production codebook review.
+   complete-message codec, не production wire adoption. PR-07k добавляет bounded
+   fragment/reassembly с local route/generation/cancel/deadline/backpressure.
+   Дальше review whole-message retry/queue/identity lifetime, затем отдельный
+   bounded transport signed metadata/signature и production codebook. Production
+   routing/reboot identity/authentication остаются blockers, не implicit defaults.
    Decode OK не обновляет context или timeouts; owner poll остаётся обязательным.
    Logical terminal outcome уже есть; он не authenticated и
    не переносит candidate через ожидание оператора. Для следующей операции

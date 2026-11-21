@@ -11,6 +11,9 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[3] / 'tools'))
 import check_update_wire_build as guard
 
 BUILD = None
+ARCHIVE = 'libtv4_update_wire.a'
+TARGET = 'tv4_update_wire'
+EXPORTS = ('tv4_update_wire_encode', 'tv4_update_wire_decode')
 
 
 class Budget(unittest.TestCase):
@@ -18,19 +21,19 @@ class Budget(unittest.TestCase):
         self.temp = tempfile.TemporaryDirectory(prefix='tv4-wire-budget-')
         self.addCleanup(self.temp.cleanup)
         self.root = Path(self.temp.name)
-        shutil.copyfile(BUILD / 'libtv4_update_wire.a', self.root / 'libtv4_update_wire.a')
-        self.frames = self.root / 'CMakeFiles/tv4_update_wire.dir/check.su'
+        shutil.copyfile(BUILD / ARCHIVE, self.root / ARCHIVE)
+        self.frames = self.root / f'CMakeFiles/{TARGET}.dir/check.su'
         self.frames.parent.mkdir(parents=True)
         self.frames.write_text('fixture.c:1:1:check\t32\tstatic\n')
 
     def archive(self, extra):
         # Throwaway Cortex-M4 objects, not board ELFs or firmware images.
         source = self.root / 'fixture.c'
-        source.write_text('void tv4_update_wire_encode(void){}\nvoid tv4_update_wire_decode(void){}\n' + extra)
+        source.write_text(''.join(f'void {name}(void){{}}\n' for name in EXPORTS) + extra)
         subprocess.run(['arm-none-eabi-gcc', '-mcpu=cortex-m4', '-mthumb', '-Os', '-c', str(source),
                         '-o', str(self.root / 'fixture.o')], check=True, capture_output=True)
-        (self.root / 'libtv4_update_wire.a').unlink()
-        subprocess.run(['arm-none-eabi-ar', 'rcs', str(self.root / 'libtv4_update_wire.a'),
+        (self.root / ARCHIVE).unlink()
+        subprocess.run(['arm-none-eabi-ar', 'rcs', str(self.root / ARCHIVE),
                         str(self.root / 'fixture.o')], check=True, capture_output=True)
 
     def test_real_archive(self):
@@ -55,14 +58,22 @@ class Budget(unittest.TestCase):
 
     def test_unreviewed_import(self):
         self.archive('extern void tv4_unapproved(void);\nvoid tv4_test_bad_import(void){tv4_unapproved();}\n')
-        with self.assertRaisesRegex(ValueError, 'unreviewed codec import'): guard.inspect(self.root)
+        with self.assertRaisesRegex(ValueError, 'unreviewed .* import'): guard.inspect(self.root)
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--build', required=True, type=Path)
+    parser.add_argument('--fragments', action='store_true')
     args = parser.parse_args()
     BUILD = args.build.absolute()
+    if args.fragments:
+        import check_update_fragment_build as guard
+        ARCHIVE = 'libtv4_update_fragments.a'
+        TARGET = 'tv4_update_fragments'
+        EXPORTS = tuple('tv4_fragment_' + suffix for suffix in (
+            'tx_init', 'rx_init', 'tx_begin', 'tx_peek', 'tx_commit', 'rx_receive',
+            'rx_take', 'tx_poll', 'rx_poll', 'tx_cancel', 'rx_cancel', 'tx_clear', 'rx_clear'))
     result = unittest.TextTestRunner(verbosity=2).run(unittest.defaultTestLoader.loadTestsFromTestCase(Budget))
     if not result.wasSuccessful(): raise SystemExit(1)
     print('PASS6 ARM budget guard cases; temporary negative objects removed, no board image or execution')

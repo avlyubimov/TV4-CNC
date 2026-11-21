@@ -33,6 +33,7 @@ jobs:
             --lock third_party/mbedtls/origin.json > evidence/source-check.txt
           python3 tools/check_boot_admission_build.py build-boot-arm > evidence/arm-budget.json
           python3 tools/check_update_wire_build.py build-boot-arm/update-transport > evidence/wire-budget.json
+          python3 tools/check_update_fragment_build.py build-boot-arm/update-transport > evidence/fragment-budget.json
           cmake --build build-boot-arm --target help > evidence/arm-targets.txt
           if grep -q 'boot_motion_review' evidence/arm-targets.txt; then
             echo 'ERROR: host filesystem reviewer leaked into ARM targets'; exit 1
@@ -80,6 +81,7 @@ jobs:
             evidence/source-check.txt
             evidence/arm-budget.json
             evidence/wire-budget.json
+            evidence/fragment-budget.json
             evidence/crypto-origin.json
             evidence/static-analysis.txt
             evidence/board-gate.txt

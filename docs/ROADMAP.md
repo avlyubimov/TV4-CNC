@@ -1,6 +1,6 @@
 # План последовательной разработки TV4-CNC
 
-Обновлено от main `deace1c`,21ноября2026; PR #1–41 слиты, main CI5/5 PASS.
+Обновлено от main `4db99df`,21ноября2026; PR #1–42 слиты, main CI5/5 PASS.
 История и текущее ПО — [IMPLEMENTATION.md](IMPLEMENTATION.md); следующий
 STM32 этап — [NEXT_STAGE.md](NEXT_STAGE.md). Рабочий HMI не переписывать заново.
 Все новые этапы — отдельные ветки/небольшие PR, merge только с разрешения
@@ -15,7 +15,7 @@ STM32 этап — [NEXT_STAGE.md](NEXT_STAGE.md). Рабочий HMI не пе�
 | PR-04 ESP32 OTA Foundation | Плановая USB-миграция, otadata, A/B, HTTPS, подпись/хеш/compatibility, self-test и rollback | Проверенный backup, trusted key provisioning, migration/recovery review; power-loss/bad-signature/wrong-hardware tests. Разметку не менять app OTA. Firmware install только отдельно разрешён | PR #9–13 слиты; read-only session. Runtime worker/UI/native install/rollback/USB migration ещё не реализованы |
 | PR-05 GitHub Release Pipeline | Build matrix, versioned artifacts, signed manifest, checksums, release notes, prerelease/stable | Публикация только после CI и явного owner approval на SHA/tag/канал/артефакты; secrets/protected environment design; никакой фиктивной STM32 bin | PR-05a/b/c/d слиты: metadata-only candidates/policy/signed cohort и blocked build binding. Production bundle/actual context/keys/CI provenance/signing/publication ещё открыты |
 | PR-06 microSD Support | FAT32, detect/mount/read/write/free-space/eject/error handling; G-code files, logs/settings export, OTA cache | Подтверждённая разводка Rev 1.2 и схема USB/CAN/SD; отсутствие/извлечение/повреждение не блокирует HMI; file I/O только worker | Не реализован |
-| PR-07 STM32 CAN Bootloader | Независимый bootloader, sequence/chunks/ACK/retry, SHA/signature, hardware/protocol checks, recovery | Flash geometry и A/B либо staging/recovery решение; сначала host transport. SWD initial install и CAN hardware только по отдельному разрешению | PR #29–33 и36–39: DATA/crypto/handoff/model/completion/negotiation/release/RAM staging слиты. PR-07j: opt-in byte codec draft и signed RAM path. Production bundle/context/medium/identity/fragmentation/production wire/Flash/recovery/physical CAN/runtime/install открыты |
+| PR-07 STM32 CAN Bootloader | Независимый bootloader, sequence/chunks/ACK/retry, SHA/signature, hardware/protocol checks, recovery | Flash geometry и A/B либо staging/recovery решение; сначала host transport. SWD initial install и CAN hardware только по отдельному разрешению | PR #29–33 и36–39: DATA/crypto/handoff/model/completion/negotiation/release/RAM staging слиты. PR #42 codec слит; PR-07k bounded fragment/reassembly draft и signed RAM path. Production bundle/context/medium/identity/routing/metadata transfer/production wire/Flash/recovery/physical CAN/runtime/install открыты |
 | PR-08 Unified Firmware Update UI | Параметры → Обновления: версии HMI/Motion/protocol, compatibility, changelog, размер, progress/result/history, check/download/install/cancel | Worker APIs PR-04/05/07; auto-check можно, auto-install нельзя. STM32 install только после подтверждённого quiescent state | PR-08a: local build/SDK/profile info/settings menu; unknown STM32/CAN. Runtime check/download/install/history ещё не реализованы |
 
 PR-04 не обязан ждать физического motion: ESP32 обновляется на изолированном
@@ -27,7 +27,17 @@ UI-каркас обновлений допустим в своём PR, но н�
 
 ## Сохранённые инженерные milestones
 
-### PR-07j — bounded update byte codec от maindeace1c
+### PR-07k — bounded fragments от main4db99df
+
+[Fragment draft](STM32_UPDATE_FRAGMENTS.md):286byte owned buffers, <=8byte
+frames, explicit route/generation и retained counters, queue peek/commit,
+exact duplicates/order, bounded deadlines/quota/READY backpressure/single take.
+Host45/sanitizers45/standalone19, oracle3,100000 fault chains и8 signed RAM
+chains. ARM separate1536text/data0/bss0/frame48, old libraries/codec прежние;
+не full RAM/stack/throughput proof. Production identity/routing/authentication/
+metadata transport/runtime/install и аппаратные gates остаются открытыми.
+
+### Слитый PR #42, PR-07j — bounded update byte codec от maindeace1c
 
 [Codec draft](STM32_UPDATE_WIRE.md):8 message kinds, exact length/header/reserved,
 canonical LE без C ABI/padding/tail, zero failure output. Independent golden12,

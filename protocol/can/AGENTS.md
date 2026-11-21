@@ -71,3 +71,16 @@ Future fragmentation/reassembly/metadata-signature transfer/identity/authenticat
 и production adoption ещё открыты. Не назначать IDs/bitrate/pins/driver или
 подключать в MCU app/CAN/HMI. Byte fixtures не настоящие CAN frames/boot epochs.
 Host/ARM budgets и negative cases обязательны; только text evidence, no binaries.
+
+## PR-07k — opt-in bounded fragments
+
+Читать docs/STM32_UPDATE_FRAGMENTS.md. Только local envelope v1/route/generation,
+no serialized identity/authentication/reboot anti-replay claim. Fixed286byte
+buffers, no live reinit/copy/move/counter reset; explicit config/deadlines/quota.
+Peek не progress, commit только exact locally queued frame, не remote ACK.
+RX no silent restart; duplicates/rejects/BUSY не продлевают deadlines; READY
+unchecked/one codec take не dispatch/CRC/crypto/install/physical authority.
+Poll clocks без traffic, sticky context/clock/exhaustion нельзя clear. Все
+existing logical/independent verifier/lease/model/deadline gates прежние. Не
+подключать в app/ISR/driver, не выбирать production CAN IDs/bitrate/pins или
+Flash map. Host/ARM/archive/import/frame/negative guards и text evidence обязательны.

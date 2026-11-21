@@ -109,9 +109,26 @@ PR и Actions; не копировать код уже открытого PR. Д
 
 ## Текущее задание
 
-PR #1–41 слиты, база main `deace1c`, main CI5/5 PASS,
+PR #1–42 слиты, база main `4db99df`, main CI5/5 PASS,
 открытых PR перед работой нет.
-PR-07j: читать STM32_UPDATE_WIRE.md и protocol/can/AGENTS.md. Только отдельный
+PR-07k: читать STM32_UPDATE_FRAGMENTS.md и protocol/can/AGENTS.md. Только
+opt-in single-owner bounded envelope/reassembly:8-byte maximum, owned286byte
+TX/RX buffers, explicit local route/generation, retained counters без wrap,
+peek/exact local-queue commit, no silent RX restart, single take после codec.
+READY_BYTES_UNCHECKED не verified/auth/install authority; unchanged logical
+CRC/session/independent crypto/lease/model/deadlines обязательны. Poll без
+traffic, duplicates/peek/reject/BUSY не продлевают сроки. Context/clock/exhaustion
+sticky; clear/reinit не сбрасывают counters или lifetime. Local identity не
+передаётся на wire и не обеспечивает replay isolation после reset. Production
+routing/authentication/IDs/bitrate/metadata-signature transport/runtime/installer
+ещё отсутствуют. No-I/O/board/output/hardware gates прежние, устройств нет.
+Host45/sanitizers45/standalone19, independent envelope oracle3,263 roundtrips,
+DLC256/START32768/offset65536,100000 mutation/drop chains и8 signed RAM chains.
+Analyzer13 embedded+1 host; ARM fragments1536text/data0/bss0/frame48 отдельно,
+4096text/frame128 ceiling +6 archive guard methods; old archives/codec прежние.
+Эти цифры не full stack/MCU RAM/CPU/physical throughput approval.
+
+Слитый PR #42, PR-07j: читать STM32_UPDATE_WIRE.md. Только отдельный
 opt-in byte codec draft: existing8 message kinds, exact bounded LE framing,
 explicit enum tokens, failure output zeroing. Не отправлять C memory layout/
 padding/tails. Shared negotiation shape helper не physical/session/auth gate;

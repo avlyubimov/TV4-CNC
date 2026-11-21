@@ -1,10 +1,16 @@
 # CAN: стендовый heartbeat и подготовка update transport
 
+PR-07k: отдельный opt-in [fragment/reassembly draft](../../docs/STM32_UPDATE_FRAGMENTS.md)
+вокруг codec. Максимум8bytes envelope,4byte header +chunk, single bounded buffer,
+retained counters, explicit local route/generation, deadlines/backpressure/take.
+Local identity не serialized/authenticated, production IDs/routing/driver и
+metadata transport не реализованы. Existing logical/crypto/lease gates прежние.
+
 PR-07j добавляет отдельный opt-in [byte codec draft](../../docs/STM32_UPDATE_WIRE.md),
 не runtime CAN driver:8 existing message kinds, canonical LE, max286bytes,
 strict shape/length и failure zeroing. CRC/session/crypto проверки остаются
-в прежних слоях. Fragments/reassembly/production adoption/IDs/bitrate/пины не
-назначены. Ниже сохранён исходный heartbeat/typed transport contract.
+в прежних слоях. PR-07k добавляет experimental fragments/reassembly; production
+adoption/IDs/bitrate/пины не назначены. Ниже сохранён исходный heartbeat/typed transport contract.
 
 CAN ID, скорость и аппаратный драйвер не назначены. Передача всегда возвращает false.
 `model_receive` принимает только тестовый heartbeat: ровно 4 байта

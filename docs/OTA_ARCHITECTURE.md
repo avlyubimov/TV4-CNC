@@ -1,5 +1,12 @@
 # OTA TV4-CNC — проект архитектуры
 
+PR-07k [bounded fragment/reassembly draft](STM32_UPDATE_FRAGMENTS.md) добавляет
+opt-in envelope вокруг codec, без production driver/IDs/bitrate/runtime. Local
+route/generation не serialized authentication/reboot replay isolation. Future
+CAN bootloader/ESP32 OTA ещё требуют signed metadata transport, identity/durable
+source и независимых physical/operator/recovery/install gates. Flash addresses/
+сектора по предположению не резервируются; действующая разметка не меняется.
+
 PR-07j [complete-message byte draft](STM32_UPDATE_WIRE.md) кодирует existing
 logical negotiation/DATA/outcome для host/ARM review. Codec не authentication,
 CAN frame/fragmentation/production version или runtime caller. Existing

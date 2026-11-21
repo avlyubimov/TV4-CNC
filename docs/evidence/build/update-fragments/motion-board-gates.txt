@@ -1,0 +1,2 @@
+PASS motion BOARD_IMAGE=ON with LINK_PROBE=OFF blocked
+PASS motion BOARD_IMAGE=ON with LINK_PROBE=ON blocked

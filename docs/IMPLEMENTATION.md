@@ -1,6 +1,6 @@
 # Реализация: main, открытые PR и аппаратные границы
 
-Актуализация от main `deace1c`, 21 ноября2026: PR #1–41 слиты. Owner SWD
+Актуализация от main `4db99df`, 21 ноября2026: PR #1–42 слиты. Owner SWD
 F407/core/Flash1024KiB/backup — [HARDWARE_STATUS](HARDWARE_STATUS.md).
 Startup/DATA/admission/handoff/preflight и PR-07e уже в main:
 [completion/outcome](STM32_UPDATE_OUTCOME.md) связывает full checks с lease close
@@ -49,7 +49,7 @@ Captured fields не перечитываются; factory/A-B и headless/bench
 provenance/CI/install authority. Host39/sanitizers39, standalone13 и прежние ARM
 gates; matrix8 проверяет self-generated candidate integrity pins. Firmware
 код/settings/dependencies прежние; hardware results не добавлены.
-Текущая ветка PR-07j [byte codec](STM32_UPDATE_WIRE.md) добавляет opt-in C11
+Слитый PR #42, PR-07j [byte codec](STM32_UPDATE_WIRE.md) добавляет opt-in C11
 canonical LE framing для8 existing message kinds, без memory ABI/padding/tail.
 Shared pure negotiation shape helper не меняет state/policy. Host42/sanitizers42/
 standalone16, independent golden12,65536 outcome tokens,200000 mutations и
@@ -60,6 +60,15 @@ transfer/identity/runtime/Flash/hardware действий; decode OK не instal
 Push CI также обнаружил старый build-candidate flaky fixture: constant `x` мог
 совпасть с SHA tail. Теперь test XOR1 гарантированно меняет байт; verifier прежний.
 Нет runtime caller, Flash writer/map/commit/jump или физического safe-state proof.
+Текущая ветка PR-07k [fragment/reassembly draft](STM32_UPDATE_FRAGMENTS.md):
+separate opt-in C11, bounded286byte message/<=8byte envelope, local identity,
+no counter wrap/reset, peek/queue commit, exact duplicates/order/conflict,
+progress/total deadlines и READY backpressure/single codec take. Host45/
+sanitizers45/standalone19; oracle3/all263 cases/100000 faults/8 signed RAM chains,
+analyzer13 embedded+1 host/ARM/source/scope/board/output PASS. ARM fragments
+1536text/data0/bss0/frame48 отдельно, old libraries/codec прежние. Это не
+production identity/routing/CAN driver/metadata transfer/runtime/installer;
+аппаратных действий или новых измерений нет.
 Следующий этап — [NEXT_STAGE](NEXT_STAGE.md). Ниже исторические снимки отдельных PR;
 их старые counts/«не реализовано» не заменяют текущий статус этого абзаца.
 

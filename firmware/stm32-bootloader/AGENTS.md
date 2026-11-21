@@ -115,3 +115,13 @@ Report не production bundle/installer/actual hardware/context approval.
 Real independent signature/full image/lease/model/close/quarantine проверки не
 заменять codec/CRC/peer success. Новых crypto/workspace/firmware callers нет;
 shape/serialization не actual memory/physical/production CAN/install authority.
+
+## PR-07k — host fragment integration
+
+Читать docs/STM32_UPDATE_FRAGMENTS.md. --fragment-staging использует отдельную
+bounded library только в host tests; old typed/byte modes прежние, production
+handoff target не линкуется с fragments/codec. Raw metadata/signature по-прежнему
+приходят напрямую из fixture, их wire transport не реализован. Fragment test
+clock не physical timing или расширение logical deadlines. Real independent
+crypto/model/lease/cleanup/revocation обязательны; local counter/route/generation
+не authentication/install/physical proof. No device/Flash/startup map/runtime.
