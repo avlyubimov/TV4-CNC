@@ -1,15 +1,25 @@
 # Открытые вопросы и блокирующие решения
 
-Обновлено22ноября2026 от main4fe84f1/слитого PR #56.
-Агент выполнил два отдельно разрешённых SWD preflight-сеанса:
-[реальные ID/Flash geometry/protection reads](evidence/hardware/2026-11-22-f407-swd-preflight/README.md).
-RDP0/nWRP0xFFF известны как snapshot; erase/install/restore не проверены.
-REV_ID0x101f по ST —5/6, full marking неизвестен. Образ c09a20e не установлен,
-original backup SHA/разрешение на backup read/независимая копия ещё не получены.
-[HARDWARE_STATUS.md](HARDWARE_STATUS.md) отделяет owner facts от новых reads.
-Ни HSI/RAM/CCM/watchdog, ни физический CAN/motion этим не подтверждены.
+22 ноября 2026, main `4fe84f10a70228b9f440f41c6ccc50869919042a`, PR #1–56 слиты.
+Первый реальный c09a20e был записан и verify прошёл, но boot bench завершился
+**FAULT/error8 (IWDG_TIMEOUT)**. После восстановления SWD с DBG_SLEEP полный
+проверенный снимок1MiB записан обратно, verify/reset-run успешны.
+**Сейчас на плате прежнее ПО, не c09a20e.** Все пять аппаратных сеансов завершены.
+Надпись STM32F407VGT6 сверена владельцем; Flash1024KiB/driver12sectors/RDP0/
+nWRP0xFFF прочитаны. Current backup2×1MiB и SHA-проверенная копия на другом
+физическом NVMe сохранены приватно. NRST к ST-Link не подключён; RESET отпущен.
 
-Ответ владельца20ноября повторил только VGT6; full physical marking/HSE неизвестны.
+Исправлены IWDG start-before-sync и DBG_SLEEP в OpenOCD, обновлены
+регрессионные тесты и runbook. Новый ELF/BIN программно проверен; его работу
+на плате ещё не подтверждали. После CI/review потребуется **новое разрешение
+на точный образ и стендовые действия**. Watchdog/UsageFault/CCM/guards/progress
+пока не прошли; нет GPIO/CAN/motion, option-byte/OTP или изменений ESP32.
+
+[аппаратные факты и логи](evidence/hardware/2026-11-22-f407-swd-preflight/README.md); [HARDWARE_STATUS.md](HARDWARE_STATUS.md).
+Полный marking теперь сверён владельцем; ответ20ноября «VGT6» — история,
+а не оставшийся запрос. Original owner backup не открывался; новый current
+snapshot и независимая копия проверены, именно snapshot успешно восстановлен.
+
 PR-05b [release policy review](RELEASE_POLICY_REVIEW.md) проверяет существующий
 HMI contract и закрывает два encoding расхождения; actual local SemVer/key context,
 production Motion metadata, CAN и hardware gates ниже остаются открытыми.
@@ -115,10 +125,10 @@ stop/join не освобождает actual claim. Верхние image/crypto/
 
 | ID | Что нужно подтвердить/решить | Блокирует |
 |---|---|---|
-| HW-F407-01 | Owner SWD/core/device ID/Flash1024KiB теперь также прочитаны агентом; REV_ID0x101f соответствует5/6. Остаются полная физическая маркировка/package. Официальные DS8626/RM0090/PM0214/ST vectors закреплены в P0; Device ID не заменяет package check | Preflight первого стенда; software board profile уже есть, raw ID не определяет bootloader layout |
-| HW-F407-02 | HSE/PLL/реальная частота, schematic/pinout/boot-reset/recovery. SWD работает;3,252V — один owner sample | Physical clock/timer/DMA/CAN. HSI-only image уже собран; HSE не блокирует его сборку, реальные HSI/LSI/reset/tick ещё не измерены |
-| HW-F407-03 | Фактическая RAM/CCM availability, runtime stack high-water/stress. Документированный SRAM112+16KiB/CCM64KiB/98vectors contract и linker проверены программно | Исполнение/измерения на плате; ELF/BIN уже есть. Минимальный cookie/probe не полный RAM test |
-| HW-F407-04 | Спецификация12sectors совпала с actual driver report; OPTCR0x0fffaaed/RDP0/nWRP0xFFF прочитаны. Реальные erase/program/power-loss/restore ещё не проверены | Exact-image install после backup/marking/нового разрешения; отдельный P4 loader layout/write/recovery, A/B не выбран |
+| HW-F407-01 | Надпись STM32F407VGT6 сверена владельцем; raw ID/core/Flash подтверждены. REV_ID0x101f означает5 или6; точная silicon revision/package pin routing ещё неизвестны | Полный board pinout/commissioning; не блокирует HSI/no-motion сборку |
+| HW-F407-02 | HSI clock registers прочитаны перед FAULT8; частоты/tick/LSI/HSE не измерены. NRST не подключён, manual RESET recovery с DBG_SLEEP выполнен | Проверка startup/progress/watchdog и дальнейшие timer/CAN measurements |
+| HW-F407-03 | RAM/CCM/guard self-tests не достигнуты из-за IWDG init timeout; полные stress/high-water также открыты. Официальный memory/vector contract проверен | Исправленный аппаратный boot bench; нулевые pass fields не доказывают плохую RAM |
+| HW-F407-04 | Driver12sectors/RDP0/nWRP0xFFF прочитаны; c09 program/verify и full1MiB snapshot restore/verify/reset выполнены. Power-loss/erase-boundary stress не выполнены | Новый exact-image bench; P4 loader layout/write/recovery остаётся отдельным решением |
 | HW-F407-05 | Физические GPIO/CAN, transceiver/pin routing, безопасные уровни/полярности ENABLE/STEP/DIR/шпинделя | Любой physical adapter/drive commissioning; no-I/O adapter не подтверждает physical inhibit |
 | HW-USB-01 | Отдельно подтвердить, что устройство 0483:5720 принадлежит именно F407 стенду | Идентификация; VID/PID не доказывает MCU/Flash/прошивку |
 | HW-DRIVE-01 | Получение первого NEMA23, точные двигатель/драйвер/питание, STEP/DIR/ENABLE polarity, encoder/alarm, второй привод | Любые испытания приводов/осей |
@@ -143,7 +153,7 @@ stop/join не освобождает actual claim. Верхние image/crypto/
 | RELEASE-LICENSE-01 | Владелец выбирает лицензию приложения, review прав на распространяемые assets/библиотеки; LICENSE-NOTICE.md пока оставляет решение открытым | Внешнее распространение app binary/source release; PR-05a публикует только review metadata |
 | PERF-01 | Реальные LVGL/CPU/heap/PSRAM/stacks/reset/watchdog/queues/reconnect/CAN timeout measurements, touch-to-display и soak methodology | PR-03 acceptance, заявления о <50 мс/30 FPS/20–30 Гц |
 | RECOVERY-01 | Независимая копия ESP32 backup, испытание восстановления; данные/отчёт по восстановлению Blue Pill | Аппаратная migration/bootloader уверенность, не permission на запись |
-| RECOVERY-F407-01 | Owner backup1048576bytes/vector structure PASS; SHA-256, повторное чтение/независимая копия и restore не сообщены | Recovery confidence перед новой записью; dump не включать в Git/CI |
+| RECOVERY-F407-01 | Current snapshot2×1MiB byte/SHA/basic vectors PASS, independent copy на другом физическом NVMe SHA PASS; snapshot restore/verify/reset PASS. Original factory provenance не проверена | Новые записи требуют актуального snapshot/hash и разрешения; backup dumps/их SHA не публиковать |
 
 ## Уже установлено / не открывать заново
 
@@ -158,7 +168,8 @@ stop/join не освобождает actual claim. Верхние image/crypto/
   полного теста touch/performance это не закрывает.
 - F407 DevEBox получена; владелец подтвердил SWD/ST-Link V2, Cortex-M4r0p1,
   raw ID0x101f6413, Flash1024KiB,3,252V, backup1048576bytes/vector structure PASS.
-  Суффикс VGT6 сообщён ранее; маркировка/RAM/geometry/HSE/GPIO/CAN не закрыты.
+  Теперь полная надпись сверена владельцем; driver geometry/protection/restore
+  проверены. Рабочий boot/RAM/CCM/HSE/GPIO/CAN ещё не подтверждены.
   NEMA23 ещё нет, второго двигателя и трансиверов нет.
 - Blue Pill по отчёту владельца доступна через SWD/64 КиБ, backup сохранён;
   это не production motion target. Не подменять ей недостающую F407 geometry.

@@ -1,0 +1,36 @@
+UpdateCTestConfiguration  from :<checkout>/build-stm32f407-bench/DartConfiguration.tcl
+Test project <checkout>/build-stm32f407-bench
+Constructing a list of tests
+Done constructing a list of tests
+Updating test list for fixtures
+Added 0 tests to meet fixture requirements
+Checking test dependency graph...
+Checking test dependency graph end
+test 1
+    Start 1: stm32_bench_image_contract
+
+1: Test command: /home/avlyubimov/.local/bin/python3.14 "<checkout>/firmware/stm32-motion/tests/bench_image_tests.py" "--build" "<checkout>/build-stm32f407-bench" "--compiler" "/usr/bin/arm-none-eabi-gcc"
+1: Working Directory: <checkout>/build-stm32f407-bench
+1: Test timeout computed to be: 60
+1: test_actual_objects_relink (__main__.BenchImageTests.test_actual_objects_relink) ... ok
+1: test_bin_and_map_must_match_elf (__main__.BenchImageTests.test_bin_and_map_must_match_elf) ... ok
+1: test_compiler_stack_and_bin_allowlist (__main__.BenchImageTests.test_compiler_stack_and_bin_allowlist) ... ok
+1: test_constructors_orphans_and_runtime_not_discarded (__main__.BenchImageTests.test_constructors_orphans_and_runtime_not_discarded) ... ok
+1: test_elf_header_truncation_and_architecture (__main__.BenchImageTests.test_elf_header_truncation_and_architecture) ... ok
+1: test_flash_ram_ccm_and_stack_overflow (__main__.BenchImageTests.test_flash_ram_ccm_and_stack_overflow) ... ok
+1: test_identity_semihosting_and_fpu_refused (__main__.BenchImageTests.test_identity_semihosting_and_fpu_refused) ... ok
+1: test_profile_and_pinned_reference_refused (__main__.BenchImageTests.test_profile_and_pinned_reference_refused) ... ok
+1: test_programming_range_never_loads_ram (__main__.BenchImageTests.test_programming_range_never_loads_ram) ... ok
+1: test_real_image (__main__.BenchImageTests.test_real_image) ... ok
+1: test_section_origin_size_alignment_permissions (__main__.BenchImageTests.test_section_origin_size_alignment_permissions) ... ok
+1: test_stack_and_each_vector (__main__.BenchImageTests.test_stack_and_each_vector) ... ok
+1:
+1: ----------------------------------------------------------------------
+1: Ran 12 tests in 0.093s
+1:
+1: OK
+1/1 Test #1: stm32_bench_image_contract .......   Passed    0.14 sec
+
+100% tests passed, 0 tests failed out of 1
+
+Total Test time (real) =   0.14 sec

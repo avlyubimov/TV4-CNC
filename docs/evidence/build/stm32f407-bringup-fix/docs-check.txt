@@ -1,0 +1,19 @@
+PASS Markdown links and Bash syntax AGENTS.md
+PASS Markdown links and Bash syntax docs/HARDWARE_STATUS.md
+PASS Markdown links and Bash syntax docs/IMPLEMENTATION_PRIORITIES.md
+PASS Markdown links and Bash syntax docs/NEXT_STAGE.md
+PASS Markdown links and Bash syntax docs/OPEN_QUESTIONS.md
+PASS Markdown links and Bash syntax docs/ROADMAP.md
+PASS Markdown links and Bash syntax docs/STM32_FIRST_IMAGE.md
+PASS Markdown links and Bash syntax docs/STM32_STLINK_RUNBOOK.md
+PASS Markdown links and Bash syntax docs/evidence/build/stm32f407-bringup-fix/README.md
+PASS Markdown links and Bash syntax docs/evidence/build/stm32f407-bringup-fix/commands.md
+PASS Markdown links and Bash syntax docs/evidence/hardware/2026-11-22-f407-swd-preflight/README.md
+PASS Markdown links and Bash syntax docs/evidence/hardware/2026-11-22-f407-swd-preflight/commands.md
+PASS Markdown links and Bash syntax docs/plans/F407_SWD_PREFLIGHT.md
+PASS Markdown links and Bash syntax firmware/stm32-motion/AGENTS.md
+PASS actual42-word diagnostic FAIL8 decoded; no uncaptured raw IWDG_SR claim
+PASS c09 program/verify/identity, first failed fallback before write, later full snapshot restore verify/reset/marker retained separately from bench exit1
+PASS five distinct completed authorization scopes; no new hardware permission inferred
+PASS text-only changed paths; no raw dumps, private backup SHA, keys or binary artifacts
+PASS existing protocol/HMI/dependency/SDK/action pins/workflows unchanged; existing CI executes new regression tests

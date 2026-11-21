@@ -1,0 +1,79 @@
+Open On-Chip Debugger 0.12.0
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
+Info : The selected transport took over low-level target control. The results might differ compared to plain JTAG/SWD
+Info : clock speed 1000 kHz
+Info : STLINK V2J29S7 (API v2) VID:PID 0483:3748
+Info : Target voltage: 3.260437
+Info : [stm32f4x.cpu] Cortex-M4 r0p1 processor detected
+Info : [stm32f4x.cpu] target has 6 breakpoints, 4 watchpoints
+Info : gdb port disabled
+Info : Unable to match requested speed 1000 kHz, using 950 kHz
+Info : Unable to match requested speed 1000 kHz, using 950 kHz
+[stm32f4x.cpu] halted due to debug-request, current mode: Thread
+xPSR: 0x01000000 pc: 0x08000288 msp: 0x20005008
+TV4_BENCH GUARD CPUID=0x410fc241 ID=0x101f6413 OPTCR=0x0fffaaed
+Info : Unable to match requested speed 1000 kHz, using 950 kHz
+Info : Unable to match requested speed 1000 kHz, using 950 kHz
+[stm32f4x.cpu] halted due to debug-request, current mode: Thread
+xPSR: 0x01000000 pc: 0x08000288 msp: 0x20005008
+Info : Unable to match requested speed 1000 kHz, using 950 kHz
+Info : Unable to match requested speed 1000 kHz, using 950 kHz
+** Programming Started **
+Info : device id = 0x101f6413
+Info : flash size = 1024 KiB
+** Programming Finished **
+** Verify Started **
+** Verified OK **
+TV4_BENCH IDENTITY_C09_CLEAN_PASS
+Info : Unable to match requested speed 1000 kHz, using 950 kHz
+Info : Unable to match requested speed 1000 kHz, using 950 kHz
+Error: jtag status contains invalid mode value - communication failure
+Polling target stm32f4x.cpu failed, trying to reexamine
+Examination failed, GDB will be halted. Polling again in 100ms
+Info : Previous state query failed, trying to reconnect
+Error: jtag status contains invalid mode value - communication failure
+Polling target stm32f4x.cpu failed, trying to reexamine
+Examination failed, GDB will be halted. Polling again in 300ms
+Info : Previous state query failed, trying to reconnect
+Error: jtag status contains invalid mode value - communication failure
+Polling target stm32f4x.cpu failed, trying to reexamine
+Examination failed, GDB will be halted. Polling again in 700ms
+Info : Previous state query failed, trying to reconnect
+Error: jtag status contains invalid mode value - communication failure
+Polling target stm32f4x.cpu failed, trying to reexamine
+Examination failed, GDB will be halted. Polling again in 1500ms
+Info : Previous state query failed, trying to reconnect
+Error: jtag status contains invalid mode value - communication failure
+Polling target stm32f4x.cpu failed, trying to reexamine
+Examination failed, GDB will be halted. Polling again in 3100ms
+Info : Previous state query failed, trying to reconnect
+Error: jtag status contains invalid mode value - communication failure
+Polling target stm32f4x.cpu failed, trying to reexamine
+Examination failed, GDB will be halted. Polling again in 6300ms
+TV4_BENCH FAILED:
+Info : Unable to match requested speed 1000 kHz, using 950 kHz
+Info : Unable to match requested speed 1000 kHz, using 950 kHz
+Error: read_memory: read at 0xe0042008 with width=32 and count=1 failed
+Error executing event examine-end on target stm32f4x.cpu:
+/usr/bin/../share/openocd/scripts/mem_helper.tcl:7: Error: read_memory: failed to read memory
+Traceback (most recent call last):
+, in script
+    ocd_process_reset halt
+  File "embedded:startup.tcl", line 1193, in ocd_process_reset
+    ocd_process_reset_inner halt
+  File "<local-workspace>/work/stm32f407-first-image/firmware/stm32-motion/board/stm32f407vg/openocd.cfg", line 13, in ocd_process_reset_inner
+    mmw 0xE0042008 0x00001000 0
+  File "/usr/bin/../share/openocd/scripts/mem_helper.tcl", line 32, in mmw
+    mrw 0xE0042008
+  File "/usr/bin/../share/openocd/scripts/mem_helper.tcl", line 7, in mrw
+    read_memory 0xE0042008 32 1
+TV4_BENCH RESTORE_FAILED_STOPPED: Traceback (most recent call last):
+, in script
+    ocd_process_reset halt
+
+shutdown command invoked
+Traceback (most recent call last):
+, in script
+    ocd_process_reset halt

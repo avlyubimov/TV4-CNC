@@ -1,0 +1,12 @@
+{
+  "repository": "https://github.com/STMicroelectronics/stm32f4xx-hal-driver",
+  "tag": "v1.8.5",
+  "annotated_tag_object": "6b55d2c9a27e128039cd68c3c1ffeff11c8fe0f7",
+  "commit": "b6f0ed3829f3829eb358a2e7417d80bba1a42db7",
+  "source_url": "https://github.com/STMicroelectronics/stm32f4xx-hal-driver/blob/b6f0ed3829f3829eb358a2e7417d80bba1a42db7/Src/stm32f4xx_hal_iwdg.c#L163",
+  "reviewed_scope": "HAL_IWDG_Init start -> unlock -> PR/RLR -> wait flags -> reload",
+  "reference_only": true,
+  "upstream_source_not_vendored": true,
+  "runtime_dependency_added": false,
+  "license_scope": "No ST HAL code copied/compiled/linked; official source consulted only"
+}

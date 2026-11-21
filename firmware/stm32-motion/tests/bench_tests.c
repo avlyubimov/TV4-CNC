@@ -6,10 +6,10 @@
 #include <string.h>
 
 enum injection {NONE,BAD_CORE,BAD_DEVICE,BAD_FLASH,HSI_STUCK,SWITCH_STUCK,STOP_STUCK,
-    LSI_STUCK,IWDG_PRE_BUSY,IWDG_POST_BUSY,IWDG_BAD_PR,IWDG_BAD_RLR};
+    LSI_STUCK,IWDG_INITIAL_PENDING,IWDG_PVU_STUCK,IWDG_RVU_STUCK,IWDG_BAD_PR,IWDG_BAD_RLR};
 static struct {
     uint32_t cr,cfgr,csr,ahb,debug,pr,rlr,sr,ctrl,load,val,reads,writes;
-    unsigned updates,feeds,starts;
+    unsigned updates,feeds,starts,sync_reads;
     bool unlocked;
     enum injection fail;
 } mock;
@@ -29,10 +29,16 @@ uint32_t tv4_bench_test_read32(uint32_t address)
     case TV4_DBG_APB1_FZ:return mock.debug;
     case TV4_IWDG_PR:return mock.pr^(mock.fail==IWDG_BAD_PR?1u:0u);
     case TV4_IWDG_RLR:return mock.rlr^(mock.fail==IWDG_BAD_RLR?1u:0u);
-    case TV4_IWDG_SR:
-        if(mock.fail==IWDG_PRE_BUSY || (mock.fail==IWDG_POST_BUSY && mock.updates>0))return 3;
-        if(mock.sr!=0)mock.sr=0;
-        return mock.sr;
+    case TV4_IWDG_SR: {
+        /* An inactive IWDG cannot complete a pending clock-domain update.
+         * The old wait-before-start sequence must fail this actual-source
+         * model; no claim is made about uncaptured SR bits on the board. */
+        uint32_t result=mock.sr;
+        if(mock.starts!=0 && ++mock.sync_reads>=6) {
+            mock.sr=mock.fail==IWDG_PVU_STUCK?1u:mock.fail==IWDG_RVU_STUCK?2u:0u;
+        }
+        return result;
+    }
     default:assert(!"read outside exact bench register set");return 0;
     }
 }
@@ -67,8 +73,8 @@ void tv4_bench_test_write32(uint32_t address,uint32_t value)
         break;
     case TV4_IWDG_KR:
         if(value==UINT32_C(0x5555))mock.unlocked=true;
-        else if(value==UINT32_C(0xaaaa)){assert(mock.pr==4 && mock.rlr==1023 && mock.sr==0);mock.unlocked=false;++mock.feeds;}
-        else {assert(value==UINT32_C(0xcccc));++mock.starts;}
+        else if(value==UINT32_C(0xaaaa)){assert(mock.starts==1 && mock.pr==4 && mock.rlr==1023 && mock.sr==0);mock.unlocked=false;++mock.feeds;}
+        else {assert(value==UINT32_C(0xcccc) && mock.starts==0);++mock.starts;}
         break;
     case TV4_IWDG_PR:assert(mock.unlocked && value==4);mock.pr=value;mock.sr|=1;++mock.updates;break;
     case TV4_IWDG_RLR:assert(mock.unlocked && value==1023);mock.rlr=value;mock.sr|=2;++mock.updates;break;
@@ -82,6 +88,7 @@ static void reset_mock(enum injection fail,bool warm)
 {
     memset(&mock,0,sizeof(mock));mock.fail=fail;mock.cr=UINT32_C(0x5583);
     mock.csr=UINT32_C(0x20000000);mock.ahb=UINT32_C(1)<<20;mock.debug=UINT32_C(1)<<5;
+    if(fail==IWDG_INITIAL_PENDING)mock.sr=3;
     if(warm){mock.cr|=(UINT32_C(1)<<16)|(UINT32_C(1)<<17)|(UINT32_C(1)<<18)|
         (UINT32_C(1)<<19)|(UINT32_C(1)<<24)|(UINT32_C(1)<<25)|(UINT32_C(1)<<26)|(UINT32_C(1)<<27);
         mock.cfgr=UINT32_C(0xcfe1fc0a);}
@@ -90,26 +97,29 @@ static void hardware_paths(void)
 {
     const tv4_bench_error expected[]={TV4_BENCH_OK,TV4_BENCH_BAD_CORE,TV4_BENCH_BAD_DEVICE,
         TV4_BENCH_BAD_FLASH,TV4_BENCH_HSI_TIMEOUT,TV4_BENCH_CLOCK_SWITCH_TIMEOUT,TV4_BENCH_CLOCK_STOP_TIMEOUT,
-        TV4_BENCH_LSI_TIMEOUT,TV4_BENCH_IWDG_TIMEOUT,TV4_BENCH_IWDG_TIMEOUT,TV4_BENCH_IWDG_READBACK,TV4_BENCH_IWDG_READBACK};
+        TV4_BENCH_LSI_TIMEOUT,TV4_BENCH_OK,TV4_BENCH_IWDG_TIMEOUT,TV4_BENCH_IWDG_TIMEOUT,
+        TV4_BENCH_IWDG_READBACK,TV4_BENCH_IWDG_READBACK};
     unsigned cases=0;
     for(unsigned warm=0;warm<2;++warm)for(unsigned i=0;i<sizeof(expected)/sizeof(expected[0]);++i) {
         reset_mock((enum injection)i,warm!=0);tv4_bench_diagnostics d={0};
         assert(tv4_bench_hardware_init(&d)==expected[i]);assert(d.reset_flags==UINT32_C(0x20000000));
         assert(mock.reads<=TV4_BENCH_WAIT_LOOPS+100u && mock.writes<24 && d.motion_outputs==0);
-        if(i==0) {
+        if(expected[i]==TV4_BENCH_OK) {
             assert(d.watchdog_started==1 && mock.starts==1 && mock.feeds==1 && d.debug_halt_freeze==1);
+            assert(mock.updates==2 && mock.sync_reads==7);
             assert(d.hsi_hz==16000000 && d.rcc_cfgr==0 && (d.rcc_cr&UINT32_C(0x0fdf0000))==0);
             assert(d.rcc_csr==3 && mock.debug==(UINT32_C(1)<<5 | UINT32_C(1)<<12));
             tv4_bench_tick_start();assert(mock.ctrl==7 && mock.load==15999 && mock.val==0);
             tv4_bench_watchdog_feed();assert(mock.feeds==2);
         }else {
-            assert(d.watchdog_started==0 && mock.starts==0 && mock.feeds==0);
+            bool started=i>IWDG_INITIAL_PENDING;
+            assert(d.watchdog_started==(started?1u:0u) && mock.starts==(started?1u:0u) && mock.feeds==0);
             assert((mock.csr&UINT32_C(0x20000000))!=0); /* no premature reset-flag clear */
             if(i<=3)assert(mock.writes==0);
         }
         ++cases;
     }
-    printf("PASS%u actual-source MMIO cases: cold/debug-PLL entry, identity/clock/LSI/IWDG timeouts/readback, bounded waits, HSI-only writes/no motion registers\n",cases);
+    printf("PASS%u actual-source MMIO cases: cold/debug-PLL entry, pending IWDG sync requires start, independent PVU/RVU timeout/readback, active watchdog on init fault/no feed, bounded waits, HSI-only writes/no motion registers\n",cases);
 }
 static void diagnostic_lifetime(void)
 {

@@ -34,14 +34,16 @@ tv4_bench_error tv4_bench_hardware_init(volatile tv4_bench_diagnostics *d)
     d->rcc_cr=tv4_bench_read32(TV4_RCC_CR);d->rcc_cfgr=tv4_bench_read32(TV4_RCC_CFGR);
     d->state=TV4_BENCH_WATCHDOG;update(TV4_RCC_CSR,1,0);
     if(!wait_bits(TV4_RCC_CSR,2,2))return TV4_BENCH_LSI_TIMEOUT;
-    if(!wait_bits(TV4_IWDG_SR,3,0))return TV4_BENCH_IWDG_TIMEOUT;
+    /* Start the IWDG clock domain before waiting for PR/RLR synchronization
+     * (ST HAL F4 v1.8.5, HAL_IWDG_Init). Once started it cannot be stopped;
+     * a later timeout/readback fault must report an active, unfed watchdog. */
+    tv4_bench_write32(TV4_IWDG_KR,UINT32_C(0xcccc));d->watchdog_started=1;
     tv4_bench_write32(TV4_IWDG_KR,UINT32_C(0x5555));
     tv4_bench_write32(TV4_IWDG_PR,TV4_BENCH_IWDG_PR);
     tv4_bench_write32(TV4_IWDG_RLR,TV4_BENCH_IWDG_RLR);
     if(!wait_bits(TV4_IWDG_SR,3,0))return TV4_BENCH_IWDG_TIMEOUT;
     if(tv4_bench_read32(TV4_IWDG_PR)!=TV4_BENCH_IWDG_PR || tv4_bench_read32(TV4_IWDG_RLR)!=TV4_BENCH_IWDG_RLR)return TV4_BENCH_IWDG_READBACK;
     tv4_bench_write32(TV4_IWDG_KR,UINT32_C(0xaaaa));
-    tv4_bench_write32(TV4_IWDG_KR,UINT32_C(0xcccc));d->watchdog_started=1;
     update(TV4_RCC_CSR,UINT32_C(1)<<24,0); /* RMVF only after captured flags */
     d->rcc_csr=tv4_bench_read32(TV4_RCC_CSR);return TV4_BENCH_OK;
 }

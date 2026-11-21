@@ -1,10 +1,13 @@
 # STM32F407VG: первый ST-Link bench и восстановление
 
-**Образ c09a20e ещё не установлен.** 22 ноября выполнены два отдельно
-разрешённых SWD-сеанса без записи Flash: первый завершился ошибкой команды,
-исправленный повтор прочитал ID/геометрию/защиту и выполнил reset/run текущего ПО.
-[Обе попытки и пределы](evidence/hardware/2026-11-22-f407-swd-preflight/README.md).
-Это не проверка исполнения нового HSI/watchdog образа и не разрешение на запись.
+**c09a20e был записан и проверен, но boot завершился FAULT/error8. Полный
+проверенный snapshot1MiB восстановлен, verify/reset-run прошли. Сейчас на плате
+прежнее ПО.** [Факты пяти завершённых сеансов](evidence/hardware/2026-11-22-f407-swd-preflight/README.md).
+Исправляются IWDG start-before-sync и DBG_SLEEP; c09a20e повторно не использовать.
+Надпись STM32F407VGT6 владелец сверил; current snapshot и независимая копия
+на другом физическом NVMe SHA-проверены. Их factory происхождение не доказано.
+NRST к ST-Link не подключён; подписанная RESET доступна и отпущена.
+
 Build/CI/PR не разрешают новый SWD/read/reset/write/capture сеанс. Прежние
 разрешения ESP32 к F407 не относятся. Перед исполнением владелец отдельно
 утверждает точный commit/profile/ELF SHA-256 и операции/длительность сеанса;
@@ -23,12 +26,15 @@ Build/CI/PR не разрешают новый SWD/read/reset/write/capture се
    Не подавать одновременно конфликтующие источники питания от ST-Link и USB.
    Сверить исходные BOOT straps/загрузку из main Flash без изменения option bytes.
    HSE frequency пока не нужна. NRST не предполагается подключённым.
-3. Владелец указывает существующий полный **1 048 576-byte** F407 backup и его
-   ранее независимо сохранённый SHA-256. Размер/vector structure уже сообщены,
-   **его SHA-256 нам пока не передан**. Новое вычисление SHA само по себе не
-   доказывает соответствие исходному backup. Нужны сверка с исходной записью,
-   независимая вторая копия и готовность restore. ESP32 16 МиБ backup сюда не подходит.
-   Пути/содержимое дампа/защищённые данные не помещать в Git, PR или public logs.
+3. Перед записью нужен проверенный полный1MiB snapshot этой платы и SHA,
+   сохранённый при его получении. 22 ноября по отдельному разрешению агент
+   сделал два полных чтения текущей Flash, сравнил bytes/SHA и начальные векторы;
+   затем SHA-проверенную копию сохранил на другом физическом NVMe. Эти данные
+   являются новым current snapshot, **не доказательством factory происхождения**.
+   Private manifest/SHA256SUMS хранятся рядом с локальными дампами, вне Git.
+   Прежний owner backup не открывался. Если для другого стенда snapshot ещё нет,
+   сначала получить отдельное разрешение на его создание/проверку и recovery copy.
+   ESP32 16MiB backup для F407 не подходит; backup не включает OTP/option bytes.
 4. Подготовить preflight без записи Flash: версию probe/OpenOCD, CPUID/DBG ID/Flash size,
    bank/sector geometry, RDP/WRP и option-byte state. Это новые аппаратные чтения,
    поэтому они ещё требуют разрешения. Не угадывать protection по старому SWD report.
@@ -46,11 +52,14 @@ python3 tools/check_stm32_bench.py \
 ```
 
 Backup checks пользователь выполняет с **известными ему проверенными путями**
-и исходным checksum file; агент их не подставляет/не открывает без разрешения:
+и checksum file проверенного snapshot; агент их не подставляет/не открывает без разрешения:
 
 ```bash
 test "$(stat -c %s "$TV4_F407_BACKUP")" = 1048576
-sha256sum --check "$TV4_F407_ORIGINAL_CHECKSUM"
+(
+  cd -- "$(dirname -- "$TV4_F407_VERIFIED_CHECKSUM")"
+  sha256sum --check -- "$(basename -- "$TV4_F407_VERIFIED_CHECKSUM")"
+)
 cmp -- "$TV4_F407_BACKUP" "$TV4_F407_SECOND_COPY"
 ```
 
@@ -60,15 +69,18 @@ cmp -- "$TV4_F407_BACKUP" "$TV4_F407_SECOND_COPY"
 для ST-Link V2/HLA SWD:
 [openocd.cfg](../firmware/stm32-motion/board/stm32f407vg/openocd.cfg).
 Stock `target/stm32f4x.cfg` имеет reset-init с PLL64MHz; custom config заменяет
-его, оставляет SWD1000kHz, запрещает trace pin initialization и задаёт только
-IWDG debug-halt freeze. `reset_config none` не предполагает линию NRST;
-сброс через SWD/SYSRESETREQ ещё должен быть проверен на стенде.
+его, оставляет SWD1000kHz, запрещает trace pin initialization и задаёт
+IWDG debug-halt freeze и DBGMCU_CR.DBG_SLEEP. Последний удерживает debug
+AHB/HCLK во время WFI (RM0090 §38.16.1), не включает Stop/Standby/trace GPIO.
+`reset_config none` соответствует отсутствию NRST; reset/run через SWD выполнен
+в разрешённых сеансах. Доступ после нового power-cycle всё равно проверить.
 Не заменять эту config стандартной без повторного review.
 
 После отдельного разрешения, **ещё без Flash write**, возможен такой сеанс:
 
 ```bash
-openocd -f firmware/stm32-motion/board/stm32f407vg/openocd.cfg \
+timeout --foreground --signal=TERM --kill-after=2s 50s \
+  openocd -f firmware/stm32-motion/board/stm32f407vg/openocd.cfg \
   -c "gdb_port disabled" -c "tcl_port disabled" -c "telnet_port disabled" \
   -c "init" -c "reset halt" \
   -c "mdw 0xE000ED00 1" -c "mdw 0xE0042000 1" \
@@ -95,6 +107,23 @@ device ID low12=0x413, Flash size1024KiB, ожидаемые12sectors и отс�
 препятствующей записи защиты. Полный raw ID сравнить с owner0x101f6413;
 неожиданное отличие расследовать. Option values не изменять. Перед записью
 сопоставить реальный отчёт с документированной картой; при сомнении остановиться.
+
+## Если debug недоступен после WFI
+
+При потере SWD остановить текущий сценарий, сохранить ошибку. Не повторять
+Flash writes, unlock или неизвестные reset wiring. 22 ноября первоначальная
+config без DBG_SLEEP потеряла доступ; восстановление потребовало нового scope
+и удержания владельцем подписанной RESET. Оно прошло с SWD100kHz, `init` и
+установкой DBG_SLEEP/IWDG freeze **до отпускания RESET**, затем halt/read.
+В log сохранено DBGMCU_CR0→1. Только после ready marker агент попросил
+отпустить кнопку и дождался подтверждения владельца. Таймаут и ожидание владельца
+должны входить в разрешённый срок; при stale release flag/ошибке остановиться.
+
+Не использовать `connect_assert_srst`/`srst_only` при неподключённом NRST и не
+просить замыкать неподписанные контакты. Повторная recovery — новый разрешённый
+сеанс, если прежний завершился. Сначала восстановить доступ/identity/protection,
+затем действовать в пределах согласованного теста или conditional snapshot restore.
+Это проверенная процедура для данного случая, не гарантия доступа при любом отказе.
 
 ## Отдельно разрешённая установка и verify
 
@@ -173,19 +202,20 @@ preflight. Любая RDP/WRP проблема требует отдельног
 
 ```text
 openocd -f firmware/stm32-motion/board/stm32f407vg/openocd.cfg \
-  -c "program {/absolute/verified/f407-factory-1mib.bin} verify reset exit 0x08000000"
+  -c "program {/absolute/verified/f407-current-snapshot-1mib.bin} verify reset exit 0x08000000"
 ```
 
 Offset для raw BIN — последний аргумент OpenOCD `program`, **0x08000000**,
 а не0x0; ELF собственного offset не требует. Полный1MiB restore стирает/записывает
 Flash sectors0–11; option bytes/OTP в этот dump не входят и не восстанавливаются.
 Команды опираются на [OpenOCD Flash documentation](https://openocd.org/doc/html/Flash-Commands.html).
-Проверить exit/verify/reset и поведение заводского приложения. При согласованном
+Проверить exit/verify/reset и поведение восстановленного предыдущего приложения. При согласованном
 readback можно отдельно сравнить полный readback SHA с исходным SHA; это новая
 операция чтения, не выполняемая автоматически данной процедурой.
 
 Разрыв питания при записи может оставить MCU без приложения. SWD recovery
 требует пригодного probe/питания и разрешённой повторной операции; образ не
-содержит независимый recovery loader. Восстановление пока **не испытано**.
+содержит независимый recovery loader. 22 ноября полный snapshot restore/verify/
+reset-run **выполнен успешно**; power-loss и автономный recovery не испытаны.
 Будущий CAN loader/разделение Flash/OTA относится к P4 после P3; sector0 данного
 bench не означает утверждения его будущего размера/адресов приложений.

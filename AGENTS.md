@@ -49,7 +49,8 @@ PR и Actions; не копировать код уже открытого PR. Д
   CAN-коммуникации; **никакой генерации STEP на ESP32**.
 - STM32F407: DevEBox STM32F4VX_M Ver. 2.0; владелец сообщил STM32F407VGT6;
   owner SWD/ST-Link V2/Cortex-M4r0p1/raw ID0x101f6413/Flash1024KiB/3,252V/
-  backup1048576bytes/vector structure PASS подтверждены. Package/RAM/CCM/секторы/
+  backup1048576bytes/vector structure PASS подтверждены. Владелец сверил полную надпись STM32F407VGT6;
+  driver12sectors/RDP0 и полный snapshot restore проверены. SRAM/CCM runtime,
   кварц/распиновка/physical GPIO/CAN ещё не проверены. Только он отвечает за планирование, таймерный STEP/DIR,
   энкодеры, homing, watchdog и состояние реальной машины после commissioning.
 - Blue Pill STM32F103C8T6: отдельный стенд протокола/таймеров/загрузчиков;
@@ -135,29 +136,30 @@ PR и Actions; не копировать код уже открытого PR. Д
    теги, релизы, секреты CI и публикации под видом обычного push.
 6. Обновлять актуальный статус; исторические отчёты сохранять с явной пометкой.
 
-## Текущее задание: F407 SWD preflight и первый install gate
+## Текущее задание: исправление первого аппаратного запуска F407
 
-База main4fe84f1, PR #1–56 слиты, main CI5/5 PASS. P0 software image готов,
-кандидат c09a20e/ELF SHA d6bb0cc3bde04b37315d583ae040867f0ccfc2e4238ecb4a4422f9bbee542e0e.
-Читать docs/STM32_STLINK_RUNBOOK.md и
-docs/evidence/hardware/2026-11-22-f407-swd-preflight/README.md.
+22 ноября 2026, main `4fe84f10a70228b9f440f41c6ccc50869919042a`, PR #1–56 слиты.
+Первый реальный c09a20e был записан и verify прошёл, но boot bench завершился
+**FAULT/error8 (IWDG_TIMEOUT)**. После восстановления SWD с DBG_SLEEP полный
+проверенный снимок1MiB записан обратно, verify/reset-run успешны.
+**Сейчас на плате прежнее ПО, не c09a20e.** Все пять аппаратных сеансов завершены.
+Надпись STM32F407VGT6 сверена владельцем; Flash1024KiB/driver12sectors/RDP0/
+nWRP0xFFF прочитаны. Current backup2×1MiB и SHA-проверенная копия на другом
+физическом NVMe сохранены приватно. NRST к ST-Link не подключён; RESET отпущен.
 
-Два отдельно разрешённых SWD-сеанса завершены: actual IDs/Flash size,
-12sector driver map, RDP0/nWRP0xFFF прочитаны; reset/run текущего ПО выполнен.
-Первый partial/unsupported command сохранён, исправленный retry PASS.
-OpenOCD unknown REV_ID0x101f расшифрован по ST как5/6, exact marking неизвестен.
-Нет Flash/OTP/option writes, erase/unlock, backup reads, candidate install,
-GPIO/CAN/motion или изменений ESP32. Firmware/profile/binary c09a20e прежние.
+Исправлены IWDG start-before-sync и DBG_SLEEP в OpenOCD, обновлены
+регрессионные тесты и runbook. Новый ELF/BIN программно проверен; его работу
+на плате ещё не подтверждали. После CI/review потребуется **новое разрешение
+на точный образ и стендовые действия**. Watchdog/UsageFault/CCM/guards/progress
+пока не прошли; нет GPIO/CAN/motion, option-byte/OTP или изменений ESP32.
 
-Обновить evidence/runbook/hardware/open questions/roadmap отдельным PR, без
-self-merge. Не маскировать failed attempt или объявлять HSI/RAM/watchdog PASS.
-Read protection/driver map не являются Flash erase/restore или physical inhibit.
-Для следующего install сначала проверить original F407 backup SHA/независимую
-копию по разрешённым владельцем путям и сверить full physical marking.
-Требуется новое разрешение на exact image/write/reset/capture/bench actions;
-двух preflight permissions на это нет. Не резервировать будущий loader layout.
-До получения зависимого input продолжать только разрешённую software/docs работу.
-После P0 порядок P1–P5 сохраняется; новые абстракции не заменяют первый boot.
+Читать docs/STM32_STLINK_RUNBOOK.md,
+docs/evidence/hardware/2026-11-22-f407-swd-preflight/README.md и
+docs/evidence/build/stm32f407-bringup-fix/README.md.
+Разделять фактический FAULT8/restore и инженерную причину; raw IWDG_SR не читался.
+Получить новый clean exact-head ELF/BIN, negative/repro/host/sanitizer/CI results,
+создать отдельный PR без self-merge. Прошлые разрешения завершены и не покрывают
+новый образ. Не резервировать CAN loader layout и не заменять boot новой библиотекой.
 
 ## Исторические контракты слитых этапов
 

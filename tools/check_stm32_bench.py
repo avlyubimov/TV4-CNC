@@ -58,11 +58,13 @@ def references():
         address += size
     require(len(p['flash_sectors']) == 12 and address == FLASH_END, 'Flash geometry')
     cfg = (BOARD / 'openocd.cfg').read_text()
-    require('reset_config none' in cfg and 'adapter speed 1000' in cfg and
-            'configure -event reset-init { adapter speed 1000 }' in cfg and
-            'configure -event pre-enable' in cfg and 'error "Pin trace is forbidden' in cfg,
-            'pinless HSI OpenOCD overrides required')
     commands = '\n'.join(x.split('#', 1)[0] for x in cfg.splitlines())
+    require('reset_config none' in commands and 'adapter speed 1000' in commands and
+            'configure -event reset-init { adapter speed 1000 }' in commands and
+            'mmw 0xE0042004 0x00000001 0' in commands and
+            'mmw 0xE0042008 0x00001000 0' in commands and
+            'configure -event pre-enable' in commands and 'error "Pin trace is forbidden' in commands,
+            'pinless HSI/OpenOCD DBG_SLEEP/IWDG overrides required')
     require(not re.search(r'\b(?:init|program|reset|shutdown|exit)\s*$', commands, re.M) and
             not re.search(r'\b(?:mww|mwh|mwb|flash|mass_erase|unlock|options_write)\b', commands),
             'OpenOCD config must not itself operate/program/change protection')

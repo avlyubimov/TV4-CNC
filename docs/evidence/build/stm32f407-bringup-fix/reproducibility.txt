@@ -1,0 +1,4 @@
+PASS working-tree builds, same toolchain, two independent build directories; no ARM execution.
+PASS tv4_stm32f407_bench.bin bytes=2540 SHA256=888fc71cca73b8b4ed0c7b199f6d00414473efd3a0c2dff2403cdc73180b30a2
+PASS tv4_stm32f407_bench.elf bytes=164828 SHA256=fba9af27fc56df4c304f80c87931e387684ac09c8daac59e5853a33c2c51ed87
+Map contains different output paths; raw map reproducibility is not claimed.

@@ -1,41 +1,34 @@
-# Следующий этап: P0 — первая прошиваемая сборка STM32F407
+# Следующий этап: P0 — исправленный первый запуск STM32F407
 
-22 ноября 2026. База main `4fe84f10a70228b9f440f41c6ccc50869919042a`,
-PR #1–56 слиты, main CI5/5 PASS. P0 software image завершён в PR #56.
-[Образ](STM32_FIRST_IMAGE.md), [runbook](STM32_STLINK_RUNBOOK.md),
-[фактический SWD preflight](evidence/hardware/2026-11-22-f407-swd-preflight/README.md).
+22 ноября 2026, main `4fe84f10a70228b9f440f41c6ccc50869919042a`, PR #1–56 слиты.
+Первый реальный c09a20e был записан и verify прошёл, но boot bench завершился
+**FAULT/error8 (IWDG_TIMEOUT)**. После восстановления SWD с DBG_SLEEP полный
+проверенный снимок1MiB записан обратно, verify/reset-run успешны.
+**Сейчас на плате прежнее ПО, не c09a20e.** Все пять аппаратных сеансов завершены.
+Надпись STM32F407VGT6 сверена владельцем; Flash1024KiB/driver12sectors/RDP0/
+nWRP0xFFF прочитаны. Current backup2×1MiB и SHA-проверенная копия на другом
+физическом NVMe сохранены приватно. NRST к ST-Link не подключён; RESET отпущен.
 
-## Текущий результат и следующий аппаратный gate
+Исправлены IWDG start-before-sync и DBG_SLEEP в OpenOCD, обновлены
+регрессионные тесты и runbook. Новый ELF/BIN программно проверен; его работу
+на плате ещё не подтверждали. После CI/review потребуется **новое разрешение
+на точный образ и стендовые действия**. Watchdog/UsageFault/CCM/guards/progress
+пока не прошли; нет GPIO/CAN/motion, option-byte/OTP или изменений ESP32.
 
-Агент выполнил два отдельно разрешённых SWD-сеанса без записи Flash:
-CPUID0x410fc241/Cortex-M4r0p1, rawID0x101f6413, Flash1024KiB, driver12sector
-geometry совпали с P0 profile; FLASH_OPTCR0x0fffaaed/RDP0xAA/nWRP0xFFF.
-Первая попытка partial из-за отсутствующей команды OpenOCD0.12; исправленный
-повтор exit0, обе вернули текущее ПО через reset/run. Ревизия0x101f по ST —5/6,
-не точный marking. Это реальные reads, не исполнение нового образа.
+[аппаратные факты и логи](evidence/hardware/2026-11-22-f407-swd-preflight/README.md), [образ](STM32_FIRST_IMAGE.md),
+[runbook](STM32_STLINK_RUNBOOK.md),
+[новые программные проверки](evidence/build/stm32f407-bringup-fix/README.md).
+Измеримый следующий результат: RUNNING с продвижением ticks/heartbeat/feeds,
+data/BSS/CCM/guards PASS, watchdog reset и UsageFault context на новом exact image.
+До этого c09a20e не считать аппаратно рабочим. После этого сохраняется порядок P1–P5.
 
-Образ **c09a20e**,2596bytes, остаётся неизменным и не установленным.
-Его software77/77+sanitizers77/77, negative/repro/CI26/26 из PR #56 сохраняются;
-новых firmware builds/local host tests эта docs/evidence работа не заявляет.
-Driver geometry не является erase test; physical inhibit/GPIO/CAN не проверены.
+## Подтверждено и ещё неизвестно
 
-Следующий измеримый шаг — exact-image install и startup/HSI/RAM/CCM/heartbeat/
-watchdog/fault bench. **Сначала нужны original F407 backup SHA, разрешение на
-чтение backup и независимая вторая копия, сверка полного marking.** Затем
-отдельное разрешение на конкретный ELF SHA и write/reset/capture/test scope.
-Два разрешённых preflight-сеанса завершены; они не разрешают Flash write,
-новые SWD-сеансы/backup reads/option changes или действия с приводами.
-Сохранить факты/исправление runbook отдельным PR, без self-merge.
-
-## Подтверждённые характеристики
-
-[Owner report](evidence/hardware/stm32f407-owner-swd/README.md): ST-Link V2/SWD
-работает, Cortex-M4r0p1, raw ID 0x101f6413, Flash 1024 КиБ, напряжение 3,252 В,
-backup 1 048 576 bytes, structural vector check PASS; сообщён VGT6/DevEBox
-STM32F4VX_M Ver. 2.0. Позже агент подтвердил ограниченные reads выше; backup не открывался.
-Это не проверка полной маркировки/package, SRAM/CCM, clock/HSE, GPIO/CAN или
-restore. Geometry/protection snapshot теперь в SWD evidence; erase/write ещё не выполнены. ESP32 — прежний ordinary8f0d899,
-owner HMI/touch/Wi-Fi PASS; его factory backup 16 МиБ исторически проверен по SHA-256.
+ST-Link/SWD/core/raw ID/Flash/protection/driver sectors, physical marking owner
+и backup/independent copy/full restore подтверждены с пределами из evidence.
+RUNNING/CCM/watchdog/fault tests не достигнуты. Кварц HSE, package pin routing,
+physical GPIO/CAN/inhibit, полные RAM/stack/stress и power-loss recovery открыты.
+ESP32 ordinary8f0d899 не затронут, прежние HMI/touch/Wi-Fi PASS сохраняются.
 
 ## Состав текущей P0 интеграции
 
@@ -70,7 +63,8 @@ no-I/O/программный fault handler подтверждением physica
 Установка на плату требует отдельного разрешения на точные image/hash и
 SWD/write/reset/capture действия, проверки бэкапа/независимой копии и recovery
 процедуры. Публикация ELF/BIN в релиз и необратимые option bytes — отдельные
-решения; build/CI/PR не являются разрешением. Данный PR не запускает эти операции.
+решения; build/CI/PR не являются разрешением. Выполненные аппаратные сеансы описаны отдельно в evidence; новые действия
+эта документация не разрешает.
 
 ## Порядок после P0
 

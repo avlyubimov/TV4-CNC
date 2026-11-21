@@ -1,12 +1,18 @@
 {
-  "AGENTS.md": "145c8262c00a65938fd1328d2bf8374ea9438be3428867ab25d6e440e9fd9a06",
-  "docs/HARDWARE_STATUS.md": "bf67b965464a996bcf4c47fcadb8e4cdbea971944e092ad3bd9fa5da801b304b",
-  "docs/IMPLEMENTATION_PRIORITIES.md": "e3518cf22ba875c0d843a06645bacbce2f17e59f983589560481f72e8a1ee24a",
-  "docs/NEXT_STAGE.md": "fbd5706898cac91e72069aa55abf3736bad774e7cc37da3d691f36de60ece766",
-  "docs/OPEN_QUESTIONS.md": "69e5bf78ad1e4388ab9ab19d77df1bfd765f64c2e0e3ea7f0394643fc0b4c013",
-  "docs/ROADMAP.md": "a81ec50b828f98b481298490f66865c43a252ff4f1e199cef4775ee4469094bf",
-  "docs/STM32_FIRST_IMAGE.md": "e281a3c3be94487cad16c4c83d09449f3dbe4d1dbb595e8ef9d4b17c0ed5e025",
-  "docs/STM32_STLINK_RUNBOOK.md": "8c229d5b0349a0f575de560aca24b68ef4bc389828a114bf49c0eb960c7cccfe",
-  "docs/plans/F407_SWD_PREFLIGHT.md": "62e1f7936df17c5a9912e0a9e8bdca8f7d4928c452161afa8cc4d2df415bde8e",
-  "firmware/stm32-motion/AGENTS.md": "572f62dad5f857a76ae89424df2b987d0a2a5b26c5d80009a76c07a799214475"
+  "AGENTS.md": "176a4eb845ba64731702590bbd38be5030d4802a0da18b2b9e3f42fd11d2b99c",
+  "docs/HARDWARE_STATUS.md": "607f4781eaf328bdfe63d7460ccd3720ef50b2cc858271f4713ad684d984380c",
+  "docs/IMPLEMENTATION_PRIORITIES.md": "c2a449ef88513da5a185d06a76cecde32c0bf171bac4ea258cb2e2277a6e8037",
+  "docs/NEXT_STAGE.md": "b2f82d1bd79abec78dab36b1fa65da05ba3d0eab918641e4e61533e9ce76f686",
+  "docs/OPEN_QUESTIONS.md": "7b9c06417fdc2e7779ed8bed45df179194c6de3f101927b31f74acc63655a578",
+  "docs/ROADMAP.md": "f5674428a94adb76a9edd539dd76906c8abbaf7b0563f40369fbe86c17d0536d",
+  "docs/STM32_FIRST_IMAGE.md": "bfa04fdc99ddf6974097da54b938b9d234c2c8b1c77c9e8eceb7552c539950c5",
+  "docs/STM32_STLINK_RUNBOOK.md": "d1b223eb51b6ded43a5e5459094e6a10cf3306ae2b3f62b870cd49d739f9be58",
+  "docs/plans/F407_SWD_PREFLIGHT.md": "ea1aa8da3b1afa7a015c51ab66d3f18f472ff91e8d0b6e52764e60a502f087b3",
+  "firmware/stm32-motion/AGENTS.md": "cfbaf14dc4f055152499b12e6f74af849b9fbedd2931a955a2ed44e4311947db",
+  "firmware/stm32-motion/CMakeLists.txt": "d019c49ad3125d4ace367d3dc0381d2c40609dc90549666bed1df07c228f905e",
+  "firmware/stm32-motion/board/stm32f407vg/hardware.c": "a170ec28339dd76ffab3561fb6bb2c8d8a4bee7083d501dc79112d3de73e3a55",
+  "firmware/stm32-motion/board/stm32f407vg/openocd.cfg": "866d71c1bbcf890f042ac32e64db289eeaf6204ff904b66a4ac4f8c5ce1b37a8",
+  "firmware/stm32-motion/tests/bench_image_tests.py": "606942f8ab98f65e970bae71f220c170625ecdabd062c914cda84daf07b4e22e",
+  "firmware/stm32-motion/tests/bench_tests.c": "66e0f4bdfeda11a0930a769cc01d837645b84c44fdcebc4dbfa530b5e634a159",
+  "tools/check_stm32_bench.py": "196aeade1f4c3aa30f8de073940f5ba2444b02130a4ac165ae71069d3e020b7f"
 }

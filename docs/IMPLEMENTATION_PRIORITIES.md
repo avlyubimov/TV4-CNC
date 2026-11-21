@@ -10,18 +10,25 @@ PR #1–54 слиты. PR #54 завершил threaded host tests; он бол�
 Исторические PR и их проверки остаются доказательствами выполненной работы,
 но не задают порядок дальнейшей разработки.
 
-## Текущее состояние после PR #56
+## Текущее состояние после первого стенда P0
 
-P0 software image завершён в PR #56; база main4fe84f1.
-[Standalone HSI ELF/BIN](STM32_FIRST_IMAGE.md) существует;
-[первый SWD preflight](evidence/hardware/2026-11-22-f407-swd-preflight/README.md) подтвердил реальные ID/Flash
-size и driver geometry/protection snapshot. Исполнение c09a20e ещё не испытано.
-Два отдельно разрешённых read/reset сеанса завершены; Flash/backup/option writes
-или install они не разрешают. Следующий шаг — backup SHA/независимая копия/
-marking, затем новое exact-image разрешение и первый install/boot bench по
-[runbook](STM32_STLINK_RUNBOOK.md). Текущая работа только сохраняет evidence и
-исправляет runbook; без firmware изменений, self-merge или новых device actions.
-Порядок P1–P5 ниже сохраняется.
+22 ноября 2026, main `4fe84f10a70228b9f440f41c6ccc50869919042a`, PR #1–56 слиты.
+Первый реальный c09a20e был записан и verify прошёл, но boot bench завершился
+**FAULT/error8 (IWDG_TIMEOUT)**. После восстановления SWD с DBG_SLEEP полный
+проверенный снимок1MiB записан обратно, verify/reset-run успешны.
+**Сейчас на плате прежнее ПО, не c09a20e.** Все пять аппаратных сеансов завершены.
+Надпись STM32F407VGT6 сверена владельцем; Flash1024KiB/driver12sectors/RDP0/
+nWRP0xFFF прочитаны. Current backup2×1MiB и SHA-проверенная копия на другом
+физическом NVMe сохранены приватно. NRST к ST-Link не подключён; RESET отпущен.
+
+Исправлены IWDG start-before-sync и DBG_SLEEP в OpenOCD, обновлены
+регрессионные тесты и runbook. Новый ELF/BIN программно проверен; его работу
+на плате ещё не подтверждали. После CI/review потребуется **новое разрешение
+на точный образ и стендовые действия**. Watchdog/UsageFault/CCM/guards/progress
+пока не прошли; нет GPIO/CAN/motion, option-byte/OTP или изменений ESP32.
+
+[аппаратные факты и логи](evidence/hardware/2026-11-22-f407-swd-preflight/README.md). Следующий функциональный результат — исправленный boot bench,
+после clean image/CI/review и нового exact-image разрешения.
 
 ## P0 — первая настоящая прошивка STM32F407
 
@@ -85,9 +92,10 @@ SWD diagnostics и ST-Link install/restore runbook. Образ имеет ста
 
 HSE и motion pinout не являются предпосылками сборки HSI/no-motion образа.
 Проверка официальной памяти/векторов — часть P0, а не новая цепочка подготовительных
-PR. Полная физическая маркировка/package, работа SRAM/CCM, частоты, GPIO/CAN,
-protection/option bytes, SHA/вторая копия/restore бэкапа пока не подтверждены;
-нужные preflight проверки перечислить перед запросом конкретной аппаратной операции.
+PR. Полная надпись owner, driver sectors/protection и SHA/independent copy/full
+snapshot restore теперь подтверждены. Рабочие boot/RAM/CCM/watchdog/fault,
+частоты, GPIO/CAN и power-loss recovery ещё нужно проверить. Новый образ
+требует нового точного разрешения; предыдущие аппаратные сеансы завершены.
 
 ## P1 — полноценный ESP32-S3 OTA
 

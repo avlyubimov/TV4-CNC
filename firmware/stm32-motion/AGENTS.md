@@ -1,19 +1,25 @@
 # STM32F407 Motion — специализированные правила
 
-Актуально после PR #56: см. docs/evidence/hardware/2026-11-22-f407-swd-preflight/README.md. Два разрешённых
-сеанса подтвердили IDs/Flash1024KiB и прочитали driver12sectors/RDP0/nWRP0xFFF.
-Это snapshot, не erase/program test. REV_ID0x101f документирован ST как5/6;
-exact marking/package/RAM/CCM/HSE/physical outputs не подтверждены.
-Доступ завершён, install c09a20e не разрешён; backup SHA/copy ещё не проверены.
-Остальной текст ниже сохраняет исторические PR-02/P0 software границы.
+Актуально после первого аппаратного запуска 22 ноября:
+22 ноября 2026, main `4fe84f10a70228b9f440f41c6ccc50869919042a`, PR #1–56 слиты.
+Первый реальный c09a20e был записан и verify прошёл, но boot bench завершился
+**FAULT/error8 (IWDG_TIMEOUT)**. После восстановления SWD с DBG_SLEEP полный
+проверенный снимок1MiB записан обратно, verify/reset-run успешны.
+**Сейчас на плате прежнее ПО, не c09a20e.** Все пять аппаратных сеансов завершены.
+Надпись STM32F407VGT6 сверена владельцем; Flash1024KiB/driver12sectors/RDP0/
+nWRP0xFFF прочитаны. Current backup2×1MiB и SHA-проверенная копия на другом
+физическом NVMe сохранены приватно. NRST к ST-Link не подключён; RESET отпущен.
 
+Исправлены IWDG start-before-sync и DBG_SLEEP в OpenOCD, обновлены
+регрессионные тесты и runbook. Новый ELF/BIN программно проверен; его работу
+на плате ещё не подтверждали. После CI/review потребуется **новое разрешение
+на точный образ и стендовые действия**. Watchdog/UsageFault/CCM/guards/progress
+пока не прошли; нет GPIO/CAN/motion, option-byte/OTP или изменений ESP32.
 
-Наследовать корневой AGENTS.md и docs/HARDWARE_STATUS.md. Плата получена,
-владелец сообщил суффикс VGT6 (STM32F407VGT6). Новым заданием подтверждены
-owner SWD/ST-Link V2, Cortex-M4r0p1, raw ID0x101f6413, Flash1024KiB,3,252V,
-backup1048576bytes/vector structure PASS. Package marking/RAM/CCM/HSE/секторы/
-pinout/physical GPIO/CAN/restore не подтверждены. Новое чтение агентом запрещено
-без отдельного разрешения. Есть foundation/probes и явный standalone P0 bench; loader/движения ещё нет.
+Наследовать корневой AGENTS.md и docs/HARDWARE_STATUS.md. Факты и пределы —
+docs/evidence/hardware/2026-11-22-f407-swd-preflight/README.md.
+Далее сохранены контракты PR-02/P0; исторические неизвестные уточняются
+актуальным статусом выше. Новые SWD/Flash/reset действия требуют отдельного scope.
 
 - Официальный контракт заявленного VGT6 проверен в docs/STM32_FIRST_IMAGE.md;
   фактическую маркировку/геометрию/защиту проверить отдельно перед hardware write.
@@ -66,13 +72,13 @@ pinout/physical GPIO/CAN/restore не подтверждены. Новое чт�
   DS8626 Rev12/RM0090 Rev22/PM0214 Rev10 и ST vector reference v2.6.11 pinned.
   Real standalone memory/vector profile: Flash1MiB, SRAM112+16KiB, CCM64KiB
   data-only/noDMA,98vectors/512align/reserved IRQ79. Это спецификация выбранного
-  устройства, не физический тест RAM/erase/clock. Full marking/HSE неизвестны.
+  устройства, не физический тест RAM/erase/clock. Полная надпись сверена владельцем; HSE неизвестен.
 - HSI16MHz/dividers1, HSE/PLL off, integer-only; data/BSS/CCM отдельно; main4KiB
   и emergency1KiB stacks/guards. No GPIO/AF/STEP/DIR/ENABLE/spindle/TIM/DMA/CAN,
   Flash writer/bootloader/heap/semihosting. Не угадывать physical safe levels.
 - Watchdog только из main при прогрессе/guards/RUNNING; ISR/fault/halt не feed.
-  Debug HALT freeze IWDG явно документирован. Ошибка до arm может halt, после
-  arm — watchdog reset; никаких motion readiness/physical inhibit claims.
+  Debug HALT freeze IWDG явно документирован. До старта IWDG ошибка может halt; started фиксируется сразу после start key,
+  до PR/RLR sync. После start ошибка не feed и ведёт к watchdog reset; никаких motion readiness/physical inhibit claims.
 - Проверять реальные ELF/BIN/map/segments/vectors/stack/identity/SHA и compiler
   frames; negative link/corruption, actual-source MMIO+sanitizers, repeat build.
   CI публикует только text evidence. ELF/BIN создаются локально для review/

@@ -137,6 +137,14 @@ class BenchImageTests(unittest.TestCase):
         (board / 'profile.json').write_text(json.dumps(profile))
         with patch.object(checker, 'BOARD', board), self.assertRaises(ValueError):
             checker.references()
+        # The real board lost its debug path on resume without DBG_SLEEP.
+        # Check configuration refusal independently of the bad profile case.
+        (board / 'profile.json').write_text((checker.BOARD / 'profile.json').read_text())
+        for replacement in ('# missing DBG_SLEEP', '# mmw 0xE0042004 0x00000001 0'):
+            (board / 'openocd.cfg').write_text((checker.BOARD / 'openocd.cfg').read_text().replace(
+                'mmw 0xE0042004 0x00000001 0', replacement))
+            with patch.object(checker, 'BOARD', board), self.assertRaisesRegex(ValueError, 'DBG_SLEEP'):
+                checker.references()
         reference = self.root / 'third_party/stm32f4-reference'
         shutil.copytree(ROOT / 'third_party/stm32f4-reference', reference)
         with (reference / 'startup_stm32f407xx.s').open('a') as stream:

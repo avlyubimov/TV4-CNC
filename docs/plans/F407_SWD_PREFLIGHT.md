@@ -1,19 +1,22 @@
-# F407: первая разрешённая SWD-проверка без записи Flash
+# F407: первый аппаратный запуск и исправление найденного отказа
 
-База main4fe84f1, PR #56 слит. Образ c09a20e остаётся неизменным.
+База main4fe84f1, PR #56 слит. Это одна интеграция первого boot, не новый слой.
 
-1. Сверить local artifact SHA/main CI/software tools; получить отдельное
-   разрешение владельца на reset/halt/read/reset-run изолированной F407.
-2. Выполнить bounded сеанс: CPUID/DBG_ID/Flash size/геометрия/protection/options,
-   без Flash/OTP writes/erase/unlock/option changes/CAN/приводов/backup reads.
-   Сохранять exit/log; ошибка не является PASS и не разрешает новую попытку.
-3. Исправить обнаруженную несовместимость runbook с OpenOCD0.12, повторить
-   только по новому разрешению; сохранить обе попытки и реальные пределы.
-4. Обновить hardware/open questions/next stage/roadmap и активный статус,
-   проверить ссылки/scope/неизменность firmware. Отдельный PR, без self-merge.
+1. Выполненные отдельно разрешённые preflight/backup/independent copy и сверку
+   marking сохранить с фактами/пределами. Не скрывать partial первый сеанс.
+2. Сохранить c09 write/verify PASS, потерю SWD и FAULT/error8; сохранить успешный
+   полный snapshot restore/verify/reset отдельно от общего failed bench exit1.
+3. Исправить start-before-sync IWDG по официальному ST reference, добавить
+   actual-source модель stalled synchronization и truthful started/no-feed errors.
+   Исправить DBG_SLEEP в custom OpenOCD, сохранить HSI/no-trace/no-motion scope.
+4. Проверить actual ELF/BIN/map/frames/vectors, negative profile/debug guards,
+   повторную сборку, host/sanitizers и CI. Старый порядок должен падать на новых тестах.
+5. Обновить статусы и создать отдельный PR. Не сливать самостоятельно.
+6. После review/CI собрать clean exact commit, подготовить конкретные SHA/
+   runbook/fallback и запросить новое разрешение на запись/стенд. До ответа
+   никаких новых SWD/read/reset/Flash/capture операций.
 
-Измеримый результат — фактический SWD/protection/sector report текущей платы,
-а не новый firmware layer. Flash installation/startup/HSI/RAM/watchdog/fault
-test ещё требует верифицированного backup/second copy/marking и отдельного
-разрешения на exact ELF. Ревизия ядра не silicon revision; Flash driver geometry
-не является erase/recovery experiment. Никаких новых bootloader addresses.
+Приёмка software: программно проверенный ELF/BIN с исправлением, воспроизводимость
+и регрессия старого дефекта. Hardware приёмка ещё впереди: RUNNING/progress,
+CCM/guards, watchdog reset, UsageFault capture. No option bytes/OTP/GPIO/CAN/motion.
+Snapshot не является доказательством factory provenance. CAN loader addresses не назначены.

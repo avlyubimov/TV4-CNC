@@ -2,5 +2,9 @@
   "attempt1-partial.txt": "ba461c5d7d6fec57b6e825aad332fe367f7e5c6207d8a1c92a8f2401752cfd54",
   "attempt2-complete.txt": "f6f8a4b8523743b0be824e2bc2771b559f50160cac4de65169987d9f77f82327",
   "offline-command-help.txt": "b4f318939bb2b6c034ba2ffdb6b4924dc5c230c75a5bfc74024419fff11b3397",
-  "result.json": "affc66e2cafe9d64bcf33953f2a064e144ce43dfffb63d56c0d4ca2cd26224b9"
+  "result.json": "fdf9d6eb612ad182034a1c00903f0342fff301431dd41c3cea09ff8944d1f347",
+  "backup-session-redacted.txt": "3e2a30a0a138c11cf6992e570433fbdc8db16c8fb53620a1b82f2eb673b8e7fb",
+  "backup-receipt.json": "b5dc3211fb2df704167ade46c15f5e30625b42d203bba37697d1585a28efb99e",
+  "install-c09-failed.txt": "edac64ae62d03685fc873a02480ee53b8076368634f6aebc908b4fc29203bc5f",
+  "recovery-c09-and-restore.txt": "129b17d1f79d2db759c7f39f3fd1ed85f61cf8632feb0b4a63dc846a470cff8e"
 }
