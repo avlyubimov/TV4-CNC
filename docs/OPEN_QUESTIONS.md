@@ -1,6 +1,6 @@
 # Открытые вопросы и блокирующие решения
 
-Обновлено от main `efa2727`,21ноября2026. Единственный свод аппаратных фактов —
+Обновлено от main `2c6fd1c`,21ноября2026. Единственный свод аппаратных фактов —
 [HARDWARE_STATUS.md](HARDWARE_STATUS.md). Не заполнять неизвестные поля
 типовыми данными семейства, USB VID/PID, старым заказом или host mock.
 
@@ -78,6 +78,11 @@ PR-07q [owned event inbox](STM32_DRIVER_EVENTS.md) добавляет serialized
 bounded current-time service и no-drop backpressure. Это не concurrent/ISR-safe
 очередь или реальный driver adapter; synchronization/provenance/reset/reconciliation,
 persistent identity/runtime/resources и все hardware/install gates остаются open.
+
+PR-07r [SPSC mailbox](STM32_COMPLETION_MAILBOX.md) проверяет C11 one-producer/
+one-consumer ownership и host races. Это не target ISR/RTOS/cache/DMA validation,
+не producer-stop/physical drain proof. Actual driver/provenance/reset/identity/
+resources/runtime/installer и все hardware gates остаются open.
 
 | ID | Что нужно подтвердить/решить | Блокирует |
 |---|---|---|

@@ -1,0 +1,2 @@
+PASS actual guard rejected unexpected .bin; temporary marker removed
+PASS compile-only outputs restored; no firmware image

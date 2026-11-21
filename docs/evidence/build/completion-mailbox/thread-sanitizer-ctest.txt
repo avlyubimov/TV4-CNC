@@ -1,0 +1,5 @@
+1/2 Test  #1: update_completion_mailbox_threads ...   Passed    0.60 sec
+2/2 Test #21: update_completion_owner .............   Passed    0.06 sec
+
+100% tests passed, 0 tests failed out of 2
+Total Test time (real) = 0.66 sec

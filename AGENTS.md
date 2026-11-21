@@ -109,9 +109,30 @@ PR и Actions; не копировать код уже открытого PR. Д
 
 ## Текущее задание
 
-PR #1–48 слиты, база main `efa2727`, main CI5/5 PASS,
+PR #1–49 слиты, база main `2c6fd1c`, main CI5/5 PASS,
 открытых PR перед работой нет.
-PR-07q: читать docs/STM32_DRIVER_EVENTS.md. Opt-in actual egress + owned event
+PR-07r: читать docs/STM32_COMPLETION_MAILBOX.md. Optional C11 SPSC owned-report
+mailbox + actual bound consumer. One producer post ONLY, one consumer other APIs;
+producer reads immutable binding only. Init externally published before actors,
+stable lifetime/stop+join before destruction, no live copy/move/reinit/flush/reset.
+Release/acquire publication+slot reuse, unsigned32 always-lock-free compile gate;
+no firmware locks/spin/heap/I/O, no target ISR/RTOS/cache/DMA approval. Full BUSY
+requires retained external report retry; consumer pending retained until actual
+inner admission. Service polls current time and handles <=1, no report timestamp.
+Begin/claim/phase/clear honor actual mailbox/pending/inner ledger; no external
+success/drained boolean. Empty snapshot does not mean producer stopped; late
+duplicate cannot free new claim due retained exact tickets. Cancel/clear retain
+ownership/atomic positions/IDs/phase/time, sticky faults remain. Original upper
+crypto/lease/model/image/close gates unchanged. Host65/sanitizers65/standalone39,
+TSan2 no suppressions;1200000 ordered reports +256 actual messages/8448 frames/
+9504 reports;8 signed positives+3 independent+2 lifetime refusals. Analyzer20+2,
+guards7×6+7,178 source/synthetic/board/output/scope PASS. Separate ARM1038text/
+data0/bss0/frame64,14 exports,4096/frame128 ceiling/5 native DMB/no atomic helpers.
+Old archives/budgets/SDK/workspace unchanged; host mailbox200/owner1208 not MCU
+RAM/full stack/physical timing proof. Actual target port/provenance/reset/resource/
+identity/routing/runtime/install/hardware gates open; no devices/merge/release.
+
+Слитый PR #49, PR-07q: читать docs/STM32_DRIVER_EVENTS.md. Opt-in actual egress + owned event
 FIFO capacity1..4, no caller drain boolean. Post ADMITTED means copy only; BUSY
 requires adapter retain/retry, no drops. Current-time service polls original
 windows then consumes <=1 event; separate poll consumes none. Begin/claim/phase

@@ -1,0 +1,4 @@
+PASS build-boot-blocked STM32 bootloader image blocked
+PASS build-motion-blocked-off F407 board image blocked
+PASS build-motion-blocked-on F407 board image blocked
+PASS build-motion-host-probe requires the pinned ARM toolchain

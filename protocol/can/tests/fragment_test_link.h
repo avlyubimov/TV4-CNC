@@ -5,6 +5,7 @@
 #include "update_channel.h"
 #include "update_egress.h"
 #include "update_driver_events.h"
+#include "completion_mailbox.h"
 
 /* HOST TEST FIXTURE ONLY. Not a driver, CAN schedule, identity provider or
  * production owner. One exclusive caller clock shared with all upper layers;
@@ -18,7 +19,7 @@ typedef struct {
     uint32_t delivery_ms, held_delivery_ms;
     unsigned hold_every, duplicate_every;
     uint16_t drop_kinds, drop_index;
-    bool drop_every_message, recover_fragment_timeouts, raw_setup, multiplexed, egress, driver_events;
+    bool drop_every_message, recover_fragment_timeouts, raw_setup, multiplexed, egress, driver_events, completion_mailbox;
     tv4_frame_queue_limits custody;
     uint32_t event_service_ms;
     uint8_t event_capacity;
@@ -30,6 +31,7 @@ typedef struct {
     tv4_channel_rx channel_rx;
     tv4_update_egress egress;
     tv4_driver_events events;
+    tv4_completion_owner completion;
     tv4_frame_ticket ticket;
     tv4_fragment_frame queued;
     uint32_t due,event_due;

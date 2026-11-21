@@ -1,0 +1,461 @@
+In archive build-update-arm/libtv4_completion_mailbox.a:
+
+completion_mailbox.c.obj:     file format elf32-littlearm
+
+
+Disassembly of section .text.tv4_completion_mailbox_init:
+
+00000000 <tv4_completion_mailbox_init>:
+   0:	b5f8      	push	{r3, r4, r5, r6, r7, lr}
+   2:	460f      	mov	r7, r1
+   4:	4615      	mov	r5, r2
+   6:	4604      	mov	r4, r0
+   8:	b318      	cbz	r0, 52 <tv4_completion_mailbox_init+0x52>
+   a:	f890 60c0 	ldrb.w	r6, [r0, #192]	@ 0xc0
+   e:	bb06      	cbnz	r6, 52 <tv4_completion_mailbox_init+0x52>
+  10:	1e4b      	subs	r3, r1, #1
+  12:	2b03      	cmp	r3, #3
+  14:	d81b      	bhi.n	4e <tv4_completion_mailbox_init+0x4e>
+  16:	b1d2      	cbz	r2, 4e <tv4_completion_mailbox_init+0x4e>
+  18:	f892 6073 	ldrb.w	r6, [r2, #115]	@ 0x73
+  1c:	b1be      	cbz	r6, 4e <tv4_completion_mailbox_init+0x4e>
+  1e:	22a0      	movs	r2, #160	@ 0xa0
+  20:	2100      	movs	r1, #0
+  22:	f7ff fffe 	bl	0 <memset>
+  26:	2300      	movs	r3, #0
+  28:	f8c4 30a0 	str.w	r3, [r4, #160]	@ 0xa0
+  2c:	f8c4 30a4 	str.w	r3, [r4, #164]	@ 0xa4
+  30:	e9d5 2316 	ldrd	r2, r3, [r5, #88]	@ 0x58
+  34:	e9c4 232c 	strd	r2, r3, [r4, #176]	@ 0xb0
+  38:	6e2b      	ldr	r3, [r5, #96]	@ 0x60
+  3a:	f8c4 30b8 	str.w	r3, [r4, #184]	@ 0xb8
+  3e:	3701      	adds	r7, #1
+  40:	2301      	movs	r3, #1
+  42:	f8c4 50a8 	str.w	r5, [r4, #168]	@ 0xa8
+  46:	f8c4 70bc 	str.w	r7, [r4, #188]	@ 0xbc
+  4a:	f884 30c0 	strb.w	r3, [r4, #192]	@ 0xc0
+  4e:	4630      	mov	r0, r6
+  50:	bdf8      	pop	{r3, r4, r5, r6, r7, pc}
+  52:	2600      	movs	r6, #0
+  54:	e7fb      	b.n	4e <tv4_completion_mailbox_init+0x4e>
+
+Disassembly of section .text.tv4_completion_mailbox_post:
+
+00000000 <tv4_completion_mailbox_post>:
+   0:	b5f0      	push	{r4, r5, r6, r7, lr}
+   2:	460c      	mov	r4, r1
+   4:	4605      	mov	r5, r0
+   6:	b3c0      	cbz	r0, 7a <tv4_completion_mailbox_post+0x7a>
+   8:	f890 30c0 	ldrb.w	r3, [r0, #192]	@ 0xc0
+   c:	b3ab      	cbz	r3, 7a <tv4_completion_mailbox_post+0x7a>
+   e:	b3a1      	cbz	r1, 7a <tv4_completion_mailbox_post+0x7a>
+  10:	7e0b      	ldrb	r3, [r1, #24]
+  12:	3b01      	subs	r3, #1
+  14:	2b03      	cmp	r3, #3
+  16:	d830      	bhi.n	7a <tv4_completion_mailbox_post+0x7a>
+  18:	690a      	ldr	r2, [r1, #16]
+  1a:	f8d0 30a8 	ldr.w	r3, [r0, #168]	@ 0xa8
+  1e:	429a      	cmp	r2, r3
+  20:	d12d      	bne.n	7e <tv4_completion_mailbox_post+0x7e>
+  22:	e9d1 0200 	ldrd	r0, r2, [r1]
+  26:	e9d5 132c 	ldrd	r1, r3, [r5, #176]	@ 0xb0
+  2a:	429a      	cmp	r2, r3
+  2c:	bf08      	it	eq
+  2e:	4288      	cmpeq	r0, r1
+  30:	d125      	bne.n	7e <tv4_completion_mailbox_post+0x7e>
+  32:	68e2      	ldr	r2, [r4, #12]
+  34:	f8d5 30b8 	ldr.w	r3, [r5, #184]	@ 0xb8
+  38:	429a      	cmp	r2, r3
+  3a:	d120      	bne.n	7e <tv4_completion_mailbox_post+0x7e>
+  3c:	68a3      	ldr	r3, [r4, #8]
+  3e:	b1f3      	cbz	r3, 7e <tv4_completion_mailbox_post+0x7e>
+  40:	f8d5 60a4 	ldr.w	r6, [r5, #164]	@ 0xa4
+  44:	f8d5 30bc 	ldr.w	r3, [r5, #188]	@ 0xbc
+  48:	1c77      	adds	r7, r6, #1
+  4a:	fbb7 f2f3 	udiv	r2, r7, r3
+  4e:	fb03 7712 	mls	r7, r3, r2, r7
+  52:	f8d5 30a0 	ldr.w	r3, [r5, #160]	@ 0xa0
+  56:	f3bf 8f5b 	dmb	ish
+  5a:	429f      	cmp	r7, r3
+  5c:	d011      	beq.n	82 <tv4_completion_mailbox_post+0x82>
+  5e:	cc0f      	ldmia	r4!, {r0, r1, r2, r3}
+  60:	eb05 1646 	add.w	r6, r5, r6, lsl #5
+  64:	c60f      	stmia	r6!, {r0, r1, r2, r3}
+  66:	e894 000f 	ldmia.w	r4, {r0, r1, r2, r3}
+  6a:	e886 000f 	stmia.w	r6, {r0, r1, r2, r3}
+  6e:	f3bf 8f5b 	dmb	ish
+  72:	f8c5 70a4 	str.w	r7, [r5, #164]	@ 0xa4
+  76:	2001      	movs	r0, #1
+  78:	bdf0      	pop	{r4, r5, r6, r7, pc}
+  7a:	2008      	movs	r0, #8
+  7c:	e7fc      	b.n	78 <tv4_completion_mailbox_post+0x78>
+  7e:	2007      	movs	r0, #7
+  80:	e7fa      	b.n	78 <tv4_completion_mailbox_post+0x78>
+  82:	2006      	movs	r0, #6
+  84:	e7f8      	b.n	78 <tv4_completion_mailbox_post+0x78>
+
+Disassembly of section .text.tv4_completion_mailbox_take:
+
+00000000 <tv4_completion_mailbox_take>:
+   0:	b5f8      	push	{r3, r4, r5, r6, r7, lr}
+   2:	4606      	mov	r6, r0
+   4:	460c      	mov	r4, r1
+   6:	b121      	cbz	r1, 12 <tv4_completion_mailbox_take+0x12>
+   8:	2220      	movs	r2, #32
+   a:	2100      	movs	r1, #0
+   c:	4620      	mov	r0, r4
+   e:	f7ff fffe 	bl	0 <memset>
+  12:	b336      	cbz	r6, 62 <tv4_completion_mailbox_take+0x62>
+  14:	f896 30c0 	ldrb.w	r3, [r6, #192]	@ 0xc0
+  18:	b31b      	cbz	r3, 62 <tv4_completion_mailbox_take+0x62>
+  1a:	b314      	cbz	r4, 62 <tv4_completion_mailbox_take+0x62>
+  1c:	f8d6 70a0 	ldr.w	r7, [r6, #160]	@ 0xa0
+  20:	f8d6 30a4 	ldr.w	r3, [r6, #164]	@ 0xa4
+  24:	f3bf 8f5b 	dmb	ish
+  28:	429f      	cmp	r7, r3
+  2a:	d01c      	beq.n	66 <tv4_completion_mailbox_take+0x66>
+  2c:	eb06 1c47 	add.w	ip, r6, r7, lsl #5
+  30:	4665      	mov	r5, ip
+  32:	cd0f      	ldmia	r5!, {r0, r1, r2, r3}
+  34:	c40f      	stmia	r4!, {r0, r1, r2, r3}
+  36:	e895 000f 	ldmia.w	r5, {r0, r1, r2, r3}
+  3a:	e884 000f 	stmia.w	r4, {r0, r1, r2, r3}
+  3e:	2220      	movs	r2, #32
+  40:	2100      	movs	r1, #0
+  42:	4660      	mov	r0, ip
+  44:	f7ff fffe 	bl	0 <memset>
+  48:	f8d6 30bc 	ldr.w	r3, [r6, #188]	@ 0xbc
+  4c:	3701      	adds	r7, #1
+  4e:	fbb7 f2f3 	udiv	r2, r7, r3
+  52:	fb03 7712 	mls	r7, r3, r2, r7
+  56:	f3bf 8f5b 	dmb	ish
+  5a:	f8c6 70a0 	str.w	r7, [r6, #160]	@ 0xa0
+  5e:	2002      	movs	r0, #2
+  60:	bdf8      	pop	{r3, r4, r5, r6, r7, pc}
+  62:	2008      	movs	r0, #8
+  64:	e7fc      	b.n	60 <tv4_completion_mailbox_take+0x60>
+  66:	2005      	movs	r0, #5
+  68:	e7fa      	b.n	60 <tv4_completion_mailbox_take+0x60>
+
+Disassembly of section .text.tv4_completion_mailbox_empty:
+
+00000000 <tv4_completion_mailbox_empty>:
+   0:	b168      	cbz	r0, 1e <tv4_completion_mailbox_empty+0x1e>
+   2:	f890 30c0 	ldrb.w	r3, [r0, #192]	@ 0xc0
+   6:	b153      	cbz	r3, 1e <tv4_completion_mailbox_empty+0x1e>
+   8:	f8d0 30a0 	ldr.w	r3, [r0, #160]	@ 0xa0
+   c:	f8d0 20a4 	ldr.w	r2, [r0, #164]	@ 0xa4
+  10:	f3bf 8f5b 	dmb	ish
+  14:	4293      	cmp	r3, r2
+  16:	bf14      	ite	ne
+  18:	2006      	movne	r0, #6
+  1a:	2000      	moveq	r0, #0
+  1c:	4770      	bx	lr
+  1e:	2008      	movs	r0, #8
+  20:	4770      	bx	lr
+
+Disassembly of section .text.waiting:
+
+00000000 <waiting>:
+   0:	b508      	push	{r3, lr}
+   2:	4603      	mov	r3, r0
+   4:	f890 0498 	ldrb.w	r0, [r0, #1176]	@ 0x498
+   8:	b930      	cbnz	r0, 18 <waiting+0x18>
+   a:	f503 706c 	add.w	r0, r3, #944	@ 0x3b0
+   e:	f7ff fffe 	bl	0 <waiting>
+  12:	3800      	subs	r0, #0
+  14:	bf18      	it	ne
+  16:	2001      	movne	r0, #1
+  18:	bd08      	pop	{r3, pc}
+
+Disassembly of section .text.tv4_completion_owner_init:
+
+00000000 <tv4_completion_owner_init>:
+   0:	b5f0      	push	{r4, r5, r6, r7, lr}
+   2:	b08b      	sub	sp, #44	@ 0x2c
+   4:	ad08      	add	r5, sp, #32
+   6:	e885 000c 	stmia.w	r5, {r2, r3}
+   a:	9f10      	ldr	r7, [sp, #64]	@ 0x40
+   c:	4604      	mov	r4, r0
+   e:	b910      	cbnz	r0, 16 <tv4_completion_owner_init+0x16>
+  10:	2000      	movs	r0, #0
+  12:	b00b      	add	sp, #44	@ 0x2c
+  14:	bdf0      	pop	{r4, r5, r6, r7, pc}
+  16:	f890 3499 	ldrb.w	r3, [r0, #1177]	@ 0x499
+  1a:	2b00      	cmp	r3, #0
+  1c:	d1f8      	bne.n	10 <tv4_completion_owner_init+0x10>
+  1e:	f890 3470 	ldrb.w	r3, [r0, #1136]	@ 0x470
+  22:	2b00      	cmp	r3, #0
+  24:	d1f4      	bne.n	10 <tv4_completion_owner_init+0x10>
+  26:	1e7b      	subs	r3, r7, #1
+  28:	2b03      	cmp	r3, #3
+  2a:	d8f1      	bhi.n	10 <tv4_completion_owner_init+0x10>
+  2c:	9b16      	ldr	r3, [sp, #88]	@ 0x58
+  2e:	9306      	str	r3, [sp, #24]
+  30:	9b15      	ldr	r3, [sp, #84]	@ 0x54
+  32:	9305      	str	r3, [sp, #20]
+  34:	f8bd 3050 	ldrh.w	r3, [sp, #80]	@ 0x50
+  38:	9304      	str	r3, [sp, #16]
+  3a:	e9dd 2312 	ldrd	r2, r3, [sp, #72]	@ 0x48
+  3e:	e9cd 2302 	strd	r2, r3, [sp, #8]
+  42:	2601      	movs	r6, #1
+  44:	9b11      	ldr	r3, [sp, #68]	@ 0x44
+  46:	9301      	str	r3, [sp, #4]
+  48:	9600      	str	r6, [sp, #0]
+  4a:	e895 000c 	ldmia.w	r5, {r2, r3}
+  4e:	f7ff fffe 	bl	0 <tv4_driver_events_init>
+  52:	2800      	cmp	r0, #0
+  54:	d0dc      	beq.n	10 <tv4_completion_owner_init+0x10>
+  56:	f504 722a 	add.w	r2, r4, #680	@ 0x2a8
+  5a:	4639      	mov	r1, r7
+  5c:	f504 706c 	add.w	r0, r4, #944	@ 0x3b0
+  60:	f7ff fffe 	bl	0 <tv4_completion_owner_init>
+  64:	2800      	cmp	r0, #0
+  66:	d0d3      	beq.n	10 <tv4_completion_owner_init+0x10>
+  68:	f884 6499 	strb.w	r6, [r4, #1177]	@ 0x499
+  6c:	e7d1      	b.n	12 <tv4_completion_owner_init+0x12>
+
+Disassembly of section .text.tv4_completion_owner_post:
+
+00000000 <tv4_completion_owner_post>:
+   0:	b130      	cbz	r0, 10 <tv4_completion_owner_post+0x10>
+   2:	f890 3499 	ldrb.w	r3, [r0, #1177]	@ 0x499
+   6:	b11b      	cbz	r3, 10 <tv4_completion_owner_post+0x10>
+   8:	f500 706c 	add.w	r0, r0, #944	@ 0x3b0
+   c:	f7ff bffe 	b.w	0 <tv4_completion_owner_post>
+  10:	2008      	movs	r0, #8
+  12:	4770      	bx	lr
+
+Disassembly of section .text.tv4_completion_owner_poll:
+
+00000000 <tv4_completion_owner_poll>:
+   0:	b410      	push	{r4}
+   2:	9c01      	ldr	r4, [sp, #4]
+   4:	b130      	cbz	r0, 14 <tv4_completion_owner_poll+0x14>
+   6:	f890 1499 	ldrb.w	r1, [r0, #1177]	@ 0x499
+   a:	b119      	cbz	r1, 14 <tv4_completion_owner_poll+0x14>
+   c:	9401      	str	r4, [sp, #4]
+   e:	bc10      	pop	{r4}
+  10:	f7ff bffe 	b.w	0 <tv4_driver_events_poll>
+  14:	2008      	movs	r0, #8
+  16:	bc10      	pop	{r4}
+  18:	4770      	bx	lr
+
+Disassembly of section .text.tv4_completion_owner_service:
+
+00000000 <tv4_completion_owner_service>:
+   0:	e92d 43f7 	stmdb	sp!, {r0, r1, r2, r4, r5, r6, r7, r8, r9, lr}
+   4:	f8dd 8028 	ldr.w	r8, [sp, #40]	@ 0x28
+   8:	f8cd 8000 	str.w	r8, [sp]
+   c:	4605      	mov	r5, r0
+   e:	4617      	mov	r7, r2
+  10:	461e      	mov	r6, r3
+  12:	f7ff fffe 	bl	0 <tv4_completion_owner_service>
+  16:	2808      	cmp	r0, #8
+  18:	4604      	mov	r4, r0
+  1a:	d104      	bne.n	26 <tv4_completion_owner_service+0x26>
+  1c:	2408      	movs	r4, #8
+  1e:	4620      	mov	r0, r4
+  20:	b003      	add	sp, #12
+  22:	e8bd 83f0 	ldmia.w	sp!, {r4, r5, r6, r7, r8, r9, pc}
+  26:	f895 33aa 	ldrb.w	r3, [r5, #938]	@ 0x3aa
+  2a:	b14b      	cbz	r3, 40 <tv4_completion_owner_service+0x40>
+  2c:	463a      	mov	r2, r7
+  2e:	4633      	mov	r3, r6
+  30:	4628      	mov	r0, r5
+  32:	f8cd 8028 	str.w	r8, [sp, #40]	@ 0x28
+  36:	b003      	add	sp, #12
+  38:	e8bd 43f0 	ldmia.w	sp!, {r4, r5, r6, r7, r8, r9, lr}
+  3c:	f7ff bffe 	b.w	0 <tv4_driver_events_service>
+  40:	f895 3498 	ldrb.w	r3, [r5, #1176]	@ 0x498
+  44:	f505 698f 	add.w	r9, r5, #1144	@ 0x478
+  48:	b97b      	cbnz	r3, 6a <tv4_completion_owner_service+0x6a>
+  4a:	4649      	mov	r1, r9
+  4c:	f505 706c 	add.w	r0, r5, #944	@ 0x3b0
+  50:	f7ff fffe 	bl	0 <tv4_completion_owner_service>
+  54:	2802      	cmp	r0, #2
+  56:	d005      	beq.n	64 <tv4_completion_owner_service+0x64>
+  58:	2805      	cmp	r0, #5
+  5a:	d1df      	bne.n	1c <tv4_completion_owner_service+0x1c>
+  5c:	2c00      	cmp	r4, #0
+  5e:	bf08      	it	eq
+  60:	2405      	moveq	r4, #5
+  62:	e7dc      	b.n	1e <tv4_completion_owner_service+0x1e>
+  64:	2301      	movs	r3, #1
+  66:	f885 3498 	strb.w	r3, [r5, #1176]	@ 0x498
+  6a:	4649      	mov	r1, r9
+  6c:	4628      	mov	r0, r5
+  6e:	f7ff fffe 	bl	0 <tv4_driver_events_post>
+  72:	2801      	cmp	r0, #1
+  74:	4604      	mov	r4, r0
+  76:	d1d2      	bne.n	1e <tv4_completion_owner_service+0x1e>
+  78:	2220      	movs	r2, #32
+  7a:	2100      	movs	r1, #0
+  7c:	4648      	mov	r0, r9
+  7e:	f7ff fffe 	bl	0 <memset>
+  82:	2300      	movs	r3, #0
+  84:	f885 3498 	strb.w	r3, [r5, #1176]	@ 0x498
+  88:	e7d0      	b.n	2c <tv4_completion_owner_service+0x2c>
+
+Disassembly of section .text.tv4_completion_owner_begin:
+
+00000000 <tv4_completion_owner_begin>:
+   0:	e92d 41f3 	stmdb	sp!, {r0, r1, r4, r5, r6, r7, r8, lr}
+   4:	f8dd 8020 	ldr.w	r8, [sp, #32]
+   8:	4604      	mov	r4, r0
+   a:	4617      	mov	r7, r2
+   c:	461e      	mov	r6, r3
+   e:	460d      	mov	r5, r1
+  10:	b919      	cbnz	r1, 1a <tv4_completion_owner_begin+0x1a>
+  12:	2002      	movs	r0, #2
+  14:	b002      	add	sp, #8
+  16:	e8bd 81f0 	ldmia.w	sp!, {r4, r5, r6, r7, r8, pc}
+  1a:	f8cd 8000 	str.w	r8, [sp]
+  1e:	f7ff fffe 	bl	0 <tv4_completion_owner_begin>
+  22:	b118      	cbz	r0, 2c <tv4_completion_owner_begin+0x2c>
+  24:	2808      	cmp	r0, #8
+  26:	d0f4      	beq.n	12 <tv4_completion_owner_begin+0x12>
+  28:	2007      	movs	r0, #7
+  2a:	e7f3      	b.n	14 <tv4_completion_owner_begin+0x14>
+  2c:	4620      	mov	r0, r4
+  2e:	f7ff fffe 	bl	0 <tv4_completion_owner_begin>
+  32:	b950      	cbnz	r0, 4a <tv4_completion_owner_begin+0x4a>
+  34:	463a      	mov	r2, r7
+  36:	4633      	mov	r3, r6
+  38:	4629      	mov	r1, r5
+  3a:	4620      	mov	r0, r4
+  3c:	f8cd 8020 	str.w	r8, [sp, #32]
+  40:	b002      	add	sp, #8
+  42:	e8bd 41f0 	ldmia.w	sp!, {r4, r5, r6, r7, r8, lr}
+  46:	f7ff bffe 	b.w	0 <tv4_driver_events_begin>
+  4a:	2006      	movs	r0, #6
+  4c:	e7e2      	b.n	14 <tv4_completion_owner_begin+0x14>
+
+Disassembly of section .text.tv4_completion_owner_pump:
+
+00000000 <tv4_completion_owner_pump>:
+   0:	b410      	push	{r4}
+   2:	9c01      	ldr	r4, [sp, #4]
+   4:	b130      	cbz	r0, 14 <tv4_completion_owner_pump+0x14>
+   6:	f890 1499 	ldrb.w	r1, [r0, #1177]	@ 0x499
+   a:	b119      	cbz	r1, 14 <tv4_completion_owner_pump+0x14>
+   c:	9401      	str	r4, [sp, #4]
+   e:	bc10      	pop	{r4}
+  10:	f7ff bffe 	b.w	0 <tv4_driver_events_pump>
+  14:	2008      	movs	r0, #8
+  16:	bc10      	pop	{r4}
+  18:	4770      	bx	lr
+
+Disassembly of section .text.tv4_completion_owner_claim:
+
+00000000 <tv4_completion_owner_claim>:
+   0:	e92d 41f3 	stmdb	sp!, {r0, r1, r4, r5, r6, r7, r8, lr}
+   4:	f8dd 8020 	ldr.w	r8, [sp, #32]
+   8:	4604      	mov	r4, r0
+   a:	4617      	mov	r7, r2
+   c:	461e      	mov	r6, r3
+   e:	460d      	mov	r5, r1
+  10:	b1d9      	cbz	r1, 4a <tv4_completion_owner_claim+0x4a>
+  12:	2228      	movs	r2, #40	@ 0x28
+  14:	2100      	movs	r1, #0
+  16:	4628      	mov	r0, r5
+  18:	f7ff fffe 	bl	0 <memset>
+  1c:	f8cd 8000 	str.w	r8, [sp]
+  20:	463a      	mov	r2, r7
+  22:	4633      	mov	r3, r6
+  24:	4620      	mov	r0, r4
+  26:	f7ff fffe 	bl	0 <tv4_completion_owner_claim>
+  2a:	b978      	cbnz	r0, 4c <tv4_completion_owner_claim+0x4c>
+  2c:	4620      	mov	r0, r4
+  2e:	f7ff fffe 	bl	0 <tv4_completion_owner_claim>
+  32:	b970      	cbnz	r0, 52 <tv4_completion_owner_claim+0x52>
+  34:	463a      	mov	r2, r7
+  36:	4633      	mov	r3, r6
+  38:	4629      	mov	r1, r5
+  3a:	4620      	mov	r0, r4
+  3c:	f8cd 8020 	str.w	r8, [sp, #32]
+  40:	b002      	add	sp, #8
+  42:	e8bd 41f0 	ldmia.w	sp!, {r4, r5, r6, r7, r8, lr}
+  46:	f7ff bffe 	b.w	0 <tv4_driver_events_claim>
+  4a:	2008      	movs	r0, #8
+  4c:	b002      	add	sp, #8
+  4e:	e8bd 81f0 	ldmia.w	sp!, {r4, r5, r6, r7, r8, pc}
+  52:	2006      	movs	r0, #6
+  54:	e7fa      	b.n	4c <tv4_completion_owner_claim+0x4c>
+
+Disassembly of section .text.tv4_completion_owner_advance:
+
+00000000 <tv4_completion_owner_advance>:
+   0:	e92d 43f0 	stmdb	sp!, {r4, r5, r6, r7, r8, r9, lr}
+   4:	b085      	sub	sp, #20
+   6:	e9dd 670c 	ldrd	r6, r7, [sp, #48]	@ 0x30
+   a:	f8dd 9038 	ldr.w	r9, [sp, #56]	@ 0x38
+   e:	ad02      	add	r5, sp, #8
+  10:	e885 000c 	stmia.w	r5, {r2, r3}
+  14:	f8cd 9000 	str.w	r9, [sp]
+  18:	4632      	mov	r2, r6
+  1a:	463b      	mov	r3, r7
+  1c:	4604      	mov	r4, r0
+  1e:	4688      	mov	r8, r1
+  20:	f7ff fffe 	bl	0 <tv4_completion_owner_advance>
+  24:	b130      	cbz	r0, 34 <tv4_completion_owner_advance+0x34>
+  26:	2808      	cmp	r0, #8
+  28:	bf14      	ite	ne
+  2a:	2007      	movne	r0, #7
+  2c:	2002      	moveq	r0, #2
+  2e:	b005      	add	sp, #20
+  30:	e8bd 83f0 	ldmia.w	sp!, {r4, r5, r6, r7, r8, r9, pc}
+  34:	4620      	mov	r0, r4
+  36:	f7ff fffe 	bl	0 <tv4_completion_owner_advance>
+  3a:	b960      	cbnz	r0, 56 <tv4_completion_owner_advance+0x56>
+  3c:	e9cd 670c 	strd	r6, r7, [sp, #48]	@ 0x30
+  40:	f8cd 9038 	str.w	r9, [sp, #56]	@ 0x38
+  44:	e895 000c 	ldmia.w	r5, {r2, r3}
+  48:	4641      	mov	r1, r8
+  4a:	4620      	mov	r0, r4
+  4c:	b005      	add	sp, #20
+  4e:	e8bd 43f0 	ldmia.w	sp!, {r4, r5, r6, r7, r8, r9, lr}
+  52:	f7ff bffe 	b.w	0 <tv4_driver_events_advance>
+  56:	2006      	movs	r0, #6
+  58:	e7e9      	b.n	2e <tv4_completion_owner_advance+0x2e>
+
+Disassembly of section .text.tv4_completion_owner_cancel:
+
+00000000 <tv4_completion_owner_cancel>:
+   0:	b410      	push	{r4}
+   2:	9c01      	ldr	r4, [sp, #4]
+   4:	b130      	cbz	r0, 14 <tv4_completion_owner_cancel+0x14>
+   6:	f890 1499 	ldrb.w	r1, [r0, #1177]	@ 0x499
+   a:	b119      	cbz	r1, 14 <tv4_completion_owner_cancel+0x14>
+   c:	9401      	str	r4, [sp, #4]
+   e:	bc10      	pop	{r4}
+  10:	f7ff bffe 	b.w	0 <tv4_driver_events_cancel>
+  14:	2008      	movs	r0, #8
+  16:	bc10      	pop	{r4}
+  18:	4770      	bx	lr
+
+Disassembly of section .text.tv4_completion_owner_clear:
+
+00000000 <tv4_completion_owner_clear>:
+   0:	b5f7      	push	{r0, r1, r2, r4, r5, r6, r7, lr}
+   2:	9f08      	ldr	r7, [sp, #32]
+   4:	9700      	str	r7, [sp, #0]
+   6:	4604      	mov	r4, r0
+   8:	4616      	mov	r6, r2
+   a:	461d      	mov	r5, r3
+   c:	f7ff fffe 	bl	0 <tv4_completion_owner_clear>
+  10:	2808      	cmp	r0, #8
+  12:	d00d      	beq.n	30 <tv4_completion_owner_clear+0x30>
+  14:	4620      	mov	r0, r4
+  16:	f7ff fffe 	bl	0 <tv4_completion_owner_clear>
+  1a:	b940      	cbnz	r0, 2e <tv4_completion_owner_clear+0x2e>
+  1c:	4632      	mov	r2, r6
+  1e:	462b      	mov	r3, r5
+  20:	4620      	mov	r0, r4
+  22:	9708      	str	r7, [sp, #32]
+  24:	b003      	add	sp, #12
+  26:	e8bd 40f0 	ldmia.w	sp!, {r4, r5, r6, r7, lr}
+  2a:	f7ff bffe 	b.w	0 <tv4_driver_events_clear>
+  2e:	200a      	movs	r0, #10
+  30:	b003      	add	sp, #12
+  32:	bdf0      	pop	{r4, r5, r6, r7, pc}

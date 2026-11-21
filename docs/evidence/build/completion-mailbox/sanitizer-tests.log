@@ -1,0 +1,868 @@
+UpdateCTestConfiguration  from :/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize/DartConfiguration.tcl
+Test project /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize
+Constructing a list of tests
+Done constructing a list of tests
+Updating test list for fixtures
+Added 0 tests to meet fixture requirements
+Checking test dependency graph...
+Checking test dependency graph end
+test 1
+      Start  1: build_validation
+
+1: Test command: /home/avlyubimov/.local/bin/python3.14 "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/tests/build_validation_tests.py"
+1: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize
+1: Test timeout computed to be: 10000000
+1: ..........
+1: ----------------------------------------------------------------------
+1: Ran 10 tests in 0.003s
+1:
+1: OK
+ 1/65 Test  #1: build_validation ....................   Passed    0.03 sec
+test 2
+      Start  2: build_candidate
+
+2: Test command: /home/avlyubimov/.local/bin/python3.14 "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/tests/build_candidate_tests.py"
+2: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize
+2: Test timeout computed to be: 10000000
+2: ................
+2: ----------------------------------------------------------------------
+2: Ran 16 tests in 0.396s
+2:
+2: OK
+ 2/65 Test  #2: build_candidate .....................   Passed    0.43 sec
+test 3
+      Start  3: core
+
+3: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize/core_tests
+3: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize
+3: Test timeout computed to be: 10000000
+3: State, timeout, invalid frames, RU fallback and inert transport passed
+ 3/65 Test  #3: core ................................   Passed    0.00 sec
+test 4
+      Start  4: firmware_info
+
+4: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize/firmware_info_tests
+4: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize
+4: Test timeout computed to be: 10000000
+4: Firmware display metadata PASS: local origins/profiles,31-byte bounds, unterminated/invalid spans, independent copies/alias, atomic UNKNOWN; sizeof=72
+ 4/65 Test  #4: firmware_info .......................   Passed    0.00 sec
+test 5
+      Start  5: wifi_profiles
+
+5: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize/wifi_profiles_tests
+5: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize
+5: Test timeout computed to be: 10000000
+5: Wi-Fi profile validation, persistence image, updates, eviction and forgetting passed
+ 5/65 Test  #5: wifi_profiles .......................   Passed    0.00 sec
+test 6
+      Start  6: render
+
+6: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize/preview
+6: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize
+6: Test timeout computed to be: 15
+6: Firmware UI PASS: local/simulator/unknown/31-byte/profile states, Wi-Fi editor cleanup, 64 navigation cycles with identical host-pool free bytes, persistent STOP/fault/no motion
+6: LVGL 9 render and Cyrillic coverage passed
+ 6/65 Test  #6: render ..............................   Passed    1.91 sec
+test 7
+      Start  7: render_rgb565
+
+7: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize/preview "--rgb565"
+7: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize
+7: Test timeout computed to be: 15
+7: Firmware UI PASS: local/simulator/unknown/31-byte/profile states, Wi-Fi editor cleanup, 64 navigation cycles with identical host-pool free bytes, persistent STOP/fault/no motion
+7: LVGL 9 render and Cyrillic coverage passed
+ 7/65 Test  #7: render_rgb565 .......................   Passed    1.89 sec
+test 8
+      Start  8: diagnostics
+
+8: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize/diagnostics_tests
+8: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize
+8: Test timeout computed to be: 10000000
+8: Diagnostics windows, wraparound, p95 bounds, saturation and bounded export PASS
+ 8/65 Test  #8: diagnostics .........................   Passed    0.00 sec
+test 9
+      Start  9: ota_crypto
+
+9: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize/ota_crypto_tests
+9: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize
+9: Test timeout computed to be: 10000000
+9: OTA P-256 signature, exact-byte mutation, unknown key, curve and SHA-256 PASS
+ 9/65 Test  #9: ota_crypto ..........................   Passed    0.01 sec
+test 10
+      Start 10: ota_candidate
+
+10: Test command: /home/avlyubimov/.local/bin/python3.14 "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/tests/ota_candidate_tests.py"
+10: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize
+10: Test timeout computed to be: 10000000
+10: ...........
+10: ----------------------------------------------------------------------
+10: Ran 11 tests in 0.155s
+10:
+10: OK
+10/65 Test #10: ota_candidate .......................   Passed    0.19 sec
+test 11
+      Start 11: ota_manifest
+
+11: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize/ota_manifest_tests
+11: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize
+11: Test timeout computed to be: 10000000
+11: Native manifest signature/policy/encoding/OOM scenarios PASS; parse peak=2323 bytes, allocations=71
+11/65 Test #11: ota_manifest ........................   Passed    0.13 sec
+test 12
+      Start 12: ota_json
+
+12: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize/ota_json_tests
+12: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize
+12: Test timeout computed to be: 15
+12: JSON escape oracle PASS: BMP=65536, accepted=63487, invalid hex=420; surrogate/escape/duplicate/truncation cases PASS
+12/65 Test #12: ota_json ............................   Passed    0.05 sec
+test 13
+      Start 13: ota_policy_conformance
+
+13: Test command: /home/avlyubimov/.local/bin/python3.14 "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/tests/ota_policy_conformance_tests.py" "--driver" "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize/ota_policy_driver"
+13: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize
+13: Test timeout computed to be: 60
+13: Conformance PASS: signed metadata=115, accepted=16, rejected=99; SemVer comparisons=2809; Base64 cases=130
+13: Native candidate fields equal offline policy; rejected native output entirely zero. Ephemeral private key stayed in C helper memory; no device/install/release.
+13/65 Test #13: ota_policy_conformance ..............   Passed    0.33 sec
+test 14
+      Start 14: ota_stream
+
+14: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize/ota_stream_tests
+14: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize
+14: Test timeout computed to be: 10000000
+14: Stream chunks, descriptor/checksum/dual-SHA, 480 truncation points, cancellation/deadlines/wrap PASS; verifier struct=504 bytes
+14/65 Test #14: ota_stream ..........................   Passed    0.01 sec
+test 15
+      Start 15: ota_http
+
+15: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize/ota_http_tests
+15: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize
+15: Test timeout computed to be: 10000000
+15: HTTPS policy/redirects/status/length/encoding/cancel/deadlines/cleanup PASS; workspace=8212 bytes (host)
+15/65 Test #15: ota_http ............................   Passed    0.00 sec
+test 16
+      Start 16: ota_session
+
+16: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize/ota_session_tests
+16: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize
+16: Test timeout computed to be: 10000000
+16: Guarded signed session: resource fault at all 94 boundaries, active/cleanup/authenticated candidate revocation PASS
+16: Read-only session signed end-to-end/failure/cancel/truncation/deadline/reset PASS; workspace=34024 bytes (host)
+16/65 Test #16: ota_session .........................   Passed    0.03 sec
+test 17
+      Start 17: ota_memory
+
+17: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize/ota_memory_tests
+17: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize
+17: Test timeout computed to be: 10000000
+17: PSRAM-only admission/low-memory/race/region/cleanup/retry PASS; host workspace=34024 bytes
+17/65 Test #17: ota_memory ..........................   Passed    0.01 sec
+test 18
+      Start 18: ota_time
+
+18: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize/ota_time_tests
+18: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize
+18: Test timeout computed to be: 10000000
+18: Time provenance/policy/age/skew/revocation/range/64-bit-clock PASS; no system clock or network changed
+18/65 Test #18: ota_time ............................   Passed    0.00 sec
+test 19
+      Start 19: ota_sntp
+
+19: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize/ota_sntp_tests
+19: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize
+19: Test timeout computed to be: 10000000
+19: SNTP lifecycle/policy/provenance/deadline/cancel/network/cleanup/retry PASS; mock only, no UTC/network changed
+19/65 Test #19: ota_sntp ............................   Passed    0.00 sec
+test 20
+      Start 20: ota_tls_probe
+
+20: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize/ota_tls_probe_tests
+20: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize
+20: Test timeout computed to be: 10000000
+20: HEAD probe time/deadline/cleanup/status/no-redirect lifecycle PASS; mocks only, no CA/TLS/network executed
+20/65 Test #20: ota_tls_probe .......................   Passed    0.00 sec
+test 21
+      Start 21: ota_resource
+
+21: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize/ota_resource_tests
+21: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize
+21: Test timeout computed to be: 10000000
+21: Resource policy bounds/review/current heap/stack/unavailable/fail-closed sampler PASS; no allocation/network
+21/65 Test #21: ota_resource ........................   Passed    0.00 sec
+test 22
+      Start 22: release_review_cli
+
+22: Test command: /home/avlyubimov/.local/bin/python3.14 "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/tests/release_cohort_tests.py" "--driver" "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize/firmware/stm32-bootloader/boot_motion_review" "--signer" "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize/ota_policy_driver" "--group" "cli"
+22: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize
+22: Test timeout computed to be: 60
+22: test_actual_independent_crypto_full_image_and_zero_workspace (__main__.MotionCLI.test_actual_independent_crypto_full_image_and_zero_workspace) ... ok
+22: test_crypto_policy_source_and_document_failures_clear_candidate (__main__.MotionCLI.test_crypto_policy_source_and_document_failures_clear_candidate) ... ok
+22: test_frontend_bounds_numbers_and_regular_files (__main__.MotionCLI.test_frontend_bounds_numbers_and_regular_files) ... ok
+22:
+22: ----------------------------------------------------------------------
+22: Ran 3 tests in 0.211s
+22:
+22: OK
+22: PASS cli signed host review; no private key files, network, devices, install or publication
+22/65 Test #22: release_review_cli ..................   Passed    0.26 sec
+test 23
+      Start 23: release_review_cohort
+
+23: Test command: /home/avlyubimov/.local/bin/python3.14 "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/tests/release_cohort_tests.py" "--driver" "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize/firmware/stm32-bootloader/boot_motion_review" "--signer" "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize/ota_policy_driver" "--group" "cohort"
+23: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize
+23: Test timeout computed to be: 60
+23: test_actual_cli_stdout_report_and_failure_has_no_partial_report (__main__.Cohort.test_actual_cli_stdout_report_and_failure_has_no_partial_report) ... ok
+23: test_corrupt_images_signatures_app_descriptor_and_sdk (__main__.Cohort.test_corrupt_images_signatures_app_descriptor_and_sdk) ... ok
+23: test_current_and_prospective_peer_context_are_separate_checks (__main__.Cohort.test_current_and_prospective_peer_context_are_separate_checks) ... ok
+23: test_local_context_unknown_duplicate_partial_and_no_paths_from_manifest (__main__.Cohort.test_local_context_unknown_duplicate_partial_and_no_paths_from_manifest) ... ok
+23: test_nonregular_inputs_and_bounds_before_any_driver_or_crypto (__main__.Cohort.test_nonregular_inputs_and_bounds_before_any_driver_or_crypto) ... ok
+23: test_paired_and_hmi_only_reports_all_authority_gates_closed (__main__.Cohort.test_paired_and_hmi_only_reports_all_authority_gates_closed) ... ok
+23: test_prerelease_and_independent_component_versions (__main__.Cohort.test_prerelease_and_independent_component_versions) ... ok
+23: test_signed_metadata_snapshot_is_not_reopened_for_binding (__main__.Cohort.test_signed_metadata_snapshot_is_not_reopened_for_binding) ... ok
+23: test_signed_mismatched_release_source_and_channel (__main__.Cohort.test_signed_mismatched_release_source_and_channel) ... ok
+23:
+23: ----------------------------------------------------------------------
+23: Ran 9 tests in 0.501s
+23:
+23: OK
+23: PASS cohort signed host review; no private key files, network, devices, install or publication
+23/65 Test #23: release_review_cohort ...............   Passed    0.55 sec
+test 24
+      Start 24: release_build_binding
+
+24: Test command: /home/avlyubimov/.local/bin/python3.14 "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/tests/release_build_tests.py" "--driver" "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize/firmware/stm32-bootloader/boot_motion_review" "--signer" "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize/ota_policy_driver"
+24: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize
+24: Test timeout computed to be: 60
+24: test_captured_candidate_not_reopened_after_validation (__main__.BuildBinding.test_captured_candidate_not_reopened_after_validation) ... ok
+24: test_cli_blocked_exit3_invalid_no_report_and_legacy_cli_unchanged (__main__.BuildBinding.test_cli_blocked_exit3_invalid_no_report_and_legacy_cli_unchanged) ... ok
+24: test_cohort_signature_peer_and_motion_checks_cannot_be_bypassed_by_build_pin (__main__.BuildBinding.test_cohort_signature_peer_and_motion_checks_cannot_be_bypassed_by_build_pin) ... ok
+24: test_different_valid_image_between_verifiers_is_rejected (__main__.BuildBinding.test_different_valid_image_between_verifiers_is_rejected) ... ok
+24: test_external_pin_is_mandatory_and_cannot_be_taken_from_replaced_metadata (__main__.BuildBinding.test_external_pin_is_mandatory_and_cannot_be_taken_from_replaced_metadata) ... ok
+24: test_hmi_only_all_sdk_profiles_are_audited_without_relabelling (__main__.BuildBinding.test_hmi_only_all_sdk_profiles_are_audited_without_relabelling) ... ok
+24: test_local_elf_digest_and_length_checked_independently (__main__.BuildBinding.test_local_elf_digest_and_length_checked_independently) ... ok
+24: test_nonregular_empty_oversized_and_extra_inputs_fail_before_crypto (__main__.BuildBinding.test_nonregular_empty_oversized_and_extra_inputs_fail_before_crypto) ... ok
+24: test_original_images_and_elf_not_reopened_after_snapshot (__main__.BuildBinding.test_original_images_and_elf_not_reopened_after_snapshot) ... ok
+24: test_paired_full_bytes_link_remains_blocked_and_has_no_private_paths (__main__.BuildBinding.test_paired_full_bytes_link_remains_blocked_and_has_no_private_paths) ... ok
+24: test_pin_api_preserves_legacy_report_and_captures_original_snapshot (__main__.BuildBinding.test_pin_api_preserves_legacy_report_and_captures_original_snapshot) ... ok
+24: test_rehashed_unsigned_source_sdk_schema_scope_layout_and_image_claims_rejected (__main__.BuildBinding.test_rehashed_unsigned_source_sdk_schema_scope_layout_and_image_claims_rejected) ... ok
+24: test_valid_but_substituted_hmi_image_cannot_match_ci_candidate (__main__.BuildBinding.test_valid_but_substituted_hmi_image_cannot_match_ci_candidate) ... ok
+24:
+24: ----------------------------------------------------------------------
+24: Ran 13 tests in 0.897s
+24:
+24: OK
+24: PASS offline build binding: actual crypto/bytes, external pin, blocked layouts/profiles, no install or provenance authority
+24/65 Test #24: release_build_binding ...............   Passed    0.94 sec
+test 25
+      Start 25: motion_supervisor
+
+25: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize/firmware/stm32-motion/motion_tests
+25: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize/firmware/stm32-motion
+25: Test timeout computed to be: 10
+25: 7 motion supervisor scenarios PASS (including 99,999 fault-injection cycles)
+25/65 Test #25: motion_supervisor ...................   Passed    0.01 sec
+test 26
+      Start 26: motion_startup_noio
+
+26: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize/firmware/stm32-motion/motion_startup_tests
+26: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize/firmware/stm32-motion
+26: Test timeout computed to be: 10
+26/65 Test #26: motion_startup_noio .................   Passed    0.00 sec
+test 27
+      Start 27: update_completion_mailbox_threads
+
+27: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize/protocol/can/update_completion_mailbox_tests "--threads"
+27: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize/protocol/can
+27: Test timeout computed to be: 60
+27: PASS two real pthread actors/1200000 ordered reports/capacities1..4, producer retries=675280; no claim/driver/auth authority
+27/65 Test #27: update_completion_mailbox_threads ...   Passed    0.23 sec
+test 28
+      Start 28: update_metadata_setup_reference
+
+28: Test command: /home/avlyubimov/.local/bin/python3.14 "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/protocol/can/tests/metadata_setup_reference.py" "--driver" "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize/protocol/can/update_metadata_setup_tests"
+28: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize/protocol/can
+28: Test timeout computed to be: 15
+28: PASS4 independent setup vectors; SHA256=77da01788acccedaabd4bc0db47b508f53c009ad84670354ac35b0367d0200b7
+28/65 Test #28: update_metadata_setup_reference .....   Passed    0.03 sec
+test 29
+      Start 29: update_wire_reference
+
+29: Test command: /home/avlyubimov/.local/bin/python3.14 "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/protocol/can/tests/wire_reference.py" "--driver" "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize/protocol/can/update_wire_tests"
+29: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize/protocol/can
+29: Test timeout computed to be: 15
+29: PASS12 independent Python LE golden messages,8 kinds/all5 outcome codes; concatenated_sha256=7c94f5fd561787851d86d23c8179a806b908cb94cf48a1d52580540cf1705426
+29/65 Test #29: update_wire_reference ...............   Passed    0.03 sec
+test 30
+      Start 30: update_fragment_reference
+
+30: Test command: /home/avlyubimov/.local/bin/python3.14 "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/protocol/can/tests/fragment_reference.py" "--driver" "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize/protocol/can/update_fragment_tests"
+30: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize/protocol/can
+30: Test timeout computed to be: 15
+30: PASS3 independent vectors: ACK24/6, DATA31/8, DATA286/72 frames; partial DLC7/6; SHA256=0e2abb4d14cacfd05d66f9c4e021efab0395643230ed6e689bc7b00364b9ec8a
+30/65 Test #30: update_fragment_reference ...........   Passed    0.03 sec
+test 31
+      Start 31: update_metadata_reference
+
+31: Test command: /home/avlyubimov/.local/bin/python3.14 "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/protocol/can/tests/metadata_reference.py" "--driver" "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize/protocol/can/update_metadata_tests"
+31: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize/protocol/can
+31: Test timeout computed to be: 15
+31: PASS2 independent metadata bundles98/1215 bytes; SHA256=e8bffb2885cc650c2be225dfb8f1956f8f2244e081361c8fd11ed7c67603e8d0
+31/65 Test #31: update_metadata_reference ...........   Passed    0.03 sec
+test 32
+      Start 32: update_session
+
+32: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize/protocol/can/update_session_tests
+32: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize/protocol/can
+32: Test timeout computed to be: 20
+32: PASS checksum_vectors
+32: PASS invalid_limits
+32: PASS begin_and_exclusivity
+32: PASS two_phase_and_exact_duplicates
+32: PASS malformed_blocks
+32: PASS conflicting_duplicate
+32: PASS crc_collision_does_not_match_duplicate
+32: PASS consumer_failure_is_sticky
+32: PASS sender_retry_budget
+32: PASS receiver_retry_budget
+32: PASS ack_validation
+32: PASS deadline_boundaries
+32: PASS total_deadline
+32: PASS clocks_and_wraparound
+32: PASS abort_and_reboot
+32: PASS null_and_output_contracts
+32: PASS retry_counter_boundary
+32: PASS 17 unit groups; rx=384 tx=384 bytes; no device access
+32/65 Test #32: update_session ......................   Passed    0.00 sec
+test 33
+      Start 33: update_loopback
+
+33: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize/protocol/can/update_loopback_tests
+33: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize/protocol/can
+33: Test timeout computed to be: 20
+33: PASS 2049 memory transfers; lost DATA=4318 ACK=4360 (final=397) corrupt=3924 reorder=4338 pending duplicates=4004
+33: PASS altered payload + valid CRC completes transport only; SHA oracle rejects image
+33: PASS 10 volatile reset cut cases; stale sessions/ACK rejected; no resume
+33: PASS truncated stream / partial RAM consumer never reach completion
+33/65 Test #33: update_loopback .....................   Passed    0.08 sec
+test 34
+      Start 34: update_outcome
+
+34: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize/protocol/can/update_outcome_tests
+34: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize/protocol/can
+34: Test timeout computed to be: 20
+34: PASS 1001 outcome sessions, 1001 deliveries; lost report/final ACK; duplicates not redelivered
+34: PASS loss_duplicate_and_history
+34: PASS binding_and_ack_validation
+34: PASS conflicts_invalid_reports_and_forgery_boundary
+34: PASS deadlines_retries_and_late_begin
+34: PASS transport_reboot_abort_and_clock
+34: PASS config_and_canonical_codes
+34: PASS 6 outcome groups; report=84 TX=128 RX=224; no authentication/install/device access
+34/65 Test #34: update_outcome ......................   Passed    0.01 sec
+test 35
+      Start 35: update_negotiation
+
+35: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize/protocol/can/update_negotiation_tests
+35: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize/protocol/can
+35: Test timeout computed to be: 20
+35: PASS 7 negotiation groups/1024 sessions; state=368 pool=32 message=128. Opaque bindings only; no CAN/authentication/install/device access.
+35/65 Test #35: update_negotiation ..................   Passed    0.01 sec
+test 36
+      Start 36: update_wire
+
+36: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize/protocol/can/update_wire_tests
+36: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize/protocol/can
+36: Test timeout computed to be: 20
+36: PASS 65536 outcome code/reason byte combinations; unknown and incompatible tokens reject with zero output
+36: PASS all256 DATA lengths; uint32 offset overflow, tail zeroing and no padding/tail emission
+36: PASS 200000 deterministic malformed/mutation cases: accepted=113410 canonical, rejected=86590 zeroed; structural only
+36: PASS corrupted DATA structurally decodes but existing RX rejects CRC before progress; consumer ACK still mandatory
+36: PASS wire draft:8 message kinds, max=286 caller_message=284; no CAN/device/installation
+36/65 Test #36: update_wire .........................   Passed    0.18 sec
+test 37
+      Start 37: update_fragment
+
+37: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize/protocol/can/update_fragment_tests
+37: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize/protocol/can
+37: Test timeout computed to be: 20
+37: PASS263 all 8 kinds / DATA lengths1..256 / <=72 frames / single delivery; tx=360 rx=352 bytes (host only)
+37: PASS all_kinds_and_lengths
+37: PASS all DLC256, START32768, continuation65536 fields; no padding or guessed order
+37: PASS malformed_envelopes
+37: PASS loss/order/retry/duplicate conflicts, route isolation, READY backpressure and exactly-once take
+37: PASS duplicates_order_and_pressure
+37: PASS owned TX snapshot, deterministic repeated peek, exact queue commit, stale commit and cancellation
+37: PASS tx_queue_and_snapshot
+37: PASS whole-message loss requires explicit timeout/clear and fresh counter; no implicit restart or remote ACK claim
+37: PASS lost_message_retry
+37: PASS exact progress/total/READY deadlines, drip duplicates, wrap, backward clock, generation revocation and sticky clear
+37: PASS deadlines_and_context
+37: PASS explicit config, frame quotas, exhaustion without wrap, no reinit/reset bypass, failure output zeroing
+37: PASS budgets_counters_and_arguments
+37: PASS READY is unchecked, malformed inner zeroes output, corrupted DATA still requires unchanged logical RX CRC
+37: PASS invalid_inner_and_crc
+37: PASS100000 deterministic drop/mutation/DLC/duplicate chains: taken=34470 structural only, rejected=65530 zero output, bounded cleanup
+37: PASS fault_corpus
+37/65 Test #37: update_fragment .....................   Passed    0.13 sec
+test 38
+      Start 38: update_fragment_timing
+
+38: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize/protocol/can/update_fragment_timing_tests
+38: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize/protocol/can
+38: Test timeout computed to be: 20
+38: PASS shared clock: whole-message retries, missing START/middle/final, lost ACK, bounded queue, exact consumer writes, wrap and retry exhaustion
+38: PASS READY exact total deadline, queue stall exact progress deadline, peek/busy cannot reset time/counters
+38: PASS sticky context/backward-clock cancellation; old START accepted by fresh generation proves reboot replay isolation is NOT provided
+38: PASS fragment progress/late valid OFFER cannot extend or revive exact50ms negotiation lifetime
+38: PASS timing data scenarios=34 frames=40700 dropped=43 timeout-clears=31 repeated-peeks=8464; HOST simulation, no bus/CPU/default timing claim
+38/65 Test #38: update_fragment_timing ..............   Passed    0.05 sec
+test 39
+      Start 39: update_metadata
+
+39: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize/protocol/can/update_metadata_tests
+39: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize/protocol/can
+39: Test timeout computed to be: 20
+39: PASS1024 document lengths, duplicate/final-ACK loss/copy-before-ACK/single take, fresh IDs/no reinit/wrap; rx=1728 snapshot=1212 host bytes
+39: PASS exact length/header/reserved/binding/field ranges; modified raw document structurally decodes and still needs independent signature/digest verification
+39: PASS image/metadata role separation, CRC, exact active/ready deadlines, wrap/backward/context/sticky cancellation and cache wipe
+39: PASS malformed complete container zeroes/wipes before delivery; fresh-ID recovery and exact total deadline despite slow progress
+39: PASS100000 mutations: structurally accepted=61930 rejected/zeroed=38070; no raw SHA/signature authority
+39/65 Test #39: update_metadata .....................   Passed    0.10 sec
+test 40
+      Start 40: update_metadata_setup
+
+40: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize/protocol/can/update_metadata_setup_tests
+40: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize/protocol/can
+40: Test timeout computed to be: 20
+40: PASS4 setup kinds; capacities/truncation/tails; 100000 mutations: 82504 structural, 17496 zero-output refusals
+40: PASS invalid config/bounds/stale session/role/generation; rejection does not allocate or restart
+40: PASS8 sequential image/metadata pairs, shared namespace ownership, no wrap/reuse; concrete close
+40: PASS4 lost setup phases, responder early take + lost CONFIRM recovery; no deadline restart
+40: PASS context/clock/owner/image/progress/content/timeout/send faults, ID retained, sticky guards
+40: Host storage only: setup=312 message=168; no MCU RAM/stack approval
+40/65 Test #40: update_metadata_setup ...............   Passed    0.03 sec
+test 41
+      Start 41: update_fragment_raw
+
+41: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize/protocol/can/update_fragment_raw_tests
+41: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize/protocol/can
+41: Test timeout computed to be: 20
+41: PASS279 raw lengths8..286, all undersized capacities, mode isolation, single take, retained IDs
+41: PASS raw/typed codec mismatch, context/clock/timeout/exhaustion; no authority from raw bytes
+41/65 Test #41: update_fragment_raw .................   Passed    0.02 sec
+test 42
+      Start 42: update_channel
+
+42: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize/protocol/can/update_channel_tests
+42: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize/protocol/can
+42: Test timeout computed to be: 20
+42: PASS512 phase cycles, 7168 mixed TU/MS messages, shared retained counters, exact queue commit/single owned take/wrap clock
+42: PASS phase order/pair IDs/late control/old metadata ACK filtering; strict prefix/version/reserved refusal, no decoder fallback
+42: PASS final queued frame progress/total timeout, exact backpressure, cancel/clear retained policy/counters; sticky context/clock/exhaustion
+42: Host storage only: channel TX=696 RX=664 snapshot=288; no MCU RAM/stack approval
+42/65 Test #42: update_channel ......................   Passed    0.14 sec
+test 43
+      Start 43: update_frame_queue
+
+43: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize/protocol/can/update_frame_queue_tests
+43: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize/protocol/can
+43: Test timeout computed to be: 20
+43: PASS capacities1..4, 4096 FIFO cycles/10240 owned frames; full/claim/duplicate/stale tickets, retained serials and wrap clock
+43: PASS timeout/cancel/uncertain/context/clock preserves actual claim; exact late terminal return reclaims without success/revival
+43: PASS cross-queue identical generation/route/serial cannot free a different actual owner; terminal cleanup explicit
+43: PASS invalid config/DLC256/exhaustion/no wrap, timeout before claim, explicit safe queued cancellation
+43: Host storage only: frame queue=128 driver snapshot=40; no MCU RAM/physical queue approval
+43/65 Test #43: update_frame_queue ..................   Passed    0.01 sec
+test 44
+      Start 44: update_egress
+
+44: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize/protocol/can/update_egress_tests
+44: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize/protocol/can
+44: Test timeout computed to be: 20
+44: PASS actual channel→owned queue→driver claim→correlated return→RX; 132 frames, capacities1..4, phase waits for driver return
+44: PASS actual final pending driver frame blocks phase despite inner IDLE; late completion reclaims, explicit clear retains counters/phase
+44: PASS uncertain/cancel/context/clock/channel-timeout cleanup; matching driver ownership retained, no force-forget/reinit
+44: Host storage only: egress owner=832; no actual MCU RAM/driver/physical approval
+44/65 Test #44: update_egress .......................   Passed    0.00 sec
+test 45
+      Start 45: update_driver_events
+
+45: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize/protocol/can/update_driver_events_tests
+45: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize/protocol/can
+45: Test timeout computed to be: 20
+45: PASS256 actual channel/RX messages, 8448 frames/21120 owned reports; capacities1..4/FIFO wrap/clock wrap, full retry, one-event service, stale/duplicate phase guards
+45: PASS full inbox preserves actual claim; external terminal report retained and retried after stale event service
+45: PASS queued terminal ages at current service time, not report time; uncertainty/cancel/context/clock retain ownership, late cleanup never revives phase
+45: Host storage only: driver event=32 bound event owner=968; no MCU RAM/RTOS/ISR/driver approval
+45/65 Test #45: update_driver_events ................   Passed    0.02 sec
+test 46
+      Start 46: update_completion_mailbox
+
+46: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize/protocol/can/update_completion_mailbox_tests
+46: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize/protocol/can
+46: Test timeout computed to be: 20
+46: PASS capacities1..4,16384 FIFO cycles/40960 owned reports, non-power-of-two ring wrap/full retry/no ledger mutation
+46: Host storage only: atomic mailbox=200; atomic_uint lock-free macro=2, no MCU ISR/RTOS approval
+46/65 Test #46: update_completion_mailbox ...........   Passed    0.01 sec
+test 47
+      Start 47: update_completion_owner
+
+47: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize/protocol/can/update_completion_owner_tests
+47: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize/protocol/can
+47: Test timeout computed to be: 20
+47: PASS full retained terminal retry/current-time timeout/uncertain/cancel/sticky cleanup; atomic positions and protocol IDs retained, no force-forget
+47: PASS actual mailbox blocks phase/begin/claim with inner owner IDLE and ledger empty; stale duplicate consumed explicitly
+47: PASS concurrent actual channel/claim/local-driver-report/service/RX:256 messages/8448 frames/9504 reports/1056 stale duplicates, capacities1..4/clock wrap
+47: Host storage only: bound completion owner=1208; no MCU memory/ISR/RTOS/driver truth approval
+47/65 Test #47: update_completion_owner .............   Passed    0.02 sec
+test 48
+      Start 48: boot_image_admission
+
+48: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize/firmware/stm32-bootloader/boot_admission_tests
+48: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize/firmware/stm32-bootloader
+48: Test timeout computed to be: 30
+48: PASS sha_vectors
+48: PASS success_and_fragmentation
+48: PASS invalid_signature_and_key
+48: PASS wrong_signer
+48: PASS compatibility_and_rollback
+48: PASS policy_errors
+48: PASS signed_malformed_metadata
+48: PASS stream_faults
+48: PASS deadlines_cancellation_and_wrap
+48: PASS arena_exhaustion_and_reuse
+48: PASS snapshot_and_reentry
+48: PASS arguments_and_limits
+48: PASS boundary_metadata_and_key_selection
+48: PASS storage_aliases_are_write_free
+48: PASS 14 admission groups; workspace=17664 bytes; ephemeral host signing keys; no device access
+48/65 Test #48: boot_image_admission ................   Passed    0.36 sec
+test 49
+      Start 49: boot_crypto_source
+
+49: Test command: /home/avlyubimov/.local/bin/python3.14 "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/firmware/stm32-bootloader/tests/source_tests.py" "--source" "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize/_deps/tv4_boot_mbedtls-src"
+49: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize/firmware/stm32-bootloader
+49: Test timeout computed to be: 15
+49: test_added_header (__main__.SourceTests.test_added_header) ... ok
+49: test_changed_code (__main__.SourceTests.test_changed_code) ... ok
+49: test_exact_source (__main__.SourceTests.test_exact_source) ... ok
+49: test_missing_header (__main__.SourceTests.test_missing_header) ... ok
+49: test_symlink (__main__.SourceTests.test_symlink) ... ok
+49:
+49: ----------------------------------------------------------------------
+49: Ran 5 tests in 0.065s
+49:
+49: OK
+49/65 Test #49: boot_crypto_source ..................   Passed    0.10 sec
+test 50
+      Start 50: boot_staging_source
+
+50: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize/firmware/stm32-bootloader/boot_staging_tests
+50: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize/firmware/stm32-bootloader
+50: Test timeout computed to be: 30
+50: PASS 45 RAM staging/read variants, 1..1025 bytes, blocks1/31/256, fragments1/7/256, pending/final duplicates
+50: PASS sizes_and_reads
+50: PASS lease_and_reuse
+50: PASS receiver_faults
+50: PASS deadlines_and_wrap
+50: PASS arguments_and_aliases
+50: PASS config_and_capacity
+50: PASS 1536 source cycles; discard retains high-water/generation/token counters; exhaustion never wraps
+50: PASS counters_and_exhaustion
+50: PASS 7 staging source groups; state=160 bytes plus explicit caller buffer; RAM only, not persistent/install/device access
+50/65 Test #50: boot_staging_source .................   Passed    0.01 sec
+test 51
+      Start 51: boot_update_handoff
+
+51: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize/firmware/stm32-bootloader/boot_handoff_tests
+51: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize/firmware/stm32-bootloader
+51: Test timeout computed to be: 30
+51: PASS 54 signed end-to-end RAM transfers with lost DATA/final ACK and pending duplicate
+51: PASS end_to_end_sizes_and_fragments
+51: PASS snapshots_and_reentry
+51: PASS binding_is_not_transport_trust
+51: PASS changes_during_verification
+51: PASS revoke_after_success
+51: PASS acquire_and_release_failures
+51: PASS deadlines_before_verification_and_wrap
+51: PASS boundaries_and_final_cleanup
+51: PASS retained_ack_does_not_extend_handoff
+51: PASS rejected_inputs_and_aliases
+51: PASS 15 signed vector inspections with fragmented reads + captured local profile mutation
+51: PASS signed_vector_success_and_snapshot
+51: PASS valid_signature_invalid_vector_model
+51: PASS preflight_context_cleanup_and_reentry
+51: PASS 6 signed DATA -> crypto -> vectors -> close -> outcome/ACK sessions, lost report/final ACK; no lease retained
+51: PASS completion_end_to_end_history
+51: PASS completion_rejections
+51: PASS completion_release_and_late_context
+51: PASS completion_reentry_snapshot_and_arguments
+51: PASS 6 signed negotiation -> DATA -> P-256/SHA -> vectors -> close -> outcome/ACK chains; all four handshake losses, DATA/final ACK/report losses
+51: PASS negotiated_full_chain
+51: PASS 3 negotiated binding failures: changed image, invalid signature, valid re-signed metadata with mismatched raw SHA; no retained lease
+51: PASS negotiated_binding_still_requires_crypto
+51: PASS 19 handoff/completion groups; completion=568; state=2136 receipt=136 workspace=17664; RAM only, no install/device access
+51/65 Test #51: boot_update_handoff .................   Passed    0.78 sec
+test 52
+      Start 52: boot_staging_handoff
+
+52: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize/firmware/stm32-bootloader/boot_handoff_tests "--staging"
+52: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize/firmware/stm32-bootloader
+52: Test timeout computed to be: 30
+52: PASS 8 signed chains through real RAM staging backend, 6 release15 + 2 legacy11; losses, locked writes, post-wipe outcome/ACK
+52: PASS staged_signed_chains
+52: PASS staged_crypto_rejections
+52: PASS staged_cleanup_and_revocation
+52: PASS staged_receiver_deadline
+52: PASS 4 staging integration groups; source=160 core=2136 completion=568 workspace=17664; no runtime/Flash/device access
+52/65 Test #52: boot_staging_handoff ................   Passed    0.09 sec
+test 53
+      Start 53: boot_wire_handoff
+
+53: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize/firmware/stm32-bootloader/boot_handoff_tests "--wire-staging"
+53: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize/firmware/stm32-bootloader
+53: Test timeout computed to be: 30
+53: PASS 8 signed chains through real RAM staging backend, 6 release15 + 2 legacy11; losses, locked writes, post-wipe outcome/ACK
+53: PASS staged_signed_chains
+53: PASS staged_crypto_rejections
+53: PASS staged_cleanup_and_revocation
+53: PASS staged_receiver_deadline
+53: PASS byte codec across existing signed RAM chains; kind counts: 1=39 2=22 3=22 4=17 5=1017 6=500 7=16 8=8; no wire/CRC success replaces signature/lease/model/deadline/cleanup or authorizes install
+53/65 Test #53: boot_wire_handoff ...................   Passed    0.09 sec
+test 54
+      Start 54: boot_fragment_handoff
+
+54: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize/firmware/stm32-bootloader/boot_handoff_tests "--fragment-staging"
+54: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize/firmware/stm32-bootloader
+54: Test timeout computed to be: 30
+54: PASS 8 signed chains through real RAM staging backend, 6 release15 + 2 legacy11; losses, locked writes, post-wipe outcome/ACK
+54: PASS staged_signed_chains
+54: PASS staged_crypto_rejections
+54: PASS staged_cleanup_and_revocation
+54: PASS staged_receiver_deadline
+54: PASS fragments across 8 actual signed RAM chains; kind counts: 1=39 2=22 3=22 4=17 5=1017 6=500 7=16 8=8; frames=22980 duplicates=1252; original logical/crypto/lease/model/deadline/cleanup gates unchanged
+54/65 Test #54: boot_fragment_handoff ...............   Passed    0.10 sec
+test 55
+      Start 55: boot_fragment_timing
+
+55: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize/firmware/stm32-bootloader/boot_handoff_tests "--fragment-timing"
+55: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize/firmware/stm32-bootloader
+55: Test timeout computed to be: 30
+55: PASS8 one-clock actual signed RAM chains: frames=7640 lost=48 timeout-clears=32 repeated-peeks=1611 longest=2551 synthetic ms; all8 kinds, no deadline resets or duplicate outcome delivery
+55: PASS one_clock_signed_chains
+55: PASS one-clock transfer success does not bypass independent signature or expired DATA live-receiver admission
+55: PASS one_clock_admission_refusals
+55/65 Test #55: boot_fragment_timing ................   Passed    0.07 sec
+test 56
+      Start 56: boot_egress_handoff
+
+56: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize/firmware/stm32-bootloader/boot_handoff_tests "--egress-staging"
+56: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize/firmware/stm32-bootloader
+56: Test timeout computed to be: 30
+56: SETUP frames=473 drops=4 elapsed=1020 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+56: EGRESS claims=1097 returns=1097 held-ticks=266 max-pending=2; local completion tickets, no driver-owned frame forgotten
+56: SETUP frames=473 drops=4 elapsed=1020 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+56: EGRESS claims=1331 returns=1331 held-ticks=324 max-pending=2; local completion tickets, no driver-owned frame forgotten
+56: SETUP frames=473 drops=4 elapsed=1016 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+56: EGRESS claims=1544 returns=1544 held-ticks=375 max-pending=2; local completion tickets, no driver-owned frame forgotten
+56: SETUP frames=473 drops=4 elapsed=1016 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+56: EGRESS claims=1778 returns=1778 held-ticks=432 max-pending=2; local completion tickets, no driver-owned frame forgotten
+56: SETUP frames=473 drops=4 elapsed=1016 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+56: EGRESS claims=1544 returns=1544 held-ticks=375 max-pending=2; local completion tickets, no driver-owned frame forgotten
+56: SETUP frames=473 drops=4 elapsed=1016 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+56: EGRESS claims=1778 returns=1778 held-ticks=432 max-pending=2; local completion tickets, no driver-owned frame forgotten
+56: SETUP frames=473 drops=4 elapsed=1016 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+56: EGRESS claims=1497 returns=1497 held-ticks=364 max-pending=2; local completion tickets, no driver-owned frame forgotten
+56: SETUP frames=473 drops=4 elapsed=1016 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+56: EGRESS claims=1497 returns=1497 held-ticks=364 max-pending=2; local completion tickets, no driver-owned frame forgotten
+56: PASS8 transported metadata signed chains: frames=12066 drops=80 container-bytes=4798 DER=70..72 longest=3710 synthetic ms; producer wiped, actual delivered signature/raw digest/lease/model/close, no image deadline reset
+56: SETUP frames=473 drops=4 elapsed=1020 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+56: SETUP frames=473 drops=4 elapsed=1020 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+56: SETUP frames=473 drops=4 elapsed=1020 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+56: PASS transported metadata does not bypass invalid signature, correctly re-signed wrong raw digest, or expired independent image RX
+56: SETUP frames=473 drops=4 elapsed=1020 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+56: SETUP frames=473 drops=4 elapsed=1020 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+56: PASS2 driver uncertain/missing-completion refusals: actual claim retained through original image timeout; late return reclaims only, clear does not revive RX or admission
+56/65 Test #56: boot_egress_handoff .................   Passed    0.13 sec
+test 57
+      Start 57: boot_driver_events_handoff
+
+57: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize/firmware/stm32-bootloader/boot_handoff_tests "--driver-events-staging"
+57: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize/firmware/stm32-bootloader
+57: Test timeout computed to be: 30
+57: SETUP frames=473 drops=4 elapsed=1198 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+57: EGRESS claims=1097 returns=1097 held-ticks=266 max-pending=2; local completion tickets, no driver-owned frame forgotten
+57: EVENTS posted=1161 serviced=1161 stale=64 wait-ticks=1161 max-pending=2; owned copies, one-event budget/current service time
+57: SETUP frames=473 drops=4 elapsed=1198 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+57: EGRESS claims=1331 returns=1331 held-ticks=324 max-pending=2; local completion tickets, no driver-owned frame forgotten
+57: EVENTS posted=1409 serviced=1409 stale=78 wait-ticks=1409 max-pending=2; owned copies, one-event budget/current service time
+57: SETUP frames=473 drops=4 elapsed=1195 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+57: EGRESS claims=1544 returns=1544 held-ticks=375 max-pending=2; local completion tickets, no driver-owned frame forgotten
+57: EVENTS posted=1634 serviced=1634 stale=90 wait-ticks=1634 max-pending=2; owned copies, one-event budget/current service time
+57: SETUP frames=473 drops=4 elapsed=1195 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+57: EGRESS claims=1778 returns=1778 held-ticks=432 max-pending=2; local completion tickets, no driver-owned frame forgotten
+57: EVENTS posted=1882 serviced=1882 stale=104 wait-ticks=1882 max-pending=2; owned copies, one-event budget/current service time
+57: SETUP frames=473 drops=4 elapsed=1195 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+57: EGRESS claims=1544 returns=1544 held-ticks=375 max-pending=2; local completion tickets, no driver-owned frame forgotten
+57: EVENTS posted=1634 serviced=1634 stale=90 wait-ticks=1634 max-pending=2; owned copies, one-event budget/current service time
+57: SETUP frames=473 drops=4 elapsed=1195 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+57: EGRESS claims=1778 returns=1778 held-ticks=432 max-pending=2; local completion tickets, no driver-owned frame forgotten
+57: EVENTS posted=1882 serviced=1882 stale=104 wait-ticks=1882 max-pending=2; owned copies, one-event budget/current service time
+57: SETUP frames=473 drops=4 elapsed=1195 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+57: EGRESS claims=1497 returns=1497 held-ticks=364 max-pending=2; local completion tickets, no driver-owned frame forgotten
+57: EVENTS posted=1585 serviced=1585 stale=88 wait-ticks=1585 max-pending=2; owned copies, one-event budget/current service time
+57: SETUP frames=473 drops=4 elapsed=1195 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+57: EGRESS claims=1497 returns=1497 held-ticks=364 max-pending=2; local completion tickets, no driver-owned frame forgotten
+57: EVENTS posted=1585 serviced=1585 stale=88 wait-ticks=1585 max-pending=2; owned copies, one-event budget/current service time
+57: PASS8 transported metadata signed chains: frames=12066 drops=80 container-bytes=4796 DER=70..71 longest=4774 synthetic ms; producer wiped, actual delivered signature/raw digest/lease/model/close, no image deadline reset
+57: SETUP frames=473 drops=4 elapsed=1198 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+57: SETUP frames=473 drops=4 elapsed=1198 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+57: SETUP frames=473 drops=4 elapsed=1198 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+57: PASS transported metadata does not bypass invalid signature, correctly re-signed wrong raw digest, or expired independent image RX
+57: SETUP frames=473 drops=4 elapsed=1198 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+57: SETUP frames=473 drops=4 elapsed=1198 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+57: PASS2 delayed queued terminal/uncertain event refusals: original image timeout retained; current-time service reclaims only, no RX/admission revival
+57/65 Test #57: boot_driver_events_handoff ..........   Passed    0.16 sec
+test 58
+      Start 58: boot_completion_mailbox_handoff
+
+58: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize/firmware/stm32-bootloader/boot_handoff_tests "--completion-mailbox-staging"
+58: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize/firmware/stm32-bootloader
+58: Test timeout computed to be: 30
+58: SETUP frames=473 drops=4 elapsed=1198 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+58: EGRESS claims=1097 returns=1097 held-ticks=266 max-pending=2; local completion tickets, no driver-owned frame forgotten
+58: EVENTS posted=1161 serviced=1161 stale=64 wait-ticks=1161 max-pending=2; owned copies, one-event budget/current service time
+58: SETUP frames=473 drops=4 elapsed=1198 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+58: EGRESS claims=1331 returns=1331 held-ticks=324 max-pending=2; local completion tickets, no driver-owned frame forgotten
+58: EVENTS posted=1409 serviced=1409 stale=78 wait-ticks=1409 max-pending=2; owned copies, one-event budget/current service time
+58: SETUP frames=473 drops=4 elapsed=1195 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+58: EGRESS claims=1544 returns=1544 held-ticks=375 max-pending=2; local completion tickets, no driver-owned frame forgotten
+58: EVENTS posted=1634 serviced=1634 stale=90 wait-ticks=1634 max-pending=2; owned copies, one-event budget/current service time
+58: SETUP frames=473 drops=4 elapsed=1195 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+58: EGRESS claims=1778 returns=1778 held-ticks=432 max-pending=2; local completion tickets, no driver-owned frame forgotten
+58: EVENTS posted=1882 serviced=1882 stale=104 wait-ticks=1882 max-pending=2; owned copies, one-event budget/current service time
+58: SETUP frames=473 drops=4 elapsed=1195 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+58: EGRESS claims=1544 returns=1544 held-ticks=375 max-pending=2; local completion tickets, no driver-owned frame forgotten
+58: EVENTS posted=1634 serviced=1634 stale=90 wait-ticks=1634 max-pending=2; owned copies, one-event budget/current service time
+58: SETUP frames=473 drops=4 elapsed=1195 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+58: EGRESS claims=1778 returns=1778 held-ticks=432 max-pending=2; local completion tickets, no driver-owned frame forgotten
+58: EVENTS posted=1882 serviced=1882 stale=104 wait-ticks=1882 max-pending=2; owned copies, one-event budget/current service time
+58: SETUP frames=473 drops=4 elapsed=1195 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+58: EGRESS claims=1497 returns=1497 held-ticks=364 max-pending=2; local completion tickets, no driver-owned frame forgotten
+58: EVENTS posted=1585 serviced=1585 stale=88 wait-ticks=1585 max-pending=2; owned copies, one-event budget/current service time
+58: SETUP frames=473 drops=4 elapsed=1195 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+58: EGRESS claims=1498 returns=1498 held-ticks=364 max-pending=2; local completion tickets, no driver-owned frame forgotten
+58: EVENTS posted=1586 serviced=1586 stale=88 wait-ticks=1586 max-pending=2; owned copies, one-event budget/current service time
+58: PASS8 transported metadata signed chains: frames=12067 drops=80 container-bytes=4799 DER=70..72 longest=4774 synthetic ms; producer wiped, actual delivered signature/raw digest/lease/model/close, no image deadline reset
+58: SETUP frames=473 drops=4 elapsed=1198 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+58: SETUP frames=473 drops=4 elapsed=1198 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+58: SETUP frames=473 drops=4 elapsed=1198 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+58: PASS transported metadata does not bypass invalid signature, correctly re-signed wrong raw digest, or expired independent image RX
+58: SETUP frames=473 drops=4 elapsed=1198 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+58: SETUP frames=473 drops=4 elapsed=1198 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+58: PASS2 delayed queued terminal/uncertain event refusals: original image timeout retained; current-time service reclaims only, no RX/admission revival
+58/65 Test #58: boot_completion_mailbox_handoff .....   Passed    0.17 sec
+test 59
+      Start 59: boot_channel_handoff
+
+59: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize/firmware/stm32-bootloader/boot_handoff_tests "--channel-staging"
+59: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize/firmware/stm32-bootloader
+59: Test timeout computed to be: 30
+59: SETUP frames=473 drops=4 elapsed=1020 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+59: SETUP frames=473 drops=4 elapsed=1020 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+59: SETUP frames=473 drops=4 elapsed=1016 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+59: SETUP frames=473 drops=4 elapsed=1016 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+59: SETUP frames=473 drops=4 elapsed=1016 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+59: SETUP frames=473 drops=4 elapsed=1016 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+59: SETUP frames=473 drops=4 elapsed=1016 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+59: SETUP frames=473 drops=4 elapsed=1016 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+59: PASS8 transported metadata signed chains: frames=12067 drops=80 container-bytes=4803 DER=70..72 longest=3710 synthetic ms; producer wiped, actual delivered signature/raw digest/lease/model/close, no image deadline reset
+59: SETUP frames=473 drops=4 elapsed=1020 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+59: SETUP frames=473 drops=4 elapsed=1020 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+59: SETUP frames=473 drops=4 elapsed=1020 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+59: PASS transported metadata does not bypass invalid signature, correctly re-signed wrong raw digest, or expired independent image RX
+59/65 Test #59: boot_channel_handoff ................   Passed    0.11 sec
+test 60
+      Start 60: boot_metadata_setup_handoff
+
+60: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize/firmware/stm32-bootloader/boot_handoff_tests "--metadata-setup-staging"
+60: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize/firmware/stm32-bootloader
+60: Test timeout computed to be: 30
+60: SETUP frames=473 drops=4 elapsed=1020 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+60: SETUP frames=473 drops=4 elapsed=1020 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+60: SETUP frames=473 drops=4 elapsed=1020 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+60: SETUP frames=473 drops=4 elapsed=1020 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+60: SETUP frames=473 drops=4 elapsed=1020 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+60: SETUP frames=473 drops=4 elapsed=1020 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+60: SETUP frames=473 drops=4 elapsed=1020 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+60: SETUP frames=473 drops=4 elapsed=1020 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+60: PASS8 transported metadata signed chains: frames=8283 drops=48 container-bytes=4800 DER=70..72 longest=3711 synthetic ms; producer wiped, actual delivered signature/raw digest/lease/model/close, no image deadline reset
+60: SETUP frames=473 drops=4 elapsed=1020 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+60: SETUP frames=473 drops=4 elapsed=1020 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+60: SETUP frames=473 drops=4 elapsed=1020 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+60: PASS transported metadata does not bypass invalid signature, correctly re-signed wrong raw digest, or expired independent image RX
+60/65 Test #60: boot_metadata_setup_handoff .........   Passed    0.10 sec
+test 61
+      Start 61: boot_metadata_handoff
+
+61: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize/firmware/stm32-bootloader/boot_handoff_tests "--metadata-staging"
+61: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize/firmware/stm32-bootloader
+61: Test timeout computed to be: 30
+61: PASS8 transported metadata signed chains: frames=9483 drops=48 container-bytes=4801 DER=70..72 longest=2804 synthetic ms; producer wiped, actual delivered signature/raw digest/lease/model/close, no image deadline reset
+61: PASS transported metadata does not bypass invalid signature, correctly re-signed wrong raw digest, or expired independent image RX
+61/65 Test #61: boot_metadata_handoff ...............   Passed    0.08 sec
+test 62
+      Start 62: boot_release_handoff
+
+62: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize/firmware/stm32-bootloader/boot_handoff_tests "--release"
+62: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize/firmware/stm32-bootloader
+62: Test timeout computed to be: 30
+62: PASS 6 release15 negotiation/DATA/signature/SHA/vector/close/outcome chains; handshake/DATA/ACK/report losses, exactly one release
+62: PASS release_full_chain
+62: PASS release_live_snapshot
+62: PASS release_live_revocation
+62: PASS release_completion_rejections
+62: PASS release_explicit_mode
+62: PASS release_cleanup_and_late_context
+62: PASS release_reentry_and_completion_snapshot
+62: PASS release_arguments_and_aliases
+62: PASS 8 release handoff groups; adapter=528 full_receipt=360 completion=568 core=2136 workspace=17664; RAM only, no install/device access
+62/65 Test #62: boot_release_handoff ................   Passed    0.21 sec
+test 63
+      Start 63: boot_image_profile
+
+63: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize/firmware/stm32-bootloader/boot_profile_tests
+63: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize/firmware/stm32-bootloader
+63: Test timeout computed to be: 15
+63: PASS 241 vector-table lengths, 16..256 entries; synthetic models only
+63: PASS all_table_lengths
+63: PASS unknown_and_invalid_profiles
+63: PASS stack_edges_and_gaps
+63: PASS every slot in 256-entry table; null/even/outside/table/RAM/truncated Thumb target rejected
+63: PASS every_handler_and_reserved_slot
+63: PASS full_uint32_arithmetic
+63: PASS lengths_aliases_and_zero_output
+63: PASS 6 profile groups; profile=116 inspection=44; model consistency only, no execution/device access
+63/65 Test #63: boot_image_profile ..................   Passed    0.01 sec
+test 64
+      Start 64: boot_release_admission
+
+64: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize/firmware/stm32-bootloader/boot_release_tests
+64: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize/firmware/stm32-bootloader
+64: Test timeout computed to be: 30
+64: PASS maximum-width fields: document=604 padded=1024 workspace=17664 candidate=224 policy=288
+64: PASS 8 signed release admission groups; raw P-256/SHA, versions/selection/target/image, cleanup/faults; RAM only, no install/device access
+64/65 Test #64: boot_release_admission ..............   Passed    0.28 sec
+test 65
+      Start 65: boot_release_versions
+
+65: Test command: /home/avlyubimov/.local/bin/python3.14 "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/firmware/stm32-bootloader/tests/release_versions.py" "--driver" "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize/firmware/stm32-bootloader/boot_release_tests"
+65: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/completion-mailbox/build-sanitize/firmware/stm32-bootloader
+65: Test timeout computed to be: 30
+65: PASS 2745 independent bounded SemVer comparisons; 31-byte subset, numeric prerelease not truncated to uint32
+65/65 Test #65: boot_release_versions ...............   Passed    0.04 sec
+
+100% tests passed, 0 tests failed out of 65
+
+Total Test time (real) =  10.83 sec

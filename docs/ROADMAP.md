@@ -1,6 +1,6 @@
 # План последовательной разработки TV4-CNC
 
-Обновлено от main `efa2727`,21ноября2026; PR #1–48 слиты, main CI5/5 PASS.
+Обновлено от main `2c6fd1c`,21ноября2026; PR #1–49 слиты, main CI5/5 PASS.
 История и текущее ПО — [IMPLEMENTATION.md](IMPLEMENTATION.md); следующий
 STM32 этап — [NEXT_STAGE.md](NEXT_STAGE.md). Рабочий HMI не переписывать заново.
 Все новые этапы — отдельные ветки/небольшие PR, merge только с разрешения
@@ -15,7 +15,7 @@ STM32 этап — [NEXT_STAGE.md](NEXT_STAGE.md). Рабочий HMI не пе�
 | PR-04 ESP32 OTA Foundation | Плановая USB-миграция, otadata, A/B, HTTPS, подпись/хеш/compatibility, self-test и rollback | Проверенный backup, trusted key provisioning, migration/recovery review; power-loss/bad-signature/wrong-hardware tests. Разметку не менять app OTA. Firmware install только отдельно разрешён | PR #9–13 слиты; read-only session. Runtime worker/UI/native install/rollback/USB migration ещё не реализованы |
 | PR-05 GitHub Release Pipeline | Build matrix, versioned artifacts, signed manifest, checksums, release notes, prerelease/stable | Публикация только после CI и явного owner approval на SHA/tag/канал/артефакты; secrets/protected environment design; никакой фиктивной STM32 bin | PR-05a/b/c/d слиты: metadata-only candidates/policy/signed cohort и blocked build binding. Production bundle/actual context/keys/CI provenance/signing/publication ещё открыты |
 | PR-06 microSD Support | FAT32, detect/mount/read/write/free-space/eject/error handling; G-code files, logs/settings export, OTA cache | Подтверждённая разводка Rev 1.2 и схема USB/CAN/SD; отсутствие/извлечение/повреждение не блокирует HMI; file I/O только worker | Не реализован |
-| PR-07 STM32 CAN Bootloader | Независимый bootloader, sequence/chunks/ACK/retry, SHA/signature, hardware/protocol checks, recovery | Flash geometry и A/B либо staging/recovery решение; сначала host transport. SWD initial install и CAN hardware только по отдельному разрешению | PR #29–33 и36–39: DATA/crypto/handoff/model/completion/negotiation/release/RAM staging слиты. PR #42 codec/#43 fragments/#44 timing/#45 metadata слиты; PR #46 setup/shared volatile namespace слит; PR #47 shared channel слит; PR #48 bound egress слит; PR-07q serialized owned completion event inbox/current-time service и signed RAM path. Production bundle/context/medium/identity/routing/metadata transfer/production wire/Flash/recovery/physical CAN/runtime/install открыты |
+| PR-07 STM32 CAN Bootloader | Независимый bootloader, sequence/chunks/ACK/retry, SHA/signature, hardware/protocol checks, recovery | Flash geometry и A/B либо staging/recovery решение; сначала host transport. SWD initial install и CAN hardware только по отдельному разрешению | PR #29–33 и36–39: DATA/crypto/handoff/model/completion/negotiation/release/RAM staging слиты. PR #42 codec/#43 fragments/#44 timing/#45 metadata слиты; PR #46 setup/shared volatile namespace слит; PR #47 shared channel слит; PR #48 bound egress слит; PR #49 serialized event inbox слит; PR-07r SPSC completion mailbox/bound consumer/concurrent+signed RAM tests. Production bundle/context/medium/identity/routing/metadata transfer/production wire/Flash/recovery/physical CAN/runtime/install открыты |
 | PR-08 Unified Firmware Update UI | Параметры → Обновления: версии HMI/Motion/protocol, compatibility, changelog, размер, progress/result/history, check/download/install/cancel | Worker APIs PR-04/05/07; auto-check можно, auto-install нельзя. STM32 install только после подтверждённого quiescent state | PR-08a: local build/SDK/profile info/settings menu; unknown STM32/CAN. Runtime check/download/install/history ещё не реализованы |
 
 PR-04 не обязан ждать физического motion: ESP32 обновляется на изолированном
@@ -26,6 +26,15 @@ UI-каркас обновлений допустим в своём PR, но н�
 версии motion, проверенные подписи или завершённую установку.
 
 ## Сохранённые инженерные milestones
+
+### PR-07r — SPSC completion mailbox от main2c6fd1c
+
+[Mailbox](STM32_COMPLETION_MAILBOX.md): single producer/consumer atomic owned
+reports, actual bound consumer/current-time service/retained claims. Host65/
+sanitizers65/standalone39/TSan2,1200000 ordered reports +8448 actual completions;
+8 signed positives+3 independent+2 lifetime refusals. Separate ARM1038text/data0/
+bss0/frame64/5 DMB; old budgets unchanged. Target ISR/RTOS/cache/DMA/driver truth/
+reset/identity/runtime/physical/install open. [Evidence](evidence/build/completion-mailbox/README.md).
 
 ### PR-07q — driver event inbox от mainefa2727
 

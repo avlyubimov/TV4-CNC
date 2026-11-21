@@ -1,6 +1,12 @@
 # Реализация: main, открытые PR и аппаратные границы
 
-PR-07q от main `efa2727`: [очередь событий завершения](STM32_DRIVER_EVENTS.md) связывает actual
+PR-07r от main `2c6fd1c`: [SPSC completion mailbox](STM32_COMPLETION_MAILBOX.md) добавляет bounded
+атомарную передачу owned reports от одного producer к одному consumer и actual
+bound owner. Host65/sanitizers65/standalone39, ThreadSanitizer2/2 PASS. Это C11
+software contract; target ISR/RTOS/cache/DMA/driver truth и аппаратные gates ещё
+не подтверждены. Аппаратных операций не выполняли.
+
+Слитый PR #49, PR-07q от main `efa2727`: [очередь событий завершения](STM32_DRIVER_EVENTS.md) связывает actual
 egress и owned event FIFO. Full означает backpressure/retry; current-time service
 обрабатывает максимум1 event, не продлевает deadlines. Host61/sanitizers61/
 standalone35 PASS. Это serialized software API; реальные ISR/RTOS/driver/reset,
@@ -28,7 +34,7 @@ Host54/sanitizers54/standalone28, independent verifier/lease/model/close пре�
 Это software local contract; authentication/persistent identity/runtime/installer
 и все physical F407 blockers открыты. Устройств не касались.
 
-Актуализация от main `efa2727`, 21 ноября2026: PR #1–48 слиты. Owner SWD
+Актуализация от main `2c6fd1c`, 21 ноября2026: PR #1–49 слиты. Owner SWD
 F407/core/Flash1024KiB/backup — [HARDWARE_STATUS](HARDWARE_STATUS.md).
 Startup/DATA/admission/handoff/preflight и PR-07e уже в main:
 [completion/outcome](STM32_UPDATE_OUTCOME.md) связывает full checks с lease close
