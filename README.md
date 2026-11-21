@@ -91,11 +91,17 @@ source commit с target/profile/image, использует прежний crypt
 отклоняет unknown local context. Host33/sanitizers33/standalone10;2745 SemVer
 comparisons — историческая приёмка PR #37.
 
-Текущая ветка от main `c17e89c`: [PR-07h release handoff](docs/STM32_RELEASE_HANDOFF.md).
+Слитый PR #38 от main `c17e89c`: [PR-07h release handoff](docs/STM32_RELEASE_HANDOFF.md).
 Signed15-field release связан с live lease/owner/RX/deadline/vector checks и
 completion/outcome через общие алгоритмы. Host34/sanitizers34/standalone11 PASS;
 legacy API/footprint и workspace сохранены. Нет production bundle/context,
 runtime caller/CAN/Flash installer или новых аппаратных действий.
+
+Текущая ветка от main `2ea51b6`: [PR-07i RAM staging source](docs/STM32_STAGING_SOURCE.md).
+Ограниченный caller buffer, ACK после copy, запрет writes/discard при lease,
+monotonic tokens/high-water и проверка через реальные signed chains. Host36/
+sanitizers36/standalone13 PASS. Volatile RAM не выбирает production medium,
+не подтверждает RAM F407 и не добавляет runtime/Flash/device actions.
 
 [OTA ESP32 A/B и F407 по CAN](docs/OTA_ARCHITECTURE.md),
 [GitHub Releases/подписи/owner approval](docs/RELEASE_PROCESS.md),

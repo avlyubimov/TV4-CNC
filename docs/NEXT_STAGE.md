@@ -1,6 +1,6 @@
 # Следующий этап: release context и STM32 board contract
 
-21 ноября2026. База main `c17e89c`, PR #1–37 слиты, пять workflow PASS.
+21 ноября2026. База main `2ea51b6`, PR #1–38 слиты, пять workflow PASS.
 ESP32 HMI/Wi-Fi/OTA primitives/candidates и STM32 transport/admission существуют;
 не создавать их заново. Данный план не разрешает доступ к устройствам или merge.
 
@@ -95,21 +95,34 @@ PASS — [evidence](evidence/build/stm32-release-binding/README.md). Workspace17
 Это исторический standalone этап PR #37. Production bundle/CAN ABI и
 доверенный installed context/installer остаются открытыми.
 
-## Текущая ветка PR-07h
+## Слитая часть PR-07h, PR #38
 
 [Release handoff](STM32_RELEASE_HANDOFF.md) соединяет signed15-field API с
 существующими live lease/owner/source/RX/deadline/vector guards и completion/
 outcome. Raw metadata SHA связан с negotiation; новый локальный режим явный,
 legacy strict11 path сохранён. Host34/sanitizers34/standalone11,6 новых full
 chains, ARM/static7/source/board/output PASS — [evidence](evidence/build/stm32-release-handoff/README.md).
-Нет runtime caller/production backend/context или install/physical authority.
+Нет runtime caller/production context или install/physical authority.
+
+## Текущая ветка PR-07i
+
+[RAM staging source](STM32_STAGING_SOURCE.md) добавляет portable bounded backend
+для pending DATA и read lease. Init не reset, discard сохраняет high-water и
+monotonic counters; writes/discard запрещены while leased. Host36/sanitizers36/
+standalone13,45 variants/1536 cycles/8 signed actual backend chains, ARM/static8/
+source/board/output PASS — [evidence](evidence/build/stm32-staging-source/README.md).
+Это volatile RAM, без default capacity/адресов или runtime caller. Full image
+помещается только в явно заданный buffer; production RAM/staging medium/durable
+recovery ещё не утверждены.
 
 ## Что делать дальше программно
 
 1. HMI policy проверена PR-05b; PR-07g проверяет independent release/component/
    target/profile/image draft. Дальше review production bundle↔component link и
    schema, доверенного local context и production immutable backend. PR-07h
-   закрывает software live coordinator adapter, но не runtime/provider contract.
+   закрывает software live coordinator adapter; PR-07i добавляет RAM backend.
+   Production staging medium/RAM budget/durable provider и runtime ещё требуют
+   review; full image нельзя считать помещающимся в F407 RAM по Flash capacity.
    Не принимать standalone historical candidate вместо lease/vector/deadline
    checks, не менять RX lifetime. Draft counters не переводить в SemVer;
    actual local versions/key provisioning/signing authority — owner gate.

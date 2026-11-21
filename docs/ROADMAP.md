@@ -1,6 +1,6 @@
 # План последовательной разработки TV4-CNC
 
-Обновлено от main `c17e89c`,21ноября2026; PR #1–37 слиты, пять main workflow PASS.
+Обновлено от main `2ea51b6`,21ноября2026; PR #1–38 слиты, пять main workflow PASS.
 История и текущее ПО — [IMPLEMENTATION.md](IMPLEMENTATION.md); следующий
 STM32 этап — [NEXT_STAGE.md](NEXT_STAGE.md). Рабочий HMI не переписывать заново.
 Все новые этапы — отдельные ветки/небольшие PR, merge только с разрешения
@@ -15,7 +15,7 @@ STM32 этап — [NEXT_STAGE.md](NEXT_STAGE.md). Рабочий HMI не пе�
 | PR-04 ESP32 OTA Foundation | Плановая USB-миграция, otadata, A/B, HTTPS, подпись/хеш/compatibility, self-test и rollback | Проверенный backup, trusted key provisioning, migration/recovery review; power-loss/bad-signature/wrong-hardware tests. Разметку не менять app OTA. Firmware install только отдельно разрешён | PR #9–13 слиты; read-only session. Runtime worker/UI/native install/rollback/USB migration ещё не реализованы |
 | PR-05 GitHub Release Pipeline | Build matrix, versioned artifacts, signed manifest, checksums, release notes, prerelease/stable | Публикация только после CI и явного owner approval на SHA/tag/канал/артефакты; secrets/protected environment design; никакой фиктивной STM32 bin | PR-05a: metadata-only bundles/exact source/pinned Actions. PR-05b: encoding fixes/shared signed C/Python policy corpus; actual versions/keys/signing/publication ещё открыты |
 | PR-06 microSD Support | FAT32, detect/mount/read/write/free-space/eject/error handling; G-code files, logs/settings export, OTA cache | Подтверждённая разводка Rev 1.2 и схема USB/CAN/SD; отсутствие/извлечение/повреждение не блокирует HMI; file I/O только worker | Не реализован |
-| PR-07 STM32 CAN Bootloader | Независимый bootloader, sequence/chunks/ACK/retry, SHA/signature, hardware/protocol checks, recovery | Flash geometry и A/B либо staging/recovery решение; сначала host transport. SWD initial install и CAN hardware только по отдельному разрешению | PR #29–33 и36–37: DATA/crypto/handoff/preflight/completion/outcome/negotiation/release draft слиты. PR-07h: release-aware live coordinator adapter. Production bundle/context/identity/wire/Flash/recovery/physical CAN/runtime/install ещё не реализованы |
+| PR-07 STM32 CAN Bootloader | Независимый bootloader, sequence/chunks/ACK/retry, SHA/signature, hardware/protocol checks, recovery | Flash geometry и A/B либо staging/recovery решение; сначала host transport. SWD initial install и CAN hardware только по отдельному разрешению | PR #29–33 и36–38: DATA/crypto/handoff/preflight/completion/outcome/negotiation/release draft слиты. Release-aware coordinator слит. PR-07i: bounded volatile RAM staging/lease backend. Production bundle/context/medium/identity/wire/Flash/recovery/physical CAN/runtime/install ещё не реализованы |
 | PR-08 Unified Firmware Update UI | Параметры → Обновления: версии HMI/Motion/protocol, compatibility, changelog, размер, progress/result/history, check/download/install/cancel | Worker APIs PR-04/05/07; auto-check можно, auto-install нельзя. STM32 install только после подтверждённого quiescent state | PR-08a: local build/SDK/profile info/settings menu; unknown STM32/CAN. Runtime check/download/install/history ещё не реализованы |
 
 PR-04 не обязан ждать физического motion: ESP32 обновляется на изолированном
@@ -26,6 +26,14 @@ UI-каркас обновлений допустим в своём PR, но н�
 версии motion, проверенные подписи или завершённую установку.
 
 ## Сохранённые инженерные milestones
+
+### PR-07i — RAM staging source от main2ea51b6
+
+[Staging source](STM32_STAGING_SOURCE.md): explicit caller buffer, pending DATA
+copy перед ACK, SEALED/LEASED/discard и monotonic tokens/high-water без reset.
+Host36/sanitizers36/standalone13,45 variants/1536 cycles/8 signed backend chains,
+ARM/static8/source/board/output PASS. State160 bytes плюс buffer; consume frame328
+при прежнем лимите512. Не runtime caller, persistent recovery или RAM/map proof.
 
 ### PR-07h — release-aware handoff от mainc17e89c
 

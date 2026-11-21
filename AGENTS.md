@@ -109,34 +109,36 @@ PR и Actions; не копировать код уже открытого PR. Д
 
 ## Текущее задание
 
-PR #1–37 слиты, база main `c17e89c`; пять workflow PASS, открытых PR перед
-работой нет. PR-07h: читать STM32_RELEASE_HANDOFF.md/NEXT_STAGE.md и scoped rules.
-Явный caller-owned adapter связывает PR-07g release15 verifier с прежними live
-lease/owner/source/RX/deadline/vector guards и completion/outcome. Не копировать
-state machine/crypto; shared helpers private, нет verifier callback/success stub.
-Mode выбирает local typed API, не JSON/HMI/CRC/ACK. Legacy11 APIs/footprint и
-workspace17664/dependency pins/crypto owner прежние; numeric counters не SemVer.
-Adapter/core/RX/context один owner/alive до clear; completion active нельзя
-обслуживать независимо. При pending release нет positive, quarantine удерживает
-handle и запрещает clear/reopen. Policy generation меняется с release selection/
-versions/keys/profile/context; число не предоставляет immutable lock/provenance.
-Raw signed metadata SHA должен совпасть с negotiation. Receipt/outcome history
-не install/physical authority; новая операция требует fresh saved-byte verify.
+PR #1–38 слиты, база main `2ea51b6`; пять workflow PASS, открытых PR перед
+работой нет. PR-07i: читать STM32_STAGING_SOURCE.md/NEXT_STAGE.md и scoped rules.
+Portable volatile RAM source использует existing pending RX -> bounded copy ->
+consume/ACK. Нет другого wire parser/новых deadlines/копии crypto/coordinator.
+Explicit buffer/capacity/boot/object, zero-init once, one owner; init не reset.
+Discard сохраняет transfer high-water/generation/token counter, exhaustion не
+wrap. Writes/begin/init/discard запрещены while leased; stale token не unlock
+new lease. Direct C/DMA/thread writes исключает owner, API не memory protection.
+Все source/core/RX/workspace/outputs disjoint/alive по их контрактам.
 
-Нет production bundle/component linkage, actual keys/versions/local-context
-provider, immutable backend/runtime caller, boot identity/persistence/authentication,
-CAN wire/IDs/bitrate, MCU map/Flash writer/COMMIT/jump/ARM/START. DATA deadlines
-не продлевать. Matching forged handshake может пройти; это не authentication.
-Owner F407 SWD/core/rawID/Flash1MiB/3,252V/backup/vector facts прежние; повторён
-только VGT6. Full marking/HSE/RAM/CCM/IRQ/sector/protection/GPIO/CAN/restore unknown.
+SEALED только completed copy; live owner/source/RX/deadline/vector guards и
+signature/SemVer/full SHA прежние. Outcome остаётся historical после wipe.
+Source detach от RX не продлевает его lifetime. Pending release не positive;
+quarantine держит actual lease, force discard/reset нет. Нет implicit RX abort.
+Source state160 плюс весь caller buffer; workspace17664/legacy footprints прежние.
+Consume individual frame328 при прежнем512 ceiling, не full-stack measurement.
+Discard O(written) worker-only, никогда UI/ISR. Flash1MiB не означает RAM1MiB.
+
+Нет production bundle/keys/versions/context/boot identity/persistence/auth,
+RAM capacity/staging medium/Flash/erase/map/writer/COMMIT/jump/ARM/START,
+CAN wire/IDs/bitrate/runtime caller/physical inhibit или install authority.
+Owner F407 SWD/core/rawID/Flash1MiB/3,252V/backup/vector facts прежние; VGT6
+не full marking/HSE/RAM/CCM/IRQ/sector/protection/GPIO/CAN/restore proof.
 BOARD_IMAGE=ON fail, synthetic startup не actual profile; no-I/O inhibit=false/
-watchdog unavailable не physical safe. Не повторять device access/backup reads.
+watchdog unavailable не physical safe. Не повторять device/backup access.
 
-Host/sanitizers34 suites, standalone11, ARM/static7/source/board/output gates;
-прежняя ESP SDK matrix8. HMI/board/config/partition/dependency/security прежние;
-UI PR-08a/dashboard/Wi-Fi/STOP сохранять. Нет новых download/install buttons.
-Host-only test keys только в RAM, не в firmware/artifacts. PR-05 candidates
-metadata-only/exact workspace trust прежний. Runtime ESP budget/fault/soak/
-installer gates открыты. На плате ordinary8f0d899, owner HMI/touch/Wi-Fi PASS;
-разрешения исполнены. Нет devices/SWD/UART/reset/Flash/network probes без
-отдельного exact-image согласования. Нет keys/release/eFuse/CAN/motion/self-merge.
+Host/sanitizers36 suites, standalone13; ARM/static8/source/board/output gates и
+прежняя ESP SDK matrix8. HMI/config/board/partition/security/dependency pins
+прежние; menu/local info/dashboard/Wi-Fi/STOP сохранять. Нет новых install UI,
+публичных ключей/версий/defaults или production release schema. Test signer только
+в RAM host, не firmware/artifacts. На ESP32 ordinary8f0d899, owner HMI/touch/
+Wi-Fi PASS; прежние разрешения исполнены. Нет devices/SWD/UART/reset/Flash/
+network probes, keys/releases/eFuse/CAN/motion или self-merge.

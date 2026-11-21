@@ -96,3 +96,10 @@ Software fixtures не подтверждают работу платы или �
 
 Устройства/SWD/UART/reset/Flash/backup reads не выполнялись; на ESP32 остаётся
 ordinary8f0d899. Нет ключей/релизов/тегов/изменения partition/security или merge.
+
+## Последующий PR-07i
+
+[RAM staging source](STM32_STAGING_SOURCE.md) добавляет portable consumer/lease
+backend и signed integration вместо mock storage. Этот этап не меняет данный
+verifier/coordinator или legacy path. API ownership проверен программно, но
+production medium/RAM budget/durable backend/runtime/physical gates ещё открыты.

@@ -1,6 +1,7 @@
 #include "update_handoff.h"
 #include "update_completion.h"
 #include "update_negotiation.h"
+#include "staging_source.h"
 #include <assert.h>
 #include <inttypes.h>
 #include <openssl/evp.h>
@@ -16,9 +17,11 @@ typedef enum {
     READ_TIMEOUT, READ_BACKWARD, REENTER, REENTER_ABORT, ACQUIRE_ABORT, EOF_ABORT,
     READ_OVERSIZE, READ_STALL, READ_SHORT, READ_EXTRA, ACQUIRE_TIMEOUT,
     ADMISSION_TIMEOUT, CLEANUP_OWNER, EOF_SOURCE, INSPECT_BAD_TOKEN, PREFLIGHT_PROFILE_MUTATE,
-    COMPLETION_REENTER, COMPLETION_ABORT, COMPLETION_INPUT_MUTATE, RELEASE_POLICY, RELEASE_CANCEL, RELEASE_TIMEOUT, ACQUIRE_RELEASE_INPUTS
+    COMPLETION_REENTER, COMPLETION_ABORT, COMPLETION_INPUT_MUTATE, RELEASE_POLICY, RELEASE_CANCEL, RELEASE_TIMEOUT, ACQUIRE_RELEASE_INPUTS, STAGE_LOCK
 } fault;
 typedef struct {
+    tv4_boot_stage stage;
+    bool use_stage;
     tv4_boot_handoff session;
     tv4_boot_handoff_config config;
     tv4_boot_release_handoff release_adapter;
@@ -97,6 +100,10 @@ static bool acquire(void *context, const tv4_update_descriptor *id, tv4_boot_sou
     assert(id->id.boot == f->view.id.boot && id->id.transfer == f->view.id.transfer);
     ++f->acquired;
     if (f->inject == ACQUIRE_FAIL) return false;
+    if (f->use_stage) {
+        if (!tv4_boot_stage_acquire(&f->stage,id,view)) return false;
+        f->locked=true;f->view=*view;return true;
+    }
     f->locked = true;
     if (f->inject == ACQUIRE_BAD_TOKEN) f->view.token = 0;
     if (f->inject == ACQUIRE_BAD_OBJECT) f->view.object = 0;
@@ -115,6 +122,7 @@ static bool inspect(void *context, uint64_t token, tv4_boot_source_view *view)
     fixture *f = context;
     assert(f->locked && token == f->view.token);
     ++f->inspected;
+    if (f->use_stage) return tv4_boot_stage_inspect(&f->stage,token,view);
     *view = f->view;
     if (f->inject == INSPECT_BAD_TOKEN) ++view->token;
     return f->inject != INSPECT_FAIL;
@@ -147,6 +155,7 @@ static bool release(void *context, uint64_t token)
         assert(!tv4_boot_handoff_begin(&f->session, &f->config, &f->rx));
     }
     if (f->releases <= f->release_failures) return false;
+    if (f->use_stage) assert(tv4_boot_stage_release(&f->stage,token));
     f->locked = false;
     if (f->inject == RELEASE_POLICY) ++f->owner.policy_generation;
     if (f->inject == RELEASE_CANCEL) f->cancel = true;
@@ -207,6 +216,20 @@ static bool read_memory(void *context, uint64_t token, uint32_t offset,
             tv4_boot_completion_abort(&f->completion); assert(f->locked && f->releases == 0);
         }
     }
+    if (f->use_stage) {
+        if (f->inject==STAGE_LOCK) {
+            tv4_boot_stage snapshot=f->stage;tv4_update_ack ack;tv4_boot_source_view view;
+            tv4_boot_stage_config cfg={.buffer=f->staging,.capacity=sizeof(f->staging),.boot=f->owner.boot,.object=91};
+            assert(!tv4_boot_stage_discard(&f->stage) && !tv4_boot_stage_init(&f->stage,&cfg));
+            assert(!tv4_boot_stage_begin(&f->stage,&f->rx));
+            assert(tv4_boot_stage_consume(&f->stage,&ack,f->now)==TV4_UPDATE_REJECT_STATE);
+            assert(!tv4_boot_stage_acquire(&f->stage,&f->descriptor,&view));
+            assert(!tv4_boot_stage_release(&f->stage,token+1));
+            assert(memcmp(&snapshot,&f->stage,sizeof(snapshot))==0);
+        }
+        if (capacity>f->fragment) capacity=f->fragment;
+        return tv4_boot_stage_read(&f->stage,token,offset,bytes,capacity,count,eof);
+    }
     if (f->inject == READ_FAIL) return false;
     if (f->inject == READ_OVERSIZE) { *count = capacity + 1; return true; }
     if (f->inject == READ_STALL) { *count = 0; *eof = false; return true; }
@@ -257,11 +280,15 @@ static void setup(fixture *f, uint32_t bytes, uint16_t block)
     assert(tv4_update_rx_begin(&f->rx, &f->descriptor, f->now) == TV4_UPDATE_OK);
     assert(tv4_update_tx_begin(&f->tx, &f->descriptor, f->now) == TV4_UPDATE_OK);
 }
-/* Actual portable sender/receiver. Only this test consumer writes RAM;
- * handoff itself has no write callback/backend. Deliberately lose one DATA
+/* Actual portable sender/receiver. Legacy fixtures use a test RAM consumer;
+ * opt-in staging fixtures use the real portable RAM source. Lose one DATA
  * and final ACK, then consume duplicates without another write. */
 static void transfer(fixture *f)
 {
+    if (f->use_stage) {
+        tv4_boot_stage_config cfg={.buffer=f->staging,.capacity=sizeof(f->staging),.boot=f->owner.boot,.object=91};
+        assert(tv4_boot_stage_init(&f->stage,&cfg) && tv4_boot_stage_begin(&f->stage,&f->rx));
+    }
     unsigned bound = 0;
     while (f->tx.context.state != TV4_UPDATE_COMPLETE_UNVERIFIED) {
         assert(++bound <= IMAGE_MAX + 10u && !f->locked);
@@ -279,10 +306,15 @@ static void transfer(fixture *f)
             tv4_update_block pending;
             assert(tv4_update_rx_pending(&f->rx, &pending, f->now) == TV4_UPDATE_PENDING);
             assert(pending.offset == f->staged_bytes);
-            memcpy(f->staging + pending.offset, pending.bytes, pending.length);
-            f->staged_bytes += pending.length;
             assert(tv4_update_rx_receive(&f->rx, &packet, &ack, f->now) == TV4_UPDATE_PENDING);
-            assert(tv4_update_rx_consume(&f->rx, pending.id, pending.sequence, true, &ack, f->now) == TV4_UPDATE_ACK);
+            if (f->use_stage) {
+                assert(tv4_boot_stage_consume(&f->stage,&ack,f->now)==TV4_UPDATE_ACK);
+                f->staged_bytes=f->stage.written;
+            } else {
+                memcpy(f->staging + pending.offset, pending.bytes, pending.length);
+                f->staged_bytes += pending.length;
+                assert(tv4_update_rx_consume(&f->rx, pending.id, pending.sequence, true, &ack, f->now) == TV4_UPDATE_ACK);
+            }
         } else assert(result == TV4_UPDATE_ACK);
         if (f->rx.context.state == TV4_UPDATE_COMPLETE_UNVERIFIED && f->lost_final_ack == 0) {
             ++f->lost_final_ack; f->now += 10; continue;
@@ -1074,9 +1106,99 @@ static void release_arguments_and_aliases(void)
     assert(f.release_adapter.handoff==&f.session && f.session.state==TV4_HANDOFF_CLOSED && !f.locked && f.releases==0);
     release_clear(&f);finish(&f);
 }
+
+static void staged_signed_chains(void)
+{
+    for(unsigned i=0;i<8;++i) {
+        fixture f;if(i<6)release_fixture(&f,i%2u?256:33);else vector_fixture(&f,33);
+        f.use_stage=true;negotiate_source(&f,i<4?1u<<(i+1u):30u);transfer(&f);
+        assert(f.stage.state==TV4_STAGE_SEALED && f.stage.next_sequence==f.rx.context.next_sequence);
+        if(i<6)release_begin(&f);else begin(&f);
+        f.inject=STAGE_LOCK;f.fragment=i%3u==0?1:i%3u==1?7:256;
+        bool ok=i<6?tv4_boot_completion_start_release(&f.completion,&f.release_adapter,&f.expected,&f.preflight_profile,&f.workspace):
+            tv4_boot_completion_start(&f.completion,&f.session,&f.expected,&f.preflight_profile,&f.workspace);
+        assert(ok);completed(&f,TV4_OUTCOME_CHECKED_CLOSED,TV4_OUTCOME_REASON_NONE);
+        assert(f.stage.state==TV4_STAGE_SEALED && f.releases==1);
+        assert(tv4_boot_stage_discard(&f.stage) && zero(f.staging,f.source_bytes));
+        /* The report remains history after actual source bytes were wiped. */
+        tv4_outcome_tx tx;tv4_outcome_rx rx;tv4_update_outcome packet,ack,delivery;
+        tv4_outcome_limits limits={.ack_timeout_ms=10,.linger_ms=50,.total_timeout_ms=100,.retry_limit=3};
+        assert(tv4_outcome_tx_init(&tx,limits,f.owner.boot,f.now) && tv4_outcome_rx_init(&rx,limits,f.now));
+        assert(tv4_outcome_tx_begin(&tx,&f.outcome,f.now)==TV4_OUTCOME_OK);
+        assert(tv4_outcome_rx_begin(&rx,&f.tx,f.expected.metadata_sha256,f.now)==TV4_OUTCOME_OK);
+        assert(tv4_outcome_tx_next(&tx,&packet,f.now)==TV4_OUTCOME_SENT); /* lost report */
+        f.now+=10;assert(tv4_outcome_tx_next(&tx,&packet,f.now)==TV4_OUTCOME_SENT);
+        assert(tv4_outcome_rx_receive(&rx,&packet,&ack,&delivery,f.now)==TV4_OUTCOME_DELIVERED); /* lost ACK */
+        f.now+=10;assert(tv4_outcome_tx_next(&tx,&packet,f.now)==TV4_OUTCOME_SENT);
+        assert(tv4_outcome_rx_receive(&rx,&packet,&ack,&delivery,f.now)==TV4_OUTCOME_ACK);
+        assert(tv4_outcome_tx_ack(&tx,&ack,f.now)==TV4_OUTCOME_OK && tv4_update_outcome_equal(&delivery,&f.outcome));
+        assert(f.releases==1 && tv4_boot_completion_clear(&f.completion));
+        if(i<6)release_clear(&f);else assert(tv4_boot_handoff_clear(&f.session));finish(&f);
+    }
+    puts("PASS 8 signed chains through real RAM staging backend, 6 release15 + 2 legacy11; losses, locked writes, post-wipe outcome/ACK");
+}
+static void staged_crypto_rejections(void)
+{
+    const tv4_outcome_reason reasons[]={TV4_OUTCOME_HASH,TV4_OUTCOME_SIGNATURE,TV4_OUTCOME_VECTORS,TV4_OUTCOME_COMPATIBILITY,TV4_OUTCOME_BINDING};
+    for(unsigned i=0;i<5;++i) {
+        fixture f;release_fixture(&f,33);f.use_stage=true;
+        if(i==1)f.signature[f.config.signature_bytes-1]^=1;
+        if(i==2) {
+            vector_word(f.source,0);bind_changed_image(&f);release_document(&f);
+            f.release_config.metadata_bytes=f.config.metadata_bytes;f.release_config.signature_bytes=f.config.signature_bytes;
+        }
+        if(i==3)f.release_config.policy.selected_source_commit[0]='1';
+        negotiate_source(&f,0);
+        if(i==0)f.source[f.source_bytes-1]^=1;
+        if(i==4) {
+            uint8_t *field=(uint8_t *)strstr((char *)f.metadata,"\"image_counter\":3");assert(field);
+            field[strlen("\"image_counter\":")]='4';sign_metadata(&f);f.release_config.signature_bytes=f.config.signature_bytes;
+        }
+        transfer(&f);release_begin(&f);
+        assert(tv4_boot_completion_start_release(&f.completion,&f.release_adapter,&f.expected,&f.preflight_profile,&f.workspace));
+        completed(&f,i==4?TV4_OUTCOME_FAILED_CLOSED:TV4_OUTCOME_REJECTED_CLOSED,reasons[i]);
+        assert(f.stage.state==TV4_STAGE_SEALED && f.releases==1);
+        assert(tv4_boot_stage_discard(&f.stage));release_clear(&f);finish(&f);
+    }
+}
+static void staged_cleanup_and_revocation(void)
+{
+    for(unsigned i=0;i<3;++i) {
+        fixture f;release_fixture(&f,33);f.use_stage=true;negotiate_source(&f,0);transfer(&f);release_begin(&f);
+        if(i==0)f.inject=OWNER_POLICY;else f.release_failures=i==1?1:100;
+        assert(tv4_boot_completion_start_release(&f.completion,&f.release_adapter,&f.expected,&f.preflight_profile,&f.workspace));
+        if(i==0)completed(&f,TV4_OUTCOME_FAILED_CLOSED,TV4_OUTCOME_CONTEXT);
+        else {
+            assert(f.completion.state==TV4_COMPLETION_CLOSING && f.stage.state==TV4_STAGE_LEASED);
+            assert(!tv4_boot_stage_discard(&f.stage));
+            memset(&f.outcome,0xa5,sizeof(f.outcome));assert(!tv4_boot_completion_snapshot(&f.completion,&f.outcome) && zero(&f.outcome,sizeof(f.outcome)));
+            if(i==1) {assert(tv4_boot_completion_poll(&f.completion));completed(&f,TV4_OUTCOME_FAILED_CLOSED,TV4_OUTCOME_RELEASE);}
+            else {
+                for(unsigned j=0;j<8;++j)assert(!tv4_boot_completion_poll(&f.completion));
+                assert(f.completion.state==TV4_COMPLETION_QUARANTINED && f.stage.state==TV4_STAGE_LEASED && f.releases==3);
+                assert(!tv4_boot_stage_discard(&f.stage) && !tv4_boot_release_handoff_clear(&f.release_adapter));finish(&f);continue;
+            }
+        }
+        assert(f.stage.state==TV4_STAGE_SEALED && tv4_boot_stage_discard(&f.stage));release_clear(&f);finish(&f);
+    }
+}
+static void staged_receiver_deadline(void)
+{
+    fixture f;release_fixture(&f,33);f.use_stage=true;negotiate_source(&f,0);transfer(&f);
+    f.now+=f.rx.context.limits.progress_timeout_ms;
+    assert(!tv4_boot_release_handoff_begin(&f.release_adapter,&f.session,&f.release_config,&f.rx));
+    assert(f.stage.state==TV4_STAGE_SEALED && f.acquired==0 && f.releases==0 && f.session.state==TV4_HANDOFF_CLOSED);
+    assert(f.session.error==TV4_HANDOFF_RECEIVER && f.rx.context.error==TV4_UPDATE_ERROR_PROGRESS_TIMEOUT);
+    assert(tv4_boot_stage_discard(&f.stage));release_clear(&f);finish(&f);
+}
 #define RUN(name) do { name(); puts("PASS " #name); } while (0)
 int main(int argc,char **argv)
 {
+    if (argc==2 && strcmp(argv[1],"--staging")==0) {
+        RUN(staged_signed_chains);RUN(staged_crypto_rejections);RUN(staged_cleanup_and_revocation);RUN(staged_receiver_deadline);
+        printf("PASS 4 staging integration groups; source=%zu core=%zu completion=%zu workspace=%zu; no runtime/Flash/device access\n",
+            sizeof(tv4_boot_stage),sizeof(tv4_boot_handoff),sizeof(tv4_boot_completion),sizeof(tv4_boot_workspace));return 0;
+    }
     if (argc==2 && strcmp(argv[1],"--release")==0) {
         RUN(release_full_chain);RUN(release_live_snapshot);RUN(release_live_revocation);
         RUN(release_completion_rejections);RUN(release_explicit_mode);RUN(release_cleanup_and_late_context);

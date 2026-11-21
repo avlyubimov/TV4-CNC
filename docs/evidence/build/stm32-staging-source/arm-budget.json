@@ -1,0 +1,26 @@
+{
+  "scope": "static library objects, not deployable firmware",
+  "objects": {
+    "text": 43344,
+    "data": 8,
+    "bss": 27
+  },
+  "unresolved_imports": [
+    "__aeabi_uldivmod",
+    "memcmp",
+    "memcpy",
+    "memmove",
+    "memset",
+    "strcmp",
+    "strlen"
+  ],
+  "max_individual_frames": {
+    "admission": 984,
+    "crypto": 376,
+    "handoff": 328,
+    "transport": 64
+  },
+  "full_stack_verified": false,
+  "board_memory_verified": false,
+  "device_access": false
+}

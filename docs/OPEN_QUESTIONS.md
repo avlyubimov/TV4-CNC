@@ -1,6 +1,6 @@
 # Открытые вопросы и блокирующие решения
 
-Обновлено от main `c17e89c`,21ноября2026. Единственный свод аппаратных фактов —
+Обновлено от main `2ea51b6`,21ноября2026. Единственный свод аппаратных фактов —
 [HARDWARE_STATUS.md](HARDWARE_STATUS.md). Не заполнять неизвестные поля
 типовыми данными семейства, USB VID/PID, старым заказом или host mock.
 
@@ -26,6 +26,11 @@ PR-07h [release handoff](STM32_RELEASE_HANDOFF.md) теперь проверяе
 в live lease/coordinator/completion цепочке. Production runtime/backend/installer
 ещё нет; аппаратные вопросы ниже не закрыты.
 
+PR-07i [staging source](STM32_STAGING_SOURCE.md) реализует bounded volatile RAM
+consumer/lease через тот же transport и verifier. Source immutability действует
+для API одного owner; это не DMA/MPU protection, persistent recovery/identity
+или подтверждение размещения всего образа в RAM F407.
+
 | ID | Что нужно подтвердить/решить | Блокирует |
 |---|---|---|
 | HW-F407-01 | Owner SWD/core/device ID/Flash1024KiB подтверждены; остаются физическая маркировка/package и согласование reference documentation. Device ID не заменяет package check | Выбор полного device vector/CMSIS/board profile; raw device ID0x101f6413 не даёт адресов bootloader |
@@ -49,7 +54,7 @@ PR-07h [release handoff](STM32_RELEASE_HANDOFF.md) теперь проверяе
 | OTA-CONTEXT-01 | Утвердить SemVer HMI release вместо текущего git-derived project version; источник версии bootloader/production protocol/реального layout и peer compatibility | PR-04b policy готовит проверку, но не подставляет тестовые версии; installer заблокирован неизвестным context |
 | OTA-MOTION-01 | Утвердить production release/component schema и link общего signed bundle с Motion document, trusted installed context, numeric counter/boot/protocol policy и signer build provenance | PR-07g draft и PR-07h live release coordinator не закрывают production contract/context; legacy11 и explicit release15 paths раздельны |
 | OTA-TLS-01 | Правильное время для TLS, CA bundle/host allowlist/redirect bounds GitHub, отсутствие insecure fallback | Реальный HTTPS download; статичные часы HMI не источник доверенного времени |
-| OTA-F407-01 | По подтверждённым секторам выбрать A/B либо staging+recovery; metadata/vector/commit/power-loss план | PR-07, не заменяется кэшем microSD ESP32 |
+| OTA-F407-01 | По подтверждённым секторам и RAM budget выбрать staging medium/A-B/recovery; metadata/vector/commit/power-loss план | PR-07i RAM backend не утверждает размер RAM/full-image fit и не даёт durable recovery; кэш ESP32 не заменяет решение |
 | OTA-STATE-01 | Fresh подтверждение F407 без движения/оборотов/программы, session lifecycle и повтор после reboot; согласованный safe state | CAN install; симуляция/heartbeat/ACK доставки не подтверждают останов |
 | RELEASE-01 | Версии/каналы/tag policy, signing authority и owner gate для exact SHA/digests, доступность environment protections | PR-05 и любой релиз; main push не разрешение |
 | RELEASE-LICENSE-01 | Владелец выбирает лицензию приложения, review прав на распространяемые assets/библиотеки; LICENSE-NOTICE.md пока оставляет решение открытым | Внешнее распространение app binary/source release; PR-05a публикует только review metadata |
