@@ -57,6 +57,11 @@ signed document с live lease/RX/context/vector guards и historical completion.
 Host/sanitizer/ARM checks не подтверждают реальную память/Flash/GPIO/CAN или
 physical quiescent state. Новых измерений/подключений нет, аппаратные факты прежние.
 
+PR-07i [RAM staging source](STM32_STAGING_SOURCE.md) — host/ARM software
+consumer/lease backend. Explicit caller buffer не резервирует RAM/Flash и не
+доказывает, что image1024KiB помещается в F407 RAM. Production medium/budget и
+durable recovery не выбраны; новых hardware действий или подтверждений нет.
+
 ## STM32F407 — подтверждение владельца после main b19a40b
 
 Приняты перечисленные в таблице результаты нового задания владельца:

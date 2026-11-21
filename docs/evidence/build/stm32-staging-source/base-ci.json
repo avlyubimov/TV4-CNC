@@ -1,0 +1,53 @@
+{
+  "base_main": "2ea51b6d42cb1b48450274f65b67e421db41f9b6",
+  "captured_utc": "2026-11-21T06:52:40.964629+00:00",
+  "runs": [
+    {
+      "id": 44876359210,
+      "name": "STM32 foundation (no hardware)",
+      "event": "push",
+      "head_sha": "2ea51b6d42cb1b48450274f65b67e421db41f9b6",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/avlyubimov/TV4-CNC/actions/runs/44876359210"
+    },
+    {
+      "id": 44876359171,
+      "name": "Host logic and LVGL render",
+      "event": "push",
+      "head_sha": "2ea51b6d42cb1b48450274f65b67e421db41f9b6",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/avlyubimov/TV4-CNC/actions/runs/44876359171"
+    },
+    {
+      "id": 44876359139,
+      "name": "Documentation checks",
+      "event": "push",
+      "head_sha": "2ea51b6d42cb1b48450274f65b67e421db41f9b6",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/avlyubimov/TV4-CNC/actions/runs/44876359139"
+    },
+    {
+      "id": 44876359163,
+      "name": "STM32 image admission (no hardware)",
+      "event": "push",
+      "head_sha": "2ea51b6d42cb1b48450274f65b67e421db41f9b6",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/avlyubimov/TV4-CNC/actions/runs/44876359163"
+    },
+    {
+      "id": 44876359175,
+      "name": "ESP-IDF compatibility",
+      "event": "push",
+      "head_sha": "2ea51b6d42cb1b48450274f65b67e421db41f9b6",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/avlyubimov/TV4-CNC/actions/runs/44876359175"
+    }
+  ],
+  "initial_snapshot": "4/5 complete, ESP matrix pending; no failed jobs",
+  "device_access": false
+}

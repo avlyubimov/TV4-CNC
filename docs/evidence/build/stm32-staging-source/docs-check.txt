@@ -1,0 +1,1 @@
+PASS 628 local Markdown file links; external URLs/anchors not fetched

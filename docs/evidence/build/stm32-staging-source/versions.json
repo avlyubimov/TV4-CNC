@@ -1,0 +1,109 @@
+{
+  "cjson": {
+    "version": "1.7.19",
+    "commit": "c859b25da02955fef659d658b8f324b5cde87be3",
+    "license": "MIT",
+    "provenance": "# cJSON provenance\n\nUpstream: https://github.com/DaveGamble/cJSON\nTag v1.7.19, commit `c859b25da02955fef659d658b8f324b5cde87be3`.\nMIT license in LICENSE. cJSON.c/h are unmodified upstream files.\nBuild sets CJSON_NESTING_LIMIT=8 and CJSON_HIDE_SYMBOLS.\nLocal tv4_namespace.h prefixes public symbols with tv4_ota_json_, avoiding SDK/global cJSON hook collisions.\nNo global hooks are installed; input/token/UTF-8 limits apply before parsing.\n\nUpstream cJSON.h:264 has a trailing space; LICENSE has a final blank line.\nThese upstream whitespace details are intentionally retained with the exact file hashes.\n"
+  },
+  "mbedtls": {
+    "version": "3.6.7",
+    "tag": "mbedtls-3.6.7",
+    "url": "https://github.com/Mbed-TLS/mbedtls/releases/download/mbedtls-3.6.7/mbedtls-3.6.7.tar.bz2",
+    "archive_sha256": "a7e8bcbec0e6f761b4af24f25677626b35f762f68eef79c08677a363212d11f6",
+    "license": "Apache-2.0 OR GPL-2.0-or-later",
+    "verification_profile_license": "Apache-2.0",
+    "crypto_sources": [
+      "asn1parse",
+      "asn1write",
+      "bignum",
+      "bignum_core",
+      "bignum_mod",
+      "bignum_mod_raw",
+      "constant_time",
+      "ecp",
+      "ecp_curves",
+      "ecp_curves_new",
+      "ecdsa",
+      "sha256",
+      "platform",
+      "platform_util",
+      "memory_buffer_alloc"
+    ],
+    "integrity_scope": [
+      "include/**/*.h",
+      "library/*.h",
+      "listed library/*.c",
+      "LICENSE"
+    ],
+    "tree_file_count": 178,
+    "tree_sha256": "2087a1191bd838ec63bc7d97452337888fef6247eac6ba782554d58408041310",
+    "archive_binary_test_inputs": {
+      "framework/data_files/base64/def_b64_ff.bin": "6ddff1c9506617bd8ff835154841f1c4553608ad96adaf0757694f5b3b17d8e8",
+      "framework/data_files/pkcs7_data.bin": "05ade08fcfb104f40b2536a14dfcd6e916d643f5cf8044b19028b607ae8f4908",
+      "framework/data_files/pkcs7_data_1.bin": "df4e26a04a444901b95afef44e4a96cfae34690fff2ad2c66389c70079cdff2b",
+      "framework/data_files/pkcs7_zerolendata.bin": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "mbedtls_archive_sha256": "a7e8bcbec0e6f761b4af24f25677626b35f762f68eef79c08677a363212d11f6",
+  "lvgl": {
+    "version": "9.2.2",
+    "commit": "7f07a129e8d77f4984fff8e623fd5be18ff42e74"
+  },
+  "esp_idf": {
+    "version": "6.1.1",
+    "commit": "051e4c4eb20346e043cdd47bc388fde75ff8af63"
+  },
+  "base_main": "2ea51b6d42cb1b48450274f65b67e421db41f9b6",
+  "client_date": "2026-11-21",
+  "timezone": "Asia/Almaty",
+  "captured_utc": "2026-11-21T06:56:34.808782+00:00",
+  "working_tree_tested": true,
+  "gcc": "gcc (Ubuntu 15.2.0-16ubuntu1) 15.2.0",
+  "arm_gcc": "arm-none-eabi-gcc (15:14.2.rel1-1) 14.2.1 20241119",
+  "arm_ld": "GNU ld (2.45.50.20251209-1ubuntu1+23build1) 2.45.50.20251209",
+  "ci_arm_release": "14.2.Rel1",
+  "ci_arm_archive_sha256": "62a63b981fe391a9cbad7ef51b17e49aeaa3e7b0d029b36ca1e9c3b2a9b78823",
+  "cmake": "cmake version 4.2.3",
+  "ninja": "1.13.2",
+  "openssl": "OpenSSL 3.5.5 27 Jan 2026 (Library: OpenSSL 3.5.5 27 Jan 2026)",
+  "shell_python": {
+    "path": "/usr/bin/python3",
+    "version": "3.14.4"
+  },
+  "ctest_python": {
+    "path": "/home/avlyubimov/.local/bin/python3.14",
+    "version": "Python 3.14.6"
+  },
+  "sanitizer_environment": {
+    "ASAN_OPTIONS": null,
+    "LSAN_OPTIONS": null,
+    "UBSAN_OPTIONS": null
+  },
+  "device_access": false,
+  "firmware_flashing": false,
+  "sdk_note": "No new local ESP builds for this STM32-only stage; existing eight CI SDK profiles retained.",
+  "stage": "PR-07i portable volatile RAM staging/lease source",
+  "source_tree_tested": true,
+  "storage_host_bytes": {
+    "release_adapter": 528,
+    "full_release_receipt": 360,
+    "legacy_handoff": 2136,
+    "legacy_receipt": 136,
+    "completion": 568,
+    "workspace": 17664,
+    "staging_state": 160
+  },
+  "staging_buffer_policy": "Explicit exclusive caller-owned region; no default capacity or board allocation; whole image must fit; not durable",
+  "arm_library_objects": {
+    "text": 43344,
+    "data": 8,
+    "bss": 27,
+    "text_delta_from_base": 1654
+  },
+  "max_individual_frame_bytes": {
+    "admission": 984,
+    "crypto": 376,
+    "handoff": 328,
+    "transport": 64
+  }
+}

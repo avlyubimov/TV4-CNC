@@ -82,3 +82,17 @@ Adapter/core/RX/context один owner/disjoint/alive до clear. Пока compl
 не выполнять независимые adapter/core operations, отменять completion_abort.
 Не терять held handle при retries/quarantine, не продлевать DATA lifetime.
 Production bundle/local context/backend/runtime/hardware/installer gates открыты.
+
+## PR-07i — volatile staging source
+
+Читать docs/STM32_STAGING_SOURCE.md. Explicit caller buffer/capacity/boot/object,
+zero-init one owner, no ISR/copy/move/reinit. Только existing pending RX API и
+copy-before-ACK; не менять transport/crypto/coordinator/deadlines. Init не reset,
+discard не сбрасывает counters/high-water и не abort/reinit RX. Exhaustion reject.
+While LEASED: read/inspect/release с текущим token, нельзя writes/discard/begin.
+Stale token не unlock новую lease; quarantine сохраняет actual source ownership.
+Direct C/DMA/thread aliases запрещает caller; это не MPU/physical protection.
+SEALED не crypto/install/live RX authority. Discard O(written), только worker.
+State160 плюс весь image buffer не подтверждают F407 RAM capacity; production
+medium/durable recovery/identity/runtime и hardware gates остаются открытыми.
+Нет нового device/SWD/UART/Flash/reset/backup read или самостоятельного merge.

@@ -317,3 +317,16 @@ linkage, local versions/keys/context и
 physical/operator/recovery/install gates ещё требуют review. Source commit —
 signer claim, не build provenance proof. Никаких actual Flash addresses, wire
 codec/IDs/bitrate, board image/keys/release или hardware actions.
+
+## PR-07i — portable volatile RAM source
+
+[Staging source](STM32_STAGING_SOURCE.md) копирует existing pending DATA в
+caller buffer до ACK, затем отдаёт immutable lease через API одного owner.
+Нет нового wire/crypto/state-machine protocol. Tokens/high-water сохраняются
+при discard и не wrap; source нельзя заменить/стереть while leased.
+
+SEALED не signature/install proof. RX lifetime проверяет прежний live coordinator;
+RAM source не продлевает дедлайны. После release/discard outcome остаётся history.
+Не выбраны real RAM capacity/production staging medium, persistent boot identity,
+Flash/recovery/physical/operator gates или installer. Full image buffer — явное
+требование, не вывод из Flash1MiB и не новый MEMORY address/default reserve.

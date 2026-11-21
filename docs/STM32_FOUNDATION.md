@@ -108,3 +108,10 @@ owner и legacy API сохраняются. Это не trusted installed-state 
 production bundle contract. PR-07h [release handoff](STM32_RELEASE_HANDOFF.md)
 добавляет software live coordinator, без runtime caller. Нет board image,
 actual memory/vector/erase/clock/GPIO/CAN profile или устройств/движения.
+
+## PR-07i — portable RAM consumer/source
+
+[Staging source](STM32_STAGING_SOURCE.md) добавляет bounded worker RAM copy/lease
+и real backend integration tests. Никаких startup/linker/clock/actual F407 profile
+изменений; caller capacity не считается измеренным RAM/CCM budget. Board image
+остаётся запрещённым, volatile buffer не даёт Flash/recovery/install решения.

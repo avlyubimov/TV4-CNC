@@ -1,6 +1,6 @@
 # Реализация: main, открытые PR и аппаратные границы
 
-Актуализация от main `c17e89c`, 21 ноября2026: PR #1–37 слиты. Owner SWD
+Актуализация от main `2ea51b6`, 21 ноября2026: PR #1–38 слиты. Owner SWD
 F407/core/Flash1024KiB/backup — [HARDWARE_STATUS](HARDWARE_STATUS.md).
 Startup/DATA/admission/handoff/preflight и PR-07e уже в main:
 [completion/outcome](STM32_UPDATE_OUTCOME.md) связывает full checks с lease close
@@ -24,11 +24,17 @@ target/counter/image checks через прежний engine. Host33/sanitizers3
 2745 version comparisons и ARM/static/source/image/output PASS; workspace17664
 прежний. Это исторический standalone этап; production bundle/schema/keys/
 installed context не задаёт. Legacy strict11-field API прежний.
-Текущая ветка PR-07h [release handoff](STM32_RELEASE_HANDOFF.md) соединяет release
+Слитый PR #38, PR-07h [release handoff](STM32_RELEASE_HANDOFF.md) соединяет release
 verifier с прежними live lease/context/vector/deadline guards и completion/outcome.
 Host34/sanitizers34/standalone11,6 новых full signed chains, ARM/static7/source/
 board/output PASS; прежние footprint/crypto/deadlines/SDK matrix8 сохранены.
 Production bundle/context/runtime/wire/installer/hardware readiness не добавлены.
+Текущая ветка PR-07i [staging source](STM32_STAGING_SOURCE.md): bounded volatile
+RAM backend вместо mock consumer/source; ACK после copy, lease exclusion,
+idempotent release, counters/high-water сохраняются при discard. Host36/
+sanitizers36/standalone13,45 variants/1536 cycles/8 actual signed backend chains,
+ARM/static8/source/board/output PASS. Buffer задаёт caller; нет default RAM
+reserve/MCU addresses, persistent recovery/identity, runtime/Flash/device actions.
 Push CI также обнаружил старый build-candidate flaky fixture: constant `x` мог
 совпасть с SHA tail. Теперь test XOR1 гарантированно меняет байт; verifier прежний.
 Нет runtime caller, Flash writer/map/commit/jump или физического safe-state proof.
