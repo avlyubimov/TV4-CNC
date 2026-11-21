@@ -1,6 +1,6 @@
 # Следующий этап: release context и STM32 board contract
 
-21 ноября2026. База main `25e635c`, PR #1–51 слиты, main CI5/5 PASS.
+21 ноября2026. База main `bc35a37`, PR #1–52 слиты, main CI5/5 PASS.
 ESP32 HMI/Wi-Fi/OTA primitives/candidates и STM32 transport/admission существуют;
 не создавать их заново. Данный план не разрешает доступ к устройствам или merge.
 
@@ -233,7 +233,7 @@ Published untaken jobs still held until explicit driver return; no hardware canc
 or physical readiness claim. Target ISR/RTOS/cache/DMA/clock/real backend, identity/
 resources/runtime/staging/install and actual hardware gates remain open.
 
-## Текущая ветка PR-07t
+## Слитый PR #52, PR-07t
 
 [Owned frame ingress](STM32_FRAME_INGRESS.md): SPSC owned captures, retained
 producer pending/full/retry, unchecked staged token/fresh original-age check,
@@ -241,6 +241,14 @@ sticky fault без live reset. Host71/sanitizers71/standalone45/TSan6; ARM1060t
 data0/bss0/frame48,8exports/15DMB, прежние budgets/SDK/workspace сохранены.
 [Evidence](evidence/build/frame-ingress/README.md). Это software boundary,
 не реальный RX driver или live producer-stop/phase-cutover/backend drain proof.
+
+## Текущая ветка PR-07u
+
+[Acknowledged ingress owner](STM32_INGRESS_OWNER.md): actual RX/ingress, exact
+pause ACK + actual pending/staged/ring/RX drain before phase change; epoch permits
+before capture, retained counters/time and bounded lower-timeout recovery. Старые
+capture/ACK не влияют на новый цикл; upper image expiry не оживает. Software actor
+barrier не physical backend/IRQ/DMA/remote stop. [Evidence](evidence/build/ingress-owner/README.md).
 
 ## Что делать дальше программно
 
@@ -274,8 +282,9 @@ data0/bss0/frame48,8exports/15DMB, прежние budgets/SDK/workspace сохр
    driver/remote drain proof. PR-07q добавляет serialized owned event inbox.
    PR-07r добавляет SPSC C11 mailbox/bound consumer, PR-07s — owned frame dispatch/
    fresh check/explicit driver return; PR-07t — bounded RX copies/original capture
-   age/sticky loss reporting. Дальше review actual producer-stop/phase-cutover
-   barrier, immutable route lifetime и target
+   age/sticky loss reporting. PR-07u добавляет acknowledged software producer
+   pause/actual RX drain/epoch cutover. Дальше review actual peripheral/IRQ/DMA/
+   backend stop/reconciliation, immutable route lifetime и target
    ISR/RTOS/cache/DMA port, trusted adapter completion provenance/reset/
    reconciliation, production identity/capabilities/codebook и
    worker/resource budgets перед runtime adoption. Production routing/reboot

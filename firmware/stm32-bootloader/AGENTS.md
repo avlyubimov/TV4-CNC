@@ -256,3 +256,20 @@ Upper polls/receive CURRENT time and independent crypto/lease/model/close gates
 unchanged. Actual signed helper serialized, cannot prove concurrent cutover.
 Separate ARM/native atomic/import/export/frame/no globals guard+negative tests,
 host/sanitizers/TSan/text evidence required. No devices/Flash/pins/runtime/merge.
+
+## PR-07u — acknowledged RX pause and bound owner
+
+Читать docs/STM32_INGRESS_OWNER.md. Own actual ingress/channel RX; one driver/
+one protocol actor, externally publish init/stable lifetime/stop+join. No inner
+mutable calls/live copy/move/reinit/flush/reset. Capture permit before input,
+retain old epoch/time through external BUSY; no retagging. Exact pause ACK after
+actual pending publication; actual ingress/staged/RX drain required for advance.
+One sequential phase per pause, partial RX may resume same phase; fresh epoch,
+retained IDs/counters/time/atomic positions. Failed RX copies STATE-retire only,
+never dispatch. Recover only lower fragment timeouts after ACK+actual ingress
+drain/no ingress fault, no upper deadline reset. Sticky clock/context/loss/age/
+exhaustion remain closed. Software ACK not physical backend/peripheral/IRQ/DMA/
+remote drain. Original independent crypto/lease/model/close gates remain.
+Host concurrency/signed chains/TSan and exact ARM/native atomic/import/export/
+frame/no-globals+negative/source/scope/text evidence mandatory. No devices,
+Flash/pin/runtime/identity/install authority or self-merge/release.

@@ -75,6 +75,7 @@ if __name__ == '__main__':
     mode.add_argument('--completion-mailbox', action='store_true')
     mode.add_argument('--driver-dispatch', action='store_true')
     mode.add_argument('--frame-ingress', action='store_true')
+    mode.add_argument('--ingress-owner', action='store_true')
     args = parser.parse_args()
     BUILD = args.build.absolute()
     if args.fragments:
@@ -153,6 +154,17 @@ if __name__ == '__main__':
             self.archive('')
             with self.assertRaisesRegex(ValueError, 'native atomic barriers'): guard.inspect(self.root)
         Budget.test_missing_atomic_barriers = missing_atomic_barriers
+    if args.ingress_owner:
+        import check_ingress_owner_build as guard
+        ARCHIVE = 'libtv4_ingress_owner.a'
+        TARGET = 'tv4_ingress_owner'
+        EXPORTS = tuple('tv4_ingress_owner_' + suffix for suffix in (
+            'init', 'permit', 'offer', 'retry', 'pause_request', 'ack', 'lost', 'poll',
+            'stage', 'receive', 'take', 'pause', 'quiescent', 'advance', 'resume', 'recover'))
+        def missing_atomic_barriers(self):
+            self.archive('')
+            with self.assertRaisesRegex(ValueError, 'native atomic barriers'): guard.inspect(self.root)
+        Budget.test_missing_atomic_barriers = missing_atomic_barriers
     result = unittest.TextTestRunner(verbosity=2).run(unittest.defaultTestLoader.loadTestsFromTestCase(Budget))
     if not result.wasSuccessful(): raise SystemExit(1)
-    print(f'PASS{7 if args.completion_mailbox or args.driver_dispatch or args.frame_ingress else 6} ARM budget guard cases; temporary negative objects removed, no board image or execution')
+    print(f'PASS{7 if args.completion_mailbox or args.driver_dispatch or args.frame_ingress or args.ingress_owner else 6} ARM budget guard cases; temporary negative objects removed, no board image or execution')

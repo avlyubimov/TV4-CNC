@@ -1,6 +1,6 @@
 # Открытые вопросы и блокирующие решения
 
-Обновлено от main `25e635c`,21ноября2026. Единственный свод аппаратных фактов —
+Обновлено от main `bc35a37`,21ноября2026. Единственный свод аппаратных фактов —
 [HARDWARE_STATUS.md](HARDWARE_STATUS.md). Не заполнять неизвестные поля
 типовыми данными семейства, USB VID/PID, старым заказом или host mock.
 
@@ -94,6 +94,12 @@ original capture age (включая retained external BUSY input) и sticky los
 Empty не producer-stop/phase-cutover/backend drain; FRAME не upper authority.
 Нужен actual stop/ack/barrier с правдивым backend reconciliation, common clock/
 loss reporting и route lifetime до runtime adoption. Аппаратных наблюдений нет.
+
+PR-07u [ingress owner](STM32_INGRESS_OWNER.md) закрывает software publication
+barrier: exact pause ACK + actual pending/staged/ring/RX drain, epoch permits,
+bounded lower-timeout recovery с прежним временем. Это не physical peripheral/
+IRQ/DMA/remote stop или trusted route/identity/provider. Новый actual target
+stop/reconciliation/clock/resource port и все hardware/install gates ещё открыты.
 
 | ID | Что нужно подтвердить/решить | Блокирует |
 |---|---|---|

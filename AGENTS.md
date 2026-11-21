@@ -109,9 +109,26 @@ PR и Actions; не копировать код уже открытого PR. Д
 
 ## Текущее задание
 
-PR #1–51 слиты, база main `25e635c`, main CI5/5 PASS,
+PR #1–52 слиты, база main `bc35a37`, main CI5/5 PASS,
 открытых PR перед работой нет.
-PR-07t: читать docs/STM32_FRAME_INGRESS.md. Optional SPSC RX copy mailbox,
+PR-07u: читать docs/STM32_INGRESS_OWNER.md. Actual ingress + actual channel RX,
+one driver/one protocol actor, externally published init/stable lifetime/stop+join.
+Driver permit before capture, retain original epoch/time with BUSY external input;
+no retagging. Exact pause request/ACK only after prior producer calls and pending
+publication; ACK + actual ring/staged/held/RX IDLE before phase advance. Empty
+alone never sufficient. While paused no offers/retries publish; lost stays valid.
+Resume fresh non-wrapping epoch, retains phase/IDs/counters/time/atomic positions;
+old offer/ACK stale. Partial RX resumes same phase only, one advance per pause.
+Receive uses fresh current time after stage; failed RX copies explicitly STATE-
+retired without dispatch. Only original lower fragment timeouts recover after
+ACK+actual ingress drain, no ingress fault; gate remains PAUSED until resume.
+Context/clock/age/loss/exhaustion/other faults cannot recover. Original crypto/
+lease/model/image/close windows unchanged. Software actor stop NOT peripheral/
+IRQ/DMA/remote drain, target port/driver truth/identity/resources/install open.
+Host/ASan/UBSan/LSan/TSan/standalone/analyzer/ARM exact guard+negative/source/
+board/output/scope checks and text evidence mandatory. No devices/merge/release.
+
+Слитый PR #52, PR-07t: читать docs/STM32_FRAME_INGRESS.md. Optional SPSC RX copy mailbox,
 immutable binding/stable lifetime/externally publish init/stop+join, no live
 copy/move/reinit/flush/clear. One driver offer/retry/lost; one consumer stage/
 check/empty. Producer never reads mutable protocol; consumer never reads private

@@ -37,6 +37,8 @@ jobs:
           test -s docs/STM32_COMPLETION_MAILBOX.md
           test -s docs/STM32_DRIVER_DISPATCH.md
           test -s docs/STM32_FRAME_INGRESS.md
+          test -s docs/STM32_INGRESS_OWNER.md
+          test -s docs/plans/PR07U_INGRESS_OWNER.md
           test -s docs/plans/PR07T_FRAME_INGRESS.md
           test -s docs/plans/PR07S_DRIVER_DISPATCH.md
           test -s docs/plans/PR07R_COMPLETION_MAILBOX.md

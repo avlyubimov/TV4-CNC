@@ -1,0 +1,5 @@
+PASS build-boot-arm excludes host fixtures/review/pthread/tests
+PASS build-update-arm excludes host fixtures/review/pthread/tests
+PASS actual production handoff target has no ingress owner/ingress/dispatch/mailbox/events/egress/channel/setup/fragments/test dependency
+PASS no ingress owner runtime caller in HMI/motion/production bootloader
+PASS software actor publication/owned-copy drain only; no actual peripheral/IRQ/DMA/RTOS/clock/remote drain or physical proof

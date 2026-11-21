@@ -1,0 +1,4 @@
+PASS cmake -S firmware/stm32-bootloader -B build-boot-blocked -DTV4_BOOT_BOARD_IMAGE=ON => STM32 bootloader image blocked
+PASS cmake -S firmware/stm32-motion -B build-motion-blocked-off -DTV4_MOTION_BOARD_IMAGE=ON -DTV4_MOTION_LINK_PROBE=OFF => F407 board image blocked
+PASS cmake -S firmware/stm32-motion -B build-motion-blocked-on -DTV4_MOTION_BOARD_IMAGE=ON -DTV4_MOTION_LINK_PROBE=ON => F407 board image blocked
+PASS cmake -S firmware/stm32-motion -B build-motion-host-probe -DTV4_MOTION_LINK_PROBE=ON => requires the pinned ARM toolchain

@@ -1,0 +1,44 @@
+{
+  "scope": "opt-in C11 SPSC mailbox/bound consumer static archive, not firmware",
+  "objects": {
+    "text": 1038,
+    "data": 0,
+    "bss": 0
+  },
+  "native_atomic_barriers": 5,
+  "isr_or_rtos_verified": false,
+  "unresolved_imports": [
+    "memset",
+    "tv4_driver_events_advance",
+    "tv4_driver_events_begin",
+    "tv4_driver_events_cancel",
+    "tv4_driver_events_claim",
+    "tv4_driver_events_clear",
+    "tv4_driver_events_init",
+    "tv4_driver_events_poll",
+    "tv4_driver_events_post",
+    "tv4_driver_events_pump",
+    "tv4_driver_events_service"
+  ],
+  "exported_functions": [
+    "tv4_completion_mailbox_empty",
+    "tv4_completion_mailbox_init",
+    "tv4_completion_mailbox_post",
+    "tv4_completion_mailbox_take",
+    "tv4_completion_owner_advance",
+    "tv4_completion_owner_begin",
+    "tv4_completion_owner_cancel",
+    "tv4_completion_owner_claim",
+    "tv4_completion_owner_clear",
+    "tv4_completion_owner_init",
+    "tv4_completion_owner_poll",
+    "tv4_completion_owner_post",
+    "tv4_completion_owner_pump",
+    "tv4_completion_owner_service"
+  ],
+  "max_individual_frame": 64,
+  "full_stack_verified": false,
+  "board_memory_verified": false,
+  "runtime_caller": false,
+  "device_access": false
+}

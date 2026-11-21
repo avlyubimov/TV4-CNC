@@ -7,6 +7,10 @@ static tv4_driver_events *events(tv4_test_link *link,unsigned side)
 {return link->config.driver_dispatch?&link->direction[side].dispatch.completion.events:link->config.completion_mailbox?&link->direction[side].completion.events:&link->direction[side].events;}
 static tv4_update_egress *egress(tv4_test_link *link,unsigned side)
 {return link->config.driver_events?&events(link,side)->egress:&link->direction[side].egress;}
+static const tv4_channel_rx *rx_view(const tv4_test_link *link,unsigned side)
+{return link->config.ingress_owner?&link->direction[side].owner.channel:&link->direction[side].channel_rx;}
+static const tv4_frame_ingress *ingress_view(const tv4_test_link *link,unsigned side)
+{return link->config.ingress_owner?&link->direction[side].owner.ingress:&link->direction[side].ingress;}
 void tv4_test_link_init(tv4_test_link *link, uint32_t *clock, const tv4_test_link_config *config)
 {
     assert(link!=NULL && clock!=NULL && config!=NULL && !link->configured);
@@ -16,6 +20,7 @@ void tv4_test_link_init(tv4_test_link *link, uint32_t *clock, const tv4_test_lin
     assert(!config->completion_mailbox || config->driver_events);
     assert(!config->driver_dispatch || config->completion_mailbox);
     assert(!config->frame_ingress || (config->driver_dispatch && config->ingress_service_ms>0 && config->ingress_service_ms<=(uint32_t)INT32_MAX));
+    assert(!config->ingress_owner || config->frame_ingress);
     assert(config->delivery_ms>0 && config->delivery_ms<=(uint32_t)INT32_MAX);
     assert(config->held_delivery_ms>=config->delivery_ms && config->held_delivery_ms<=(uint32_t)INT32_MAX);
     memset(link,0,sizeof(*link));link->config=*config;link->clock=clock;
@@ -27,8 +32,11 @@ void tv4_test_link_init(tv4_test_link *link, uint32_t *clock, const tv4_test_lin
             else if(config->driver_events)assert(tv4_driver_events_init(&link->direction[i].events,&config->fragments,config->custody,config->event_capacity,i+1u,link->generation[i],0,0,*clock));
             else if(config->egress)assert(tv4_update_egress_init(&link->direction[i].egress,&config->fragments,config->custody,i+1u,link->generation[i],0,0,*clock));
             else assert(tv4_channel_tx_init(&link->direction[i].channel_tx,&config->fragments,i+1u,link->generation[i],0,*clock));
-            assert(tv4_channel_rx_init(&link->direction[i].channel_rx,&config->fragments,i+1u,link->generation[i],0,*clock));
-            if(config->frame_ingress)assert(tv4_frame_ingress_init(&link->direction[i].ingress,config->ingress_capacity,config->ingress_residency_ms,i+1u,link->generation[i],0,*clock));
+            if(config->ingress_owner)assert(tv4_ingress_owner_init(&link->direction[i].owner,&config->fragments,config->ingress_capacity,config->ingress_residency_ms,i+1u,link->generation[i],0,0,0,*clock));
+            else {
+                assert(tv4_channel_rx_init(&link->direction[i].channel_rx,&config->fragments,i+1u,link->generation[i],0,*clock));
+                if(config->frame_ingress)assert(tv4_frame_ingress_init(&link->direction[i].ingress,config->ingress_capacity,config->ingress_residency_ms,i+1u,link->generation[i],0,*clock));
+            }
             continue;
         }
         tv4_fragment_result tx=config->raw_setup?
@@ -46,7 +54,7 @@ bool tv4_test_link_can_send(const tv4_test_link *link, unsigned direction)
 {
     assert(link!=NULL && link->configured && direction<2);
     const tv4_test_link_direction *d=&link->direction[direction];
-    if(link->config.frame_ingress && tv4_frame_ingress_empty(&d->ingress)!=TV4_INGRESS_WAIT)return false;
+    if(link->config.frame_ingress && tv4_frame_ingress_empty(ingress_view(link,direction))!=TV4_INGRESS_WAIT)return false;
     const tv4_completion_owner *completion=link->config.driver_dispatch?&d->dispatch.completion:&d->completion;
     const tv4_driver_events *ev=link->config.completion_mailbox?&completion->events:&d->events;
     const tv4_update_egress *tx=link->config.driver_events?&ev->egress:&d->egress;
@@ -68,8 +76,9 @@ bool tv4_test_link_idle(const tv4_test_link *link)
             const tv4_completion_owner *completion=link->config.driver_dispatch?&d->dispatch.completion:&d->completion;
             const tv4_driver_events *ev=link->config.completion_mailbox?&completion->events:&d->events;
             const tv4_channel_tx *tx=link->config.egress?(link->config.driver_events?&ev->egress.channel:&d->egress.channel):&d->channel_tx;
-            if(d->channel_rx.fragments.storage.state!=TV4_FRAG_IDLE ||
-                tx->error!=TV4_CHANNEL_NO_ERROR || d->channel_rx.error!=TV4_CHANNEL_NO_ERROR)return false;
+            const tv4_channel_rx *rx=rx_view(link,side);
+            if(rx->fragments.storage.state!=TV4_FRAG_IDLE ||
+                tx->error!=TV4_CHANNEL_NO_ERROR || rx->error!=TV4_CHANNEL_NO_ERROR)return false;
         }else if(d->rx.storage.state!=TV4_FRAG_IDLE)return false;
     }
     return true;
@@ -84,7 +93,14 @@ void tv4_test_link_advance(tv4_test_link *link,tv4_channel_phase phase,tv4_updat
             tv4_driver_events_advance(&link->direction[i].events,phase,id,link->generation[i],*link->clock):link->config.egress?
             tv4_update_egress_advance(&link->direction[i].egress,phase,id,link->generation[i],*link->clock):
             tv4_channel_tx_advance(&link->direction[i].channel_tx,phase,id,link->generation[i],*link->clock))==TV4_CHANNEL_OK);
-        assert(tv4_channel_rx_advance(&link->direction[i].channel_rx,phase,id,link->generation[i],*link->clock)==TV4_CHANNEL_OK);
+        if(link->config.ingress_owner) {
+            tv4_ingress_owner *owner=&link->direction[i].owner;
+            assert(tv4_ingress_owner_pause(owner,link->generation[i],*link->clock)==TV4_GATE_REQUESTED);tv4_ingress_pause p;
+            assert(tv4_ingress_owner_pause_request(owner,&p)==TV4_GATE_REQUESTED && tv4_ingress_owner_ack(owner,p,*link->clock)==TV4_GATE_PAUSED);++link->owner_pauses;
+            assert(tv4_ingress_owner_quiescent(owner,link->generation[i],*link->clock)==TV4_GATE_PAUSED);
+            assert(tv4_ingress_owner_advance(owner,phase,id,link->generation[i],*link->clock)==TV4_CHANNEL_OK);++link->owner_advances;
+            assert(tv4_ingress_owner_resume(owner,link->generation[i],*link->clock)==TV4_GATE_OPEN);
+        }else assert(tv4_channel_rx_advance(&link->direction[i].channel_rx,phase,id,link->generation[i],*link->clock)==TV4_CHANNEL_OK);
     }
 }
 static tv4_fragment_result channel_result(tv4_channel_result r)
@@ -122,6 +138,23 @@ tv4_fragment_result tv4_test_link_send(tv4_test_link *link, unsigned direction, 
         (link->config.drop_every_message || (link->dropped_kinds&bit)==0);
     ++link->attempts[(unsigned)message->kind];return r;
 }
+static void recover_owner(tv4_test_link *link,unsigned side)
+{
+    tv4_ingress_owner *owner=&link->direction[side].owner;uint64_t generation=link->generation[side];uint32_t now=*link->clock;
+    tv4_ingress_pause p;assert(tv4_ingress_owner_pause_request(owner,&p)==TV4_GATE_REQUESTED);
+    tv4_ingress_gate_result ack=tv4_ingress_owner_ack(owner,p,now);
+    for(unsigned n=0;ack==TV4_GATE_BUSY && n<TV4_FRAME_INGRESS_MAX+2u;++n) {
+        tv4_ingress_token t;assert(tv4_ingress_owner_stage(owner,&t)==TV4_INGRESS_UNCHECKED);
+        assert(tv4_ingress_owner_receive(owner,t,generation,now)==TV4_FRAG_STATE);++link->ingress_checks;++link->owner_retirements;
+        ack=tv4_ingress_owner_ack(owner,p,now);
+    }
+    assert(ack==TV4_GATE_PAUSED);++link->owner_pauses;
+    for(unsigned n=0;n<TV4_FRAME_INGRESS_MAX+2u;++n) {
+        tv4_ingress_token t;tv4_ingress_result r=tv4_ingress_owner_stage(owner,&t);if(r==TV4_INGRESS_WAIT)break;
+        assert(r==TV4_INGRESS_UNCHECKED && tv4_ingress_owner_receive(owner,t,generation,now)==TV4_FRAG_STATE);++link->ingress_checks;++link->owner_retirements;
+    }
+    assert(tv4_ingress_owner_recover(owner,generation,now)==TV4_FRAG_OK && tv4_ingress_owner_resume(owner,generation,now)==TV4_GATE_OPEN);++link->owner_recovers;++link->timeouts;
+}
 static void timeout_recovery(tv4_test_link *link, unsigned side)
 {
     tv4_test_link_direction *d=&link->direction[side];
@@ -132,7 +165,7 @@ static void timeout_recovery(tv4_test_link *link, unsigned side)
             tv4_driver_dispatch_poll(&d->dispatch,generation,now):link->config.completion_mailbox?
             tv4_completion_owner_poll(&d->completion,generation,now):link->config.driver_events?
             tv4_driver_events_poll(&d->events,generation,now):tv4_update_egress_poll(owner,generation,now);
-        tv4_fragment_result rx=tv4_channel_rx_poll(&d->channel_rx,generation,now);
+        tv4_fragment_result rx=link->config.ingress_owner?tv4_ingress_owner_poll(&d->owner,generation,now):tv4_channel_rx_poll(&d->channel_rx,generation,now);
         if(tx==TV4_QUEUE_ERROR) {
             tv4_fragment_error low=owner->channel.fragments.storage.error;
             bool recover=link->config.recover_fragment_timeouts &&
@@ -154,9 +187,11 @@ static void timeout_recovery(tv4_test_link *link, unsigned side)
             }else ++link->sticky_failures;
         }
         if(rx==TV4_FRAG_ERROR) {
-            tv4_fragment_error low=d->channel_rx.fragments.storage.error;
+            tv4_fragment_error low=rx_view(link,side)->fragments.storage.error;
             if(link->config.recover_fragment_timeouts && (low==TV4_FRAG_PROGRESS_TIMEOUT || low==TV4_FRAG_TOTAL_TIMEOUT)) {
-                assert(tv4_channel_rx_clear(&d->channel_rx,generation,now)==TV4_FRAG_OK);++link->timeouts;
+                if(link->config.ingress_owner) {
+                    if(tv4_frame_ingress_faults(&d->owner.ingress)==0)recover_owner(link,side);else ++link->sticky_failures;
+                }else {assert(tv4_channel_rx_clear(&d->channel_rx,generation,now)==TV4_FRAG_OK);++link->timeouts;}
             }else ++link->sticky_failures;
         }
         return;
@@ -205,30 +240,41 @@ void tv4_test_link_poll(tv4_test_link *link)
         timeout_recovery(link,side);
     }
 }
-static void receive_frame(tv4_test_link *link,unsigned side,const tv4_fragment_frame *frame)
+static void receive_result(tv4_test_link *link,tv4_fragment_result r)
 {
-    tv4_test_link_direction *d=&link->direction[side];
-    tv4_fragment_result r=link->config.multiplexed?
-        tv4_channel_rx_receive(&d->channel_rx,side+1u,frame,link->generation[side],*link->clock):
-        tv4_fragment_rx_receive(&d->rx,side+1u,frame,link->generation[side],*link->clock);
     ++link->delivered_frames;
     if(r==TV4_FRAG_DUPLICATE)++link->duplicate_frames;
     if(r==TV4_FRAG_ORDER)++link->order_rejects;
     if(r==TV4_FRAG_STALE)++link->stale_rejects;
     if(r==TV4_FRAG_BUSY)++link->ready_busy;
 }
+static void receive_frame(tv4_test_link *link,unsigned side,const tv4_fragment_frame *frame)
+{
+    tv4_test_link_direction *d=&link->direction[side];
+    assert(!link->config.ingress_owner);
+    tv4_fragment_result r=link->config.multiplexed?
+        tv4_channel_rx_receive(&d->channel_rx,side+1u,frame,link->generation[side],*link->clock):
+        tv4_fragment_rx_receive(&d->rx,side+1u,frame,link->generation[side],*link->clock);
+    receive_result(link,r);
+}
 static void service_ingress(tv4_test_link *link,unsigned side)
 {
     if(!link->config.frame_ingress)return;
     tv4_test_link_direction *d=&link->direction[side];
     if(*link->clock-d->ingress_due>(uint32_t)INT32_MAX)return;
-    tv4_ingress_token token;tv4_ingress_result staged=tv4_frame_ingress_stage(&d->ingress,&token);
+    tv4_ingress_token token;tv4_ingress_result staged=link->config.ingress_owner?
+        tv4_ingress_owner_stage(&d->owner,&token):tv4_frame_ingress_stage(&d->ingress,&token);
     if(staged==TV4_INGRESS_WAIT)return;
-    assert(staged==TV4_INGRESS_UNCHECKED);tv4_fragment_frame frame;
+    assert(staged==TV4_INGRESS_UNCHECKED);
     /* Fresh clock read AFTER acquire/stage; never dispatch at captured time. */
-    assert(tv4_frame_ingress_check(&d->ingress,token,&frame,*link->clock)==TV4_INGRESS_FRAME);
-    ++link->ingress_checks;receive_frame(link,side,&frame);memset(&frame,0,sizeof(frame));
-    d->ingress_due=*link->clock+link->config.ingress_service_ms;
+    if(link->config.ingress_owner) {
+        tv4_fragment_result r=tv4_ingress_owner_receive(&d->owner,token,link->generation[side],*link->clock);
+        assert(r!=TV4_FRAG_ERROR && r!=TV4_FRAG_STATE);receive_result(link,r);
+    }else {
+        tv4_fragment_frame frame;assert(tv4_frame_ingress_check(&d->ingress,token,&frame,*link->clock)==TV4_INGRESS_FRAME);
+        receive_frame(link,side,&frame);memset(&frame,0,sizeof(frame));
+    }
+    ++link->ingress_checks;d->ingress_due=*link->clock+link->config.ingress_service_ms;
 }
 static void deliver(tv4_test_link *link, unsigned side)
 {
@@ -242,9 +288,12 @@ static void deliver(tv4_test_link *link, unsigned side)
     }
     if(!d->drop_current && !cancelled) {
         if(link->config.frame_ingress) {
-            bool empty=tv4_frame_ingress_empty(&d->ingress)==TV4_INGRESS_WAIT;
-            tv4_fragment_frame captured=d->queued;
-            assert(tv4_frame_ingress_offer(&d->ingress,side+1u,link->generation[side],&captured,*link->clock,*link->clock)==TV4_INGRESS_ADMITTED);
+            bool empty=tv4_frame_ingress_empty(ingress_view(link,side))==TV4_INGRESS_WAIT;
+            tv4_ingress_permit p={0};if(link->config.ingress_owner)assert(tv4_ingress_owner_permit(&d->owner,&p)==TV4_GATE_OPEN);
+            tv4_fragment_frame captured=d->queued; /* new simulated arrival AFTER permit */
+            assert((link->config.ingress_owner?
+                tv4_ingress_owner_offer(&d->owner,p,side+1u,link->generation[side],&captured,*link->clock,*link->clock):
+                tv4_frame_ingress_offer(&d->ingress,side+1u,link->generation[side],&captured,*link->clock,*link->clock))==TV4_INGRESS_ADMITTED);
             memset(&captured,0,sizeof(captured));++link->ingress_posts;
             if(empty)d->ingress_due=*link->clock+link->config.ingress_service_ms;
         }else receive_frame(link,side,&d->queued);
@@ -357,7 +406,7 @@ tv4_fragment_result tv4_test_link_take(tv4_test_link *link, unsigned direction, 
     tv4_fragment_result r;
     if(link->config.multiplexed) {
         memset(out,0,sizeof(*out));tv4_channel_message m;
-        tv4_channel_result c=tv4_channel_rx_take(&link->direction[direction].channel_rx,&m,link->generation[direction],*link->clock);
+        tv4_channel_result c=link->config.ingress_owner?tv4_ingress_owner_take(&link->direction[direction].owner,&m,link->generation[direction],*link->clock):tv4_channel_rx_take(&link->direction[direction].channel_rx,&m,link->generation[direction],*link->clock);
         r=channel_result(c);
         if(c==TV4_CHANNEL_TAKEN_UNVERIFIED){assert(m.kind==TV4_CHANNEL_WIRE);*out=m.body.wire;r=TV4_FRAG_TAKEN;}
     }else r=tv4_fragment_rx_take(&link->direction[direction].rx,out,link->generation[direction],*link->clock);
@@ -394,7 +443,7 @@ tv4_fragment_result tv4_test_link_take_setup(tv4_test_link *link,unsigned direct
     assert(link!=NULL && link->configured && direction<2 && out!=NULL && (link->config.raw_setup || link->config.multiplexed));
     if(link->config.multiplexed) {
         memset(out,0,sizeof(*out));tv4_channel_message m;
-        tv4_channel_result r=tv4_channel_rx_take(&link->direction[direction].channel_rx,&m,link->generation[direction],*link->clock);
+        tv4_channel_result r=link->config.ingress_owner?tv4_ingress_owner_take(&link->direction[direction].owner,&m,link->generation[direction],*link->clock):tv4_channel_rx_take(&link->direction[direction].channel_rx,&m,link->generation[direction],*link->clock);
         if(r!=TV4_CHANNEL_TAKEN_UNVERIFIED)return channel_result(r);
         assert(m.kind==TV4_CHANNEL_MS);*out=m.body.setup;
         ++link->takes;++link->deliveries[8u+(unsigned)out->kind];return TV4_FRAG_RAW_TAKEN_UNCHECKED;

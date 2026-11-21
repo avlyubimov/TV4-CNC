@@ -1,0 +1,51 @@
+{
+  "scope": "opt-in acknowledged RX pause/channel owner static archive, not firmware",
+  "objects": {
+    "text": 1512,
+    "data": 0,
+    "bss": 0
+  },
+  "native_atomic_barriers": 10,
+  "isr_or_rtos_verified": false,
+  "unresolved_imports": [
+    "memset",
+    "tv4_channel_rx_advance",
+    "tv4_channel_rx_cancel",
+    "tv4_channel_rx_clear",
+    "tv4_channel_rx_init",
+    "tv4_channel_rx_poll",
+    "tv4_channel_rx_receive",
+    "tv4_channel_rx_take",
+    "tv4_frame_ingress_check",
+    "tv4_frame_ingress_empty",
+    "tv4_frame_ingress_faults",
+    "tv4_frame_ingress_init",
+    "tv4_frame_ingress_lost",
+    "tv4_frame_ingress_offer",
+    "tv4_frame_ingress_retry",
+    "tv4_frame_ingress_stage"
+  ],
+  "exported_functions": [
+    "tv4_ingress_owner_ack",
+    "tv4_ingress_owner_advance",
+    "tv4_ingress_owner_init",
+    "tv4_ingress_owner_lost",
+    "tv4_ingress_owner_offer",
+    "tv4_ingress_owner_pause",
+    "tv4_ingress_owner_pause_request",
+    "tv4_ingress_owner_permit",
+    "tv4_ingress_owner_poll",
+    "tv4_ingress_owner_quiescent",
+    "tv4_ingress_owner_receive",
+    "tv4_ingress_owner_recover",
+    "tv4_ingress_owner_resume",
+    "tv4_ingress_owner_retry",
+    "tv4_ingress_owner_stage",
+    "tv4_ingress_owner_take"
+  ],
+  "max_individual_frame": 88,
+  "full_stack_verified": false,
+  "board_memory_verified": false,
+  "runtime_caller": false,
+  "device_access": false
+}
