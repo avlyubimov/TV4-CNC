@@ -1,6 +1,6 @@
 # Следующий этап: release context и STM32 board contract
 
-21 ноября2026. База main `2c6fd1c`, PR #1–49 слиты, main CI5/5 PASS.
+21 ноября2026. База main `db50840`, PR #1–50 слиты, main CI5/5 PASS.
 ESP32 HMI/Wi-Fi/OTA primitives/candidates и STM32 transport/admission существуют;
 не создавать их заново. Данный план не разрешает доступ к устройствам или merge.
 
@@ -216,13 +216,22 @@ Host61/sanitizers61/standalone35; [evidence](evidence/build/driver-events/README
 Serialized API only, no actual synchronized RTOS/ISR/driver/provenance/reset proof.
 Original upper windows/crypto/lease/model/close and all hardware gates retained.
 
-## Текущая ветка PR-07r
+## Слитый PR #50, PR-07r
 
 [SPSC mailbox](STM32_COMPLETION_MAILBOX.md): one producer/consumer owned reports,
 release/acquire/actual bound consumer/retained custody; host65/sanitizers65/
 standalone39/TSan2. [Evidence](evidence/build/completion-mailbox/README.md).
 C11 concurrency checked on host/compile; target ISR/RTOS/cache/DMA/completion
 truth/reset/reconciliation, persistent identity/routing/resources/physical/install open.
+
+## Текущая ветка PR-07s
+
+[Owned driver dispatch](STM32_DRIVER_DISPATCH.md): actual frame claim/publication/
+unchecked token/fresh check/exact return/slot cleanup; host68/sanitizers68/
+standalone42/TSan4. [Evidence](evidence/build/driver-dispatch/README.md).
+Published untaken jobs still held until explicit driver return; no hardware cancel
+or physical readiness claim. Target ISR/RTOS/cache/DMA/clock/real backend, identity/
+resources/runtime/staging/install and actual hardware gates remain open.
 
 ## Что делать дальше программно
 
@@ -254,7 +263,8 @@ truth/reset/reconciliation, persistent identity/routing/resources/physical/insta
    и local phase/outbox filters, не actual runtime owner/remote queue flush.
    PR-07p добавляет actual bound local custody queue/driver tickets, не real
    driver/remote drain proof. PR-07q добавляет serialized owned event inbox.
-   PR-07r добавляет SPSC C11 mailbox/bound consumer. Дальше review actual target
+   PR-07r добавляет SPSC C11 mailbox/bound consumer, PR-07s — owned frame dispatch/
+   fresh check/explicit driver return. Дальше review actual target
    ISR/RTOS/cache/DMA port, trusted adapter completion provenance/reset/
    reconciliation, production identity/capabilities/codebook и
    worker/resource budgets перед runtime adoption. Production routing/reboot

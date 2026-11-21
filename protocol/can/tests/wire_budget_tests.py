@@ -73,6 +73,7 @@ if __name__ == '__main__':
     mode.add_argument('--egress', action='store_true')
     mode.add_argument('--driver-events', action='store_true')
     mode.add_argument('--completion-mailbox', action='store_true')
+    mode.add_argument('--driver-dispatch', action='store_true')
     args = parser.parse_args()
     BUILD = args.build.absolute()
     if args.fragments:
@@ -130,6 +131,17 @@ if __name__ == '__main__':
             self.archive('')
             with self.assertRaisesRegex(ValueError, 'native atomic barriers'): guard.inspect(self.root)
         Budget.test_missing_atomic_barriers = missing_atomic_barriers
+    if args.driver_dispatch:
+        import check_driver_dispatch_build as guard
+        ARCHIVE = 'libtv4_driver_dispatch.a'
+        TARGET = 'tv4_driver_dispatch'
+        EXPORTS = tuple('tv4_driver_dispatch_' + suffix for suffix in (
+            'init', 'begin', 'pump', 'publish', 'poll', 'service', 'advance', 'cancel', 'clear',
+            'take', 'check', 'report', 'retry'))
+        def missing_atomic_barriers(self):
+            self.archive('')
+            with self.assertRaisesRegex(ValueError, 'native atomic barriers'): guard.inspect(self.root)
+        Budget.test_missing_atomic_barriers = missing_atomic_barriers
     result = unittest.TextTestRunner(verbosity=2).run(unittest.defaultTestLoader.loadTestsFromTestCase(Budget))
     if not result.wasSuccessful(): raise SystemExit(1)
-    print(f'PASS{7 if args.completion_mailbox else 6} ARM budget guard cases; temporary negative objects removed, no board image or execution')
+    print(f'PASS{7 if args.completion_mailbox or args.driver_dispatch else 6} ARM budget guard cases; temporary negative objects removed, no board image or execution')

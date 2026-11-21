@@ -182,3 +182,22 @@ model/image/close gates mandatory; all old modes/budgets/SDK pins unchanged.
 Host pthread/TSan tests never enter ARM/runtime. Separate imports/exports/frame/
 no globals/native atomic guard+negative cases/text evidence mandatory. No actual
 hardware/identity/persistence/routing/resource/install authority/devices/merge.
+
+## PR-07s — owned driver dispatch
+
+Читать docs/STM32_DRIVER_DISPATCH.md. One protocol actor owns actual completion/
+frame ledger; one driver actor take/check/report/retry. Publish init before both,
+stable lifetime/stop+join; no live copy/move/reinit/flush/inner mutable calls.
+Release/acquire slot publication and return; driver never reads protocol mutable
+state, owner never reads driver-private fields. Take returns zero-payload token;
+read time AFTER take, check original admission/residency before frame exposure.
+Software check/revocation not atomic hardware cancellation/physical inhibit.
+Exact ticket, no implicit-current callback; full retains first report for retry,
+no overwrite; uncertain keeps claim. Slot reuse needs actual consumer cleanup
+AND driver RETURNED. Cancel preserves untaken/taken/pending/claim; explicit driver
+terminal return mandatory, no force-forget. Clear retains IDs/phase/time/atomic
+positions and cannot reset private driver clock fault. Independent crypto/lease/
+model/image/close gates and all old modes/budgets/SDK pins preserved. Host pthread/
+TSan only, no target backend/ISR/RTOS/cache/DMA/clock/truth approval. Separate exact
+ARM/import/export/frame/global/native-atomic guard+negatives/text evidence required.
+No devices/SWD/UART/reset/Flash/CAN/motion/self-merge/release.

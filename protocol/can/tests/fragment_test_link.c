@@ -4,7 +4,7 @@
 #include <string.h>
 
 static tv4_driver_events *events(tv4_test_link *link,unsigned side)
-{return link->config.completion_mailbox?&link->direction[side].completion.events:&link->direction[side].events;}
+{return link->config.driver_dispatch?&link->direction[side].dispatch.completion.events:link->config.completion_mailbox?&link->direction[side].completion.events:&link->direction[side].events;}
 static tv4_update_egress *egress(tv4_test_link *link,unsigned side)
 {return link->config.driver_events?&events(link,side)->egress:&link->direction[side].egress;}
 void tv4_test_link_init(tv4_test_link *link, uint32_t *clock, const tv4_test_link_config *config)
@@ -14,13 +14,15 @@ void tv4_test_link_init(tv4_test_link *link, uint32_t *clock, const tv4_test_lin
     assert(!config->egress || config->multiplexed);
     assert(!config->driver_events || (config->egress && config->event_service_ms>0 && config->event_service_ms<=(uint32_t)INT32_MAX));
     assert(!config->completion_mailbox || config->driver_events);
+    assert(!config->driver_dispatch || config->completion_mailbox);
     assert(config->delivery_ms>0 && config->delivery_ms<=(uint32_t)INT32_MAX);
     assert(config->held_delivery_ms>=config->delivery_ms && config->held_delivery_ms<=(uint32_t)INT32_MAX);
     memset(link,0,sizeof(*link));link->config=*config;link->clock=clock;
     for(unsigned i=0;i<2;++i) {
         link->generation[i]=100u+i;
         if(config->multiplexed) {
-            if(config->completion_mailbox)assert(tv4_completion_owner_init(&link->direction[i].completion,&config->fragments,config->custody,config->event_capacity,i+1u,link->generation[i],0,0,*clock));
+            if(config->driver_dispatch)assert(tv4_driver_dispatch_init(&link->direction[i].dispatch,&config->fragments,config->custody,config->event_capacity,i+1u,link->generation[i],0,0,*clock));
+            else if(config->completion_mailbox)assert(tv4_completion_owner_init(&link->direction[i].completion,&config->fragments,config->custody,config->event_capacity,i+1u,link->generation[i],0,0,*clock));
             else if(config->driver_events)assert(tv4_driver_events_init(&link->direction[i].events,&config->fragments,config->custody,config->event_capacity,i+1u,link->generation[i],0,0,*clock));
             else if(config->egress)assert(tv4_update_egress_init(&link->direction[i].egress,&config->fragments,config->custody,i+1u,link->generation[i],0,0,*clock));
             else assert(tv4_channel_tx_init(&link->direction[i].channel_tx,&config->fragments,i+1u,link->generation[i],0,*clock));
@@ -42,12 +44,14 @@ bool tv4_test_link_can_send(const tv4_test_link *link, unsigned direction)
 {
     assert(link!=NULL && link->configured && direction<2);
     const tv4_test_link_direction *d=&link->direction[direction];
-    const tv4_driver_events *ev=link->config.completion_mailbox?&d->completion.events:&d->events;
+    const tv4_completion_owner *completion=link->config.driver_dispatch?&d->dispatch.completion:&d->completion;
+    const tv4_driver_events *ev=link->config.completion_mailbox?&completion->events:&d->events;
     const tv4_update_egress *tx=link->config.driver_events?&ev->egress:&d->egress;
     if(link->config.egress)return !d->occupied && !tx->channel.active && !tx->channel.queued &&
         tx->channel.fragments.storage.state==TV4_FRAG_IDLE && tx->queue.count==0 &&
         tx->queue.flight==0 && !tx->failed && !tx->queue.stopped && (!link->config.driver_events || ev->count==0) &&
-        (!link->config.completion_mailbox || (!d->completion.has_pending && tv4_completion_mailbox_empty(&d->completion.mailbox)==TV4_QUEUE_OK));
+        (!link->config.completion_mailbox || (!completion->has_pending && tv4_completion_mailbox_empty(&completion->mailbox)==TV4_QUEUE_OK)) &&
+        (!link->config.driver_dispatch || atomic_load_explicit(&d->dispatch.state,memory_order_acquire)==TV4_DISPATCH_EMPTY);
     return !d->occupied && (link->config.multiplexed?
         (!d->channel_tx.active && !d->channel_tx.queued && d->channel_tx.fragments.storage.state==TV4_FRAG_IDLE):
         d->tx.storage.state==TV4_FRAG_IDLE);
@@ -58,8 +62,11 @@ bool tv4_test_link_idle(const tv4_test_link *link)
         const tv4_test_link_direction *d=&link->direction[side];
         if(!tv4_test_link_can_send(link,side))return false;
         if(link->config.multiplexed) {
+            const tv4_completion_owner *completion=link->config.driver_dispatch?&d->dispatch.completion:&d->completion;
+            const tv4_driver_events *ev=link->config.completion_mailbox?&completion->events:&d->events;
+            const tv4_channel_tx *tx=link->config.egress?(link->config.driver_events?&ev->egress.channel:&d->egress.channel):&d->channel_tx;
             if(d->channel_rx.fragments.storage.state!=TV4_FRAG_IDLE ||
-                (link->config.egress?(link->config.driver_events?(link->config.completion_mailbox?d->completion.events.egress.channel.error:d->events.egress.channel.error):d->egress.channel.error):d->channel_tx.error)!=TV4_CHANNEL_NO_ERROR || d->channel_rx.error!=TV4_CHANNEL_NO_ERROR)return false;
+                tx->error!=TV4_CHANNEL_NO_ERROR || d->channel_rx.error!=TV4_CHANNEL_NO_ERROR)return false;
         }else if(d->rx.storage.state!=TV4_FRAG_IDLE)return false;
     }
     return true;
@@ -68,7 +75,8 @@ void tv4_test_link_advance(tv4_test_link *link,tv4_channel_phase phase,tv4_updat
 {
     assert(link!=NULL && link->configured && link->config.multiplexed && tv4_test_link_idle(link));
     for(unsigned i=0;i<2;++i) {
-        assert((link->config.completion_mailbox?
+        assert((link->config.driver_dispatch?
+            tv4_driver_dispatch_advance(&link->direction[i].dispatch,phase,id,link->generation[i],*link->clock):link->config.completion_mailbox?
             tv4_completion_owner_advance(&link->direction[i].completion,phase,id,link->generation[i],*link->clock):link->config.driver_events?
             tv4_driver_events_advance(&link->direction[i].events,phase,id,link->generation[i],*link->clock):link->config.egress?
             tv4_update_egress_advance(&link->direction[i].egress,phase,id,link->generation[i],*link->clock):
@@ -96,7 +104,8 @@ tv4_fragment_result tv4_test_link_send(tv4_test_link *link, unsigned direction, 
     tv4_fragment_result r;
     if(link->config.multiplexed) {
         tv4_channel_message m={.kind=TV4_CHANNEL_WIRE,.body.wire=*message};
-        r=channel_result(link->config.completion_mailbox?
+        r=channel_result(link->config.driver_dispatch?
+            tv4_driver_dispatch_begin(&d->dispatch,&m,link->generation[direction],*link->clock):link->config.completion_mailbox?
             tv4_completion_owner_begin(&d->completion,&m,link->generation[direction],*link->clock):link->config.driver_events?
             tv4_driver_events_begin(&d->events,&m,link->generation[direction],*link->clock):link->config.egress?
             tv4_update_egress_begin(&d->egress,&m,link->generation[direction],*link->clock):
@@ -116,7 +125,8 @@ static void timeout_recovery(tv4_test_link *link, unsigned side)
     uint64_t generation=link->generation[side];uint32_t now=*link->clock;
     if(link->config.egress) {
         tv4_update_egress *owner=egress(link,side);
-        tv4_frame_queue_result tx=link->config.completion_mailbox?
+        tv4_frame_queue_result tx=link->config.driver_dispatch?
+            tv4_driver_dispatch_poll(&d->dispatch,generation,now):link->config.completion_mailbox?
             tv4_completion_owner_poll(&d->completion,generation,now):link->config.driver_events?
             tv4_driver_events_poll(&d->events,generation,now):tv4_update_egress_poll(owner,generation,now);
         tv4_fragment_result rx=tv4_channel_rx_poll(&d->channel_rx,generation,now);
@@ -126,11 +136,13 @@ static void timeout_recovery(tv4_test_link *link, unsigned side)
                 (owner->queue.error==TV4_QUEUE_TIMEOUT || low==TV4_FRAG_PROGRESS_TIMEOUT || low==TV4_FRAG_TOTAL_TIMEOUT ||
                  owner->channel.error==TV4_CHANNEL_QUEUE_PROGRESS || owner->channel.error==TV4_CHANNEL_QUEUE_TOTAL);
             if(recover) {
-                tv4_frame_queue_result stopped=link->config.completion_mailbox?
+                tv4_frame_queue_result stopped=link->config.driver_dispatch?
+                    tv4_driver_dispatch_cancel(&d->dispatch,generation,now):link->config.completion_mailbox?
                     tv4_completion_owner_cancel(&d->completion,generation,now):link->config.driver_events?
                     tv4_driver_events_cancel(&d->events,generation,now):tv4_update_egress_cancel(owner,generation,now);
                 if(stopped!=TV4_QUEUE_HELD) {
-                    tv4_frame_queue_result cleared=link->config.completion_mailbox?
+                    tv4_frame_queue_result cleared=link->config.driver_dispatch?
+                        tv4_driver_dispatch_clear(&d->dispatch,generation,now):link->config.completion_mailbox?
                         tv4_completion_owner_clear(&d->completion,generation,now):link->config.driver_events?
                         tv4_driver_events_clear(&d->events,generation,now):tv4_update_egress_clear(owner,generation,now);
                     assert(cleared==TV4_QUEUE_OK || (link->config.driver_events && cleared==TV4_QUEUE_HELD));
@@ -173,10 +185,12 @@ void tv4_test_link_poll(tv4_test_link *link)
     assert(link!=NULL && link->configured);
     for(unsigned side=0;side<2;++side) {
         tv4_test_link_direction *d=&link->direction[side];
+        const tv4_completion_owner *completion=link->config.driver_dispatch?&d->dispatch.completion:&d->completion;
         bool pending=events(link,side)->count!=0 || (link->config.completion_mailbox &&
-            (d->completion.has_pending || tv4_completion_mailbox_empty(&d->completion.mailbox)!=TV4_QUEUE_OK));
+            (completion->has_pending || tv4_completion_mailbox_empty(&completion->mailbox)!=TV4_QUEUE_OK));
         if(link->config.driver_events && (!pending || *link->clock-d->event_due<=(uint32_t)INT32_MAX)) {
-            tv4_frame_queue_result r=link->config.completion_mailbox?
+            tv4_frame_queue_result r=link->config.driver_dispatch?
+                tv4_driver_dispatch_service(&d->dispatch,link->generation[side],*link->clock):link->config.completion_mailbox?
                 tv4_completion_owner_service(&d->completion,link->generation[side],*link->clock):tv4_driver_events_service(&d->events,link->generation[side],*link->clock);
             if(pending) {
                 ++link->event_services;
@@ -192,7 +206,13 @@ static void deliver(tv4_test_link *link, unsigned side)
 {
     tv4_test_link_direction *d=&link->direction[side];
     if(!d->occupied || *link->clock-d->due>(uint32_t)INT32_MAX)return;
-    if(!d->drop_current) {
+    bool cancelled=false;
+    if(link->config.driver_dispatch) {
+        tv4_dispatch_delivery checked;tv4_dispatch_status status=tv4_driver_dispatch_check(&d->dispatch,d->ticket,&checked,*link->clock);
+        if(status!=TV4_DISPATCH_SENDABLE){assert(status==TV4_DISPATCH_REVOKED || status==TV4_DISPATCH_EXPIRED || status==TV4_DISPATCH_CLOCK);cancelled=true;}
+        else assert(checked.delivery.frame.length==d->queued.length && memcmp(checked.delivery.frame.bytes,d->queued.bytes,TV4_FRAGMENT_BYTES)==0);
+    }
+    if(!d->drop_current && !cancelled) {
         tv4_fragment_result r=link->config.multiplexed?
             tv4_channel_rx_receive(&d->channel_rx,side+1u,&d->queued,link->generation[side],*link->clock):
             tv4_fragment_rx_receive(&d->rx,side+1u,&d->queued,link->generation[side],*link->clock);
@@ -202,14 +222,19 @@ static void deliver(tv4_test_link *link, unsigned side)
         if(r==TV4_FRAG_STALE)++link->stale_rejects;
         if(r==TV4_FRAG_BUSY)++link->ready_busy;
     }
-    if(!d->drop_current && !d->repeated && link->config.duplicate_every>0 && link->delivered_frames%link->config.duplicate_every==0) {
+    if(!d->drop_current && !cancelled && !d->repeated && link->config.duplicate_every>0 && link->delivered_frames%link->config.duplicate_every==0) {
         d->repeated=true;d->due=*link->clock+link->config.delivery_ms;
     }else {
         if(link->config.egress) {
             if(link->config.driver_events) {
                 tv4_driver_event event={d->ticket,TV4_FRAME_SENT_LOCAL};
+                if(cancelled)event.result=TV4_FRAME_CANCELLED_LOCAL;
                 unsigned copies=link->frames%17u==0?2u:1u;
-                for(unsigned n=0;n<copies;++n) {
+                if(link->config.driver_dispatch) {
+                    assert(tv4_driver_dispatch_report(&d->dispatch,&event)==TV4_QUEUE_ADMITTED);++link->event_posts;
+                    if(copies==2){assert(tv4_driver_dispatch_report(&d->dispatch,&event)==TV4_QUEUE_STALE);++link->dispatch_rejected_callbacks;}
+                    copies=1;
+                }else for(unsigned n=0;n<copies;++n) {
                     assert((link->config.completion_mailbox?tv4_completion_owner_post(&d->completion,&event):tv4_driver_events_post(&d->events,&event))==TV4_QUEUE_ADMITTED);++link->event_posts;
                 }
                 memset(&event,0,sizeof(event));d->event_due=*link->clock+link->config.event_service_ms;
@@ -230,7 +255,8 @@ static void queue_next(tv4_test_link *link, unsigned side)
     tv4_test_link_direction *d=&link->direction[side];
     if(link->config.egress) {
         tv4_update_egress *owner=egress(link,side);
-        tv4_frame_queue_result pumped=link->config.completion_mailbox?
+        tv4_frame_queue_result pumped=link->config.driver_dispatch?
+            tv4_driver_dispatch_pump(&d->dispatch,link->generation[side],*link->clock):link->config.completion_mailbox?
             tv4_completion_owner_pump(&d->completion,link->generation[side],*link->clock):link->config.driver_events?
             tv4_driver_events_pump(&d->events,link->generation[side],*link->clock):tv4_update_egress_pump(owner,link->generation[side],*link->clock);
         if(pumped==TV4_QUEUE_ADMITTED)++link->driver_admissions;
@@ -240,7 +266,17 @@ static void queue_next(tv4_test_link *link, unsigned side)
         if(owner->queue.count>link->driver_max_pending)link->driver_max_pending=owner->queue.count;
         if(d->occupied){++link->driver_held_ticks;return;}
         tv4_frame_delivery out;
-        tv4_frame_queue_result claimed=link->config.completion_mailbox?
+        tv4_frame_queue_result claimed;
+        if(link->config.driver_dispatch) {
+            tv4_frame_queue_result published=tv4_driver_dispatch_publish(&d->dispatch,link->generation[side],*link->clock);
+            if(published==TV4_QUEUE_BUSY){++link->event_held_ticks;return;}
+            if(published==TV4_QUEUE_WAIT)return;
+            assert(published==TV4_QUEUE_ADMITTED);++link->dispatch_publications;
+            tv4_dispatch_delivery token,checked;
+            assert(tv4_driver_dispatch_take(&d->dispatch,&token)==TV4_DISPATCH_UNCHECKED);
+            assert(tv4_driver_dispatch_check(&d->dispatch,token.delivery.ticket,&checked,*link->clock)==TV4_DISPATCH_SENDABLE);
+            out=checked.delivery;claimed=TV4_QUEUE_FRAME;
+        }else claimed=link->config.completion_mailbox?
             tv4_completion_owner_claim(&d->completion,&out,link->generation[side],*link->clock):link->config.driver_events?
             tv4_driver_events_claim(&d->events,&out,link->generation[side],*link->clock):tv4_update_egress_claim(owner,&out,link->generation[side],*link->clock);
         if(link->config.driver_events && claimed==TV4_QUEUE_BUSY){++link->event_held_ticks;return;}
@@ -308,7 +344,8 @@ tv4_fragment_result tv4_test_link_send_setup(tv4_test_link *link,unsigned direct
     tv4_test_link_direction *d=&link->direction[direction];tv4_fragment_result r;
     if(link->config.multiplexed) {
         tv4_channel_message m={.kind=TV4_CHANNEL_MS,.body.setup=*message};
-        r=channel_result(link->config.completion_mailbox?
+        r=channel_result(link->config.driver_dispatch?
+            tv4_driver_dispatch_begin(&d->dispatch,&m,link->generation[direction],*link->clock):link->config.completion_mailbox?
             tv4_completion_owner_begin(&d->completion,&m,link->generation[direction],*link->clock):link->config.driver_events?
             tv4_driver_events_begin(&d->events,&m,link->generation[direction],*link->clock):link->config.egress?
             tv4_update_egress_begin(&d->egress,&m,link->generation[direction],*link->clock):

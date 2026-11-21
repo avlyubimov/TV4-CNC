@@ -1,0 +1,44 @@
+{
+  "scope": "opt-in two-actor owned frame dispatch/completion static archive, not firmware",
+  "objects": {
+    "text": 1324,
+    "data": 0,
+    "bss": 0
+  },
+  "native_atomic_barriers": 14,
+  "isr_or_rtos_verified": false,
+  "unresolved_imports": [
+    "memset",
+    "tv4_completion_mailbox_empty",
+    "tv4_completion_owner_advance",
+    "tv4_completion_owner_begin",
+    "tv4_completion_owner_cancel",
+    "tv4_completion_owner_claim",
+    "tv4_completion_owner_clear",
+    "tv4_completion_owner_init",
+    "tv4_completion_owner_poll",
+    "tv4_completion_owner_post",
+    "tv4_completion_owner_pump",
+    "tv4_completion_owner_service"
+  ],
+  "exported_functions": [
+    "tv4_driver_dispatch_advance",
+    "tv4_driver_dispatch_begin",
+    "tv4_driver_dispatch_cancel",
+    "tv4_driver_dispatch_check",
+    "tv4_driver_dispatch_clear",
+    "tv4_driver_dispatch_init",
+    "tv4_driver_dispatch_poll",
+    "tv4_driver_dispatch_publish",
+    "tv4_driver_dispatch_pump",
+    "tv4_driver_dispatch_report",
+    "tv4_driver_dispatch_retry",
+    "tv4_driver_dispatch_service",
+    "tv4_driver_dispatch_take"
+  ],
+  "max_individual_frame": 72,
+  "full_stack_verified": false,
+  "board_memory_verified": false,
+  "runtime_caller": false,
+  "device_access": false
+}

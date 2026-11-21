@@ -1,6 +1,6 @@
 # Открытые вопросы и блокирующие решения
 
-Обновлено от main `2c6fd1c`,21ноября2026. Единственный свод аппаратных фактов —
+Обновлено от main `db50840`,21ноября2026. Единственный свод аппаратных фактов —
 [HARDWARE_STATUS.md](HARDWARE_STATUS.md). Не заполнять неизвестные поля
 типовыми данными семейства, USB VID/PID, старым заказом или host mock.
 
@@ -83,6 +83,11 @@ PR-07r [SPSC mailbox](STM32_COMPLETION_MAILBOX.md) проверяет C11 one-pr
 one-consumer ownership и host races. Это не target ISR/RTOS/cache/DMA validation,
 не producer-stop/physical drain proof. Actual driver/provenance/reset/identity/
 resources/runtime/installer и все hardware gates остаются open.
+
+PR-07s [driver dispatch](STM32_DRIVER_DISPATCH.md) связывает actual frame claim/
+publication/fresh check/correlated return; no external copy gap in software API.
+Это не real backend/clock/ISR/RTOS/cache/DMA/cancel truth или physical inhibit.
+Persistent identity/routing/resources/runtime/install и все hardware gates open.
 
 | ID | Что нужно подтвердить/решить | Блокирует |
 |---|---|---|
