@@ -84,7 +84,7 @@ fragment и logical APIs на одной шкале.34 DATA scenarios/8 signed p
 ARM/source/board/output/scope gates PASS, core footprint прежний. Логические
 сроки не продлеваются при fragment recovery; replay после reboot остаётся
 открытым. Нет runtime/metadata transport/физических измерений/устройств.
-Текущая ветка PR-07m [metadata transport](STM32_METADATA_TRANSPORT.md): opt-in
+Слитый PR #45, PR-07m [metadata transport](STM32_METADATA_TRANSPORT.md): opt-in
 container codec/RX поверх прежнего DATA, globally fresh separate metadata ID,
 bounded raw document/signature/key ID, ACK после copy/single owned snapshot.
 Image RX lifetime не reset;8 delivered-metadata signed chains +3 refusals,
