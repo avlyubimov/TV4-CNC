@@ -112,3 +112,12 @@ resource/fault tests и отдельное согласование exact releas
 На плате по-прежнему ordinary8f0d899. Firmware C/UI, board pinout, RGB/GT911,
 PSRAM/TLS/stack settings, locks и partitions.csv не меняются. Новых device calls,
 прошивок, UTC/network probes, CAN/motion/installer нет. Откат — revert PR.
+
+## Последующий PR-05c
+
+[Offline signed cohort review](RELEASE_COHORT_REVIEW.md) — отдельная проверка
+подписанных HMI/Motion артефактов и metadata consistency, не замена данного
+CI candidate/provenance workflow. Она не назначает PROJECT_VER/SemVer, не
+публикует images и не делает current factory candidate пригодным к OTA.
+Source claim в подписи/report не является доказательством build origin;
+approved candidate→signer→exact bytes linkage ещё требует production review.

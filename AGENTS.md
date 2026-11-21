@@ -109,36 +109,40 @@ PR и Actions; не копировать код уже открытого PR. Д
 
 ## Текущее задание
 
-PR #1–38 слиты, база main `2ea51b6`; пять workflow PASS, открытых PR перед
-работой нет. PR-07i: читать STM32_STAGING_SOURCE.md/NEXT_STAGE.md и scoped rules.
-Portable volatile RAM source использует existing pending RX -> bounded copy ->
-consume/ACK. Нет другого wire parser/новых deadlines/копии crypto/coordinator.
-Explicit buffer/capacity/boot/object, zero-init once, one owner; init не reset.
-Discard сохраняет transfer high-water/generation/token counter, exhaustion не
-wrap. Writes/begin/init/discard запрещены while leased; stale token не unlock
-new lease. Direct C/DMA/thread writes исключает owner, API не memory protection.
-Все source/core/RX/workspace/outputs disjoint/alive по их контрактам.
+PR #1–39 слиты, база main `2c06cdc`; пять workflow PASS, открытых PR перед
+работой нет. PR-05c: читать RELEASE_COHORT_REVIEW.md/NEXT_STAGE.md/scoped rules.
+Offline tool проверяет existing signed HMI/Motion formats/full images, explicit
+local selection/source/channel, ESP app descriptor и prospective HMI peer range.
+Motion frontend вызывает прежний independent Mbed verifier, только HOST; нет
+нового firmware parser/crypto owner/clock/resource defaults/runtime caller.
+Legacy HMI verify/CLI report прежний; signed metadata возвращается из того же
+snapshot, что прошёл signature/image checks. Не перечитывать replaced manifest
+для binding и не принимать generic success boolean вместо crypto.
 
-SEALED только completed copy; live owner/source/RX/deadline/vector guards и
-signature/SemVer/full SHA прежние. Outcome остаётся historical после wipe.
-Source detach от RX не продлевает его lifetime. Pending release не positive;
-quarantine держит actual lease, force discard/reset нет. Нет implicit RX abort.
-Source state160 плюс весь caller buffer; workspace17664/legacy footprints прежние.
-Consume individual frame328 при прежнем512 ceiling, не full-stack measurement.
-Discard O(written) worker-only, никогда UI/ISR. Flash1MiB не означает RAM1MiB.
+Local context/key/executable paths — explicit trusted operator inputs, не поля
+скачанного JSON. Bounded regular snapshots; quiescent owned FS/toolchain, не
+sandbox hostile executable. Test private keys только RAM (два разных role keys),
+никаких private files/production signer/provisioning. Review JSON metadata-only,
+не OTA manifest/bundle/CAN ABI или install token. HMI-only без fake Motion record.
+Все authority gates закрыты; protocol SemVer и numeric counters НЕ переводить.
+Source signer claim и driver SHA не build/code attestation. Реальные versions/
+keys/context/protocol mapping/production bundle/лицензия/publish ещё открыты.
 
-Нет production bundle/keys/versions/context/boot identity/persistence/auth,
-RAM capacity/staging medium/Flash/erase/map/writer/COMMIT/jump/ARM/START,
-CAN wire/IDs/bitrate/runtime caller/physical inhibit или install authority.
-Owner F407 SWD/core/rawID/Flash1MiB/3,252V/backup/vector facts прежние; VGT6
-не full marking/HSE/RAM/CCM/IRQ/sector/protection/GPIO/CAN/restore proof.
-BOARD_IMAGE=ON fail, synthetic startup не actual profile; no-I/O inhibit=false/
-watchdog unavailable не physical safe. Не повторять device/backup access.
+Host/sanitizers38 suites, standalone13, ARM/static8 embedded+1 host/source/
+board/output/scope gates; прежняя ESP SDK matrix8. ARM libraries43344text/data8/
+bss27/frames984,376,328,64 прежние. Host I/O frontend не входит в ARM targets.
+Firmware C/UI/board/config/partition/security/dependency pins прежние. Не менять
+PROJECT_VER ради review PASS; current git version не trusted release SemVer,
+factory2MiB не A/B. Runtime budget/worker/installer и production context открыты.
 
-Host/sanitizers36 suites, standalone13; ARM/static8/source/board/output gates и
-прежняя ESP SDK matrix8. HMI/config/board/partition/security/dependency pins
-прежние; menu/local info/dashboard/Wi-Fi/STOP сохранять. Нет новых install UI,
-публичных ключей/версий/defaults или production release schema. Test signer только
-в RAM host, не firmware/artifacts. На ESP32 ordinary8f0d899, owner HMI/touch/
-Wi-Fi PASS; прежние разрешения исполнены. Нет devices/SWD/UART/reset/Flash/
-network probes, keys/releases/eFuse/CAN/motion или self-merge.
+PR-07i RAM source — один owner, exclusive caller buffer, no init/discard reset
+counters/high-water, no writes/discard while leased. API не DMA/MPU protection,
+volatile не durable recovery; Flash1MiB не RAM1MiB. Quarantine держит handle,
+DATA deadlines не продлевать. Receipt/history не install/COMMIT/jump/ARM token.
+Owner F407 SWD/core/rawID/Flash1MiB/3,252V/backup/vector facts прежние; VGT6 не
+full marking/HSE/RAM/CCM/IRQ/erase/protection/GPIO/CAN/restore proof. BOARD_IMAGE=ON
+fail, synthetic startup не actual profile, no-I/O inhibit=false/watchdog unavailable
+не physical safe. Не читать backup/dump и не повторять device probes.
+На ESP32 ordinary8f0d899, owner HMI/touch/Wi-Fi PASS; разрешения исполнены.
+Нет devices/SWD/UART/reset/Flash/network probes, keys/releases/eFuse/CAN/motion,
+installer/boot activation или самостоятельного merge.

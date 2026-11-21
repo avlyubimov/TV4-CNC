@@ -1,0 +1,26 @@
+Test command: /home/avlyubimov/.local/bin/python3.14 "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/release-cohort-review/tests/release_cohort_tests.py" "--driver" "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/release-cohort-review/build-host/firmware/stm32-bootloader/boot_motion_review" "--signer" "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/release-cohort-review/build-host/ota_policy_driver" "--group" "cli"
+Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/release-cohort-review/build-host
+Test timeout computed to be: 60
+test_actual_independent_crypto_full_image_and_zero_workspace (__main__.MotionCLI.test_actual_independent_crypto_full_image_and_zero_workspace) ... ok
+test_crypto_policy_source_and_document_failures_clear_candidate (__main__.MotionCLI.test_crypto_policy_source_and_document_failures_clear_candidate) ... ok
+test_frontend_bounds_numbers_and_regular_files (__main__.MotionCLI.test_frontend_bounds_numbers_and_regular_files) ... ok
+----------------------------------------------------------------------
+Ran 3 tests in 0.044s
+OK
+PASS cli signed host review; no private key files, network, devices, install or publication
+Test command: /home/avlyubimov/.local/bin/python3.14 "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/release-cohort-review/tests/release_cohort_tests.py" "--driver" "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/release-cohort-review/build-host/firmware/stm32-bootloader/boot_motion_review" "--signer" "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/release-cohort-review/build-host/ota_policy_driver" "--group" "cohort"
+Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/release-cohort-review/build-host
+Test timeout computed to be: 60
+test_actual_cli_stdout_report_and_failure_has_no_partial_report (__main__.Cohort.test_actual_cli_stdout_report_and_failure_has_no_partial_report) ... ok
+test_corrupt_images_signatures_app_descriptor_and_sdk (__main__.Cohort.test_corrupt_images_signatures_app_descriptor_and_sdk) ... ok
+test_current_and_prospective_peer_context_are_separate_checks (__main__.Cohort.test_current_and_prospective_peer_context_are_separate_checks) ... ok
+test_local_context_unknown_duplicate_partial_and_no_paths_from_manifest (__main__.Cohort.test_local_context_unknown_duplicate_partial_and_no_paths_from_manifest) ... ok
+test_nonregular_inputs_and_bounds_before_any_driver_or_crypto (__main__.Cohort.test_nonregular_inputs_and_bounds_before_any_driver_or_crypto) ... ok
+test_paired_and_hmi_only_reports_all_authority_gates_closed (__main__.Cohort.test_paired_and_hmi_only_reports_all_authority_gates_closed) ... ok
+test_prerelease_and_independent_component_versions (__main__.Cohort.test_prerelease_and_independent_component_versions) ... ok
+test_signed_metadata_snapshot_is_not_reopened_for_binding (__main__.Cohort.test_signed_metadata_snapshot_is_not_reopened_for_binding) ... ok
+test_signed_mismatched_release_source_and_channel (__main__.Cohort.test_signed_mismatched_release_source_and_channel) ... ok
+----------------------------------------------------------------------
+Ran 9 tests in 0.200s
+OK
+PASS cohort signed host review; no private key files, network, devices, install or publication

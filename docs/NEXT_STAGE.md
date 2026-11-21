@@ -1,6 +1,6 @@
 # Следующий этап: release context и STM32 board contract
 
-21 ноября2026. База main `2ea51b6`, PR #1–38 слиты, пять workflow PASS.
+21 ноября2026. База main `2c06cdc`, PR #1–39 слиты, пять workflow PASS.
 ESP32 HMI/Wi-Fi/OTA primitives/candidates и STM32 transport/admission существуют;
 не создавать их заново. Данный план не разрешает доступ к устройствам или merge.
 
@@ -104,7 +104,7 @@ legacy strict11 path сохранён. Host34/sanitizers34/standalone11,6 нов
 chains, ARM/static7/source/board/output PASS — [evidence](evidence/build/stm32-release-handoff/README.md).
 Нет runtime caller/production context или install/physical authority.
 
-## Текущая ветка PR-07i
+## Слитая часть PR-07i, PR #39
 
 [RAM staging source](STM32_STAGING_SOURCE.md) добавляет portable bounded backend
 для pending DATA и read lease. Init не reset, discard сохраняет high-water и
@@ -115,10 +115,21 @@ source/board/output PASS — [evidence](evidence/build/stm32-staging-source/READ
 помещается только в явно заданный buffer; production RAM/staging medium/durable
 recovery ещё не утверждены.
 
+## Текущая ветка PR-05c
+
+[Offline cohort review](RELEASE_COHORT_REVIEW.md) проверяет существующие signed
+HMI и optional Motion документы/полные образы как один expected release/source/
+channel. App descriptor и prospective HMI→Motion peer range проверены; HMI-only
+не создаёт Motion entry. Host38/sanitizers38/standalone13, CLI3/cohort9 methods,
+analyzer8 embedded+1 host и ARM/source/board/output/scope gates PASS —
+[evidence](evidence/build/release-cohort-review/README.md). Report metadata-only;
+production manifest/context/protocol mapping/runtime/install gates не закрыты.
+
 ## Что делать дальше программно
 
 1. HMI policy проверена PR-05b; PR-07g проверяет independent release/component/
-   target/profile/image draft. Дальше review production bundle↔component link и
+   target/profile/image draft; PR-05c добавляет offline signed cohort link.
+   Дальше review production bundle↔component contract и
    schema, доверенного local context и production immutable backend. PR-07h
    закрывает software live coordinator adapter; PR-07i добавляет RAM backend.
    Production staging medium/RAM budget/durable provider и runtime ещё требуют

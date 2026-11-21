@@ -1,0 +1,58 @@
+{
+  "channel": "stable",
+  "components": [
+    {
+      "app_descriptor_checked": true,
+      "component_version": "2.1.0",
+      "image_bytes": 336,
+      "key_id": "test-only",
+      "key_sha256": "de48eeaaf7624546c14c51a47dd7fd28333707c84f9e5ad97992e1055e7928d8",
+      "metadata_sha256": "be1ffb08a3d5b3c3c9afb62319c6788eea6fad1e62302527b14a8f2d3672d55d",
+      "name": "hmi",
+      "sdk": "6.1.1",
+      "sha256": "b2a163900bfe7e6c8b35072eb61dfc46f40123167f8f3307e7f9619283670e3f",
+      "signature_sha256": "d190a5ce7f42f34b3e4808d4de73022b391ffd4297fd91c4e9edf71c6e1f8498"
+    },
+    {
+      "component_version": "2.1.0",
+      "image_bytes": 769,
+      "image_counter": 3,
+      "key_id": "test-only",
+      "key_sha256": "76ce68e081bf4ad506999da614113d26fe9482dac8f12d8a270b7e6d0a44928a",
+      "metadata_sha256": "6bfc8787876dd570ee4f64bfb55d3313a83968c8460e6bb653d0c92685101287",
+      "name": "motion",
+      "native_workspace_zero": true,
+      "sha256": "5597e9f4a238756875392f4979be0f2cfb8bf50953605a9d316d38315714b1f5",
+      "signature_sha256": "14b6d203412d07545e99128b4f37c22139889e0094fad949326a3741013584bc"
+    }
+  ],
+  "device_access": false,
+  "gates": {
+    "actual_installed_context": false,
+    "actual_layout": false,
+    "build_provenance": false,
+    "exact_release_owner_approval": false,
+    "install": false,
+    "key_provisioning": false,
+    "license_selection": false,
+    "live_source": false,
+    "motion_vectors": false,
+    "physical_quiescent": false,
+    "protocol_mapping": false,
+    "publish": false,
+    "recovery": false,
+    "runtime_resource_budget": false
+  },
+  "host_motion_driver_sha256": "aedf2eb42e0b3e3ecd53ad38e3b8bed1f585610753acd202c60edcd588874f99",
+  "install_enabled": false,
+  "local_context_sha256": "bd492ba7940cbd6b3c5aa50bc66123ae8d422c39e4128768dfe1801913e31287",
+  "motion_present": true,
+  "prospective_peer_checked": true,
+  "protocol_counter": 7,
+  "protocol_semver": "1.0.0",
+  "release_published": false,
+  "release_version": "3.0.0",
+  "schema": "tv4-release-cohort-review-draft-1",
+  "source_commit": "0123456789abcdef0123456789abcdef01234567",
+  "status": "consistent-offline-review-only"
+}

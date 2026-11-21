@@ -160,10 +160,16 @@ def read_metadata(args):
     return dict(release=manifest['release_version'], version=app['version'],
                 url=app['url'], notes=manifest['release_notes'],
                 size_bytes=app['size_bytes'], sha256=app['sha256'],
-                key_sha256=hashlib.sha256(key).hexdigest())
+                key_sha256=hashlib.sha256(key).hexdigest(),
+                source_commit=manifest['source_commit'], channel=manifest['channel'],
+                metadata_sha256=hashlib.sha256(raw).hexdigest(),
+                protocol=dict(manifest['protocol']),
+                compatible_peer_versions=dict(app['compatible_peer_versions'])
+                if 'compatible_peer_versions' in app else None)
 
 
-def verify(args):
+def verify_with_metadata(args):
+    """One authenticated metadata snapshot + full image pass, for local review."""
     candidate = read_metadata(args)
     total = 0
     header = b''
@@ -177,9 +183,15 @@ def verify(args):
     require(total == candidate['size_bytes'] and digest.hexdigest() == candidate['sha256'], 'image hash/length rejected')
     require(len(header) == 24 and header[0] == 0xe9 and header[3] >> 4 == 4
             and struct.unpack_from('<H', header, 12)[0] == 9, 'image header incompatible')
-    return {'status': 'verified-offline-only', 'schema_version': 1, 'image_bytes': total,
+    report = {'status': 'verified-offline-only', 'schema_version': 1, 'image_bytes': total,
             'sha256': digest.hexdigest(), 'key_sha256': candidate['key_sha256'],
             'device_access': False, 'install_enabled': False}
+    return candidate, report
+
+
+def verify(args):
+    # Preserve the existing public CLI/report; no second metadata verification.
+    return verify_with_metadata(args)[1]
 
 
 def parser():

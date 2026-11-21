@@ -330,3 +330,17 @@ RAM source не продлевает дедлайны. После release/discar
 Не выбраны real RAM capacity/production staging medium, persistent boot identity,
 Flash/recovery/physical/operator gates или installer. Full image buffer — явное
 требование, не вывод из Flash1MiB и не новый MEMORY address/default reserve.
+
+## PR-05c — offline release cohort
+
+[Review tool](RELEASE_COHORT_REVIEW.md) выполняет independent signature/policy/
+full-image checks двух существующих форматов, затем сравнивает expected source/
+release/channel и prospective HMI peer range. Поля берутся из authenticated
+snapshots, не перечитываются из заменённого manifest. Motion frontend host-only;
+нет нового embedded parser/crypto owner/runtime или изменённого workspace.
+
+Report metadata-only: actual context/layout/provenance/protocol mapping/vector/
+live source/physical/operator/recovery/install/publication gates закрыты.
+Не добавлять две component записи в production HMI manifest по этому report;
+его parser по-прежнему принимает только HMI. Real bundle/schema/keys/versions/
+installer ещё требуют отдельного review, factory2MiB и на плате8f0d899 прежние.

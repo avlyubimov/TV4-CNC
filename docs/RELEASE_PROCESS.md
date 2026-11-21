@@ -152,3 +152,18 @@ review candidate→signer→exact bytes остаётся отдельным pipe
 PR-07h [release handoff](STM32_RELEASE_HANDOFF.md) закрывает software live
 lease/coordinator соединение; production bundle/context/runtime и
 installation/recovery/hardware gates открыты.
+
+## PR-05c — offline-проверка состава перед production bundle
+
+[Release cohort review](RELEASE_COHORT_REVIEW.md) связывает существующие signed
+HMI/Motion документы с explicit expected release/source/channel и полными bytes.
+HMI app descriptor/SDK и prospective HMI→Motion peer range проверяются;
+HMI-only не требует фиктивного Motion image. Native Motion frontend вызывает
+прежний independent verifier и не компилируется для ARM.
+
+Неподписанный review report не OTA manifest, signer/build provenance, trust
+provisioning или release approval. Все authority gates false; actual SemVer/
+keys/context/protocol mapping/layout/лицензия/публикация остаются owner review.
+PROJECT_VER/CI candidates остаются прежними; новый инструмент не назначает
+release versions и не публикует binaries/tags/releases. Production format и
+связь с approved CI artifacts/signing custody — следующий отдельный этап.
