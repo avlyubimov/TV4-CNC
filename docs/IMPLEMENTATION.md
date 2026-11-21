@@ -1,6 +1,13 @@
 # Реализация: main, открытые PR и аппаратные границы
 
-PR-07u от main `bc35a37`: [подтверждённая пауза приёма](STM32_INGRESS_OWNER.md) связывает actual
+PR-07v от main `5e76626`: [подписанный threaded HOST link](STM32_THREADED_LINK.md)
+передаёт full signed update через отдельный driver pthread и concurrent RX.
+Host75/sanitizers75/standalone49/TSan8+1 PASS; upper windows, independent crypto/
+lease/model/close и все ARM budgets прежние. Software ACK/stop/join не physical
+backend drain; target port/identity/resources/runtime/install/hardware gates open.
+Устройств не касались; текущий ESP32 ordinary8f0d899, Flash/pins не менялись.
+
+Слитый PR #53, PR-07u от main `bc35a37`: [подтверждённая пауза приёма](STM32_INGRESS_OWNER.md) связывает actual
 ingress и channel RX. Смена фазы ждёт exact driver ACK и actual pending/staged/
 ring/RX drain; resume выдаёт новую epoch без сброса clocks/counters/IDs.
 Только lower fragment timeout восстанавливается после ACK+cleanup; sticky faults
@@ -54,7 +61,7 @@ Host54/sanitizers54/standalone28, independent verifier/lease/model/close пре�
 Это software local contract; authentication/persistent identity/runtime/installer
 и все physical F407 blockers открыты. Устройств не касались.
 
-Актуализация от main `db50840`, 21 ноября2026: PR #1–50 слиты. Owner SWD
+Актуализация от main `5e76626`, 21 ноября2026: PR #1–53 слиты. Owner SWD
 F407/core/Flash1024KiB/backup — [HARDWARE_STATUS](HARDWARE_STATUS.md).
 Startup/DATA/admission/handoff/preflight и PR-07e уже в main:
 [completion/outcome](STM32_UPDATE_OUTCOME.md) связывает full checks с lease close

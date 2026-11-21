@@ -1,6 +1,13 @@
 # TV4 CNC
 
-PR-07u от main `bc35a37`: [подтверждённая пауза приёма](docs/STM32_INGRESS_OWNER.md) связывает actual
+PR-07v от main `5e76626`: [подписанный threaded HOST link](docs/STM32_THREADED_LINK.md)
+передаёт full signed update через отдельный driver pthread и concurrent RX.
+Host75/sanitizers75/standalone49/TSan8+1 PASS; upper windows, independent crypto/
+lease/model/close и все ARM budgets прежние. Software ACK/stop/join не physical
+backend drain; target port/identity/resources/runtime/install/hardware gates open.
+Устройств не касались; текущий ESP32 ordinary8f0d899, Flash/pins не менялись.
+
+Слитый PR #53, PR-07u от main `bc35a37`: [подтверждённая пауза приёма](docs/STM32_INGRESS_OWNER.md) связывает actual
 ingress и channel RX. Смена фазы ждёт exact driver ACK и actual pending/staged/
 ring/RX drain; resume выдаёт новую epoch без сброса clocks/counters/IDs.
 Только lower fragment timeout восстанавливается после ACK+cleanup; sticky faults

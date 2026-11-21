@@ -1,0 +1,905 @@
+UpdateCTestConfiguration  from :/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/threaded-update-link/build-boot-host/DartConfiguration.tcl
+Test project /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/threaded-update-link/build-boot-host
+Constructing a list of tests
+Done constructing a list of tests
+Updating test list for fixtures
+Added 0 tests to meet fixture requirements
+Checking test dependency graph...
+Checking test dependency graph end
+test 1
+      Start  1: boot_image_admission
+
+1: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/threaded-update-link/build-boot-host/boot_admission_tests
+1: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/threaded-update-link/build-boot-host
+1: Test timeout computed to be: 30
+1: PASS sha_vectors
+1: PASS success_and_fragmentation
+1: PASS invalid_signature_and_key
+1: PASS wrong_signer
+1: PASS compatibility_and_rollback
+1: PASS policy_errors
+1: PASS signed_malformed_metadata
+1: PASS stream_faults
+1: PASS deadlines_cancellation_and_wrap
+1: PASS arena_exhaustion_and_reuse
+1: PASS snapshot_and_reentry
+1: PASS arguments_and_limits
+1: PASS boundary_metadata_and_key_selection
+1: PASS storage_aliases_are_write_free
+1: PASS 14 admission groups; workspace=17664 bytes; ephemeral host signing keys; no device access
+ 1/49 Test  #1: boot_image_admission ................   Passed    0.14 sec
+test 2
+      Start  2: boot_crypto_source
+
+2: Test command: /home/avlyubimov/.local/bin/python3.14 "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/threaded-update-link/firmware/stm32-bootloader/tests/source_tests.py" "--source" "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/threaded-update-link/build-boot-host/_deps/tv4_boot_mbedtls-src"
+2: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/threaded-update-link/build-boot-host
+2: Test timeout computed to be: 15
+2: test_added_header (__main__.SourceTests.test_added_header) ... ok
+2: test_changed_code (__main__.SourceTests.test_changed_code) ... ok
+2: test_exact_source (__main__.SourceTests.test_exact_source) ... ok
+2: test_missing_header (__main__.SourceTests.test_missing_header) ... ok
+2: test_symlink (__main__.SourceTests.test_symlink) ... ok
+2:
+2: ----------------------------------------------------------------------
+2: Ran 5 tests in 0.083s
+2:
+2: OK
+ 2/49 Test  #2: boot_crypto_source ..................   Passed    0.12 sec
+test 3
+      Start  3: boot_staging_source
+
+3: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/threaded-update-link/build-boot-host/boot_staging_tests
+3: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/threaded-update-link/build-boot-host
+3: Test timeout computed to be: 30
+3: PASS 45 RAM staging/read variants, 1..1025 bytes, blocks1/31/256, fragments1/7/256, pending/final duplicates
+3: PASS sizes_and_reads
+3: PASS lease_and_reuse
+3: PASS receiver_faults
+3: PASS deadlines_and_wrap
+3: PASS arguments_and_aliases
+3: PASS config_and_capacity
+3: PASS 1536 source cycles; discard retains high-water/generation/token counters; exhaustion never wraps
+3: PASS counters_and_exhaustion
+3: PASS 7 staging source groups; state=160 bytes plus explicit caller buffer; RAM only, not persistent/install/device access
+ 3/49 Test  #3: boot_staging_source .................   Passed    0.00 sec
+test 4
+      Start  4: boot_update_handoff
+
+4: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/threaded-update-link/build-boot-host/boot_handoff_tests
+4: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/threaded-update-link/build-boot-host
+4: Test timeout computed to be: 30
+4: PASS 54 signed end-to-end RAM transfers with lost DATA/final ACK and pending duplicate
+4: PASS end_to_end_sizes_and_fragments
+4: PASS snapshots_and_reentry
+4: PASS binding_is_not_transport_trust
+4: PASS changes_during_verification
+4: PASS revoke_after_success
+4: PASS acquire_and_release_failures
+4: PASS deadlines_before_verification_and_wrap
+4: PASS boundaries_and_final_cleanup
+4: PASS retained_ack_does_not_extend_handoff
+4: PASS rejected_inputs_and_aliases
+4: PASS 15 signed vector inspections with fragmented reads + captured local profile mutation
+4: PASS signed_vector_success_and_snapshot
+4: PASS valid_signature_invalid_vector_model
+4: PASS preflight_context_cleanup_and_reentry
+4: PASS 6 signed DATA -> crypto -> vectors -> close -> outcome/ACK sessions, lost report/final ACK; no lease retained
+4: PASS completion_end_to_end_history
+4: PASS completion_rejections
+4: PASS completion_release_and_late_context
+4: PASS completion_reentry_snapshot_and_arguments
+4: PASS 6 signed negotiation -> DATA -> P-256/SHA -> vectors -> close -> outcome/ACK chains; all four handshake losses, DATA/final ACK/report losses
+4: PASS negotiated_full_chain
+4: PASS 3 negotiated binding failures: changed image, invalid signature, valid re-signed metadata with mismatched raw SHA; no retained lease
+4: PASS negotiated_binding_still_requires_crypto
+4: PASS 19 handoff/completion groups; completion=568; state=2136 receipt=136 workspace=17664; RAM only, no install/device access
+ 4/49 Test  #4: boot_update_handoff .................   Passed    0.31 sec
+test 5
+      Start  5: boot_staging_handoff
+
+5: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/threaded-update-link/build-boot-host/boot_handoff_tests "--staging"
+5: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/threaded-update-link/build-boot-host
+5: Test timeout computed to be: 30
+5: PASS 8 signed chains through real RAM staging backend, 6 release15 + 2 legacy11; losses, locked writes, post-wipe outcome/ACK
+5: PASS staged_signed_chains
+5: PASS staged_crypto_rejections
+5: PASS staged_cleanup_and_revocation
+5: PASS staged_receiver_deadline
+5: PASS 4 staging integration groups; source=160 core=2136 completion=568 workspace=17664; no runtime/Flash/device access
+ 5/49 Test  #5: boot_staging_handoff ................   Passed    0.03 sec
+test 6
+      Start  6: boot_wire_handoff
+
+6: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/threaded-update-link/build-boot-host/boot_handoff_tests "--wire-staging"
+6: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/threaded-update-link/build-boot-host
+6: Test timeout computed to be: 30
+6: PASS 8 signed chains through real RAM staging backend, 6 release15 + 2 legacy11; losses, locked writes, post-wipe outcome/ACK
+6: PASS staged_signed_chains
+6: PASS staged_crypto_rejections
+6: PASS staged_cleanup_and_revocation
+6: PASS staged_receiver_deadline
+6: PASS byte codec across existing signed RAM chains; kind counts: 1=39 2=22 3=22 4=17 5=1017 6=500 7=16 8=8; no wire/CRC success replaces signature/lease/model/deadline/cleanup or authorizes install
+ 6/49 Test  #6: boot_wire_handoff ...................   Passed    0.03 sec
+test 7
+      Start  7: boot_fragment_handoff
+
+7: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/threaded-update-link/build-boot-host/boot_handoff_tests "--fragment-staging"
+7: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/threaded-update-link/build-boot-host
+7: Test timeout computed to be: 30
+7: PASS 8 signed chains through real RAM staging backend, 6 release15 + 2 legacy11; losses, locked writes, post-wipe outcome/ACK
+7: PASS staged_signed_chains
+7: PASS staged_crypto_rejections
+7: PASS staged_cleanup_and_revocation
+7: PASS staged_receiver_deadline
+7: PASS fragments across 8 actual signed RAM chains; kind counts: 1=39 2=22 3=22 4=17 5=1017 6=500 7=16 8=8; frames=22980 duplicates=1252; original logical/crypto/lease/model/deadline/cleanup gates unchanged
+ 7/49 Test  #7: boot_fragment_handoff ...............   Passed    0.04 sec
+test 8
+      Start  8: boot_fragment_timing
+
+8: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/threaded-update-link/build-boot-host/boot_handoff_tests "--fragment-timing"
+8: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/threaded-update-link/build-boot-host
+8: Test timeout computed to be: 30
+8: PASS8 one-clock actual signed RAM chains: frames=7640 lost=48 timeout-clears=32 repeated-peeks=1611 longest=2551 synthetic ms; all8 kinds, no deadline resets or duplicate outcome delivery
+8: PASS one_clock_signed_chains
+8: PASS one-clock transfer success does not bypass independent signature or expired DATA live-receiver admission
+8: PASS one_clock_admission_refusals
+ 8/49 Test  #8: boot_fragment_timing ................   Passed    0.02 sec
+test 9
+      Start  9: boot_egress_handoff
+
+9: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/threaded-update-link/build-boot-host/boot_handoff_tests "--egress-staging"
+9: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/threaded-update-link/build-boot-host
+9: Test timeout computed to be: 30
+9: SETUP frames=473 drops=4 elapsed=1020 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+9: EGRESS claims=1097 returns=1097 held-ticks=266 max-pending=2; local completion tickets, no driver-owned frame forgotten
+9: SETUP frames=473 drops=4 elapsed=1020 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+9: EGRESS claims=1331 returns=1331 held-ticks=324 max-pending=2; local completion tickets, no driver-owned frame forgotten
+9: SETUP frames=473 drops=4 elapsed=1016 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+9: EGRESS claims=1544 returns=1544 held-ticks=375 max-pending=2; local completion tickets, no driver-owned frame forgotten
+9: SETUP frames=473 drops=4 elapsed=1016 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+9: EGRESS claims=1778 returns=1778 held-ticks=432 max-pending=2; local completion tickets, no driver-owned frame forgotten
+9: SETUP frames=473 drops=4 elapsed=1016 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+9: EGRESS claims=1544 returns=1544 held-ticks=375 max-pending=2; local completion tickets, no driver-owned frame forgotten
+9: SETUP frames=473 drops=4 elapsed=1016 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+9: EGRESS claims=1778 returns=1778 held-ticks=432 max-pending=2; local completion tickets, no driver-owned frame forgotten
+9: SETUP frames=473 drops=4 elapsed=1016 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+9: EGRESS claims=1497 returns=1497 held-ticks=364 max-pending=2; local completion tickets, no driver-owned frame forgotten
+9: SETUP frames=473 drops=4 elapsed=1016 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+9: EGRESS claims=1498 returns=1498 held-ticks=364 max-pending=2; local completion tickets, no driver-owned frame forgotten
+9: PASS8 transported metadata signed chains: frames=12067 drops=80 container-bytes=4800 DER=70..72 longest=3710 synthetic ms; producer wiped, actual delivered signature/raw digest/lease/model/close, no image deadline reset
+9: SETUP frames=473 drops=4 elapsed=1020 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+9: SETUP frames=473 drops=4 elapsed=1020 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+9: SETUP frames=473 drops=4 elapsed=1020 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+9: PASS transported metadata does not bypass invalid signature, correctly re-signed wrong raw digest, or expired independent image RX
+9: SETUP frames=473 drops=4 elapsed=1020 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+9: SETUP frames=473 drops=4 elapsed=1020 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+9: PASS2 driver uncertain/missing-completion refusals: actual claim retained through original image timeout; late return reclaims only, clear does not revive RX or admission
+ 9/49 Test  #9: boot_egress_handoff .................   Passed    0.04 sec
+test 10
+      Start 10: boot_driver_events_handoff
+
+10: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/threaded-update-link/build-boot-host/boot_handoff_tests "--driver-events-staging"
+10: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/threaded-update-link/build-boot-host
+10: Test timeout computed to be: 30
+10: SETUP frames=473 drops=4 elapsed=1198 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+10: EGRESS claims=1097 returns=1097 held-ticks=266 max-pending=2; local completion tickets, no driver-owned frame forgotten
+10: EVENTS posted=1161 serviced=1161 stale=64 wait-ticks=1161 max-pending=2; owned copies, one-event budget/current service time
+10: SETUP frames=473 drops=4 elapsed=1198 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+10: EGRESS claims=1331 returns=1331 held-ticks=324 max-pending=2; local completion tickets, no driver-owned frame forgotten
+10: EVENTS posted=1409 serviced=1409 stale=78 wait-ticks=1409 max-pending=2; owned copies, one-event budget/current service time
+10: SETUP frames=473 drops=4 elapsed=1195 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+10: EGRESS claims=1544 returns=1544 held-ticks=375 max-pending=2; local completion tickets, no driver-owned frame forgotten
+10: EVENTS posted=1634 serviced=1634 stale=90 wait-ticks=1634 max-pending=2; owned copies, one-event budget/current service time
+10: SETUP frames=473 drops=4 elapsed=1195 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+10: EGRESS claims=1778 returns=1778 held-ticks=432 max-pending=2; local completion tickets, no driver-owned frame forgotten
+10: EVENTS posted=1882 serviced=1882 stale=104 wait-ticks=1882 max-pending=2; owned copies, one-event budget/current service time
+10: SETUP frames=473 drops=4 elapsed=1195 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+10: EGRESS claims=1544 returns=1544 held-ticks=375 max-pending=2; local completion tickets, no driver-owned frame forgotten
+10: EVENTS posted=1634 serviced=1634 stale=90 wait-ticks=1634 max-pending=2; owned copies, one-event budget/current service time
+10: SETUP frames=473 drops=4 elapsed=1195 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+10: EGRESS claims=1778 returns=1778 held-ticks=432 max-pending=2; local completion tickets, no driver-owned frame forgotten
+10: EVENTS posted=1882 serviced=1882 stale=104 wait-ticks=1882 max-pending=2; owned copies, one-event budget/current service time
+10: SETUP frames=473 drops=4 elapsed=1195 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+10: EGRESS claims=1498 returns=1498 held-ticks=364 max-pending=2; local completion tickets, no driver-owned frame forgotten
+10: EVENTS posted=1586 serviced=1586 stale=88 wait-ticks=1586 max-pending=2; owned copies, one-event budget/current service time
+10: SETUP frames=473 drops=4 elapsed=1195 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+10: EGRESS claims=1497 returns=1497 held-ticks=364 max-pending=2; local completion tickets, no driver-owned frame forgotten
+10: EVENTS posted=1585 serviced=1585 stale=88 wait-ticks=1585 max-pending=2; owned copies, one-event budget/current service time
+10: PASS8 transported metadata signed chains: frames=12067 drops=80 container-bytes=4800 DER=70..72 longest=4774 synthetic ms; producer wiped, actual delivered signature/raw digest/lease/model/close, no image deadline reset
+10: SETUP frames=473 drops=4 elapsed=1198 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+10: SETUP frames=473 drops=4 elapsed=1198 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+10: SETUP frames=473 drops=4 elapsed=1198 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+10: PASS transported metadata does not bypass invalid signature, correctly re-signed wrong raw digest, or expired independent image RX
+10: SETUP frames=473 drops=4 elapsed=1198 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+10: SETUP frames=473 drops=4 elapsed=1198 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+10: PASS2 delayed queued terminal/uncertain event refusals: original image timeout retained; current-time service reclaims only, no RX/admission revival
+10/49 Test #10: boot_driver_events_handoff ..........   Passed    0.04 sec
+test 11
+      Start 11: boot_completion_mailbox_handoff
+
+11: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/threaded-update-link/build-boot-host/boot_handoff_tests "--completion-mailbox-staging"
+11: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/threaded-update-link/build-boot-host
+11: Test timeout computed to be: 30
+11: SETUP frames=473 drops=4 elapsed=1198 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+11: EGRESS claims=1097 returns=1097 held-ticks=266 max-pending=2; local completion tickets, no driver-owned frame forgotten
+11: EVENTS posted=1161 serviced=1161 stale=64 wait-ticks=1161 max-pending=2; owned copies, one-event budget/current service time
+11: SETUP frames=473 drops=4 elapsed=1198 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+11: EGRESS claims=1331 returns=1331 held-ticks=324 max-pending=2; local completion tickets, no driver-owned frame forgotten
+11: EVENTS posted=1409 serviced=1409 stale=78 wait-ticks=1409 max-pending=2; owned copies, one-event budget/current service time
+11: SETUP frames=473 drops=4 elapsed=1195 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+11: EGRESS claims=1544 returns=1544 held-ticks=375 max-pending=2; local completion tickets, no driver-owned frame forgotten
+11: EVENTS posted=1634 serviced=1634 stale=90 wait-ticks=1634 max-pending=2; owned copies, one-event budget/current service time
+11: SETUP frames=473 drops=4 elapsed=1195 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+11: EGRESS claims=1778 returns=1778 held-ticks=432 max-pending=2; local completion tickets, no driver-owned frame forgotten
+11: EVENTS posted=1882 serviced=1882 stale=104 wait-ticks=1882 max-pending=2; owned copies, one-event budget/current service time
+11: SETUP frames=473 drops=4 elapsed=1195 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+11: EGRESS claims=1544 returns=1544 held-ticks=375 max-pending=2; local completion tickets, no driver-owned frame forgotten
+11: EVENTS posted=1634 serviced=1634 stale=90 wait-ticks=1634 max-pending=2; owned copies, one-event budget/current service time
+11: SETUP frames=473 drops=4 elapsed=1195 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+11: EGRESS claims=1778 returns=1778 held-ticks=432 max-pending=2; local completion tickets, no driver-owned frame forgotten
+11: EVENTS posted=1882 serviced=1882 stale=104 wait-ticks=1882 max-pending=2; owned copies, one-event budget/current service time
+11: SETUP frames=473 drops=4 elapsed=1195 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+11: EGRESS claims=1498 returns=1498 held-ticks=364 max-pending=2; local completion tickets, no driver-owned frame forgotten
+11: EVENTS posted=1586 serviced=1586 stale=88 wait-ticks=1586 max-pending=2; owned copies, one-event budget/current service time
+11: SETUP frames=473 drops=4 elapsed=1195 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+11: EGRESS claims=1497 returns=1497 held-ticks=364 max-pending=2; local completion tickets, no driver-owned frame forgotten
+11: EVENTS posted=1585 serviced=1585 stale=88 wait-ticks=1585 max-pending=2; owned copies, one-event budget/current service time
+11: PASS8 transported metadata signed chains: frames=12067 drops=80 container-bytes=4800 DER=70..72 longest=4774 synthetic ms; producer wiped, actual delivered signature/raw digest/lease/model/close, no image deadline reset
+11: SETUP frames=473 drops=4 elapsed=1198 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+11: SETUP frames=473 drops=4 elapsed=1198 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+11: SETUP frames=473 drops=4 elapsed=1198 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+11: PASS transported metadata does not bypass invalid signature, correctly re-signed wrong raw digest, or expired independent image RX
+11: SETUP frames=473 drops=4 elapsed=1198 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+11: SETUP frames=473 drops=4 elapsed=1198 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+11: PASS2 delayed queued terminal/uncertain event refusals: original image timeout retained; current-time service reclaims only, no RX/admission revival
+11/49 Test #11: boot_completion_mailbox_handoff .....   Passed    0.04 sec
+test 12
+      Start 12: boot_driver_dispatch_handoff
+
+12: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/threaded-update-link/build-boot-host/boot_handoff_tests "--driver-dispatch-staging"
+12: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/threaded-update-link/build-boot-host
+12: Test timeout computed to be: 30
+12: SETUP frames=473 drops=4 elapsed=1189 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+12: EGRESS claims=1097 returns=1097 held-ticks=266 max-pending=2; local completion tickets, no driver-owned frame forgotten
+12: DISPATCH published=1097 driver-rejected-callbacks=64; original admission/fresh check/exact terminal/slot reuse, no driver-copy gap
+12: EVENTS posted=1097 serviced=1097 stale=0 wait-ticks=1097 max-pending=1; owned copies, one-event budget/current service time
+12: SETUP frames=473 drops=4 elapsed=1189 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+12: EGRESS claims=1331 returns=1331 held-ticks=324 max-pending=2; local completion tickets, no driver-owned frame forgotten
+12: DISPATCH published=1331 driver-rejected-callbacks=78; original admission/fresh check/exact terminal/slot reuse, no driver-copy gap
+12: EVENTS posted=1331 serviced=1331 stale=0 wait-ticks=1331 max-pending=1; owned copies, one-event budget/current service time
+12: SETUP frames=473 drops=4 elapsed=1185 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+12: EGRESS claims=1544 returns=1544 held-ticks=375 max-pending=2; local completion tickets, no driver-owned frame forgotten
+12: DISPATCH published=1544 driver-rejected-callbacks=90; original admission/fresh check/exact terminal/slot reuse, no driver-copy gap
+12: EVENTS posted=1544 serviced=1544 stale=0 wait-ticks=1544 max-pending=1; owned copies, one-event budget/current service time
+12: SETUP frames=473 drops=4 elapsed=1185 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+12: EGRESS claims=1778 returns=1778 held-ticks=432 max-pending=2; local completion tickets, no driver-owned frame forgotten
+12: DISPATCH published=1778 driver-rejected-callbacks=104; original admission/fresh check/exact terminal/slot reuse, no driver-copy gap
+12: EVENTS posted=1778 serviced=1778 stale=0 wait-ticks=1778 max-pending=1; owned copies, one-event budget/current service time
+12: SETUP frames=473 drops=4 elapsed=1185 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+12: EGRESS claims=1544 returns=1544 held-ticks=375 max-pending=2; local completion tickets, no driver-owned frame forgotten
+12: DISPATCH published=1544 driver-rejected-callbacks=90; original admission/fresh check/exact terminal/slot reuse, no driver-copy gap
+12: EVENTS posted=1544 serviced=1544 stale=0 wait-ticks=1544 max-pending=1; owned copies, one-event budget/current service time
+12: SETUP frames=473 drops=4 elapsed=1185 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+12: EGRESS claims=1778 returns=1778 held-ticks=432 max-pending=2; local completion tickets, no driver-owned frame forgotten
+12: DISPATCH published=1778 driver-rejected-callbacks=104; original admission/fresh check/exact terminal/slot reuse, no driver-copy gap
+12: EVENTS posted=1778 serviced=1778 stale=0 wait-ticks=1778 max-pending=1; owned copies, one-event budget/current service time
+12: SETUP frames=473 drops=4 elapsed=1185 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+12: EGRESS claims=1497 returns=1497 held-ticks=364 max-pending=2; local completion tickets, no driver-owned frame forgotten
+12: DISPATCH published=1497 driver-rejected-callbacks=88; original admission/fresh check/exact terminal/slot reuse, no driver-copy gap
+12: EVENTS posted=1497 serviced=1497 stale=0 wait-ticks=1497 max-pending=1; owned copies, one-event budget/current service time
+12: SETUP frames=473 drops=4 elapsed=1185 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+12: EGRESS claims=1498 returns=1498 held-ticks=364 max-pending=2; local completion tickets, no driver-owned frame forgotten
+12: DISPATCH published=1498 driver-rejected-callbacks=88; original admission/fresh check/exact terminal/slot reuse, no driver-copy gap
+12: EVENTS posted=1498 serviced=1498 stale=0 wait-ticks=1498 max-pending=1; owned copies, one-event budget/current service time
+12: PASS8 transported metadata signed chains: frames=12067 drops=80 container-bytes=4799 DER=70..72 longest=4715 synthetic ms; producer wiped, actual delivered signature/raw digest/lease/model/close, no image deadline reset
+12: SETUP frames=473 drops=4 elapsed=1189 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+12: SETUP frames=473 drops=4 elapsed=1189 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+12: SETUP frames=473 drops=4 elapsed=1189 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+12: PASS transported metadata does not bypass invalid signature, correctly re-signed wrong raw digest, or expired independent image RX
+12: SETUP frames=473 drops=4 elapsed=1189 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+12: SETUP frames=473 drops=4 elapsed=1189 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+12: PASS2 dispatch/completion retained through original image expiry; late correlated return reclaims slot only, no RX/admission revival
+12/49 Test #12: boot_driver_dispatch_handoff ........   Passed    0.05 sec
+test 13
+      Start 13: boot_frame_ingress_handoff
+
+13: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/threaded-update-link/build-boot-host/boot_handoff_tests "--frame-ingress-staging"
+13: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/threaded-update-link/build-boot-host
+13: Test timeout computed to be: 30
+13: SETUP frames=473 drops=4 elapsed=1192 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+13: EGRESS claims=1097 returns=1097 held-ticks=266 max-pending=2; local completion tickets, no driver-owned frame forgotten
+13: DISPATCH published=1097 driver-rejected-callbacks=64; original admission/fresh check/exact terminal/slot reuse, no driver-copy gap
+13: INGRESS owned copies=1161 checked=1161; capture age/current service time, one-frame service budget
+13: EVENTS posted=1097 serviced=1097 stale=0 wait-ticks=1097 max-pending=1; owned copies, one-event budget/current service time
+13: SETUP frames=473 drops=4 elapsed=1192 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+13: EGRESS claims=1331 returns=1331 held-ticks=324 max-pending=2; local completion tickets, no driver-owned frame forgotten
+13: DISPATCH published=1331 driver-rejected-callbacks=78; original admission/fresh check/exact terminal/slot reuse, no driver-copy gap
+13: INGRESS owned copies=1409 checked=1409; capture age/current service time, one-frame service budget
+13: EVENTS posted=1331 serviced=1331 stale=0 wait-ticks=1331 max-pending=1; owned copies, one-event budget/current service time
+13: SETUP frames=473 drops=4 elapsed=1188 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+13: EGRESS claims=1544 returns=1544 held-ticks=375 max-pending=2; local completion tickets, no driver-owned frame forgotten
+13: DISPATCH published=1544 driver-rejected-callbacks=90; original admission/fresh check/exact terminal/slot reuse, no driver-copy gap
+13: INGRESS owned copies=1627 checked=1627; capture age/current service time, one-frame service budget
+13: EVENTS posted=1544 serviced=1544 stale=0 wait-ticks=1544 max-pending=1; owned copies, one-event budget/current service time
+13: SETUP frames=473 drops=4 elapsed=1188 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+13: EGRESS claims=1778 returns=1778 held-ticks=432 max-pending=2; local completion tickets, no driver-owned frame forgotten
+13: DISPATCH published=1778 driver-rejected-callbacks=104; original admission/fresh check/exact terminal/slot reuse, no driver-copy gap
+13: INGRESS owned copies=1876 checked=1876; capture age/current service time, one-frame service budget
+13: EVENTS posted=1778 serviced=1778 stale=0 wait-ticks=1778 max-pending=1; owned copies, one-event budget/current service time
+13: SETUP frames=473 drops=4 elapsed=1188 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+13: EGRESS claims=1544 returns=1544 held-ticks=375 max-pending=2; local completion tickets, no driver-owned frame forgotten
+13: DISPATCH published=1544 driver-rejected-callbacks=90; original admission/fresh check/exact terminal/slot reuse, no driver-copy gap
+13: INGRESS owned copies=1627 checked=1627; capture age/current service time, one-frame service budget
+13: EVENTS posted=1544 serviced=1544 stale=0 wait-ticks=1544 max-pending=1; owned copies, one-event budget/current service time
+13: SETUP frames=473 drops=4 elapsed=1188 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+13: EGRESS claims=1778 returns=1778 held-ticks=432 max-pending=2; local completion tickets, no driver-owned frame forgotten
+13: DISPATCH published=1778 driver-rejected-callbacks=104; original admission/fresh check/exact terminal/slot reuse, no driver-copy gap
+13: INGRESS owned copies=1876 checked=1876; capture age/current service time, one-frame service budget
+13: EVENTS posted=1778 serviced=1778 stale=0 wait-ticks=1778 max-pending=1; owned copies, one-event budget/current service time
+13: SETUP frames=473 drops=4 elapsed=1188 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+13: EGRESS claims=1497 returns=1497 held-ticks=364 max-pending=2; local completion tickets, no driver-owned frame forgotten
+13: DISPATCH published=1497 driver-rejected-callbacks=88; original admission/fresh check/exact terminal/slot reuse, no driver-copy gap
+13: INGRESS owned copies=1577 checked=1577; capture age/current service time, one-frame service budget
+13: EVENTS posted=1497 serviced=1497 stale=0 wait-ticks=1497 max-pending=1; owned copies, one-event budget/current service time
+13: SETUP frames=473 drops=4 elapsed=1188 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+13: EGRESS claims=1497 returns=1497 held-ticks=364 max-pending=2; local completion tickets, no driver-owned frame forgotten
+13: DISPATCH published=1497 driver-rejected-callbacks=88; original admission/fresh check/exact terminal/slot reuse, no driver-copy gap
+13: INGRESS owned copies=1577 checked=1577; capture age/current service time, one-frame service budget
+13: EVENTS posted=1497 serviced=1497 stale=0 wait-ticks=1497 max-pending=1; owned copies, one-event budget/current service time
+13: PASS8 transported metadata signed chains: frames=12066 drops=80 container-bytes=4796 DER=70..72 longest=4740 synthetic ms; producer wiped, actual delivered signature/raw digest/lease/model/close, no image deadline reset
+13: SETUP frames=473 drops=4 elapsed=1192 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+13: SETUP frames=473 drops=4 elapsed=1192 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+13: SETUP frames=473 drops=4 elapsed=1192 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+13: PASS transported metadata does not bypass invalid signature, correctly re-signed wrong raw digest, or expired independent image RX
+13: SETUP frames=473 drops=4 elapsed=1192 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+13: SETUP frames=473 drops=4 elapsed=1192 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+13: PASS2 ingress expiry/overrun refuses staged payload, original image deadline retained, no RX/admission revival
+13/49 Test #13: boot_frame_ingress_handoff ..........   Passed    0.05 sec
+test 14
+      Start 14: boot_threaded_ingress_handoff
+
+14: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/threaded-update-link/build-boot-host/boot_handoff_tests "--threaded-owner-staging"
+14: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/threaded-update-link/build-boot-host
+14: Test timeout computed to be: 60
+14: SETUP frames=473 drops=4 elapsed=1192 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+14: EGRESS claims=1097 returns=1097 held-ticks=1363 max-pending=2; local completion tickets, no driver-owned frame forgotten
+14: DISPATCH published=1097 driver-rejected-callbacks=64; original admission/fresh check/exact terminal/slot reuse, no driver-copy gap
+14: INGRESS owned copies=1161 checked=1161; capture age/current service time, one-frame service budget
+14: RX OWNER pauses=10 advances=10 timeout-recoveries=0 retired-without-dispatch=0; actual ACK+drain barrier, epochs/counters/time retained
+14: EVENTS posted=1097 serviced=1097 stale=0 wait-ticks=1363 max-pending=1; owned copies, one-event budget/current service time
+14: THREADED captures=1161 retained=0 actual-driver-acks=10; dedicated driver joined, protocol/crypto on caller, no synthetic returns
+14: SETUP frames=473 drops=4 elapsed=1192 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+14: EGRESS claims=1331 returns=1331 held-ticks=1657 max-pending=2; local completion tickets, no driver-owned frame forgotten
+14: DISPATCH published=1331 driver-rejected-callbacks=78; original admission/fresh check/exact terminal/slot reuse, no driver-copy gap
+14: INGRESS owned copies=1409 checked=1409; capture age/current service time, one-frame service budget
+14: RX OWNER pauses=14 advances=10 timeout-recoveries=4 retired-without-dispatch=3; actual ACK+drain barrier, epochs/counters/time retained
+14: EVENTS posted=1331 serviced=1331 stale=0 wait-ticks=1655 max-pending=1; owned copies, one-event budget/current service time
+14: THREADED captures=1409 retained=0 actual-driver-acks=14; dedicated driver joined, protocol/crypto on caller, no synthetic returns
+14: SETUP frames=473 drops=4 elapsed=1188 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+14: EGRESS claims=1544 returns=1544 held-ticks=1925 max-pending=2; local completion tickets, no driver-owned frame forgotten
+14: DISPATCH published=1544 driver-rejected-callbacks=90; original admission/fresh check/exact terminal/slot reuse, no driver-copy gap
+14: INGRESS owned copies=1627 checked=1627; capture age/current service time, one-frame service budget
+14: RX OWNER pauses=22 advances=10 timeout-recoveries=12 retired-without-dispatch=12; actual ACK+drain barrier, epochs/counters/time retained
+14: EVENTS posted=1544 serviced=1544 stale=0 wait-ticks=1919 max-pending=1; owned copies, one-event budget/current service time
+14: THREADED captures=1627 retained=0 actual-driver-acks=22; dedicated driver joined, protocol/crypto on caller, no synthetic returns
+14: SETUP frames=473 drops=4 elapsed=1188 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+14: EGRESS claims=1778 returns=1778 held-ticks=2210 max-pending=2; local completion tickets, no driver-owned frame forgotten
+14: DISPATCH published=1778 driver-rejected-callbacks=104; original admission/fresh check/exact terminal/slot reuse, no driver-copy gap
+14: INGRESS owned copies=1876 checked=1876; capture age/current service time, one-frame service budget
+14: RX OWNER pauses=10 advances=10 timeout-recoveries=0 retired-without-dispatch=0; actual ACK+drain barrier, epochs/counters/time retained
+14: EVENTS posted=1778 serviced=1778 stale=0 wait-ticks=2210 max-pending=1; owned copies, one-event budget/current service time
+14: THREADED captures=1876 retained=0 actual-driver-acks=10; dedicated driver joined, protocol/crypto on caller, no synthetic returns
+14: SETUP frames=473 drops=4 elapsed=1188 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+14: EGRESS claims=1544 returns=1544 held-ticks=1923 max-pending=2; local completion tickets, no driver-owned frame forgotten
+14: DISPATCH published=1544 driver-rejected-callbacks=90; original admission/fresh check/exact terminal/slot reuse, no driver-copy gap
+14: INGRESS owned copies=1627 checked=1627; capture age/current service time, one-frame service budget
+14: RX OWNER pauses=22 advances=10 timeout-recoveries=12 retired-without-dispatch=10; actual ACK+drain barrier, epochs/counters/time retained
+14: EVENTS posted=1544 serviced=1544 stale=0 wait-ticks=1919 max-pending=1; owned copies, one-event budget/current service time
+14: THREADED captures=1627 retained=0 actual-driver-acks=22; dedicated driver joined, protocol/crypto on caller, no synthetic returns
+14: SETUP frames=473 drops=4 elapsed=1188 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+14: EGRESS claims=1778 returns=1778 held-ticks=2216 max-pending=2; local completion tickets, no driver-owned frame forgotten
+14: DISPATCH published=1778 driver-rejected-callbacks=104; original admission/fresh check/exact terminal/slot reuse, no driver-copy gap
+14: INGRESS owned copies=1876 checked=1876; capture age/current service time, one-frame service budget
+14: RX OWNER pauses=22 advances=10 timeout-recoveries=12 retired-without-dispatch=12; actual ACK+drain barrier, epochs/counters/time retained
+14: EVENTS posted=1778 serviced=1778 stale=0 wait-ticks=2210 max-pending=1; owned copies, one-event budget/current service time
+14: THREADED captures=1876 retained=0 actual-driver-acks=22; dedicated driver joined, protocol/crypto on caller, no synthetic returns
+14: SETUP frames=473 drops=4 elapsed=1188 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+14: EGRESS claims=1497 returns=1497 held-ticks=1861 max-pending=2; local completion tickets, no driver-owned frame forgotten
+14: DISPATCH published=1497 driver-rejected-callbacks=88; original admission/fresh check/exact terminal/slot reuse, no driver-copy gap
+14: INGRESS owned copies=1577 checked=1577; capture age/current service time, one-frame service budget
+14: RX OWNER pauses=10 advances=10 timeout-recoveries=0 retired-without-dispatch=0; actual ACK+drain barrier, epochs/counters/time retained
+14: EVENTS posted=1497 serviced=1497 stale=0 wait-ticks=1861 max-pending=1; owned copies, one-event budget/current service time
+14: THREADED captures=1577 retained=0 actual-driver-acks=10; dedicated driver joined, protocol/crypto on caller, no synthetic returns
+14: SETUP frames=473 drops=4 elapsed=1188 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+14: EGRESS claims=1497 returns=1497 held-ticks=1863 max-pending=2; local completion tickets, no driver-owned frame forgotten
+14: DISPATCH published=1497 driver-rejected-callbacks=88; original admission/fresh check/exact terminal/slot reuse, no driver-copy gap
+14: INGRESS owned copies=1577 checked=1577; capture age/current service time, one-frame service budget
+14: RX OWNER pauses=22 advances=10 timeout-recoveries=12 retired-without-dispatch=11; actual ACK+drain barrier, epochs/counters/time retained
+14: EVENTS posted=1497 serviced=1497 stale=0 wait-ticks=1861 max-pending=1; owned copies, one-event budget/current service time
+14: THREADED captures=1577 retained=0 actual-driver-acks=22; dedicated driver joined, protocol/crypto on caller, no synthetic returns
+14: PASS8 transported metadata signed chains: frames=12066 drops=80 container-bytes=4799 DER=70..72 longest=4740 synthetic ms; producer wiped, actual delivered signature/raw digest/lease/model/close, no image deadline reset
+14: SETUP frames=473 drops=4 elapsed=1192 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+14: THREADED captures=1271 retained=0 actual-driver-acks=12; dedicated driver joined, protocol/crypto on caller, no synthetic returns
+14: SETUP frames=473 drops=4 elapsed=1192 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+14: THREADED captures=1271 retained=0 actual-driver-acks=12; dedicated driver joined, protocol/crypto on caller, no synthetic returns
+14: SETUP frames=473 drops=4 elapsed=1192 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+14: THREADED captures=1008 retained=0 actual-driver-acks=12; dedicated driver joined, protocol/crypto on caller, no synthetic returns
+14: PASS transported metadata does not bypass invalid signature, correctly re-signed wrong raw digest, or expired independent image RX
+14: SETUP frames=473 drops=4 elapsed=1192 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+14: SETUP frames=473 drops=4 elapsed=1192 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+14: PASS2 threaded driver lifetime refusals: original image expiry, retained exact claim, late cancellation cleanup-only; stop/join never synthesizes a return
+14: PASS threaded external BUSY capture: original permit/time retained, actual ring+pending+driver claim preserved; pause unacknowledged, no retag/flush on join
+14/49 Test #14: boot_threaded_ingress_handoff .......   Passed    0.18 sec
+test 15
+      Start 15: boot_ingress_owner_handoff
+
+15: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/threaded-update-link/build-boot-host/boot_handoff_tests "--ingress-owner-staging"
+15: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/threaded-update-link/build-boot-host
+15: Test timeout computed to be: 30
+15: SETUP frames=473 drops=4 elapsed=1192 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+15: EGRESS claims=1097 returns=1097 held-ticks=266 max-pending=2; local completion tickets, no driver-owned frame forgotten
+15: DISPATCH published=1097 driver-rejected-callbacks=64; original admission/fresh check/exact terminal/slot reuse, no driver-copy gap
+15: INGRESS owned copies=1161 checked=1161; capture age/current service time, one-frame service budget
+15: RX OWNER pauses=10 advances=10 timeout-recoveries=0 retired-without-dispatch=0; actual ACK+drain barrier, epochs/counters/time retained
+15: EVENTS posted=1097 serviced=1097 stale=0 wait-ticks=1097 max-pending=1; owned copies, one-event budget/current service time
+15: SETUP frames=473 drops=4 elapsed=1192 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+15: EGRESS claims=1331 returns=1331 held-ticks=324 max-pending=2; local completion tickets, no driver-owned frame forgotten
+15: DISPATCH published=1331 driver-rejected-callbacks=78; original admission/fresh check/exact terminal/slot reuse, no driver-copy gap
+15: INGRESS owned copies=1409 checked=1409; capture age/current service time, one-frame service budget
+15: RX OWNER pauses=14 advances=10 timeout-recoveries=4 retired-without-dispatch=3; actual ACK+drain barrier, epochs/counters/time retained
+15: EVENTS posted=1331 serviced=1331 stale=0 wait-ticks=1331 max-pending=1; owned copies, one-event budget/current service time
+15: SETUP frames=473 drops=4 elapsed=1188 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+15: EGRESS claims=1544 returns=1544 held-ticks=375 max-pending=2; local completion tickets, no driver-owned frame forgotten
+15: DISPATCH published=1544 driver-rejected-callbacks=90; original admission/fresh check/exact terminal/slot reuse, no driver-copy gap
+15: INGRESS owned copies=1627 checked=1627; capture age/current service time, one-frame service budget
+15: RX OWNER pauses=22 advances=10 timeout-recoveries=12 retired-without-dispatch=12; actual ACK+drain barrier, epochs/counters/time retained
+15: EVENTS posted=1544 serviced=1544 stale=0 wait-ticks=1544 max-pending=1; owned copies, one-event budget/current service time
+15: SETUP frames=473 drops=4 elapsed=1188 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+15: EGRESS claims=1778 returns=1778 held-ticks=432 max-pending=2; local completion tickets, no driver-owned frame forgotten
+15: DISPATCH published=1778 driver-rejected-callbacks=104; original admission/fresh check/exact terminal/slot reuse, no driver-copy gap
+15: INGRESS owned copies=1876 checked=1876; capture age/current service time, one-frame service budget
+15: RX OWNER pauses=10 advances=10 timeout-recoveries=0 retired-without-dispatch=0; actual ACK+drain barrier, epochs/counters/time retained
+15: EVENTS posted=1778 serviced=1778 stale=0 wait-ticks=1778 max-pending=1; owned copies, one-event budget/current service time
+15: SETUP frames=473 drops=4 elapsed=1188 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+15: EGRESS claims=1544 returns=1544 held-ticks=375 max-pending=2; local completion tickets, no driver-owned frame forgotten
+15: DISPATCH published=1544 driver-rejected-callbacks=90; original admission/fresh check/exact terminal/slot reuse, no driver-copy gap
+15: INGRESS owned copies=1627 checked=1627; capture age/current service time, one-frame service budget
+15: RX OWNER pauses=22 advances=10 timeout-recoveries=12 retired-without-dispatch=10; actual ACK+drain barrier, epochs/counters/time retained
+15: EVENTS posted=1544 serviced=1544 stale=0 wait-ticks=1544 max-pending=1; owned copies, one-event budget/current service time
+15: SETUP frames=473 drops=4 elapsed=1188 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+15: EGRESS claims=1778 returns=1778 held-ticks=432 max-pending=2; local completion tickets, no driver-owned frame forgotten
+15: DISPATCH published=1778 driver-rejected-callbacks=104; original admission/fresh check/exact terminal/slot reuse, no driver-copy gap
+15: INGRESS owned copies=1876 checked=1876; capture age/current service time, one-frame service budget
+15: RX OWNER pauses=22 advances=10 timeout-recoveries=12 retired-without-dispatch=12; actual ACK+drain barrier, epochs/counters/time retained
+15: EVENTS posted=1778 serviced=1778 stale=0 wait-ticks=1778 max-pending=1; owned copies, one-event budget/current service time
+15: SETUP frames=473 drops=4 elapsed=1188 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+15: EGRESS claims=1497 returns=1497 held-ticks=364 max-pending=2; local completion tickets, no driver-owned frame forgotten
+15: DISPATCH published=1497 driver-rejected-callbacks=88; original admission/fresh check/exact terminal/slot reuse, no driver-copy gap
+15: INGRESS owned copies=1577 checked=1577; capture age/current service time, one-frame service budget
+15: RX OWNER pauses=10 advances=10 timeout-recoveries=0 retired-without-dispatch=0; actual ACK+drain barrier, epochs/counters/time retained
+15: EVENTS posted=1497 serviced=1497 stale=0 wait-ticks=1497 max-pending=1; owned copies, one-event budget/current service time
+15: SETUP frames=473 drops=4 elapsed=1188 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+15: EGRESS claims=1497 returns=1497 held-ticks=364 max-pending=2; local completion tickets, no driver-owned frame forgotten
+15: DISPATCH published=1497 driver-rejected-callbacks=88; original admission/fresh check/exact terminal/slot reuse, no driver-copy gap
+15: INGRESS owned copies=1577 checked=1577; capture age/current service time, one-frame service budget
+15: RX OWNER pauses=22 advances=10 timeout-recoveries=12 retired-without-dispatch=11; actual ACK+drain barrier, epochs/counters/time retained
+15: EVENTS posted=1497 serviced=1497 stale=0 wait-ticks=1497 max-pending=1; owned copies, one-event budget/current service time
+15: PASS8 transported metadata signed chains: frames=12066 drops=80 container-bytes=4796 DER=70..72 longest=4740 synthetic ms; producer wiped, actual delivered signature/raw digest/lease/model/close, no image deadline reset
+15: SETUP frames=473 drops=4 elapsed=1192 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+15: SETUP frames=473 drops=4 elapsed=1192 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+15: SETUP frames=473 drops=4 elapsed=1192 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+15: PASS transported metadata does not bypass invalid signature, correctly re-signed wrong raw digest, or expired independent image RX
+15: SETUP frames=473 drops=4 elapsed=1192 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+15: SETUP frames=473 drops=4 elapsed=1192 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+15: PASS2 ingress owner refusals: original capture age stays fatal; ACK+drain lower-timeout recovery/fresh epoch/late TX cleanup cannot revive expired independent image RX or admission
+15/49 Test #15: boot_ingress_owner_handoff ..........   Passed    0.06 sec
+test 16
+      Start 16: boot_channel_handoff
+
+16: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/threaded-update-link/build-boot-host/boot_handoff_tests "--channel-staging"
+16: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/threaded-update-link/build-boot-host
+16: Test timeout computed to be: 30
+16: SETUP frames=473 drops=4 elapsed=1020 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+16: SETUP frames=473 drops=4 elapsed=1020 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+16: SETUP frames=473 drops=4 elapsed=1016 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+16: SETUP frames=473 drops=4 elapsed=1016 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+16: SETUP frames=473 drops=4 elapsed=1016 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+16: SETUP frames=473 drops=4 elapsed=1016 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+16: SETUP frames=473 drops=4 elapsed=1016 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+16: SETUP frames=473 drops=4 elapsed=1016 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+16: PASS8 transported metadata signed chains: frames=12066 drops=80 container-bytes=4798 DER=70..72 longest=3710 synthetic ms; producer wiped, actual delivered signature/raw digest/lease/model/close, no image deadline reset
+16: SETUP frames=473 drops=4 elapsed=1020 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+16: SETUP frames=473 drops=4 elapsed=1020 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+16: SETUP frames=473 drops=4 elapsed=1020 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+16: PASS transported metadata does not bypass invalid signature, correctly re-signed wrong raw digest, or expired independent image RX
+16/49 Test #16: boot_channel_handoff ................   Passed    0.03 sec
+test 17
+      Start 17: boot_metadata_setup_handoff
+
+17: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/threaded-update-link/build-boot-host/boot_handoff_tests "--metadata-setup-staging"
+17: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/threaded-update-link/build-boot-host
+17: Test timeout computed to be: 30
+17: SETUP frames=473 drops=4 elapsed=1020 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+17: SETUP frames=473 drops=4 elapsed=1020 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+17: SETUP frames=473 drops=4 elapsed=1020 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+17: SETUP frames=473 drops=4 elapsed=1020 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+17: SETUP frames=473 drops=4 elapsed=1020 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+17: SETUP frames=473 drops=4 elapsed=1020 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+17: SETUP frames=473 drops=4 elapsed=1020 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+17: SETUP frames=473 drops=4 elapsed=1020 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+17: PASS8 transported metadata signed chains: frames=8282 drops=48 container-bytes=4802 DER=71..72 longest=3711 synthetic ms; producer wiped, actual delivered signature/raw digest/lease/model/close, no image deadline reset
+17: SETUP frames=473 drops=4 elapsed=1020 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+17: SETUP frames=473 drops=4 elapsed=1020 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+17: SETUP frames=473 drops=4 elapsed=1020 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+17: PASS transported metadata does not bypass invalid signature, correctly re-signed wrong raw digest, or expired independent image RX
+17/49 Test #17: boot_metadata_setup_handoff .........   Passed    0.03 sec
+test 18
+      Start 18: boot_metadata_handoff
+
+18: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/threaded-update-link/build-boot-host/boot_handoff_tests "--metadata-staging"
+18: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/threaded-update-link/build-boot-host
+18: Test timeout computed to be: 30
+18: PASS8 transported metadata signed chains: frames=9483 drops=48 container-bytes=4797 DER=70..72 longest=2804 synthetic ms; producer wiped, actual delivered signature/raw digest/lease/model/close, no image deadline reset
+18: PASS transported metadata does not bypass invalid signature, correctly re-signed wrong raw digest, or expired independent image RX
+18/49 Test #18: boot_metadata_handoff ...............   Passed    0.02 sec
+test 19
+      Start 19: boot_release_handoff
+
+19: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/threaded-update-link/build-boot-host/boot_handoff_tests "--release"
+19: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/threaded-update-link/build-boot-host
+19: Test timeout computed to be: 30
+19: PASS 6 release15 negotiation/DATA/signature/SHA/vector/close/outcome chains; handshake/DATA/ACK/report losses, exactly one release
+19: PASS release_full_chain
+19: PASS release_live_snapshot
+19: PASS release_live_revocation
+19: PASS release_completion_rejections
+19: PASS release_explicit_mode
+19: PASS release_cleanup_and_late_context
+19: PASS release_reentry_and_completion_snapshot
+19: PASS release_arguments_and_aliases
+19: PASS 8 release handoff groups; adapter=528 full_receipt=360 completion=568 core=2136 workspace=17664; RAM only, no install/device access
+19/49 Test #19: boot_release_handoff ................   Passed    0.08 sec
+test 20
+      Start 20: boot_image_profile
+
+20: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/threaded-update-link/build-boot-host/boot_profile_tests
+20: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/threaded-update-link/build-boot-host
+20: Test timeout computed to be: 15
+20: PASS 241 vector-table lengths, 16..256 entries; synthetic models only
+20: PASS all_table_lengths
+20: PASS unknown_and_invalid_profiles
+20: PASS stack_edges_and_gaps
+20: PASS every slot in 256-entry table; null/even/outside/table/RAM/truncated Thumb target rejected
+20: PASS every_handler_and_reserved_slot
+20: PASS full_uint32_arithmetic
+20: PASS lengths_aliases_and_zero_output
+20: PASS 6 profile groups; profile=116 inspection=44; model consistency only, no execution/device access
+20/49 Test #20: boot_image_profile ..................   Passed    0.00 sec
+test 21
+      Start 21: boot_release_admission
+
+21: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/threaded-update-link/build-boot-host/boot_release_tests
+21: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/threaded-update-link/build-boot-host
+21: Test timeout computed to be: 30
+21: PASS maximum-width fields: document=604 padded=1024 workspace=17664 candidate=224 policy=288
+21: PASS 8 signed release admission groups; raw P-256/SHA, versions/selection/target/image, cleanup/faults; RAM only, no install/device access
+21/49 Test #21: boot_release_admission ..............   Passed    0.10 sec
+test 22
+      Start 22: boot_release_versions
+
+22: Test command: /home/avlyubimov/.local/bin/python3.14 "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/threaded-update-link/firmware/stm32-bootloader/tests/release_versions.py" "--driver" "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/threaded-update-link/build-boot-host/boot_release_tests"
+22: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/threaded-update-link/build-boot-host
+22: Test timeout computed to be: 30
+22: PASS 2745 independent bounded SemVer comparisons; 31-byte subset, numeric prerelease not truncated to uint32
+22/49 Test #22: boot_release_versions ...............   Passed    0.04 sec
+test 23
+      Start 23: update_driver_dispatch_threads
+
+23: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/threaded-update-link/build-boot-host/update-transport/update_driver_dispatch_tests "--threads"
+23: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/threaded-update-link/build-boot-host/update-transport
+23: Test timeout computed to be: 60
+23: PASS two real actors bidirectional publication/take/fresh-check/peer-RX/exact-return/service: 256 messages/8448 frames/1056 stale callbacks, capacities1..4/clock wrap
+23: PASS4 controlled two-actor cancellations before/after take, driver expiry and full uncertain→retained terminal retry; exact claim reclaimed only
+23/49 Test #23: update_driver_dispatch_threads ......   Passed    0.01 sec
+test 24
+      Start 24: update_frame_ingress_threads
+
+24: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/threaded-update-link/build-boot-host/update-transport/update_frame_ingress_tests "--threads"
+24: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/threaded-update-link/build-boot-host/update-transport
+24: Test timeout computed to be: 60
+24: PASS two real actors: 800000 owned FIFO frames; 256 actual channel messages/8448 fragments; capacity1..4, input wiped, fixed synthetic near-wrap clock
+24: PASS3 controlled two-actor loss/producer-clock/consumer-age refusals after stage, no payload exposure
+24/49 Test #24: update_frame_ingress_threads ........   Passed    0.17 sec
+test 25
+      Start 25: update_ingress_owner_threads
+
+25: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/threaded-update-link/build-boot-host/update-transport/update_ingress_owner_tests "--threads"
+25: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/threaded-update-link/build-boot-host/update-transport
+25: Test timeout computed to be: 60
+25: PASS256 actual two-actor channel messages/8448 frames/1280 acknowledged phase cutovers/1276 stale ACKs/1024 stale offers; capacity1..4, fixed synthetic near-wrap clock, counters retained
+25: PASS5 controlled races: early empty/in-flight permit, published frame after empty, full pending+staged ACK barrier, loss after ACK, lower-timeout ACK+retirement+recovery; no external stop/drain boolean
+25/49 Test #25: update_ingress_owner_threads ........   Passed    0.00 sec
+test 26
+      Start 26: update_completion_mailbox_threads
+
+26: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/threaded-update-link/build-boot-host/update-transport/update_completion_mailbox_tests "--threads"
+26: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/threaded-update-link/build-boot-host/update-transport
+26: Test timeout computed to be: 60
+26: PASS two real pthread actors/1200000 ordered reports/capacities1..4, producer retries=691037; no claim/driver/auth authority
+26/49 Test #26: update_completion_mailbox_threads ...   Passed    0.17 sec
+test 27
+      Start 27: update_metadata_setup_reference
+
+27: Test command: /home/avlyubimov/.local/bin/python3.14 "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/threaded-update-link/protocol/can/tests/metadata_setup_reference.py" "--driver" "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/threaded-update-link/build-boot-host/update-transport/update_metadata_setup_tests"
+27: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/threaded-update-link/build-boot-host/update-transport
+27: Test timeout computed to be: 15
+27: PASS4 independent setup vectors; SHA256=77da01788acccedaabd4bc0db47b508f53c009ad84670354ac35b0367d0200b7
+27/49 Test #27: update_metadata_setup_reference .....   Passed    0.03 sec
+test 28
+      Start 28: update_wire_reference
+
+28: Test command: /home/avlyubimov/.local/bin/python3.14 "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/threaded-update-link/protocol/can/tests/wire_reference.py" "--driver" "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/threaded-update-link/build-boot-host/update-transport/update_wire_tests"
+28: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/threaded-update-link/build-boot-host/update-transport
+28: Test timeout computed to be: 15
+28: PASS12 independent Python LE golden messages,8 kinds/all5 outcome codes; concatenated_sha256=7c94f5fd561787851d86d23c8179a806b908cb94cf48a1d52580540cf1705426
+28/49 Test #28: update_wire_reference ...............   Passed    0.03 sec
+test 29
+      Start 29: update_fragment_reference
+
+29: Test command: /home/avlyubimov/.local/bin/python3.14 "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/threaded-update-link/protocol/can/tests/fragment_reference.py" "--driver" "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/threaded-update-link/build-boot-host/update-transport/update_fragment_tests"
+29: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/threaded-update-link/build-boot-host/update-transport
+29: Test timeout computed to be: 15
+29: PASS3 independent vectors: ACK24/6, DATA31/8, DATA286/72 frames; partial DLC7/6; SHA256=0e2abb4d14cacfd05d66f9c4e021efab0395643230ed6e689bc7b00364b9ec8a
+29/49 Test #29: update_fragment_reference ...........   Passed    0.02 sec
+test 30
+      Start 30: update_metadata_reference
+
+30: Test command: /home/avlyubimov/.local/bin/python3.14 "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/threaded-update-link/protocol/can/tests/metadata_reference.py" "--driver" "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/threaded-update-link/build-boot-host/update-transport/update_metadata_tests"
+30: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/threaded-update-link/build-boot-host/update-transport
+30: Test timeout computed to be: 15
+30: PASS2 independent metadata bundles98/1215 bytes; SHA256=e8bffb2885cc650c2be225dfb8f1956f8f2244e081361c8fd11ed7c67603e8d0
+30/49 Test #30: update_metadata_reference ...........   Passed    0.02 sec
+test 31
+      Start 31: update_session
+
+31: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/threaded-update-link/build-boot-host/update-transport/update_session_tests
+31: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/threaded-update-link/build-boot-host/update-transport
+31: Test timeout computed to be: 20
+31: PASS checksum_vectors
+31: PASS invalid_limits
+31: PASS begin_and_exclusivity
+31: PASS two_phase_and_exact_duplicates
+31: PASS malformed_blocks
+31: PASS conflicting_duplicate
+31: PASS crc_collision_does_not_match_duplicate
+31: PASS consumer_failure_is_sticky
+31: PASS sender_retry_budget
+31: PASS receiver_retry_budget
+31: PASS ack_validation
+31: PASS deadline_boundaries
+31: PASS total_deadline
+31: PASS clocks_and_wraparound
+31: PASS abort_and_reboot
+31: PASS null_and_output_contracts
+31: PASS retry_counter_boundary
+31: PASS 17 unit groups; rx=384 tx=384 bytes; no device access
+31/49 Test #31: update_session ......................   Passed    0.00 sec
+test 32
+      Start 32: update_loopback
+
+32: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/threaded-update-link/build-boot-host/update-transport/update_loopback_tests
+32: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/threaded-update-link/build-boot-host/update-transport
+32: Test timeout computed to be: 20
+32: PASS 2049 memory transfers; lost DATA=4318 ACK=4360 (final=397) corrupt=3924 reorder=4338 pending duplicates=4004
+32: PASS altered payload + valid CRC completes transport only; SHA oracle rejects image
+32: PASS 10 volatile reset cut cases; stale sessions/ACK rejected; no resume
+32: PASS truncated stream / partial RAM consumer never reach completion
+32/49 Test #32: update_loopback .....................   Passed    0.04 sec
+test 33
+      Start 33: update_outcome
+
+33: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/threaded-update-link/build-boot-host/update-transport/update_outcome_tests
+33: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/threaded-update-link/build-boot-host/update-transport
+33: Test timeout computed to be: 20
+33: PASS 1001 outcome sessions, 1001 deliveries; lost report/final ACK; duplicates not redelivered
+33: PASS loss_duplicate_and_history
+33: PASS binding_and_ack_validation
+33: PASS conflicts_invalid_reports_and_forgery_boundary
+33: PASS deadlines_retries_and_late_begin
+33: PASS transport_reboot_abort_and_clock
+33: PASS config_and_canonical_codes
+33: PASS 6 outcome groups; report=84 TX=128 RX=224; no authentication/install/device access
+33/49 Test #33: update_outcome ......................   Passed    0.01 sec
+test 34
+      Start 34: update_negotiation
+
+34: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/threaded-update-link/build-boot-host/update-transport/update_negotiation_tests
+34: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/threaded-update-link/build-boot-host/update-transport
+34: Test timeout computed to be: 20
+34: PASS 7 negotiation groups/1024 sessions; state=368 pool=32 message=128. Opaque bindings only; no CAN/authentication/install/device access.
+34/49 Test #34: update_negotiation ..................   Passed    0.00 sec
+test 35
+      Start 35: update_wire
+
+35: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/threaded-update-link/build-boot-host/update-transport/update_wire_tests
+35: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/threaded-update-link/build-boot-host/update-transport
+35: Test timeout computed to be: 20
+35: PASS 65536 outcome code/reason byte combinations; unknown and incompatible tokens reject with zero output
+35: PASS all256 DATA lengths; uint32 offset overflow, tail zeroing and no padding/tail emission
+35: PASS 200000 deterministic malformed/mutation cases: accepted=113410 canonical, rejected=86590 zeroed; structural only
+35: PASS corrupted DATA structurally decodes but existing RX rejects CRC before progress; consumer ACK still mandatory
+35: PASS wire draft:8 message kinds, max=286 caller_message=284; no CAN/device/installation
+35/49 Test #35: update_wire .........................   Passed    0.06 sec
+test 36
+      Start 36: update_fragment
+
+36: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/threaded-update-link/build-boot-host/update-transport/update_fragment_tests
+36: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/threaded-update-link/build-boot-host/update-transport
+36: Test timeout computed to be: 20
+36: PASS263 all 8 kinds / DATA lengths1..256 / <=72 frames / single delivery; tx=360 rx=352 bytes (host only)
+36: PASS all_kinds_and_lengths
+36: PASS all DLC256, START32768, continuation65536 fields; no padding or guessed order
+36: PASS malformed_envelopes
+36: PASS loss/order/retry/duplicate conflicts, route isolation, READY backpressure and exactly-once take
+36: PASS duplicates_order_and_pressure
+36: PASS owned TX snapshot, deterministic repeated peek, exact queue commit, stale commit and cancellation
+36: PASS tx_queue_and_snapshot
+36: PASS whole-message loss requires explicit timeout/clear and fresh counter; no implicit restart or remote ACK claim
+36: PASS lost_message_retry
+36: PASS exact progress/total/READY deadlines, drip duplicates, wrap, backward clock, generation revocation and sticky clear
+36: PASS deadlines_and_context
+36: PASS explicit config, frame quotas, exhaustion without wrap, no reinit/reset bypass, failure output zeroing
+36: PASS budgets_counters_and_arguments
+36: PASS READY is unchecked, malformed inner zeroes output, corrupted DATA still requires unchanged logical RX CRC
+36: PASS invalid_inner_and_crc
+36: PASS100000 deterministic drop/mutation/DLC/duplicate chains: taken=34470 structural only, rejected=65530 zero output, bounded cleanup
+36: PASS fault_corpus
+36/49 Test #36: update_fragment .....................   Passed    0.04 sec
+test 37
+      Start 37: update_fragment_timing
+
+37: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/threaded-update-link/build-boot-host/update-transport/update_fragment_timing_tests
+37: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/threaded-update-link/build-boot-host/update-transport
+37: Test timeout computed to be: 20
+37: PASS shared clock: whole-message retries, missing START/middle/final, lost ACK, bounded queue, exact consumer writes, wrap and retry exhaustion
+37: PASS READY exact total deadline, queue stall exact progress deadline, peek/busy cannot reset time/counters
+37: PASS sticky context/backward-clock cancellation; old START accepted by fresh generation proves reboot replay isolation is NOT provided
+37: PASS fragment progress/late valid OFFER cannot extend or revive exact50ms negotiation lifetime
+37: PASS timing data scenarios=34 frames=40700 dropped=43 timeout-clears=31 repeated-peeks=8464; HOST simulation, no bus/CPU/default timing claim
+37/49 Test #37: update_fragment_timing ..............   Passed    0.01 sec
+test 38
+      Start 38: update_metadata
+
+38: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/threaded-update-link/build-boot-host/update-transport/update_metadata_tests
+38: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/threaded-update-link/build-boot-host/update-transport
+38: Test timeout computed to be: 20
+38: PASS1024 document lengths, duplicate/final-ACK loss/copy-before-ACK/single take, fresh IDs/no reinit/wrap; rx=1728 snapshot=1212 host bytes
+38: PASS exact length/header/reserved/binding/field ranges; modified raw document structurally decodes and still needs independent signature/digest verification
+38: PASS image/metadata role separation, CRC, exact active/ready deadlines, wrap/backward/context/sticky cancellation and cache wipe
+38: PASS malformed complete container zeroes/wipes before delivery; fresh-ID recovery and exact total deadline despite slow progress
+38: PASS100000 mutations: structurally accepted=61930 rejected/zeroed=38070; no raw SHA/signature authority
+38/49 Test #38: update_metadata .....................   Passed    0.05 sec
+test 39
+      Start 39: update_metadata_setup
+
+39: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/threaded-update-link/build-boot-host/update-transport/update_metadata_setup_tests
+39: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/threaded-update-link/build-boot-host/update-transport
+39: Test timeout computed to be: 20
+39: PASS4 setup kinds; capacities/truncation/tails; 100000 mutations: 82504 structural, 17496 zero-output refusals
+39: PASS invalid config/bounds/stale session/role/generation; rejection does not allocate or restart
+39: PASS8 sequential image/metadata pairs, shared namespace ownership, no wrap/reuse; concrete close
+39: PASS4 lost setup phases, responder early take + lost CONFIRM recovery; no deadline restart
+39: PASS context/clock/owner/image/progress/content/timeout/send faults, ID retained, sticky guards
+39: Host storage only: setup=312 message=168; no MCU RAM/stack approval
+39/49 Test #39: update_metadata_setup ...............   Passed    0.01 sec
+test 40
+      Start 40: update_fragment_raw
+
+40: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/threaded-update-link/build-boot-host/update-transport/update_fragment_raw_tests
+40: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/threaded-update-link/build-boot-host/update-transport
+40: Test timeout computed to be: 20
+40: PASS279 raw lengths8..286, all undersized capacities, mode isolation, single take, retained IDs
+40: PASS raw/typed codec mismatch, context/clock/timeout/exhaustion; no authority from raw bytes
+40/49 Test #40: update_fragment_raw .................   Passed    0.01 sec
+test 41
+      Start 41: update_channel
+
+41: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/threaded-update-link/build-boot-host/update-transport/update_channel_tests
+41: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/threaded-update-link/build-boot-host/update-transport
+41: Test timeout computed to be: 20
+41: PASS512 phase cycles, 7168 mixed TU/MS messages, shared retained counters, exact queue commit/single owned take/wrap clock
+41: PASS phase order/pair IDs/late control/old metadata ACK filtering; strict prefix/version/reserved refusal, no decoder fallback
+41: PASS final queued frame progress/total timeout, exact backpressure, cancel/clear retained policy/counters; sticky context/clock/exhaustion
+41: Host storage only: channel TX=696 RX=664 snapshot=288; no MCU RAM/stack approval
+41/49 Test #41: update_channel ......................   Passed    0.03 sec
+test 42
+      Start 42: update_frame_queue
+
+42: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/threaded-update-link/build-boot-host/update-transport/update_frame_queue_tests
+42: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/threaded-update-link/build-boot-host/update-transport
+42: Test timeout computed to be: 20
+42: PASS capacities1..4, 4096 FIFO cycles/10240 owned frames; full/claim/duplicate/stale tickets, retained serials and wrap clock
+42: PASS timeout/cancel/uncertain/context/clock preserves actual claim; exact late terminal return reclaims without success/revival
+42: PASS cross-queue identical generation/route/serial cannot free a different actual owner; terminal cleanup explicit
+42: PASS invalid config/DLC256/exhaustion/no wrap, timeout before claim, explicit safe queued cancellation
+42: Host storage only: frame queue=128 driver snapshot=40; no MCU RAM/physical queue approval
+42/49 Test #42: update_frame_queue ..................   Passed    0.00 sec
+test 43
+      Start 43: update_egress
+
+43: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/threaded-update-link/build-boot-host/update-transport/update_egress_tests
+43: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/threaded-update-link/build-boot-host/update-transport
+43: Test timeout computed to be: 20
+43: PASS actual channel→owned queue→driver claim→correlated return→RX; 132 frames, capacities1..4, phase waits for driver return
+43: PASS actual final pending driver frame blocks phase despite inner IDLE; late completion reclaims, explicit clear retains counters/phase
+43: PASS uncertain/cancel/context/clock/channel-timeout cleanup; matching driver ownership retained, no force-forget/reinit
+43: Host storage only: egress owner=832; no actual MCU RAM/driver/physical approval
+43/49 Test #43: update_egress .......................   Passed    0.00 sec
+test 44
+      Start 44: update_driver_events
+
+44: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/threaded-update-link/build-boot-host/update-transport/update_driver_events_tests
+44: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/threaded-update-link/build-boot-host/update-transport
+44: Test timeout computed to be: 20
+44: PASS256 actual channel/RX messages, 8448 frames/21120 owned reports; capacities1..4/FIFO wrap/clock wrap, full retry, one-event service, stale/duplicate phase guards
+44: PASS full inbox preserves actual claim; external terminal report retained and retried after stale event service
+44: PASS queued terminal ages at current service time, not report time; uncertainty/cancel/context/clock retain ownership, late cleanup never revives phase
+44: Host storage only: driver event=32 bound event owner=968; no MCU RAM/RTOS/ISR/driver approval
+44/49 Test #44: update_driver_events ................   Passed    0.00 sec
+test 45
+      Start 45: update_completion_mailbox
+
+45: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/threaded-update-link/build-boot-host/update-transport/update_completion_mailbox_tests
+45: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/threaded-update-link/build-boot-host/update-transport
+45: Test timeout computed to be: 20
+45: PASS capacities1..4,16384 FIFO cycles/40960 owned reports, non-power-of-two ring wrap/full retry/no ledger mutation
+45: Host storage only: atomic mailbox=200; atomic_uint lock-free macro=2, no MCU ISR/RTOS approval
+45/49 Test #45: update_completion_mailbox ...........   Passed    0.00 sec
+test 46
+      Start 46: update_completion_owner
+
+46: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/threaded-update-link/build-boot-host/update-transport/update_completion_owner_tests
+46: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/threaded-update-link/build-boot-host/update-transport
+46: Test timeout computed to be: 20
+46: PASS full retained terminal retry/current-time timeout/uncertain/cancel/sticky cleanup; atomic positions and protocol IDs retained, no force-forget
+46: PASS actual mailbox blocks phase/begin/claim with inner owner IDLE and ledger empty; stale duplicate consumed explicitly
+46: PASS concurrent actual channel/claim/local-driver-report/service/RX:256 messages/8448 frames/9504 reports/1056 stale duplicates, capacities1..4/clock wrap
+46: Host storage only: bound completion owner=1208; no MCU memory/ISR/RTOS/driver truth approval
+46/49 Test #46: update_completion_owner .............   Passed    0.01 sec
+test 47
+      Start 47: update_driver_dispatch
+
+47: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/threaded-update-link/build-boot-host/update-transport/update_driver_dispatch_tests
+47: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/threaded-update-link/build-boot-host/update-transport
+47: Test timeout computed to be: 20
+47: PASS published untaken/taken claims survive cancel/expiry/context/driver-clock fault; fresh check required, original admission retained, late SENT cleanup only
+47: PASS full completion retains first terminal for retry; uncertain never overwritten, old callback cannot free next claim after clear, no implicit-current callback
+47: Host storage only: dispatch=1360 delivery=48; no target RAM/ISR/RTOS/backend or physical authority
+47/49 Test #47: update_driver_dispatch ..............   Passed    0.00 sec
+test 48
+      Start 48: update_frame_ingress
+
+48: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/threaded-update-link/build-boot-host/update-transport/update_frame_ingress_tests
+48: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/threaded-update-link/build-boot-host/update-transport
+48: Test timeout computed to be: 20
+48: PASS capacity1..4 FIFO/copy-before-release/input wipe/full retains first/original time/exact token/no live reinit
+48: PASS clock wrap/backwards/original age39 accepts40 refuses/retained retry age/overrun/exhaustion sticky; zero refusals
+48: PASS256 DLC shapes/config/token binding; ingress FRAME does not revive original channel timeout at current service time
+48: PASS BUSY caller retains original capture across later offer; fresh producer time cannot refresh external age, future capture refused
+48: host ingress=208 token=32 entry=20 bytes, not MCU RAM/physical timing approval
+48/49 Test #48: update_frame_ingress ................   Passed    0.00 sec
+test 49
+      Start 49: update_ingress_owner
+
+49: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/threaded-update-link/build-boot-host/update-transport/update_ingress_owner_tests
+49: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/threaded-update-link/build-boot-host/update-transport
+49: Test timeout computed to be: 20
+49: PASS actual pending/staged/partial/READY drain blocks advance; same-phase resume retains clocks/IDs, exact old permits/ACK stale, one advance per pause
+49: PASS loss/producer clock/owner context/consumer expiry/clock/exhaustion fail closed; lost after ACK blocks advance, zero take output, no live recovery
+49: PASS recover only actual fragment timeout after ACK+pending/staged/ring cleanup; explicit STATE retirement never feeds failed RX; clocks/counters/phase/atomic positions retained, gate stays paused until fresh epoch resume
+49: HOST ingress owner=888 permit=16 pause=16 bytes; not MCU RAM/full stack/physical drain approval
+49/49 Test #49: update_ingress_owner ................   Passed    0.00 sec
+
+100% tests passed, 0 tests failed out of 49
+
+Total Test time (real) =   2.19 sec

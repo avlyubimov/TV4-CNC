@@ -1,0 +1,4 @@
+PASS build-boot-arm: actual targets/commands exclude host fixtures/pthread/tests/review
+PASS build-update-arm: actual targets/commands exclude host fixtures/pthread/tests/review
+PASS actual production handoff target unchanged: build libtv4_boot_handoff.a: C_STATIC_LIBRARY_LINKER__tv4_boot_handoff_MinSizeRel CMakeFiles/tv4_boot_handoff.dir/core/update_handoff.c.obj CMakeFiles/tv4_boot_handoff.dir/core/update_completion.c.obj CMakeFiles/tv4_boot_handoff.dir/core/release_handoff.c.obj CMakeFiles/tv4_boot_handoff.dir/core/staging_source.c.obj || libtv4_boot_admission.a libtv4_boot_crypto.a update-transport/libtv4_update_transport.a
+PASS no embedded C/API/config/dependency/Flash/pin/security/runtime change; synthetic ELF inspected only

@@ -54,7 +54,11 @@ jobs:
             -fanalyzer -Iprotocol/can -c protocol/can/tests/fragment_test_link.c \
             -o build/policy-analysis/fragment_test_link.o >> build/policy-analysis.log 2>&1
           printf 'host fragment_test_link: actual-source analyzer PASS\n' >> build/policy-analysis.log
-      - name: Race-check completion, dispatch, ingress and acknowledged RX pause
+          gcc -std=c11 -Wall -Wextra -Werror -Wconversion -Wshadow -Wstrict-prototypes \
+            -fanalyzer -pthread -Iprotocol/can -c protocol/can/tests/threaded_test_link.c \
+            -o build/policy-analysis/threaded_test_link.o >> build/policy-analysis.log 2>&1
+          printf 'host threaded_test_link: actual-source analyzer PASS\n' >> build/policy-analysis.log
+      - name: Race-check completion, dispatch, ingress, RX pause and signed update
         if: matrix.sanitizer == false
         shell: bash
         run: |
@@ -65,6 +69,12 @@ jobs:
           cmake --build build-thread-sanitize --target update_completion_mailbox_tests update_completion_owner_tests update_driver_dispatch_tests update_frame_ingress_tests update_ingress_owner_tests -j4
           ctest --test-dir build-thread-sanitize -R '^(update_completion_mailbox_threads|update_completion_owner|update_driver_dispatch_threads|update_driver_dispatch|update_frame_ingress_threads|update_frame_ingress|update_ingress_owner_threads|update_ingress_owner)$' \
             -V --output-log "$PWD/build/thread-sanitizer.log"
+          cmake -S firmware/stm32-bootloader -B build-boot-thread-sanitize -G Ninja \
+            -DCMAKE_C_FLAGS='-fsanitize=thread -fno-omit-frame-pointer -g -O1' \
+            -DCMAKE_EXE_LINKER_FLAGS=-fsanitize=thread
+          cmake --build build-boot-thread-sanitize --target boot_handoff_tests -j4
+          ctest --test-dir build-boot-thread-sanitize -R '^boot_threaded_ingress_handoff$' \
+            -V --output-log "$PWD/build/threaded-signed-sanitizer.log"
       - run: ctest --test-dir build --output-on-failure
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         if: always()
@@ -74,3 +84,4 @@ jobs:
             build/Testing/Temporary/LastTest.log
             build/policy-analysis.log
             build/thread-sanitizer.log
+            build/threaded-signed-sanitizer.log

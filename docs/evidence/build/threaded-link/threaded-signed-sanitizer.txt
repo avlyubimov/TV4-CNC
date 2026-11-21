@@ -1,0 +1,90 @@
+UpdateCTestConfiguration  from :/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/threaded-update-link/build-boot-thread-sanitize/DartConfiguration.tcl
+Test project /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/threaded-update-link/build-boot-thread-sanitize
+Constructing a list of tests
+Done constructing a list of tests
+Updating test list for fixtures
+Added 0 tests to meet fixture requirements
+Checking test dependency graph...
+Checking test dependency graph end
+test 14
+    Start 14: boot_threaded_ingress_handoff
+
+14: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/threaded-update-link/build-boot-thread-sanitize/boot_handoff_tests "--threaded-owner-staging"
+14: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/threaded-update-link/build-boot-thread-sanitize
+14: Test timeout computed to be: 60
+14: SETUP frames=473 drops=4 elapsed=1192 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+14: EGRESS claims=1097 returns=1097 held-ticks=1363 max-pending=2; local completion tickets, no driver-owned frame forgotten
+14: DISPATCH published=1097 driver-rejected-callbacks=64; original admission/fresh check/exact terminal/slot reuse, no driver-copy gap
+14: INGRESS owned copies=1161 checked=1161; capture age/current service time, one-frame service budget
+14: RX OWNER pauses=10 advances=10 timeout-recoveries=0 retired-without-dispatch=0; actual ACK+drain barrier, epochs/counters/time retained
+14: EVENTS posted=1097 serviced=1097 stale=0 wait-ticks=1363 max-pending=1; owned copies, one-event budget/current service time
+14: THREADED captures=1161 retained=0 actual-driver-acks=10; dedicated driver joined, protocol/crypto on caller, no synthetic returns
+14: SETUP frames=473 drops=4 elapsed=1192 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+14: EGRESS claims=1331 returns=1331 held-ticks=1657 max-pending=2; local completion tickets, no driver-owned frame forgotten
+14: DISPATCH published=1331 driver-rejected-callbacks=78; original admission/fresh check/exact terminal/slot reuse, no driver-copy gap
+14: INGRESS owned copies=1409 checked=1409; capture age/current service time, one-frame service budget
+14: RX OWNER pauses=14 advances=10 timeout-recoveries=4 retired-without-dispatch=3; actual ACK+drain barrier, epochs/counters/time retained
+14: EVENTS posted=1331 serviced=1331 stale=0 wait-ticks=1655 max-pending=1; owned copies, one-event budget/current service time
+14: THREADED captures=1409 retained=0 actual-driver-acks=14; dedicated driver joined, protocol/crypto on caller, no synthetic returns
+14: SETUP frames=473 drops=4 elapsed=1188 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+14: EGRESS claims=1544 returns=1544 held-ticks=1925 max-pending=2; local completion tickets, no driver-owned frame forgotten
+14: DISPATCH published=1544 driver-rejected-callbacks=90; original admission/fresh check/exact terminal/slot reuse, no driver-copy gap
+14: INGRESS owned copies=1627 checked=1627; capture age/current service time, one-frame service budget
+14: RX OWNER pauses=22 advances=10 timeout-recoveries=12 retired-without-dispatch=12; actual ACK+drain barrier, epochs/counters/time retained
+14: EVENTS posted=1544 serviced=1544 stale=0 wait-ticks=1919 max-pending=1; owned copies, one-event budget/current service time
+14: THREADED captures=1627 retained=0 actual-driver-acks=22; dedicated driver joined, protocol/crypto on caller, no synthetic returns
+14: SETUP frames=473 drops=4 elapsed=1188 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+14: EGRESS claims=1778 returns=1778 held-ticks=2210 max-pending=2; local completion tickets, no driver-owned frame forgotten
+14: DISPATCH published=1778 driver-rejected-callbacks=104; original admission/fresh check/exact terminal/slot reuse, no driver-copy gap
+14: INGRESS owned copies=1876 checked=1876; capture age/current service time, one-frame service budget
+14: RX OWNER pauses=10 advances=10 timeout-recoveries=0 retired-without-dispatch=0; actual ACK+drain barrier, epochs/counters/time retained
+14: EVENTS posted=1778 serviced=1778 stale=0 wait-ticks=2210 max-pending=1; owned copies, one-event budget/current service time
+14: THREADED captures=1876 retained=0 actual-driver-acks=10; dedicated driver joined, protocol/crypto on caller, no synthetic returns
+14: SETUP frames=473 drops=4 elapsed=1188 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+14: EGRESS claims=1544 returns=1544 held-ticks=1923 max-pending=2; local completion tickets, no driver-owned frame forgotten
+14: DISPATCH published=1544 driver-rejected-callbacks=90; original admission/fresh check/exact terminal/slot reuse, no driver-copy gap
+14: INGRESS owned copies=1627 checked=1627; capture age/current service time, one-frame service budget
+14: RX OWNER pauses=22 advances=10 timeout-recoveries=12 retired-without-dispatch=10; actual ACK+drain barrier, epochs/counters/time retained
+14: EVENTS posted=1544 serviced=1544 stale=0 wait-ticks=1919 max-pending=1; owned copies, one-event budget/current service time
+14: THREADED captures=1627 retained=0 actual-driver-acks=22; dedicated driver joined, protocol/crypto on caller, no synthetic returns
+14: SETUP frames=473 drops=4 elapsed=1188 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+14: EGRESS claims=1778 returns=1778 held-ticks=2216 max-pending=2; local completion tickets, no driver-owned frame forgotten
+14: DISPATCH published=1778 driver-rejected-callbacks=104; original admission/fresh check/exact terminal/slot reuse, no driver-copy gap
+14: INGRESS owned copies=1876 checked=1876; capture age/current service time, one-frame service budget
+14: RX OWNER pauses=22 advances=10 timeout-recoveries=12 retired-without-dispatch=12; actual ACK+drain barrier, epochs/counters/time retained
+14: EVENTS posted=1778 serviced=1778 stale=0 wait-ticks=2210 max-pending=1; owned copies, one-event budget/current service time
+14: THREADED captures=1876 retained=0 actual-driver-acks=22; dedicated driver joined, protocol/crypto on caller, no synthetic returns
+14: SETUP frames=473 drops=4 elapsed=1188 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+14: EGRESS claims=1497 returns=1497 held-ticks=1861 max-pending=2; local completion tickets, no driver-owned frame forgotten
+14: DISPATCH published=1497 driver-rejected-callbacks=88; original admission/fresh check/exact terminal/slot reuse, no driver-copy gap
+14: INGRESS owned copies=1577 checked=1577; capture age/current service time, one-frame service budget
+14: RX OWNER pauses=10 advances=10 timeout-recoveries=0 retired-without-dispatch=0; actual ACK+drain barrier, epochs/counters/time retained
+14: EVENTS posted=1497 serviced=1497 stale=0 wait-ticks=1861 max-pending=1; owned copies, one-event budget/current service time
+14: THREADED captures=1577 retained=0 actual-driver-acks=10; dedicated driver joined, protocol/crypto on caller, no synthetic returns
+14: SETUP frames=473 drops=4 elapsed=1188 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+14: EGRESS claims=1497 returns=1497 held-ticks=1863 max-pending=2; local completion tickets, no driver-owned frame forgotten
+14: DISPATCH published=1497 driver-rejected-callbacks=88; original admission/fresh check/exact terminal/slot reuse, no driver-copy gap
+14: INGRESS owned copies=1577 checked=1577; capture age/current service time, one-frame service budget
+14: RX OWNER pauses=22 advances=10 timeout-recoveries=12 retired-without-dispatch=11; actual ACK+drain barrier, epochs/counters/time retained
+14: EVENTS posted=1497 serviced=1497 stale=0 wait-ticks=1861 max-pending=1; owned copies, one-event budget/current service time
+14: THREADED captures=1577 retained=0 actual-driver-acks=22; dedicated driver joined, protocol/crypto on caller, no synthetic returns
+14: PASS8 transported metadata signed chains: frames=12066 drops=80 container-bytes=4796 DER=70..72 longest=4740 synthetic ms; producer wiped, actual delivered signature/raw digest/lease/model/close, no image deadline reset
+14: SETUP frames=473 drops=4 elapsed=1192 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+14: THREADED captures=1271 retained=0 actual-driver-acks=12; dedicated driver joined, protocol/crypto on caller, no synthetic returns
+14: SETUP frames=473 drops=4 elapsed=1192 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+14: THREADED captures=1271 retained=0 actual-driver-acks=12; dedicated driver joined, protocol/crypto on caller, no synthetic returns
+14: SETUP frames=473 drops=4 elapsed=1192 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+14: THREADED captures=1008 retained=0 actual-driver-acks=12; dedicated driver joined, protocol/crypto on caller, no synthetic returns
+14: PASS transported metadata does not bypass invalid signature, correctly re-signed wrong raw digest, or expired independent image RX
+14: SETUP frames=473 drops=4 elapsed=1192 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+14: SETUP frames=473 drops=4 elapsed=1192 synthetic ms; paired ID=45 pools held, raw MS codec before dispatch
+14: PASS2 threaded driver lifetime refusals: original image expiry, retained exact claim, late cancellation cleanup-only; stop/join never synthesizes a return
+14: PASS threaded external BUSY capture: original permit/time retained, actual ring+pending+driver claim preserved; pause unacknowledged, no retag/flush on join
+1/1 Test #14: boot_threaded_ingress_handoff ....   Passed    0.68 sec
+
+The following tests passed:
+	boot_threaded_ingress_handoff
+
+100% tests passed, 0 tests failed out of 1
+
+Total Test time (real) =   0.68 sec

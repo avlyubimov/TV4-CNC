@@ -109,9 +109,24 @@ PR и Actions; не копировать код уже открытого PR. Д
 
 ## Текущее задание
 
-PR #1–52 слиты, база main `bc35a37`, main CI5/5 PASS,
+PR #1–53 слиты, база main `5e76626`, main CI5/5 PASS,
 открытых PR перед работой нет.
-PR-07u: читать docs/STM32_INGRESS_OWNER.md. Actual ingress + actual channel RX,
+PR-07v: читать docs/STM32_THREADED_LINK.md. HOST-only dedicated driver pthread,
+protocol/crypto caller, concurrent RX; init publication/stable lifetime/stop+join.
+TX publish before wake; original common logical clock frozen during each turn,
+no crypto CPU accounting/target scheduler claim. Target APIs outside HOST mutex.
+Driver uses public APIs/immutable bindings/private bounded jobs only. Capture
+permit before new arrival; retain original BUSY input/epoch/time, no retag/drop.
+External capture not covered by inner pending ACK: keep pause blocked, no fake
+ACK/flush. Exact driver thread ACK + actual drain/upper states before cutover.
+Stop/join never synthesizes return or frees actual claim; missing completion
+stays held, late terminal cleanup-only, original upper RX expiry not revived.
+All old modes/upper gates/11 ARM archives/budgets/SDK pins unchanged. Host75/
+sanitizers75/standalone49/TSan8+1/analyzer23+3/negative/source178/synthetic/
+board/output/scope/text evidence mandatory. Target port/clock/backend/identity/
+resources/runtime/install/physical unknown. No devices/Flash/merge/release.
+
+Слитый PR #53, PR-07u: читать docs/STM32_INGRESS_OWNER.md. Actual ingress + actual channel RX,
 one driver/one protocol actor, externally published init/stable lifetime/stop+join.
 Driver permit before capture, retain original epoch/time with BUSY external input;
 no retagging. Exact pause request/ACK only after prior producer calls and pending

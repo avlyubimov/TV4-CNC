@@ -1,0 +1,101 @@
+# Reproduce PR-07v software checks
+
+From this branch root; no device access or deployable firmware binary.
+Exact compilers, archive identities and licenses: [versions.json](versions.json).
+Local LVGL9.2.2 checkout and official Mbed TLS3.6.7 archive are sibling inputs.
+
+```bash
+set -euo pipefail
+TV4_LVGL_DIR="$PWD/../lvgl"
+TV4_MBED_ARCHIVE="$PWD/../deps/mbedtls-3.6.7.tar.bz2"
+TV4_ARM_TOOLCHAIN="$PWD/firmware/stm32-motion/cmake/arm-none-eabi.cmake"
+cmake -S . -B build-host -G Ninja -DLVGL_DIR="$TV4_LVGL_DIR" \
+  -DTV4_BOOT_MBEDTLS_ARCHIVE="$TV4_MBED_ARCHIVE"
+cmake --build build-host -j4
+ctest --test-dir build-host -V
+cmake -S . -B build-sanitize -G Ninja -DLVGL_DIR="$TV4_LVGL_DIR" \
+  -DTV4_BOOT_MBEDTLS_ARCHIVE="$TV4_MBED_ARCHIVE" \
+  -DCMAKE_C_FLAGS='-fsanitize=address,undefined -fno-omit-frame-pointer' \
+  -DCMAKE_EXE_LINKER_FLAGS=-fsanitize=address,undefined
+cmake --build build-sanitize -j4
+# Outside ptrace; default environment; no ASAN/LSAN/UBSAN options/suppressions.
+ctest --test-dir build-sanitize -V
+cmake -S protocol/can -B build-thread-sanitize -G Ninja \
+  -DCMAKE_C_FLAGS='-fsanitize=thread -fno-omit-frame-pointer -g -O1' \
+  -DCMAKE_EXE_LINKER_FLAGS=-fsanitize=thread
+cmake --build build-thread-sanitize --target update_completion_mailbox_tests update_completion_owner_tests update_driver_dispatch_tests update_frame_ingress_tests update_ingress_owner_tests -j4
+# Outside ptrace/default environment; no TSAN_OPTIONS or suppressions.
+ctest --test-dir build-thread-sanitize -R '^(update_completion_mailbox_threads|update_completion_owner|update_driver_dispatch_threads|update_driver_dispatch|update_frame_ingress_threads|update_frame_ingress|update_ingress_owner_threads|update_ingress_owner)$' -V
+cmake -S firmware/stm32-bootloader -B build-boot-thread-sanitize -G Ninja \
+  -DTV4_BOOT_MBEDTLS_ARCHIVE="$TV4_MBED_ARCHIVE" \
+  -DCMAKE_C_FLAGS='-fsanitize=thread -fno-omit-frame-pointer -g -O1' \
+  -DCMAKE_EXE_LINKER_FLAGS=-fsanitize=thread
+cmake --build build-boot-thread-sanitize --target boot_handoff_tests -j4
+ctest --test-dir build-boot-thread-sanitize -R '^boot_threaded_ingress_handoff$' -V
+cmake -S firmware/stm32-bootloader -B build-boot-host -G Ninja \
+  -DTV4_BOOT_MBEDTLS_ARCHIVE="$TV4_MBED_ARCHIVE"
+cmake --build build-boot-host -j4
+ctest --test-dir build-boot-host -V
+cmake -S firmware/stm32-bootloader -B build-boot-arm -G Ninja \
+  -DCMAKE_TOOLCHAIN_FILE="$TV4_ARM_TOOLCHAIN" -DCMAKE_BUILD_TYPE=MinSizeRel \
+  -DTV4_BOOT_MBEDTLS_ARCHIVE="$TV4_MBED_ARCHIVE"
+cmake --build build-boot-arm -j4
+python3 tools/check_boot_admission_build.py build-boot-arm
+python3 tools/check_update_wire_build.py build-boot-arm/update-transport
+python3 tools/check_update_fragment_build.py build-boot-arm/update-transport
+python3 tools/check_update_metadata_build.py build-boot-arm/update-transport
+python3 tools/check_metadata_setup_build.py build-boot-arm/update-transport
+python3 tools/check_update_channel_build.py build-boot-arm/update-transport
+python3 tools/check_update_egress_build.py build-boot-arm/update-transport
+python3 tools/check_driver_events_build.py build-boot-arm/update-transport
+python3 tools/check_completion_mailbox_build.py build-boot-arm/update-transport
+python3 tools/check_driver_dispatch_build.py build-boot-arm/update-transport
+python3 tools/check_frame_ingress_build.py build-boot-arm/update-transport
+python3 tools/check_ingress_owner_build.py build-boot-arm/update-transport
+python3 protocol/can/tests/wire_budget_tests.py --build build-boot-arm/update-transport
+python3 protocol/can/tests/wire_budget_tests.py --fragments --build build-boot-arm/update-transport
+python3 protocol/can/tests/wire_budget_tests.py --metadata --build build-boot-arm/update-transport
+python3 protocol/can/tests/wire_budget_tests.py --setup --build build-boot-arm/update-transport
+python3 protocol/can/tests/wire_budget_tests.py --channel --build build-boot-arm/update-transport
+python3 protocol/can/tests/wire_budget_tests.py --egress --build build-boot-arm/update-transport
+python3 protocol/can/tests/wire_budget_tests.py --driver-events --build build-boot-arm/update-transport
+python3 protocol/can/tests/wire_budget_tests.py --completion-mailbox --build build-boot-arm/update-transport
+python3 protocol/can/tests/wire_budget_tests.py --driver-dispatch --build build-boot-arm/update-transport
+python3 protocol/can/tests/wire_budget_tests.py --frame-ingress --build build-boot-arm/update-transport
+python3 protocol/can/tests/wire_budget_tests.py --ingress-owner --build build-boot-arm/update-transport
+python3 tools/check_boot_crypto_source.py --source build-boot-arm/_deps/tv4_boot_mbedtls-src \
+  --lock third_party/mbedtls/origin.json
+cmake -S protocol/can -B build-update-arm -G Ninja \
+  -DCMAKE_TOOLCHAIN_FILE="$TV4_ARM_TOOLCHAIN" -DCMAKE_BUILD_TYPE=MinSizeRel
+cmake --build build-update-arm -j4
+cmake -S firmware/stm32-motion -B build-motion-probe -G Ninja \
+  -DCMAKE_TOOLCHAIN_FILE=cmake/arm-none-eabi.cmake -DCMAKE_BUILD_TYPE=MinSizeRel \
+  -DTV4_MOTION_LINK_PROBE=ON
+cmake --build build-motion-probe
+python3 tools/check_motion_link.py build-motion-probe/tv4_motion_link_probe.elf
+ctest --test-dir build-motion-probe --output-on-failure
+```
+
+Actual strict C11 `-fanalyzer -c` commands are in motion.yml/bootloader.yml/host.yml:
+23 embedded and 3 host units. HOST motion_review uses the CI include and
+`-D_POSIX_C_SOURCE=200809L` flags. No diagnostics/sanitizers suppressed.
+Pinned Mbed source/config unchanged. Board-image ON/host-probe negatives,
+actual unexpected .bin guard and actual ARM target/dependency/runtime scope
+were checked. Ingress owner native code retained in atomic-codegen.txt:10 DMB, no __atomic/lock
+helper imports. Native RMW may retry exclusive stores: no bounded MCU IRQ latency
+claim. Board gates and actual unexpected-output negative are summarized with exact
+commands/results in board-gates.txt/output-gate.txt; marker removed. ARM target
+help and production handoff dependencies inspected, no host/ingress runtime leak.
+Synthetic ARM ELF inspected only, never executed or flashed. No new local ESP
+build claimed; the unchanged eight-profile SDK matrix runs in CI.
+
+The new mode is `boot_handoff_tests --threaded-owner-staging`; it runs inside
+root75/ASan75/standalone49 and separately TSan1, in addition to old TSan8.
+New helper analyzer uses the same strict C11 flags, `-fanalyzer -pthread
+-Iprotocol/can -c protocol/can/tests/threaded_test_link.c`. Full actual guard
+commands/exit codes/log filenames: [guard-commands.json](guard-commands.json).
+Exact parsed ARM comparisons: [unchanged-arm-budgets.txt](unchanged-arm-budgets.txt).
+Source scope and board/output negative commands/results: [scope](scope-gate.txt),
+[board](board-gates.txt), [output](output-gate.txt). All archives match PR53;
+comparison uses historical metadata_setup/update_channel/update_egress filenames.
+No local SDK build is claimed; unchanged matrix8 is verified in exact-head CI.
