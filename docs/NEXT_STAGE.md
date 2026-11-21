@@ -1,6 +1,6 @@
 # Следующий этап: release context и STM32 board contract
 
-21 ноября2026. База main `db50840`, PR #1–50 слиты, main CI5/5 PASS.
+21 ноября2026. База main `25e635c`, PR #1–51 слиты, main CI5/5 PASS.
 ESP32 HMI/Wi-Fi/OTA primitives/candidates и STM32 transport/admission существуют;
 не создавать их заново. Данный план не разрешает доступ к устройствам или merge.
 
@@ -224,7 +224,7 @@ standalone39/TSan2. [Evidence](evidence/build/completion-mailbox/README.md).
 C11 concurrency checked on host/compile; target ISR/RTOS/cache/DMA/completion
 truth/reset/reconciliation, persistent identity/routing/resources/physical/install open.
 
-## Текущая ветка PR-07s
+## Слитый PR #51, PR-07s
 
 [Owned driver dispatch](STM32_DRIVER_DISPATCH.md): actual frame claim/publication/
 unchecked token/fresh check/exact return/slot cleanup; host68/sanitizers68/
@@ -232,6 +232,15 @@ standalone42/TSan4. [Evidence](evidence/build/driver-dispatch/README.md).
 Published untaken jobs still held until explicit driver return; no hardware cancel
 or physical readiness claim. Target ISR/RTOS/cache/DMA/clock/real backend, identity/
 resources/runtime/staging/install and actual hardware gates remain open.
+
+## Текущая ветка PR-07t
+
+[Owned frame ingress](STM32_FRAME_INGRESS.md): SPSC owned captures, retained
+producer pending/full/retry, unchecked staged token/fresh original-age check,
+sticky fault без live reset. Host71/sanitizers71/standalone45/TSan6; ARM1060text/
+data0/bss0/frame48,8exports/15DMB, прежние budgets/SDK/workspace сохранены.
+[Evidence](evidence/build/frame-ingress/README.md). Это software boundary,
+не реальный RX driver или live producer-stop/phase-cutover/backend drain proof.
 
 ## Что делать дальше программно
 
@@ -264,7 +273,9 @@ resources/runtime/staging/install and actual hardware gates remain open.
    PR-07p добавляет actual bound local custody queue/driver tickets, не real
    driver/remote drain proof. PR-07q добавляет serialized owned event inbox.
    PR-07r добавляет SPSC C11 mailbox/bound consumer, PR-07s — owned frame dispatch/
-   fresh check/explicit driver return. Дальше review actual target
+   fresh check/explicit driver return; PR-07t — bounded RX copies/original capture
+   age/sticky loss reporting. Дальше review actual producer-stop/phase-cutover
+   barrier, immutable route lifetime и target
    ISR/RTOS/cache/DMA port, trusted adapter completion provenance/reset/
    reconciliation, production identity/capabilities/codebook и
    worker/resource budgets перед runtime adoption. Production routing/reboot

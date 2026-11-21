@@ -1,0 +1,469 @@
+In archive build-boot-arm/update-transport/libtv4_frame_ingress.a:
+
+frame_ingress.c.obj:     file format elf32-littlearm
+
+
+Disassembly of section .text.valid:
+
+00000000 <valid>:
+   0:	b108      	cbz	r0, 6 <valid+0x6>
+   2:	f890 008c 	ldrb.w	r0, [r0, #140]	@ 0x8c
+   6:	4770      	bx	lr
+
+Disassembly of section .text.push:
+
+00000000 <push>:
+   0:	b5f0      	push	{r4, r5, r6, r7, lr}
+   2:	4606      	mov	r6, r0
+   4:	460c      	mov	r4, r1
+   6:	6e45      	ldr	r5, [r0, #100]	@ 0x64
+   8:	f8d0 3088 	ldr.w	r3, [r0, #136]	@ 0x88
+   c:	1c6f      	adds	r7, r5, #1
+   e:	429f      	cmp	r7, r3
+  10:	bf08      	it	eq
+  12:	2700      	moveq	r7, #0
+  14:	6e83      	ldr	r3, [r0, #104]	@ 0x68
+  16:	f3bf 8f5b 	dmb	ish
+  1a:	42bb      	cmp	r3, r7
+  1c:	d00b      	beq.n	36 <push+0x36>
+  1e:	2314      	movs	r3, #20
+  20:	fb03 0505 	mla	r5, r3, r5, r0
+  24:	cc0f      	ldmia	r4!, {r0, r1, r2, r3}
+  26:	c50f      	stmia	r5!, {r0, r1, r2, r3}
+  28:	6823      	ldr	r3, [r4, #0]
+  2a:	602b      	str	r3, [r5, #0]
+  2c:	f3bf 8f5b 	dmb	ish
+  30:	6677      	str	r7, [r6, #100]	@ 0x64
+  32:	2001      	movs	r0, #1
+  34:	bdf0      	pop	{r4, r5, r6, r7, pc}
+  36:	2000      	movs	r0, #0
+  38:	e7fc      	b.n	34 <push+0x34>
+
+Disassembly of section .text.fault:
+
+00000000 <fault>:
+   0:	3070      	adds	r0, #112	@ 0x70
+   2:	f3bf 8f5b 	dmb	ish
+   6:	e850 3f00 	ldrex	r3, [r0]
+   a:	430b      	orrs	r3, r1
+   c:	e840 3200 	strex	r2, r3, [r0]
+  10:	2a00      	cmp	r2, #0
+  12:	d1f8      	bne.n	6 <fault+0x6>
+  14:	f3bf 8f5b 	dmb	ish
+  18:	4770      	bx	lr
+
+Disassembly of section .text.observe:
+
+00000000 <observe>:
+   0:	b510      	push	{r4, lr}
+   2:	680c      	ldr	r4, [r1, #0]
+   4:	1b14      	subs	r4, r2, r4
+   6:	2c00      	cmp	r4, #0
+   8:	da04      	bge.n	14 <observe+0x14>
+   a:	2101      	movs	r1, #1
+   c:	f7ff fffe 	bl	0 <observe>
+  10:	2000      	movs	r0, #0
+  12:	bd10      	pop	{r4, pc}
+  14:	600a      	str	r2, [r1, #0]
+  16:	6f00      	ldr	r0, [r0, #112]	@ 0x70
+  18:	f3bf 8f5b 	dmb	ish
+  1c:	fab0 f080 	clz	r0, r0
+  20:	0940      	lsrs	r0, r0, #5
+  22:	e7f6      	b.n	12 <observe+0x12>
+
+Disassembly of section .text.tv4_frame_ingress_init:
+
+00000000 <tv4_frame_ingress_init>:
+   0:	e92d 4ff8 	stmdb	sp!, {r3, r4, r5, r6, r7, r8, r9, sl, fp, lr}
+   4:	f8dd a030 	ldr.w	sl, [sp, #48]	@ 0x30
+   8:	e9dd 9b0a 	ldrd	r9, fp, [sp, #40]	@ 0x28
+   c:	460e      	mov	r6, r1
+   e:	4617      	mov	r7, r2
+  10:	4698      	mov	r8, r3
+  12:	4604      	mov	r4, r0
+  14:	b358      	cbz	r0, 6e <tv4_frame_ingress_init+0x6e>
+  16:	f890 508c 	ldrb.w	r5, [r0, #140]	@ 0x8c
+  1a:	bb45      	cbnz	r5, 6e <tv4_frame_ingress_init+0x6e>
+  1c:	1e4a      	subs	r2, r1, #1
+  1e:	2a03      	cmp	r2, #3
+  20:	d822      	bhi.n	68 <tv4_frame_ingress_init+0x68>
+  22:	2f00      	cmp	r7, #0
+  24:	dd20      	ble.n	68 <tv4_frame_ingress_init+0x68>
+  26:	b1fb      	cbz	r3, 68 <tv4_frame_ingress_init+0x68>
+  28:	ea59 020b 	orrs.w	r2, r9, fp
+  2c:	d01c      	beq.n	68 <tv4_frame_ingress_init+0x68>
+  2e:	22d0      	movs	r2, #208	@ 0xd0
+  30:	4629      	mov	r1, r5
+  32:	f7ff fffe 	bl	0 <memset>
+  36:	6665      	str	r5, [r4, #100]	@ 0x64
+  38:	66a5      	str	r5, [r4, #104]	@ 0x68
+  3a:	66e5      	str	r5, [r4, #108]	@ 0x6c
+  3c:	6725      	str	r5, [r4, #112]	@ 0x70
+  3e:	e9c4 9b1e 	strd	r9, fp, [r4, #120]	@ 0x78
+  42:	9b0d      	ldr	r3, [sp, #52]	@ 0x34
+  44:	f8c4 8080 	str.w	r8, [r4, #128]	@ 0x80
+  48:	3601      	adds	r6, #1
+  4a:	2501      	movs	r5, #1
+  4c:	f8c4 6088 	str.w	r6, [r4, #136]	@ 0x88
+  50:	f8c4 7084 	str.w	r7, [r4, #132]	@ 0x84
+  54:	f8c4 a0a4 	str.w	sl, [r4, #164]	@ 0xa4
+  58:	f8c4 a0c4 	str.w	sl, [r4, #196]	@ 0xc4
+  5c:	f8c4 30a8 	str.w	r3, [r4, #168]	@ 0xa8
+  60:	f8c4 30c8 	str.w	r3, [r4, #200]	@ 0xc8
+  64:	f884 508c 	strb.w	r5, [r4, #140]	@ 0x8c
+  68:	4628      	mov	r0, r5
+  6a:	e8bd 8ff8 	ldmia.w	sp!, {r3, r4, r5, r6, r7, r8, r9, sl, fp, pc}
+  6e:	2500      	movs	r5, #0
+  70:	e7fa      	b.n	68 <tv4_frame_ingress_init+0x68>
+
+Disassembly of section .text.tv4_frame_ingress_offer:
+
+00000000 <tv4_frame_ingress_offer>:
+   0:	b5f0      	push	{r4, r5, r6, r7, lr}
+   2:	b087      	sub	sp, #28
+   4:	e9dd 670c 	ldrd	r6, r7, [sp, #48]	@ 0x30
+   8:	9c0e      	ldr	r4, [sp, #56]	@ 0x38
+   a:	4605      	mov	r5, r0
+   c:	f7ff fffe 	bl	0 <tv4_frame_ingress_offer>
+  10:	2800      	cmp	r0, #0
+  12:	d051      	beq.n	b8 <tv4_frame_ingress_offer+0xb8>
+  14:	2e00      	cmp	r6, #0
+  16:	d04f      	beq.n	b8 <tv4_frame_ingress_offer+0xb8>
+  18:	7a30      	ldrb	r0, [r6, #8]
+  1a:	3801      	subs	r0, #1
+  1c:	2807      	cmp	r0, #7
+  1e:	d84b      	bhi.n	b8 <tv4_frame_ingress_offer+0xb8>
+  20:	f8d5 0080 	ldr.w	r0, [r5, #128]	@ 0x80
+  24:	4288      	cmp	r0, r1
+  26:	d149      	bne.n	bc <tv4_frame_ingress_offer+0xbc>
+  28:	e9d5 011e 	ldrd	r0, r1, [r5, #120]	@ 0x78
+  2c:	4299      	cmp	r1, r3
+  2e:	bf08      	it	eq
+  30:	4290      	cmpeq	r0, r2
+  32:	d143      	bne.n	bc <tv4_frame_ingress_offer+0xbc>
+  34:	4622      	mov	r2, r4
+  36:	f105 01a8 	add.w	r1, r5, #168	@ 0xa8
+  3a:	4628      	mov	r0, r5
+  3c:	f7ff fffe 	bl	0 <tv4_frame_ingress_offer>
+  40:	b128      	cbz	r0, 4e <tv4_frame_ingress_offer+0x4e>
+  42:	1be4      	subs	r4, r4, r7
+  44:	d506      	bpl.n	54 <tv4_frame_ingress_offer+0x54>
+  46:	2101      	movs	r1, #1
+  48:	4628      	mov	r0, r5
+  4a:	f7ff fffe 	bl	0 <tv4_frame_ingress_offer>
+  4e:	2009      	movs	r0, #9
+  50:	b007      	add	sp, #28
+  52:	bdf0      	pop	{r4, r5, r6, r7, pc}
+  54:	f8d5 3084 	ldr.w	r3, [r5, #132]	@ 0x84
+  58:	42a3      	cmp	r3, r4
+  5a:	d801      	bhi.n	60 <tv4_frame_ingress_offer+0x60>
+  5c:	2102      	movs	r1, #2
+  5e:	e7f3      	b.n	48 <tv4_frame_ingress_offer+0x48>
+  60:	f895 30ac 	ldrb.w	r3, [r5, #172]	@ 0xac
+  64:	bb63      	cbnz	r3, c0 <tv4_frame_ingress_offer+0xc0>
+  66:	f8d5 30a4 	ldr.w	r3, [r5, #164]	@ 0xa4
+  6a:	1c5a      	adds	r2, r3, #1
+  6c:	d101      	bne.n	72 <tv4_frame_ingress_offer+0x72>
+  6e:	2108      	movs	r1, #8
+  70:	e7ea      	b.n	48 <tv4_frame_ingress_offer+0x48>
+  72:	3301      	adds	r3, #1
+  74:	f8c5 30a4 	str.w	r3, [r5, #164]	@ 0xa4
+  78:	7a32      	ldrb	r2, [r6, #8]
+  7a:	9305      	str	r3, [sp, #20]
+  7c:	2400      	movs	r4, #0
+  7e:	4631      	mov	r1, r6
+  80:	a801      	add	r0, sp, #4
+  82:	e9cd 4703 	strd	r4, r7, [sp, #12]
+  86:	e9cd 4401 	strd	r4, r4, [sp, #4]
+  8a:	f88d 200c 	strb.w	r2, [sp, #12]
+  8e:	f7ff fffe 	bl	0 <memcpy>
+  92:	a901      	add	r1, sp, #4
+  94:	4628      	mov	r0, r5
+  96:	f7ff fffe 	bl	0 <tv4_frame_ingress_offer>
+  9a:	b998      	cbnz	r0, c4 <tv4_frame_ingress_offer+0xc4>
+  9c:	ac01      	add	r4, sp, #4
+  9e:	cc0f      	ldmia	r4!, {r0, r1, r2, r3}
+  a0:	f105 0690 	add.w	r6, r5, #144	@ 0x90
+  a4:	c60f      	stmia	r6!, {r0, r1, r2, r3}
+  a6:	6823      	ldr	r3, [r4, #0]
+  a8:	6033      	str	r3, [r6, #0]
+  aa:	2001      	movs	r0, #1
+  ac:	f885 00ac 	strb.w	r0, [r5, #172]	@ 0xac
+  b0:	f3bf 8f5b 	dmb	ish
+  b4:	66e8      	str	r0, [r5, #108]	@ 0x6c
+  b6:	e7cb      	b.n	50 <tv4_frame_ingress_offer+0x50>
+  b8:	2007      	movs	r0, #7
+  ba:	e7c9      	b.n	50 <tv4_frame_ingress_offer+0x50>
+  bc:	2008      	movs	r0, #8
+  be:	e7c7      	b.n	50 <tv4_frame_ingress_offer+0x50>
+  c0:	2002      	movs	r0, #2
+  c2:	e7c5      	b.n	50 <tv4_frame_ingress_offer+0x50>
+  c4:	4620      	mov	r0, r4
+  c6:	e7c3      	b.n	50 <tv4_frame_ingress_offer+0x50>
+
+Disassembly of section .text.tv4_frame_ingress_retry:
+
+00000000 <tv4_frame_ingress_retry>:
+   0:	b538      	push	{r3, r4, r5, lr}
+   2:	460a      	mov	r2, r1
+   4:	4604      	mov	r4, r0
+   6:	f7ff fffe 	bl	0 <tv4_frame_ingress_retry>
+   a:	b1d8      	cbz	r0, 44 <tv4_frame_ingress_retry+0x44>
+   c:	f104 01a8 	add.w	r1, r4, #168	@ 0xa8
+  10:	4620      	mov	r0, r4
+  12:	f7ff fffe 	bl	0 <tv4_frame_ingress_retry>
+  16:	b1b8      	cbz	r0, 48 <tv4_frame_ingress_retry+0x48>
+  18:	f894 30ac 	ldrb.w	r3, [r4, #172]	@ 0xac
+  1c:	b1b3      	cbz	r3, 4c <tv4_frame_ingress_retry+0x4c>
+  1e:	f104 0590 	add.w	r5, r4, #144	@ 0x90
+  22:	4629      	mov	r1, r5
+  24:	4620      	mov	r0, r4
+  26:	f7ff fffe 	bl	0 <tv4_frame_ingress_retry>
+  2a:	b188      	cbz	r0, 50 <tv4_frame_ingress_retry+0x50>
+  2c:	2214      	movs	r2, #20
+  2e:	2100      	movs	r1, #0
+  30:	4628      	mov	r0, r5
+  32:	f7ff fffe 	bl	0 <memset>
+  36:	2000      	movs	r0, #0
+  38:	f884 00ac 	strb.w	r0, [r4, #172]	@ 0xac
+  3c:	f3bf 8f5b 	dmb	ish
+  40:	66e0      	str	r0, [r4, #108]	@ 0x6c
+  42:	bd38      	pop	{r3, r4, r5, pc}
+  44:	2007      	movs	r0, #7
+  46:	e7fc      	b.n	42 <tv4_frame_ingress_retry+0x42>
+  48:	2009      	movs	r0, #9
+  4a:	e7fa      	b.n	42 <tv4_frame_ingress_retry+0x42>
+  4c:	2003      	movs	r0, #3
+  4e:	e7f8      	b.n	42 <tv4_frame_ingress_retry+0x42>
+  50:	2001      	movs	r0, #1
+  52:	e7f6      	b.n	42 <tv4_frame_ingress_retry+0x42>
+
+Disassembly of section .text.tv4_frame_ingress_lost:
+
+00000000 <tv4_frame_ingress_lost>:
+   0:	b508      	push	{r3, lr}
+   2:	4603      	mov	r3, r0
+   4:	f7ff fffe 	bl	0 <tv4_frame_ingress_lost>
+   8:	b128      	cbz	r0, 16 <tv4_frame_ingress_lost+0x16>
+   a:	4618      	mov	r0, r3
+   c:	2104      	movs	r1, #4
+   e:	f7ff fffe 	bl	0 <tv4_frame_ingress_lost>
+  12:	2009      	movs	r0, #9
+  14:	bd08      	pop	{r3, pc}
+  16:	2007      	movs	r0, #7
+  18:	e7fc      	b.n	14 <tv4_frame_ingress_lost+0x14>
+
+Disassembly of section .text.tv4_frame_ingress_stage:
+
+00000000 <tv4_frame_ingress_stage>:
+   0:	e92d 43f8 	stmdb	sp!, {r3, r4, r5, r6, r7, r8, r9, lr}
+   4:	4604      	mov	r4, r0
+   6:	460d      	mov	r5, r1
+   8:	b121      	cbz	r1, 14 <tv4_frame_ingress_stage+0x14>
+   a:	2220      	movs	r2, #32
+   c:	2100      	movs	r1, #0
+   e:	4628      	mov	r0, r5
+  10:	f7ff fffe 	bl	0 <memset>
+  14:	4620      	mov	r0, r4
+  16:	f7ff fffe 	bl	0 <tv4_frame_ingress_stage>
+  1a:	2800      	cmp	r0, #0
+  1c:	d03e      	beq.n	9c <tv4_frame_ingress_stage+0x9c>
+  1e:	2d00      	cmp	r5, #0
+  20:	d03c      	beq.n	9c <tv4_frame_ingress_stage+0x9c>
+  22:	6f23      	ldr	r3, [r4, #112]	@ 0x70
+  24:	f3bf 8f5b 	dmb	ish
+  28:	2b00      	cmp	r3, #0
+  2a:	d139      	bne.n	a0 <tv4_frame_ingress_stage+0xa0>
+  2c:	f894 80cc 	ldrb.w	r8, [r4, #204]	@ 0xcc
+  30:	f1b8 0f00 	cmp.w	r8, #0
+  34:	d136      	bne.n	a4 <tv4_frame_ingress_stage+0xa4>
+  36:	6ea6      	ldr	r6, [r4, #104]	@ 0x68
+  38:	6e63      	ldr	r3, [r4, #100]	@ 0x64
+  3a:	f3bf 8f5b 	dmb	ish
+  3e:	429e      	cmp	r6, r3
+  40:	d032      	beq.n	a8 <tv4_frame_ingress_stage+0xa8>
+  42:	f04f 0914 	mov.w	r9, #20
+  46:	fb09 4e06 	mla	lr, r9, r6, r4
+  4a:	46f4      	mov	ip, lr
+  4c:	e8bc 000f 	ldmia.w	ip!, {r0, r1, r2, r3}
+  50:	f104 07b0 	add.w	r7, r4, #176	@ 0xb0
+  54:	c70f      	stmia	r7!, {r0, r1, r2, r3}
+  56:	f8dc 3000 	ldr.w	r3, [ip]
+  5a:	603b      	str	r3, [r7, #0]
+  5c:	464a      	mov	r2, r9
+  5e:	4641      	mov	r1, r8
+  60:	4670      	mov	r0, lr
+  62:	f7ff fffe 	bl	0 <memset>
+  66:	f8d4 2088 	ldr.w	r2, [r4, #136]	@ 0x88
+  6a:	1c73      	adds	r3, r6, #1
+  6c:	429a      	cmp	r2, r3
+  6e:	bf08      	it	eq
+  70:	2300      	moveq	r3, #0
+  72:	f3bf 8f5b 	dmb	ish
+  76:	66a3      	str	r3, [r4, #104]	@ 0x68
+  78:	2301      	movs	r3, #1
+  7a:	f884 30cc 	strb.w	r3, [r4, #204]	@ 0xcc
+  7e:	e9d4 671e 	ldrd	r6, r7, [r4, #120]	@ 0x78
+  82:	e9d4 322f 	ldrd	r3, r2, [r4, #188]	@ 0xbc
+  86:	f8d4 1080 	ldr.w	r1, [r4, #128]	@ 0x80
+  8a:	602c      	str	r4, [r5, #0]
+  8c:	e9c5 6702 	strd	r6, r7, [r5, #8]
+  90:	e9c5 1204 	strd	r1, r2, [r5, #16]
+  94:	61ab      	str	r3, [r5, #24]
+  96:	2004      	movs	r0, #4
+  98:	e8bd 83f8 	ldmia.w	sp!, {r3, r4, r5, r6, r7, r8, r9, pc}
+  9c:	2007      	movs	r0, #7
+  9e:	e7fb      	b.n	98 <tv4_frame_ingress_stage+0x98>
+  a0:	2009      	movs	r0, #9
+  a2:	e7f9      	b.n	98 <tv4_frame_ingress_stage+0x98>
+  a4:	2002      	movs	r0, #2
+  a6:	e7f7      	b.n	98 <tv4_frame_ingress_stage+0x98>
+  a8:	2003      	movs	r0, #3
+  aa:	e7f5      	b.n	98 <tv4_frame_ingress_stage+0x98>
+
+Disassembly of section .text.tv4_frame_ingress_check:
+
+00000000 <tv4_frame_ingress_check>:
+   0:	b082      	sub	sp, #8
+   2:	b5f8      	push	{r3, r4, r5, r6, r7, lr}
+   4:	e9dd 670e 	ldrd	r6, r7, [sp, #56]	@ 0x38
+   8:	a906      	add	r1, sp, #24
+   a:	e881 000c 	stmia.w	r1, {r2, r3}
+   e:	4604      	mov	r4, r0
+  10:	b126      	cbz	r6, 1c <tv4_frame_ingress_check+0x1c>
+  12:	2209      	movs	r2, #9
+  14:	2100      	movs	r1, #0
+  16:	4630      	mov	r0, r6
+  18:	f7ff fffe 	bl	0 <memset>
+  1c:	4620      	mov	r0, r4
+  1e:	f7ff fffe 	bl	0 <tv4_frame_ingress_check>
+  22:	2800      	cmp	r0, #0
+  24:	d066      	beq.n	f4 <tv4_frame_ingress_check+0xf4>
+  26:	2e00      	cmp	r6, #0
+  28:	d064      	beq.n	f4 <tv4_frame_ingress_check+0xf4>
+  2a:	f894 30cc 	ldrb.w	r3, [r4, #204]	@ 0xcc
+  2e:	2b00      	cmp	r3, #0
+  30:	d062      	beq.n	f8 <tv4_frame_ingress_check+0xf8>
+  32:	9b06      	ldr	r3, [sp, #24]
+  34:	42a3      	cmp	r3, r4
+  36:	d15f      	bne.n	f8 <tv4_frame_ingress_check+0xf8>
+  38:	f8d4 3080 	ldr.w	r3, [r4, #128]	@ 0x80
+  3c:	9a0a      	ldr	r2, [sp, #40]	@ 0x28
+  3e:	429a      	cmp	r2, r3
+  40:	d15a      	bne.n	f8 <tv4_frame_ingress_check+0xf8>
+  42:	e9d4 131e 	ldrd	r1, r3, [r4, #120]	@ 0x78
+  46:	e9dd 0208 	ldrd	r0, r2, [sp, #32]
+  4a:	429a      	cmp	r2, r3
+  4c:	bf08      	it	eq
+  4e:	4288      	cmpeq	r0, r1
+  50:	d152      	bne.n	f8 <tv4_frame_ingress_check+0xf8>
+  52:	f8d4 30c0 	ldr.w	r3, [r4, #192]	@ 0xc0
+  56:	9a0b      	ldr	r2, [sp, #44]	@ 0x2c
+  58:	429a      	cmp	r2, r3
+  5a:	d14d      	bne.n	f8 <tv4_frame_ingress_check+0xf8>
+  5c:	f8d4 30bc 	ldr.w	r3, [r4, #188]	@ 0xbc
+  60:	9a0c      	ldr	r2, [sp, #48]	@ 0x30
+  62:	429a      	cmp	r2, r3
+  64:	d148      	bne.n	f8 <tv4_frame_ingress_check+0xf8>
+  66:	463a      	mov	r2, r7
+  68:	f104 01c8 	add.w	r1, r4, #200	@ 0xc8
+  6c:	4620      	mov	r0, r4
+  6e:	f7ff fffe 	bl	0 <tv4_frame_ingress_check>
+  72:	f8d4 30bc 	ldr.w	r3, [r4, #188]	@ 0xbc
+  76:	1aff      	subs	r7, r7, r3
+  78:	4605      	mov	r5, r0
+  7a:	d533      	bpl.n	e4 <tv4_frame_ingress_check+0xe4>
+  7c:	2101      	movs	r1, #1
+  7e:	4620      	mov	r0, r4
+  80:	f7ff fffe 	bl	0 <tv4_frame_ingress_check>
+  84:	2500      	movs	r5, #0
+  86:	f8d4 30c4 	ldr.w	r3, [r4, #196]	@ 0xc4
+  8a:	1c5a      	adds	r2, r3, #1
+  8c:	d004      	beq.n	98 <tv4_frame_ingress_check+0x98>
+  8e:	f8d4 20c0 	ldr.w	r2, [r4, #192]	@ 0xc0
+  92:	3301      	adds	r3, #1
+  94:	429a      	cmp	r2, r3
+  96:	d004      	beq.n	a2 <tv4_frame_ingress_check+0xa2>
+  98:	2108      	movs	r1, #8
+  9a:	4620      	mov	r0, r4
+  9c:	f7ff fffe 	bl	0 <tv4_frame_ingress_check>
+  a0:	2500      	movs	r5, #0
+  a2:	f8d4 30c0 	ldr.w	r3, [r4, #192]	@ 0xc0
+  a6:	f8c4 30c4 	str.w	r3, [r4, #196]	@ 0xc4
+  aa:	6f23      	ldr	r3, [r4, #112]	@ 0x70
+  ac:	f3bf 8f5b 	dmb	ish
+  b0:	f104 07b0 	add.w	r7, r4, #176	@ 0xb0
+  b4:	b9e3      	cbnz	r3, f0 <tv4_frame_ingress_check+0xf0>
+  b6:	b12d      	cbz	r5, c4 <tv4_frame_ingress_check+0xc4>
+  b8:	463b      	mov	r3, r7
+  ba:	cb03      	ldmia	r3!, {r0, r1}
+  bc:	6030      	str	r0, [r6, #0]
+  be:	6071      	str	r1, [r6, #4]
+  c0:	781b      	ldrb	r3, [r3, #0]
+  c2:	7233      	strb	r3, [r6, #8]
+  c4:	2214      	movs	r2, #20
+  c6:	2100      	movs	r1, #0
+  c8:	4638      	mov	r0, r7
+  ca:	f7ff fffe 	bl	0 <memset>
+  ce:	2300      	movs	r3, #0
+  d0:	429d      	cmp	r5, r3
+  d2:	f884 30cc 	strb.w	r3, [r4, #204]	@ 0xcc
+  d6:	bf0c      	ite	eq
+  d8:	2009      	moveq	r0, #9
+  da:	2005      	movne	r0, #5
+  dc:	e8bd 40f8 	ldmia.w	sp!, {r3, r4, r5, r6, r7, lr}
+  e0:	b002      	add	sp, #8
+  e2:	4770      	bx	lr
+  e4:	f8d4 3084 	ldr.w	r3, [r4, #132]	@ 0x84
+  e8:	42bb      	cmp	r3, r7
+  ea:	d8cc      	bhi.n	86 <tv4_frame_ingress_check+0x86>
+  ec:	2102      	movs	r1, #2
+  ee:	e7c6      	b.n	7e <tv4_frame_ingress_check+0x7e>
+  f0:	2500      	movs	r5, #0
+  f2:	e7e7      	b.n	c4 <tv4_frame_ingress_check+0xc4>
+  f4:	2007      	movs	r0, #7
+  f6:	e7f1      	b.n	dc <tv4_frame_ingress_check+0xdc>
+  f8:	2006      	movs	r0, #6
+  fa:	e7ef      	b.n	dc <tv4_frame_ingress_check+0xdc>
+
+Disassembly of section .text.tv4_frame_ingress_empty:
+
+00000000 <tv4_frame_ingress_empty>:
+   0:	b508      	push	{r3, lr}
+   2:	4603      	mov	r3, r0
+   4:	f7ff fffe 	bl	0 <tv4_frame_ingress_empty>
+   8:	b1a0      	cbz	r0, 34 <tv4_frame_ingress_empty+0x34>
+   a:	6f1a      	ldr	r2, [r3, #112]	@ 0x70
+   c:	f3bf 8f5b 	dmb	ish
+  10:	b992      	cbnz	r2, 38 <tv4_frame_ingress_empty+0x38>
+  12:	f893 20cc 	ldrb.w	r2, [r3, #204]	@ 0xcc
+  16:	b91a      	cbnz	r2, 20 <tv4_frame_ingress_empty+0x20>
+  18:	6eda      	ldr	r2, [r3, #108]	@ 0x6c
+  1a:	f3bf 8f5b 	dmb	ish
+  1e:	b10a      	cbz	r2, 24 <tv4_frame_ingress_empty+0x24>
+  20:	2002      	movs	r0, #2
+  22:	bd08      	pop	{r3, pc}
+  24:	6e5a      	ldr	r2, [r3, #100]	@ 0x64
+  26:	f3bf 8f5b 	dmb	ish
+  2a:	6e9b      	ldr	r3, [r3, #104]	@ 0x68
+  2c:	429a      	cmp	r2, r3
+  2e:	d1f7      	bne.n	20 <tv4_frame_ingress_empty+0x20>
+  30:	2003      	movs	r0, #3
+  32:	e7f6      	b.n	22 <tv4_frame_ingress_empty+0x22>
+  34:	2007      	movs	r0, #7
+  36:	e7f4      	b.n	22 <tv4_frame_ingress_empty+0x22>
+  38:	2009      	movs	r0, #9
+  3a:	e7f2      	b.n	22 <tv4_frame_ingress_empty+0x22>
+
+Disassembly of section .text.tv4_frame_ingress_faults:
+
+00000000 <tv4_frame_ingress_faults>:
+   0:	b508      	push	{r3, lr}
+   2:	4603      	mov	r3, r0
+   4:	f7ff fffe 	bl	0 <tv4_frame_ingress_faults>
+   8:	b118      	cbz	r0, 12 <tv4_frame_ingress_faults+0x12>
+   a:	6f18      	ldr	r0, [r3, #112]	@ 0x70
+   c:	f3bf 8f5b 	dmb	ish
+  10:	bd08      	pop	{r3, pc}
+  12:	f04f 30ff 	mov.w	r0, #4294967295	@ 0xffffffff
+  16:	e7fb      	b.n	10 <tv4_frame_ingress_faults+0x10>

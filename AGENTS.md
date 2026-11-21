@@ -109,9 +109,27 @@ PR и Actions; не копировать код уже открытого PR. Д
 
 ## Текущее задание
 
-PR #1–50 слиты, база main `db50840`, main CI5/5 PASS,
+PR #1–51 слиты, база main `25e635c`, main CI5/5 PASS,
 открытых PR перед работой нет.
-PR-07s: читать docs/STM32_DRIVER_DISPATCH.md. Actual completion owner + one owned
+PR-07t: читать docs/STM32_FRAME_INGRESS.md. Optional SPSC RX copy mailbox,
+immutable binding/stable lifetime/externally publish init/stop+join, no live
+copy/move/reinit/flush/clear. One driver offer/retry/lost; one consumer stage/
+check/empty. Producer never reads mutable protocol; consumer never reads private
+producer state. Captured time separate from fresh producer now; full retains
+first owned copy/original timestamp, BUSY caller retains new input+timestamp or
+reports actual loss. Stage token has no payload; read time AFTER acquire, exact
+check original age then FRAME unverified owned bytes, refusal output zero.
+Clock/expiry/overrun/exhaustion sticky, faults invalid object UINT_MAX. Empty
+snapshot not producer-stop/phase-cutover/backend drain; no phase authority here.
+Current-time protocol polling/crypto/lease/model/close/upper windows unchanged.
+Host71/sanitizers71/standalone45/TSan6,800000 FIFO+256 messages/8448 fragments,
+3 controlled thread faults,8 signed positive+3 independent+2 ingress refusals.
+Analyzer22+2/guards7×6+3×7/source178/synthetic/board/output/scope PASS. Separate
+ARM1060text/data0/bss0/frame48,8exports/15DMB,4096/frame128 ceiling. Host208/token32
+not MCU RAM/full stack/timing. Actual driver/ISR/RTOS/cache/DMA/clock/phase-cutover/
+identity/resources/runtime/install/hardware remain open. No devices/merge/release.
+
+Слитый PR #51, PR-07s: читать docs/STM32_DRIVER_DISPATCH.md. Actual completion owner + one owned
 frame dispatch slot, protocol actor publish/consumer APIs vs driver actor take/
 check/report/retry. Externally publish init/stable lifetime/stop+join; no live
 copy/move/reinit/flush/inner mutable APIs. Producer never reads mutable protocol

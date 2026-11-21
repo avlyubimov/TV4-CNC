@@ -1,0 +1,29 @@
+{
+  "scope": "opt-in SPSC owned frame ingress static archive, not firmware",
+  "objects": {
+    "text": 1060,
+    "data": 0,
+    "bss": 0
+  },
+  "native_atomic_barriers": 15,
+  "isr_or_rtos_verified": false,
+  "unresolved_imports": [
+    "memcpy",
+    "memset"
+  ],
+  "exported_functions": [
+    "tv4_frame_ingress_check",
+    "tv4_frame_ingress_empty",
+    "tv4_frame_ingress_faults",
+    "tv4_frame_ingress_init",
+    "tv4_frame_ingress_lost",
+    "tv4_frame_ingress_offer",
+    "tv4_frame_ingress_retry",
+    "tv4_frame_ingress_stage"
+  ],
+  "max_individual_frame": 48,
+  "full_stack_verified": false,
+  "board_memory_verified": false,
+  "runtime_caller": false,
+  "device_access": false
+}

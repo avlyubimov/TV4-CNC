@@ -1,6 +1,6 @@
 # Открытые вопросы и блокирующие решения
 
-Обновлено от main `db50840`,21ноября2026. Единственный свод аппаратных фактов —
+Обновлено от main `25e635c`,21ноября2026. Единственный свод аппаратных фактов —
 [HARDWARE_STATUS.md](HARDWARE_STATUS.md). Не заполнять неизвестные поля
 типовыми данными семейства, USB VID/PID, старым заказом или host mock.
 
@@ -88,6 +88,12 @@ PR-07s [driver dispatch](STM32_DRIVER_DISPATCH.md) связывает actual fra
 publication/fresh check/correlated return; no external copy gap in software API.
 Это не real backend/clock/ISR/RTOS/cache/DMA/cancel truth или physical inhibit.
 Persistent identity/routing/resources/runtime/install и все hardware gates open.
+
+PR-07t [frame ingress](STM32_FRAME_INGRESS.md) проверяет bounded SPSC RX copies,
+original capture age (включая retained external BUSY input) и sticky loss/fault.
+Empty не producer-stop/phase-cutover/backend drain; FRAME не upper authority.
+Нужен actual stop/ack/barrier с правдивым backend reconciliation, common clock/
+loss reporting и route lifetime до runtime adoption. Аппаратных наблюдений нет.
 
 | ID | Что нужно подтвердить/решить | Блокирует |
 |---|---|---|

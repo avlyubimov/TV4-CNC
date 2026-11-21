@@ -1,0 +1,5 @@
+PASS build-boot-arm excludes host fixtures/review/pthread/tests
+PASS build-update-arm excludes host fixtures/review/pthread/tests
+PASS actual production handoff target has no ingress/dispatch/mailbox/events/egress/channel/setup/fragments/test dependency
+PASS no frame ingress runtime caller in HMI/motion/production bootloader
+PASS two-actor tests and serialized signed HOST fixture only; no target clock/ISR/RTOS/cache/DMA/driver/phase-cutover/physical proof

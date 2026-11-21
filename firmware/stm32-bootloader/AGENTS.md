@@ -240,3 +240,19 @@ model/image/close gates and all old modes/budgets/SDK pins preserved. Host pthre
 TSan only, no target backend/ISR/RTOS/cache/DMA/clock/truth approval. Separate exact
 ARM/import/export/frame/global/native-atomic guard+negatives/text evidence required.
 No devices/SWD/UART/reset/Flash/CAN/motion/self-merge/release.
+
+## PR-07t — bounded owned frame ingress
+
+Читать docs/STM32_FRAME_INGRESS.md. One driver offer/retry/lost, one consumer
+stage/check/empty, immutable route/generation; externally publish init/stable
+lifetime/stop+join. No live copy/move/reinit/reset/flush/clear or private aliases.
+Full retains first copied frame/time; BUSY new input+original captured retained
+externally or lost reported. captured separate from fresh now; retry/reoffer
+never refreshes original age. Stage returns payload-free token; read clock AFTER
+acquire then exact check. FRAME unverified; other outputs zero. Clock/expiry/
+overrun/exhaustion sticky, no force recovery. Empty not producer-stop/phase-cutover/
+backend drain. No channel phase owner/real driver/ISR/RTOS/cache/DMA/clock proof.
+Upper polls/receive CURRENT time and independent crypto/lease/model/close gates
+unchanged. Actual signed helper serialized, cannot prove concurrent cutover.
+Separate ARM/native atomic/import/export/frame/no globals guard+negative tests,
+host/sanitizers/TSan/text evidence required. No devices/Flash/pins/runtime/merge.

@@ -1,0 +1,33 @@
+[1/33] Building C object CMakeFiles/tv4_update_wire.dir/update_wire.c.o
+[2/33] Building C object CMakeFiles/tv4_update_transport.dir/update_outcome.c.o
+[3/33] Building C object CMakeFiles/tv4_update_transport.dir/update_session.c.o
+[4/33] Building C object CMakeFiles/tv4_update_transport.dir/update_negotiation.c.o
+[5/33] Building C object CMakeFiles/tv4_update_metadata.dir/update_metadata.c.o
+[6/33] Linking C static library libtv4_update_transport.a
+[7/33] Building C object CMakeFiles/tv4_update_fragments.dir/update_fragments.c.o
+[8/33] Linking C static library libtv4_update_wire.a
+[9/33] Linking C static library libtv4_update_metadata.a
+[10/33] Building C object CMakeFiles/tv4_update_channel.dir/update_channel.c.o
+[11/33] Building C object CMakeFiles/tv4_metadata_setup.dir/update_metadata_setup.c.o
+[12/33] Linking C static library libtv4_update_fragments.a
+[13/33] Building C object CMakeFiles/tv4_update_egress.dir/update_egress.c.o
+[14/33] Building C object CMakeFiles/tv4_update_egress.dir/frame_queue.c.o
+[15/33] Linking C static library libtv4_metadata_setup.a
+[16/33] Building C object CMakeFiles/tv4_update_driver_events.dir/update_driver_events.c.o
+[17/33] Linking C static library libtv4_update_channel.a
+[18/33] Building C object CMakeFiles/tv4_completion_mailbox.dir/completion_mailbox.c.o
+[19/33] Building C object CMakeFiles/tv4_driver_dispatch.dir/driver_dispatch.c.o
+[20/33] Building C object CMakeFiles/tv4_frame_ingress.dir/frame_ingress.c.o
+[21/33] Linking C static library libtv4_update_egress.a
+[22/33] Linking C static library libtv4_frame_ingress.a
+[23/33] Building C object CMakeFiles/update_completion_mailbox_tests.dir/tests/completion_mailbox_tests.c.o
+[24/33] Linking C static library libtv4_update_driver_events.a
+[25/33] Building C object CMakeFiles/update_completion_owner_tests.dir/tests/completion_owner_tests.c.o
+[26/33] Linking C static library libtv4_completion_mailbox.a
+[27/33] Linking C executable update_completion_mailbox_tests
+[28/33] Linking C static library libtv4_driver_dispatch.a
+[29/33] Linking C executable update_completion_owner_tests
+[30/33] Building C object CMakeFiles/update_driver_dispatch_tests.dir/tests/driver_dispatch_tests.c.o
+[31/33] Building C object CMakeFiles/update_frame_ingress_tests.dir/tests/frame_ingress_tests.c.o
+[32/33] Linking C executable update_driver_dispatch_tests
+[33/33] Linking C executable update_frame_ingress_tests
