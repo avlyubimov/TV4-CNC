@@ -1,6 +1,6 @@
 # Открытые вопросы и блокирующие решения
 
-Обновлено от main `bc35a37`,21ноября2026. Единственный свод аппаратных фактов —
+Обновлено от main `5e76626`,21ноября2026. Единственный свод аппаратных фактов —
 [HARDWARE_STATUS.md](HARDWARE_STATUS.md). Не заполнять неизвестные поля
 типовыми данными семейства, USB VID/PID, старым заказом или host mock.
 
@@ -100,6 +100,13 @@ barrier: exact pause ACK + actual pending/staged/ring/RX drain, epoch permits,
 bounded lower-timeout recovery с прежним временем. Это не physical peripheral/
 IRQ/DMA/remote stop или trusted route/identity/provider. Новый actual target
 stop/reconciliation/clock/resource port и все hardware/install gates ещё открыты.
+
+PR-07v [threaded signed HOST link](STM32_THREADED_LINK.md) проверяет full signed
+composition через driver pthread и concurrent RX; TSan8+1 сохраняет прежние
+races и добавляет эту цепочку. Это не target scheduler/clock/backend/physical
+validation. External BUSY capture намеренно блокирует ACK до reconciliation;
+stop/join не освобождает actual claim. Верхние image/crypto/lease/model/close
+окна и все аппаратные blockers сохраняются. [Evidence](evidence/build/threaded-link/README.md).
 
 | ID | Что нужно подтвердить/решить | Блокирует |
 |---|---|---|

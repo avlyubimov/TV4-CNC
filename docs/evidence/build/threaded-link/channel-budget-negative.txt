@@ -1,0 +1,12 @@
+test_excessive_code_or_rodata (__main__.Budget.test_excessive_code_or_rodata) ... ok
+test_excessive_frame (__main__.Budget.test_excessive_frame) ... ok
+test_missing_frame_or_dynamic_frame (__main__.Budget.test_missing_frame_or_dynamic_frame) ... ok
+test_mutable_globals (__main__.Budget.test_mutable_globals) ... ok
+test_real_archive (__main__.Budget.test_real_archive) ... ok
+test_unreviewed_import (__main__.Budget.test_unreviewed_import) ... ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.136s
+
+OK
+PASS6 ARM budget guard cases; temporary negative objects removed, no board image or execution

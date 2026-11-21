@@ -273,3 +273,17 @@ remote drain. Original independent crypto/lease/model/close gates remain.
 Host concurrency/signed chains/TSan and exact ARM/native atomic/import/export/
 frame/no-globals+negative/source/scope/text evidence mandatory. No devices,
 Flash/pin/runtime/identity/install authority or self-merge/release.
+
+## PR-07v — threaded signed HOST composition
+
+Читать docs/STM32_THREADED_LINK.md. Новый pthread helper только NOT CROSS/HOST.
+Protocol/crypto caller + dedicated driver actor, concurrent RX; TX publish before
+wake, common clock frozen per turn, no CPU/target scheduler claim. No target API
+under HOST mutex. Public driver APIs/immutable bindings/private owned copies only.
+Original permit/time retained for BUSY capture; external copy blocks pause ACK,
+no retag/drop/flush. Actual ACK+actual ring/staged/held/RX/TX drain and old upper
+states remain gates. Stop/join never synthesizes return or clears claim; original
+image expiry cannot revive after late cleanup. All older modes/11 ARM archives/
+SDK pins/crypto/lease/model/close unchanged. Host/sanitizers75/standalone49/TSan8+1,
+strict analyzer23+3/guards/source/scope/text evidence mandatory. No target driver/
+ISR/RTOS/cache/DMA/clock/identity/resources/install/physical/device/merge/release.

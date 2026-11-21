@@ -1,0 +1,187 @@
+[
+  {
+    "command": "python3 tools/check_boot_admission_build.py build-boot-arm",
+    "exit_code": 0,
+    "evidence": "arm-budget.json"
+  },
+  {
+    "command": "python3 tools/check_update_wire_build.py build-update-arm",
+    "exit_code": 0,
+    "evidence": "wire-budget.json"
+  },
+  {
+    "command": "python3 tools/check_update_wire_build.py build-boot-arm/update-transport",
+    "exit_code": 0,
+    "evidence": "standalone-wire-budget.json"
+  },
+  {
+    "command": "python3 protocol/can/tests/wire_budget_tests.py --build build-update-arm",
+    "exit_code": 0,
+    "evidence": "wire-budget-negative.txt"
+  },
+  {
+    "command": "python3 tools/check_update_fragment_build.py build-update-arm",
+    "exit_code": 0,
+    "evidence": "fragment-budget.json"
+  },
+  {
+    "command": "python3 tools/check_update_fragment_build.py build-boot-arm/update-transport",
+    "exit_code": 0,
+    "evidence": "standalone-fragment-budget.json"
+  },
+  {
+    "command": "python3 protocol/can/tests/wire_budget_tests.py --fragments --build build-update-arm",
+    "exit_code": 0,
+    "evidence": "fragment-budget-negative.txt"
+  },
+  {
+    "command": "python3 tools/check_update_metadata_build.py build-update-arm",
+    "exit_code": 0,
+    "evidence": "metadata-budget.json"
+  },
+  {
+    "command": "python3 tools/check_update_metadata_build.py build-boot-arm/update-transport",
+    "exit_code": 0,
+    "evidence": "standalone-metadata-budget.json"
+  },
+  {
+    "command": "python3 protocol/can/tests/wire_budget_tests.py --metadata --build build-update-arm",
+    "exit_code": 0,
+    "evidence": "metadata-budget-negative.txt"
+  },
+  {
+    "command": "python3 tools/check_metadata_setup_build.py build-update-arm",
+    "exit_code": 0,
+    "evidence": "metadata-setup-budget.json"
+  },
+  {
+    "command": "python3 tools/check_metadata_setup_build.py build-boot-arm/update-transport",
+    "exit_code": 0,
+    "evidence": "standalone-metadata-setup-budget.json"
+  },
+  {
+    "command": "python3 protocol/can/tests/wire_budget_tests.py --setup --build build-update-arm",
+    "exit_code": 0,
+    "evidence": "metadata-setup-budget-negative.txt"
+  },
+  {
+    "command": "python3 tools/check_update_channel_build.py build-update-arm",
+    "exit_code": 0,
+    "evidence": "channel-budget.json"
+  },
+  {
+    "command": "python3 tools/check_update_channel_build.py build-boot-arm/update-transport",
+    "exit_code": 0,
+    "evidence": "standalone-channel-budget.json"
+  },
+  {
+    "command": "python3 protocol/can/tests/wire_budget_tests.py --channel --build build-update-arm",
+    "exit_code": 0,
+    "evidence": "channel-budget-negative.txt"
+  },
+  {
+    "command": "python3 tools/check_update_egress_build.py build-update-arm",
+    "exit_code": 0,
+    "evidence": "egress-budget.json"
+  },
+  {
+    "command": "python3 tools/check_update_egress_build.py build-boot-arm/update-transport",
+    "exit_code": 0,
+    "evidence": "standalone-egress-budget.json"
+  },
+  {
+    "command": "python3 protocol/can/tests/wire_budget_tests.py --egress --build build-update-arm",
+    "exit_code": 0,
+    "evidence": "egress-budget-negative.txt"
+  },
+  {
+    "command": "python3 tools/check_driver_events_build.py build-update-arm",
+    "exit_code": 0,
+    "evidence": "driver-events-budget.json"
+  },
+  {
+    "command": "python3 tools/check_driver_events_build.py build-boot-arm/update-transport",
+    "exit_code": 0,
+    "evidence": "standalone-driver-events-budget.json"
+  },
+  {
+    "command": "python3 protocol/can/tests/wire_budget_tests.py --driver-events --build build-update-arm",
+    "exit_code": 0,
+    "evidence": "driver-events-budget-negative.txt"
+  },
+  {
+    "command": "python3 tools/check_completion_mailbox_build.py build-update-arm",
+    "exit_code": 0,
+    "evidence": "completion-mailbox-budget.json"
+  },
+  {
+    "command": "python3 tools/check_completion_mailbox_build.py build-boot-arm/update-transport",
+    "exit_code": 0,
+    "evidence": "standalone-completion-mailbox-budget.json"
+  },
+  {
+    "command": "python3 protocol/can/tests/wire_budget_tests.py --completion-mailbox --build build-update-arm",
+    "exit_code": 0,
+    "evidence": "completion-mailbox-budget-negative.txt"
+  },
+  {
+    "command": "python3 tools/check_driver_dispatch_build.py build-update-arm",
+    "exit_code": 0,
+    "evidence": "driver-dispatch-budget.json"
+  },
+  {
+    "command": "python3 tools/check_driver_dispatch_build.py build-boot-arm/update-transport",
+    "exit_code": 0,
+    "evidence": "standalone-driver-dispatch-budget.json"
+  },
+  {
+    "command": "python3 protocol/can/tests/wire_budget_tests.py --driver-dispatch --build build-update-arm",
+    "exit_code": 0,
+    "evidence": "driver-dispatch-budget-negative.txt"
+  },
+  {
+    "command": "python3 tools/check_frame_ingress_build.py build-update-arm",
+    "exit_code": 0,
+    "evidence": "frame-ingress-budget.json"
+  },
+  {
+    "command": "python3 tools/check_frame_ingress_build.py build-boot-arm/update-transport",
+    "exit_code": 0,
+    "evidence": "standalone-frame-ingress-budget.json"
+  },
+  {
+    "command": "python3 protocol/can/tests/wire_budget_tests.py --frame-ingress --build build-update-arm",
+    "exit_code": 0,
+    "evidence": "frame-ingress-budget-negative.txt"
+  },
+  {
+    "command": "python3 tools/check_ingress_owner_build.py build-update-arm",
+    "exit_code": 0,
+    "evidence": "ingress-owner-budget.json"
+  },
+  {
+    "command": "python3 tools/check_ingress_owner_build.py build-boot-arm/update-transport",
+    "exit_code": 0,
+    "evidence": "standalone-ingress-owner-budget.json"
+  },
+  {
+    "command": "python3 protocol/can/tests/wire_budget_tests.py --ingress-owner --build build-update-arm",
+    "exit_code": 0,
+    "evidence": "ingress-owner-budget-negative.txt"
+  },
+  {
+    "command": "python3 tools/check_boot_crypto_source.py --source build-boot-arm/_deps/tv4_boot_mbedtls-src --lock third_party/mbedtls/origin.json",
+    "exit_code": 0,
+    "evidence": "source-check.txt"
+  },
+  {
+    "command": "python3 tools/check_motion_link.py build-motion-probe/tv4_motion_link_probe.elf",
+    "exit_code": 0,
+    "evidence": "motion-link-probe.json"
+  },
+  {
+    "command": "ctest --test-dir build-motion-probe --output-on-failure",
+    "exit_code": 0,
+    "evidence": "motion-link-contract.txt"
+  }
+]

@@ -1,0 +1,17 @@
+host-tests.txt: 75/75 PASS, 5.46s, all CTest rows retained
+host-tests.txt / threaded signed suite: PASS8 transported metadata signed chains: frames=12066 drops=80 container-bytes=4798 DER=70..72 longest=4740 synthetic ms; producer wiped, actual delivered signature/raw digest/lease/model/close, no image deadline reset
+host-tests.txt / threaded signed suite: PASS2 threaded driver lifetime refusals: original image expiry, retained exact claim, late cancellation cleanup-only; stop/join never synthesizes a return
+host-tests.txt / threaded signed suite: PASS threaded external BUSY capture: original permit/time retained, actual ring+pending+driver claim preserved; pause unacknowledged, no retag/flush on join
+sanitizer-tests.txt: 75/75 PASS, 12.49s, all CTest rows retained
+sanitizer-tests.txt / threaded signed suite: PASS8 transported metadata signed chains: frames=12067 drops=80 container-bytes=4798 DER=70..72 longest=4740 synthetic ms; producer wiped, actual delivered signature/raw digest/lease/model/close, no image deadline reset
+sanitizer-tests.txt / threaded signed suite: PASS2 threaded driver lifetime refusals: original image expiry, retained exact claim, late cancellation cleanup-only; stop/join never synthesizes a return
+sanitizer-tests.txt / threaded signed suite: PASS threaded external BUSY capture: original permit/time retained, actual ring+pending+driver claim preserved; pause unacknowledged, no retag/flush on join
+standalone-tests.txt: 49/49 PASS, 2.19s, all CTest rows retained
+standalone-tests.txt / threaded signed suite: PASS8 transported metadata signed chains: frames=12066 drops=80 container-bytes=4799 DER=70..72 longest=4740 synthetic ms; producer wiped, actual delivered signature/raw digest/lease/model/close, no image deadline reset
+standalone-tests.txt / threaded signed suite: PASS2 threaded driver lifetime refusals: original image expiry, retained exact claim, late cancellation cleanup-only; stop/join never synthesizes a return
+standalone-tests.txt / threaded signed suite: PASS threaded external BUSY capture: original permit/time retained, actual ring+pending+driver claim preserved; pause unacknowledged, no retag/flush on join
+thread-sanitizer.txt: 8/8 PASS, 1.39s, all CTest rows retained
+threaded-signed-sanitizer.txt: 1/1 PASS, 0.68s, all CTest rows retained
+threaded-signed-sanitizer.txt / threaded signed suite: PASS8 transported metadata signed chains: frames=12066 drops=80 container-bytes=4796 DER=70..72 longest=4740 synthetic ms; producer wiped, actual delivered signature/raw digest/lease/model/close, no image deadline reset
+threaded-signed-sanitizer.txt / threaded signed suite: PASS2 threaded driver lifetime refusals: original image expiry, retained exact claim, late cancellation cleanup-only; stop/join never synthesizes a return
+threaded-signed-sanitizer.txt / threaded signed suite: PASS threaded external BUSY capture: original permit/time retained, actual ring+pending+driver claim preserved; pause unacknowledged, no retag/flush on join

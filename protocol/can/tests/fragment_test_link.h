@@ -17,6 +17,7 @@
 /* Host-only statistics mask: TU1..8, MS kinds mapped to slots9..12.
  * No new wire tokens/IDs or CAN routing policy. */
 #define TV4_TEST_LINK_MS_DROP_MASK UINT16_C(0x1e00)
+struct tv4_threaded_link;
 typedef struct {
     tv4_fragment_config fragments;
     uint32_t delivery_ms, held_delivery_ms;
@@ -47,7 +48,7 @@ typedef struct {
     unsigned kind;
     bool occupied, repeated, drop_message, drop_current;
 } tv4_test_link_direction;
-typedef struct {
+typedef struct tv4_test_link {
     tv4_test_link_direction direction[2];
     tv4_test_link_config config;
     uint32_t *clock;
@@ -62,6 +63,7 @@ typedef struct {
     unsigned owner_pauses,owner_advances,owner_recovers,owner_retirements;
     uint16_t dropped_kinds;
     bool configured;
+    struct tv4_threaded_link *threaded; /* HOST worker; exclusive caller control */
 } tv4_test_link;
 void tv4_test_link_init(tv4_test_link *link, uint32_t *clock,
     const tv4_test_link_config *config);

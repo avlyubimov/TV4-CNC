@@ -1,6 +1,6 @@
 # Следующий этап: release context и STM32 board contract
 
-21 ноября2026. База main `bc35a37`, PR #1–52 слиты, main CI5/5 PASS.
+21 ноября2026. База main `5e76626`, PR #1–53 слиты, main CI5/5 PASS.
 ESP32 HMI/Wi-Fi/OTA primitives/candidates и STM32 transport/admission существуют;
 не создавать их заново. Данный план не разрешает доступ к устройствам или merge.
 
@@ -242,13 +242,22 @@ data0/bss0/frame48,8exports/15DMB, прежние budgets/SDK/workspace сохр
 [Evidence](evidence/build/frame-ingress/README.md). Это software boundary,
 не реальный RX driver или live producer-stop/phase-cutover/backend drain proof.
 
-## Текущая ветка PR-07u
+## Слитый PR #53, PR-07u
 
 [Acknowledged ingress owner](STM32_INGRESS_OWNER.md): actual RX/ingress, exact
 pause ACK + actual pending/staged/ring/RX drain before phase change; epoch permits
 before capture, retained counters/time and bounded lower-timeout recovery. Старые
 capture/ACK не влияют на новый цикл; upper image expiry не оживает. Software actor
 barrier не physical backend/IRQ/DMA/remote stop. [Evidence](evidence/build/ingress-owner/README.md).
+
+## Текущая ветка PR-07v
+
+[Threaded signed HOST link](STM32_THREADED_LINK.md): protocol/crypto caller и
+отдельный bounded driver pthread, concurrent RX, actual driver pause ACK и
+actual drain; full signed chains/loss/recovery/independent refusals. External
+BUSY input сохраняет original permit/time и блокирует ACK, stop/join не теряет
+actual claim. Host75/sanitizers75/standalone49/TSan8+1 PASS, прежние ARM budgets/
+SDK pins/upper windows сохранены. [Evidence](evidence/build/threaded-link/README.md).
 
 ## Что делать дальше программно
 
@@ -283,7 +292,9 @@ barrier не physical backend/IRQ/DMA/remote stop. [Evidence](evidence/build/ing
    PR-07r добавляет SPSC C11 mailbox/bound consumer, PR-07s — owned frame dispatch/
    fresh check/explicit driver return; PR-07t — bounded RX copies/original capture
    age/sticky loss reporting. PR-07u добавляет acknowledged software producer
-   pause/actual RX drain/epoch cutover. Дальше review actual peripheral/IRQ/DMA/
+   pause/actual RX drain/epoch cutover. PR-07v проверяет signed composition
+   через dedicated HOST driver thread/concurrent RX; это не target scheduler.
+   Дальше review actual peripheral/IRQ/DMA/
    backend stop/reconciliation, immutable route lifetime и target
    ISR/RTOS/cache/DMA port, trusted adapter completion provenance/reset/
    reconciliation, production identity/capabilities/codebook и

@@ -1,6 +1,13 @@
 # Аппаратный статус TV4-CNC
 
-PR-07u от main `bc35a37`: [подтверждённая пауза приёма](STM32_INGRESS_OWNER.md) связывает actual
+PR-07v от main `5e76626`: [threaded signed HOST tests](STM32_THREADED_LINK.md)
+добавляют программную проверку отдельного driver actor, не аппаратное испытание.
+Owner SWD/core/Flash1024KiB/3,252V/backup/vector facts ниже прежние; новых
+подключений/SWD/UART/reset/Flash/backup reads не было. ESP32 ordinary8f0d899.
+Full marking/package/RAM/CCM/HSE/IRQ/erase/protection/GPIO/CAN/restore остаются
+неподтверждёнными; software ACK и join не доказывают physical drain/inhibit.
+
+Слитый PR #53, PR-07u от main `bc35a37`: [подтверждённая пауза приёма](STM32_INGRESS_OWNER.md) связывает actual
 ingress и channel RX. Смена фазы ждёт exact driver ACK и actual pending/staged/
 ring/RX drain; resume выдаёт новую epoch без сброса clocks/counters/IDs.
 Только lower fragment timeout восстанавливается после ACK+cleanup; sticky faults

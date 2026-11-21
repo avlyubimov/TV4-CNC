@@ -1,0 +1,12 @@
+PASS arm: exact parsed result unchanged from PR53
+PASS wire: exact parsed result unchanged from PR53 and standalone build
+PASS fragment: exact parsed result unchanged from PR53 and standalone build
+PASS metadata: exact parsed result unchanged from PR53 and standalone build
+PASS metadata-setup: exact parsed result unchanged from PR53 and standalone build
+PASS channel: exact parsed result unchanged from PR53 and standalone build
+PASS egress: exact parsed result unchanged from PR53 and standalone build
+PASS driver-events: exact parsed result unchanged from PR53 and standalone build
+PASS completion-mailbox: exact parsed result unchanged from PR53 and standalone build
+PASS driver-dispatch: exact parsed result unchanged from PR53 and standalone build
+PASS frame-ingress: exact parsed result unchanged from PR53 and standalone build
+PASS ingress-owner: exact parsed result unchanged from PR53 and standalone build

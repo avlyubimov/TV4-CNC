@@ -1,0 +1,6 @@
+PASS 56 Markdown files/503 local links resolve and mandatory CI docs exist
+PASS 168 exact source/config/document SHA-256 entries
+PASS 56 text-only evidence files <300000 bytes/no private PEM/binary outputs
+PASS HOST helper/tests/CMake NOT CROSS/CI/docs only; no embedded C/API/SDK/dependency locks/pin/partition/security/device changes
+PASS no executable changes after five final full checks; no sanitizer diagnostics/options/suppressions
+PASS all CTest result rows retained, captured trailing whitespace normalized only; distinct TSan protocol8 and signed1 logs

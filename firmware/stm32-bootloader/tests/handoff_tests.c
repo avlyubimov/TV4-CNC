@@ -5,6 +5,7 @@
 #include "update_wire.h"
 #include "update_fragments.h"
 #include "fragment_test_link.h"
+#include "threaded_test_link.h"
 #include "update_metadata.h"
 #include <assert.h>
 #include <inttypes.h>
@@ -1620,7 +1621,7 @@ static size_t timed_metadata_impl(fixture *f,tv4_test_link *link,tv4_metadata_do
 }
 static size_t timed_metadata(fixture *f,tv4_test_link *link,tv4_metadata_document *downloaded)
 {return timed_metadata_impl(f,link,downloaded,NULL);}
-typedef enum {META_DIRECT,META_SETUP,META_CHANNEL,META_EGRESS,META_EVENTS,META_MAILBOX,META_DISPATCH,META_INGRESS,META_OWNER} metadata_link_mode;
+typedef enum {META_DIRECT,META_SETUP,META_CHANNEL,META_EGRESS,META_EVENTS,META_MAILBOX,META_DISPATCH,META_INGRESS,META_OWNER,META_THREADED} metadata_link_mode;
 static void metadata_signed_chains(metadata_link_mode mode)
 {
     bool setup_mode=mode>=META_SETUP,channel_mode=mode>=META_CHANNEL,egress_mode=mode>=META_EGRESS,event_mode=mode>=META_EVENTS;
@@ -1631,8 +1632,9 @@ static void metadata_signed_chains(metadata_link_mode mode)
         if(channel_mode)mask=(uint16_t)(mask|TV4_TEST_LINK_MS_DROP_MASK);
         tv4_test_link_config cfg=timed_config(mask,(uint16_t)(i%3u));cfg.multiplexed=channel_mode;cfg.egress=egress_mode;
         if(egress_mode)cfg.custody=(tv4_frame_queue_limits){16,2};
-        if(event_mode){cfg.driver_events=true;cfg.event_capacity=2;cfg.event_service_ms=1;cfg.fragments.total_timeout_ms=256;cfg.completion_mailbox=mode>=META_MAILBOX;cfg.driver_dispatch=mode>=META_DISPATCH;if(mode>=META_INGRESS){cfg.frame_ingress=true;cfg.ingress_capacity=2;cfg.ingress_residency_ms=8;cfg.ingress_service_ms=1;cfg.ingress_owner=mode==META_OWNER;}}
-        tv4_test_link_init(&link,&f.now,&cfg);
+        if(event_mode){cfg.driver_events=true;cfg.event_capacity=2;cfg.event_service_ms=1;cfg.fragments.total_timeout_ms=256;cfg.completion_mailbox=mode>=META_MAILBOX;cfg.driver_dispatch=mode>=META_DISPATCH;if(mode>=META_INGRESS){cfg.frame_ingress=true;cfg.ingress_capacity=2;cfg.ingress_residency_ms=8;cfg.ingress_service_ms=1;cfg.ingress_owner=mode>=META_OWNER;}}
+        tv4_test_link_init(&link,&f.now,&cfg);tv4_threaded_link worker={0};
+        if(mode==META_THREADED)tv4_threaded_link_start(&worker,&link);
         uint32_t started=f.now;tv4_metadata_document downloaded;
         if(setup_mode) {
             timed_image_session image={0};timed_negotiate_impl(&f,&link,256,&image);
@@ -1655,7 +1657,7 @@ static void metadata_signed_chains(metadata_link_mode mode)
             for(unsigned d=0;d<2;++d) {
                 const tv4_channel_tx *tx=mode>=META_DISPATCH?&link.direction[d].dispatch.completion.events.egress.channel:mode==META_MAILBOX?&link.direction[d].completion.events.egress.channel:event_mode?&link.direction[d].events.egress.channel:egress_mode?&link.direction[d].egress.channel:&link.direction[d].channel_tx;
                 assert(tx->policy.phase==TV4_CHANNEL_NEGOTIATION);
-                assert(tx->fragments.storage.counter==(mode==META_OWNER?link.direction[d].owner.channel.fragments.storage.counter:link.direction[d].channel_rx.fragments.storage.counter));
+                assert(tx->fragments.storage.counter==(mode>=META_OWNER?link.direction[d].owner.channel.fragments.storage.counter:link.direction[d].channel_rx.fragments.storage.counter));
                 counters+=tx->fragments.storage.counter;
             }
             assert(attempts==counters);
@@ -1679,9 +1681,9 @@ static void metadata_signed_chains(metadata_link_mode mode)
                         assert(link.event_stales==0 && link.event_max_pending==1 && link.dispatch_publications==link.frames && link.dispatch_rejected_callbacks>0);
                         printf("DISPATCH published=%u driver-rejected-callbacks=%u; original admission/fresh check/exact terminal/slot reuse, no driver-copy gap\n",link.dispatch_publications,link.dispatch_rejected_callbacks);
                         if(mode>=META_INGRESS){assert(link.ingress_posts==link.ingress_checks && link.ingress_checks==link.delivered_frames+link.owner_retirements);
-                            for(unsigned d=0;d<2;++d){const tv4_frame_ingress *in=mode==META_OWNER?&link.direction[d].owner.ingress:&link.direction[d].ingress;assert(tv4_frame_ingress_empty(in)==TV4_INGRESS_WAIT && tv4_frame_ingress_faults(in)==0);}
+                            for(unsigned d=0;d<2;++d){const tv4_frame_ingress *in=mode>=META_OWNER?&link.direction[d].owner.ingress:&link.direction[d].ingress;assert(tv4_frame_ingress_empty(in)==TV4_INGRESS_WAIT && tv4_frame_ingress_faults(in)==0);}
                             printf("INGRESS owned copies=%u checked=%u; capture age/current service time, one-frame service budget\n",link.ingress_posts,link.ingress_checks);}
-                        if(mode==META_OWNER){assert(link.owner_advances==10 && link.owner_pauses==link.owner_advances+link.owner_recovers);
+                        if(mode>=META_OWNER){assert(link.owner_advances==10 && link.owner_pauses==link.owner_advances+link.owner_recovers);
                             for(unsigned d=0;d<2;++d)assert(atomic_load(&link.direction[d].owner.gate)==TV4_GATE_OPEN && !link.direction[d].owner.failed);
                             printf("RX OWNER pauses=%u advances=%u timeout-recoveries=%u retired-without-dispatch=%u; actual ACK+drain barrier, epochs/counters/time retained\n",link.owner_pauses,link.owner_advances,link.owner_recovers,link.owner_retirements);}
                     }else assert(link.event_stales>0 && link.event_max_pending==2);
@@ -1695,6 +1697,8 @@ static void metadata_signed_chains(metadata_link_mode mode)
         if(i<6)release_clear(&f);else assert(tv4_boot_handoff_clear(&f.session));
         if(f.now-started>longest)longest=f.now-started;
         frames+=link.frames;drops+=link.dropped_frames;
+        if(mode==META_THREADED){tv4_threaded_link_stop(&worker,&link);assert(worker.stats.pause_acks==link.owner_pauses);
+            printf("THREADED captures=%u retained=%u actual-driver-acks=%u; dedicated driver joined, protocol/crypto on caller, no synthetic returns\n",worker.stats.captures,worker.stats.retained_captures,worker.stats.pause_acks);}
         memset(&downloaded,0,sizeof(downloaded));finish(&f);
     }
     printf("PASS8 transported metadata signed chains: frames=%u drops=%u container-bytes=%u DER=%u..%u longest=%u synthetic ms; producer wiped, actual delivered signature/raw digest/lease/model/close, no image deadline reset\n",frames,drops,container_bytes,sig_min,sig_max,longest);
@@ -1707,8 +1711,9 @@ static void metadata_admission_refusals(metadata_link_mode mode)
         tv4_test_link_config cfg=timed_config((uint16_t)((1u<<5)|(1u<<6)|(channel_mode?TV4_TEST_LINK_MS_DROP_MASK:0u)),1);
         cfg.multiplexed=channel_mode;cfg.egress=egress_mode;
         if(egress_mode)cfg.custody=(tv4_frame_queue_limits){16,2};
-        if(event_mode){cfg.driver_events=true;cfg.event_capacity=2;cfg.event_service_ms=1;cfg.fragments.total_timeout_ms=256;cfg.completion_mailbox=mode>=META_MAILBOX;cfg.driver_dispatch=mode>=META_DISPATCH;if(mode>=META_INGRESS){cfg.frame_ingress=true;cfg.ingress_capacity=2;cfg.ingress_residency_ms=8;cfg.ingress_service_ms=1;cfg.ingress_owner=mode==META_OWNER;}}
-        tv4_test_link_init(&link,&f.now,&cfg);
+        if(event_mode){cfg.driver_events=true;cfg.event_capacity=2;cfg.event_service_ms=1;cfg.fragments.total_timeout_ms=256;cfg.completion_mailbox=mode>=META_MAILBOX;cfg.driver_dispatch=mode>=META_DISPATCH;if(mode>=META_INGRESS){cfg.frame_ingress=true;cfg.ingress_capacity=2;cfg.ingress_residency_ms=8;cfg.ingress_service_ms=1;cfg.ingress_owner=mode>=META_OWNER;}}
+        tv4_test_link_init(&link,&f.now,&cfg);tv4_threaded_link worker={0};
+        if(mode==META_THREADED)tv4_threaded_link_start(&worker,&link);
         timed_image_session image={0};
         if(setup_mode)timed_negotiate_impl(&f,&link,256,&image);else timed_negotiate(&f,&link,31);
         if(i==0)f.signature[f.config.signature_bytes-1u]^=1;
@@ -1729,7 +1734,9 @@ static void metadata_admission_refusals(metadata_link_mode mode)
             assert(!tv4_boot_release_handoff_begin(&f.release_adapter,&f.session,&f.release_config,&f.rx));
             assert(f.acquired==0 && f.rx.context.next_offset==0);
         }
-        release_clear(&f);memset(&downloaded,0,sizeof(downloaded));finish(&f);
+        release_clear(&f);if(mode==META_THREADED){tv4_threaded_link_stop(&worker,&link);assert(worker.stats.pause_acks==link.owner_pauses);
+            printf("THREADED captures=%u retained=%u actual-driver-acks=%u; dedicated driver joined, protocol/crypto on caller, no synthetic returns\n",worker.stats.captures,worker.stats.retained_captures,worker.stats.pause_acks);}
+        memset(&downloaded,0,sizeof(downloaded));finish(&f);
     }
     puts("PASS transported metadata does not bypass invalid signature, correctly re-signed wrong raw digest, or expired independent image RX");
 }
@@ -1905,8 +1912,100 @@ static void ingress_owner_lifetime_refusals(void)
     puts("PASS2 ingress owner refusals: original capture age stays fatal; ACK+drain lower-timeout recovery/fresh epoch/late TX cleanup cannot revive expired independent image RX or admission");
 }
 #define RUN(name) do { name(); puts("PASS " #name); } while (0)
+static void threaded_external_capture_refusal(void)
+{
+    uint32_t now=UINT32_MAX-20u;tv4_test_link link={0};tv4_threaded_link worker={0};
+    tv4_test_link_config cfg=timed_config(0,0);cfg.multiplexed=true;cfg.egress=true;
+    cfg.custody=(tv4_frame_queue_limits){16,2};cfg.driver_events=true;cfg.completion_mailbox=true;
+    cfg.driver_dispatch=true;cfg.event_capacity=2;cfg.event_service_ms=1;
+    cfg.frame_ingress=true;cfg.ingress_owner=true;cfg.ingress_capacity=1;
+    cfg.ingress_residency_ms=8;cfg.ingress_service_ms=1;cfg.duplicate_every=0;cfg.hold_every=0;
+    tv4_test_link_init(&link,&now,&cfg);tv4_threaded_link_start(&worker,&link);
+    tv4_wire_message message={.kind=TV4_WIRE_REQUEST,.body.negotiation={.kind=TV4_NEG_REQUEST,
+        .request_id={11,1},.descriptor={.image_bytes=1000},.responder_boot=22,.block_bytes=64}};
+    assert(tv4_test_link_send(&link,0,&message)==TV4_FRAG_OK);
+    tv4_driver_dispatch *dispatch=&link.direction[0].dispatch;tv4_ingress_owner *owner=&link.direction[0].owner;
+    /* Deliberately withhold RX service: one ring copy, one actual producer
+     * pending, then one backend-owned BUSY capture with its original permit. */
+    for(unsigned n=0;n<6;++n) {
+        ++now;tv4_frame_queue_result service=tv4_driver_dispatch_service(dispatch,link.generation[0],now);
+        assert(service==TV4_QUEUE_WAIT || service==TV4_QUEUE_LOCAL_COMPLETE_UNVERIFIED);
+        tv4_frame_queue_result pump=tv4_driver_dispatch_pump(dispatch,link.generation[0],now);
+        assert(pump==TV4_QUEUE_ADMITTED || pump==TV4_QUEUE_BUSY || pump==TV4_QUEUE_WAIT);
+        tv4_frame_queue_result publish=tv4_driver_dispatch_publish(dispatch,link.generation[0],now);
+        assert(publish==TV4_QUEUE_ADMITTED || publish==TV4_QUEUE_BUSY || publish==TV4_QUEUE_WAIT);
+        tv4_threaded_link_pulse(&worker,&link);
+    }
+    assert(link.ingress_posts==2 && atomic_load(&dispatch->state)==TV4_DISPATCH_TAKEN);
+    assert(tv4_ingress_owner_pause(owner,link.generation[0],now)==TV4_GATE_REQUESTED);
+    tv4_threaded_link_pulse(&worker,&link);++now;tv4_threaded_link_pulse(&worker,&link);
+    assert(atomic_load(&owner->gate)==TV4_GATE_REQUESTED && tv4_ingress_owner_quiescent(owner,link.generation[0],now)==TV4_GATE_BUSY);
+    tv4_threaded_link_stop(&worker,&link);
+    assert(worker.stats.captures==3 && worker.stats.retained_captures>=3 && worker.stats.pause_acks==0);
+    assert(worker.direction[0].occupied && worker.direction[0].has_capture && worker.direction[0].captured_at==now-1u);
+    assert(worker.direction[0].permit.owner==owner && worker.direction[0].permit.epoch==atomic_load(&owner->epoch));
+    assert(dispatch->driver_has_current && dispatch->completion.events.egress.queue.flight!=0 && tv4_frame_ingress_faults(&owner->ingress)==0);
+    /* Retained mock state ends only after join. This intentionally blocked
+     * lifetime is not reconciled, force-cleared or advertised as hardware drain. */
+    puts("PASS threaded external BUSY capture: original permit/time retained, actual ring+pending+driver claim preserved; pause unacknowledged, no retag/flush on join");
+}
+static void threaded_driver_lifetime_refusals(void)
+{
+    for(unsigned which=0;which<2;++which) {
+        fixture f;release_fixture(&f,33);f.use_stage=true;tv4_test_link link={0};
+        tv4_test_link_config cfg=timed_config(TV4_TEST_LINK_MS_DROP_MASK,1);
+        cfg.multiplexed=true;cfg.egress=true;cfg.custody=(tv4_frame_queue_limits){16,2};
+        cfg.driver_events=true;cfg.completion_mailbox=true;cfg.driver_dispatch=true;
+        cfg.event_capacity=2;cfg.event_service_ms=1;cfg.fragments.total_timeout_ms=256;
+        cfg.frame_ingress=true;cfg.ingress_owner=true;cfg.ingress_capacity=2;
+        cfg.ingress_residency_ms=8;cfg.ingress_service_ms=1;
+        tv4_test_link_init(&link,&f.now,&cfg);tv4_threaded_link worker={0};tv4_threaded_link_start(&worker,&link);
+        timed_image_session image={0};timed_negotiate_impl(&f,&link,256,&image);
+        tv4_metadata_document downloaded;(void)timed_metadata_impl(&f,&link,&downloaded,&image);
+        tv4_threaded_link_hold(&worker,&link,true);
+        unsigned claims=link.driver_claims,returns=link.driver_returns;
+        uint32_t started=f.rx.context.started_ms,progress=f.rx.context.progress_ms;
+        assert(tv4_update_tx_load(&f.tx,f.source,256,f.now)==TV4_UPDATE_OK);
+        tv4_wire_message packet={.kind=TV4_WIRE_DATA};assert(tv4_update_tx_next(&f.tx,&packet.body.data,f.now)==TV4_UPDATE_OK);
+        assert(tv4_test_link_send(&link,0,&packet)==TV4_FRAG_OK);tv4_test_link_step(&link);
+        tv4_driver_dispatch *dispatch=&link.direction[0].dispatch;
+        tv4_update_egress *tx=&dispatch->completion.events.egress;uint32_t serial=tx->queue.flight;
+        assert(serial!=0 && link.driver_claims==claims+1 && link.driver_returns==returns);
+        if(which==1) {
+            /* Join is only a lifetime boundary. A missing backend completion
+             * stays held even after the actor stops; no force-forget/flush. */
+            tv4_threaded_link_stop(&worker,&link);
+            assert(tx->queue.flight==serial && tv4_driver_dispatch_clear(dispatch,link.generation[0],f.now)==TV4_QUEUE_HELD);
+        }
+        while(f.now-progress<f.rx.context.limits.progress_timeout_ms) {
+            ++f.now;(void)tv4_update_rx_poll(&f.rx,f.now);(void)tv4_update_tx_poll(&f.tx,f.now);
+            (void)tv4_driver_dispatch_poll(dispatch,link.generation[0],f.now);
+            if(which==0)tv4_threaded_link_pulse(&worker,&link);
+            assert(tx->queue.flight==serial && link.driver_returns==returns);
+        }
+        assert(f.rx.context.state==TV4_UPDATE_FAILED && f.rx.context.error==TV4_UPDATE_ERROR_PROGRESS_TIMEOUT);
+        assert(f.rx.context.started_ms==started && f.rx.context.progress_ms==progress && f.rx.context.next_offset==0);
+        assert(tv4_driver_dispatch_cancel(dispatch,link.generation[0],f.now)==TV4_QUEUE_HELD);
+        assert(tv4_driver_dispatch_clear(dispatch,link.generation[0],f.now)==TV4_QUEUE_HELD);
+        if(which==0) {
+            tv4_threaded_link_hold(&worker,&link,false);tv4_threaded_link_pulse(&worker,&link);
+            assert(tv4_driver_dispatch_service(dispatch,link.generation[0],f.now)==TV4_QUEUE_RECLAIMED_FAILED);
+            uint32_t issued=tx->queue.last_issued;uint16_t counter=tx->channel.fragments.storage.counter;
+            assert(tv4_driver_dispatch_clear(dispatch,link.generation[0],f.now)==TV4_QUEUE_OK);
+            assert(tx->queue.last_issued==issued && tx->channel.fragments.storage.counter==counter && tx->channel.policy.phase==TV4_CHANNEL_IMAGE);
+            tv4_threaded_link_stop(&worker,&link);
+        }else assert(dispatch->driver_has_current && tx->queue.flight==serial);
+        assert(!tv4_boot_release_handoff_begin(&f.release_adapter,&f.session,&f.release_config,&f.rx));
+        assert(f.acquired==0 && f.releases==0 && f.rx.context.started_ms==started);
+        release_clear(&f);memset(&downloaded,0,sizeof(downloaded));finish(&f);
+    }
+    puts("PASS2 threaded driver lifetime refusals: original image expiry, retained exact claim, late cancellation cleanup-only; stop/join never synthesizes a return");
+}
 int main(int argc,char **argv)
 {
+    if(argc==2 && strcmp(argv[1],"--threaded-owner-staging")==0) {
+        metadata_signed_chains(META_THREADED);metadata_admission_refusals(META_THREADED);threaded_driver_lifetime_refusals();threaded_external_capture_refusal();return 0;
+    }
     if(argc==2 && strcmp(argv[1],"--ingress-owner-staging")==0) {
         metadata_signed_chains(META_OWNER);metadata_admission_refusals(META_OWNER);ingress_owner_lifetime_refusals();return 0;
     }
