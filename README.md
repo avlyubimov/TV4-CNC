@@ -109,11 +109,18 @@ selection/source/channel, descriptor и prospective peer range. HMI-only доп�
 Host38/sanitizers38/standalone13 PASS; report metadata-only, все authority gates
 закрыты. Production bundle/context/installer и аппаратная проверка ещё открыты.
 
-Текущая ветка от main `aa06833`: [PR-05d build binding audit](docs/RELEASE_BUILD_BINDING.md).
+Слитый PR #41 от main `aa06833`: [PR-05d build binding audit](docs/RELEASE_BUILD_BINDING.md).
 Unsigned CI candidate связывается по explicit external pin/full image/ELF с
 тем же signed cohort. Factory/A-B и test/ordinary profile mismatch отображаются
 как blockers; metadata pin не CI/source attestation. Новый audit всегда blocked,
 все install/publish gates закрыты. Старые CLI reports/firmware/settings прежние.
+
+Текущая ветка от main `deace1c`: [PR-07j update byte codec](docs/STM32_UPDATE_WIRE.md).
+Отдельная bounded opt-in library переводит existing negotiation/DATA/outcome
+messages в canonical LE bytes без C padding/tail. Golden12, malformed/token
+corpus и8 signed RAM chains проверяют путь; host42/sanitizers42/standalone16.
+Это experimental draft, без CAN driver/IDs/bitrate/fragmentation/runtime или
+установки. Все independent crypto/lifetime/physical/hardware gates сохраняются.
 
 [OTA ESP32 A/B и F407 по CAN](docs/OTA_ARCHITECTURE.md),
 [GitHub Releases/подписи/owner approval](docs/RELEASE_PROCESS.md),

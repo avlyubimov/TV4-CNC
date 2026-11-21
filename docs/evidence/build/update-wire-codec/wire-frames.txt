@@ -1,0 +1,8 @@
+/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-wire-codec/protocol/can/update_wire.c:10:13:put32	0	static
+/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-wire-codec/protocol/can/update_wire.c:14:17:get32	0	static
+/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-wire-codec/protocol/can/update_wire.c:18:22:get_id	8	static
+/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-wire-codec/protocol/can/update_wire.c:21:13:put_descriptor	16	static
+/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-wire-codec/protocol/can/update_wire.c:23:13:get_descriptor	24	static
+/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-wire-codec/protocol/can/update_wire.c:53:15:body_size	8	static
+/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-wire-codec/protocol/can/update_wire.c:71:17:tv4_update_wire_encode	24	static
+/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-wire-codec/protocol/can/update_wire.c:121:17:tv4_update_wire_decode	32	static

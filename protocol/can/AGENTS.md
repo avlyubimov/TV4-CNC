@@ -56,3 +56,18 @@ Single-use take не является auth/install token; copied descriptor не
 persistence/collision policy/authentication ещё не реализованы. Полностью matching
 forged reply может пройти; не объявлять защитой от attacker или physical safe state.
 DATA lifetime и independent crypto/model/lease gates сохраняются.
+
+## PR-07j — opt-in byte codec draft
+
+Читать docs/STM32_UPDATE_WIRE.md. Отдельная tv4_update_wire library, не runtime
+CAN driver или production wire version. Existing typed APIs/core policies прежние;
+shared tv4_neg_message_valid проверяет только shape. Explicit header/tokens/LE,
+exact bounded message, no C layout/padding/tail, decode failure zero output.
+Input/output spans valid/disjoint/exclusive, no in-place/ISR/threads. CRC не
+вычислять повторно в codec: unchanged DATA RX проверяет его до progress/consume.
+Opaque tags/hashes/outcomes/codec OK не authentication/install/physical state.
+Malformed traffic не отменяет обязанность owner poll clocks; deadlines прежние.
+Future fragmentation/reassembly/metadata-signature transfer/identity/authentication
+и production adoption ещё открыты. Не назначать IDs/bitrate/pins/driver или
+подключать в MCU app/CAN/HMI. Byte fixtures не настоящие CAN frames/boot epochs.
+Host/ARM budgets и negative cases обязательны; только text evidence, no binaries.

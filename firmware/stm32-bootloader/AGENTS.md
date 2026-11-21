@@ -106,3 +106,12 @@ no defaults/signing/Flash/live lease/model claims. Bounded regular files, monoto
 host clock, cleanup и historical JSON only; no new crypto/arena/embedded parser.
 Trusted host executable/quiescent FS — precondition, driver SHA не attestation.
 Report не production bundle/installer/actual hardware/context approval.
+
+## PR-07j — host byte path integration
+
+Читать docs/STM32_UPDATE_WIRE.md. Только host boot_handoff_tests --wire-staging
+вызывает codec вокруг existing negotiation/DATA/outcome APIs. Остальные test
+режимы сохраняют typed path, tv4_boot_handoff не линкуется с wire library.
+Real independent signature/full image/lease/model/close/quarantine проверки не
+заменять codec/CRC/peer success. Новых crypto/workspace/firmware callers нет;
+shape/serialization не actual memory/physical/production CAN/install authority.

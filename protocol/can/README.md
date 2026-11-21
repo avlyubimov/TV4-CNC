@@ -1,5 +1,11 @@
 # CAN: стендовый heartbeat и подготовка update transport
 
+PR-07j добавляет отдельный opt-in [byte codec draft](../../docs/STM32_UPDATE_WIRE.md),
+не runtime CAN driver:8 existing message kinds, canonical LE, max286bytes,
+strict shape/length и failure zeroing. CRC/session/crypto проверки остаются
+в прежних слоях. Fragments/reassembly/production adoption/IDs/bitrate/пины не
+назначены. Ниже сохранён исходный heartbeat/typed transport contract.
+
 CAN ID, скорость и аппаратный драйвер не назначены. Передача всегда возвращает false.
 `model_receive` принимает только тестовый heartbeat: ровно 4 байта
 [версия=1, sequence uint8, reserved=0, reserved=0]. После первого пакета требуется

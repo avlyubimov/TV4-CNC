@@ -1,6 +1,6 @@
 # Реализация: main, открытые PR и аппаратные границы
 
-Актуализация от main `aa06833`, 21 ноября2026: PR #1–40 слиты. Owner SWD
+Актуализация от main `deace1c`, 21 ноября2026: PR #1–41 слиты. Owner SWD
 F407/core/Flash1024KiB/backup — [HARDWARE_STATUS](HARDWARE_STATUS.md).
 Startup/DATA/admission/handoff/preflight и PR-07e уже в main:
 [completion/outcome](STM32_UPDATE_OUTCOME.md) связывает full checks с lease close
@@ -42,13 +42,21 @@ CLI report прежний; fields берутся из одного authenticated
 sanitizers38/standalone13 и analyzer8 embedded+1 host/ARM/source/scope gates PASS.
 Новый frontend только для host, firmware libraries/frames/configs не изменены.
 Production bundle/context/keys/protocol mapping/install authority ещё открыты.
-Текущая ветка PR-05d [build binding audit](RELEASE_BUILD_BINDING.md) связывает
+Слитый PR #41, PR-05d [build binding audit](RELEASE_BUILD_BINDING.md) связывает
 external-pinned unsigned candidate/full HMI image/ELF с тем же signed cohort.
 Captured fields не перечитываются; factory/A-B и headless/bench/rev12 mismatch
 не скрываются. Report только blocked/exit3, pin/unsigned source claims не дают
 provenance/CI/install authority. Host39/sanitizers39, standalone13 и прежние ARM
 gates; matrix8 проверяет self-generated candidate integrity pins. Firmware
 код/settings/dependencies прежние; hardware results не добавлены.
+Текущая ветка PR-07j [byte codec](STM32_UPDATE_WIRE.md) добавляет opt-in C11
+canonical LE framing для8 existing message kinds, без memory ABI/padding/tail.
+Shared pure negotiation shape helper не меняет state/policy. Host42/sanitizers42/
+standalone16, independent golden12,65536 outcome tokens,200000 mutations и
+8 existing signed RAM chains через byte path. Strict analyzer12 embedded+1 host
+и wire budget guard6 PASS. ARM4 libraries43362text (+18), codec1219 отдельно,
+data/bss/frame budgets сохранены. Нет production CAN/fragmentation/metadata
+transfer/identity/runtime/Flash/hardware действий; decode OK не install token.
 Push CI также обнаружил старый build-candidate flaky fixture: constant `x` мог
 совпасть с SHA tail. Теперь test XOR1 гарантированно меняет байт; verifier прежний.
 Нет runtime caller, Flash writer/map/commit/jump или физического safe-state proof.

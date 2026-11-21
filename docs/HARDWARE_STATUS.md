@@ -1,5 +1,9 @@
 # Аппаратный статус TV4-CNC
 
+PR-07j [byte codec](STM32_UPDATE_WIRE.md) проверен на host/ARM compile и signed
+RAM chains; это не физический CAN/link/identity/память или новый boot платы.
+Никаких SWD/UART/reset/Flash/backup rereads. Owner facts и ordinary8f0d899 прежние.
+
 PR-05d [build binding audit](RELEASE_BUILD_BINDING.md) — только host tooling,
 не новые измерения. Unsigned build pin/full bytes/signature consistency не
 подтверждают actual layout, F407 RAM/HSE/Flash geometry/GPIO/CAN или recovery.

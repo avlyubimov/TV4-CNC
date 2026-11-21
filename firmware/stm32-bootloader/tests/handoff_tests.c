@@ -2,6 +2,7 @@
 #include "update_completion.h"
 #include "update_negotiation.h"
 #include "staging_source.h"
+#include "update_wire.h"
 #include <assert.h>
 #include <inttypes.h>
 #include <openssl/evp.h>
@@ -10,6 +11,50 @@
 #include <string.h>
 
 enum { IMAGE_MAX = 2049 };
+/* Only --wire-staging opts into byte transport. Existing test modes keep their
+ * typed path; no firmware/library runtime caller is introduced. */
+static bool wire_mode;
+static unsigned wire_counts[9];
+static void wire_hop(tv4_wire_message *m)
+{
+    uint8_t raw[TV4_WIRE_MESSAGE_MAX];size_t n=0;tv4_wire_message decoded;
+    assert(tv4_update_wire_encode(m,raw,sizeof(raw),&n)==TV4_WIRE_OK);
+    assert(tv4_update_wire_decode(raw,n,&decoded)==TV4_WIRE_OK && decoded.kind==m->kind);
+    ++wire_counts[(unsigned)m->kind];*m=decoded;
+}
+static tv4_neg_result wire_receive_neg(tv4_negotiation *s,const tv4_neg_message *message,uint64_t generation,uint32_t now)
+{
+    if(!wire_mode)return tv4_neg_receive(s,message,generation,now);
+    tv4_wire_message m={.body.negotiation=*message};
+    switch(message->kind){case TV4_NEG_REQUEST:m.kind=TV4_WIRE_REQUEST;break;case TV4_NEG_OFFER:m.kind=TV4_WIRE_OFFER;break;
+    case TV4_NEG_ACCEPT:m.kind=TV4_WIRE_ACCEPT;break;case TV4_NEG_CONFIRM:m.kind=TV4_WIRE_CONFIRM;break;default:assert(false);}
+    wire_hop(&m);return tv4_neg_receive(s,&m.body.negotiation,generation,now);
+}
+static tv4_update_result wire_receive_data(tv4_update_rx *rx,const tv4_update_block *packet,tv4_update_ack *ack,uint32_t now)
+{
+    if(!wire_mode)return tv4_update_rx_receive(rx,packet,ack,now);
+    tv4_wire_message m={.kind=TV4_WIRE_DATA,.body.data=*packet};wire_hop(&m);
+    return tv4_update_rx_receive(rx,&m.body.data,ack,now);
+}
+static tv4_update_result wire_ack_data(tv4_update_tx *tx,const tv4_update_ack *ack,uint32_t now)
+{
+    if(!wire_mode)return tv4_update_tx_ack(tx,ack,now);
+    tv4_wire_message m={.kind=TV4_WIRE_DATA_ACK,.body.ack=*ack};wire_hop(&m);
+    return tv4_update_tx_ack(tx,&m.body.ack,now);
+}
+static tv4_outcome_result wire_receive_outcome(tv4_outcome_rx *rx,const tv4_update_outcome *packet,
+    tv4_update_outcome *ack,tv4_update_outcome *delivery,uint32_t now)
+{
+    if(!wire_mode)return tv4_outcome_rx_receive(rx,packet,ack,delivery,now);
+    tv4_wire_message m={.kind=TV4_WIRE_OUTCOME,.body.outcome=*packet};wire_hop(&m);
+    return tv4_outcome_rx_receive(rx,&m.body.outcome,ack,delivery,now);
+}
+static tv4_outcome_result wire_ack_outcome(tv4_outcome_tx *tx,const tv4_update_outcome *ack,uint32_t now)
+{
+    if(!wire_mode)return tv4_outcome_tx_ack(tx,ack,now);
+    tv4_wire_message m={.kind=TV4_WIRE_OUTCOME_ACK,.body.outcome=*ack};wire_hop(&m);
+    return tv4_outcome_tx_ack(tx,&m.body.outcome,now);
+}
 typedef enum {
     NONE, ACQUIRE_FAIL, ACQUIRE_BAD_TOKEN, ACQUIRE_BAD_OBJECT, INSPECT_FAIL,
     READ_FAIL, SOURCE_OBJECT, SOURCE_GENERATION, SOURCE_SIZE, SOURCE_SESSION,
@@ -301,12 +346,12 @@ static void transfer(fixture *f)
         assert(tv4_update_tx_next(&f->tx, &packet, f->now) == TV4_UPDATE_OK);
         if (f->lost_data == 0) { ++f->lost_data; f->now += 10; continue; }
         tv4_update_ack ack;
-        tv4_update_result result = tv4_update_rx_receive(&f->rx, &packet, &ack, f->now);
+        tv4_update_result result = wire_receive_data(&f->rx, &packet, &ack, f->now);
         if (result == TV4_UPDATE_PENDING) {
             tv4_update_block pending;
             assert(tv4_update_rx_pending(&f->rx, &pending, f->now) == TV4_UPDATE_PENDING);
             assert(pending.offset == f->staged_bytes);
-            assert(tv4_update_rx_receive(&f->rx, &packet, &ack, f->now) == TV4_UPDATE_PENDING);
+            assert(wire_receive_data(&f->rx, &packet, &ack, f->now) == TV4_UPDATE_PENDING);
             if (f->use_stage) {
                 assert(tv4_boot_stage_consume(&f->stage,&ack,f->now)==TV4_UPDATE_ACK);
                 f->staged_bytes=f->stage.written;
@@ -319,7 +364,7 @@ static void transfer(fixture *f)
         if (f->rx.context.state == TV4_UPDATE_COMPLETE_UNVERIFIED && f->lost_final_ack == 0) {
             ++f->lost_final_ack; f->now += 10; continue;
         }
-        assert(tv4_update_tx_ack(&f->tx, &ack, f->now) == TV4_UPDATE_OK);
+        assert(wire_ack_data(&f->tx, &ack, f->now) == TV4_UPDATE_OK);
     }
     assert(f->staged_bytes == f->source_bytes && memcmp(f->staging, f->source, f->source_bytes) == 0);
     assert(f->rx.context.state == TV4_UPDATE_COMPLETE_UNVERIFIED && f->lost_final_ack == 1);
@@ -519,10 +564,10 @@ static void retained_ack_does_not_extend_handoff(void)
     tv4_update_block duplicate = f.rx.block;
     tv4_update_ack ack;
     ++f.now;
-    assert(tv4_update_rx_receive(&f.rx, &duplicate, &ack, f.now) == TV4_UPDATE_ACK);
+    assert(wire_receive_data(&f.rx, &duplicate, &ack, f.now) == TV4_UPDATE_ACK);
     assert(tv4_boot_handoff_peek(&f.session, &f.receipt) && f.releases == 0 && f.acquired == 1);
     /* Last ACK retries remain bounded even while a verified candidate exists. */
-    for (unsigned i = 0; i < 4; ++i) (void)tv4_update_rx_receive(&f.rx, &duplicate, &ack, f.now);
+    for (unsigned i = 0; i < 4; ++i) (void)wire_receive_data(&f.rx, &duplicate, &ack, f.now);
     assert(f.rx.context.state == TV4_UPDATE_FAILED && f.rx.context.error == TV4_UPDATE_ERROR_RETRIES);
     assert(!tv4_boot_handoff_peek(&f.session, &f.receipt));
     closed_failure(&f, TV4_HANDOFF_RECEIVER); finish(&f);
@@ -687,10 +732,10 @@ static void completion_end_to_end_history(void)
         assert(tv4_outcome_rx_begin(&rx,&f.tx,f.expected.metadata_sha256,f.now)==TV4_OUTCOME_OK);
         assert(tv4_outcome_tx_next(&tx,&packet,f.now)==TV4_OUTCOME_SENT); /* lost report */
         f.now+=10; assert(tv4_outcome_tx_next(&tx,&packet,f.now)==TV4_OUTCOME_SENT);
-        assert(tv4_outcome_rx_receive(&rx,&packet,&ack,&delivery,f.now)==TV4_OUTCOME_DELIVERED); /* lost ACK */
+        assert(wire_receive_outcome(&rx,&packet,&ack,&delivery,f.now)==TV4_OUTCOME_DELIVERED); /* lost ACK */
         f.now+=10; assert(tv4_outcome_tx_next(&tx,&packet,f.now)==TV4_OUTCOME_SENT);
-        assert(tv4_outcome_rx_receive(&rx,&packet,&ack,&delivery,f.now)==TV4_OUTCOME_ACK);
-        assert(tv4_outcome_tx_ack(&tx,&ack,f.now)==TV4_OUTCOME_OK && tv4_update_outcome_equal(&delivery,&f.outcome));
+        assert(wire_receive_outcome(&rx,&packet,&ack,&delivery,f.now)==TV4_OUTCOME_ACK);
+        assert(wire_ack_outcome(&tx,&ack,f.now)==TV4_OUTCOME_OK && tv4_update_outcome_equal(&delivery,&f.outcome));
         assert(f.reads==calls && f.releases==1 && !f.locked);
         assert(tv4_boot_completion_clear(&f.completion)); finish(&f);
     }
@@ -793,7 +838,7 @@ static void negotiate_source(fixture *f,unsigned drop_mask)
             assert(r==TV4_NEG_SENT);
             unsigned bit=1u<<(unsigned)packet.kind;
             if((drop_mask&bit)!=0 && (dropped&bit)==0) { dropped|=bit;continue; }
-            r=tv4_neg_receive(to,&packet,to_generation,f->now);
+            r=wire_receive_neg(to,&packet,to_generation,f->now);
             assert(r==TV4_NEG_OK || r==TV4_NEG_DUPLICATE);
         }
         f->now+=10;
@@ -817,7 +862,7 @@ static void negotiate_source(fixture *f,unsigned drop_mask)
     assert(tv4_neg_close(&a,2001,f->now)==TV4_NEG_OK);
     assert(tv4_neg_close(&b,f->owner.policy_generation,f->now)==TV4_NEG_OK);
     assert(tv4_neg_clear(&a) && tv4_neg_clear(&b));
-    assert(tv4_neg_receive(&b,&old_request,f->owner.policy_generation,f->now)==TV4_NEG_REJECT_SESSION);
+    assert(wire_receive_neg(&b,&old_request,f->owner.policy_generation,f->now)==TV4_NEG_REJECT_SESSION);
     assert(f->rx.context.next_offset==0 && f->tx.context.next_offset==0 && f->acquired==0);
 }
 static void negotiated_full_chain(void)
@@ -836,10 +881,10 @@ static void negotiated_full_chain(void)
         assert(tv4_outcome_rx_begin(&rx,&f.tx,f.expected.metadata_sha256,f.now)==TV4_OUTCOME_OK);
         assert(tv4_outcome_tx_next(&tx,&packet,f.now)==TV4_OUTCOME_SENT); /* lost */
         f.now+=10;assert(tv4_outcome_tx_next(&tx,&packet,f.now)==TV4_OUTCOME_SENT);
-        assert(tv4_outcome_rx_receive(&rx,&packet,&ack,&delivery,f.now)==TV4_OUTCOME_DELIVERED); /* ACK lost */
+        assert(wire_receive_outcome(&rx,&packet,&ack,&delivery,f.now)==TV4_OUTCOME_DELIVERED); /* ACK lost */
         f.now+=10;assert(tv4_outcome_tx_next(&tx,&packet,f.now)==TV4_OUTCOME_SENT);
-        assert(tv4_outcome_rx_receive(&rx,&packet,&ack,&delivery,f.now)==TV4_OUTCOME_ACK);
-        assert(tv4_outcome_tx_ack(&tx,&ack,f.now)==TV4_OUTCOME_OK);
+        assert(wire_receive_outcome(&rx,&packet,&ack,&delivery,f.now)==TV4_OUTCOME_ACK);
+        assert(wire_ack_outcome(&tx,&ack,f.now)==TV4_OUTCOME_OK);
         assert(tv4_update_outcome_equal(&delivery,&f.outcome) && f.releases==1 && !f.locked);
         finish(&f);
     }
@@ -920,10 +965,10 @@ static void release_full_chain(void)
         assert(tv4_outcome_rx_begin(&rx,&f.tx,f.expected.metadata_sha256,f.now)==TV4_OUTCOME_OK);
         assert(tv4_outcome_tx_next(&tx,&packet,f.now)==TV4_OUTCOME_SENT); /* lost report */
         f.now+=10;assert(tv4_outcome_tx_next(&tx,&packet,f.now)==TV4_OUTCOME_SENT);
-        assert(tv4_outcome_rx_receive(&rx,&packet,&ack,&delivery,f.now)==TV4_OUTCOME_DELIVERED); /* lost ACK */
+        assert(wire_receive_outcome(&rx,&packet,&ack,&delivery,f.now)==TV4_OUTCOME_DELIVERED); /* lost ACK */
         f.now+=10;assert(tv4_outcome_tx_next(&tx,&packet,f.now)==TV4_OUTCOME_SENT);
-        assert(tv4_outcome_rx_receive(&rx,&packet,&ack,&delivery,f.now)==TV4_OUTCOME_ACK);
-        assert(tv4_outcome_tx_ack(&tx,&ack,f.now)==TV4_OUTCOME_OK && tv4_update_outcome_equal(&delivery,&f.outcome));
+        assert(wire_receive_outcome(&rx,&packet,&ack,&delivery,f.now)==TV4_OUTCOME_ACK);
+        assert(wire_ack_outcome(&tx,&ack,f.now)==TV4_OUTCOME_OK && tv4_update_outcome_equal(&delivery,&f.outcome));
         assert(f.releases==1 && f.reads==reads && !f.locked);
         assert(tv4_boot_completion_clear(&f.completion));release_clear(&f);finish(&f);
     }
@@ -1128,10 +1173,10 @@ static void staged_signed_chains(void)
         assert(tv4_outcome_rx_begin(&rx,&f.tx,f.expected.metadata_sha256,f.now)==TV4_OUTCOME_OK);
         assert(tv4_outcome_tx_next(&tx,&packet,f.now)==TV4_OUTCOME_SENT); /* lost report */
         f.now+=10;assert(tv4_outcome_tx_next(&tx,&packet,f.now)==TV4_OUTCOME_SENT);
-        assert(tv4_outcome_rx_receive(&rx,&packet,&ack,&delivery,f.now)==TV4_OUTCOME_DELIVERED); /* lost ACK */
+        assert(wire_receive_outcome(&rx,&packet,&ack,&delivery,f.now)==TV4_OUTCOME_DELIVERED); /* lost ACK */
         f.now+=10;assert(tv4_outcome_tx_next(&tx,&packet,f.now)==TV4_OUTCOME_SENT);
-        assert(tv4_outcome_rx_receive(&rx,&packet,&ack,&delivery,f.now)==TV4_OUTCOME_ACK);
-        assert(tv4_outcome_tx_ack(&tx,&ack,f.now)==TV4_OUTCOME_OK && tv4_update_outcome_equal(&delivery,&f.outcome));
+        assert(wire_receive_outcome(&rx,&packet,&ack,&delivery,f.now)==TV4_OUTCOME_ACK);
+        assert(wire_ack_outcome(&tx,&ack,f.now)==TV4_OUTCOME_OK && tv4_update_outcome_equal(&delivery,&f.outcome));
         assert(f.releases==1 && tv4_boot_completion_clear(&f.completion));
         if(i<6)release_clear(&f);else assert(tv4_boot_handoff_clear(&f.session));finish(&f);
     }
@@ -1194,6 +1239,13 @@ static void staged_receiver_deadline(void)
 #define RUN(name) do { name(); puts("PASS " #name); } while (0)
 int main(int argc,char **argv)
 {
+    if(argc==2 && strcmp(argv[1],"--wire-staging")==0) {
+        wire_mode=true;
+        RUN(staged_signed_chains);RUN(staged_crypto_rejections);RUN(staged_cleanup_and_revocation);RUN(staged_receiver_deadline);
+        printf("PASS byte codec across existing signed RAM chains; kind counts:");
+        for(unsigned i=1;i<=8;++i){assert(wire_counts[i]>0);printf(" %u=%u",i,wire_counts[i]);}
+        puts("; no wire/CRC success replaces signature/lease/model/deadline/cleanup or authorizes install");return 0;
+    }
     if (argc==2 && strcmp(argv[1],"--staging")==0) {
         RUN(staged_signed_chains);RUN(staged_crypto_rejections);RUN(staged_cleanup_and_revocation);RUN(staged_receiver_deadline);
         printf("PASS 4 staging integration groups; source=%zu core=%zu completion=%zu workspace=%zu; no runtime/Flash/device access\n",

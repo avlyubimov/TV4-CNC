@@ -1,0 +1,11 @@
+{
+  "status": "synthetic-link-only",
+  "vectors_bytes": 64,
+  "data_bytes": 4,
+  "bss_bytes": 4,
+  "stack_bytes": 2048,
+  "rom_load_bytes": 396,
+  "deployable": false,
+  "device_access": false,
+  "physical_memory_verified": false
+}

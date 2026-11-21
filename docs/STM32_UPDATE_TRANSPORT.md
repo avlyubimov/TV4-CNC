@@ -1,5 +1,9 @@
 # PR-07a — сеанс передачи образа без установки
 
+Последующий PR-07j: [opt-in complete-message byte codec](STM32_UPDATE_WIRE.md),
+не raw CAN fragmentation/driver. DATA CRC проверяет этот RX, consume/ACK и
+deadlines прежние. Codec success не завершение transfer или install authority.
+
 Исторический контракт PR-07a от main `74a7af9`; PR #29 теперь слит.
 В main `28fe7bc` есть независимая portable C11 библиотека [update_session](../protocol/can/update_session.h).
 Это программная часть будущего CAN bootloader: отправитель, приёмник и

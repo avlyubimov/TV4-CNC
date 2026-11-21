@@ -1,0 +1,255 @@
+UpdateCTestConfiguration  from :/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-wire-codec/build-boot-host/DartConfiguration.tcl
+Test project /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-wire-codec/build-boot-host
+Constructing a list of tests
+Done constructing a list of tests
+Updating test list for fixtures
+Added 0 tests to meet fixture requirements
+Checking test dependency graph...
+Checking test dependency graph end
+test 1
+      Start  1: boot_image_admission
+
+1: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-wire-codec/build-boot-host/boot_admission_tests
+1: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-wire-codec/build-boot-host
+1: Test timeout computed to be: 30
+1: PASS sha_vectors
+1: PASS success_and_fragmentation
+1: PASS invalid_signature_and_key
+1: PASS wrong_signer
+1: PASS compatibility_and_rollback
+1: PASS policy_errors
+1: PASS signed_malformed_metadata
+1: PASS stream_faults
+1: PASS deadlines_cancellation_and_wrap
+1: PASS arena_exhaustion_and_reuse
+1: PASS snapshot_and_reentry
+1: PASS arguments_and_limits
+1: PASS boundary_metadata_and_key_selection
+1: PASS storage_aliases_are_write_free
+1: PASS 14 admission groups; workspace=17664 bytes; ephemeral host signing keys; no device access
+ 1/16 Test  #1: boot_image_admission .............   Passed    0.14 sec
+test 2
+      Start  2: boot_crypto_source
+
+2: Test command: /home/avlyubimov/.local/bin/python3.14 "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-wire-codec/firmware/stm32-bootloader/tests/source_tests.py" "--source" "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-wire-codec/build-boot-host/_deps/tv4_boot_mbedtls-src"
+2: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-wire-codec/build-boot-host
+2: Test timeout computed to be: 15
+2: test_added_header (__main__.SourceTests.test_added_header) ... ok
+2: test_changed_code (__main__.SourceTests.test_changed_code) ... ok
+2: test_exact_source (__main__.SourceTests.test_exact_source) ... ok
+2: test_missing_header (__main__.SourceTests.test_missing_header) ... ok
+2: test_symlink (__main__.SourceTests.test_symlink) ... ok
+2:
+2: ----------------------------------------------------------------------
+2: Ran 5 tests in 0.082s
+2:
+2: OK
+ 2/16 Test  #2: boot_crypto_source ...............   Passed    0.12 sec
+test 3
+      Start  3: boot_staging_source
+
+3: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-wire-codec/build-boot-host/boot_staging_tests
+3: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-wire-codec/build-boot-host
+3: Test timeout computed to be: 30
+3: PASS 45 RAM staging/read variants, 1..1025 bytes, blocks1/31/256, fragments1/7/256, pending/final duplicates
+3: PASS sizes_and_reads
+3: PASS lease_and_reuse
+3: PASS receiver_faults
+3: PASS deadlines_and_wrap
+3: PASS arguments_and_aliases
+3: PASS config_and_capacity
+3: PASS 1536 source cycles; discard retains high-water/generation/token counters; exhaustion never wraps
+3: PASS counters_and_exhaustion
+3: PASS 7 staging source groups; state=160 bytes plus explicit caller buffer; RAM only, not persistent/install/device access
+ 3/16 Test  #3: boot_staging_source ..............   Passed    0.00 sec
+test 4
+      Start  4: boot_update_handoff
+
+4: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-wire-codec/build-boot-host/boot_handoff_tests
+4: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-wire-codec/build-boot-host
+4: Test timeout computed to be: 30
+4: PASS 54 signed end-to-end RAM transfers with lost DATA/final ACK and pending duplicate
+4: PASS end_to_end_sizes_and_fragments
+4: PASS snapshots_and_reentry
+4: PASS binding_is_not_transport_trust
+4: PASS changes_during_verification
+4: PASS revoke_after_success
+4: PASS acquire_and_release_failures
+4: PASS deadlines_before_verification_and_wrap
+4: PASS boundaries_and_final_cleanup
+4: PASS retained_ack_does_not_extend_handoff
+4: PASS rejected_inputs_and_aliases
+4: PASS 15 signed vector inspections with fragmented reads + captured local profile mutation
+4: PASS signed_vector_success_and_snapshot
+4: PASS valid_signature_invalid_vector_model
+4: PASS preflight_context_cleanup_and_reentry
+4: PASS 6 signed DATA -> crypto -> vectors -> close -> outcome/ACK sessions, lost report/final ACK; no lease retained
+4: PASS completion_end_to_end_history
+4: PASS completion_rejections
+4: PASS completion_release_and_late_context
+4: PASS completion_reentry_snapshot_and_arguments
+4: PASS 6 signed negotiation -> DATA -> P-256/SHA -> vectors -> close -> outcome/ACK chains; all four handshake losses, DATA/final ACK/report losses
+4: PASS negotiated_full_chain
+4: PASS 3 negotiated binding failures: changed image, invalid signature, valid re-signed metadata with mismatched raw SHA; no retained lease
+4: PASS negotiated_binding_still_requires_crypto
+4: PASS 19 handoff/completion groups; completion=568; state=2136 receipt=136 workspace=17664; RAM only, no install/device access
+ 4/16 Test  #4: boot_update_handoff ..............   Passed    0.29 sec
+test 5
+      Start  5: boot_staging_handoff
+
+5: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-wire-codec/build-boot-host/boot_handoff_tests "--staging"
+5: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-wire-codec/build-boot-host
+5: Test timeout computed to be: 30
+5: PASS 8 signed chains through real RAM staging backend, 6 release15 + 2 legacy11; losses, locked writes, post-wipe outcome/ACK
+5: PASS staged_signed_chains
+5: PASS staged_crypto_rejections
+5: PASS staged_cleanup_and_revocation
+5: PASS staged_receiver_deadline
+5: PASS 4 staging integration groups; source=160 core=2136 completion=568 workspace=17664; no runtime/Flash/device access
+ 5/16 Test  #5: boot_staging_handoff .............   Passed    0.03 sec
+test 6
+      Start  6: boot_wire_handoff
+
+6: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-wire-codec/build-boot-host/boot_handoff_tests "--wire-staging"
+6: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-wire-codec/build-boot-host
+6: Test timeout computed to be: 30
+6: PASS 8 signed chains through real RAM staging backend, 6 release15 + 2 legacy11; losses, locked writes, post-wipe outcome/ACK
+6: PASS staged_signed_chains
+6: PASS staged_crypto_rejections
+6: PASS staged_cleanup_and_revocation
+6: PASS staged_receiver_deadline
+6: PASS byte codec across existing signed RAM chains; kind counts: 1=39 2=22 3=22 4=17 5=1017 6=500 7=16 8=8; no wire/CRC success replaces signature/lease/model/deadline/cleanup or authorizes install
+ 6/16 Test  #6: boot_wire_handoff ................   Passed    0.03 sec
+test 7
+      Start  7: boot_release_handoff
+
+7: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-wire-codec/build-boot-host/boot_handoff_tests "--release"
+7: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-wire-codec/build-boot-host
+7: Test timeout computed to be: 30
+7: PASS 6 release15 negotiation/DATA/signature/SHA/vector/close/outcome chains; handshake/DATA/ACK/report losses, exactly one release
+7: PASS release_full_chain
+7: PASS release_live_snapshot
+7: PASS release_live_revocation
+7: PASS release_completion_rejections
+7: PASS release_explicit_mode
+7: PASS release_cleanup_and_late_context
+7: PASS release_reentry_and_completion_snapshot
+7: PASS release_arguments_and_aliases
+7: PASS 8 release handoff groups; adapter=528 full_receipt=360 completion=568 core=2136 workspace=17664; RAM only, no install/device access
+ 7/16 Test  #7: boot_release_handoff .............   Passed    0.07 sec
+test 8
+      Start  8: boot_image_profile
+
+8: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-wire-codec/build-boot-host/boot_profile_tests
+8: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-wire-codec/build-boot-host
+8: Test timeout computed to be: 15
+8: PASS 241 vector-table lengths, 16..256 entries; synthetic models only
+8: PASS all_table_lengths
+8: PASS unknown_and_invalid_profiles
+8: PASS stack_edges_and_gaps
+8: PASS every slot in 256-entry table; null/even/outside/table/RAM/truncated Thumb target rejected
+8: PASS every_handler_and_reserved_slot
+8: PASS full_uint32_arithmetic
+8: PASS lengths_aliases_and_zero_output
+8: PASS 6 profile groups; profile=116 inspection=44; model consistency only, no execution/device access
+ 8/16 Test  #8: boot_image_profile ...............   Passed    0.00 sec
+test 9
+      Start  9: boot_release_admission
+
+9: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-wire-codec/build-boot-host/boot_release_tests
+9: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-wire-codec/build-boot-host
+9: Test timeout computed to be: 30
+9: PASS maximum-width fields: document=604 padded=1024 workspace=17664 candidate=224 policy=288
+9: PASS 8 signed release admission groups; raw P-256/SHA, versions/selection/target/image, cleanup/faults; RAM only, no install/device access
+ 9/16 Test  #9: boot_release_admission ...........   Passed    0.10 sec
+test 10
+      Start 10: boot_release_versions
+
+10: Test command: /home/avlyubimov/.local/bin/python3.14 "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-wire-codec/firmware/stm32-bootloader/tests/release_versions.py" "--driver" "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-wire-codec/build-boot-host/boot_release_tests"
+10: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-wire-codec/build-boot-host
+10: Test timeout computed to be: 30
+10: PASS 2745 independent bounded SemVer comparisons; 31-byte subset, numeric prerelease not truncated to uint32
+10/16 Test #10: boot_release_versions ............   Passed    0.04 sec
+test 11
+      Start 11: update_wire_reference
+
+11: Test command: /home/avlyubimov/.local/bin/python3.14 "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-wire-codec/protocol/can/tests/wire_reference.py" "--driver" "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-wire-codec/build-boot-host/update-transport/update_wire_tests"
+11: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-wire-codec/build-boot-host/update-transport
+11: Test timeout computed to be: 15
+11: PASS12 independent Python LE golden messages,8 kinds/all5 outcome codes; concatenated_sha256=7c94f5fd561787851d86d23c8179a806b908cb94cf48a1d52580540cf1705426
+11/16 Test #11: update_wire_reference ............   Passed    0.02 sec
+test 12
+      Start 12: update_session
+
+12: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-wire-codec/build-boot-host/update-transport/update_session_tests
+12: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-wire-codec/build-boot-host/update-transport
+12: Test timeout computed to be: 20
+12: PASS checksum_vectors
+12: PASS invalid_limits
+12: PASS begin_and_exclusivity
+12: PASS two_phase_and_exact_duplicates
+12: PASS malformed_blocks
+12: PASS conflicting_duplicate
+12: PASS crc_collision_does_not_match_duplicate
+12: PASS consumer_failure_is_sticky
+12: PASS sender_retry_budget
+12: PASS receiver_retry_budget
+12: PASS ack_validation
+12: PASS deadline_boundaries
+12: PASS total_deadline
+12: PASS clocks_and_wraparound
+12: PASS abort_and_reboot
+12: PASS null_and_output_contracts
+12: PASS retry_counter_boundary
+12: PASS 17 unit groups; rx=384 tx=384 bytes; no device access
+12/16 Test #12: update_session ...................   Passed    0.00 sec
+test 13
+      Start 13: update_loopback
+
+13: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-wire-codec/build-boot-host/update-transport/update_loopback_tests
+13: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-wire-codec/build-boot-host/update-transport
+13: Test timeout computed to be: 20
+13: PASS 2049 memory transfers; lost DATA=4318 ACK=4360 (final=397) corrupt=3924 reorder=4338 pending duplicates=4004
+13: PASS altered payload + valid CRC completes transport only; SHA oracle rejects image
+13: PASS 10 volatile reset cut cases; stale sessions/ACK rejected; no resume
+13: PASS truncated stream / partial RAM consumer never reach completion
+13/16 Test #13: update_loopback ..................   Passed    0.04 sec
+test 14
+      Start 14: update_outcome
+
+14: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-wire-codec/build-boot-host/update-transport/update_outcome_tests
+14: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-wire-codec/build-boot-host/update-transport
+14: Test timeout computed to be: 20
+14: PASS 1001 outcome sessions, 1001 deliveries; lost report/final ACK; duplicates not redelivered
+14: PASS loss_duplicate_and_history
+14: PASS binding_and_ack_validation
+14: PASS conflicts_invalid_reports_and_forgery_boundary
+14: PASS deadlines_retries_and_late_begin
+14: PASS transport_reboot_abort_and_clock
+14: PASS config_and_canonical_codes
+14: PASS 6 outcome groups; report=84 TX=128 RX=224; no authentication/install/device access
+14/16 Test #14: update_outcome ...................   Passed    0.01 sec
+test 15
+      Start 15: update_negotiation
+
+15: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-wire-codec/build-boot-host/update-transport/update_negotiation_tests
+15: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-wire-codec/build-boot-host/update-transport
+15: Test timeout computed to be: 20
+15: PASS 7 negotiation groups/1024 sessions; state=368 pool=32 message=128. Opaque bindings only; no CAN/authentication/install/device access.
+15/16 Test #15: update_negotiation ...............   Passed    0.00 sec
+test 16
+      Start 16: update_wire
+
+16: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-wire-codec/build-boot-host/update-transport/update_wire_tests
+16: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-wire-codec/build-boot-host/update-transport
+16: Test timeout computed to be: 20
+16: PASS 65536 outcome code/reason byte combinations; unknown and incompatible tokens reject with zero output
+16: PASS all256 DATA lengths; uint32 offset overflow, tail zeroing and no padding/tail emission
+16: PASS 200000 deterministic malformed/mutation cases: accepted=113410 canonical, rejected=86590 zeroed; structural only
+16: PASS corrupted DATA structurally decodes but existing RX rejects CRC before progress; consumer ACK still mandatory
+16: PASS wire draft:8 message kinds, max=286 caller_message=284; no CAN/device/installation
+16/16 Test #16: update_wire ......................   Passed    0.06 sec
+
+100% tests passed, 0 tests failed out of 16
+
+Total Test time (real) =   0.96 sec
