@@ -1,0 +1,44 @@
+{
+  "scope": "opt-in bound channel TX/frame custody static archive, not firmware",
+  "objects": {
+    "text": 1972,
+    "data": 0,
+    "bss": 0
+  },
+  "unresolved_imports": [
+    "memcpy",
+    "memset",
+    "tv4_channel_tx_advance",
+    "tv4_channel_tx_begin",
+    "tv4_channel_tx_cancel",
+    "tv4_channel_tx_clear",
+    "tv4_channel_tx_commit",
+    "tv4_channel_tx_init",
+    "tv4_channel_tx_peek",
+    "tv4_channel_tx_poll"
+  ],
+  "exported_functions": [
+    "tv4_frame_queue_admit",
+    "tv4_frame_queue_cancel",
+    "tv4_frame_queue_claim",
+    "tv4_frame_queue_clear",
+    "tv4_frame_queue_complete",
+    "tv4_frame_queue_init",
+    "tv4_frame_queue_poll",
+    "tv4_frame_queue_quiescent",
+    "tv4_update_egress_advance",
+    "tv4_update_egress_begin",
+    "tv4_update_egress_cancel",
+    "tv4_update_egress_claim",
+    "tv4_update_egress_clear",
+    "tv4_update_egress_complete",
+    "tv4_update_egress_init",
+    "tv4_update_egress_poll",
+    "tv4_update_egress_pump"
+  ],
+  "max_individual_frame": 88,
+  "full_stack_verified": false,
+  "board_memory_verified": false,
+  "runtime_caller": false,
+  "device_access": false
+}

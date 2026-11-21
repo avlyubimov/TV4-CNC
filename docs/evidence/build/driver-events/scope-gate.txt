@@ -1,0 +1,5 @@
+PASS build-boot-arm excludes host fixtures/review/tests
+PASS build-update-arm excludes host fixtures/review/tests
+PASS actual production handoff target has no event/egress/channel/setup/fragment/test dependency
+PASS no driver event API/runtime caller in HMI/motion/production bootloader
+PASS serialized host simulated adapter only; no synchronization/ISR/real driver/remote or physical completion claim

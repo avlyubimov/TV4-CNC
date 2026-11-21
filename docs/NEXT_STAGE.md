@@ -1,6 +1,6 @@
 # Следующий этап: release context и STM32 board contract
 
-21 ноября2026. База main `555007d`, PR #1–47 слиты, main CI5/5 PASS.
+21 ноября2026. База main `efa2727`, PR #1–48 слиты, main CI5/5 PASS.
 ESP32 HMI/Wi-Fi/OTA primitives/candidates и STM32 transport/admission существуют;
 не создавать их заново. Данный план не разрешает доступ к устройствам или merge.
 
@@ -199,7 +199,7 @@ model/close остаются отдельными обязательствами
 [evidence](evidence/build/update-channel/README.md); external queue drain/identity/
 authentication/routing/runtime/resources/hardware/install open.
 
-## Текущая ветка PR-07p
+## Слитый PR #48, PR-07p
 
 [Bound egress](STM32_UPDATE_EGRESS.md): actual channel TX/frame ledger, one driver
 claim/tickets, bounded residency/backpressure, held claim on timeout/cancel/
@@ -207,6 +207,14 @@ uncertainty, late return reclaim only. Host59/sanitizers59/standalone33;
 [evidence](evidence/build/update-egress/README.md). No real driver/runtime/remote
 ACK/auth/upper/physical/install authority. Original image/crypto/lease deadlines
 preserved; real completion/reset/event queue/provider/resources gates open.
+
+## Текущая ветка PR-07q
+
+[Driver event inbox](STM32_DRIVER_EVENTS.md): actual owned egress + completion
+FIFO, full/retry/no drop, one-event current-time service, no pending-event flush.
+Host61/sanitizers61/standalone35; [evidence](evidence/build/driver-events/README.md).
+Serialized API only, no actual synchronized RTOS/ISR/driver/provenance/reset proof.
+Original upper windows/crypto/lease/model/close and all hardware gates retained.
 
 ## Что делать дальше программно
 
@@ -237,8 +245,9 @@ preserved; real completion/reset/event queue/provider/resources gates open.
    ownership на original image windows. PR-07o добавляет bounded shared channel
    и local phase/outbox filters, не actual runtime owner/remote queue flush.
    PR-07p добавляет actual bound local custody queue/driver tickets, не real
-   driver/remote drain proof. Дальше review trusted adapter completion/reset/
-   reconciliation/event queues, production identity/capabilities/codebook и
+   driver/remote drain proof. PR-07q добавляет serialized owned event inbox.
+   Дальше review synchronized trusted adapter completion provenance/reset/
+   reconciliation, production identity/capabilities/codebook и
    worker/resource budgets перед runtime adoption. Production routing/reboot
    identity/authentication, durable ownership и measured worker/bus/crypto budgets
    остаются blockers, не implicit defaults или permissive setup stub.

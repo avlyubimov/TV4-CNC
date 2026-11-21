@@ -109,9 +109,28 @@ PR и Actions; не копировать код уже открытого PR. Д
 
 ## Текущее задание
 
-PR #1–47 слиты, база main `555007d`, main CI5/5 PASS,
+PR #1–48 слиты, база main `efa2727`, main CI5/5 PASS,
 открытых PR перед работой нет.
-PR-07p: читать docs/STM32_UPDATE_EGRESS.md. Opt-in bound channel TX + actual
+PR-07q: читать docs/STM32_DRIVER_EVENTS.md. Opt-in actual egress + owned event
+FIFO capacity1..4, no caller drain boolean. Post ADMITTED means copy only; BUSY
+requires adapter retain/retry, no drops. Current-time service polls original
+windows then consumes <=1 event; separate poll consumes none. Begin/claim/phase
+wait actual inbox; cancel retains inbox+claim; clear only after actual event
+consumption and exact terminal cleanup. No timestamp/reinit/counter/time reset.
+Wrong owner/route/generation refused; stale/duplicate cannot free current claim.
+Original independent crypto/lease/model/image/close gates unchanged. Serialized
+one owner ONLY, not RTOS/ISR/thread-safe/real driver; no I/O/heap/runtime/IDs/pins/
+Flash defaults/devices/self-merge. Host61/sanitizers61/standalone35,256 actual
+messages/8448 frames/21120 reports,8 signed positive+3 independent+2 delayed event
+refusals. Analyzer19 embedded+2 host/guards7×6/source178/board/output/scope PASS;
+new archive768text/data0/bss0/frame56,4096/frame128 ceiling,10 exports. Old code/
+budgets/SDK/workspace unchanged. Host event32/owner968 not MCU RAM/full stack.
+New host mode explicit fragment total256 before init for extra event hop; old
+modes128/progress8/frame160 and all upper windows preserved. Actual synchronized
+adapter/provenance/reset/reconciliation/persistence/routing/resources/staging/
+installer/physical blockers open; no force-forget or success/physical claim.
+
+Слитый PR #48, PR-07p: читать docs/STM32_UPDATE_EGRESS.md. Opt-in bound channel TX + actual
 owned frame ledger, explicit capacity1..4/deadline, one exact owner/route/generation/serial
 claim. Channel commit after owned copy; phase/begin wait for correlated local
 terminal returns, no caller drain/success boolean. Local SENT_UNVERIFIED не

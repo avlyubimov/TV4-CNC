@@ -190,3 +190,18 @@ driver/runtime/IDs/bitrate/Flash/pins/heap/crypto owner/device or self-merge.
 Actual adapter truth/reset/event queues/persistent identity/resources/physical/
 installer open. New separate exact ARM imports/exports/frame/no globals+negative
 guard; old budgets/dependencies unchanged, text evidence required.
+
+## PR-07q — driver event inbox
+
+Читать docs/STM32_DRIVER_EVENTS.md. Own actual egress + event FIFO, no external
+success/drained bool. Post copies only; full BUSY retains external report for
+retry, no event/claim drops. Current-time service polls original windows then
+consumes <=1 event; separate poll consumes none. Begin/claim/phase wait actual
+inbox; cancel keeps inbox+claim, clear requires actual consumption/terminal return.
+No timestamp/reinit/counter/time reset; context/clock/exhaustion sticky. Serialized
+one owner only, NOT concurrent/ISR/RTOS/driver truth or physical/install authority.
+Host-only delayed event adapter/signed chains; all old modes/upper crypto/lease/
+model/deadlines/budgets/SDK pins remain. New mode fragment total256 before init,
+old128/progress8/frame160 and all upper windows unchanged. Actual synchronization/
+provenance/reset/persistence/routing/resources/runtime/hardware/install remain open.
+Separate exact ARM guard/negative checks/text evidence mandatory. No devices/merge.

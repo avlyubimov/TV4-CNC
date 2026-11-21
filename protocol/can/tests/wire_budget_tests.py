@@ -71,6 +71,7 @@ if __name__ == '__main__':
     mode.add_argument('--setup', action='store_true')
     mode.add_argument('--channel', action='store_true')
     mode.add_argument('--egress', action='store_true')
+    mode.add_argument('--driver-events', action='store_true')
     args = parser.parse_args()
     BUILD = args.build.absolute()
     if args.fragments:
@@ -111,6 +112,12 @@ if __name__ == '__main__':
             'init', 'admit', 'claim', 'complete', 'poll', 'cancel', 'clear', 'quiescent'))
         EXPORTS += tuple('tv4_update_egress_' + suffix for suffix in (
             'init', 'begin', 'pump', 'claim', 'complete', 'poll', 'advance', 'cancel', 'clear'))
+    if args.driver_events:
+        import check_driver_events_build as guard
+        ARCHIVE = 'libtv4_update_driver_events.a'
+        TARGET = 'tv4_update_driver_events'
+        EXPORTS = tuple('tv4_driver_events_' + suffix for suffix in (
+            'init', 'begin', 'pump', 'claim', 'post', 'poll', 'service', 'advance', 'cancel', 'clear'))
     result = unittest.TextTestRunner(verbosity=2).run(unittest.defaultTestLoader.loadTestsFromTestCase(Budget))
     if not result.wasSuccessful(): raise SystemExit(1)
     print('PASS6 ARM budget guard cases; temporary negative objects removed, no board image or execution')
