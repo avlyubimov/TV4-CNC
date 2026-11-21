@@ -1,0 +1,135 @@
+{
+  "schema": "tv4-hardware-preflight-1",
+  "date_local": "2026-11-22",
+  "timezone": "Asia/Almaty",
+  "base_main": "4fe84f10a70228b9f440f41c6ccc50869919042a",
+  "candidate_commit": "c09a20e086a79a06099036540b87b66fd0b65c36",
+  "candidate_installed": false,
+  "owner_confirmed_isolated": true,
+  "permissions": [
+    {
+      "operation": "one <=60s SWD discover/reset-halt/ID-geometry-options reads/reset-run",
+      "result": "partial, unsupported command, reset-run completed"
+    },
+    {
+      "operation": "one additional <=60s corrected SWD session",
+      "result": "complete, reset-run completed"
+    }
+  ],
+  "openocd": "0.12.0",
+  "probe": "STLINK V2J29S7 API2",
+  "probe_voltage_samples_v": [
+    3.257257,
+    3.260437
+  ],
+  "voltage_accuracy_or_load_test": false,
+  "swd_requested_khz": 1000,
+  "swd_selected_khz": 950,
+  "core": "Cortex-M4 r0p1",
+  "cpuid": "0x410fc241",
+  "device_id_raw": "0x101f6413",
+  "device_id_low12": "0x413",
+  "rev_id": "0x101f",
+  "silicon_revisions_per_st": [
+    5,
+    6
+  ],
+  "single_silicon_revision_resolved": false,
+  "flash_kib": 1024,
+  "flash_base": "0x08000000",
+  "flash_bytes": 1048576,
+  "flash_driver": "stm32f2x",
+  "flash_sectors": [
+    {
+      "number": 0,
+      "offset": 0,
+      "origin": 134217728,
+      "bytes": 16384
+    },
+    {
+      "number": 1,
+      "offset": 16384,
+      "origin": 134234112,
+      "bytes": 16384
+    },
+    {
+      "number": 2,
+      "offset": 32768,
+      "origin": 134250496,
+      "bytes": 16384
+    },
+    {
+      "number": 3,
+      "offset": 49152,
+      "origin": 134266880,
+      "bytes": 16384
+    },
+    {
+      "number": 4,
+      "offset": 65536,
+      "origin": 134283264,
+      "bytes": 65536
+    },
+    {
+      "number": 5,
+      "offset": 131072,
+      "origin": 134348800,
+      "bytes": 131072
+    },
+    {
+      "number": 6,
+      "offset": 262144,
+      "origin": 134479872,
+      "bytes": 131072
+    },
+    {
+      "number": 7,
+      "offset": 393216,
+      "origin": 134610944,
+      "bytes": 131072
+    },
+    {
+      "number": 8,
+      "offset": 524288,
+      "origin": 134742016,
+      "bytes": 131072
+    },
+    {
+      "number": 9,
+      "offset": 655360,
+      "origin": 134873088,
+      "bytes": 131072
+    },
+    {
+      "number": 10,
+      "offset": 786432,
+      "origin": 135004160,
+      "bytes": 131072
+    },
+    {
+      "number": 11,
+      "offset": 917504,
+      "origin": 135135232,
+      "bytes": 131072
+    }
+  ],
+  "geometry_matches_bench_profile": true,
+  "erase_geometry_tested": false,
+  "optcr_raw": "0x0fffaaed",
+  "rdp": "0xaa",
+  "rdp_level": 0,
+  "nwrp": "0xfff",
+  "write_protected_sectors": [],
+  "user_options_reported": "0xec",
+  "option_bytes_changed": false,
+  "flash_written_or_erased": false,
+  "otp_accessed": false,
+  "backup_read": false,
+  "current_firmware_reset_run_completed": true,
+  "hsiramwatchdog_bench_executed": false,
+  "can_or_motion": false,
+  "physical_inhibit_verified": false,
+  "original_backup_sha_verified": false,
+  "independent_second_copy_verified": false,
+  "full_package_marking_verified": false
+}

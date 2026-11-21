@@ -1,6 +1,27 @@
 # Аппаратный статус TV4-CNC
 
-## Текущий P0: спецификация проверена, нового аппаратного результата нет
+## 22 ноября: фактический SWD preflight, без установки образа
+
+От main4fe84f1/слитого PR #56, после двух отдельных разрешений владельца
+агент прочитал Cortex-M4r0p1/CPUID0x410fc241, DBG_ID0x101f6413 и Flash1024KiB.
+STLINK V2J29S7/API2/OpenOCD0.12, SWD950kHz при requested1000; probe voltage
+samples3.257257V/3.260437V не являются calibrated/load measurements.
+Driver сообщил bank0 `0x08000000`/1MiB и12секторов по reviewed profile.
+FLASH_OPTCR0x0fffaaed/RDP0xAA/nWRP0xFFF: protection snapshot level0,
+write protection секторов0–11 не активна. **Erase/program не проверены**.
+
+OpenOCD пишет revision unknown0x101f; по ST RM0090/ES0182 это silicon5 **или**6,
+один точный marking не определён. Core r0p1 — отдельное поле. Полный корпусной
+marking/package, HSE/реальные clock/RAM/CCM/watchdog/fault/GPIO/CAN неизвестны.
+Первая попытка завершилась ошибкой неподдерживаемого flash command, исправленный
+повтор exit0; обе вернули текущее ПО через reset/run. [Оба лога и факты](evidence/hardware/2026-11-22-f407-swd-preflight/README.md).
+Ни Flash/OTP/option bytes, ни backups не записывались/не читались дампом.
+Образ c09a20e не установлен; его startup/HSI/RAM/watchdog не испытаны.
+До установки нужны original backup SHA/независимая копия/marking и новое
+exact-image разрешение. ESP32 ordinary8f0d899 прежний.
+
+
+## Исторический программный snapshot P0 (до разрешённого SWD preflight)
 
 22 ноября 2026, от main610f174 (PR #55 слит). Подготовлен настоящий
 [STM32F407VG HSI bench](STM32_FIRST_IMAGE.md): ELF/BIN/map, официальный

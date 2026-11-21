@@ -6,6 +6,10 @@
 [План](plans/P0_STM32F407_FIRST_IMAGE.md), [проверки](evidence/build/stm32f407-first-image/README.md),
 [установка/восстановление](STM32_STLINK_RUNBOOK.md).
 
+После PR #56 выполнен отдельный [SWD preflight](evidence/hardware/2026-11-22-f407-swd-preflight/README.md):
+IDs/Flash size/driver geometry/protection прочитаны, но c09a20e не установлен.
+Это уточняет hardware snapshot, не результаты исполнения этого образа.
+
 ## Что является исходными данными
 
 Владелец подтвердил SWD/ST-Link V2, Cortex-M4 r0p1, raw device ID

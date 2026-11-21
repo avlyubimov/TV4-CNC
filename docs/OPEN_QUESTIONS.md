@@ -1,12 +1,13 @@
 # Открытые вопросы и блокирующие решения
 
-Обновлено22ноября2026 от main610f174 (PR #55 слит).
-[HARDWARE_STATUS.md](HARDWARE_STATUS.md) — единственный свод owner facts.
-P0 [реальный образ](STM32_FIRST_IMAGE.md) закрывает **software** пробел
-официального memory/vector/HSI/startup contract; это не новое аппаратное
-подтверждение SRAM/CCM/clock/erase. Новых device/backup операций нет.
-[Runbook](STM32_STLINK_RUNBOOK.md) перечисляет preflight перед отдельно
-разрешённой первой записью. Вопросы runtime CAN/OTA не заменяют этот bench.
+Обновлено22ноября2026 от main4fe84f1/слитого PR #56.
+Агент выполнил два отдельно разрешённых SWD preflight-сеанса:
+[реальные ID/Flash geometry/protection reads](evidence/hardware/2026-11-22-f407-swd-preflight/README.md).
+RDP0/nWRP0xFFF известны как snapshot; erase/install/restore не проверены.
+REV_ID0x101f по ST —5/6, full marking неизвестен. Образ c09a20e не установлен,
+original backup SHA/разрешение на backup read/независимая копия ещё не получены.
+[HARDWARE_STATUS.md](HARDWARE_STATUS.md) отделяет owner facts от новых reads.
+Ни HSI/RAM/CCM/watchdog, ни физический CAN/motion этим не подтверждены.
 
 Ответ владельца20ноября повторил только VGT6; full physical marking/HSE неизвестны.
 PR-05b [release policy review](RELEASE_POLICY_REVIEW.md) проверяет существующий
@@ -114,10 +115,10 @@ stop/join не освобождает actual claim. Верхние image/crypto/
 
 | ID | Что нужно подтвердить/решить | Блокирует |
 |---|---|---|
-| HW-F407-01 | Owner SWD/core/device ID/Flash1024KiB подтверждены; остаются физическая маркировка/package. Официальные DS8626/RM0090/PM0214/ST vectors закреплены в P0; Device ID не заменяет package check | Preflight первого стенда; software board profile уже есть, raw ID не определяет bootloader layout |
+| HW-F407-01 | Owner SWD/core/device ID/Flash1024KiB теперь также прочитаны агентом; REV_ID0x101f соответствует5/6. Остаются полная физическая маркировка/package. Официальные DS8626/RM0090/PM0214/ST vectors закреплены в P0; Device ID не заменяет package check | Preflight первого стенда; software board profile уже есть, raw ID не определяет bootloader layout |
 | HW-F407-02 | HSE/PLL/реальная частота, schematic/pinout/boot-reset/recovery. SWD работает;3,252V — один owner sample | Physical clock/timer/DMA/CAN. HSI-only image уже собран; HSE не блокирует его сборку, реальные HSI/LSI/reset/tick ещё не измерены |
 | HW-F407-03 | Фактическая RAM/CCM availability, runtime stack high-water/stress. Документированный SRAM112+16KiB/CCM64KiB/98vectors contract и linker проверены программно | Исполнение/измерения на плате; ELF/BIN уже есть. Минимальный cookie/probe не полный RAM test |
-| HW-F407-04 | Спецификация12sectors рассмотрена в P0, но erase/protection/option-byte state экземпляра и restore не проверены | Первый Flash preflight и отдельный P4 loader layout/write/recovery; A/B по-прежнему не выбран |
+| HW-F407-04 | Спецификация12sectors совпала с actual driver report; OPTCR0x0fffaaed/RDP0/nWRP0xFFF прочитаны. Реальные erase/program/power-loss/restore ещё не проверены | Exact-image install после backup/marking/нового разрешения; отдельный P4 loader layout/write/recovery, A/B не выбран |
 | HW-F407-05 | Физические GPIO/CAN, transceiver/pin routing, безопасные уровни/полярности ENABLE/STEP/DIR/шпинделя | Любой physical adapter/drive commissioning; no-I/O adapter не подтверждает physical inhibit |
 | HW-USB-01 | Отдельно подтвердить, что устройство 0483:5720 принадлежит именно F407 стенду | Идентификация; VID/PID не доказывает MCU/Flash/прошивку |
 | HW-DRIVE-01 | Получение первого NEMA23, точные двигатель/драйвер/питание, STEP/DIR/ENABLE polarity, encoder/alarm, второй привод | Любые испытания приводов/осей |

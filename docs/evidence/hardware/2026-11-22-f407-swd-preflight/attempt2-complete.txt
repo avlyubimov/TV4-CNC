@@ -1,0 +1,47 @@
+Open On-Chip Debugger 0.12.0
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
+Info : The selected transport took over low-level target control. The results might differ compared to plain JTAG/SWD
+Info : clock speed 1000 kHz
+Info : STLINK V2J29S7 (API v2) VID:PID 0483:3748
+Info : Target voltage: 3.260437
+Info : [stm32f4x.cpu] Cortex-M4 r0p1 processor detected
+Info : [stm32f4x.cpu] target has 6 breakpoints, 4 watchpoints
+Info : gdb port disabled
+Info : Unable to match requested speed 1000 kHz, using 950 kHz
+Info : Unable to match requested speed 1000 kHz, using 950 kHz
+[stm32f4x.cpu] halted due to debug-request, current mode: Thread
+xPSR: 0x01000000 pc: 0x08000288 msp: 0x20005008
+TV4_PREFLIGHT CPUID=0x410fc241
+TV4_PREFLIGHT DBG_ID=0x101f6413 OWNER_ID_MATCH=1
+TV4_PREFLIGHT FLASH_KIB=1024
+#0 : stm32f4x.flash (stm32f2x) at 0x00000000, size 0x00000000, buswidth 0, chipwidth 0
+#1 : stm32f4x.otp (stm32f2x) at 0x1fff7800, size 0x00000000, buswidth 0, chipwidth 0
+
+Info : device id = 0x101f6413
+Info : flash size = 1024 KiB
+#0 : stm32f2x at 0x08000000, size 0x00100000, buswidth 0, chipwidth 0
+	#  0: 0x00000000 (0x4000 16kB) not protected
+	#  1: 0x00004000 (0x4000 16kB) not protected
+	#  2: 0x00008000 (0x4000 16kB) not protected
+	#  3: 0x0000c000 (0x4000 16kB) not protected
+	#  4: 0x00010000 (0x10000 64kB) not protected
+	#  5: 0x00020000 (0x20000 128kB) not protected
+	#  6: 0x00040000 (0x20000 128kB) not protected
+	#  7: 0x00060000 (0x20000 128kB) not protected
+	#  8: 0x00080000 (0x20000 128kB) not protected
+	#  9: 0x000a0000 (0x20000 128kB) not protected
+	# 10: 0x000c0000 (0x20000 128kB) not protected
+	# 11: 0x000e0000 (0x20000 128kB) not protected
+STM32F4xx - Rev: unknown (0x101f)
+
+TV4_PREFLIGHT OPTCR=0x0fffaaed RDP=0xaa NWRP=0xfff
+stm32f2x user_options 0xEC
+
+TV4_PREFLIGHT READS_COMPLETE
+Info : Unable to match requested speed 1000 kHz, using 950 kHz
+Info : Unable to match requested speed 1000 kHz, using 950 kHz
+TV4_PREFLIGHT CURRENT_FIRMWARE_RESET_RUN_COMPLETE
+TV4_PREFLIGHT SESSION_COMPLETE_NO_FLASH_WRITE
+shutdown command invoked

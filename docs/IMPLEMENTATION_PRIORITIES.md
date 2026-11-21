@@ -10,18 +10,18 @@ PR #1–54 слиты. PR #54 завершил threaded host tests; он бол�
 Исторические PR и их проверки остаются доказательствами выполненной работы,
 но не задают порядок дальнейшей разработки.
 
-## Текущая интеграция после PR #55
+## Текущее состояние после PR #56
 
-PR #55 docs-only слит; новая база main
-`610f1745d892d5904ea183b50617a20d8ce755bb`. Текущий отдельный P0 даёт
-[настоящий HSI bench ELF/BIN](STM32_FIRST_IMAGE.md), проверки/CI и
-[ST-Link install/restore процедуру](STM32_STLINK_RUNBOOK.md).
-[Программные результаты](evidence/build/stm32f407-first-image/README.md)
-отделены от ещё не выполненного hardware test. После создания PR остановиться,
-не выполнять merge, прошивку, SWD/reset/capture или backup reads.
-После review следующий аппаратный шаг требует отдельного exact-image разрешения.
-Порядок P1–P5 и критерии ниже сохраняются; не создавать новый PR планирования
-или абстракций вместо этого образа/его измеримой приёмки.
+P0 software image завершён в PR #56; база main4fe84f1.
+[Standalone HSI ELF/BIN](STM32_FIRST_IMAGE.md) существует;
+[первый SWD preflight](evidence/hardware/2026-11-22-f407-swd-preflight/README.md) подтвердил реальные ID/Flash
+size и driver geometry/protection snapshot. Исполнение c09a20e ещё не испытано.
+Два отдельно разрешённых read/reset сеанса завершены; Flash/backup/option writes
+или install они не разрешают. Следующий шаг — backup SHA/независимая копия/
+marking, затем новое exact-image разрешение и первый install/boot bench по
+[runbook](STM32_STLINK_RUNBOOK.md). Текущая работа только сохраняет evidence и
+исправляет runbook; без firmware изменений, self-merge или новых device actions.
+Порядок P1–P5 ниже сохраняется.
 
 ## P0 — первая настоящая прошивка STM32F407
 

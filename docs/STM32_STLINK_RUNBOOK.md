@@ -1,6 +1,10 @@
 # STM32F407VG: первый ST-Link bench и восстановление
 
-**Это подготовленная процедура. В P0 аппаратные команды не выполнялись.**
+**Образ c09a20e ещё не установлен.** 22 ноября выполнены два отдельно
+разрешённых SWD-сеанса без записи Flash: первый завершился ошибкой команды,
+исправленный повтор прочитал ID/геометрию/защиту и выполнил reset/run текущего ПО.
+[Обе попытки и пределы](evidence/hardware/2026-11-22-f407-swd-preflight/README.md).
+Это не проверка исполнения нового HSI/watchdog образа и не разрешение на запись.
 Build/CI/PR не разрешают новый SWD/read/reset/write/capture сеанс. Прежние
 разрешения ESP32 к F407 не относятся. Перед исполнением владелец отдельно
 утверждает точный commit/profile/ELF SHA-256 и операции/длительность сеанса;
@@ -25,7 +29,7 @@ Build/CI/PR не разрешают новый SWD/read/reset/write/capture се
    доказывает соответствие исходному backup. Нужны сверка с исходной записью,
    независимая вторая копия и готовность restore. ESP32 16 МиБ backup сюда не подходит.
    Пути/содержимое дампа/защищённые данные не помещать в Git, PR или public logs.
-4. Подготовить read-only preflight: версию probe/OpenOCD, CPUID/DBG ID/Flash size,
+4. Подготовить preflight без записи Flash: версию probe/OpenOCD, CPUID/DBG ID/Flash size,
    bank/sector geometry, RDP/WRP и option-byte state. Это новые аппаратные чтения,
    поэтому они ещё требуют разрешения. Не угадывать protection по старому SWD report.
    При mismatch/защите/unknown recovery остановиться; **не выполнять unlock,
@@ -65,15 +69,28 @@ IWDG debug-halt freeze. `reset_config none` не предполагает лин
 
 ```bash
 openocd -f firmware/stm32-motion/board/stm32f407vg/openocd.cfg \
+  -c "gdb_port disabled" -c "tcl_port disabled" -c "telnet_port disabled" \
   -c "init" -c "reset halt" \
   -c "mdw 0xE000ED00 1" -c "mdw 0xE0042000 1" \
   -c "mdh 0x1FFF7A22 1" \
-  -c "flash info 0" -c "flash protect_check 0" \
-  -c "stm32f2x options_read 0" -c "shutdown"
+  -c 'echo [flash info 0 sectors]' -c "mdw 0x40023C14 1" \
+  -c 'echo [stm32f2x options_read 0]' \
+  -c "reset run" -c "shutdown"
 ```
 
-Это halt/reset/read, не пассивное наблюдение; после shutdown CPU может остаться
-halted. Любой последующий resume/reset согласуется в разрешении. Проверить
+В OpenOCD0.12 команды `flash protect_check` **нет**. `flash info 0 sectors`
+показывает геометрию/защиту bank0; независимое чтение FLASH_OPTCR по
+`0x40023C14` даёт RDP[15:8] и nWRP[27:16] согласно RM0090 §3.9.9.
+RDP0xAA — level0; nWRP0xFFF — секторы0–11 не write-protected. Иные значения
+не исправлять автоматически. `options_read` только читает user option bytes.
+В Tcl-блоке результат `flash info`/`options_read` выводить через `echo`, иначе
+возвращённая строка может не попасть в лог.
+
+Это halt/reset/read, не пассивное наблюдение. На успешном пути выполняется
+reset/run текущего ПО. Ошибка до него может оставить CPU halted; в выполненных
+сеансах cleanup через Tcl `catch` отдельно выполнил reset/run даже после ошибки.
+Проверять marker/exit, не объявлять cleanup успешным без лога. Новый сеанс или
+повторное reset требует разрешения в пределах согласованного scope. Проверить
 device ID low12=0x413, Flash size1024KiB, ожидаемые12sectors и отсутствие
 препятствующей записи защиты. Полный raw ID сравнить с owner0x101f6413;
 неожиданное отличие расследовать. Option values не изменять. Перед записью

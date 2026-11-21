@@ -1,0 +1,22 @@
+PASS links/Bash syntax/text-only scope AGENTS.md
+PASS links/Bash syntax/text-only scope docs/HARDWARE_STATUS.md
+PASS links/Bash syntax/text-only scope docs/IMPLEMENTATION_PRIORITIES.md
+PASS links/Bash syntax/text-only scope docs/NEXT_STAGE.md
+PASS links/Bash syntax/text-only scope docs/OPEN_QUESTIONS.md
+PASS links/Bash syntax/text-only scope docs/ROADMAP.md
+PASS links/Bash syntax/text-only scope docs/STM32_FIRST_IMAGE.md
+PASS links/Bash syntax/text-only scope docs/STM32_STLINK_RUNBOOK.md
+PASS links/Bash syntax/text-only scope firmware/stm32-motion/AGENTS.md
+PASS links/Bash syntax/text-only scope docs/evidence/hardware/2026-11-22-f407-swd-preflight/README.md
+PASS links/Bash syntax/text-only scope docs/evidence/hardware/2026-11-22-f407-swd-preflight/attempt1-partial.txt
+PASS links/Bash syntax/text-only scope docs/evidence/hardware/2026-11-22-f407-swd-preflight/attempt2-complete.txt
+PASS links/Bash syntax/text-only scope docs/evidence/hardware/2026-11-22-f407-swd-preflight/base-main-ci.json
+PASS links/Bash syntax/text-only scope docs/evidence/hardware/2026-11-22-f407-swd-preflight/commands.md
+PASS links/Bash syntax/text-only scope docs/evidence/hardware/2026-11-22-f407-swd-preflight/log-hashes.json
+PASS links/Bash syntax/text-only scope docs/evidence/hardware/2026-11-22-f407-swd-preflight/offline-command-help.txt
+PASS links/Bash syntax/text-only scope docs/evidence/hardware/2026-11-22-f407-swd-preflight/result.json
+PASS links/Bash syntax/text-only scope docs/plans/F407_SWD_PREFLIGHT.md
+PASS actual12sector log parsed against all profile entries; RDP/nWRP/cleanup markers match logs
+PASS two authorization scopes retained; first failure explicit, no erase/install/backup read claim
+PASS firmware/tools/CI/dependencies unchanged; docs/evidence/scoped instructions only
+PASS base-main CI5/5 belongs to 4fe84f1; no new local build claimed

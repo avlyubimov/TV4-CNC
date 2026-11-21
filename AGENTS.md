@@ -135,31 +135,29 @@ PR и Actions; не копировать код уже открытого PR. Д
    теги, релизы, секреты CI и публикации под видом обычного push.
 6. Обновлять актуальный статус; исторические отчёты сохранять с явной пометкой.
 
-## Текущее задание: P0 — реальный STM32F407 bench image
+## Текущее задание: F407 SWD preflight и первый install gate
 
-База main `610f1745d892d5904ea183b50617a20d8ce755bb`, PR #1–55 слиты;
-PR #55 согласовал приоритеты, docs-only задача завершена. Следующее поручение
-«дальше» разрешило одну интеграцию P0, а не новый PR предварительного плана.
-Читать docs/STM32_FIRST_IMAGE.md, docs/STM32_STLINK_RUNBOOK.md и scoped правила.
+База main4fe84f1, PR #1–56 слиты, main CI5/5 PASS. P0 software image готов,
+кандидат c09a20e/ELF SHA d6bb0cc3bde04b37315d583ae040867f0ccfc2e4238ecb4a4422f9bbee542e0e.
+Читать docs/STM32_STLINK_RUNBOOK.md и
+docs/evidence/hardware/2026-11-22-f407-swd-preflight/README.md.
 
-Результат P0 — настоящий standalone ELF/BIN/map профиля
-`stm32f407vg-hsi-no-motion-v1`: официальный VGT6 Flash/SRAM/CCM/vector contract,
-HSI, exception/emergency stack, main-only watchdog, RAM/SWD diagnostics,
-реальные image/link/corruption/MMIO checks, воспроизводимость и CI.
-Default libraries/synthetic probe сохраняются; другие board profiles и
-CAN bootloader image по-прежнему отклоняются. Не добавлять новые transport
-абстракции вместо прошиваемого образа. В CI только текст, binary release gate
-и pending application license сохраняются.
+Два отдельно разрешённых SWD-сеанса завершены: actual IDs/Flash size,
+12sector driver map, RDP0/nWRP0xFFF прочитаны; reset/run текущего ПО выполнен.
+Первый partial/unsupported command сохранён, исправленный retry PASS.
+OpenOCD unknown REV_ID0x101f расшифрован по ST как5/6, exact marking неизвестен.
+Нет Flash/OTP/option writes, erase/unlock, backup reads, candidate install,
+GPIO/CAN/motion или изменений ESP32. Firmware/profile/binary c09a20e прежние.
 
-Обновить статусы/evidence, создать отдельный PR и остановиться без merge.
-**Не подключаться/не прошивать устройства.** После review следующий аппаратный
-результат — отдельно разрешённый изолированный F407 SWD/install/diagnostic/
-watchdog/fault bench по точному clean image SHA и runbook. Сначала получить
-F407 backup original SHA/вторую копию/marking и разрешённый protection preflight.
-Unknown HSE не блокирует HSI build; неизвестные GPIO запрещают motion I/O.
-No-I/O/компиляция не physical inhibit. Bootloader/app/staging адреса не резервировать.
-После P0 порядок P1–P5 прежний; firmware update/движение/option bytes/merge/release
-требуют своих явных разрешений.
+Обновить evidence/runbook/hardware/open questions/roadmap отдельным PR, без
+self-merge. Не маскировать failed attempt или объявлять HSI/RAM/watchdog PASS.
+Read protection/driver map не являются Flash erase/restore или physical inhibit.
+Для следующего install сначала проверить original F407 backup SHA/независимую
+копию по разрешённым владельцем путям и сверить full physical marking.
+Требуется новое разрешение на exact image/write/reset/capture/bench actions;
+двух preflight permissions на это нет. Не резервировать будущий loader layout.
+До получения зависимого input продолжать только разрешённую software/docs работу.
+После P0 порядок P1–P5 сохраняется; новые абстракции не заменяют первый boot.
 
 ## Исторические контракты слитых этапов
 

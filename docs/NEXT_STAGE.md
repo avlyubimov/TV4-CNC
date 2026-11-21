@@ -1,38 +1,40 @@
 # Следующий этап: P0 — первая прошиваемая сборка STM32F407
 
-22 ноября 2026. База main `610f1745d892d5904ea183b50617a20d8ce755bb`,
-PR #1–55 слиты; main CI5/5 PASS. PR #54 host и PR #55 priorities завершены.
-Текущая работа — одна интеграция **настоящего P0 образа**.
-[Контракт/реальные артефакты](STM32_FIRST_IMAGE.md),
-[проверки](evidence/build/stm32f407-first-image/README.md),
-[ST-Link runbook](STM32_STLINK_RUNBOOK.md),
-[порядок P0–P5](IMPLEMENTATION_PRIORITIES.md).
+22 ноября 2026. База main `4fe84f10a70228b9f440f41c6ccc50869919042a`,
+PR #1–56 слиты, main CI5/5 PASS. P0 software image завершён в PR #56.
+[Образ](STM32_FIRST_IMAGE.md), [runbook](STM32_STLINK_RUNBOOK.md),
+[фактический SWD preflight](evidence/hardware/2026-11-22-f407-swd-preflight/README.md).
 
-## Текущий результат и остановка
+## Текущий результат и следующий аппаратный gate
 
-Подготовлен standalone `stm32f407vg-hsi-no-motion-v1`: ELF/BIN/map, HSI16MHz,
-98 vectors, SRAM/CCM, отдельный emergency stack, main-only IWDG, RAM/SWD diagnostics,
-image/MMIO/negative checks и CI. Размер BIN2596 bytes, SRAM static268 + stacks/
-guards5184, CCM probe4; точные source/hash/toolchain — в image-check.json.
-Образ **программно проверен**, фактическое исполнение на F407 не подтверждено.
-В этом PR нет hardware/SWD/reset/Flash/backup reads, merge или release.
-После проверки/создания PR остановиться.
+Агент выполнил два отдельно разрешённых SWD-сеанса без записи Flash:
+CPUID0x410fc241/Cortex-M4r0p1, rawID0x101f6413, Flash1024KiB, driver12sector
+geometry совпали с P0 profile; FLASH_OPTCR0x0fffaaed/RDP0xAA/nWRP0xFFF.
+Первая попытка partial из-за отсутствующей команды OpenOCD0.12; исправленный
+повтор exit0, обе вернули текущее ПО через reset/run. Ревизия0x101f по ST —5/6,
+не точный marking. Это реальные reads, не исполнение нового образа.
 
-Следующий измеримый аппаратный этап после review — отдельно разрешённый
-изолированный F407 bench: preflight protection/backup/marking, установка
-точного clean ELF SHA, исполнение startup/HSI/CCM/heartbeat, watchdog/fault
-и диагностический отчёт по runbook. До разрешения не подключаться к плате.
-Original SHA F407 backup/вторая копия/restore пока не подтверждены;
-это gates перед записью, не причина нового предварительного software PR.
+Образ **c09a20e**,2596bytes, остаётся неизменным и не установленным.
+Его software77/77+sanitizers77/77, negative/repro/CI26/26 из PR #56 сохраняются;
+новых firmware builds/local host tests эта docs/evidence работа не заявляет.
+Driver geometry не является erase test; physical inhibit/GPIO/CAN не проверены.
+
+Следующий измеримый шаг — exact-image install и startup/HSI/RAM/CCM/heartbeat/
+watchdog/fault bench. **Сначала нужны original F407 backup SHA, разрешение на
+чтение backup и независимая вторая копия, сверка полного marking.** Затем
+отдельное разрешение на конкретный ELF SHA и write/reset/capture/test scope.
+Два разрешённых preflight-сеанса завершены; они не разрешают Flash write,
+новые SWD-сеансы/backup reads/option changes или действия с приводами.
+Сохранить факты/исправление runbook отдельным PR, без self-merge.
 
 ## Подтверждённые характеристики
 
 [Owner report](evidence/hardware/stm32f407-owner-swd/README.md): ST-Link V2/SWD
 работает, Cortex-M4r0p1, raw ID 0x101f6413, Flash 1024 КиБ, напряжение 3,252 В,
 backup 1 048 576 bytes, structural vector check PASS; сообщён VGT6/DevEBox
-STM32F4VX_M Ver. 2.0. Новых аппаратных или backup reads не было.
-Это не проверка полной маркировки/package, SRAM/CCM, clock/HSE, Flash geometry/
-protection/option bytes, GPIO/CAN или restore. ESP32 — прежний ordinary8f0d899,
+STM32F4VX_M Ver. 2.0. Позже агент подтвердил ограниченные reads выше; backup не открывался.
+Это не проверка полной маркировки/package, SRAM/CCM, clock/HSE, GPIO/CAN или
+restore. Geometry/protection snapshot теперь в SWD evidence; erase/write ещё не выполнены. ESP32 — прежний ordinary8f0d899,
 owner HMI/touch/Wi-Fi PASS; его factory backup 16 МиБ исторически проверен по SHA-256.
 
 ## Состав текущей P0 интеграции

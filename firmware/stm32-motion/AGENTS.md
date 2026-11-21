@@ -1,5 +1,13 @@
 # STM32F407 Motion — специализированные правила
 
+Актуально после PR #56: см. docs/evidence/hardware/2026-11-22-f407-swd-preflight/README.md. Два разрешённых
+сеанса подтвердили IDs/Flash1024KiB и прочитали driver12sectors/RDP0/nWRP0xFFF.
+Это snapshot, не erase/program test. REV_ID0x101f документирован ST как5/6;
+exact marking/package/RAM/CCM/HSE/physical outputs не подтверждены.
+Доступ завершён, install c09a20e не разрешён; backup SHA/copy ещё не проверены.
+Остальной текст ниже сохраняет исторические PR-02/P0 software границы.
+
+
 Наследовать корневой AGENTS.md и docs/HARDWARE_STATUS.md. Плата получена,
 владелец сообщил суффикс VGT6 (STM32F407VGT6). Новым заданием подтверждены
 owner SWD/ST-Link V2, Cortex-M4r0p1, raw ID0x101f6413, Flash1024KiB,3,252V,
