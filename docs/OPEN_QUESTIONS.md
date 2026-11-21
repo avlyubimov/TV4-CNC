@@ -1,6 +1,6 @@
 # Открытые вопросы и блокирующие решения
 
-Обновлено от main `4db99df`,21ноября2026. Единственный свод аппаратных фактов —
+Обновлено от main `277801e`,21ноября2026. Единственный свод аппаратных фактов —
 [HARDWARE_STATUS.md](HARDWARE_STATUS.md). Не заполнять неизвестные поля
 типовыми данными семейства, USB VID/PID, старым заказом или host mock.
 
@@ -42,6 +42,13 @@ order/duplicate/deadline/backpressure software contract вокруг codec. Он
 и не аутентифицирует peer. Production identity/routing/queue lifetime, metadata/
 signature transport, measured bus/worker budget и old logical timeout composition
 ещё требуют review. Известные1MiB Flash не определяют RAM или bootloader sectors.
+
+PR-07l [shared-clock tests](STM32_UPDATE_TIMING.md) проверяет losses/queue/retry/
+existing deadlines на одной шкале. Это не измеренный scheduling/bus/crypto budget
+и не firmware owner. Old START принимается новым RX после local generation
+change: production reboot replay isolation/routing/authentication ещё открыты.
+Следующий программный contract — bounded raw metadata/signature transport,
+immutable snapshots и digest/session binding; физические blockers не закрыты.
 
 | ID | Что нужно подтвердить/решить | Блокирует |
 |---|---|---|

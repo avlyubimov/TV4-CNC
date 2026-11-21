@@ -50,6 +50,10 @@ jobs:
             -c firmware/stm32-bootloader/tools/motion_review.c \
             -o build/policy-analysis/motion_review.o >> build/policy-analysis.log 2>&1
           printf 'host motion_review: actual-source analyzer PASS\n' >> build/policy-analysis.log
+          gcc -std=c11 -Wall -Wextra -Werror -Wconversion -Wshadow -Wstrict-prototypes \
+            -fanalyzer -Iprotocol/can -c protocol/can/tests/fragment_test_link.c \
+            -o build/policy-analysis/fragment_test_link.o >> build/policy-analysis.log 2>&1
+          printf 'host fragment_test_link: actual-source analyzer PASS\n' >> build/policy-analysis.log
       - run: ctest --test-dir build --output-on-failure
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         if: always()

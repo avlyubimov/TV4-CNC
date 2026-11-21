@@ -84,3 +84,13 @@ Poll clocks без traffic, sticky context/clock/exhaustion нельзя clear. 
 existing logical/independent verifier/lease/model/deadline gates прежние. Не
 подключать в app/ISR/driver, не выбирать production CAN IDs/bitrate/pins или
 Flash map. Host/ARM/archive/import/frame/negative guards и text evidence обязательны.
+
+## PR-07l — host scheduling fixture
+
+Читать docs/STM32_UPDATE_TIMING.md. tests/fragment_test_link только HOST: bounded
+single frame slot per direction/explicit delays/shared caller clock, без sleep,
+heap или driver. Не переносить target в ARM/runtime. Upper APIs/limits/deadlines
+не менять, recovery не reinit/reset counters/time. New local generation не
+wire authentication/reboot replay isolation; негативный test сохраняет этот
+known blocker. CPU/bitrate/physical scheduling не измерены; synthetic timings
+не defaults. Source hashes/text evidence/host+sanitizers/scope gates обязательны.

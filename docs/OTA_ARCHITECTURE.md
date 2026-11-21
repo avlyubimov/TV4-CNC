@@ -1,5 +1,11 @@
 # OTA TV4-CNC — проект архитектуры
 
+PR-07l [one-clock timing tests](STM32_UPDATE_TIMING.md) проверяет композицию
+existing fragments/negotiation/DATA/outcome/admission с queue delays/loss/retries.
+Только HOST fixture, не runtime scheduling/CAN driver или measured time budget.
+Production metadata transport/identity/routing/worker/crypto CPU budgets и
+physical/operator/recovery/installer остаются отдельными gates.
+
 PR-07k [bounded fragment/reassembly draft](STM32_UPDATE_FRAGMENTS.md) добавляет
 opt-in envelope вокруг codec, без production driver/IDs/bitrate/runtime. Local
 route/generation не serialized authentication/reboot replay isolation. Future

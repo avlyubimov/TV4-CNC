@@ -1,5 +1,10 @@
 # Аппаратный статус TV4-CNC
 
+PR-07l [one-clock host composition](STM32_UPDATE_TIMING.md) не добавляет
+аппаратных фактов. Synthetic delays/2551ms не measured CAN/CPU/latency или
+подтверждённый timing/RAM reserve. Owner facts/ordinary8f0d899 и blockers ниже
+сохранены; никаких новых устройств/SWD/UART/reset/Flash/backup rereads.
+
 PR-07k [fragment/reassembly](STM32_UPDATE_FRAGMENTS.md) — только host/ARM compile,
 без новых аппаратных фактов. Local route/generation не actual CAN mapping,
 identity/authentication или физический safe state. Owner SWD/core/Flash/backup

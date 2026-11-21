@@ -1,0 +1,587 @@
+UpdateCTestConfiguration  from :/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-fragment-timing/build-host/DartConfiguration.tcl
+Test project /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-fragment-timing/build-host
+Constructing a list of tests
+Done constructing a list of tests
+Updating test list for fixtures
+Added 0 tests to meet fixture requirements
+Checking test dependency graph...
+Checking test dependency graph end
+test 1
+      Start  1: build_validation
+
+1: Test command: /home/avlyubimov/.local/bin/python3.14 "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-fragment-timing/tests/build_validation_tests.py"
+1: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-fragment-timing/build-host
+1: Test timeout computed to be: 10000000
+1: ..........
+1: ----------------------------------------------------------------------
+1: Ran 10 tests in 0.004s
+1:
+1: OK
+ 1/47 Test  #1: build_validation .................   Passed    0.04 sec
+test 2
+      Start  2: build_candidate
+
+2: Test command: /home/avlyubimov/.local/bin/python3.14 "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-fragment-timing/tests/build_candidate_tests.py"
+2: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-fragment-timing/build-host
+2: Test timeout computed to be: 10000000
+2: ................
+2: ----------------------------------------------------------------------
+2: Ran 16 tests in 0.471s
+2:
+2: OK
+ 2/47 Test  #2: build_candidate ..................   Passed    0.51 sec
+test 3
+      Start  3: core
+
+3: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-fragment-timing/build-host/core_tests
+3: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-fragment-timing/build-host
+3: Test timeout computed to be: 10000000
+3: State, timeout, invalid frames, RU fallback and inert transport passed
+ 3/47 Test  #3: core .............................   Passed    0.00 sec
+test 4
+      Start  4: firmware_info
+
+4: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-fragment-timing/build-host/firmware_info_tests
+4: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-fragment-timing/build-host
+4: Test timeout computed to be: 10000000
+4: Firmware display metadata PASS: local origins/profiles,31-byte bounds, unterminated/invalid spans, independent copies/alias, atomic UNKNOWN; sizeof=72
+ 4/47 Test  #4: firmware_info ....................   Passed    0.00 sec
+test 5
+      Start  5: wifi_profiles
+
+5: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-fragment-timing/build-host/wifi_profiles_tests
+5: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-fragment-timing/build-host
+5: Test timeout computed to be: 10000000
+5: Wi-Fi profile validation, persistence image, updates, eviction and forgetting passed
+ 5/47 Test  #5: wifi_profiles ....................   Passed    0.00 sec
+test 6
+      Start  6: render
+
+6: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-fragment-timing/build-host/preview
+6: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-fragment-timing/build-host
+6: Test timeout computed to be: 15
+6: Firmware UI PASS: local/simulator/unknown/31-byte/profile states, Wi-Fi editor cleanup, 64 navigation cycles with identical host-pool free bytes, persistent STOP/fault/no motion
+6: LVGL 9 render and Cyrillic coverage passed
+ 6/47 Test  #6: render ...........................   Passed    0.56 sec
+test 7
+      Start  7: render_rgb565
+
+7: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-fragment-timing/build-host/preview "--rgb565"
+7: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-fragment-timing/build-host
+7: Test timeout computed to be: 15
+7: Firmware UI PASS: local/simulator/unknown/31-byte/profile states, Wi-Fi editor cleanup, 64 navigation cycles with identical host-pool free bytes, persistent STOP/fault/no motion
+7: LVGL 9 render and Cyrillic coverage passed
+ 7/47 Test  #7: render_rgb565 ....................   Passed    0.55 sec
+test 8
+      Start  8: diagnostics
+
+8: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-fragment-timing/build-host/diagnostics_tests
+8: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-fragment-timing/build-host
+8: Test timeout computed to be: 10000000
+8: Diagnostics windows, wraparound, p95 bounds, saturation and bounded export PASS
+ 8/47 Test  #8: diagnostics ......................   Passed    0.00 sec
+test 9
+      Start  9: ota_crypto
+
+9: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-fragment-timing/build-host/ota_crypto_tests
+9: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-fragment-timing/build-host
+9: Test timeout computed to be: 10000000
+9: OTA P-256 signature, exact-byte mutation, unknown key, curve and SHA-256 PASS
+ 9/47 Test  #9: ota_crypto .......................   Passed    0.00 sec
+test 10
+      Start 10: ota_candidate
+
+10: Test command: /home/avlyubimov/.local/bin/python3.14 "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-fragment-timing/tests/ota_candidate_tests.py"
+10: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-fragment-timing/build-host
+10: Test timeout computed to be: 10000000
+10: ...........
+10: ----------------------------------------------------------------------
+10: Ran 11 tests in 0.156s
+10:
+10: OK
+10/47 Test #10: ota_candidate ....................   Passed    0.19 sec
+test 11
+      Start 11: ota_manifest
+
+11: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-fragment-timing/build-host/ota_manifest_tests
+11: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-fragment-timing/build-host
+11: Test timeout computed to be: 10000000
+11: Native manifest signature/policy/encoding/OOM scenarios PASS; parse peak=2323 bytes, allocations=71
+11/47 Test #11: ota_manifest .....................   Passed    0.06 sec
+test 12
+      Start 12: ota_json
+
+12: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-fragment-timing/build-host/ota_json_tests
+12: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-fragment-timing/build-host
+12: Test timeout computed to be: 15
+12: JSON escape oracle PASS: BMP=65536, accepted=63487, invalid hex=420; surrogate/escape/duplicate/truncation cases PASS
+12/47 Test #12: ota_json .........................   Passed    0.01 sec
+test 13
+      Start 13: ota_policy_conformance
+
+13: Test command: /home/avlyubimov/.local/bin/python3.14 "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-fragment-timing/tests/ota_policy_conformance_tests.py" "--driver" "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-fragment-timing/build-host/ota_policy_driver"
+13: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-fragment-timing/build-host
+13: Test timeout computed to be: 60
+13: Conformance PASS: signed metadata=115, accepted=16, rejected=99; SemVer comparisons=2809; Base64 cases=130
+13: Native candidate fields equal offline policy; rejected native output entirely zero. Ephemeral private key stayed in C helper memory; no device/install/release.
+13/47 Test #13: ota_policy_conformance ...........   Passed    0.30 sec
+test 14
+      Start 14: ota_stream
+
+14: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-fragment-timing/build-host/ota_stream_tests
+14: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-fragment-timing/build-host
+14: Test timeout computed to be: 10000000
+14: Stream chunks, descriptor/checksum/dual-SHA, 480 truncation points, cancellation/deadlines/wrap PASS; verifier struct=504 bytes
+14/47 Test #14: ota_stream .......................   Passed    0.00 sec
+test 15
+      Start 15: ota_http
+
+15: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-fragment-timing/build-host/ota_http_tests
+15: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-fragment-timing/build-host
+15: Test timeout computed to be: 10000000
+15: HTTPS policy/redirects/status/length/encoding/cancel/deadlines/cleanup PASS; workspace=8212 bytes (host)
+15/47 Test #15: ota_http .........................   Passed    0.00 sec
+test 16
+      Start 16: ota_session
+
+16: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-fragment-timing/build-host/ota_session_tests
+16: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-fragment-timing/build-host
+16: Test timeout computed to be: 10000000
+16: Guarded signed session: resource fault at all 94 boundaries, active/cleanup/authenticated candidate revocation PASS
+16: Read-only session signed end-to-end/failure/cancel/truncation/deadline/reset PASS; workspace=34024 bytes (host)
+16/47 Test #16: ota_session ......................   Passed    0.01 sec
+test 17
+      Start 17: ota_memory
+
+17: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-fragment-timing/build-host/ota_memory_tests
+17: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-fragment-timing/build-host
+17: Test timeout computed to be: 10000000
+17: PSRAM-only admission/low-memory/race/region/cleanup/retry PASS; host workspace=34024 bytes
+17/47 Test #17: ota_memory .......................   Passed    0.00 sec
+test 18
+      Start 18: ota_time
+
+18: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-fragment-timing/build-host/ota_time_tests
+18: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-fragment-timing/build-host
+18: Test timeout computed to be: 10000000
+18: Time provenance/policy/age/skew/revocation/range/64-bit-clock PASS; no system clock or network changed
+18/47 Test #18: ota_time .........................   Passed    0.00 sec
+test 19
+      Start 19: ota_sntp
+
+19: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-fragment-timing/build-host/ota_sntp_tests
+19: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-fragment-timing/build-host
+19: Test timeout computed to be: 10000000
+19: SNTP lifecycle/policy/provenance/deadline/cancel/network/cleanup/retry PASS; mock only, no UTC/network changed
+19/47 Test #19: ota_sntp .........................   Passed    0.00 sec
+test 20
+      Start 20: ota_tls_probe
+
+20: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-fragment-timing/build-host/ota_tls_probe_tests
+20: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-fragment-timing/build-host
+20: Test timeout computed to be: 10000000
+20: HEAD probe time/deadline/cleanup/status/no-redirect lifecycle PASS; mocks only, no CA/TLS/network executed
+20/47 Test #20: ota_tls_probe ....................   Passed    0.00 sec
+test 21
+      Start 21: ota_resource
+
+21: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-fragment-timing/build-host/ota_resource_tests
+21: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-fragment-timing/build-host
+21: Test timeout computed to be: 10000000
+21: Resource policy bounds/review/current heap/stack/unavailable/fail-closed sampler PASS; no allocation/network
+21/47 Test #21: ota_resource .....................   Passed    0.00 sec
+test 22
+      Start 22: release_review_cli
+
+22: Test command: /home/avlyubimov/.local/bin/python3.14 "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-fragment-timing/tests/release_cohort_tests.py" "--driver" "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-fragment-timing/build-host/firmware/stm32-bootloader/boot_motion_review" "--signer" "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-fragment-timing/build-host/ota_policy_driver" "--group" "cli"
+22: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-fragment-timing/build-host
+22: Test timeout computed to be: 60
+22: test_actual_independent_crypto_full_image_and_zero_workspace (__main__.MotionCLI.test_actual_independent_crypto_full_image_and_zero_workspace) ... ok
+22: test_crypto_policy_source_and_document_failures_clear_candidate (__main__.MotionCLI.test_crypto_policy_source_and_document_failures_clear_candidate) ... ok
+22: test_frontend_bounds_numbers_and_regular_files (__main__.MotionCLI.test_frontend_bounds_numbers_and_regular_files) ... ok
+22:
+22: ----------------------------------------------------------------------
+22: Ran 3 tests in 0.044s
+22:
+22: OK
+22: PASS cli signed host review; no private key files, network, devices, install or publication
+22/47 Test #22: release_review_cli ...............   Passed    0.10 sec
+test 23
+      Start 23: release_review_cohort
+
+23: Test command: /home/avlyubimov/.local/bin/python3.14 "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-fragment-timing/tests/release_cohort_tests.py" "--driver" "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-fragment-timing/build-host/firmware/stm32-bootloader/boot_motion_review" "--signer" "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-fragment-timing/build-host/ota_policy_driver" "--group" "cohort"
+23: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-fragment-timing/build-host
+23: Test timeout computed to be: 60
+23: test_actual_cli_stdout_report_and_failure_has_no_partial_report (__main__.Cohort.test_actual_cli_stdout_report_and_failure_has_no_partial_report) ... ok
+23: test_corrupt_images_signatures_app_descriptor_and_sdk (__main__.Cohort.test_corrupt_images_signatures_app_descriptor_and_sdk) ... ok
+23: test_current_and_prospective_peer_context_are_separate_checks (__main__.Cohort.test_current_and_prospective_peer_context_are_separate_checks) ... ok
+23: test_local_context_unknown_duplicate_partial_and_no_paths_from_manifest (__main__.Cohort.test_local_context_unknown_duplicate_partial_and_no_paths_from_manifest) ... ok
+23: test_nonregular_inputs_and_bounds_before_any_driver_or_crypto (__main__.Cohort.test_nonregular_inputs_and_bounds_before_any_driver_or_crypto) ... ok
+23: test_paired_and_hmi_only_reports_all_authority_gates_closed (__main__.Cohort.test_paired_and_hmi_only_reports_all_authority_gates_closed) ... ok
+23: test_prerelease_and_independent_component_versions (__main__.Cohort.test_prerelease_and_independent_component_versions) ... ok
+23: test_signed_metadata_snapshot_is_not_reopened_for_binding (__main__.Cohort.test_signed_metadata_snapshot_is_not_reopened_for_binding) ... ok
+23: test_signed_mismatched_release_source_and_channel (__main__.Cohort.test_signed_mismatched_release_source_and_channel) ... ok
+23:
+23: ----------------------------------------------------------------------
+23: Ran 9 tests in 0.207s
+23:
+23: OK
+23: PASS cohort signed host review; no private key files, network, devices, install or publication
+23/47 Test #23: release_review_cohort ............   Passed    0.25 sec
+test 24
+      Start 24: release_build_binding
+
+24: Test command: /home/avlyubimov/.local/bin/python3.14 "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-fragment-timing/tests/release_build_tests.py" "--driver" "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-fragment-timing/build-host/firmware/stm32-bootloader/boot_motion_review" "--signer" "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-fragment-timing/build-host/ota_policy_driver"
+24: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-fragment-timing/build-host
+24: Test timeout computed to be: 60
+24: test_captured_candidate_not_reopened_after_validation (__main__.BuildBinding.test_captured_candidate_not_reopened_after_validation) ... ok
+24: test_cli_blocked_exit3_invalid_no_report_and_legacy_cli_unchanged (__main__.BuildBinding.test_cli_blocked_exit3_invalid_no_report_and_legacy_cli_unchanged) ... ok
+24: test_cohort_signature_peer_and_motion_checks_cannot_be_bypassed_by_build_pin (__main__.BuildBinding.test_cohort_signature_peer_and_motion_checks_cannot_be_bypassed_by_build_pin) ... ok
+24: test_different_valid_image_between_verifiers_is_rejected (__main__.BuildBinding.test_different_valid_image_between_verifiers_is_rejected) ... ok
+24: test_external_pin_is_mandatory_and_cannot_be_taken_from_replaced_metadata (__main__.BuildBinding.test_external_pin_is_mandatory_and_cannot_be_taken_from_replaced_metadata) ... ok
+24: test_hmi_only_all_sdk_profiles_are_audited_without_relabelling (__main__.BuildBinding.test_hmi_only_all_sdk_profiles_are_audited_without_relabelling) ... ok
+24: test_local_elf_digest_and_length_checked_independently (__main__.BuildBinding.test_local_elf_digest_and_length_checked_independently) ... ok
+24: test_nonregular_empty_oversized_and_extra_inputs_fail_before_crypto (__main__.BuildBinding.test_nonregular_empty_oversized_and_extra_inputs_fail_before_crypto) ... ok
+24: test_original_images_and_elf_not_reopened_after_snapshot (__main__.BuildBinding.test_original_images_and_elf_not_reopened_after_snapshot) ... ok
+24: test_paired_full_bytes_link_remains_blocked_and_has_no_private_paths (__main__.BuildBinding.test_paired_full_bytes_link_remains_blocked_and_has_no_private_paths) ... ok
+24: test_pin_api_preserves_legacy_report_and_captures_original_snapshot (__main__.BuildBinding.test_pin_api_preserves_legacy_report_and_captures_original_snapshot) ... ok
+24: test_rehashed_unsigned_source_sdk_schema_scope_layout_and_image_claims_rejected (__main__.BuildBinding.test_rehashed_unsigned_source_sdk_schema_scope_layout_and_image_claims_rejected) ... ok
+24: test_valid_but_substituted_hmi_image_cannot_match_ci_candidate (__main__.BuildBinding.test_valid_but_substituted_hmi_image_cannot_match_ci_candidate) ... ok
+24:
+24: ----------------------------------------------------------------------
+24: Ran 13 tests in 0.568s
+24:
+24: OK
+24: PASS offline build binding: actual crypto/bytes, external pin, blocked layouts/profiles, no install or provenance authority
+24/47 Test #24: release_build_binding ............   Passed    0.62 sec
+test 25
+      Start 25: motion_supervisor
+
+25: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-fragment-timing/build-host/firmware/stm32-motion/motion_tests
+25: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-fragment-timing/build-host/firmware/stm32-motion
+25: Test timeout computed to be: 10
+25: 7 motion supervisor scenarios PASS (including 99,999 fault-injection cycles)
+25/47 Test #25: motion_supervisor ................   Passed    0.00 sec
+test 26
+      Start 26: motion_startup_noio
+
+26: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-fragment-timing/build-host/firmware/stm32-motion/motion_startup_tests
+26: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-fragment-timing/build-host/firmware/stm32-motion
+26: Test timeout computed to be: 10
+26/47 Test #26: motion_startup_noio ..............   Passed    0.00 sec
+test 27
+      Start 27: update_wire_reference
+
+27: Test command: /home/avlyubimov/.local/bin/python3.14 "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-fragment-timing/protocol/can/tests/wire_reference.py" "--driver" "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-fragment-timing/build-host/protocol/can/update_wire_tests"
+27: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-fragment-timing/build-host/protocol/can
+27: Test timeout computed to be: 15
+27: PASS12 independent Python LE golden messages,8 kinds/all5 outcome codes; concatenated_sha256=7c94f5fd561787851d86d23c8179a806b908cb94cf48a1d52580540cf1705426
+27/47 Test #27: update_wire_reference ............   Passed    0.02 sec
+test 28
+      Start 28: update_fragment_reference
+
+28: Test command: /home/avlyubimov/.local/bin/python3.14 "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-fragment-timing/protocol/can/tests/fragment_reference.py" "--driver" "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-fragment-timing/build-host/protocol/can/update_fragment_tests"
+28: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-fragment-timing/build-host/protocol/can
+28: Test timeout computed to be: 15
+28: PASS3 independent vectors: ACK24/6, DATA31/8, DATA286/72 frames; partial DLC7/6; SHA256=0e2abb4d14cacfd05d66f9c4e021efab0395643230ed6e689bc7b00364b9ec8a
+28/47 Test #28: update_fragment_reference ........   Passed    0.03 sec
+test 29
+      Start 29: update_session
+
+29: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-fragment-timing/build-host/protocol/can/update_session_tests
+29: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-fragment-timing/build-host/protocol/can
+29: Test timeout computed to be: 20
+29: PASS checksum_vectors
+29: PASS invalid_limits
+29: PASS begin_and_exclusivity
+29: PASS two_phase_and_exact_duplicates
+29: PASS malformed_blocks
+29: PASS conflicting_duplicate
+29: PASS crc_collision_does_not_match_duplicate
+29: PASS consumer_failure_is_sticky
+29: PASS sender_retry_budget
+29: PASS receiver_retry_budget
+29: PASS ack_validation
+29: PASS deadline_boundaries
+29: PASS total_deadline
+29: PASS clocks_and_wraparound
+29: PASS abort_and_reboot
+29: PASS null_and_output_contracts
+29: PASS retry_counter_boundary
+29: PASS 17 unit groups; rx=384 tx=384 bytes; no device access
+29/47 Test #29: update_session ...................   Passed    0.00 sec
+test 30
+      Start 30: update_loopback
+
+30: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-fragment-timing/build-host/protocol/can/update_loopback_tests
+30: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-fragment-timing/build-host/protocol/can
+30: Test timeout computed to be: 20
+30: PASS 2049 memory transfers; lost DATA=4318 ACK=4360 (final=397) corrupt=3924 reorder=4338 pending duplicates=4004
+30: PASS altered payload + valid CRC completes transport only; SHA oracle rejects image
+30: PASS 10 volatile reset cut cases; stale sessions/ACK rejected; no resume
+30: PASS truncated stream / partial RAM consumer never reach completion
+30/47 Test #30: update_loopback ..................   Passed    0.04 sec
+test 31
+      Start 31: update_outcome
+
+31: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-fragment-timing/build-host/protocol/can/update_outcome_tests
+31: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-fragment-timing/build-host/protocol/can
+31: Test timeout computed to be: 20
+31: PASS 1001 outcome sessions, 1001 deliveries; lost report/final ACK; duplicates not redelivered
+31: PASS loss_duplicate_and_history
+31: PASS binding_and_ack_validation
+31: PASS conflicts_invalid_reports_and_forgery_boundary
+31: PASS deadlines_retries_and_late_begin
+31: PASS transport_reboot_abort_and_clock
+31: PASS config_and_canonical_codes
+31: PASS 6 outcome groups; report=84 TX=128 RX=224; no authentication/install/device access
+31/47 Test #31: update_outcome ...................   Passed    0.01 sec
+test 32
+      Start 32: update_negotiation
+
+32: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-fragment-timing/build-host/protocol/can/update_negotiation_tests
+32: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-fragment-timing/build-host/protocol/can
+32: Test timeout computed to be: 20
+32: PASS 7 negotiation groups/1024 sessions; state=368 pool=32 message=128. Opaque bindings only; no CAN/authentication/install/device access.
+32/47 Test #32: update_negotiation ...............   Passed    0.00 sec
+test 33
+      Start 33: update_wire
+
+33: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-fragment-timing/build-host/protocol/can/update_wire_tests
+33: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-fragment-timing/build-host/protocol/can
+33: Test timeout computed to be: 20
+33: PASS 65536 outcome code/reason byte combinations; unknown and incompatible tokens reject with zero output
+33: PASS all256 DATA lengths; uint32 offset overflow, tail zeroing and no padding/tail emission
+33: PASS 200000 deterministic malformed/mutation cases: accepted=113410 canonical, rejected=86590 zeroed; structural only
+33: PASS corrupted DATA structurally decodes but existing RX rejects CRC before progress; consumer ACK still mandatory
+33: PASS wire draft:8 message kinds, max=286 caller_message=284; no CAN/device/installation
+33/47 Test #33: update_wire ......................   Passed    0.05 sec
+test 34
+      Start 34: update_fragment
+
+34: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-fragment-timing/build-host/protocol/can/update_fragment_tests
+34: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-fragment-timing/build-host/protocol/can
+34: Test timeout computed to be: 20
+34: PASS263 all 8 kinds / DATA lengths1..256 / <=72 frames / single delivery; tx=360 rx=352 bytes (host only)
+34: PASS all_kinds_and_lengths
+34: PASS all DLC256, START32768, continuation65536 fields; no padding or guessed order
+34: PASS malformed_envelopes
+34: PASS loss/order/retry/duplicate conflicts, route isolation, READY backpressure and exactly-once take
+34: PASS duplicates_order_and_pressure
+34: PASS owned TX snapshot, deterministic repeated peek, exact queue commit, stale commit and cancellation
+34: PASS tx_queue_and_snapshot
+34: PASS whole-message loss requires explicit timeout/clear and fresh counter; no implicit restart or remote ACK claim
+34: PASS lost_message_retry
+34: PASS exact progress/total/READY deadlines, drip duplicates, wrap, backward clock, generation revocation and sticky clear
+34: PASS deadlines_and_context
+34: PASS explicit config, frame quotas, exhaustion without wrap, no reinit/reset bypass, failure output zeroing
+34: PASS budgets_counters_and_arguments
+34: PASS READY is unchecked, malformed inner zeroes output, corrupted DATA still requires unchanged logical RX CRC
+34: PASS invalid_inner_and_crc
+34: PASS100000 deterministic drop/mutation/DLC/duplicate chains: taken=34470 structural only, rejected=65530 zero output, bounded cleanup
+34: PASS fault_corpus
+34/47 Test #34: update_fragment ..................   Passed    0.04 sec
+test 35
+      Start 35: update_fragment_timing
+
+35: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-fragment-timing/build-host/protocol/can/update_fragment_timing_tests
+35: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-fragment-timing/build-host/protocol/can
+35: Test timeout computed to be: 20
+35: PASS shared clock: whole-message retries, missing START/middle/final, lost ACK, bounded queue, exact consumer writes, wrap and retry exhaustion
+35: PASS READY exact total deadline, queue stall exact progress deadline, peek/busy cannot reset time/counters
+35: PASS sticky context/backward-clock cancellation; old START accepted by fresh generation proves reboot replay isolation is NOT provided
+35: PASS fragment progress/late valid OFFER cannot extend or revive exact50ms negotiation lifetime
+35: PASS timing data scenarios=34 frames=40700 dropped=43 timeout-clears=31 repeated-peeks=8464; HOST simulation, no bus/CPU/default timing claim
+35/47 Test #35: update_fragment_timing ...........   Passed    0.01 sec
+test 36
+      Start 36: boot_image_admission
+
+36: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-fragment-timing/build-host/firmware/stm32-bootloader/boot_admission_tests
+36: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-fragment-timing/build-host/firmware/stm32-bootloader
+36: Test timeout computed to be: 30
+36: PASS sha_vectors
+36: PASS success_and_fragmentation
+36: PASS invalid_signature_and_key
+36: PASS wrong_signer
+36: PASS compatibility_and_rollback
+36: PASS policy_errors
+36: PASS signed_malformed_metadata
+36: PASS stream_faults
+36: PASS deadlines_cancellation_and_wrap
+36: PASS arena_exhaustion_and_reuse
+36: PASS snapshot_and_reentry
+36: PASS arguments_and_limits
+36: PASS boundary_metadata_and_key_selection
+36: PASS storage_aliases_are_write_free
+36: PASS 14 admission groups; workspace=17664 bytes; ephemeral host signing keys; no device access
+36/47 Test #36: boot_image_admission .............   Passed    0.13 sec
+test 37
+      Start 37: boot_crypto_source
+
+37: Test command: /home/avlyubimov/.local/bin/python3.14 "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-fragment-timing/firmware/stm32-bootloader/tests/source_tests.py" "--source" "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-fragment-timing/build-host/_deps/tv4_boot_mbedtls-src"
+37: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-fragment-timing/build-host/firmware/stm32-bootloader
+37: Test timeout computed to be: 15
+37: test_added_header (__main__.SourceTests.test_added_header) ... ok
+37: test_changed_code (__main__.SourceTests.test_changed_code) ... ok
+37: test_exact_source (__main__.SourceTests.test_exact_source) ... ok
+37: test_missing_header (__main__.SourceTests.test_missing_header) ... ok
+37: test_symlink (__main__.SourceTests.test_symlink) ... ok
+37:
+37: ----------------------------------------------------------------------
+37: Ran 5 tests in 0.072s
+37:
+37: OK
+37/47 Test #37: boot_crypto_source ...............   Passed    0.10 sec
+test 38
+      Start 38: boot_staging_source
+
+38: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-fragment-timing/build-host/firmware/stm32-bootloader/boot_staging_tests
+38: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-fragment-timing/build-host/firmware/stm32-bootloader
+38: Test timeout computed to be: 30
+38: PASS 45 RAM staging/read variants, 1..1025 bytes, blocks1/31/256, fragments1/7/256, pending/final duplicates
+38: PASS sizes_and_reads
+38: PASS lease_and_reuse
+38: PASS receiver_faults
+38: PASS deadlines_and_wrap
+38: PASS arguments_and_aliases
+38: PASS config_and_capacity
+38: PASS 1536 source cycles; discard retains high-water/generation/token counters; exhaustion never wraps
+38: PASS counters_and_exhaustion
+38: PASS 7 staging source groups; state=160 bytes plus explicit caller buffer; RAM only, not persistent/install/device access
+38/47 Test #38: boot_staging_source ..............   Passed    0.00 sec
+test 39
+      Start 39: boot_update_handoff
+
+39: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-fragment-timing/build-host/firmware/stm32-bootloader/boot_handoff_tests
+39: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-fragment-timing/build-host/firmware/stm32-bootloader
+39: Test timeout computed to be: 30
+39: PASS 54 signed end-to-end RAM transfers with lost DATA/final ACK and pending duplicate
+39: PASS end_to_end_sizes_and_fragments
+39: PASS snapshots_and_reentry
+39: PASS binding_is_not_transport_trust
+39: PASS changes_during_verification
+39: PASS revoke_after_success
+39: PASS acquire_and_release_failures
+39: PASS deadlines_before_verification_and_wrap
+39: PASS boundaries_and_final_cleanup
+39: PASS retained_ack_does_not_extend_handoff
+39: PASS rejected_inputs_and_aliases
+39: PASS 15 signed vector inspections with fragmented reads + captured local profile mutation
+39: PASS signed_vector_success_and_snapshot
+39: PASS valid_signature_invalid_vector_model
+39: PASS preflight_context_cleanup_and_reentry
+39: PASS 6 signed DATA -> crypto -> vectors -> close -> outcome/ACK sessions, lost report/final ACK; no lease retained
+39: PASS completion_end_to_end_history
+39: PASS completion_rejections
+39: PASS completion_release_and_late_context
+39: PASS completion_reentry_snapshot_and_arguments
+39: PASS 6 signed negotiation -> DATA -> P-256/SHA -> vectors -> close -> outcome/ACK chains; all four handshake losses, DATA/final ACK/report losses
+39: PASS negotiated_full_chain
+39: PASS 3 negotiated binding failures: changed image, invalid signature, valid re-signed metadata with mismatched raw SHA; no retained lease
+39: PASS negotiated_binding_still_requires_crypto
+39: PASS 19 handoff/completion groups; completion=568; state=2136 receipt=136 workspace=17664; RAM only, no install/device access
+39/47 Test #39: boot_update_handoff ..............   Passed    0.30 sec
+test 40
+      Start 40: boot_staging_handoff
+
+40: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-fragment-timing/build-host/firmware/stm32-bootloader/boot_handoff_tests "--staging"
+40: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-fragment-timing/build-host/firmware/stm32-bootloader
+40: Test timeout computed to be: 30
+40: PASS 8 signed chains through real RAM staging backend, 6 release15 + 2 legacy11; losses, locked writes, post-wipe outcome/ACK
+40: PASS staged_signed_chains
+40: PASS staged_crypto_rejections
+40: PASS staged_cleanup_and_revocation
+40: PASS staged_receiver_deadline
+40: PASS 4 staging integration groups; source=160 core=2136 completion=568 workspace=17664; no runtime/Flash/device access
+40/47 Test #40: boot_staging_handoff .............   Passed    0.03 sec
+test 41
+      Start 41: boot_wire_handoff
+
+41: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-fragment-timing/build-host/firmware/stm32-bootloader/boot_handoff_tests "--wire-staging"
+41: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-fragment-timing/build-host/firmware/stm32-bootloader
+41: Test timeout computed to be: 30
+41: PASS 8 signed chains through real RAM staging backend, 6 release15 + 2 legacy11; losses, locked writes, post-wipe outcome/ACK
+41: PASS staged_signed_chains
+41: PASS staged_crypto_rejections
+41: PASS staged_cleanup_and_revocation
+41: PASS staged_receiver_deadline
+41: PASS byte codec across existing signed RAM chains; kind counts: 1=39 2=22 3=22 4=17 5=1017 6=500 7=16 8=8; no wire/CRC success replaces signature/lease/model/deadline/cleanup or authorizes install
+41/47 Test #41: boot_wire_handoff ................   Passed    0.03 sec
+test 42
+      Start 42: boot_fragment_handoff
+
+42: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-fragment-timing/build-host/firmware/stm32-bootloader/boot_handoff_tests "--fragment-staging"
+42: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-fragment-timing/build-host/firmware/stm32-bootloader
+42: Test timeout computed to be: 30
+42: PASS 8 signed chains through real RAM staging backend, 6 release15 + 2 legacy11; losses, locked writes, post-wipe outcome/ACK
+42: PASS staged_signed_chains
+42: PASS staged_crypto_rejections
+42: PASS staged_cleanup_and_revocation
+42: PASS staged_receiver_deadline
+42: PASS fragments across 8 actual signed RAM chains; kind counts: 1=39 2=22 3=22 4=17 5=1017 6=500 7=16 8=8; frames=22980 duplicates=1252; original logical/crypto/lease/model/deadline/cleanup gates unchanged
+42/47 Test #42: boot_fragment_handoff ............   Passed    0.03 sec
+test 43
+      Start 43: boot_fragment_timing
+
+43: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-fragment-timing/build-host/firmware/stm32-bootloader/boot_handoff_tests "--fragment-timing"
+43: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-fragment-timing/build-host/firmware/stm32-bootloader
+43: Test timeout computed to be: 30
+43: PASS8 one-clock actual signed RAM chains: frames=7640 lost=48 timeout-clears=32 repeated-peeks=1611 longest=2551 synthetic ms; all8 kinds, no deadline resets or duplicate outcome delivery
+43: PASS one_clock_signed_chains
+43: PASS one-clock transfer success does not bypass independent signature or expired DATA live-receiver admission
+43: PASS one_clock_admission_refusals
+43/47 Test #43: boot_fragment_timing .............   Passed    0.02 sec
+test 44
+      Start 44: boot_release_handoff
+
+44: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-fragment-timing/build-host/firmware/stm32-bootloader/boot_handoff_tests "--release"
+44: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-fragment-timing/build-host/firmware/stm32-bootloader
+44: Test timeout computed to be: 30
+44: PASS 6 release15 negotiation/DATA/signature/SHA/vector/close/outcome chains; handshake/DATA/ACK/report losses, exactly one release
+44: PASS release_full_chain
+44: PASS release_live_snapshot
+44: PASS release_live_revocation
+44: PASS release_completion_rejections
+44: PASS release_explicit_mode
+44: PASS release_cleanup_and_late_context
+44: PASS release_reentry_and_completion_snapshot
+44: PASS release_arguments_and_aliases
+44: PASS 8 release handoff groups; adapter=528 full_receipt=360 completion=568 core=2136 workspace=17664; RAM only, no install/device access
+44/47 Test #44: boot_release_handoff .............   Passed    0.08 sec
+test 45
+      Start 45: boot_image_profile
+
+45: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-fragment-timing/build-host/firmware/stm32-bootloader/boot_profile_tests
+45: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-fragment-timing/build-host/firmware/stm32-bootloader
+45: Test timeout computed to be: 15
+45: PASS 241 vector-table lengths, 16..256 entries; synthetic models only
+45: PASS all_table_lengths
+45: PASS unknown_and_invalid_profiles
+45: PASS stack_edges_and_gaps
+45: PASS every slot in 256-entry table; null/even/outside/table/RAM/truncated Thumb target rejected
+45: PASS every_handler_and_reserved_slot
+45: PASS full_uint32_arithmetic
+45: PASS lengths_aliases_and_zero_output
+45: PASS 6 profile groups; profile=116 inspection=44; model consistency only, no execution/device access
+45/47 Test #45: boot_image_profile ...............   Passed    0.00 sec
+test 46
+      Start 46: boot_release_admission
+
+46: Test command: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-fragment-timing/build-host/firmware/stm32-bootloader/boot_release_tests
+46: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-fragment-timing/build-host/firmware/stm32-bootloader
+46: Test timeout computed to be: 30
+46: PASS maximum-width fields: document=604 padded=1024 workspace=17664 candidate=224 policy=288
+46: PASS 8 signed release admission groups; raw P-256/SHA, versions/selection/target/image, cleanup/faults; RAM only, no install/device access
+46/47 Test #46: boot_release_admission ...........   Passed    0.10 sec
+test 47
+      Start 47: boot_release_versions
+
+47: Test command: /home/avlyubimov/.local/bin/python3.14 "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-fragment-timing/firmware/stm32-bootloader/tests/release_versions.py" "--driver" "/home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-fragment-timing/build-host/firmware/stm32-bootloader/boot_release_tests"
+47: Working Directory: /home/avlyubimov/Documents/Codex/2026-11-16/home-avlyubimov-tv4-cnc/work/update-fragment-timing/build-host/firmware/stm32-bootloader
+47: Test timeout computed to be: 30
+47: PASS 2745 independent bounded SemVer comparisons; 31-byte subset, numeric prerelease not truncated to uint32
+47/47 Test #47: boot_release_versions ............   Passed    0.04 sec
+
+100% tests passed, 0 tests failed out of 47
+
+Total Test time (real) =   4.30 sec

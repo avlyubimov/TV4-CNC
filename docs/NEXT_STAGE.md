@@ -1,6 +1,6 @@
 # Следующий этап: release context и STM32 board contract
 
-21 ноября2026. База main `4db99df`, PR #1–42 слиты, main CI5/5 PASS.
+21 ноября2026. База main `277801e`, PR #1–43 слиты, main CI5/5 PASS.
 ESP32 HMI/Wi-Fi/OTA primitives/candidates и STM32 transport/admission существуют;
 не создавать их заново. Данный план не разрешает доступ к устройствам или merge.
 
@@ -147,7 +147,7 @@ data/bss0/frame32 отдельно от existing4 archives43362text (+18). По�
 RAM/CPU budget не подтверждён. Нет production CAN version/IDs/bitrate/driver/
 fragmentation/metadata transfer/runtime/identity/install или hardware действий.
 
-## Текущая ветка PR-07k
+## Слитый PR #43, PR-07k
 
 [Bounded fragments](STM32_UPDATE_FRAGMENTS.md) добавляют отдельную opt-in
 библиотеку вокруг codec:4-byte envelope header/1..4bytes chunk,286byte ceiling,
@@ -158,6 +158,16 @@ transport ещё не реализован. Host45/sanitizers45/standalone19, or
 100000 fault chains и8 actual signed RAM chains; ARM fragment1536text/data0/
 bss0/frame48 отдельно. Old4 archives43362text и codec1219 прежние. Нет новых
 аппаратных подтверждений/обращений к платам. [Evidence](evidence/build/update-fragments/README.md).
+
+## Текущая ветка PR-07l
+
+[One-clock composition](STM32_UPDATE_TIMING.md): bounded host-only two-direction
+link с queue hold/drop/duplicate и одним clock для всех existing layers.
+34 DATA scenarios,8 signed positive chains и2 refusal cases; host47/sanitizers47/
+standalone21. Original deadlines/counters не сбрасываются при fragment recovery,
+late ACK/OFFER не оживляет expired layer. Host helper не входит в ARM; core code/
+footprint прежние. Это не production timing/resource/identity approval.
+[Evidence](evidence/build/update-fragment-timing/README.md).
 
 ## Что делать дальше программно
 
@@ -181,9 +191,11 @@ bss0/frame48 отдельно. Old4 archives43362text и codec1219 прежни�
    fragmentation/IDs/bitrate требуют review. PR-07j закрывает только experimental
    complete-message codec, не production wire adoption. PR-07k добавляет bounded
    fragment/reassembly с local route/generation/cancel/deadline/backpressure.
-   Дальше review whole-message retry/queue/identity lifetime, затем отдельный
-   bounded transport signed metadata/signature и production codebook. Production
-   routing/reboot identity/authentication остаются blockers, не implicit defaults.
+   PR-07l проверяет whole-message retry/queue/deadline composition на одной
+   synthetic шкале. Дальше bounded transport raw signed metadata/signature,
+   review immutable metadata ownership/bounds/digest binding и production
+   codebook. Production routing/reboot identity/authentication и measured
+   worker/bus/crypto budgets остаются blockers, не implicit defaults.
    Decode OK не обновляет context или timeouts; owner poll остаётся обязательным.
    Logical terminal outcome уже есть; он не authenticated и
    не переносит candidate через ожидание оператора. Для следующей операции

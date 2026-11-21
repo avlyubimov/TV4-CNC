@@ -37,6 +37,13 @@ if(NOT CMAKE_CROSSCOMPILING)
   target_link_libraries(update_wire_tests PRIVATE tv4_update_wire)
   add_executable(update_fragment_tests tests/fragment_tests.c)
   target_link_libraries(update_fragment_tests PRIVATE tv4_update_fragments)
+  add_library(tv4_fragment_test_link STATIC tests/fragment_test_link.c)
+  target_include_directories(tv4_fragment_test_link PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/tests")
+  target_link_libraries(tv4_fragment_test_link PUBLIC tv4_update_fragments)
+  target_compile_options(tv4_fragment_test_link PRIVATE
+    -Wall -Wextra -Werror -Wconversion -Wshadow -Wstrict-prototypes -UNDEBUG)
+  add_executable(update_fragment_timing_tests tests/fragment_timing_tests.c)
+  target_link_libraries(update_fragment_timing_tests PRIVATE tv4_fragment_test_link)
   find_package(Python3 REQUIRED COMPONENTS Interpreter)
   add_test(NAME update_wire_reference COMMAND ${Python3_EXECUTABLE}
     "${CMAKE_CURRENT_SOURCE_DIR}/tests/wire_reference.py" --driver $<TARGET_FILE:update_wire_tests>)
@@ -44,7 +51,7 @@ if(NOT CMAKE_CROSSCOMPILING)
   add_test(NAME update_fragment_reference COMMAND ${Python3_EXECUTABLE}
     "${CMAKE_CURRENT_SOURCE_DIR}/tests/fragment_reference.py" --driver $<TARGET_FILE:update_fragment_tests>)
   set_tests_properties(update_fragment_reference PROPERTIES TIMEOUT 15)
-  foreach(test IN ITEMS update_session update_loopback update_outcome update_negotiation update_wire update_fragment)
+  foreach(test IN ITEMS update_session update_loopback update_outcome update_negotiation update_wire update_fragment update_fragment_timing)
     target_compile_options(${test}_tests PRIVATE
       -Wall -Wextra -Werror -Wconversion -Wshadow -Wstrict-prototypes -UNDEBUG)
     add_test(NAME ${test} COMMAND ${test}_tests)

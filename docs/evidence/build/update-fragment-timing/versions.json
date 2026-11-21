@@ -1,0 +1,215 @@
+{
+  "cjson": {
+    "version": "1.7.19",
+    "commit": "c859b25da02955fef659d658b8f324b5cde87be3",
+    "license": "MIT",
+    "provenance": "# cJSON provenance\n\nUpstream: https://github.com/DaveGamble/cJSON\nTag v1.7.19, commit `c859b25da02955fef659d658b8f324b5cde87be3`.\nMIT license in LICENSE. cJSON.c/h are unmodified upstream files.\nBuild sets CJSON_NESTING_LIMIT=8 and CJSON_HIDE_SYMBOLS.\nLocal tv4_namespace.h prefixes public symbols with tv4_ota_json_, avoiding SDK/global cJSON hook collisions.\nNo global hooks are installed; input/token/UTF-8 limits apply before parsing.\n\nUpstream cJSON.h:264 has a trailing space; LICENSE has a final blank line.\nThese upstream whitespace details are intentionally retained with the exact file hashes.\n"
+  },
+  "lvgl": {
+    "version": "9.2.2",
+    "commit": "7f07a129e8d77f4984fff8e623fd5be18ff42e74"
+  },
+  "esp_idf": {
+    "version": "6.1.1",
+    "commit": "051e4c4eb20346e043cdd47bc388fde75ff8af63"
+  },
+  "mbedtls": {
+    "version": "3.6.7",
+    "tag": "mbedtls-3.6.7",
+    "url": "https://github.com/Mbed-TLS/mbedtls/releases/download/mbedtls-3.6.7/mbedtls-3.6.7.tar.bz2",
+    "archive_sha256": "a7e8bcbec0e6f761b4af24f25677626b35f762f68eef79c08677a363212d11f6",
+    "license": "Apache-2.0 OR GPL-2.0-or-later",
+    "verification_profile_license": "Apache-2.0",
+    "crypto_sources": [
+      "asn1parse",
+      "asn1write",
+      "bignum",
+      "bignum_core",
+      "bignum_mod",
+      "bignum_mod_raw",
+      "constant_time",
+      "ecp",
+      "ecp_curves",
+      "ecp_curves_new",
+      "ecdsa",
+      "sha256",
+      "platform",
+      "platform_util",
+      "memory_buffer_alloc"
+    ],
+    "integrity_scope": [
+      "include/**/*.h",
+      "library/*.h",
+      "listed library/*.c",
+      "LICENSE"
+    ],
+    "tree_file_count": 178,
+    "tree_sha256": "2087a1191bd838ec63bc7d97452337888fef6247eac6ba782554d58408041310",
+    "archive_binary_test_inputs": {
+      "framework/data_files/base64/def_b64_ff.bin": "6ddff1c9506617bd8ff835154841f1c4553608ad96adaf0757694f5b3b17d8e8",
+      "framework/data_files/pkcs7_data.bin": "05ade08fcfb104f40b2536a14dfcd6e916d643f5cf8044b19028b607ae8f4908",
+      "framework/data_files/pkcs7_data_1.bin": "df4e26a04a444901b95afef44e4a96cfae34690fff2ad2c66389c70079cdff2b",
+      "framework/data_files/pkcs7_zerolendata.bin": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "ci_arm_release": "14.2.Rel1",
+  "ci_arm_archive_sha256": "62a63b981fe391a9cbad7ef51b17e49aeaa3e7b0d029b36ca1e9c3b2a9b78823",
+  "base_main": "277801e4e876b751c83c424b97311f2f19a576f0",
+  "stage": "PR-07l host-only shared-clock fragment/upper-layer integration",
+  "client_date": "2026-11-21",
+  "timezone": "Asia/Almaty",
+  "captured_utc": "2026-11-21T10:47:39.456365+00:00",
+  "working_tree_tested": true,
+  "gcc": "gcc (Ubuntu 15.2.0-16ubuntu1) 15.2.0",
+  "arm_gcc": "arm-none-eabi-gcc (15:14.2.rel1-1) 14.2.1 20241119",
+  "arm_ld": "GNU ld (2.45.50.20251209-1ubuntu1+23build1) 2.45.50.20251209",
+  "cmake": "cmake version 4.2.3",
+  "ninja": "1.13.2",
+  "openssl": "OpenSSL 3.5.5 27 Jan 2026 (Library: OpenSSL 3.5.5 27 Jan 2026)",
+  "shell_python": {
+    "path": "/usr/bin/python3",
+    "version": "3.14.4"
+  },
+  "ctest_python": {
+    "path": "/home/avlyubimov/.local/bin/python3.14",
+    "version": "Python 3.14.6"
+  },
+  "sanitizer_options": {
+    "ASAN_OPTIONS": null,
+    "LSAN_OPTIONS": null,
+    "UBSAN_OPTIONS": null
+  },
+  "sanitizer_execution": "ctest outside ptrace, default env/no options/suppressions",
+  "existing_arm_libraries": {
+    "scope": "static library objects, not deployable firmware",
+    "objects": {
+      "text": 43362,
+      "data": 8,
+      "bss": 27
+    },
+    "unresolved_imports": [
+      "__aeabi_uldivmod",
+      "memcmp",
+      "memcpy",
+      "memmove",
+      "memset",
+      "strcmp",
+      "strlen"
+    ],
+    "max_individual_frames": {
+      "admission": 984,
+      "crypto": 376,
+      "handoff": 328,
+      "transport": 64
+    },
+    "full_stack_verified": false,
+    "board_memory_verified": false,
+    "device_access": false
+  },
+  "wire_archive": {
+    "scope": "opt-in byte codec static archive, not firmware",
+    "objects": {
+      "text": 1219,
+      "data": 0,
+      "bss": 0
+    },
+    "unresolved_imports": [
+      "memcpy",
+      "memset",
+      "tv4_neg_message_valid",
+      "tv4_update_outcome_valid"
+    ],
+    "exported_functions": [
+      "tv4_update_wire_decode",
+      "tv4_update_wire_encode"
+    ],
+    "max_individual_frame": 32,
+    "full_stack_verified": false,
+    "board_memory_verified": false,
+    "runtime_caller": false,
+    "device_access": false
+  },
+  "fragment_archive": {
+    "scope": "opt-in fragment/reassembly static archive, not firmware",
+    "objects": {
+      "text": 1536,
+      "data": 0,
+      "bss": 0
+    },
+    "unresolved_imports": [
+      "memcmp",
+      "memcpy",
+      "memset",
+      "tv4_update_wire_decode",
+      "tv4_update_wire_encode"
+    ],
+    "exported_functions": [
+      "tv4_fragment_rx_cancel",
+      "tv4_fragment_rx_clear",
+      "tv4_fragment_rx_init",
+      "tv4_fragment_rx_poll",
+      "tv4_fragment_rx_receive",
+      "tv4_fragment_rx_take",
+      "tv4_fragment_tx_begin",
+      "tv4_fragment_tx_cancel",
+      "tv4_fragment_tx_clear",
+      "tv4_fragment_tx_commit",
+      "tv4_fragment_tx_init",
+      "tv4_fragment_tx_peek",
+      "tv4_fragment_tx_poll"
+    ],
+    "max_individual_frame": 48,
+    "full_stack_verified": false,
+    "board_memory_verified": false,
+    "runtime_caller": false,
+    "device_access": false
+  },
+  "firmware_scope": {
+    "embedded_source_changes": false,
+    "production_runtime_added": false,
+    "host_fixture_compiled_for_arm": false,
+    "new_local_esp_builds": false,
+    "ci_sdk_matrix_profiles": 8,
+    "device_access": false,
+    "self_merge": false
+  },
+  "timing_fixture": {
+    "clock": "single exclusive caller uint32_t milliseconds modulo2^32",
+    "queue_slots_per_direction": 1,
+    "fragment_progress_ms": 8,
+    "fragment_total_ms": 128,
+    "fragment_attempts": 160,
+    "delivery_ms": 1,
+    "held_delivery_ms": 3,
+    "hold_every": 11,
+    "duplicate_every": 17,
+    "positive_negotiation_retry_ms": 200,
+    "positive_negotiation_total_ms": 4000,
+    "positive_data_ack_ms": 200,
+    "positive_data_progress_ms": 3000,
+    "positive_data_total_ms": 10000,
+    "positive_outcome_ack_ms": 200,
+    "positive_outcome_linger_ms": 500,
+    "positive_outcome_total_ms": 2000,
+    "data_scenarios": 34,
+    "data_frames": 40700,
+    "data_drops": 43,
+    "data_timeout_clears": 31,
+    "data_repeated_peeks": 8464,
+    "positive_signed_chains": 8,
+    "release_chains": 6,
+    "legacy_chains": 2,
+    "refusal_scenarios": 2,
+    "signed_frames": 7640,
+    "signed_drops": 48,
+    "signed_timeout_clears": 32,
+    "signed_repeated_peeks": 1611,
+    "longest_signed_synthetic_ms": 2551,
+    "cpu_duration_measured_or_charged": false,
+    "bus_latency_measured": false,
+    "production_defaults": false,
+    "metadata_signature_channel": false,
+    "reboot_replay_isolation": false
+  },
+  "mbedtls_archive_sha256": "a7e8bcbec0e6f761b4af24f25677626b35f762f68eef79c08677a363212d11f6"
+}

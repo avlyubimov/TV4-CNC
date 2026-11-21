@@ -1,5 +1,10 @@
 # CAN: стендовый heartbeat и подготовка update transport
 
+PR-07l: [HOST-only shared-clock fixture](../../docs/STM32_UPDATE_TIMING.md)
+проверяет очередь/потери/whole-message retries/deadlines на одной шкале вместе
+с existing logical transport и actual signed RAM admission. Нового driver,
+production timing/defaults/identity/metadata transfer/runtime здесь нет.
+
 PR-07k: отдельный opt-in [fragment/reassembly draft](../../docs/STM32_UPDATE_FRAGMENTS.md)
 вокруг codec. Максимум8bytes envelope,4byte header +chunk, single bounded buffer,
 retained counters, explicit local route/generation, deadlines/backpressure/take.

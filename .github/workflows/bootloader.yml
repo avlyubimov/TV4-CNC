@@ -35,10 +35,10 @@ jobs:
           python3 tools/check_update_wire_build.py build-boot-arm/update-transport > evidence/wire-budget.json
           python3 tools/check_update_fragment_build.py build-boot-arm/update-transport > evidence/fragment-budget.json
           cmake --build build-boot-arm --target help > evidence/arm-targets.txt
-          if grep -q 'boot_motion_review' evidence/arm-targets.txt; then
+          if grep -Eq 'boot_motion_review|tv4_fragment_test_link|update_fragment_timing_tests' evidence/arm-targets.txt; then
             echo 'ERROR: host filesystem reviewer leaked into ARM targets'; exit 1
           fi
-          echo 'PASS host Motion review target absent from ARM build' > evidence/host-review-scope.txt
+          echo 'PASS host Motion review and fragment fixture targets absent from ARM build' > evidence/host-review-scope.txt
           cp third_party/mbedtls/origin.json evidence/crypto-origin.json
           gcc --version > evidence/static-analysis.txt
           for source in admission metadata release_policy image_profile update_handoff update_completion release_handoff staging_source; do

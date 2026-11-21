@@ -122,12 +122,18 @@ corpus и8 signed RAM chains проверяют путь; host42/sanitizers42/st
 Это experimental draft, без CAN driver/IDs/bitrate/fragmentation/runtime или
 установки. Все independent crypto/lifetime/physical/hardware gates сохраняются.
 
-Текущая ветка от main `4db99df`: [PR-07k bounded fragments](docs/STM32_UPDATE_FRAGMENTS.md).
+Слитый PR #43: [PR-07k bounded fragments](docs/STM32_UPDATE_FRAGMENTS.md).
 Отдельный opt-in слой вокруг codec: bounded buffers/counters, порядок/повторы,
 таймауты, queue backpressure и single take. Host45/sanitizers45/standalone19,
 100000 fault chains и8 actual signed RAM chains. Production CAN identity/
 routing/metadata transport/driver/runtime/installer ещё не реализованы;
 аппаратных действий/новых измерений нет. [Evidence](docs/evidence/build/update-fragments/README.md).
+
+Текущая ветка от main `277801e`: [PR-07l общая шкала времени](docs/STM32_UPDATE_TIMING.md).
+Ограниченный host test link связывает fragment/queue delays и logical deadlines
+на одних часах:34 DATA scenarios,8 signed chains и отказы подписи/expired DATA.
+Host47/sanitizers47/standalone21, embedded code/ARM footprint прежние. Это не
+измерения CAN/CPU или production runtime driver. [Evidence](docs/evidence/build/update-fragment-timing/README.md).
 
 [OTA ESP32 A/B и F407 по CAN](docs/OTA_ARCHITECTURE.md),
 [GitHub Releases/подписи/owner approval](docs/RELEASE_PROCESS.md),

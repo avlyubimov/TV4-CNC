@@ -4,6 +4,7 @@
 #include "staging_source.h"
 #include "update_wire.h"
 #include "update_fragments.h"
+#include "fragment_test_link.h"
 #include <assert.h>
 #include <inttypes.h>
 #include <openssl/evp.h>
@@ -1266,9 +1267,213 @@ static void staged_receiver_deadline(void)
     assert(f.session.error==TV4_HANDOFF_RECEIVER && f.rx.context.error==TV4_UPDATE_ERROR_PROGRESS_TIMEOUT);
     assert(tv4_boot_stage_discard(&f.stage));release_clear(&f);finish(&f);
 }
+/* One-clock HOST fixture. All upper APIs, fragment polls, queued deliveries
+ * and verifier now_ms observe f->now. Limits below are explicit test scenarios,
+ * never rewritten after begin and never production timing defaults. */
+static tv4_test_link_config timed_config(uint16_t drops,uint16_t index)
+{
+    return (tv4_test_link_config){.fragments={8,128,160,TV4_FRAGMENT_VERSION},
+        .delivery_ms=1,.held_delivery_ms=3,.hold_every=11,.duplicate_every=17,
+        .drop_kinds=drops,.drop_index=index,.recover_fragment_timeouts=true};
+}
+static bool timed_idle(const tv4_test_link *link)
+{
+    for(unsigned side=0;side<2;++side)
+        if(!tv4_test_link_can_send(link,side) || link->direction[side].rx.storage.state!=TV4_FRAG_IDLE)return false;
+    return true;
+}
+static void timed_negotiate(fixture *f,tv4_test_link *link,uint16_t block)
+{
+    assert(tv4_update_rx_abort(&f->rx,f->descriptor.id,f->now)==TV4_UPDATE_OK);
+    assert(tv4_update_tx_abort(&f->tx,f->descriptor.id,f->now)==TV4_UPDATE_OK);
+    tv4_neg_pool pool[2]={{0},{0}};tv4_negotiation n[2]={{0},{0}};
+    uint8_t tag[32];digest((const uint8_t *)"timed-fixture",13,tag);
+    assert(tv4_neg_pool_init(&pool[0],11,f->owner.boot,0));
+    assert(tv4_neg_pool_init(&pool[1],f->owner.boot,11,f->descriptor.id.transfer));
+    tv4_neg_limits limits={.max_image_bytes=IMAGE_MAX,.retry_ms=200,.total_ms=4000,.block_ceiling=block,.send_limit=8};
+    assert(tv4_neg_init(&n[0],&pool[0],TV4_NEG_REQUESTER,limits,tag,2001,f->now));
+    assert(tv4_neg_init(&n[1],&pool[1],TV4_NEG_RESPONDER,limits,tag,f->owner.policy_generation,f->now));
+    tv4_neg_image image={.image_bytes=f->descriptor.image_bytes};memcpy(image.image_sha256,f->descriptor.image_sha256,32);
+    digest(f->metadata,f->config.metadata_bytes,image.metadata_sha256);
+    assert(tv4_neg_begin(&n[0],&image,2001,f->now)==TV4_NEG_OK);
+    uint32_t started=f->now,responder_started=0;bool responder_live=false;unsigned ticks;
+    for(ticks=0;ticks<4000;++ticks) {
+        for(unsigned side=0;side<2;++side) {
+            uint64_t generation=side?f->owner.policy_generation:2001;
+            assert(tv4_neg_poll(&n[side],generation,f->now)==TV4_NEG_OK);
+            tv4_wire_message packet;
+            if(tv4_test_link_take(link,side,&packet)==TV4_FRAG_TAKEN) {
+                unsigned target=1u-side;uint64_t to_generation=target?f->owner.policy_generation:2001;
+                tv4_neg_result r=tv4_neg_receive(&n[target],&packet.body.negotiation,to_generation,f->now);
+                assert(r==TV4_NEG_OK || r==TV4_NEG_DUPLICATE);
+            }
+        }
+        bool ready=n[0].state==TV4_NEG_READY && n[1].state==TV4_NEG_READY;
+        if(ready && timed_idle(link))break;
+        if(!ready)for(unsigned side=0;side<2;++side)if(tv4_test_link_can_send(link,side)) {
+            tv4_wire_message packet={0};uint64_t generation=side?f->owner.policy_generation:2001;
+            tv4_neg_result r=tv4_neg_next(&n[side],&packet.body.negotiation,generation,f->now);
+            if(r==TV4_NEG_SENT) {
+                packet.kind=(tv4_wire_kind)packet.body.negotiation.kind;
+                assert(tv4_test_link_send(link,side,&packet)==TV4_FRAG_OK);
+            }else assert(r==TV4_NEG_WAIT);
+        }
+        assert(n[0].started_ms==started);
+        if(n[1].state!=TV4_NEG_IDLE) {
+            if(!responder_live){responder_started=n[1].started_ms;responder_live=true;}
+            assert(n[1].started_ms==responder_started);
+        }
+        tv4_test_link_step(link);
+    }
+    assert(ticks<4000);
+    tv4_negotiated parameters[2];
+    assert(tv4_neg_take(&n[0],&parameters[0],2001,f->now)==TV4_NEG_OK);
+    assert(tv4_neg_take(&n[1],&parameters[1],f->owner.policy_generation,f->now)==TV4_NEG_OK);
+    assert(parameters[0].block_bytes==block && parameters[1].block_bytes==block);
+    f->descriptor=parameters[0].descriptor;f->view.id=f->descriptor.id;++f->view.generation;
+    f->expected.image=f->descriptor;memcpy(f->expected.metadata_sha256,parameters[0].metadata_sha256,32);
+    tv4_update_limits data={.max_image_bytes=IMAGE_MAX,.ack_timeout_ms=200,.progress_timeout_ms=3000,
+        .total_timeout_ms=10000,.block_bytes=block,.retry_limit=4};
+    assert(tv4_update_rx_init(&f->rx,data,f->owner.boot,f->now) && tv4_update_tx_init(&f->tx,data,f->owner.boot,f->now));
+    assert(tv4_update_rx_begin(&f->rx,&f->descriptor,f->now)==TV4_UPDATE_OK && tv4_update_tx_begin(&f->tx,&f->descriptor,f->now)==TV4_UPDATE_OK);
+    assert(tv4_neg_close(&n[0],2001,f->now)==TV4_NEG_OK && tv4_neg_close(&n[1],f->owner.policy_generation,f->now)==TV4_NEG_OK);
+    assert(tv4_neg_clear(&n[0]) && tv4_neg_clear(&n[1]));
+}
+static void timed_drain(fixture *f,tv4_test_link *link)
+{
+    for(unsigned tick=0;!timed_idle(link);++tick) {
+        assert(tick<128);
+        assert(tv4_update_rx_poll(&f->rx,f->now)==TV4_UPDATE_OK && tv4_update_tx_poll(&f->tx,f->now)==TV4_UPDATE_OK);
+        for(unsigned side=0;side<2;++side){tv4_wire_message ignored;(void)tv4_test_link_take(link,side,&ignored);}
+        tv4_test_link_step(link);
+    }
+}
+static void timed_transfer(fixture *f,tv4_test_link *link)
+{
+    tv4_boot_stage_config stage={.buffer=f->staging,.capacity=sizeof(f->staging),.boot=f->owner.boot,.object=91};
+    assert(tv4_boot_stage_init(&f->stage,&stage) && tv4_boot_stage_begin(&f->stage,&f->rx));
+    uint32_t started=f->now;tv4_wire_message pending_ack={0};bool ack_pending=false;unsigned ticks;
+    for(ticks=0;ticks<10000;++ticks) {
+        assert(tv4_update_tx_poll(&f->tx,f->now)==TV4_UPDATE_OK && tv4_update_rx_poll(&f->rx,f->now)==TV4_UPDATE_OK);
+        tv4_wire_message packet;
+        if(tv4_test_link_take(link,0,&packet)==TV4_FRAG_TAKEN) {
+            assert(packet.kind==TV4_WIRE_DATA);tv4_update_ack ack;
+            tv4_update_result r=tv4_update_rx_receive(&f->rx,&packet.body.data,&ack,f->now);
+            if(r==TV4_UPDATE_PENDING)assert(tv4_boot_stage_consume(&f->stage,&ack,f->now)==TV4_UPDATE_ACK);
+            else assert(r==TV4_UPDATE_ACK);
+            pending_ack=(tv4_wire_message){.kind=TV4_WIRE_DATA_ACK,.body.ack=ack};ack_pending=true;
+        }
+        if(tv4_test_link_take(link,1,&packet)==TV4_FRAG_TAKEN) {
+            assert(packet.kind==TV4_WIRE_DATA_ACK);
+            tv4_update_result r=tv4_update_tx_ack(&f->tx,&packet.body.ack,f->now);
+            assert(r==TV4_UPDATE_OK || r==TV4_UPDATE_STALE_ACK);
+        }
+        if(f->tx.context.state==TV4_UPDATE_COMPLETE_UNVERIFIED)break;
+        if(ack_pending && tv4_test_link_can_send(link,1)) {
+            assert(tv4_test_link_send(link,1,&pending_ack)==TV4_FRAG_OK);ack_pending=false;
+        }
+        if(tv4_test_link_can_send(link,0)) {
+            if(f->tx.context.state==TV4_UPDATE_NEED_DATA) {
+                size_t length=f->source_bytes-f->tx.context.next_offset;
+                if(length>f->tx.context.limits.block_bytes)length=f->tx.context.limits.block_bytes;
+                assert(tv4_update_tx_load(&f->tx,f->source+f->tx.context.next_offset,length,f->now)==TV4_UPDATE_OK);
+            }
+            tv4_wire_message outgoing={.kind=TV4_WIRE_DATA};tv4_update_result r=tv4_update_tx_next(&f->tx,&outgoing.body.data,f->now);
+            if(r==TV4_UPDATE_OK)assert(tv4_test_link_send(link,0,&outgoing)==TV4_FRAG_OK);
+            else assert(r==TV4_UPDATE_WAIT);
+        }
+        assert(f->tx.context.started_ms==started && f->rx.context.started_ms==started);tv4_test_link_step(link);
+    }
+    assert(ticks<10000 && f->stage.state==TV4_STAGE_SEALED && f->stage.written==f->source_bytes);
+    assert(f->stage.next_sequence==f->rx.context.next_sequence && memcmp(f->staging,f->source,f->source_bytes)==0);
+    f->staged_bytes=f->stage.written;timed_drain(f,link);
+}
+static void timed_outcome(fixture *f,tv4_test_link *link)
+{
+    tv4_outcome_tx tx;tv4_outcome_rx rx;tv4_outcome_limits limits={200,500,2000,4};
+    assert(tv4_outcome_tx_init(&tx,limits,f->owner.boot,f->now) && tv4_outcome_rx_init(&rx,limits,f->now));
+    assert(tv4_outcome_tx_begin(&tx,&f->outcome,f->now)==TV4_OUTCOME_OK);
+    assert(tv4_outcome_rx_begin(&rx,&f->tx,f->expected.metadata_sha256,f->now)==TV4_OUTCOME_OK);
+    tv4_wire_message pending_ack={0};bool ack_pending=false;unsigned deliveries=0,ticks;
+    for(ticks=0;ticks<2000;++ticks) {
+        assert(tv4_outcome_tx_poll(&tx,f->now)!=TV4_OUTCOME_ERROR && tv4_outcome_rx_poll(&rx,f->now)!=TV4_OUTCOME_ERROR);
+        tv4_wire_message packet;
+        if(tv4_test_link_take(link,1,&packet)==TV4_FRAG_TAKEN) {
+            assert(packet.kind==TV4_WIRE_OUTCOME);tv4_update_outcome ack,delivery;
+            tv4_outcome_result r=tv4_outcome_rx_receive(&rx,&packet.body.outcome,&ack,&delivery,f->now);
+            assert(r==TV4_OUTCOME_ACK || r==TV4_OUTCOME_DELIVERED);
+            if(r==TV4_OUTCOME_DELIVERED){++deliveries;assert(tv4_update_outcome_equal(&delivery,&f->outcome));}
+            pending_ack=(tv4_wire_message){.kind=TV4_WIRE_OUTCOME_ACK,.body.outcome=ack};ack_pending=true;
+        }
+        if(tv4_test_link_take(link,0,&packet)==TV4_FRAG_TAKEN) {
+            assert(packet.kind==TV4_WIRE_OUTCOME_ACK);
+            assert(tv4_outcome_tx_ack(&tx,&packet.body.outcome,f->now)==TV4_OUTCOME_OK);
+        }
+        if(tx.context.state==TV4_OUTCOME_ACKED)break;
+        if(ack_pending && tv4_test_link_can_send(link,0)) {
+            assert(tv4_test_link_send(link,0,&pending_ack)==TV4_FRAG_OK);ack_pending=false;
+        }
+        if(tv4_test_link_can_send(link,1)) {
+            tv4_wire_message outgoing={.kind=TV4_WIRE_OUTCOME};tv4_outcome_result r=tv4_outcome_tx_next(&tx,&outgoing.body.outcome,f->now);
+            if(r==TV4_OUTCOME_SENT)assert(tv4_test_link_send(link,1,&outgoing)==TV4_FRAG_OK);
+            else assert(r==TV4_OUTCOME_WAIT);
+        }
+        tv4_test_link_step(link);
+    }
+    assert(ticks<2000 && deliveries==1);timed_drain(f,link);
+}
+static void one_clock_signed_chains(void)
+{
+    unsigned frames=0,dropped=0,timeouts=0,peeks=0;uint32_t longest=0;
+    for(unsigned i=0;i<8;++i) {
+        fixture f;if(i<6)release_fixture(&f,i%2u?256:33);else vector_fixture(&f,33);
+        f.use_stage=true;tv4_test_link link={0};uint16_t mask=i<2?0u:510u;
+        tv4_test_link_config cfg=timed_config(mask,(uint16_t)(i%3u));tv4_test_link_init(&link,&f.now,&cfg);
+        uint32_t started=f.now;timed_negotiate(&f,&link,i%2u?256u:31u);timed_transfer(&f,&link);
+        if(i<6)release_begin(&f);else begin(&f);
+        f.inject=STAGE_LOCK;f.fragment=i%3u==0?1:i%3u==1?7:256;
+        bool ok=i<6?tv4_boot_completion_start_release(&f.completion,&f.release_adapter,&f.expected,&f.preflight_profile,&f.workspace):
+            tv4_boot_completion_start(&f.completion,&f.session,&f.expected,&f.preflight_profile,&f.workspace);
+        assert(ok);completed(&f,TV4_OUTCOME_CHECKED_CLOSED,TV4_OUTCOME_REASON_NONE);
+        assert(tv4_boot_stage_discard(&f.stage) && zero(f.staging,f.source_bytes));
+        timed_outcome(&f,&link);
+        assert(link.dropped_kinds==mask && link.sticky_failures==0 && link.repeated_peeks>0);
+        for(unsigned kind=1;kind<=8;++kind)assert(link.deliveries[kind]>0);
+        assert(f.releases==1 && tv4_boot_completion_clear(&f.completion));
+        if(i<6)release_clear(&f);else assert(tv4_boot_handoff_clear(&f.session));
+        uint32_t elapsed=f.now-started;if(elapsed>longest)longest=elapsed;
+        frames+=link.frames;dropped+=link.dropped_frames;timeouts+=link.timeouts;peeks+=link.repeated_peeks;finish(&f);
+    }
+    printf("PASS8 one-clock actual signed RAM chains: frames=%u lost=%u timeout-clears=%u repeated-peeks=%u longest=%u synthetic ms; all8 kinds, no deadline resets or duplicate outcome delivery\n",frames,dropped,timeouts,peeks,longest);
+}
+static void one_clock_admission_refusals(void)
+{
+    for(unsigned i=0;i<2;++i) {
+        fixture f;release_fixture(&f,33);f.use_stage=true;
+        if(i==0)f.signature[f.config.signature_bytes-1u]^=1;
+        tv4_test_link link={0};tv4_test_link_config cfg=timed_config((1u<<5)|(1u<<6),1);
+        tv4_test_link_init(&link,&f.now,&cfg);timed_negotiate(&f,&link,31);timed_transfer(&f,&link);
+        if(i==0) {
+            release_begin(&f);assert(tv4_boot_completion_start_release(&f.completion,&f.release_adapter,&f.expected,&f.preflight_profile,&f.workspace));
+            completed(&f,TV4_OUTCOME_REJECTED_CLOSED,TV4_OUTCOME_SIGNATURE);
+            assert(f.releases==1 && tv4_boot_completion_clear(&f.completion));
+        }else {
+            uint32_t progress=f.rx.context.progress_ms;
+            while(f.now-progress<f.rx.context.limits.progress_timeout_ms)tv4_test_link_step(&link);
+            assert(!tv4_boot_release_handoff_begin(&f.release_adapter,&f.session,&f.release_config,&f.rx));
+            assert(f.session.error==TV4_HANDOFF_RECEIVER && f.rx.context.error==TV4_UPDATE_ERROR_PROGRESS_TIMEOUT);
+            assert(f.acquired==0 && f.releases==0);
+        }
+        assert(tv4_boot_stage_discard(&f.stage));release_clear(&f);finish(&f);
+    }
+    puts("PASS one-clock transfer success does not bypass independent signature or expired DATA live-receiver admission");
+}
 #define RUN(name) do { name(); puts("PASS " #name); } while (0)
 int main(int argc,char **argv)
 {
+    if(argc==2 && strcmp(argv[1],"--fragment-timing")==0) {
+        RUN(one_clock_signed_chains);RUN(one_clock_admission_refusals);return 0;
+    }
     if(argc==2 && strcmp(argv[1],"--fragment-staging")==0) {
         const tv4_fragment_config limits={100,500,160,TV4_FRAGMENT_VERSION};
         assert(tv4_fragment_tx_init(&fragment_tx,&limits,7,9,0,0)==TV4_FRAG_OK);
