@@ -1,0 +1,5 @@
+PASS build-update-arm host fixture/review/new test targets absent
+PASS build-boot-arm host fixture/review/new test targets absent
+PASS actual production handoff target has no setup/fragment/helper dependency
+PASS no setup caller/header added to HMI/motion/production bootloader code
+PASS host link helper includes MS decoder explicitly before upper dispatch; production runtime still absent

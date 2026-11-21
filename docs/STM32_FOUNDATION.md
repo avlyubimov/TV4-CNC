@@ -1,5 +1,13 @@
 # PR-02 — STM32 Motion Foundation
 
+PR-07n от main `d18cf93`: [metadata setup/shared namespace](STM32_METADATA_SETUP.md)
+связывает original CLOSED image negotiation, live empty image endpoints и
+metadata DATA. Paired ID выделяется из общего volatile pool, raw MS exchange
+проверен с потерями всех фаз, complete metadata endpoints закрывают pool.
+Host54/sanitizers54/standalone28, independent verifier/lease/model/close прежние.
+Это software local contract; authentication/persistent identity/runtime/installer
+и все physical F407 blockers открыты. Устройств не касались.
+
 PR-07m от main7640f43: [metadata container/RX](STM32_METADATA_TRANSPORT.md)
 компилируется отдельно, не входит в MCU app/driver. Distinct metadata DATA ID,
 owned unverified snapshot и real verifier integration не задают RAM/Flash map,

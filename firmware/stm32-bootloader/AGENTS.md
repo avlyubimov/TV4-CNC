@@ -147,3 +147,19 @@ clean close не подменять transport success. Metadata ID distinct; des
 до metadata и не reset; time charges его original windows. Snapshot alive/exclusive
 через config/handoff/completion lifetime. No new crypto owner/arena/runtime/Flash.
 Static assertions согласуют1024/72/31 bounds; DER length variable, per-run counts.
+
+## PR-07n — bounded metadata setup
+
+Читать docs/STM32_METADATA_SETUP.md. Paired metadata image+1 ID из original
+CLOSED image pool, single allocation/no wrap/no rollback; retain CLOSED fields
+до clear. Setup owns pool до actual completed metadata TX / TAKEN RX close.
+Borrow empty original image endpoints; poll their unchanged time/descriptor/
+limits/context, не reinit или продлевать окна. MS172 separate codec; explicit
+raw fragment mode не отключает legacy typed TU decoder и не даёт dispatch/auth.
+Host test helper applies MS decode before upper receive. One take UNVERIFIED,
+real independent signature/raw digest/image/lease/model/close остаются нужны.
+Responder bounded CONFIRM retry после take; duplicates не reset clocks/sends.
+No new crypto owner/heap/runtime/IDs/bitrate/Flash/pins/devices. Host-only fixtures
+не ARM. Scope/import/frame/global/negative guards, text evidence обязательны.
+Production authenticated identity/routing/persistence/staging/resources/installer
+и actual board hardware gates остаются открытыми. No self-merge.

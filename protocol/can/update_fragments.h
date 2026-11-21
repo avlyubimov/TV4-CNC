@@ -35,7 +35,8 @@ typedef enum {
     TV4_FRAG_OK, TV4_FRAG_FRAME, TV4_FRAG_PENDING, TV4_FRAG_READY,
     TV4_FRAG_TAKEN, TV4_FRAG_COMMITTED, TV4_FRAG_FINISHED, TV4_FRAG_DUPLICATE,
     TV4_FRAG_BUSY, TV4_FRAG_STALE, TV4_FRAG_ARGUMENT, TV4_FRAG_BAD_FRAME,
-    TV4_FRAG_ORDER, TV4_FRAG_ROUTE, TV4_FRAG_LIMIT, TV4_FRAG_STATE, TV4_FRAG_ERROR
+    TV4_FRAG_ORDER, TV4_FRAG_ROUTE, TV4_FRAG_LIMIT, TV4_FRAG_STATE, TV4_FRAG_ERROR,
+    TV4_FRAG_RAW_TAKEN_UNCHECKED
 } tv4_fragment_result;
 /* Public storage is caller-owned, not a serialized layout. Fields are read-only
  * to the caller after init. counter is last-issued TX / high-water RX; clear,
@@ -48,7 +49,7 @@ typedef struct {
     uint16_t counter, total, cursor, attempts;
     tv4_fragment_state state;
     tv4_fragment_error error;
-    bool configured;
+    bool configured,raw_mode;
 } tv4_fragment_storage;
 typedef struct { tv4_fragment_storage storage; bool peeked; } tv4_fragment_tx;
 typedef struct { tv4_fragment_storage storage; } tv4_fragment_rx;
@@ -61,6 +62,18 @@ tv4_fragment_result tv4_fragment_rx_init(tv4_fragment_rx *rx,
     uint16_t last_seen, uint32_t now);
 tv4_fragment_result tv4_fragment_tx_begin(tv4_fragment_tx *tx,
     const tv4_wire_message *message, uint64_t generation, uint32_t now);
+/* Explicit immutable raw mode, separate from the legacy strict TU codec mode.
+ * Raw bytes8..286 are owned/copied but UNCHECKED. Caller must apply the selected
+ * bounded complete-message codec before dispatch. This is no routing/auth proof.
+ * Clear cannot switch mode. Raw take failure: written=0, bytes untouched. */
+tv4_fragment_result tv4_fragment_tx_init_raw(tv4_fragment_tx *tx,
+    const tv4_fragment_config *config,uint32_t route,uint64_t generation,uint16_t last_issued,uint32_t now);
+tv4_fragment_result tv4_fragment_rx_init_raw(tv4_fragment_rx *rx,
+    const tv4_fragment_config *config,uint32_t route,uint64_t generation,uint16_t last_seen,uint32_t now);
+tv4_fragment_result tv4_fragment_tx_begin_raw(tv4_fragment_tx *tx,
+    const uint8_t *bytes,size_t length,uint64_t generation,uint32_t now);
+tv4_fragment_result tv4_fragment_rx_take_raw(tv4_fragment_rx *rx,
+    uint8_t *bytes,size_t capacity,size_t *written,uint64_t generation,uint32_t now);
 /* Peek can repeat without advancing. Commit ONLY after a future local queue
  * accepts exactly that frame; local commit is NOT a remote ACK/delivery proof. */
 tv4_fragment_result tv4_fragment_tx_peek(tv4_fragment_tx *tx,

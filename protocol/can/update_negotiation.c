@@ -45,7 +45,9 @@ static void finish(tv4_negotiation *s,tv4_neg_state state,tv4_neg_error error)
 {
     if(s->error==TV4_NEG_ERROR_NONE)s->error=error;
     if(s->pool->owner==s)s->pool->owner=NULL;
-    memset(&s->request,0,sizeof(s->request));memset(&s->offer,0,sizeof(s->offer));
+    if(state!=TV4_NEG_CLOSED) {
+        memset(&s->request,0,sizeof(s->request));memset(&s->offer,0,sizeof(s->offer));
+    }
     s->pending=TV4_NEG_NO_MESSAGE;s->state=state;
 }
 static tv4_neg_result fail(tv4_negotiation *s,tv4_neg_error error)
@@ -239,7 +241,27 @@ bool tv4_neg_clear(tv4_negotiation *s)
 {
     if(s==NULL || !s->configured || s->pool==NULL || !terminal(s))return false;
     if(s->pool->owner==s)s->pool->owner=NULL;
+    memset(&s->request,0,sizeof(s->request));memset(&s->offer,0,sizeof(s->offer));
     s->pending=TV4_NEG_NO_MESSAGE;s->sends=0;s->started_ms=s->sent_ms=0;
     s->error=TV4_NEG_ERROR_NONE;s->state=TV4_NEG_IDLE;
     return true;
+}
+
+tv4_neg_result tv4_neg_reserve_metadata(const tv4_negotiation *s,uint64_t generation,tv4_update_id *out)
+{
+    if(out!=NULL)memset(out,0,sizeof(*out));
+    if(s==NULL || out==NULL || !s->configured || s->pool==NULL)return TV4_NEG_REJECT_ARGUMENT;
+    if(s->role!=TV4_NEG_RESPONDER || s->state!=TV4_NEG_CLOSED || s->error!=TV4_NEG_ERROR_NONE)
+        return TV4_NEG_REJECT_STATE;
+    tv4_neg_pool *p=s->pool;
+    if(generation==0 || generation!=s->policy_generation || !p->configured ||
+        p->local_boot!=s->local_boot || p->peer_boot!=s->peer_boot || p->owner!=NULL ||
+        !tv4_neg_message_valid(&s->request) || !tv4_neg_message_valid(&s->offer) ||
+        s->offer.descriptor.id.boot!=s->local_boot ||
+        s->request.request_id.boot!=s->peer_boot ||
+        p->last_peer_request!=s->request.request_id.transfer ||
+        p->last_issued!=s->offer.descriptor.id.transfer)return TV4_NEG_REJECT_SESSION;
+    uint32_t number;
+    if(!reserve(p,&number))return TV4_NEG_ERROR;
+    *out=(tv4_update_id){s->local_boot,number};return TV4_NEG_OK;
 }

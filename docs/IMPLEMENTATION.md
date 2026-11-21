@@ -1,6 +1,14 @@
 # Реализация: main, открытые PR и аппаратные границы
 
-Актуализация от main `7640f43`, 21 ноября2026: PR #1–44 слиты. Owner SWD
+PR-07n от main `d18cf93`: [metadata setup/shared namespace](STM32_METADATA_SETUP.md)
+связывает original CLOSED image negotiation, live empty image endpoints и
+metadata DATA. Paired ID выделяется из общего volatile pool, raw MS exchange
+проверен с потерями всех фаз, complete metadata endpoints закрывают pool.
+Host54/sanitizers54/standalone28, independent verifier/lease/model/close прежние.
+Это software local contract; authentication/persistent identity/runtime/installer
+и все physical F407 blockers открыты. Устройств не касались.
+
+Актуализация от main `d18cf93`, 21 ноября2026: PR #1–45 слиты. Owner SWD
 F407/core/Flash1024KiB/backup — [HARDWARE_STATUS](HARDWARE_STATUS.md).
 Startup/DATA/admission/handoff/preflight и PR-07e уже в main:
 [completion/outcome](STM32_UPDATE_OUTCOME.md) связывает full checks с lease close
