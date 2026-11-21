@@ -1,17 +1,86 @@
-# Следующий этап: release context и STM32 board contract
+# Следующий этап: P0 — первая прошиваемая сборка STM32F407
 
-21 ноября2026. База main `5e76626`, PR #1–53 слиты, main CI5/5 PASS.
-ESP32 HMI/Wi-Fi/OTA primitives/candidates и STM32 transport/admission существуют;
-не создавать их заново. Данный план не разрешает доступ к устройствам или merge.
+21 ноября 2026. База main `951ff0f59736685591f6b5ae67e93a6a482d35f1`,
+PR #1–54 слиты, main CI5/5 PASS. PR #54 завершён и больше не активная задача.
+Новый порядок и подробная приёмка — [IMPLEMENTATION_PRIORITIES.md](IMPLEMENTATION_PRIORITIES.md),
+свод — [ROADMAP.md](ROADMAP.md).
+
+## Текущая задача и остановка
+
+Сейчас — отдельный PR только для AGENTS.md, NEXT_STAGE.md, ROADMAP.md и
+IMPLEMENTATION_PRIORITIES.md. Проверить документацию/ссылки/согласованность/scope,
+создать PR и остановиться. Firmware, linker/startup, CI, partitions, keys не
+меняются. Не выполнять hardware operations, merge или начинать реализацию P0
+в этой же задаче.
+При следующем поручении продолжать разработку выполнять P0 отдельным PR;
+повторный PR предварительного планирования не является следующим этапом.
 
 ## Подтверждённые характеристики
 
-[Owner report](evidence/hardware/stm32f407-owner-swd/README.md): ST-Link V2/SWD,
-Cortex-M4r0p1, raw ID0x101f6413, Flash1024KiB, напряжение3,252V,
-backup1048576bytes, structural vector check PASS. Агент их не перечитывал.
-Это не physical package/clock/RAM/sector/GPIO/CAN/restore validation.
+[Owner report](evidence/hardware/stm32f407-owner-swd/README.md): ST-Link V2/SWD
+работает, Cortex-M4r0p1, raw ID 0x101f6413, Flash 1024 КиБ, напряжение 3,252 В,
+backup 1 048 576 bytes, structural vector check PASS; сообщён VGT6/DevEBox
+STM32F4VX_M Ver. 2.0. Новых аппаратных или backup reads не было.
+Это не проверка полной маркировки/package, SRAM/CCM, clock/HSE, Flash geometry/
+protection/option bytes, GPIO/CAN или restore. ESP32 — прежний ordinary8f0d899,
+owner HMI/touch/Wi-Fi PASS; его factory backup 16 МиБ исторически проверен по SHA-256.
 
-## Слитая программная база
+## Следующий отдельный PR: P0
+
+**Результат — настоящий программно проверенный ELF/BIN STM32F407, готовый
+к отдельно разрешённому стендовому запуску.** Существующие synthetic link probe
+и portable libraries использовать для проверок; они не являются этим результатом.
+
+| Часть одной интеграции | Проверяемый результат |
+|---|---|
+| Официальная память и startup | Проверенные источники/редакции ST для STM32F407VGT6: Flash/SRAM/CCM/секторы/IRQ/vectors; действительные linker MEMORY/sections, data/BSS, MSP/stack, Reset_Handler и полная vector table |
+| Первоначальный clock | Явный HSI-only путь без неподтверждённых HSE/PLL; согласованные clock/tick настройки |
+| Запрет движения | STEP/DIR, ENABLE, шпиндель и другие motion outputs не активируются при boot/reset/fault/watchdog; неизвестные GPIO/AF/полярности не назначены |
+| Диагностика и ошибки | RAM/SWD boot state/heartbeat/reset reason/fault context без обязательных LED/UART/semihosting; обработчики исключений и явная watchdog policy, не поддерживающая ошибочное исполнение |
+| Реальные артефакты и CI | ELF↔BIN↔map/size/SHA-256/source/toolchain identity; границы/overlap/overflow Flash/SRAM/CCM/stack, entry/SP/Thumb/reserved/IRQ vectors и отрицательные проверки |
+| Установка и recovery | Конкретный ST-Link install/verify/restore runbook с проверкой бэкапа/платы/защиты и exact-image gate перед отдельно разрешённой операцией |
+
+Эти части реализовать вместе; не подменять P0 новой библиотекой или подготовительным
+PR модели. В том же PR обновить нужные scoped instructions/профиль/CI guards,
+чтобы проверенный реальный образ собирался, а неподдерживаемые карты отклонялись.
+Новые внешние зависимости использовать только при необходимости, фиксируя
+официальный источник, точную версию и лицензию.
+
+## Сборка, стенд и будущий bootloader
+
+Официальная карта выбранного VGT6 проверяется в P0; аппаратная проверка
+конкретного экземпляра и поведения clock/RAM/watchdog остаётся отдельным стендом.
+Неизвестный HSE не блокирует подготовку HSI образа, неизвестный motion pinout
+запрещает выводы движения. Не угадывать безопасные уровни и не объявлять
+no-I/O/программный fault handler подтверждением physical inhibit.
+
+Образ не резервирует адреса будущего CAN bootloader/staging/app layout.
+Установка на плату требует отдельного разрешения на точные image/hash и
+SWD/write/reset/capture действия, проверки бэкапа/независимой копии и recovery
+процедуры. Публикация ELF/BIN в релиз и необратимые option bytes — отдельные
+решения; build/CI/PR не являются разрешением. Данный PR не запускает эти операции.
+
+## Порядок после P0
+
+1. P1 — рабочий ESP32 OTA: рассчитанная factory recovery+два OTA-слота в 16 МиБ,
+   отдельная USB-миграция, existing HTTPS/crypto/compatibility, inactive-slot write,
+   self-test/rollback, Wi-Fi/power-loss tests и реальные SRAM/PSRAM/stack measurements.
+2. P2 — настоящие воспроизводимые CI binaries/SemVer/source binding/signed manifest/
+   SHA-256/prerelease-stable и ручной owner release gate, экран «ПО и обновления».
+3. P3 — минимальный реальный CAN exchange после получения трансиверов: проверка
+   физических уровней/терминации/pinout/errors/timeouts/recovery. До этого hardware
+   CAN неизвестен; существующий протокол сохраняется.
+4. P4 — независимый STM32 CAN bootloader/Flash write/recovery по проверенной
+   карте и физическому CAN, existing verifier и ESP32 OTA Manager; no update during motion.
+5. P5 — microSD/tools/G-code/planner/STEP-DIR/encoders/homing/thread sync/coordinates/
+   manual-CNC после стабилизации базовых контроллеров, с отдельным motion approval.
+
+Для новой абстракции нужен конкретный потребитель текущей интеграции.
+Подробные результаты/зависимости/приёмка — [IMPLEMENTATION_PRIORITIES.md](IMPLEMENTATION_PRIORITIES.md).
+Все записи ниже — история; они не заменяют этот порядок следующей работой
+над production context, codebook или ещё одним host transport layer.
+
+## История слитой программной базы
 
 - PR #28: [startup/sections/no-I/O](STM32_STARTUP.md), portable data/BSS init,
   Cortex-M4 reset object, synthetic ARM link tests. Нет real board MEMORY/map,
@@ -250,7 +319,7 @@ before capture, retained counters/time and bounded lower-timeout recovery. Ст�
 capture/ACK не влияют на новый цикл; upper image expiry не оживает. Software actor
 barrier не physical backend/IRQ/DMA/remote stop. [Evidence](evidence/build/ingress-owner/README.md).
 
-## Текущая ветка PR-07v
+## Слитый PR #54, PR-07v
 
 [Threaded signed HOST link](STM32_THREADED_LINK.md): protocol/crypto caller и
 отдельный bounded driver pthread, concurrent RX, actual driver pause ACK и
@@ -258,87 +327,3 @@ actual drain; full signed chains/loss/recovery/independent refusals. External
 BUSY input сохраняет original permit/time и блокирует ACK, stop/join не теряет
 actual claim. Host75/sanitizers75/standalone49/TSan8+1 PASS, прежние ARM budgets/
 SDK pins/upper windows сохранены. [Evidence](evidence/build/threaded-link/README.md).
-
-## Что делать дальше программно
-
-1. HMI policy проверена PR-05b; PR-07g проверяет independent release/component/
-   target/profile/image draft; PR-05c добавляет offline signed cohort link,
-   PR-05d проверяет его связь с explicit-pinned unsigned build claims/bytes и
-   показывает blockers. Дальше review production bundle↔component contract и
-   schema, доверенного local context и production immutable backend. PR-07h
-   закрывает software live coordinator adapter; PR-07i добавляет RAM backend.
-   Production staging medium/RAM budget/durable provider и runtime ещё требуют
-   review; full image нельзя считать помещающимся в F407 RAM по Flash capacity.
-   Не принимать standalone historical candidate вместо lease/vector/deadline
-   checks, не менять RX lifetime. Draft counters не переводить в SemVer;
-   actual local versions/key provisioning/signing authority — owner gate.
-   Candidate digest брать из independently reviewed run, не из самого unknown
-   artifact; self-generated CI integrity pin не доказывает происхождение. Для
-   production нужны approved source/build/signer custody и actual target layout,
-   не подавление factory/A-B blocker или замена current PROJECT_VER.
-2. PR-07f проверяет volatile logical negotiation, но production boot epoch
-   provider/persistence/collision/authentication, capabilities/version и raw CAN
-   fragmentation/IDs/bitrate требуют review. PR-07j закрывает только experimental
-   complete-message codec, не production wire adoption. PR-07k добавляет bounded
-   fragment/reassembly с local route/generation/cancel/deadline/backpressure.
-   PR-07l проверяет whole-message retry/queue/deadline composition на одной
-   synthetic шкале. PR-07m добавляет bounded raw metadata/signature container и
-   receiver с distinct DATA ID/single owned snapshot/original request binding.
-   PR-07n добавляет bounded metadata setup, shared volatile role IDs и phase
-   ownership на original image windows. PR-07o добавляет bounded shared channel
-   и local phase/outbox filters, не actual runtime owner/remote queue flush.
-   PR-07p добавляет actual bound local custody queue/driver tickets, не real
-   driver/remote drain proof. PR-07q добавляет serialized owned event inbox.
-   PR-07r добавляет SPSC C11 mailbox/bound consumer, PR-07s — owned frame dispatch/
-   fresh check/explicit driver return; PR-07t — bounded RX copies/original capture
-   age/sticky loss reporting. PR-07u добавляет acknowledged software producer
-   pause/actual RX drain/epoch cutover. PR-07v проверяет signed composition
-   через dedicated HOST driver thread/concurrent RX; это не target scheduler.
-   Дальше review actual peripheral/IRQ/DMA/
-   backend stop/reconciliation, immutable route lifetime и target
-   ISR/RTOS/cache/DMA port, trusted adapter completion provenance/reset/
-   reconciliation, production identity/capabilities/codebook и
-   worker/resource budgets перед runtime adoption. Production routing/reboot
-   identity/authentication, durable ownership и measured worker/bus/crypto budgets
-   остаются blockers, не implicit defaults или permissive setup stub.
-   Decode OK не обновляет context или timeouts; owner poll остаётся обязательным.
-   Logical terminal outcome уже есть; он не authenticated и
-   не переносит candidate через ожидание оператора. Для следующей операции
-   проверять saved bytes полностью и подтверждать новый session/context.
-   Текущий DATA RX deadline не продлевать молча.
-3. Разделить software candidate и будущую установку: fresh session-bound
-   отсутствие движения/шпинделя/программы, operator exact-image approval,
-   reviewed recovery/vector/erase gate. Не вводить permissive boolean stub,
-   который открывает Flash writer или изображает physical inhibit.
-4. Для активной проверки обновлений из нового UI нужны approved local key/
-   version/layout/time context, runtime resource/load/fault/soak budget и
-   отдельный bounded worker/snapshot contract. Не превращать local build
-   descriptor в SemVer/release trust и не показывать фиктивную историю/progress.
-
-## Что блокирует настоящий board image
-
-1. Проверить физическую маркировку/package/board revision, RAM/CCM bounds и
-   полный device IRQ/vector contract по согласованным reference sources.
-   Device ID/suffix и1MiB capacity не заменяют эту проверку.
-   Новый ответ владельца20ноября повторяет только VGT6; HSE/полной маркировки нет.
-2. Утвердить clock/reset policy. Возможен отдельный минимальный HSI-only путь;
-   неизвестный HSE блокирует HSE/PLL, фактические частоты/пригодность CAN ещё
-   нужно измерить. Текущий код clock не устанавливает.
-3. После memory/vector/stack review подготовить standalone no-I/O board profile
-   без пинов приводов/bootloader reserve. Synthetic fixture addresses/stack/
-   core vectors никогда не использовать как реальную карту F407.
-4. До любой записи отдельно уточнить backup SHA/независимую копию/restore,
-   затем согласовать exact image и SWD/write/reset/capture. Нынешнее задание
-   этих операций не разрешает. GPIO/CAN/уровни ENABLE — отдельное commissioning.
-
-## Flash и будущий OTA
-
-[Архитектура](OTA_ARCHITECTURE.md): signed GitHub component → ESP32 bounded
-cache/transport → независимый F407 verifier/recovery. До reviewed erase sectors,
-protection/RAM/vector/commit/power-loss решения нельзя выбирать A/B/staging,
-app offset или metadata address. **Flash1024KiB не резервирует ни одного адреса.**
-
-Сохранённый valid flag/receipt не заменяет signature/hash/vector check перед
-commit/jump. Reboot/reconnect/update не разрешают движение. Fresh physical
-quiescent/operator/recovery checks обязательны, SIMULATION/no-I/O/ACK их не
-подменяют. Аппаратная NC E-stop/STO цепь независима от CAN и обоих MCU.

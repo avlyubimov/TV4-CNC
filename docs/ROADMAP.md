@@ -1,33 +1,54 @@
-# План последовательной разработки TV4-CNC
+# План реализации TV4-CNC: функциональные приоритеты P0–P5
 
-Обновлено от main `5e76626`,21ноября2026; PR #1–53 слиты, main CI5/5 PASS.
-История и текущее ПО — [IMPLEMENTATION.md](IMPLEMENTATION.md); следующий
-STM32 этап — [NEXT_STAGE.md](NEXT_STAGE.md). Рабочий HMI не переписывать заново.
-Все новые этапы — отдельные ветки/небольшие PR, merge только с разрешения
-владельца. PR-01 слит; PR #13 слит, выполнен первый разрешённый baseline b93cf3b. Таблица не является разрешением
-на автоматическое выполнение/прошивку всех следующих этапов.
+21 ноября 2026. Актуальная база main `951ff0f59736685591f6b5ae67e93a6a482d35f1`,
+PR #1–54 слиты, main CI5/5 PASS. PR #54 — завершённая host-проверка, не текущая задача.
+Приоритеты владельца заменяют прежнюю последовательность подготовительных PR.
+История реализации — [IMPLEMENTATION.md](IMPLEMENTATION.md), текущая задача —
+[NEXT_STAGE.md](NEXT_STAGE.md), полная приёмка — [IMPLEMENTATION_PRIORITIES.md](IMPLEMENTATION_PRIORITIES.md).
 
-| PR | Содержание | Приёмка / зависимости | Статус |
+**Приоритет функциональных результатов выше создания новых абстракций.**
+Небольшие PR закрывают законченные интеграции; нужные startup/linker/driver/CI
+изменения не разбивать на неограниченную цепочку предварительных библиотек.
+Готовые HMI/HTTPS/crypto/protocol и содержательные tests использовать повторно.
+
+## Текущий PR — только согласование плана
+
+Разрешённый diff: AGENTS.md, NEXT_STAGE.md, ROADMAP.md и
+IMPLEMENTATION_PRIORITIES.md. Проверить документацию, создать отдельный PR
+и остановиться; firmware/CI/layout/keys/devices не менять, merge не выполнять.
+**Следующий отдельный PR — P0, первая безопасная прошиваемая сборка STM32F407.**
+
+## Порядок и критерии результата
+
+| Приоритет | Законченный результат | Зависимости и приёмка | Текущий статус |
 |---|---|---|---|
-| PR-01 Architecture & Codex Rules | Root/scoped AGENTS, hardware status, OTA/release design, open questions, актуализация документов | Docs-only diff; нет firmware/settings/partition changes; отдельный PR и отчёт | Завершён, PR #6 слит |
-| PR-02 STM32 Firmware Foundation | CMake/Ninja/точный ARM GCC, reviewed startup/linker, clock/GPIO/timer/DMA/watchdog abstractions, faults/state machine и host tests | Реальный board profile после package/RAM/vector/clock review; секторная карта нужна для bootloader/Flash writer. Никаких приводов. CI без SWD | PR #7 слит. Owner подтвердил SWD/core/Flash1024KiB/backup; PR-02b: startup objects/no-I/O/sections + synthetic link tests. Board image ещё блокирован, HSE/GPIO/CAN не проверены |
-| PR-03 ESP32 Performance Diagnostics | Дополнить существующие метрики, reset/watchdog/reconnect/queue counters, CPU/PSRAM/stacks, export | Не дублировать dashboard/main logs. Измерить физическую touch-to-display отдельно, собрать baseline и soak/fault results | PR #8 слит: instrumentation/ресурсы/worker serial export; per-core CPU и аппаратные baseline/soak ещё открыты |
-| PR-04 ESP32 OTA Foundation | Плановая USB-миграция, otadata, A/B, HTTPS, подпись/хеш/compatibility, self-test и rollback | Проверенный backup, trusted key provisioning, migration/recovery review; power-loss/bad-signature/wrong-hardware tests. Разметку не менять app OTA. Firmware install только отдельно разрешён | PR #9–13 слиты; read-only session. Runtime worker/UI/native install/rollback/USB migration ещё не реализованы |
-| PR-05 GitHub Release Pipeline | Build matrix, versioned artifacts, signed manifest, checksums, release notes, prerelease/stable | Публикация только после CI и явного owner approval на SHA/tag/канал/артефакты; secrets/protected environment design; никакой фиктивной STM32 bin | PR-05a/b/c/d слиты: metadata-only candidates/policy/signed cohort и blocked build binding. Production bundle/actual context/keys/CI provenance/signing/publication ещё открыты |
-| PR-06 microSD Support | FAT32, detect/mount/read/write/free-space/eject/error handling; G-code files, logs/settings export, OTA cache | Подтверждённая разводка Rev 1.2 и схема USB/CAN/SD; отсутствие/извлечение/повреждение не блокирует HMI; file I/O только worker | Не реализован |
-| PR-07 STM32 CAN Bootloader | Независимый bootloader, sequence/chunks/ACK/retry, SHA/signature, hardware/protocol checks, recovery | Flash geometry и A/B либо staging/recovery решение; сначала host transport. SWD initial install и CAN hardware только по отдельному разрешению | PR #29–33 и36–39: DATA/crypto/handoff/model/completion/negotiation/release/RAM staging слиты. PR #42 codec/#43 fragments/#44 timing/#45 metadata слиты; PR #46 setup/shared volatile namespace слит; PR #47 shared channel слит; PR #48 bound egress слит; PR #49 serialized event inbox слит; PR #50 SPSC mailbox слит; PR #51/PR-07s owned driver dispatch/fresh check/retained return/concurrent+signed RAM tests; PR #52 ingress/#53 acknowledged RX owner слиты. PR-07v threaded signed HOST composition/TSan8+1, без target runtime. Production bundle/context/medium/identity/routing/production wire/Flash/recovery/physical CAN/runtime/install открыты |
-| PR-08 Unified Firmware Update UI | Параметры → Обновления: версии HMI/Motion/protocol, compatibility, changelog, размер, progress/result/history, check/download/install/cancel | Worker APIs PR-04/05/07; auto-check можно, auto-install нельзя. STM32 install только после подтверждённого quiescent state | PR-08a: local build/SDK/profile info/settings menu; unknown STM32/CAN. Runtime check/download/install/history ещё не реализованы |
+| P0 — STM32F407 firmware | Настоящий ELF/BIN на HSI с RAM/SWD diagnostics, exception/watchdog handling, без активации motion outputs | Официальная карта VGT6/SRAM/CCM/Flash sectors/vectors; real startup/linker; map/size/hash/source и memory/vector CI; ST-Link install/restore runbook; запись только отдельно разрешена | Следующий отдельный PR. SWD/core/Flash1024KiB/backup подтверждены владельцем, нового образа и его hardware test ещё нет |
+| P1 — ESP32 OTA | Установка проверенного образа в неактивный слот, boot self-test, подтверждение или rollback с работающими LVGL/GT911/Wi-Fi | Расчёт/утверждение 16 МиБ factory recovery+otadata+двух OTA-слотов; отдельная USB-миграция; existing HTTPS/signature/local key/SHA/size/hardware checks; Wi-Fi/power-loss tests; реальные SRAM/PSRAM/stack измерения | Existing verification/HTTPS/session есть; runtime install/rollback/migration ещё не завершены. Текущая разметка не меняется в этом PR |
+| P2 — Releases | Настоящие воспроизводимые бинарники, SemVer/source binding, signed manifest/SHA-256, prerelease/stable, экран «ПО и обновления» | Рабочий OTA P1; проверка воспроизводимости, trust/signer/licensing; ручное утверждение владельцем exact SHA/tag/channel/assets; push/merge не выпускают release | CI/metadata-only review база существует; production signing/publication/runtime update UI ещё нет. Фиктивный STM32 BIN запрещён |
+| P3 — physical CAN | Минимальный проверенный обмен ESP32-S3↔STM32F407 с ошибками/тайм-аутами/восстановлением | Получить трансиверы; проверить уровни/терминаторы/pinout/mux/IDs/bitrate на изолированном стенде; отдельное hardware permission | Физический CAN не проверен. Существующий протокол сохраняется; новые слои только для конкретной интеграции |
+| P4 — STM32 CAN OTA | Независимый bootloader, проверенная запись Flash/recovery после прерывания, existing independent crypto и ESP32 OTA Manager | Реальная карта/профиль P0 и physical CAN P3; reviewed bootloader/app/staging layout; fresh quiescent/operator/recovery gates; обновления при движении запрещены | Host transport/verifier подготовлены. Адреса загрузчика сейчас не резервируются, Flash writer/boot activation ещё нет |
+| P5 — microSD/G-code/CNC | microSD/tools/parser/planner/timer STEP-DIR/encoders/homing/thread sync/coordinates/manual-CNC | Стабилизированные базовые контроллеры, проверенная механика/электрика/защита; каждое испытание движения отдельно разрешено | Дальнейший этап; существующие HMI simulation/tools не выдавать за управление станком |
 
-PR-04 не обязан ждать физического motion: ESP32 обновляется на изолированном
-стенде. Но неподтверждённая механика никогда не компенсируется OTA/CI. PR-07
-может проектировать и тестировать transport в host до получения трансиверов;
-реальное распределение CAN ID/bitrate и GPIO требует отдельного решения.
-UI-каркас обновлений допустим в своём PR, но не должен изображать несуществующие
-версии motion, проверенные подписи или завершённую установку.
+## Разрешения и доказательства
+
+Подготовка образа/CI не разрешает доступ к устройствам, Flash/reset/SWD/UART,
+движение, merge или release. NC E-stop/STO/manual-CNC interlocks сохраняются.
+Не назначать неизвестные motion pins/полярности, не менять eFuse/option bytes
+без отдельного разрешения. Boot/reset/reconnect/OTA не разрешают движение.
+
+[HARDWARE_STATUS.md](HARDWARE_STATUS.md) остаётся источником owner facts.
+Официальный device memory/vector contract изучается внутри P0; измерения на
+экземпляре, physical GPIO/CAN и backup restore отмечаются отдельно. Неизвестный
+HSE не препятствует HSI-only сборке. Новую аппаратную проверку или размер памяти
+не объявлять по успешной компиляции/host test.
+
+Исторические номера PR-01…PR-08 ниже — имена подсистем, не порядок дальнейшей
+работы. Сохранённые evidence и limitations не требуют нового подготовительного
+PR вместо P0 и не являются разрешением аппаратных действий.
 
 ## Сохранённые инженерные milestones
 
-### PR-07v — текущая ветка от main5e76626
+### Слитый PR #54, PR-07v — от main5e76626
 
 [Threaded signed HOST link](STM32_THREADED_LINK.md): dedicated driver actor/
 concurrent RX/full independent signed chain, original deadlines/ownership/ACK+
@@ -368,7 +389,7 @@ Host71/sanitizers71/standalone45/TSan6; ARM1060/frame48 отдельно; no new
 Flash map/pins/driver/runtime. Далее — actual producer-stop/phase-cutover, truthful
 backend loss/completion/reset/clock и reviewed resource/identity/runtime port.
 
-## Текущая часть PR-07u
+## Слитый PR #53, PR-07u
 
 [Подтверждённая пауза RX](STM32_INGRESS_OWNER.md) от mainbc35a37 после PR #52:
 actual driver ACK + owned ingress/channel drain перед сменой фазы, epoch capture
