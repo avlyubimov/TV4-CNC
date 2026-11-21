@@ -1,0 +1,26 @@
+{
+  "host": {
+    "frames": 9483,
+    "drops": 48,
+    "container_bytes": 4801,
+    "signature_min": 70,
+    "signature_max": 72,
+    "longest_synthetic_ms": 2804
+  },
+  "sanitizer": {
+    "frames": 9484,
+    "drops": 48,
+    "container_bytes": 4799,
+    "signature_min": 70,
+    "signature_max": 72,
+    "longest_synthetic_ms": 2804
+  },
+  "standalone": {
+    "frames": 9482,
+    "drops": 48,
+    "container_bytes": 4797,
+    "signature_min": 70,
+    "signature_max": 72,
+    "longest_synthetic_ms": 2804
+  }
+}

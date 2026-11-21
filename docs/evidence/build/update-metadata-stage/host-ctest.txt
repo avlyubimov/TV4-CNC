@@ -1,0 +1,52 @@
+ 1/50 Test  #1: build_validation .................   Passed    0.03 sec
+ 2/50 Test  #2: build_candidate ..................   Passed    0.44 sec
+ 3/50 Test  #3: core .............................   Passed    0.00 sec
+ 4/50 Test  #4: firmware_info ....................   Passed    0.00 sec
+ 5/50 Test  #5: wifi_profiles ....................   Passed    0.00 sec
+ 6/50 Test  #6: render ...........................   Passed    0.54 sec
+ 7/50 Test  #7: render_rgb565 ....................   Passed    0.54 sec
+ 8/50 Test  #8: diagnostics ......................   Passed    0.00 sec
+ 9/50 Test  #9: ota_crypto .......................   Passed    0.00 sec
+10/50 Test #10: ota_candidate ....................   Passed    0.19 sec
+11/50 Test #11: ota_manifest .....................   Passed    0.08 sec
+12/50 Test #12: ota_json .........................   Passed    0.01 sec
+13/50 Test #13: ota_policy_conformance ...........   Passed    0.30 sec
+14/50 Test #14: ota_stream .......................   Passed    0.00 sec
+15/50 Test #15: ota_http .........................   Passed    0.00 sec
+16/50 Test #16: ota_session ......................   Passed    0.01 sec
+17/50 Test #17: ota_memory .......................   Passed    0.00 sec
+18/50 Test #18: ota_time .........................   Passed    0.00 sec
+19/50 Test #19: ota_sntp .........................   Passed    0.00 sec
+20/50 Test #20: ota_tls_probe ....................   Passed    0.00 sec
+21/50 Test #21: ota_resource .....................   Passed    0.00 sec
+22/50 Test #22: release_review_cli ...............   Passed    0.09 sec
+23/50 Test #23: release_review_cohort ............   Passed    0.25 sec
+24/50 Test #24: release_build_binding ............   Passed    0.60 sec
+25/50 Test #25: motion_supervisor ................   Passed    0.00 sec
+26/50 Test #26: motion_startup_noio ..............   Passed    0.00 sec
+27/50 Test #27: update_wire_reference ............   Passed    0.03 sec
+28/50 Test #28: update_fragment_reference ........   Passed    0.03 sec
+29/50 Test #29: update_metadata_reference ........   Passed    0.02 sec
+30/50 Test #30: update_session ...................   Passed    0.00 sec
+31/50 Test #31: update_loopback ..................   Passed    0.04 sec
+32/50 Test #32: update_outcome ...................   Passed    0.01 sec
+33/50 Test #33: update_negotiation ...............   Passed    0.00 sec
+34/50 Test #34: update_wire ......................   Passed    0.05 sec
+35/50 Test #35: update_fragment ..................   Passed    0.04 sec
+36/50 Test #36: update_fragment_timing ...........   Passed    0.01 sec
+37/50 Test #37: update_metadata ..................   Passed    0.05 sec
+38/50 Test #38: boot_image_admission .............   Passed    0.13 sec
+39/50 Test #39: boot_crypto_source ...............   Passed    0.10 sec
+40/50 Test #40: boot_staging_source ..............   Passed    0.00 sec
+41/50 Test #41: boot_update_handoff ..............   Passed    0.30 sec
+42/50 Test #42: boot_staging_handoff .............   Passed    0.03 sec
+43/50 Test #43: boot_wire_handoff ................   Passed    0.03 sec
+44/50 Test #44: boot_fragment_handoff ............   Passed    0.03 sec
+45/50 Test #45: boot_fragment_timing .............   Passed    0.02 sec
+46/50 Test #46: boot_metadata_handoff ............   Passed    0.02 sec
+47/50 Test #47: boot_release_handoff .............   Passed    0.08 sec
+48/50 Test #48: boot_image_profile ...............   Passed    0.00 sec
+49/50 Test #49: boot_release_admission ...........   Passed    0.10 sec
+50/50 Test #50: boot_release_versions ............   Passed    0.04 sec
+100% tests passed, 0 tests failed out of 50
+Total Test time (real) =   4.29 sec

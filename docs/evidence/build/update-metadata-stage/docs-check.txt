@@ -1,0 +1,3 @@
+PASS 879 local Markdown file links; external URLs/anchors not fetched
+PASS 110 source SHA-256 records; evidence excluded
+PASS existing core/API/HMI/configs/partitions/dependencies/SDK matrix unchanged; text-only evidence

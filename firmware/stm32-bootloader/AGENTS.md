@@ -135,3 +135,15 @@ expired receiver отказ обязательны; test keys только RAM. 
 приходят из fixture, не по каналу; CPU crypto duration не measured/тарифицирована.
 Не подменять worker/identity/physical/installer gates симуляцией. Core/runtime/
 board/pins/config/dependency changes не входят в этот этап; ARM исключает helper.
+
+## PR-07m — delivered metadata integration
+
+Читать docs/STM32_METADATA_TRANSPORT.md. Только --metadata-staging передаёт raw
+metadata/signature/key ID по shared-clock byte/fragment DATA link перед image.
+Producer arrays wiped; verifier читает delivered owned snapshot. Legacy modes
+сохранять. Independent P-256/raw request digest/full image/live RX/lease/model/
+clean close не подменять transport success. Metadata ID distinct; descriptor setup
+в fixture local input, не implemented authenticated handshake. Image RX starts
+до metadata и не reset; time charges его original windows. Snapshot alive/exclusive
+через config/handoff/completion lifetime. No new crypto owner/arena/runtime/Flash.
+Static assertions согласуют1024/72/31 bounds; DER length variable, per-run counts.

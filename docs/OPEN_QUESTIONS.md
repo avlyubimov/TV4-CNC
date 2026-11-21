@@ -1,6 +1,6 @@
 # Открытые вопросы и блокирующие решения
 
-Обновлено от main `277801e`,21ноября2026. Единственный свод аппаратных фактов —
+Обновлено от main `7640f43`,21ноября2026. Единственный свод аппаратных фактов —
 [HARDWARE_STATUS.md](HARDWARE_STATUS.md). Не заполнять неизвестные поля
 типовыми данными семейства, USB VID/PID, старым заказом или host mock.
 
@@ -49,6 +49,13 @@ existing deadlines на одной шкале. Это не измеренный 
 change: production reboot replay isolation/routing/authentication ещё открыты.
 Следующий программный contract — bounded raw metadata/signature transport,
 immutable snapshots и digest/session binding; физические blockers не закрыты.
+
+PR-07m [metadata container/RX](STM32_METADATA_TRANSPORT.md) передаёт raw document/
+signature/key ID в отдельном DATA stream. Transport output UNVERIFIED, raw SHA/
+signature всё ещё проверяет independent engine. Setup descriptor пока explicit
+local input; discovery/authentication/global cross-role ID namespace/persistence/
+routing/phase ownership и runtime resource budgets ещё открыты. Current pair
+checks не заменяют provider и не дают reboot replay isolation/physical authority.
 
 | ID | Что нужно подтвердить/решить | Блокирует |
 |---|---|---|

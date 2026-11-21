@@ -1,0 +1,2 @@
+PASS no new MCU caller/production handoff link; old C/API/dependencies/HMI/configs unchanged
+PASS host fixture/reviewer/metadata test targets excluded from both ARM projects

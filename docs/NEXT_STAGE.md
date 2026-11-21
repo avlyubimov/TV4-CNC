@@ -1,6 +1,6 @@
 # Следующий этап: release context и STM32 board contract
 
-21 ноября2026. База main `277801e`, PR #1–43 слиты, main CI5/5 PASS.
+21 ноября2026. База main `7640f43`, PR #1–44 слиты, main CI5/5 PASS.
 ESP32 HMI/Wi-Fi/OTA primitives/candidates и STM32 transport/admission существуют;
 не создавать их заново. Данный план не разрешает доступ к устройствам или merge.
 
@@ -159,7 +159,7 @@ transport ещё не реализован. Host45/sanitizers45/standalone19, or
 bss0/frame48 отдельно. Old4 archives43362text и codec1219 прежние. Нет новых
 аппаратных подтверждений/обращений к платам. [Evidence](evidence/build/update-fragments/README.md).
 
-## Текущая ветка PR-07l
+## Слитый PR #44, PR-07l
 
 [One-clock composition](STM32_UPDATE_TIMING.md): bounded host-only two-direction
 link с queue hold/drop/duplicate и одним clock для всех existing layers.
@@ -168,6 +168,17 @@ standalone21. Original deadlines/counters не сбрасываются при f
 late ACK/OFFER не оживляет expired layer. Host helper не входит в ARM; core code/
 footprint прежние. Это не production timing/resource/identity approval.
 [Evidence](evidence/build/update-fragment-timing/README.md).
+
+## Текущая ветка PR-07m
+
+[Metadata container/RX](STM32_METADATA_TRANSPORT.md): separate DATA identity,
+bounded raw document/signature/key ID, ACK после copy, one owned UNVERIFIED
+snapshot и сохранённые image deadlines.8 positive chains реально передают
+metadata по shared-clock byte/fragment link,3 refusals сохраняют independent
+signature/raw request digest/live image guards. Host50/sanitizers50/standalone24,
+ARM separate metadata1568text/data0/bss0/frame48; old libs прежние. Transport
+setup ещё local input, не authenticated wire exchange/runtime/installer.
+[Evidence](evidence/build/update-metadata-stage/README.md).
 
 ## Что делать дальше программно
 
@@ -192,10 +203,12 @@ footprint прежние. Это не production timing/resource/identity approv
    complete-message codec, не production wire adoption. PR-07k добавляет bounded
    fragment/reassembly с local route/generation/cancel/deadline/backpressure.
    PR-07l проверяет whole-message retry/queue/deadline composition на одной
-   synthetic шкале. Дальше bounded transport raw signed metadata/signature,
-   review immutable metadata ownership/bounds/digest binding и production
-   codebook. Production routing/reboot identity/authentication и measured
-   worker/bus/crypto budgets остаются blockers, не implicit defaults.
+   synthetic шкале. PR-07m добавляет bounded raw metadata/signature container и
+   receiver с distinct DATA ID/single owned snapshot/original request binding.
+   Дальше review metadata descriptor discovery/setup, shared image/metadata ID
+   namespace/phase lifetime и production codebook. Production routing/reboot
+   identity/authentication, durable ownership и measured worker/bus/crypto budgets
+   остаются blockers, не implicit defaults или permissive setup stub.
    Decode OK не обновляет context или timeouts; owner poll остаётся обязательным.
    Logical terminal outcome уже есть; он не authenticated и
    не переносит candidate через ожидание оператора. Для следующей операции

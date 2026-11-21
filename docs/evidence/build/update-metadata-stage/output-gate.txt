@@ -1,0 +1,1 @@
+PASS unexpected binary output rejected; temporary marker removed

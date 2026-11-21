@@ -1,5 +1,10 @@
 # Аппаратный статус TV4-CNC
 
+PR-07m [metadata transport](STM32_METADATA_TRANSPORT.md) — software host/ARM
+foundation, не новый аппаратный результат. RX1728/snapshot1212 host bytes и
+отдельный archive1568text не подтверждают F407 RAM/clock/CAN/bootloader reserve.
+Owner facts/ordinary8f0d899 прежние; никаких device/SWD/UART/reset/Flash/backup reads.
+
 PR-07l [one-clock host composition](STM32_UPDATE_TIMING.md) не добавляет
 аппаратных фактов. Synthetic delays/2551ms не measured CAN/CPU/latency или
 подтверждённый timing/RAM reserve. Owner facts/ordinary8f0d899 и blockers ниже

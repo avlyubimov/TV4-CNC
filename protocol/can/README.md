@@ -1,5 +1,11 @@
 # CAN: стендовый heartbeat и подготовка update transport
 
+PR-07m: [opt-in metadata container/RX](../../docs/STM32_METADATA_TRANSPORT.md)
+переносит raw document/signature/key ID через отдельный logical DATA stream.
+Original image ID/binding и metadata ID различаются, high-water/time сохраняются.
+Snapshot UNVERIFIED, actual raw SHA/signature проверяет прежний independent
+engine. Descriptor setup local input; no new wire kinds/IDs/driver/runtime.
+
 PR-07l: [HOST-only shared-clock fixture](../../docs/STM32_UPDATE_TIMING.md)
 проверяет очередь/потери/whole-message retries/deadlines на одной шкале вместе
 с existing logical transport и actual signed RAM admission. Нового driver,

@@ -1,5 +1,10 @@
 # PR-02 — STM32 Motion Foundation
 
+PR-07m от main7640f43: [metadata container/RX](STM32_METADATA_TRANSPORT.md)
+компилируется отдельно, не входит в MCU app/driver. Distinct metadata DATA ID,
+owned unverified snapshot и real verifier integration не задают RAM/Flash map,
+clock/GPIO/CAN или physical inhibit. Owner facts/аппаратные запреты прежние.
+
 PR-07l от main277801e: [shared-clock host tests](STM32_UPDATE_TIMING.md) проверяют
 очередь/потери/retry/deadlines через прежние fragment/logical/independent verifier
 APIs. Core/ARM code footprint прежний; scheduler не ARM/runtime target и не

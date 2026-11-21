@@ -1,5 +1,12 @@
 # OTA TV4-CNC — проект архитектуры
 
+PR-07m [metadata transport foundation](STM32_METADATA_TRANSPORT.md) добавляет
+bounded raw document/signature/key ID container и separate-ID DATA receiver.
+TAKEN_UNVERIFIED — owned bytes, не signature/hash/installer permission. Actual
+independent verifier/live image/lease/physical/operator/recovery gates прежние.
+Authenticated descriptor setup/identity/routing/runtime worker ещё не реализованы;
+действующая разметка/bootloader reserve/устройства не меняются.
+
 PR-07l [one-clock timing tests](STM32_UPDATE_TIMING.md) проверяет композицию
 existing fragments/negotiation/DATA/outcome/admission с queue delays/loss/retries.
 Только HOST fixture, не runtime scheduling/CAN driver или measured time budget.
