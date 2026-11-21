@@ -1,0 +1,21 @@
+ 1/19 Test  #1: boot_image_admission .............   Passed    0.13 sec
+ 2/19 Test  #2: boot_crypto_source ...............   Passed    0.10 sec
+ 3/19 Test  #3: boot_staging_source ..............   Passed    0.00 sec
+ 4/19 Test  #4: boot_update_handoff ..............   Passed    0.30 sec
+ 5/19 Test  #5: boot_staging_handoff .............   Passed    0.03 sec
+ 6/19 Test  #6: boot_wire_handoff ................   Passed    0.03 sec
+ 7/19 Test  #7: boot_fragment_handoff ............   Passed    0.03 sec
+ 8/19 Test  #8: boot_release_handoff .............   Passed    0.08 sec
+ 9/19 Test  #9: boot_image_profile ...............   Passed    0.00 sec
+10/19 Test #10: boot_release_admission ...........   Passed    0.10 sec
+11/19 Test #11: boot_release_versions ............   Passed    0.04 sec
+12/19 Test #12: update_wire_reference ............   Passed    0.02 sec
+13/19 Test #13: update_fragment_reference ........   Passed    0.02 sec
+14/19 Test #14: update_session ...................   Passed    0.00 sec
+15/19 Test #15: update_loopback ..................   Passed    0.04 sec
+16/19 Test #16: update_outcome ...................   Passed    0.01 sec
+17/19 Test #17: update_negotiation ...............   Passed    0.00 sec
+18/19 Test #18: update_wire ......................   Passed    0.05 sec
+19/19 Test #19: update_fragment ..................   Passed    0.04 sec
+100% tests passed, 0 tests failed out of 19
+Total Test time (real) =   1.05 sec

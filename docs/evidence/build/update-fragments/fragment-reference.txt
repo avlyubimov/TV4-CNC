@@ -1,0 +1,1 @@
+PASS3 independent vectors: ACK24/6, DATA31/8, DATA286/72 frames; partial DLC7/6; SHA256=0e2abb4d14cacfd05d66f9c4e021efab0395643230ed6e689bc7b00364b9ec8a

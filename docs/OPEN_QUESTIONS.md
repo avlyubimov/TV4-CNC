@@ -1,6 +1,6 @@
 # Открытые вопросы и блокирующие решения
 
-Обновлено от main `deace1c`,21ноября2026. Единственный свод аппаратных фактов —
+Обновлено от main `4db99df`,21ноября2026. Единственный свод аппаратных фактов —
 [HARDWARE_STATUS.md](HARDWARE_STATUS.md). Не заполнять неизвестные поля
 типовыми данными семейства, USB VID/PID, старым заказом или host mock.
 
@@ -35,6 +35,13 @@ PR-05c [cohort review](RELEASE_COHORT_REVIEW.md) закрывает offline ср
 signed release/source/channel/full artifacts и prospective HMI peer range.
 Это не production bundle/двусторонняя совместимость, protocol mapping,
 trusted installed-state/key provider, build attestation или install authority.
+
+PR-07k [bounded fragments](STM32_UPDATE_FRAGMENTS.md) закрывает local buffer/
+order/duplicate/deadline/backpressure software contract вокруг codec. Он не
+передаёт local generation/route на wire, не различает old frames после reboot
+и не аутентифицирует peer. Production identity/routing/queue lifetime, metadata/
+signature transport, measured bus/worker budget и old logical timeout composition
+ещё требуют review. Известные1MiB Flash не определяют RAM или bootloader sectors.
 
 | ID | Что нужно подтвердить/решить | Блокирует |
 |---|---|---|

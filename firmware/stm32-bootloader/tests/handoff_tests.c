@@ -3,6 +3,7 @@
 #include "update_negotiation.h"
 #include "staging_source.h"
 #include "update_wire.h"
+#include "update_fragments.h"
 #include <assert.h>
 #include <inttypes.h>
 #include <openssl/evp.h>
@@ -14,12 +15,41 @@ enum { IMAGE_MAX = 2049 };
 /* Only --wire-staging opts into byte transport. Existing test modes keep their
  * typed path; no firmware/library runtime caller is introduced. */
 static bool wire_mode;
+static bool fragment_mode;
 static unsigned wire_counts[9];
+/* Host-only transport clock/route, deliberately separate from all unchanged
+ * logical/crypto deadlines. No runtime timing or bus budget is claimed. */
+static tv4_fragment_tx fragment_tx;
+static tv4_fragment_rx fragment_rx;
+static unsigned fragment_frames, fragment_duplicates;
+static void fragment_hop(const tv4_wire_message *input,tv4_wire_message *output)
+{
+    assert(tv4_fragment_tx_begin(&fragment_tx,input,9,0)==TV4_FRAG_OK);
+    while(fragment_tx.storage.state==TV4_FRAG_SENDING) {
+        tv4_fragment_frame a,b;
+        assert(tv4_fragment_tx_peek(&fragment_tx,&a,9,0)==TV4_FRAG_FRAME);
+        /* A locally full queue does not consume/advance the frame. */
+        assert(tv4_fragment_tx_peek(&fragment_tx,&b,9,0)==TV4_FRAG_FRAME && memcmp(&a,&b,sizeof(a))==0);
+        tv4_fragment_result r=tv4_fragment_rx_receive(&fragment_rx,7,&a,9,0);
+        assert(r==TV4_FRAG_PENDING || r==TV4_FRAG_READY);
+        if(r==TV4_FRAG_PENDING && fragment_frames%17u==0) {
+            assert(tv4_fragment_rx_receive(&fragment_rx,7,&a,9,0)==TV4_FRAG_DUPLICATE);++fragment_duplicates;
+        }
+        r=tv4_fragment_tx_commit(&fragment_tx,&a,9,0);
+        assert(r==TV4_FRAG_COMMITTED || r==TV4_FRAG_FINISHED);++fragment_frames;
+    }
+    assert(tv4_fragment_rx_take(&fragment_rx,output,9,0)==TV4_FRAG_TAKEN);
+}
 static void wire_hop(tv4_wire_message *m)
 {
-    uint8_t raw[TV4_WIRE_MESSAGE_MAX];size_t n=0;tv4_wire_message decoded;
-    assert(tv4_update_wire_encode(m,raw,sizeof(raw),&n)==TV4_WIRE_OK);
-    assert(tv4_update_wire_decode(raw,n,&decoded)==TV4_WIRE_OK && decoded.kind==m->kind);
+    tv4_wire_message decoded;
+    if(fragment_mode)fragment_hop(m,&decoded);
+    else {
+        uint8_t raw[TV4_WIRE_MESSAGE_MAX];size_t n=0;
+        assert(tv4_update_wire_encode(m,raw,sizeof(raw),&n)==TV4_WIRE_OK);
+        assert(tv4_update_wire_decode(raw,n,&decoded)==TV4_WIRE_OK);
+    }
+    assert(decoded.kind==m->kind);
     ++wire_counts[(unsigned)m->kind];*m=decoded;
 }
 static tv4_neg_result wire_receive_neg(tv4_negotiation *s,const tv4_neg_message *message,uint64_t generation,uint32_t now)
@@ -1239,6 +1269,18 @@ static void staged_receiver_deadline(void)
 #define RUN(name) do { name(); puts("PASS " #name); } while (0)
 int main(int argc,char **argv)
 {
+    if(argc==2 && strcmp(argv[1],"--fragment-staging")==0) {
+        const tv4_fragment_config limits={100,500,160,TV4_FRAGMENT_VERSION};
+        assert(tv4_fragment_tx_init(&fragment_tx,&limits,7,9,0,0)==TV4_FRAG_OK);
+        assert(tv4_fragment_rx_init(&fragment_rx,&limits,7,9,0,0)==TV4_FRAG_OK);
+        wire_mode=true;fragment_mode=true;
+        RUN(staged_signed_chains);RUN(staged_crypto_rejections);RUN(staged_cleanup_and_revocation);RUN(staged_receiver_deadline);
+        printf("PASS fragments across 8 actual signed RAM chains; kind counts:");
+        for(unsigned i=1;i<=8;++i){assert(wire_counts[i]>0);printf(" %u=%u",i,wire_counts[i]);}
+        assert(fragment_duplicates>0);
+        printf("; frames=%u duplicates=%u; original logical/crypto/lease/model/deadline/cleanup gates unchanged\n",fragment_frames,fragment_duplicates);
+        return 0;
+    }
     if(argc==2 && strcmp(argv[1],"--wire-staging")==0) {
         wire_mode=true;
         RUN(staged_signed_chains);RUN(staged_crypto_rejections);RUN(staged_cleanup_and_revocation);RUN(staged_receiver_deadline);

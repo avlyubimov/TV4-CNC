@@ -1,0 +1,2 @@
+   text	   data	    bss	    dec	    hex	filename
+   1536	      0	      0	   1536	    600	update_fragments.c.obj (ex build-update-arm/libtv4_update_fragments.a)

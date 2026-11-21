@@ -1,5 +1,10 @@
 # Аппаратный статус TV4-CNC
 
+PR-07k [fragment/reassembly](STM32_UPDATE_FRAGMENTS.md) — только host/ARM compile,
+без новых аппаратных фактов. Local route/generation не actual CAN mapping,
+identity/authentication или физический safe state. Owner SWD/core/Flash/backup
+facts ниже сохранены; ordinary8f0d899 прежний. Устройства/backup не читались.
+
 PR-07j [byte codec](STM32_UPDATE_WIRE.md) проверен на host/ARM compile и signed
 RAM chains; это не физический CAN/link/identity/память или новый boot платы.
 Никаких SWD/UART/reset/Flash/backup rereads. Owner facts и ordinary8f0d899 прежние.

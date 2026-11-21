@@ -1,5 +1,10 @@
 # PR-02 — STM32 Motion Foundation
 
+PR-07k от main4db99df: [bounded fragment/reassembly](STM32_UPDATE_FRAGMENTS.md)
+проверен host/ARM и real signed RAM chains. Это opt-in software library, не
+startup/board image/CAN driver или физическое подтверждение памяти/пинов/частот.
+Owner SWD/Flash facts и все неизвестные ниже сохраняются, устройств не касались.
+
 Актуализация после mainb19a40b: [owner SWD/Flash/backup facts](evidence/hardware/stm32f407-owner-swd/README.md)
 приняты; [PR-02b startup/sections/no-I/O](STM32_STARTUP.md) готовит generic
 building blocks и synthetic link checks. Физическая маркировка/RAM/CCM/HSE/
