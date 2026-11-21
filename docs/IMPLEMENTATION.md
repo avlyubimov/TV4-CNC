@@ -1,6 +1,12 @@
 # Реализация: main, открытые PR и аппаратные границы
 
-PR-07p от main `555007d`: [bound TX egress/driver tickets](STM32_UPDATE_EGRESS.md)
+PR-07q от main `efa2727`: [очередь событий завершения](STM32_DRIVER_EVENTS.md) связывает actual
+egress и owned event FIFO. Full означает backpressure/retry; current-time service
+обрабатывает максимум1 event, не продлевает deadlines. Host61/sanitizers61/
+standalone35 PASS. Это serialized software API; реальные ISR/RTOS/driver/reset,
+identity/runtime/install и аппаратные gates остаются открытыми. Аппаратных операций не выполняли.
+
+Слитый PR #48, PR-07p от main `555007d`: [bound TX egress/driver tickets](STM32_UPDATE_EGRESS.md)
 добавляет bounded frame ledger и owned channel TX. Phase advance ждёт actual
 correlated local driver returns; timeout/uncertain сохраняют held claim. Host59/
 sanitizers59/standalone33 и independent signed chains проходят. Это local
@@ -22,7 +28,7 @@ Host54/sanitizers54/standalone28, independent verifier/lease/model/close пре�
 Это software local contract; authentication/persistent identity/runtime/installer
 и все physical F407 blockers открыты. Устройств не касались.
 
-Актуализация от main `555007d`, 21 ноября2026: PR #1–47 слиты. Owner SWD
+Актуализация от main `efa2727`, 21 ноября2026: PR #1–48 слиты. Owner SWD
 F407/core/Flash1024KiB/backup — [HARDWARE_STATUS](HARDWARE_STATUS.md).
 Startup/DATA/admission/handoff/preflight и PR-07e уже в main:
 [completion/outcome](STM32_UPDATE_OUTCOME.md) связывает full checks с lease close

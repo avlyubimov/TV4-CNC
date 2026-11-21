@@ -1,6 +1,6 @@
 # Открытые вопросы и блокирующие решения
 
-Обновлено от main `555007d`,21ноября2026. Единственный свод аппаратных фактов —
+Обновлено от main `efa2727`,21ноября2026. Единственный свод аппаратных фактов —
 [HARDWARE_STATUS.md](HARDWARE_STATUS.md). Не заполнять неизвестные поля
 типовыми данными семейства, USB VID/PID, старым заказом или host mock.
 
@@ -73,6 +73,11 @@ PR-07p [bound egress](STM32_UPDATE_EGRESS.md) закрывает local frame cus
 ticket/phase guard gap в software API, не truth/reset/completion provenance
 реального adapter. Unknown ownership не force-cleared, late return не upper
 resume. Trusted driver/event/identity/routing/runtime/physical/install gates open.
+
+PR-07q [owned event inbox](STM32_DRIVER_EVENTS.md) добавляет serialized FIFO,
+bounded current-time service и no-drop backpressure. Это не concurrent/ISR-safe
+очередь или реальный driver adapter; synchronization/provenance/reset/reconciliation,
+persistent identity/runtime/resources и все hardware/install gates остаются open.
 
 | ID | Что нужно подтвердить/решить | Блокирует |
 |---|---|---|

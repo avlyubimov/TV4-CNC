@@ -1,0 +1,68 @@
+Initial local HOST analyzer invocation omitted the bootloader include directory. Corrected to the CI include flags; no source or diagnostic suppression changes.
+firmware/stm32-bootloader/tools/motion_review.c:3:10: fatal error: release_admission.h: No such file or directory
+    3 | #include "release_admission.h"
+      |          ^~~~~~~~~~~~~~~~~~~~~
+compilation terminated.
+Second local invocation also omitted the required _POSIX_C_SOURCE=200809L. Final command uses the exact host.yml flags; no source or suppressions changed.
+firmware/stm32-bootloader/tools/motion_review.c: In function ‘same_file’:
+firmware/stm32-bootloader/tools/motion_review.c:18:12: error: ‘const struct stat’ has no member named ‘st_mtim’; did you mean ‘st_mtime’?
+   18 |         a->st_mtim.tv_sec==b->st_mtim.tv_sec && a->st_mtim.tv_nsec==b->st_mtim.tv_nsec &&
+      |            ^~~~~~~
+      |            st_mtime
+firmware/stm32-bootloader/tools/motion_review.c:18:31: error: ‘const struct stat’ has no member named ‘st_mtim’; did you mean ‘st_mtime’?
+   18 |         a->st_mtim.tv_sec==b->st_mtim.tv_sec && a->st_mtim.tv_nsec==b->st_mtim.tv_nsec &&
+      |                               ^~~~~~~
+      |                               st_mtime
+firmware/stm32-bootloader/tools/motion_review.c:18:52: error: ‘const struct stat’ has no member named ‘st_mtim’; did you mean ‘st_mtime’?
+   18 |         a->st_mtim.tv_sec==b->st_mtim.tv_sec && a->st_mtim.tv_nsec==b->st_mtim.tv_nsec &&
+      |                                                    ^~~~~~~
+      |                                                    st_mtime
+firmware/stm32-bootloader/tools/motion_review.c:18:72: error: ‘const struct stat’ has no member named ‘st_mtim’; did you mean ‘st_mtime’?
+   18 |         a->st_mtim.tv_sec==b->st_mtim.tv_sec && a->st_mtim.tv_nsec==b->st_mtim.tv_nsec &&
+      |                                                                        ^~~~~~~
+      |                                                                        st_mtime
+firmware/stm32-bootloader/tools/motion_review.c:19:12: error: ‘const struct stat’ has no member named ‘st_ctim’; did you mean ‘st_ctime’?
+   19 |         a->st_ctim.tv_sec==b->st_ctim.tv_sec && a->st_ctim.tv_nsec==b->st_ctim.tv_nsec;
+      |            ^~~~~~~
+      |            st_ctime
+firmware/stm32-bootloader/tools/motion_review.c:19:31: error: ‘const struct stat’ has no member named ‘st_ctim’; did you mean ‘st_ctime’?
+   19 |         a->st_ctim.tv_sec==b->st_ctim.tv_sec && a->st_ctim.tv_nsec==b->st_ctim.tv_nsec;
+      |                               ^~~~~~~
+      |                               st_ctime
+firmware/stm32-bootloader/tools/motion_review.c:19:52: error: ‘const struct stat’ has no member named ‘st_ctim’; did you mean ‘st_ctime’?
+   19 |         a->st_ctim.tv_sec==b->st_ctim.tv_sec && a->st_ctim.tv_nsec==b->st_ctim.tv_nsec;
+      |                                                    ^~~~~~~
+      |                                                    st_ctime
+firmware/stm32-bootloader/tools/motion_review.c:19:72: error: ‘const struct stat’ has no member named ‘st_ctim’; did you mean ‘st_ctime’?
+   19 |         a->st_ctim.tv_sec==b->st_ctim.tv_sec && a->st_ctim.tv_nsec==b->st_ctim.tv_nsec;
+      |                                                                        ^~~~~~~
+      |                                                                        st_ctime
+firmware/stm32-bootloader/tools/motion_review.c: In function ‘regular’:
+firmware/stm32-bootloader/tools/motion_review.c:24:8: error: implicit declaration of function ‘lstat’; did you mean ‘fstat’? [-Wimplicit-function-declaration]
+   24 |     if(lstat(path,&before)!=0 || !S_ISREG(before.st_mode) || before.st_size<=0 ||
+      |        ^~~~~
+      |        fstat
+firmware/stm32-bootloader/tools/motion_review.c:26:31: error: ‘O_CLOEXEC’ undeclared (first use in this function); did you mean ‘FD_CLOEXEC’?
+   26 |     int fd=open(path,O_RDONLY|O_CLOEXEC|O_NOFOLLOW|O_NONBLOCK);
+      |                               ^~~~~~~~~
+      |                               FD_CLOEXEC
+firmware/stm32-bootloader/tools/motion_review.c:26:31: note: each undeclared identifier is reported only once for each function it appears in
+firmware/stm32-bootloader/tools/motion_review.c:26:41: error: ‘O_NOFOLLOW’ undeclared (first use in this function)
+   26 |     int fd=open(path,O_RDONLY|O_CLOEXEC|O_NOFOLLOW|O_NONBLOCK);
+      |                                         ^~~~~~~~~~
+firmware/stm32-bootloader/tools/motion_review.c:29:13: error: implicit declaration of function ‘fdopen’; did you mean ‘fopen’? [-Wimplicit-function-declaration]
+   29 |     FILE *f=fdopen(fd,"rb");
+      |             ^~~~~~
+      |             fopen
+firmware/stm32-bootloader/tools/motion_review.c:29:13: error: initialization of ‘FILE *’ from ‘int’ makes pointer from integer without a cast [-Wint-conversion]
+firmware/stm32-bootloader/tools/motion_review.c: In function ‘small’:
+firmware/stm32-bootloader/tools/motion_review.c:38:54: error: implicit declaration of function ‘fileno’ [-Wimplicit-function-declaration]
+   38 |     bool ok=n>0 && n<=maximum && !ferror(f) && fstat(fileno(f),&after)==0 && same_file(&saved,&after);
+      |                                                      ^~~~~~
+firmware/stm32-bootloader/tools/motion_review.c: In function ‘now_ms’:
+firmware/stm32-bootloader/tools/motion_review.c:63:8: error: implicit declaration of function ‘clock_gettime’ [-Wimplicit-function-declaration]
+   63 |     if(clock_gettime(CLOCK_MONOTONIC,&t)!=0 || t.tv_sec<0 || t.tv_nsec<0) {s->clock_failed=true;return 0;}
+      |        ^~~~~~~~~~~~~
+firmware/stm32-bootloader/tools/motion_review.c:63:22: error: ‘CLOCK_MONOTONIC’ undeclared (first use in this function)
+   63 |     if(clock_gettime(CLOCK_MONOTONIC,&t)!=0 || t.tv_sec<0 || t.tv_nsec<0) {s->clock_failed=true;return 0;}
+      |                      ^~~~~~~~~~~~~~~

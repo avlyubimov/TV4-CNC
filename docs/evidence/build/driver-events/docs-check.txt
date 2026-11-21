@@ -1,0 +1,4 @@
+PASS 46 Markdown files / 440 local links resolve
+PASS 139 exact source/config/document SHA-256 entries
+PASS 36 text-only evidence files <300000 bytes, no private PEM/binary outputs
+PASS scoped optional protocol/tests/guards/CI/docs; no SDK/dependency/pin/partition/device changes
