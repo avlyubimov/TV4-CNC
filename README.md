@@ -97,11 +97,17 @@ completion/outcome через общие алгоритмы. Host34/sanitizers34
 legacy API/footprint и workspace сохранены. Нет production bundle/context,
 runtime caller/CAN/Flash installer или новых аппаратных действий.
 
-Текущая ветка от main `2ea51b6`: [PR-07i RAM staging source](docs/STM32_STAGING_SOURCE.md).
+Слитый PR #39 от main `2ea51b6`: [PR-07i RAM staging source](docs/STM32_STAGING_SOURCE.md).
 Ограниченный caller buffer, ACK после copy, запрет writes/discard при lease,
 monotonic tokens/high-water и проверка через реальные signed chains. Host36/
 sanitizers36/standalone13 PASS. Volatile RAM не выбирает production medium,
 не подтверждает RAM F407 и не добавляет runtime/Flash/device actions.
+
+Текущая ветка от main `2c06cdc`: [PR-05c offline release review](docs/RELEASE_COHORT_REVIEW.md).
+Независимые signed HMI/Motion документы и полные images сверяются по local
+selection/source/channel, descriptor и prospective peer range. HMI-only допустим.
+Host38/sanitizers38/standalone13 PASS; report metadata-only, все authority gates
+закрыты. Production bundle/context/installer и аппаратная проверка ещё открыты.
 
 [OTA ESP32 A/B и F407 по CAN](docs/OTA_ARCHITECTURE.md),
 [GitHub Releases/подписи/owner approval](docs/RELEASE_PROCESS.md),

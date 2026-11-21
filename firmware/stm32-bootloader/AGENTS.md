@@ -96,3 +96,13 @@ SEALED не crypto/install/live RX authority. Discard O(written), только w
 State160 плюс весь image buffer не подтверждают F407 RAM capacity; production
 medium/durable recovery/identity/runtime и hardware gates остаются открытыми.
 Нет нового device/SWD/UART/Flash/reset/backup read или самостоятельного merge.
+
+## PR-05c — host artifact review frontend
+
+Читать docs/RELEASE_COHORT_REVIEW.md. tools/motion_review.c только в host CMake
+ветке; не включать stdio/filesystem/clock frontend в ARM targets/firmware/artifacts.
+Вызывать существующий tv4_boot_admit_release с explicit local policy/key/selection,
+no defaults/signing/Flash/live lease/model claims. Bounded regular files, monotonic
+host clock, cleanup и historical JSON only; no new crypto/arena/embedded parser.
+Trusted host executable/quiescent FS — precondition, driver SHA не attestation.
+Report не production bundle/installer/actual hardware/context approval.

@@ -32,6 +32,11 @@ jobs:
             --source build-boot-arm/_deps/tv4_boot_mbedtls-src \
             --lock third_party/mbedtls/origin.json > evidence/source-check.txt
           python3 tools/check_boot_admission_build.py build-boot-arm > evidence/arm-budget.json
+          cmake --build build-boot-arm --target help > evidence/arm-targets.txt
+          if grep -q 'boot_motion_review' evidence/arm-targets.txt; then
+            echo 'ERROR: host filesystem reviewer leaked into ARM targets'; exit 1
+          fi
+          echo 'PASS host Motion review target absent from ARM build' > evidence/host-review-scope.txt
           cp third_party/mbedtls/origin.json evidence/crypto-origin.json
           gcc --version > evidence/static-analysis.txt
           for source in admission metadata release_policy image_profile update_handoff update_completion release_handoff staging_source; do
@@ -77,5 +82,6 @@ jobs:
             evidence/static-analysis.txt
             evidence/board-gate.txt
             evidence/output-gate.txt
+            evidence/host-review-scope.txt
           if-no-files-found: error
           retention-days: 14

@@ -62,6 +62,11 @@ consumer/lease backend. Explicit caller buffer не резервирует RAM/F
 доказывает, что image1024KiB помещается в F407 RAM. Production medium/budget и
 durable recovery не выбраны; новых hardware действий или подтверждений нет.
 
+PR-05c [offline cohort review](RELEASE_COHORT_REVIEW.md) добавляет host tooling
+для signed artifacts/identity/peer checks. Synthetic fixture reports не
+подтверждают installed versions, Flash layout, RAM, GPIO/CAN, bootability или
+physical state. Новых устройств/измерений нет, ordinary8f0d899 прежний.
+
 ## STM32F407 — подтверждение владельца после main b19a40b
 
 Приняты перечисленные в таблице результаты нового задания владельца:

@@ -61,6 +61,12 @@ if(CMAKE_CROSSCOMPILING)
 else()
   enable_testing()
   find_package(OpenSSL 3.0 REQUIRED COMPONENTS Crypto)
+  # Host filesystem/monotonic-clock frontend; never compiled into ARM firmware.
+  add_executable(boot_motion_review tools/motion_review.c)
+  target_link_libraries(boot_motion_review PRIVATE tv4_boot_admission)
+  target_compile_definitions(boot_motion_review PRIVATE _POSIX_C_SOURCE=200809L)
+  target_compile_options(boot_motion_review PRIVATE -Wall -Wextra -Werror -Wconversion -Wshadow -Wstrict-prototypes)
+
   add_executable(boot_admission_tests tests/admission_tests.c)
   target_link_libraries(boot_admission_tests PRIVATE tv4_boot_admission tv4_boot_crypto OpenSSL::Crypto)
   target_compile_options(boot_admission_tests PRIVATE -Wall -Wextra -Werror -Wconversion -Wshadow -Wstrict-prototypes -UNDEBUG)

@@ -1,0 +1,44 @@
+{
+  "channel": "stable",
+  "components": [
+    {
+      "app_descriptor_checked": true,
+      "component_version": "2.1.0",
+      "image_bytes": 336,
+      "key_id": "test-only",
+      "key_sha256": "de48eeaaf7624546c14c51a47dd7fd28333707c84f9e5ad97992e1055e7928d8",
+      "metadata_sha256": "be1ffb08a3d5b3c3c9afb62319c6788eea6fad1e62302527b14a8f2d3672d55d",
+      "name": "hmi",
+      "sdk": "6.1.1",
+      "sha256": "b2a163900bfe7e6c8b35072eb61dfc46f40123167f8f3307e7f9619283670e3f",
+      "signature_sha256": "d190a5ce7f42f34b3e4808d4de73022b391ffd4297fd91c4e9edf71c6e1f8498"
+    }
+  ],
+  "device_access": false,
+  "gates": {
+    "actual_installed_context": false,
+    "actual_layout": false,
+    "build_provenance": false,
+    "exact_release_owner_approval": false,
+    "install": false,
+    "key_provisioning": false,
+    "license_selection": false,
+    "live_source": false,
+    "motion_vectors": false,
+    "physical_quiescent": false,
+    "protocol_mapping": false,
+    "publish": false,
+    "recovery": false,
+    "runtime_resource_budget": false
+  },
+  "install_enabled": false,
+  "local_context_sha256": "69908d2c8703127514805c6ce3df7122ac58efbf64061e31dab2b22abc3792d6",
+  "motion_present": false,
+  "prospective_peer_checked": false,
+  "protocol_semver": "1.0.0",
+  "release_published": false,
+  "release_version": "3.0.0",
+  "schema": "tv4-release-cohort-review-draft-1",
+  "source_commit": "0123456789abcdef0123456789abcdef01234567",
+  "status": "consistent-offline-review-only"
+}

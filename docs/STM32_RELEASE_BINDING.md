@@ -116,3 +116,10 @@ backup1048576bytes/vector structure PASS сохранены без новых ч
 HSE/RAM/CCM/IRQ/erase/protection/GPIO/CAN/restore неизвестны. На ESP32 ordinary
 8f0d899. Нет device/SWD/UART/reset/Flash, ключей/релизов или самостоятельного merge.
 Откат — revert PR; migration и действия с устройствами не нужны.
+
+## PR-05c — host artifact review
+
+[Offline cohort tool](RELEASE_COHORT_REVIEW.md) вызывает этот же verifier через
+host-only frontend для raw Motion document/signature/image и explicit local
+policy. Нового embedded API/формата/ключей/версий нет. Historical host report
+не live source/vector/bootability/physical/install proof или production bundle.

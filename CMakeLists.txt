@@ -123,3 +123,11 @@ add_test(NAME ota_resource COMMAND ota_resource_tests)
 
 # Independent read-only admission and logical transport handoff; no runtime caller.
 add_subdirectory(firmware/stm32-bootloader)
+
+# Host-only signed artifact/cohort review; no new runtime/firmware caller.
+foreach(group cli cohort)
+  add_test(NAME release_review_${group} COMMAND ${Python3_EXECUTABLE}
+    ${CMAKE_CURRENT_SOURCE_DIR}/tests/release_cohort_tests.py
+    --driver $<TARGET_FILE:boot_motion_review> --signer $<TARGET_FILE:ota_policy_driver> --group ${group})
+  set_tests_properties(release_review_${group} PROPERTIES TIMEOUT 60)
+endforeach()
