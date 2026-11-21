@@ -109,17 +109,21 @@ PR и Actions; не копировать код уже открытого PR. Д
 
 ## Текущее задание
 
-PR #1–35 слиты, база main `f0bd866`; пять workflow PASS, открытых PR перед
+PR #1–36 слиты, база main `3381236`; пять workflow PASS, открытых PR перед
 работой нет. Startup/DATA/crypto/handoff/preflight/completion/outcome, release
-policy review и local firmware info UI существуют. PR-07f: читать
-STM32_UPDATE_NEGOTIATION.md/NEXT_STAGE.md и protocol/bootloader scoped rules.
-Только logical REQUEST/OFFER/ACCEPT/CONFIRM, fixed boot pair/pool counters,
-opaque binding/tag/local generation, bounded clocks/replies и one-time take.
-Не назначать production wire version/IDs/codec/bitrate, entropy/persistent
-identity source, actual keys/versions/profile/Flash addresses или runtime caller.
-Matching forged handshake может пройти; это не authentication/install/physical
-authority. DATA/outcome APIs/deadlines и independent crypto прежние. Не копировать
-live pool/coordinator; clear не сбрасывает replay counters и не reconfigure.
+policy review/local firmware info UI и negotiation существуют. PR-07g: читать
+STM32_RELEASE_BINDING.md/NEXT_STAGE.md и bootloader scoped rules. Новый opt-in
+release-draft-1 API проверяет raw signature/release selection/component SemVer/
+channel/source/target/image через тот же bounded independent crypto engine.
+Legacy admission-draft-1 остаётся strict11 fields; новый draft15 fields не
+становится production HMI/CAN/bundle ABI. Numeric counters не переводить в SemVer.
+No actual keys/versions/context/profile/Flash addresses или runtime caller.
+Новый API ещё не вызывается source-lease/handoff/completion coordinator; нельзя
+обходить его live context/vector/deadline gates ради нового signed document.
+Boot identity/persistence/authentication/raw wire provider по-прежнему отсутствует.
+Matching forged handshake может пройти; это не install/physical authority.
+DATA/outcome APIs/deadlines прежние. Не копировать live pool/coordinator;
+clear не сбрасывает replay counters и не reconfigure.
 UI snapshot72bytes/UNKNOWN/DEVICE/SIMULATOR прежний; app descriptor не trusted
 OTA context. Draft counters не переводить в SemVer; HMI success не заменяет
 независимый verifier. Owner повторил VGT6, full marking/HSE неизвестны.
@@ -138,7 +142,7 @@ quarantine, clear/reopen его не скрывают. RX deadline не прод
 задаёт RAM/sector/bootloader layout. Startup synthetic fixture не является
 F407 profile. BOARD_IMAGE=ON всегда fail; no .bin/ELF upload. No-I/O adapter
 inhibit=false/watchdog unavailable; нельзя объявлять physical safe state.
-Host/sanitizers31 suites, standalone8, ARM/static/board/output gates; прежняя
+Host/sanitizers33 suites, standalone10, ARM/static/board/output gates; прежняя
 ESP SDK matrix8 сохраняется. HMI UI/config/board/dependency locks/security прежние.
 Слитый UI PR-08a/меню/dashboard/Wi-Fi/STOP сохранять. Новых update/download/
 install buttons/history или ложной readiness нет.

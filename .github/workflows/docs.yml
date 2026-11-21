@@ -21,6 +21,7 @@ jobs:
           test -s docs/STM32_IMAGE_PREFLIGHT.md
           test -s docs/STM32_UPDATE_OUTCOME.md
           test -s docs/STM32_UPDATE_NEGOTIATION.md
+          test -s docs/STM32_RELEASE_BINDING.md
           test -s docs/RELEASE_POLICY_REVIEW.md
           test -s docs/FIRMWARE_INFO_UI.md
           echo 'Documentation scaffold present'

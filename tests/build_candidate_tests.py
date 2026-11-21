@@ -249,7 +249,10 @@ class CandidateTests(unittest.TestCase):
     def test_image_corruption_truncation_extra_bytes_and_wrong_sdk(self):
         self.create()
         path = self.build / 'other.bin'
-        for raw in (self.app[:-1], self.app + b'x', self.app[:-1] + b'x',
+        # A constant replacement may equal the existing SHA tail byte.
+        damaged = self.app[:-1] + bytes([self.app[-1] ^ 1])
+        self.assertNotEqual(damaged, self.app)
+        for raw in (self.app[:-1], self.app + b'x', damaged,
                     image('other-version'), image(self.version, '5.3.2')):
             with self.subTest(length=len(raw)):
                 path.write_bytes(raw)

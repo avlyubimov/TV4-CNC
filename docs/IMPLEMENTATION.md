@@ -1,6 +1,6 @@
 # Реализация: main, открытые PR и аппаратные границы
 
-Актуализация от main `f0bd866`, 21 ноября2026: PR #1–35 слиты. Owner SWD
+Актуализация от main `3381236`, 21 ноября2026: PR #1–36 слиты. Owner SWD
 F407/core/Flash1024KiB/backup — [HARDWARE_STATUS](HARDWARE_STATUS.md).
 Startup/DATA/admission/handoff/preflight и PR-07e уже в main:
 [completion/outcome](STM32_UPDATE_OUTCOME.md) связывает full checks с lease close
@@ -13,11 +13,19 @@ native analyzer3units и local SDK6.1.1 headless/rev12 PASS; это истори
 display build/SDK/profile, unknown peer/protocol, no runtime updater. Host30/
 sanitizers30, XRGB8888/RGB565 lifecycle/layout и local SDK6.1.1 headless/rev12
 PASS; прежняя CI matrix8 и STM32 gates сохранены.
-Текущая ветка PR-07f [fresh logical negotiation](STM32_UPDATE_NEGOTIATION.md):
+Слитый PR #36, PR-07f [fresh logical negotiation](STM32_UPDATE_NEGOTIATION.md):
 REQUEST/OFFER/ACCEPT/CONFIRM, volatile monotonic pool/peer high-water и bounded
 one-time DATA setup. Host31/sanitizers31/standalone8, ARM/static/source/image/
 output PASS;1024 sessions +6 new signed chains/3 negatives. Нет identity provider,
 wire/CAN authentication, actual keys/context или install/physical permission.
+Текущая ветка PR-07g [independent release binding](STM32_RELEASE_BINDING.md):
+отдельный signed Motion draft с release/component SemVer/channel/source и
+target/counter/image checks через прежний engine. Host33/sanitizers33/standalone10,
+2745 version comparisons и ARM/static/source/image/output PASS; workspace17664
+прежний. Новый API ещё не подключён к lease/coordinator/runtime и не задаёт
+production bundle/schema/keys/installed context. Legacy strict11-field API прежний.
+Push CI также обнаружил старый build-candidate flaky fixture: constant `x` мог
+совпасть с SHA tail. Теперь test XOR1 гарантированно меняет байт; verifier прежний.
 Нет runtime caller, Flash writer/map/commit/jump или физического safe-state proof.
 Следующий этап — [NEXT_STAGE](NEXT_STAGE.md). Ниже исторические снимки отдельных PR;
 их старые counts/«не реализовано» не заменяют текущий статус этого абзаца.

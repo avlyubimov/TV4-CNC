@@ -301,3 +301,17 @@ positive и сохраняют quarantine ownership. Peer message не authentic
 install/ARM authority. Operator wait не держит lease; новая операция требует
 fresh negotiation/full saved-byte verification/physical/operator/recovery gates.
 Нет actual MCU map/Flash writer/runtime или изменения DATA deadline.
+
+## PR-07g — independent Motion release document
+
+[Signed release binding](STM32_RELEASE_BINDING.md) добавляет отдельный opt-in
+15-field Motion draft с release/component SemVer/channel/source и прежними
+hardware/profile/counter/protocol/image checks. Один raw signature + полный
+image SHA/EOF проверяются существующей независимой Mbed TLS; local unknowns
+отклоняются. Legacy11-field draft/API и HMI manifest остаются прежними.
+
+Это standalone software candidate, пока без source-lease/handoff/coordinator
+adapter. Production bundle↔component linkage, local versions/keys/context и
+physical/operator/recovery/install gates ещё требуют review. Source commit —
+signer claim, не build provenance proof. Никаких actual Flash addresses, wire
+codec/IDs/bitrate, board image/keys/release или hardware actions.

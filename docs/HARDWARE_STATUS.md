@@ -47,6 +47,11 @@ PR-07f [logical negotiation](STM32_UPDATE_NEGOTIATION.md) — только RAM/A
 и signed integration. Test boot epochs/pool counters не являются измеренными
 device identity или persistent recovery. Новых подключений/прошивки/измерений нет.
 
+PR-07g [independent release binding](STM32_RELEASE_BINDING.md) — host/ARM software
+проверка signed document/образа. Local policy и RAM budgets не подтверждают MCU
+context, memory/erase map или readiness. Новых hardware действий нет; ordinary8f0d899
+и owner facts ниже сохраняются.
+
 ## STM32F407 — подтверждение владельца после main b19a40b
 
 Приняты перечисленные в таблице результаты нового задания владельца:

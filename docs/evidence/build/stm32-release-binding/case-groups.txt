@@ -1,0 +1,7 @@
+13: Conformance PASS: signed metadata=115, accepted=16, rejected=99; SemVer comparisons=2809; Base64 cases=130
+30: PASS 6 signed negotiation -> DATA -> P-256/SHA -> vectors -> close -> outcome/ACK chains; all four handshake losses, DATA/final ACK/report losses
+30: PASS 3 negotiated binding failures: changed image, invalid signature, valid re-signed metadata with mismatched raw SHA; no retained lease
+30: PASS 19 handoff/completion groups; completion=568; state=2136 receipt=136 workspace=17664; RAM only, no install/device access
+32: PASS maximum-width fields: document=604 padded=1024 workspace=17664 candidate=224 policy=288
+32: PASS 8 signed release admission groups; raw P-256/SHA, versions/selection/target/image, cleanup/faults; RAM only, no install/device access
+33: PASS 2745 independent bounded SemVer comparisons; 31-byte subset, numeric prerelease not truncated to uint32

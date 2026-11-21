@@ -1,5 +1,6 @@
 #include "admission.h"
 #include "metadata.h"
+#include "release_metadata.h"
 #include <limits.h>
 #include <string.h>
 #include <mbedtls/ecdsa.h>
@@ -105,8 +106,9 @@ static bool resource_failure(int code)
     return code == MBEDTLS_ERR_MPI_ALLOC_FAILED || code == MBEDTLS_ERR_ECP_ALLOC_FAILED;
 }
 
-tv4_boot_result tv4_boot_admit(const tv4_boot_policy *policy,
-    const tv4_boot_request *request, tv4_boot_workspace *w, tv4_boot_candidate *out)
+static tv4_boot_result admit(const tv4_boot_policy *policy,
+    const tv4_boot_request *request, tv4_boot_workspace *w, tv4_boot_candidate *out,
+    const tv4_boot_release_policy *release_policy, tv4_boot_release_candidate *release_out)
 {
     if (active) return TV4_BOOT_BUSY; /* including output: no live-storage writes */
     if (out == NULL) return TV4_BOOT_ARGUMENT;
@@ -178,9 +180,15 @@ tv4_boot_result tv4_boot_admit(const tv4_boot_policy *policy,
     mbedtls_ecdsa_free(&ec); /* return MPI workspace before streaming */
     result = guard(&r, &d);
     if (result != TV4_BOOT_VERIFIED_CANDIDATE) goto cleanup;
-    if (!tv4_boot_parse_metadata(w->metadata, r.metadata_bytes, &metadata)) { result = TV4_BOOT_METADATA; goto cleanup; }
+    bool parsed = release_policy == NULL ? tv4_boot_parse_metadata(w->metadata, r.metadata_bytes, &metadata) :
+        tv4_boot_parse_release_metadata(w->metadata, r.metadata_bytes, &metadata, release_out);
+    if (!parsed) { result = TV4_BOOT_METADATA; goto cleanup; }
     result = compatible(&p, &metadata);
     if (result != TV4_BOOT_VERIFIED_CANDIDATE) goto cleanup;
+    if (release_policy != NULL) {
+        result = tv4_boot_release_compatible(release_policy, release_out);
+        if (result != TV4_BOOT_VERIFIED_CANDIDATE) goto cleanup;
+    }
     if (mbedtls_sha256_starts(&hash, 0) != 0) { result = TV4_BOOT_CRYPTO; goto cleanup; }
     uint32_t offset = 0;
     while (offset < metadata.image_size) {
@@ -226,6 +234,45 @@ cleanup:
     if (result == TV4_BOOT_VERIFIED_CANDIDATE) result = final;
     active = false;
     if (result == TV4_BOOT_VERIFIED_CANDIDATE) *out = candidate;
+    mbedtls_platform_zeroize(&candidate, sizeof(candidate));
+    return result;
+}
+
+tv4_boot_result tv4_boot_admit(const tv4_boot_policy *policy,
+    const tv4_boot_request *request, tv4_boot_workspace *w, tv4_boot_candidate *out)
+{
+    return admit(policy, request, w, out, NULL, NULL);
+}
+
+tv4_boot_result tv4_boot_admit_release(const tv4_boot_release_policy *policy,
+    const tv4_boot_request *request, tv4_boot_workspace *w, tv4_boot_release_candidate *out)
+{
+    _Static_assert(sizeof(tv4_boot_release_candidate) <= 224, "release candidate regression");
+    if (active) return TV4_BOOT_BUSY;
+    if (out == NULL) return TV4_BOOT_ARGUMENT;
+    if (policy == NULL || request == NULL || w == NULL) {
+        *out = (tv4_boot_release_candidate){0};
+        return TV4_BOOT_ARGUMENT;
+    }
+    if (!separate(out, sizeof(*out), w, sizeof(*w)) ||
+        !separate(out, sizeof(*out), policy, sizeof(*policy)) ||
+        !separate(out, sizeof(*out), request, sizeof(*request)) ||
+        !separate(w, sizeof(*w), policy, sizeof(*policy)) ||
+        !separate(w, sizeof(*w), request, sizeof(*request))) return TV4_BOOT_ARGUMENT;
+    tv4_boot_release_policy p = *policy;
+    tv4_boot_request r = *request;
+    if (aliases(out, sizeof(*out), r.metadata, r.metadata_bytes, TV4_BOOT_METADATA_MAX) ||
+        aliases(out, sizeof(*out), r.signature, r.signature_bytes, TV4_BOOT_SIGNATURE_MAX) ||
+        aliases(out, sizeof(*out), r.key_id, r.key_id_bytes, TV4_BOOT_ID_BYTES) ||
+        (p.image.key_count <= TV4_BOOT_KEYS_MAX &&
+         aliases(out, sizeof(*out), p.image.keys, p.image.key_count * sizeof(*p.image.keys),
+                 TV4_BOOT_KEYS_MAX * sizeof(*p.image.keys)))) return TV4_BOOT_ARGUMENT;
+    *out = (tv4_boot_release_candidate){0};
+    if (!tv4_boot_release_policy_valid(&p)) return TV4_BOOT_POLICY;
+    tv4_boot_release_candidate candidate = {0};
+    tv4_boot_result result = admit(&p.image, &r, w, &candidate.image, &p, &candidate);
+    if (result == TV4_BOOT_VERIFIED_CANDIDATE) *out = candidate;
+    else *out = (tv4_boot_release_candidate){0};
     mbedtls_platform_zeroize(&candidate, sizeof(candidate));
     return result;
 }
