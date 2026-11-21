@@ -125,3 +125,13 @@ handoff target не линкуется с fragments/codec. Raw metadata/signatur
 clock не physical timing или расширение logical deadlines. Real independent
 crypto/model/lease/cleanup/revocation обязательны; local counter/route/generation
 не authentication/install/physical proof. No device/Flash/startup map/runtime.
+
+## PR-07l — one-clock signed fixture
+
+Читать docs/STM32_UPDATE_TIMING.md. --fragment-timing только HOST, использует
+shared f.now для queue/fragments/negotiation/DATA/outcome/verifier callbacks.
+Legacy modes сохранять. Real independent crypto/model/lease/clean-close и
+expired receiver отказ обязательны; test keys только RAM. Raw metadata/signature
+приходят из fixture, не по каналу; CPU crypto duration не measured/тарифицирована.
+Не подменять worker/identity/physical/installer gates симуляцией. Core/runtime/
+board/pins/config/dependency changes не входят в этот этап; ARM исключает helper.

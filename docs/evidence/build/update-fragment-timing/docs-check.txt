@@ -1,0 +1,3 @@
+PASS 834 local Markdown file links; external URLs/anchors not fetched
+PASS 103 source SHA-256 records; evidence excluded
+PASS embedded C/API/HMI/configs/partitions/dependencies/ESP matrix unchanged; text-only evidence

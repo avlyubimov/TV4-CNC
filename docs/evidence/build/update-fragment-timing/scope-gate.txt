@@ -1,0 +1,2 @@
+PASS host reviewer/fragment scheduler/timing targets absent from ARM; production handoff links unchanged
+PASS embedded C/API/limits/pins/HMI/SDK/security/partitions/dependencies unchanged

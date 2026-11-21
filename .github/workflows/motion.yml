@@ -41,6 +41,11 @@ jobs:
             -DCMAKE_TOOLCHAIN_FILE="$PWD/firmware/stm32-motion/cmake/arm-none-eabi.cmake" \
             -DCMAKE_BUILD_TYPE=MinSizeRel
           cmake --build build-update-arm
+          cmake --build build-update-arm --target help > evidence/update-arm-targets.txt
+          if grep -Eq 'tv4_fragment_test_link|update_fragment_timing_tests' evidence/update-arm-targets.txt; then
+            echo 'ERROR: host fragment fixture leaked into ARM targets'; exit 1
+          fi
+          echo 'PASS host fragment fixture absent from ARM build' > evidence/fragment-test-scope.txt
           mkdir -p build-update-static
           gcc --version > evidence/update-static-analysis.txt
           for source in update_session update_outcome update_negotiation update_wire update_fragments; do
@@ -118,6 +123,7 @@ jobs:
             evidence/update-static-analysis.txt
             evidence/wire-budget.json
             evidence/fragment-budget.json
+            evidence/fragment-test-scope.txt
             evidence/wire-budget-negative.txt
             evidence/fragment-budget-negative.txt
           if-no-files-found: error

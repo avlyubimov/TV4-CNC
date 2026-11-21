@@ -109,9 +109,22 @@ PR и Actions; не копировать код уже открытого PR. Д
 
 ## Текущее задание
 
-PR #1–42 слиты, база main `4db99df`, main CI5/5 PASS,
+PR #1–43 слиты, база main `277801e`, main CI5/5 PASS,
 открытых PR перед работой нет.
-PR-07k: читать STM32_UPDATE_FRAGMENTS.md и protocol/can/AGENTS.md. Только
+PR-07l: читать STM32_UPDATE_TIMING.md. HOST-ONLY bounded test link, две one-frame
+queues, один caller clock для fragments/logical/lease/crypto. Никакого runtime
+owner/driver/identity provider/default timing/Flash. Не переносить helper из
+protocol/can/tests в ARM; targets/import/scope checks обязательны. Core C/API/
+limits/deadlines прежние, no reinit/counter/time reset ради recovery. Fragment
+clear только explicit recoverable timeout policy теста; context/clock sticky.
+34 DATA scenarios +8 signed positive/2 refusal chains, host47/sanitizers47/
+standalone21, analyzer13 embedded+2 host и прежние ARM/source/board/output gates.
+Synthetic2551ms не measured bus/CPU/throughput: crypto CPU не тарифицируется,
+metadata/signature не передаются по каналу. Old START принимается новым RX с
+другой local generation: known replay blocker, не security success. Production
+identity/routing/queue/metadata/runtime/hardware/install gates остаются открытыми.
+
+Слитый PR #43, PR-07k: читать STM32_UPDATE_FRAGMENTS.md и protocol/can/AGENTS.md. Только
 opt-in single-owner bounded envelope/reassembly:8-byte maximum, owned286byte
 TX/RX buffers, explicit local route/generation, retained counters без wrap,
 peek/exact local-queue commit, no silent RX restart, single take после codec.

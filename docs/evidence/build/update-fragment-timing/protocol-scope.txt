@@ -1,0 +1,1 @@
+PASS standalone protocol ARM build excludes host scheduler/timing targets

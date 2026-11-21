@@ -1,5 +1,10 @@
 # PR-02 — STM32 Motion Foundation
 
+PR-07l от main277801e: [shared-clock host tests](STM32_UPDATE_TIMING.md) проверяют
+очередь/потери/retry/deadlines через прежние fragment/logical/independent verifier
+APIs. Core/ARM code footprint прежний; scheduler не ARM/runtime target и не
+physical CAN/clock/startup/RAM proof. Аппаратные факты и запреты ниже сохраняются.
+
 PR-07k от main4db99df: [bounded fragment/reassembly](STM32_UPDATE_FRAGMENTS.md)
 проверен host/ARM и real signed RAM chains. Это opt-in software library, не
 startup/board image/CAN driver или физическое подтверждение памяти/пинов/частот.

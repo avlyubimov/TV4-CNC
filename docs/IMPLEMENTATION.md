@@ -1,6 +1,6 @@
 # Реализация: main, открытые PR и аппаратные границы
 
-Актуализация от main `4db99df`, 21 ноября2026: PR #1–42 слиты. Owner SWD
+Актуализация от main `277801e`, 21 ноября2026: PR #1–43 слиты. Owner SWD
 F407/core/Flash1024KiB/backup — [HARDWARE_STATUS](HARDWARE_STATUS.md).
 Startup/DATA/admission/handoff/preflight и PR-07e уже в main:
 [completion/outcome](STM32_UPDATE_OUTCOME.md) связывает full checks с lease close
@@ -60,7 +60,7 @@ transfer/identity/runtime/Flash/hardware действий; decode OK не instal
 Push CI также обнаружил старый build-candidate flaky fixture: constant `x` мог
 совпасть с SHA tail. Теперь test XOR1 гарантированно меняет байт; verifier прежний.
 Нет runtime caller, Flash writer/map/commit/jump или физического safe-state proof.
-Текущая ветка PR-07k [fragment/reassembly draft](STM32_UPDATE_FRAGMENTS.md):
+Слитый PR #43, PR-07k [fragment/reassembly draft](STM32_UPDATE_FRAGMENTS.md):
 separate opt-in C11, bounded286byte message/<=8byte envelope, local identity,
 no counter wrap/reset, peek/queue commit, exact duplicates/order/conflict,
 progress/total deadlines и READY backpressure/single codec take. Host45/
@@ -69,6 +69,13 @@ analyzer13 embedded+1 host/ARM/source/scope/board/output PASS. ARM fragments
 1536text/data0/bss0/frame48 отдельно, old libraries/codec прежние. Это не
 production identity/routing/CAN driver/metadata transfer/runtime/installer;
 аппаратных действий или новых измерений нет.
+Текущая ветка PR-07l [shared-clock composition](STM32_UPDATE_TIMING.md):
+HOST-only scheduler с bounded queues/delays/drop/duplicate проверяет существующие
+fragment и logical APIs на одной шкале.34 DATA scenarios/8 signed positive chains/
+2 refusals, host47/sanitizers47/standalone21; actual analyzer13 embedded+2 host,
+ARM/source/board/output/scope gates PASS, core footprint прежний. Логические
+сроки не продлеваются при fragment recovery; replay после reboot остаётся
+открытым. Нет runtime/metadata transport/физических измерений/устройств.
 Следующий этап — [NEXT_STAGE](NEXT_STAGE.md). Ниже исторические снимки отдельных PR;
 их старые counts/«не реализовано» не заменяют текущий статус этого абзаца.
 

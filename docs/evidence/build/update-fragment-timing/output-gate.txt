@@ -1,0 +1,1 @@
+PASS unexpected binary output rejected; temporary non-firmware marker removed
