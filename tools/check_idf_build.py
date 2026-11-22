@@ -16,7 +16,7 @@ def require(condition, message):
         raise ValueError(message)
 
 
-def verify(build, profile, version, *, write_report=True):
+def verify(build, profile, version, *, write_report=True, memory_diagnostics=False):
     require(profile in {"headless", "rev12", "rev12-memory-bench", "rev12-tls-bench", "rev12-ota"}, "unknown profile")
     require(version in {"5.3.2", "6.1.1"}, "unvalidated SDK")
     build = Path(build)
@@ -34,6 +34,9 @@ def verify(build, profile, version, *, write_report=True):
     require(config.get("TV4_UTC_TLS_BENCH", False) == (profile == "rev12-tls-bench"),
             "UTC/TLS probe must be enabled only for explicit TLS bench profile")
     ota = profile == "rev12-ota"
+    require(type(memory_diagnostics) is bool and (not memory_diagnostics or ota), "memory diagnostics require explicit OTA selection")
+    require(config.get("TV4_OTA_MEMORY_DIAGNOSTICS", False)==memory_diagnostics,
+            "memory tracing must match explicit build selection")
     require(config.get("TV4_OTA_ENABLED", False) == ota, "OTA requires explicit migration profile")
     for name in ("SPIRAM_XIP_FROM_PSRAM","SPIRAM_FETCH_INSTRUCTIONS","SPIRAM_RODATA"):
         require(config.get(name,False)==ota, "PSRAM XiP is required only in the explicit OTA profile")
@@ -97,6 +100,7 @@ def verify(build, profile, version, *, write_report=True):
                   tls_record_out=config.get("MBEDTLS_SSL_OUT_CONTENT_LEN"),
                   memory_bench=config.get("TV4_OTA_MEMORY_BENCH", False), tls_bench=config.get("TV4_UTC_TLS_BENCH", False), psram="octal 80MHz" if profile != "headless" else "disabled", images=images, partitions=partitions,
                   device_access=False, physical_performance="not measured")
+    if ota:result['ota_memory_diagnostics']=memory_diagnostics
     if write_report:
         (build / "validation.json").write_text(json.dumps(result, indent=2) + "\n")
         print(json.dumps(result, indent=2))
@@ -104,9 +108,9 @@ def verify(build, profile, version, *, write_report=True):
 
 
 if __name__ == "__main__":
-    if len(sys.argv) != 4:
-        raise SystemExit("Usage: check_idf_build.py BUILD_DIR headless|rev12|rev12-memory-bench|rev12-tls-bench|rev12-ota 5.3.2|6.1.1")
+    if len(sys.argv) not in (4,5) or (len(sys.argv)==5 and sys.argv[4]!='--memory-diagnostics'):
+        raise SystemExit("Usage: check_idf_build.py BUILD_DIR PROFILE SDK [--memory-diagnostics]")
     try:
-        verify(*sys.argv[1:])
+        verify(*sys.argv[1:4],memory_diagnostics=len(sys.argv)==5)
     except (ValueError, KeyError, OSError, struct.error) as error:
         raise SystemExit(f"Build validation failed: {error}")

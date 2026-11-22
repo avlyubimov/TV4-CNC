@@ -21,6 +21,7 @@ tv4_ota_boot_result tv4_ota_boot_observe(tv4_ota_boot_window *w,uint32_t now,boo
 #include "ota_local_context.h"
 #include "installer_sdk.h"
 #include "memory.h"
+#include "memory_diagnostics.h"
 #include "sntp_source.h"
 #include "wifi_service.h"
 #include "esp_ota_ops.h"
@@ -50,10 +51,15 @@ static bool cancelled(void *c) {
     bool v=cancel_requested || !health || (uint32_t)(stamp-health_ms)>=500;
     portEXIT_CRITICAL(&mux);return v;
 }
-static void publish(tv4_update_state state,unsigned error) {
+/* Only the actual OTA worker calls this, including after diagnostic logging.
+ * A failed xTaskCreate in main must never publish main's stack as OTA's. */
+static void worker_stack(void) {
     uint32_t stack=uxTaskGetStackHighWaterMark(NULL);
+    portENTER_CRITICAL(&mux);status.stack_watermark=stack;status.stack_valid=true;portEXIT_CRITICAL(&mux);
+}
+static void publish(tv4_update_state state,unsigned error) {
     portENTER_CRITICAL(&mux);if(state==TV4_UPDATE_READY && cancel_requested) {state=TV4_UPDATE_ERROR;error=TV4_SESSION_CANCEL+4;}
-    status.state=state;status.error=error;status.stack_watermark=stack;portEXIT_CRITICAL(&mux);
+    status.state=state;status.error=error;portEXIT_CRITICAL(&mux);
 }
 static bool commit(void *c) {
     (void)c;portENTER_CRITICAL(&mux);uint32_t stamp=now_ms(NULL);
@@ -76,19 +82,27 @@ static bool configured(void) {
 }
 static void operation(bool install) {
     tv4_ota_memory lease={0};tv4_time_anchor anchor={0};unsigned error=1;bool committed=false;tv4_ota_sdk sdk={.approval=&approved,.commit_allowed=commit};
+    bool measured=false;tv4_ota_memory_window measuring=TV4_MEM_WORKSPACE;
     publish(install?TV4_UPDATE_WRITING:TV4_UPDATE_CHECKING,0);
     if(!configured() || !tv4_ota_sdk_layout_valid() || !wifi_service_online())goto done;
+    tv4_ota_memory_window_begin(measuring);measured=true;
     if(tv4_ota_memory_acquire_psram(&lease,&mem_policy)!=TV4_MEMORY_OK) {error=2;goto done;}
+    tv4_ota_memory_window_end(measuring);tv4_ota_memory_report_window();measured=false;
     tv4_sntp_report sync;
-    if(tv4_sntp_sync(&anchor,&clock_policy,10000,cancelled,NULL,&sync)!=TV4_SNTP_OK || !sync.cleanup_ok) {error=3;goto done;}
+    measuring=TV4_MEM_SNTP;tv4_ota_memory_window_begin(measuring);measured=true;
+    tv4_sntp_result synced=tv4_sntp_sync(&anchor,&clock_policy,10000,cancelled,NULL,&sync);
+    tv4_ota_memory_window_end(measuring);tv4_ota_memory_report_window();measured=false;
+    if(synced!=TV4_SNTP_OK || !sync.cleanup_ok) {error=3;goto done;}
     esp_chip_info_t chip;esp_chip_info(&chip);
     tv4_session_request r={OTA_MANIFEST_URL,&trust,{15000,300000,(uint16_t)chip.revision,true},15000,300000,5000,3,true,install};
     tv4_session_io io={&anchor,fetch,now_ms,cancelled};tv4_ota_resource_report report;
     bool ok;
+    measuring=TV4_MEM_SESSION;tv4_ota_memory_window_begin(measuring);measured=true;
     if(install) {
         tv4_session_sink sink={&sdk,tv4_ota_sdk_begin,write_chunk,tv4_ota_sdk_seal,tv4_ota_sdk_activate,tv4_ota_sdk_abort};
         ok=tv4_ota_session_install_guarded(lease.session,&r,&io,&resources,tv4_ota_resource_sample_current,NULL,&report,&sink);
     }else ok=tv4_ota_session_run_guarded(lease.session,&r,&io,&resources,tv4_ota_resource_sample_current,NULL,&report);
+    tv4_ota_memory_window_end(measuring);tv4_ota_memory_report_window();measured=false;
     if(!ok) {error=4+(unsigned)lease.session->result.error;goto done;}
     committed=install && lease.session->result.state==TV4_SESSION_INSTALLED;
     if(!install) {
@@ -99,7 +113,13 @@ static void operation(bool install) {
     }
     error=0;
 done:
+    if(measured) {tv4_ota_memory_window_end(measuring);tv4_ota_memory_report_window();}
+    /* SDK monitor start allocates/asserts: never add that operation after
+     * successful boot selection. Preserve the existing manual-reboot path. */
+    if(!committed)tv4_ota_memory_window_begin(TV4_MEM_CLEANUP);
     tv4_time_forget(&anchor);tv4_ota_memory_result released=tv4_ota_memory_release(&lease);
+    if(!committed) {tv4_ota_memory_window_end(TV4_MEM_CLEANUP);tv4_ota_memory_report_window();}
+    worker_stack();
     /* No failing condition after boot selection: cleanup cannot revoke an
      * already committed update. Reboot remains an explicit operator action. */
     if(committed) {
@@ -130,10 +150,16 @@ static void worker(void *c) {
         vTaskDelay(pdMS_TO_TICKS(50));
     }
     passed=passed && tv4_ota_sdk_layout_valid();
-    if(!tv4_ota_sdk_finish_boot(passed))esp_restart();
+    tv4_ota_memory_window_end(TV4_MEM_BOOT);
+    tv4_ota_memory_report_startup();tv4_ota_memory_report_window();
+    bool finished=tv4_ota_sdk_finish_boot(passed);
+    ESP_LOGI("tv4_ota","boot_self_test checks_pass=%u sdk_finish=%u",(unsigned)passed,(unsigned)finished);
+    worker_stack();
+    if(!finished)esp_restart();
     if(esp_task_wdt_delete(NULL)!=ESP_OK)esp_restart();
     publish(!passed?TV4_UPDATE_BOOT_FAILED:configured()?TV4_UPDATE_IDLE:TV4_UPDATE_SETUP,0);
     for(;;) {
+        worker_stack();
         tv4_update_command cmd;if(xQueueReceive(commands,&cmd,portMAX_DELAY)!=pdTRUE)continue;
         if(cmd==TV4_UPDATE_REBOOT)esp_restart();
         else operation(cmd==TV4_UPDATE_INSTALL);
@@ -142,8 +168,9 @@ static void worker(void *c) {
 bool tv4_ota_service_start(void) {
     if(started)return false;
     started=true;commands=xQueueCreateStatic(1,sizeof(tv4_update_command),queue_bytes,&queue_state);
+    tv4_ota_memory_window_begin(TV4_MEM_BOOT);
     bool ok=commands && xTaskCreate(worker,"tv4_ota",TV4_OTA_PROVISIONED?8192:3072,NULL,1,NULL)==pdPASS;
-    if(!ok) {publish(TV4_UPDATE_SETUP,21);const esp_partition_t *r=esp_ota_get_running_partition();esp_ota_img_states_t state;
+    if(!ok) {tv4_ota_memory_window_end(TV4_MEM_BOOT);publish(TV4_UPDATE_SETUP,21);const esp_partition_t *r=esp_ota_get_running_partition();esp_ota_img_states_t state;
         if(r && esp_ota_get_state_partition(r,&state)==ESP_OK && state==ESP_OTA_IMG_PENDING_VERIFY)esp_restart();}
     return ok;
 }

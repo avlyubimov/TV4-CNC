@@ -37,6 +37,15 @@ docs/BOARD_ADAPTER.md, docs/RUNTIME_DIAGNOSTICS.md и docs/OTA_ARCHITECTURE.md.
   docs/ESP32_OTA_INSTALLATION.md. Отсутствующий owner-local trust/context
   блокирует установку; проверочные ключи только host. Подготовка USB-пакета
   не разрешает его запись. Текущие установленные образы этим PR не меняются.
+- P1 после PR #61: читать docs/ESP32_OTA_MEMORY_PHASES.md. TV4_OTA_MEMORY_DIAGNOSTICS
+  default off; explicit flag1 только rev12-ota и другой build tree. SDK minimum
+  start выделяет/asserts bookkeeping и не отклоняет nested start: один serialized
+  service owner, запрет concurrent TLS bench, source/ELF gates обязательны.
+  Ни startup callbacks, ни per-chunk путь не логируют/не начинают окна. Main
+  публикует семь фиксированных samples, существующий worker выводит ограниченно.
+  Не приписывать late worker_stack_at_emit старой startup-точке; не выдавать
+  own compiler frames за full runtime stack. Install/crypto/resource authority,
+  heap clocks/DMA reserve/TLS records/framebuffer и installed fecc05d прежние.
 
 Исторические контракты ниже описывают слитые read-only этапы; P1 расширяет только
 explicit OTA profile, не включает installer в прежних профилях и не снимает

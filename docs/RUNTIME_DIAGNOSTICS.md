@@ -1,5 +1,26 @@
 # Диагностика HMI: instrumentation и границы измерений
 
+## P1: после стенда fecc05d
+
+[Аппаратные16samples](evidence/hardware/2026-11-22-esp32-ota-migration/README.md)
+дали historical internal minimum112bytes при текущих22851..22907. Причина пока
+не установлена: SDK суммирует per-heap history, включая изменения DMA reserve
+ещё до app_main. Следующая [фазная firmware instrumentation](ESP32_OTA_MEMORY_PHASES.md)
+готовится без новых device operations. Добавочные schema1 поля только в OTA:
+`ota_stack_valid`, `ota_stack`, `heap_min_scope` (history/window/unknown).
+Во время scope transition минимум помечается unknown; другие heap values не
+объявляются атомарным simultaneous snapshot. Ordinary JSON сохраняет прежние поля.
+
+SDK local-minimum windows только при явном TV4_OTA_MEMORY_DIAGNOSTICS=1;
+default off. Startup samples публикует main, bounded UART вывод делает OTA-worker
+после self-test. `sample_stack` относится к sampler, `worker_stack_at_emit` — к
+позднему выводу; не смешивать их. В normal OTA есть явный boot_self_test marker
+и watermark действительного worker, без ложного main stack при task-create fail.
+Полный call-stack peak, CPU/FPS/latency и configured TLS/install budget ещё
+не подтверждены; bookkeeping guards не являются production floors.
+
+## Исторический baseline PR-03
+
 PR-03 расширяет код ниже: [HMI_PERFORMANCE.md](HMI_PERFORMANCE.md).
 Добавлены heap/PSRAM minima, task stacks, reset/counters/histograms и bounded
 worker serial JSON export. Per-core CPU и аппаратная latency/soak не завершены.

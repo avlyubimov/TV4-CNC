@@ -5,6 +5,12 @@
 #include "wifi_service.h"
 #include "export.h"
 #include "service.h"
+#include "memory_diagnostics.h"
+#if CONFIG_TV4_OTA_ENABLED
+#define MEMORY_PHASE(phase) ((void)tv4_ota_memory_startup(phase))
+#else
+#define MEMORY_PHASE(phase) ((void)0)
+#endif
 #if CONFIG_TV4_OTA_MEMORY_BENCH
 #include "memory_probe.h"
 #endif
@@ -56,6 +62,7 @@ static void boot_error(lv_display_t *display,string_id reason,esp_err_t error) {
     for(;;) { lv_timer_handler();vTaskDelay(pdMS_TO_TICKS(20)); }
 }
 void app_main(void) {
+    MEMORY_PHASE(TV4_MEM_APP_ENTRY);
 #if CONFIG_TV4_OTA_ENABLED
     /* Starts the bounded first-boot rollback deadline before any board I/O. */
     if(!tv4_ota_service_start())ESP_LOGE(TAG,"OTA worker unavailable");
@@ -66,6 +73,7 @@ void app_main(void) {
 #else
     ESP_LOGW(TAG,"Headless simulation: no GPIO, display, touch or CAN initialized");
 #endif
+    MEMORY_PHASE(TV4_MEM_RGB_READY);
     ESP_LOGI(TAG,"Memory before UI: internal=%u PSRAM=%u bytes",
         (unsigned)heap_caps_get_free_size(MALLOC_CAP_INTERNAL|MALLOC_CAP_8BIT),
         (unsigned)heap_caps_get_total_size(MALLOC_CAP_SPIRAM));
@@ -78,6 +86,7 @@ void app_main(void) {
     lv_display_set_color_format(display,LV_COLOR_FORMAT_RGB565);
     lv_display_set_buffers(display,buffer,NULL,bytes,LV_DISPLAY_RENDER_MODE_PARTIAL);
     lv_display_set_flush_cb(display,flush);
+    MEMORY_PHASE(TV4_MEM_DRAW_READY);
     boot_view_create();lv_refr_now(display);
 #if CONFIG_TV4_BOARD_REV12
     /* The boot screen is visible before GT911 initialization. */
@@ -100,11 +109,13 @@ void app_main(void) {
     lv_indev_set_type(input,LV_INDEV_TYPE_POINTER);lv_indev_set_read_cb(input,read_touch);
     lv_indev_set_display(input,display);lv_indev_wait_release(input);
 #endif
+    MEMORY_PHASE(TV4_MEM_TOUCH_READY);
     boot_view_stage(BOOT_NETWORK);lv_refr_now(display);
 #if CONFIG_TV4_BOARD_REV12
     /* Networking is optional; connection/DHCP never holds up the HMI boot. */
     if(!wifi_service_start()) ESP_LOGE(TAG,"Wi-Fi task creation failed");
 #endif
+    MEMORY_PHASE(TV4_MEM_WIFI_STARTED);
     boot_view_stage(BOOT_INTERFACE);lv_refr_now(display);
     dashboard_create();
     /* Local running-build metadata, sampled once by LVGL owner at startup.
@@ -124,6 +135,7 @@ void app_main(void) {
     if(app)firmware_info_set(&info,app->version,sizeof(app->version),app->idf_ver,
         sizeof(app->idf_ver),FIRMWARE_INFO_DEVICE,profile);
     dashboard_set_firmware_info(&info);
+    MEMORY_PHASE(TV4_MEM_DASHBOARD_READY);
     diagnostics_t *diagnostics=dashboard_diagnostics();
     diagnostics->record.board=true;
 #if CONFIG_TV4_BOARD_REV12
@@ -151,6 +163,7 @@ void app_main(void) {
 #endif
     ESP_LOGI(TAG,"UI ready: LVGL %d.%d.%d, 800x480 RGB565, draw buffer=%u bytes",
         LVGL_VERSION_MAJOR,LVGL_VERSION_MINOR,LVGL_VERSION_PATCH,(unsigned)bytes);
+    MEMORY_PHASE(TV4_MEM_UI_READY);
 #if CONFIG_TV4_OTA_MEMORY_BENCH || CONFIG_TV4_UTC_TLS_BENCH
     uint32_t bench_ready=tick_ms();bool bench_requested=false;
 #endif
@@ -177,11 +190,19 @@ void app_main(void) {
         if((uint32_t)(report_now-last_resources)>=1000) {
             diag_record_t *r=&diagnostics->record;
             r->resources_valid=true;r->display_errors=display_errors;
+#if CONFIG_TV4_OTA_ENABLED
+            uint32_t memory_revision=tv4_ota_memory_scope_revision();
+#endif
             r->internal_free=heap_caps_get_free_size(MALLOC_CAP_INTERNAL|MALLOC_CAP_8BIT);
             r->internal_min=heap_caps_get_minimum_free_size(MALLOC_CAP_INTERNAL|MALLOC_CAP_8BIT);
             r->internal_largest=heap_caps_get_largest_free_block(MALLOC_CAP_INTERNAL|MALLOC_CAP_8BIT);
             r->psram_free=heap_caps_get_free_size(MALLOC_CAP_SPIRAM);
             r->psram_min=heap_caps_get_minimum_free_size(MALLOC_CAP_SPIRAM);
+#if CONFIG_TV4_OTA_ENABLED
+            r->ota_enabled=true;r->heap_min_scope=(uint32_t)tv4_ota_memory_scope_since(memory_revision);
+            tv4_update_snapshot update;tv4_ota_service_snapshot(&update);
+            r->ota_stack_valid=update.stack_valid;r->ota_stack=update.stack_valid?update.stack_watermark:0;
+#endif
             r->psram_total=heap_caps_get_total_size(MALLOC_CAP_SPIRAM);
             r->owner_stack=uxTaskGetStackHighWaterMark(NULL);
             wifi_snapshot_t wifi;

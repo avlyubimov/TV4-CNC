@@ -23,11 +23,18 @@ int main(void) {
     uint32_t counter=UINT32_MAX;diag_increment(&counter);assert(counter==UINT32_MAX);
     char json[1536];memset(&d.record,0xff,sizeof(d.record));
     d.record.board=true;d.record.resources_valid=true;d.record.rev12=true;
+    d.record.ota_enabled=false;d.record.ota_stack_valid=false;
     assert(diagnostics_format(&d.record,json,sizeof(json)));
     assert(strstr(json,"\"cpu_percent\":null"));
     assert(strstr(json,"\"touch_to_display_ms\":null"));
     assert(!strstr(json,"password") && !strstr(json,"ssid"));
     assert(json[0]=='{' && json[strlen(json)-1]=='}');
+    assert(!strstr(json,"ota_stack") && !strstr(json,"heap_min_scope"));
+    d.record.ota_enabled=true;d.record.ota_stack_valid=true;d.record.heap_min_scope=1;
+    assert(diagnostics_format(&d.record,json,sizeof(json)));
+    assert(strstr(json,"\"ota_stack_valid\":true") && strstr(json,"\"heap_min_scope\":1"));
+    d.record.ota_stack_valid=false;
+    assert(diagnostics_format(&d.record,json,sizeof(json)) && strstr(json,"\"ota_stack\":0"));
     char tiny[4]="abc";assert(!diagnostics_format(&d.record,tiny,sizeof(tiny)) && !tiny[0]);
     assert(!diagnostics_format(&d.record,NULL,0));
     puts("Diagnostics windows, wraparound, p95 bounds, saturation and bounded export PASS");

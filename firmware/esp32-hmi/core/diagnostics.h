@@ -14,6 +14,8 @@ typedef struct {
     uint32_t queue_drops, mock_can_timeouts, display_errors, export_drops;
     uint32_t wifi_attempts, wifi_disconnects, wifi_ip_events, wifi_queue_drops;
     uint32_t touch_errors, reset_reason, watchdog_boot;
+    uint32_t ota_stack,heap_min_scope;
+    bool ota_enabled,ota_stack_valid;
     bool board, resources_valid, rev12;
 } diag_record_t;
 typedef struct {

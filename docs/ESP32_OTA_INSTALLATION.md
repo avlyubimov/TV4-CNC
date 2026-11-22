@@ -181,6 +181,13 @@ binding и не подменяется этим пакетом.
 
 ## Память и пределы программной проверки
 
+Следующая [фазная диагностика](ESP32_OTA_MEMORY_PHASES.md) добавляет OTA-worker
+watermark/boot marker и отдельный explicit TV4_OTA_MEMORY_DIAGNOSTICS=1 build.
+Normal default off не сбрасывает global minima. Diagnostic app готовят для
+отдельного app-only стенда на уже действующей карте, не через повторение USB
+migration bundle: production migration inspector намеренно отвергает flag1.
+Это не owner key/context, новый resource floor или runtime OTA acceptance.
+
 Session workspace остаётся 34000 байт и размещается только в PSRAM; download
 не хранит весь образ. TLS использует существующий SDK external allocator,
 records 16384/4096, CA bundle и certificate-date checks. DMA reserve 64 КиБ,

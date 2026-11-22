@@ -77,5 +77,14 @@ bool diagnostics_format(const diag_record_t *r,char *out,size_t size) {
         r->mock_can_timeouts,r->display_errors,r->export_drops,r->wifi_attempts,
         r->wifi_disconnects,r->wifi_ip_events,r->wifi_queue_drops,r->touch_errors,
         r->reset_reason,r->watchdog_boot);
-    if(n<0 || (size_t)n>=size) { out[0]=0;return false; }return true;
+    if(n<0 || (size_t)n>=size) { out[0]=0;return false; }
+    if(r->ota_enabled) {
+        /* Additive schema-1 fields only in the OTA image. Ordinary export
+         * retains its existing bytes; 0/1/2 = history/window/unknown. */
+        size_t used=(size_t)n-1;
+        n=snprintf(out+used,size-used,",\"ota_stack_valid\":%s,\"ota_stack\":%" PRIu32 ",\"heap_min_scope\":%" PRIu32 "}",
+            r->ota_stack_valid?"true":"false",r->ota_stack_valid?r->ota_stack:0,r->heap_min_scope<=2?r->heap_min_scope:2);
+        if(n<0 || (size_t)n>=size-used) {out[0]=0;return false;}
+    }
+    return true;
 }

@@ -144,7 +144,7 @@ PR и Actions; не копировать код уже открытого PR. Д
 
 ## Текущее задание: P1 после первой USB migration
 
-База отчётного PR — main c41a3d24bbca9f6c55015de9431dcef32651cd92, PR #1–60 слиты.
+База текущей интеграции — main6f95d27d90093d1dffcf43cf2bbc12acd1063fde, PR #1–61 слиты.
 22 ноября отдельный разрешённый стенд fecc05d/rev12-ota/SDK6.1.1 завершён:
 четыре записи/MD5/readback, неизменность NVS/PHY до app boot, factory boot,
 PSRAM8MiB/XiP/RGB/GT911/UI и owner HMI/touch/saved Wi-Fi/OTA SETUP PASS.
@@ -174,8 +174,15 @@ Restore ESP32, network/power loss, load/FPS/tearing/latency/soak остаютс�
 нового применимого разрешения. Initial bootloader/table/factory migration не
 защищается app rollback; ordinary flash/возврат старой карты не автоматизировать.
 
-Текущий отчётный PR только docs/evidence: исполняемые firmware/SDK/dependency/
-CI pins не менять. Никакого самостоятельного merge/release, eFuse/option bytes/
+Docs-only отчёт PR #61 завершён. По продолжению владельца следующий отдельный
+PR интегрирует измерения памяти/стека в реальную rev12-ota firmware, см.
+docs/plans/P1_ESP32_MEMORY_PHASES.md. SDK local-minimum monitor выделяет/asserts
+bookkeeping и не отвергает nested start: только один владелец в explicit
+TV4_OTA_MEMORY_DIAGNOSTICS=1 build, default off, отдельный build tree. Normal OTA
+получает stack validity и явный boot result без сброса глобальных minima.
+Не менять SDK/dependency pins, GPIO/Flash map/DMA reserve/TLS records/framebuffer
+или trust/context/floors. Новое ПО пока только build/tests, installed fecc05d
+не менять без нового exact-image разрешения. Никакого самостоятельного merge/release, eFuse/option bytes/
 OTP/CAN/motion. Hardware action only after an explicit applicable owner approval.
 
 ## Исторические контракты слитых этапов

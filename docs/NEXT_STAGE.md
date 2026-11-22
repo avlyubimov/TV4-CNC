@@ -1,6 +1,7 @@
 # P1 — после первой USB-миграции ESP32
 
-База отчёта — main `c41a3d24bbca9f6c55015de9431dcef32651cd92`, PR #1–60 слиты.
+База текущей интеграции — main `6f95d27d90093d1dffcf43cf2bbc12acd1063fde`,
+PR #1–61 слиты. Аппаратный отчёт миграции относится к более раннему fecc05d.
 На ESP32 после отдельно разрешённого стенда оставлен `fecc05d/rev12-ota`,
 factory, SDK6.1.1 и карта tv4-16m-ab-v1. [Миграция, UART и подтверждение владельца](evidence/hardware/2026-11-22-esp32-ota-migration/README.md).
 F407 ee7d179 не открывался; его [базовый стенд](evidence/hardware/2026-11-22-f407-ee7d179-bench/README.md)
@@ -25,6 +26,16 @@ self-test/rollback/watchdog и prepare/independent verify USB migration bundle.
 
 ## Что уже проверено и что делать дальше
 
+[Программная интеграция фазных измерений](ESP32_OTA_MEMORY_PHASES.md)
+дала настоящий rev12-ota ELF/BIN из clean391d429: явный boot result, OTA-worker stack и
+отдельный opt-in TV4_OTA_MEMORY_DIAGNOSTICS=1 вариант в другом build tree.
+Normal default off не вызывает SDK minimum monitor. Наблюдённые432bytes state/
+112bytes own compiler frame и host/sanitizer tests относятся к software build,
+не к установленной firmware или runtime пикам. Обе SDK×5 profiles и два trace
+варианта собраны:12/12 PASS; host/sanitizers87/87. [Evidence](evidence/build/esp32-ota-memory-phases/README.md).
+Новый стенд требует отдельного разрешения на exact image/backup/возврат; на
+плате пока fecc05d. Действующую A/B карту не мигрировать повторно.
+
 1. **Готово:** clean-main fecc05d, rev12-ota/SDK6.1.1 без ключа собран;
    prepare/independent verify bundle PASS. App SHA-256
    `de55953fc9e3c4080cb277d734ca7d1f02c74880db38dac0f4b53830f587d021`.
@@ -32,7 +43,8 @@ self-test/rollback/watchdog и prepare/independent verify USB migration bundle.
    whole-device MD5/local SHA-256/legacy layout/app inspection PASS; после reset
    owner HMI/touch/Wi-Fi PASS. Snapshot SHA-256
    `47c4f9c4e6d7fb1fcfce2b0065c2f69af0ea01664d1407b3504ee6e4a6a13107`.
-   Это checkpoint текущего8f0d899; factory backup сохранён отдельно.
+   Это checkpoint8f0d899 до миграции, не снимок нынешнего fecc05d;
+   factory backup сохранён отдельно.
 3. **Готово:** USB migration четырёх областей/verify/readback, NVS/PHY до boot,
    factory boot/PSRAM8MiB/XiP/GT911/RGB/UI, owner HMI/touch/saved Wi-Fi/SETUP.
    Один capture89.114s, весь сеанс117.810s, recovery не понадобился. Restore
@@ -41,7 +53,7 @@ self-test/rollback/watchdog и prepare/independent verify USB migration bundle.
    реальный configured installer. 16 срезов без нагрузки дали internal
    free22851..22907/largest7680/history112 и PSRAM free6090732bytes. History112
    — сумма SDK per-heap minima, не одновременный остаток/OOM proof и не floor;
-   причина/пик открыты. OTA-worker watermark отсутствует; render/event samples0
+   причина/пик открыты. В отчёте fecc05d OTA-worker watermark отсутствует; render/event samples0
    не измеряют FPS/latency. Не уменьшать DMA reserve/TLS records/framebuffer
    ради прохождения. Не назначать production пороги по этим или HEAD-срезам.
 5. Нужны owner public key и утверждённые SemVer/time/resource context,

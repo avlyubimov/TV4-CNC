@@ -1,12 +1,18 @@
 # План реализации TV4-CNC: функциональные приоритеты P0–P5
 
-База отчёта main c41a3d2 / PR #1–60. 22 ноября [первая USB migration ESP32](evidence/hardware/2026-11-22-esp32-ota-migration/README.md)
+База текущей интеграции main6f95d27 / PR #1–61. 22 ноября [первая USB migration ESP32](evidence/hardware/2026-11-22-esp32-ota-migration/README.md)
 завершена: four writes/verify/NVS preservation/factory fecc05d/PSRAM8MiB/XiP/
 owner HMI/touch/saved Wi-Fi/SETUP PASS. На ESP32 теперь rev12-ota и карта
 tv4-16m-ab-v1; на F407 ee7d179 без изменений. Backup8f0d899/two-NVMe сохранён,
 restore не испытывался. P1 configured install/confirm/rollback/power-loss и
 RAM/stack/performance budget ещё открыты: historical internal minimum112bytes
 требует разбора, не устанавливает simultaneous OOM/floor. Сеанс закрыт.
+
+Получен software результат P1 — [фазный диагностический ELF/BIN](ESP32_OTA_MEMORY_PHASES.md)
+с opt-in minimum monitor и достоверным OTA-worker stack. Normal flag0 сохраняет
+global history; измерения flag1 требуют нового отдельно разрешённого стенда.
+Clean391d429:12/12 build variants и host/sanitizers87/87 PASS; новые compile/host
+результаты не заменяют hardware данные fecc05d выше.
 
 ## Исторический итог P0 и программной подготовки
 
@@ -25,9 +31,10 @@ HTTPS/crypto и review16MiB factory+двух OTA slots/USB migration. Новых
 операций или будущих CAN loader addresses это не разрешает.
 
 [Успешный стенд ee7d179](evidence/hardware/2026-11-22-f407-ee7d179-bench/README.md). [Следующий этап](NEXT_STAGE.md), [приоритеты](IMPLEMENTATION_PRIORITIES.md).
-Базовый P0 hardware acceptance выполнен; PR #58 слит, текущая база main d1317a8.
+Базовый P0 hardware acceptance выполнен; PR #58 слит, база того этапа main d1317a8.
 P1 интегрирован программно: [installer/rollback/migration](ESP32_OTA_INSTALLATION.md);
-ключ/context не настроены по решению владельца, аппаратных операций нет.
+ключ/context не настроены по решению владельца; аппаратная migration/factory
+проверка описана выше, configured OTA ещё не испытан.
 Приводы, CAN и independent bootloader остаются отдельными этапами.
 
 ## Порядок и критерии результата

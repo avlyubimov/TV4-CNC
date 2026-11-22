@@ -1,0 +1,378 @@
+{
+  "source_commit": "391d42989df8f2b89bffdfdb07947626317ec0e9",
+  "source_tree": "44461c0292f8c35e13845d8e139ced934cf9938e",
+  "source_display_version": "391d429",
+  "source_worktree_clean": true,
+  "device_access": false,
+  "hardware_performance": "not measured",
+  "dependency_lock_sha256": {
+    "firmware/esp32-hmi/locks/idf-5.3.2.lock": "bdabdb06b5b4572369ca86e5cfc446ab6c270c56dab0500a304dcf7e112c94d0",
+    "firmware/esp32-hmi/locks/idf-6.1.1.lock": "d09551b18bfceae3a3f4c5c50583d81907bc7f2e47e3629182cbf1d1914a10b1"
+  },
+  "started_utc": "2026-11-22T10:41:21.875102+00:00",
+  "completed_utc": "2026-11-22T10:46:35.804250+00:00",
+  "sdk_toolchains": {
+    "6.1.1": {
+      "mode": "local",
+      "sdk_commit": "051e4c4eb20346e043cdd47bc388fde75ff8af63",
+      "sdk_tracked_changes": false,
+      "compiler": "xtensa-esp-elf-gcc (crosstool-NG esp-15.2.0_20251204) 15.2.0"
+    },
+    "5.3.2": {
+      "mode": "docker",
+      "image": "espressif/idf@sha256:5b8f58d9d9caa45b689a31a0b6a0cc53b84594e0ba5fdd8d28eeef7d6123242a",
+      "compiler": "xtensa-esp-elf-gcc (crosstool-NG esp-13.2.0_20240530) 13.2.0",
+      "sdk_commit": "9d7f2d69f50d1288526d4f1027108e314e8c879f"
+    }
+  },
+  "dependencies": {
+    "lvgl/lvgl": "9.2.2",
+    "espressif/esp_lcd_touch": "1.2.1",
+    "espressif/esp_lcd_touch_gt911": "1.1.3"
+  },
+  "byte_reproducibility_across_builds": "not tested; APP_REPRODUCIBLE_BUILD remains disabled",
+  "builds": [
+    {
+      "sdk": "6.1.1",
+      "mode": "local",
+      "profile": "headless",
+      "memory_diagnostics": false,
+      "status": "PASS",
+      "project_version": "391d429",
+      "elf_sha256": "ce93051450f58822a7292aebd4f7b057ab231d9ed161208d50dc743809f902a8",
+      "sdkconfig_sha256": "a28935407150b4c250e587d01ec9cde5b71735ca67b46fdb25d3a3ab8dd6bfe1",
+      "partition_table_sha256": "5e71c3c890e04714daa03b21a0d23953a2dadf9fdf15eec02b886f7b6e9f8c81",
+      "images": {
+        "tv4_hmi.bin": {
+          "bytes": 1061056,
+          "sha256": "e55516e7310d51e571a5b7780864f423e98b710ebd498505d0f18d95f16e8678"
+        },
+        "bootloader/bootloader.bin": {
+          "bytes": 20656,
+          "sha256": "0fbba2571d2fea48e4be15b525ef5d28c3e730ddc737f6abfbe0af550c4fa307"
+        }
+      },
+      "module_writable_bytes": 0,
+      "max_own_compiler_frame_bytes": 32,
+      "sdk_monitor_linked": [],
+      "build_configuration_verified": true
+    },
+    {
+      "sdk": "6.1.1",
+      "mode": "local",
+      "profile": "rev12",
+      "memory_diagnostics": false,
+      "status": "PASS",
+      "project_version": "391d429",
+      "elf_sha256": "c95b5bb952bbbab8514e9c3bea75061336e75020c1a975bcc867912087469781",
+      "sdkconfig_sha256": "d6d64adda9ddd620805ddffeee820f2dd9d8657c69f57bb3da3aa57c4f51bb83",
+      "partition_table_sha256": "5e71c3c890e04714daa03b21a0d23953a2dadf9fdf15eec02b886f7b6e9f8c81",
+      "images": {
+        "tv4_hmi.bin": {
+          "bytes": 1579248,
+          "sha256": "7c2bea8304485d4bbd4baab794dba580c42e8f4e8f0de9be179c62b9a8eb7efe"
+        },
+        "bootloader/bootloader.bin": {
+          "bytes": 20656,
+          "sha256": "1d632735694f18b68e98c4bec61e19589b8fb2fe1458829baa51ecb3431ba35b"
+        }
+      },
+      "module_writable_bytes": 0,
+      "max_own_compiler_frame_bytes": 32,
+      "sdk_monitor_linked": [],
+      "build_configuration_verified": true
+    },
+    {
+      "sdk": "6.1.1",
+      "mode": "local",
+      "profile": "rev12-memory-bench",
+      "memory_diagnostics": false,
+      "status": "PASS",
+      "project_version": "391d429",
+      "elf_sha256": "1fd5c775f560df7664f6849ec13459e90e908e10b213bd3068d2e6edbf377371",
+      "sdkconfig_sha256": "6e9cbc45bf541091852fba2f1a322d32efcef5eb8f5bb70f95b6092bde69ca4b",
+      "partition_table_sha256": "5e71c3c890e04714daa03b21a0d23953a2dadf9fdf15eec02b886f7b6e9f8c81",
+      "images": {
+        "tv4_hmi.bin": {
+          "bytes": 1580944,
+          "sha256": "9a27b3d4648087b3cd67fbe06a3e651a56448dad9d68c702f60f7543dafa0b7b"
+        },
+        "bootloader/bootloader.bin": {
+          "bytes": 20656,
+          "sha256": "4e0fd4312cb82d22e24a4a13bfb32813a5d7cacb627186e683d720f35c35005f"
+        }
+      },
+      "module_writable_bytes": 0,
+      "max_own_compiler_frame_bytes": 32,
+      "sdk_monitor_linked": [],
+      "build_configuration_verified": true
+    },
+    {
+      "sdk": "6.1.1",
+      "mode": "local",
+      "profile": "rev12-tls-bench",
+      "memory_diagnostics": false,
+      "status": "PASS",
+      "project_version": "391d429",
+      "elf_sha256": "e4955d574ee69e7e482d7264ba1176242f0f23017007945d74b54f1df3b32f66",
+      "sdkconfig_sha256": "0c24666051dd9a3d0d3d1b8083fbb54ee3c0718b91c9cce3ed8e4d1faea6462c",
+      "partition_table_sha256": "5e71c3c890e04714daa03b21a0d23953a2dadf9fdf15eec02b886f7b6e9f8c81",
+      "images": {
+        "tv4_hmi.bin": {
+          "bytes": 1584144,
+          "sha256": "1f85e8f9449457d8f0f36e64b6acf6c3ffb8385df8fa11ce7f7f5ea7e73cb5a1"
+        },
+        "bootloader/bootloader.bin": {
+          "bytes": 20656,
+          "sha256": "875a5e5a7e77ff31924e2effb38ee946dcb4f53aeda5d5238366c75299cdc144"
+        }
+      },
+      "module_writable_bytes": 0,
+      "max_own_compiler_frame_bytes": 32,
+      "sdk_monitor_linked": [
+        "heap_caps_monitor_local_minimum_free_size_start",
+        "heap_caps_monitor_local_minimum_free_size_stop"
+      ],
+      "build_configuration_verified": true
+    },
+    {
+      "sdk": "6.1.1",
+      "mode": "local",
+      "profile": "rev12-ota",
+      "memory_diagnostics": false,
+      "status": "PASS",
+      "project_version": "391d429",
+      "elf_sha256": "360cee7050e29607be584ed8a96c27a5186bac22fdbbbb9ac90a8b7220f8fa15",
+      "sdkconfig_sha256": "5e3bbdee08d6b58070fbb55d7a9ddac3498d79fddc5fc2bbb1bf2589fd9cf814",
+      "partition_table_sha256": "b4c64dbabb0eb8a6fb1a735fb3f3a7981a36520560b70e267851144211e401f1",
+      "images": {
+        "tv4_hmi.bin": {
+          "bytes": 1598512,
+          "sha256": "ec6784cc48237a8c6f1ff11c7242c47daed39e86894c9d582ba9c3b214774bce"
+        },
+        "bootloader/bootloader.bin": {
+          "bytes": 20720,
+          "sha256": "d89ad804ccd1ed6d8344cec87c37db8bdcda8b474697bf0bc4b8ad65e7af82cb"
+        }
+      },
+      "module_writable_bytes": 0,
+      "max_own_compiler_frame_bytes": 64,
+      "sdk_monitor_linked": [],
+      "build_configuration_verified": true
+    },
+    {
+      "sdk": "6.1.1",
+      "mode": "local",
+      "profile": "rev12-ota",
+      "memory_diagnostics": true,
+      "status": "PASS",
+      "project_version": "391d429",
+      "elf_sha256": "4f8808a5519b21fcf7aabe31fbb2e4bdcaaf44f777eb07adf9844f7bca08ef25",
+      "sdkconfig_sha256": "4a3abd4c689e752e5bee419abeec7f5fef761fcbba54fcc588b91e1616e8a784",
+      "partition_table_sha256": "b4c64dbabb0eb8a6fb1a735fb3f3a7981a36520560b70e267851144211e401f1",
+      "images": {
+        "tv4_hmi.bin": {
+          "bytes": 1600528,
+          "sha256": "8b9e0bc8ffa242c32ea5febab8f9ad091d0eb8d18b5dd35b6e52db671e423a3d"
+        },
+        "bootloader/bootloader.bin": {
+          "bytes": 20720,
+          "sha256": "c361d764df9bd1e9a1443447843ba89b3521798d9db1a61eb70ffe5ffb29891e"
+        }
+      },
+      "module_writable_bytes": 432,
+      "max_own_compiler_frame_bytes": 112,
+      "sdk_monitor_linked": [
+        "heap_caps_monitor_local_minimum_free_size_start",
+        "heap_caps_monitor_local_minimum_free_size_stop"
+      ],
+      "build_configuration_verified": true,
+      "own_compiler_frames": {
+        "transition": 32,
+        "report": 112,
+        "tv4_ota_memory_scope_revision": 32,
+        "tv4_ota_memory_scope_since": 32,
+        "tv4_ota_memory_capture": 64,
+        "tv4_ota_memory_startup": 80,
+        "tv4_ota_memory_window_begin": 32,
+        "tv4_ota_memory_window_end": 32,
+        "tv4_ota_memory_report_window": 48,
+        "tv4_ota_memory_report_startup": 48
+      }
+    },
+    {
+      "sdk": "5.3.2",
+      "mode": "docker",
+      "profile": "headless",
+      "memory_diagnostics": false,
+      "status": "PASS",
+      "project_version": "391d429",
+      "elf_sha256": "d500873ac05830b657ddc29cbbbde75aff9d4f0558278eb38df36fbb0b255d2b",
+      "sdkconfig_sha256": "5f9bb296f300fc2c9bc3dc2906ef763c2620c6887a9466ab8e46ef3f31aa44af",
+      "partition_table_sha256": "5e71c3c890e04714daa03b21a0d23953a2dadf9fdf15eec02b886f7b6e9f8c81",
+      "images": {
+        "tv4_hmi.bin": {
+          "bytes": 1075472,
+          "sha256": "dec63aa6e516523d9bb2d70a9fdf81f7aad65dca5aa260699c5f24c906efe4c3"
+        },
+        "bootloader/bootloader.bin": {
+          "bytes": 21648,
+          "sha256": "976278da84e855b28df9cf7791db5758fbbb2d555d052adb7018456512528d6d"
+        }
+      },
+      "module_writable_bytes": 0,
+      "max_own_compiler_frame_bytes": 32,
+      "sdk_monitor_linked": [],
+      "build_configuration_verified": true
+    },
+    {
+      "sdk": "5.3.2",
+      "mode": "docker",
+      "profile": "rev12",
+      "memory_diagnostics": false,
+      "status": "PASS",
+      "project_version": "391d429",
+      "elf_sha256": "3ef871ac396d4cdfce3fbacab5512094912038761fef40cc90a53422ddda73f1",
+      "sdkconfig_sha256": "1837e05da5a7c009bdd99ecb7393ca8d0cc56d51b0c73e3eb347e03489b6b347",
+      "partition_table_sha256": "5e71c3c890e04714daa03b21a0d23953a2dadf9fdf15eec02b886f7b6e9f8c81",
+      "images": {
+        "tv4_hmi.bin": {
+          "bytes": 1535040,
+          "sha256": "bebb567c41df475cad70a49581cd3de5e0ad59979574bd69e73408ee7c9936e7"
+        },
+        "bootloader/bootloader.bin": {
+          "bytes": 21648,
+          "sha256": "c82b2a66063b94c1b4ed368d4affdc42e9f81231b1c507638e2b68c6587cbe2f"
+        }
+      },
+      "module_writable_bytes": 0,
+      "max_own_compiler_frame_bytes": 32,
+      "sdk_monitor_linked": [],
+      "build_configuration_verified": true
+    },
+    {
+      "sdk": "5.3.2",
+      "mode": "docker",
+      "profile": "rev12-memory-bench",
+      "memory_diagnostics": false,
+      "status": "PASS",
+      "project_version": "391d429",
+      "elf_sha256": "e8900a2066cfe00af8bbb04616454157a7e905ac23eb5f351aa1815c2e488b01",
+      "sdkconfig_sha256": "5050a74945c02cd09ae48925c2044587fcc8582df5ad4675481a60f3740dd5bf",
+      "partition_table_sha256": "5e71c3c890e04714daa03b21a0d23953a2dadf9fdf15eec02b886f7b6e9f8c81",
+      "images": {
+        "tv4_hmi.bin": {
+          "bytes": 1536736,
+          "sha256": "c2162acfc8007a3af66e63f8b2b599997848403ff6098de683f0bea0929a265f"
+        },
+        "bootloader/bootloader.bin": {
+          "bytes": 21648,
+          "sha256": "53e478b6d94fe35f944f8d0e341137d61a8cc8ee651f31270b0c3a5de7f2515c"
+        }
+      },
+      "module_writable_bytes": 0,
+      "max_own_compiler_frame_bytes": 32,
+      "sdk_monitor_linked": [],
+      "build_configuration_verified": true
+    },
+    {
+      "sdk": "5.3.2",
+      "mode": "docker",
+      "profile": "rev12-tls-bench",
+      "memory_diagnostics": false,
+      "status": "PASS",
+      "project_version": "391d429",
+      "elf_sha256": "d8cfccb5b554bc1e24fafafda7a9abdaf7af4e51960aab81bcd38fb7106b7d76",
+      "sdkconfig_sha256": "3cbf43779246118f68fae79edc23e992dcbee6b7ecfbeadba9c59d8f3e5ee4e7",
+      "partition_table_sha256": "5e71c3c890e04714daa03b21a0d23953a2dadf9fdf15eec02b886f7b6e9f8c81",
+      "images": {
+        "tv4_hmi.bin": {
+          "bytes": 1540032,
+          "sha256": "c0415c2a75b86e812f5747c062d849cb35b5706e743996ffe62d19c7e247cc97"
+        },
+        "bootloader/bootloader.bin": {
+          "bytes": 21648,
+          "sha256": "2c3d52530a81a933c02dea14b8112eaa80d1454afcd27821063b6df2f254b8c4"
+        }
+      },
+      "module_writable_bytes": 0,
+      "max_own_compiler_frame_bytes": 32,
+      "sdk_monitor_linked": [
+        "heap_caps_monitor_local_minimum_free_size_start",
+        "heap_caps_monitor_local_minimum_free_size_stop"
+      ],
+      "build_configuration_verified": true
+    },
+    {
+      "sdk": "5.3.2",
+      "mode": "docker",
+      "profile": "rev12-ota",
+      "memory_diagnostics": false,
+      "status": "PASS",
+      "project_version": "391d429",
+      "elf_sha256": "a776e0ae587c9bc4b6a5cc2352e5ae7756bc0c1f7f3ea8a766d702349af1ed16",
+      "sdkconfig_sha256": "d840242ce25fd73b472de148de0c68b2567c95ed23c21f8d348da2bb0d9e63bf",
+      "partition_table_sha256": "b4c64dbabb0eb8a6fb1a735fb3f3a7981a36520560b70e267851144211e401f1",
+      "images": {
+        "tv4_hmi.bin": {
+          "bytes": 1551040,
+          "sha256": "cfa976ca98da9ad03637d2835b89751012fa84dfbfe54d1cce9b1c59a01e19b1"
+        },
+        "bootloader/bootloader.bin": {
+          "bytes": 21728,
+          "sha256": "4abf8011cded10241e09e8f7fade8c75544cde22a7572bf4ad10e8871c4543ba"
+        }
+      },
+      "module_writable_bytes": 0,
+      "max_own_compiler_frame_bytes": 64,
+      "sdk_monitor_linked": [],
+      "build_configuration_verified": true
+    },
+    {
+      "sdk": "5.3.2",
+      "mode": "docker",
+      "profile": "rev12-ota",
+      "memory_diagnostics": true,
+      "status": "PASS",
+      "project_version": "391d429",
+      "elf_sha256": "29199a4647f97c2a2fcf099910a38ebb214703e945bb7ee55da17eac07fd72b9",
+      "sdkconfig_sha256": "7ce0c82ae128f4b1c14ad152b61c7d03baa267901af62010c6fb99cf822516f0",
+      "partition_table_sha256": "b4c64dbabb0eb8a6fb1a735fb3f3a7981a36520560b70e267851144211e401f1",
+      "images": {
+        "tv4_hmi.bin": {
+          "bytes": 1553088,
+          "sha256": "f54d0b09b93011e5f04d5c2a11d2952b8673d9a634f50ab808a5d26d7b137f8c"
+        },
+        "bootloader/bootloader.bin": {
+          "bytes": 21728,
+          "sha256": "4eb6e679ac88d820d0ed3ca0b28c1aabb6819e9b0f4c2d6d5ec83610285b3219"
+        }
+      },
+      "module_writable_bytes": 432,
+      "max_own_compiler_frame_bytes": 112,
+      "sdk_monitor_linked": [
+        "heap_caps_monitor_local_minimum_free_size_start",
+        "heap_caps_monitor_local_minimum_free_size_stop"
+      ],
+      "build_configuration_verified": true,
+      "own_compiler_frames": {
+        "transition": 32,
+        "report": 112,
+        "tv4_ota_memory_scope_revision": 32,
+        "tv4_ota_memory_scope_since": 32,
+        "tv4_ota_memory_capture": 64,
+        "tv4_ota_memory_startup": 80,
+        "tv4_ota_memory_window_begin": 32,
+        "tv4_ota_memory_window_end": 32,
+        "tv4_ota_memory_report_window": 48,
+        "tv4_ota_memory_report_startup": 48
+      }
+    }
+  ],
+  "ota_unprovisioned_own_compiler_frames_bytes": {
+    "app_main": 1232,
+    "worker": 80,
+    "operation": 432,
+    "worker_stack": 32
+  }
+}
