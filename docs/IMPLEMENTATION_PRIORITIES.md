@@ -10,7 +10,17 @@ PR #1–54 слиты. PR #54 завершил threaded host tests; он бол�
 Исторические PR и их проверки остаются доказательствами выполненной работы,
 но не задают порядок дальнейшей разработки.
 
-## Текущее состояние: базовый P0 стенд пройден
+## Текущее состояние: базовый P0 и первая USB-миграция P1 пройдены
+
+База отчёта main c41a3d2/PR #1–60. После отдельно разрешённого [стенда ESP32](evidence/hardware/2026-11-22-esp32-ota-migration/README.md)
+работает fecc05d/rev12-ota/factory с tv4-16m-ab-v1. Verify/NVS preservation/
+PSRAM8MiB/XiP/owner HMI/saved Wi-Fi/SETUP PASS; snapshot8f0d899/two-NVMe сохранён,
+restore не выполнялся. Следующий P1 результат — фазный RAM/stack budget и
+configured install/confirm/rollback после owner key/context решений. Historical
+internal minimum112bytes требует разбора, FPS/latency/soak не измерены. Полный
+P1 и P2–P5 не завершены. Сеанс закрыт, новых hardware разрешений не даёт.
+
+### Базовый стенд P0 и программная подготовка P1
 
 22 ноября 2026, база main `07fb406e37ebd1f1e019dbee0b54e8bb5571be1a`, PR #1–57 слиты.
 После отдельного разрешения один стенд ee7d179 завершён за16,196s, exit0:
@@ -28,9 +38,10 @@ HTTPS/crypto и review16MiB factory+двух OTA slots/USB migration. Новых
 
 [Успешный стенд ee7d179](evidence/hardware/2026-11-22-f407-ee7d179-bench/README.md). Следующий измеримый результат — P1 runtime ESP32 OTA,
 не дальнейшее расширение host-модели F407. Отчёт #58 уже слит; текущая база
-main d1317a8. [P1 installation](ESP32_OTA_INSTALLATION.md) интегрирует реальный
+main d1317a8 для программной интеграции. [P1 installation](ESP32_OTA_INSTALLATION.md) интегрирует реальный
 rev12-ota SDK writer/self-test/rollback/USB bundle и UI. Владелец выбрал настройку
-без ключа; install fail-closed, hardware migration/OTA/resources ещё не проверены.
+без ключа; install fail-closed. Базовая hardware migration с тех пор пройдена,
+configured OTA/resources остаются открытыми, как указано в текущем статусе выше.
 
 ## P0 — первая настоящая прошивка STM32F407
 

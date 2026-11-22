@@ -1,6 +1,16 @@
-# Резервные копии ESP32 — заводская и перед OTA
+# Резервные копии ESP32 — заводская и перед миграцией OTA
 
-## Текущий snapshot перед OTA, 22 ноября 2026
+## После миграции, 22 ноября 2026
+
+На плате теперь fecc05d/rev12-ota factory, карта tv4-16m-ab-v1. [Миграция и первый запуск](evidence/hardware/2026-11-22-esp32-ota-migration/README.md)
+прошли по отдельному разрешению; NVS/PHY до app boot сохранены. Условный restore
+не потребовался и не выполнялся. Две private NVMe-копии прежнего8f0d899 ниже
+снова проверены до записи и сохранены как recovery checkpoint; original factory
+backup сохранён отдельно. Новый полный snapshot после миграции не считывался.
+Restore ESP32 остаётся не испытанным; завершённое разрешение не разрешает
+новую запись/чтение/reset. Дампы и NVS не публикуются.
+
+## Снимок 8f0d899 перед миграцией, 22 ноября 2026
 
 После отдельного разрешения считана вся Flash ESP32: **16777216bytes**.
 Один полный read, штатный transfer MD5 и отдельный device MD5 whole Flash,
@@ -11,12 +21,12 @@
 47c4f9c4e6d7fb1fcfce2b0065c2f69af0ea01664d1407b3504ee6e4a6a13107
 ```
 
-[Отчёт](evidence/hardware/2026-11-22-esp32-pre-ota-snapshot/README.md) различает этот snapshot установленного8f0d899
-и будущую сборку fecc05d. Partition MD5 и app checksum/appended SHA проверены;
-текущая карта factory2MiB соответствует precondition миграции. NVS не декодировалась.
-После reset владелец подтвердил экран/касания/Wi-Fi. Новой Flash записи не было;
-восстановление snapshot и USB migration пока не испытывались. Дампы/сырые UART
-логи остаются приватными и не включаются в Git/CI/PR.
+[Отчёт чтения](evidence/hardware/2026-11-22-esp32-pre-ota-snapshot/README.md) относится
+к прежнему8f0d899 и карте factory2MiB **до** последующей миграции fecc05d.
+Partition MD5 и app checksum/appended SHA проверены; эта legacy карта совпала
+с precondition миграции. NVS не декодировалась. После read-only reset владелец
+подтвердил экран/касания/Wi-Fi. В том сеансе Flash не записывалась; позднейшая
+запись отражена выше. Дампы/сырые UART логи приватны и не входят в Git/CI/PR.
 
 ## Заводская копия — сохранена
 

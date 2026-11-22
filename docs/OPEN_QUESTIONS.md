@@ -1,10 +1,18 @@
 # Открытые вопросы и блокирующие решения
 
-22 ноября2026: [read-only pre-migration ESP32 snapshot](evidence/hardware/2026-11-22-esp32-pre-ota-snapshot/README.md)
-закрыл чтение реальной geometry/защиты/legacy table и fresh backup на двух NVMe.
-Installed descriptor8f0d899/SDK6.1.1, owner HMI/touch/Wi-Fi после reset PASS.
-Новый image не записан: OTA-ESP-01 остаётся открыт для USB migration/recovery/
-XiP boot/OTA/rollback/power loss; OTA-KEY/CONTEXT/resource floors не закрыты.
+22 ноября2026: [первая USB migration](evidence/hardware/2026-11-22-esp32-ota-migration/README.md)
+закрыла базовый переход на tv4-16m-ab-v1/factory fecc05d, verify/NVS preservation,
+PSRAM8MiB/XiP/GT911/UI и owner saved Wi-Fi/SETUP. Два backup NVMe сохранены,
+restore не выполнялся. OTA-ESP-01 открыт для configured install/confirm/rollback/
+Wi-Fi/power loss/recovery; ключ/context по решению владельца отсутствуют.
+
+Новые измерения:16 periodic samples, internal free22851..22907/largest7680,
+SDK history112bytes; OTA-worker stack watermark отсутствует. History112 требует
+разбора по фазам, не доказывает simultaneous OOM и не задаёт допустимый floor.
+Render/event samples0 не закрывают FPS/latency/soak. Production RAM/stack budget
+installer не утверждён. Сеанс закрыт, новый UART/reset/Flash требует разрешения.
+
+## История подготовки до миграции
 
 
 Текущий P1 от main d1317a8: [installer/self-test/rollback/USB package](ESP32_OTA_INSTALLATION.md)
@@ -156,7 +164,7 @@ stop/join не освобождает actual claim. Верхние image/crypto/
 | CAN-WIRE-01 | Production codebook adoption, bounded fragmentation/reassembly/routing/session identity/backpressure/deadline, signed metadata/signature transfer | PR-07j даёт только opt-in complete-message byte draft; это не CAN frame/production version/driver/authentication/runtime |
 | CAN-IDENTITY-01 | Reviewed unique boot epoch provider, counter continuity при peer reset, persistence/collision/authentication и compatibility-tag provenance | Runtime negotiation/replay claims; PR-07f volatile pools не доказывают uniqueness после reset или доверие CAN |
 | SD-01 | Наличие/тип карты, FAT32, фактическая шина/CS/card detect и извлечение конкретной Rev 1.2; лимиты/имена/ошибки/политика файлов | PR-06; не назначать пины по аналогии |
-| OTA-ESP-01 | Review candidate 16 МиБ layout, recovery size, оба SDK partition parser, backup/USB migration/recovery trials | PR-04; текущий factory 2 МиБ не менять в PR-01 |
+| OTA-ESP-01 | Layout tv4-16m-ab-v1, fresh16MiB backup/two-NVMe, USB migration/factory fecc05d/XiP/owner HMI PASS. Остались configured install/slot confirm/rollback/Wi-Fi/power-loss и recovery trials | Без key/context установка закрыта; текущую карту не заменять ordinary flash, каждый новый стенд отдельно разрешать |
 | OTA-KEY-01 | Owner-provisioned public key/fingerprint, signer custody, алгоритм/encoding/test vectors/key rotation, manifest schema/min versions | Любая доверенная установка; приватных ключей в Git/логах нет |
 | OTA-CONTEXT-01 | Утвердить SemVer HMI release вместо текущего git-derived project version; источник версии bootloader/production protocol/реального layout и peer compatibility | PR-04b policy готовит проверку, но не подставляет тестовые версии; installer заблокирован неизвестным context |
 | OTA-MOTION-01 | Утвердить production release/component schema и link общего signed bundle с Motion document, trusted installed context, numeric counter/boot/protocol policy и signer build provenance | PR-05c offline cohort review и PR-07g/h draft/coordinator не закрывают production contract/context/protocol mapping; legacy11/release15 раздельны |
@@ -165,7 +173,7 @@ stop/join не освобождает actual claim. Верхние image/crypto/
 | OTA-STATE-01 | Fresh подтверждение F407 без движения/оборотов/программы, session lifecycle и повтор после reboot; согласованный safe state | CAN install; симуляция/heartbeat/ACK доставки не подтверждают останов |
 | RELEASE-01 | Версии/каналы/tag policy, signing authority, independent CI/source provenance/candidate digest selection и owner gate для exact SHA/digests, доступность environment protections | PR-05d связывает unsigned candidate и signed bytes, но не подтверждает CI identity/автора; factory/A-B/profile blockers не закрыты. Main push не разрешение |
 | RELEASE-LICENSE-01 | Владелец выбирает лицензию приложения, review прав на распространяемые assets/библиотеки; LICENSE-NOTICE.md пока оставляет решение открытым | Внешнее распространение app binary/source release; PR-05a публикует только review metadata |
-| PERF-01 | Реальные LVGL/CPU/heap/PSRAM/stacks/reset/watchdog/queues/reconnect/CAN timeout measurements, touch-to-display и soak methodology | PR-03 acceptance, заявления о <50 мс/30 FPS/20–30 Гц |
+| PERF-01 | Fecc05d:16 samples internal free22851..22907/largest7680/history112, PSRAM free6090732; нужен фазный бюджет. OTA-worker stack/нагрузка/TLS/FPS/touch-to-display/soak/CAN не измерены | History112 не simultaneous OOM/floor; render/event samples0 не FPS/latency proof; заявления о <50 мс/30 FPS/20–30 Гц не подтверждены |
 | RECOVERY-01 | Независимая копия ESP32 backup, испытание восстановления; данные/отчёт по восстановлению Blue Pill | Аппаратная migration/bootloader уверенность, не permission на запись |
 | RECOVERY-F407-01 | Current snapshot2×1MiB byte/SHA/basic vectors PASS, independent copy на другом физическом NVMe SHA PASS; snapshot restore/verify/reset PASS. Original factory provenance не проверена | Новые записи требуют актуального snapshot/hash и разрешения; backup dumps/их SHA не публиковать |
 

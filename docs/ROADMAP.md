@@ -1,11 +1,14 @@
 # План реализации TV4-CNC: функциональные приоритеты P0–P5
 
-Текущая база main fecc05d / PR #1–59: P1 installer слит. 22 ноября выполнен
-[ESP32 pre-migration snapshot](evidence/hardware/2026-11-22-esp32-pre-ota-snapshot/README.md):16МиБ/device MD5/
-SHA-256/two-NVMe copies/legacy map и owner HMI после reset PASS. Это завершённое
-read-only разрешение, не запись rev12-ota; USB migration/XiP/OTA/rollback/resources
-ещё открыты. F407 ee7d179 и ESP32 ordinary8f0d899 сохраняются.
+База отчёта main c41a3d2 / PR #1–60. 22 ноября [первая USB migration ESP32](evidence/hardware/2026-11-22-esp32-ota-migration/README.md)
+завершена: four writes/verify/NVS preservation/factory fecc05d/PSRAM8MiB/XiP/
+owner HMI/touch/saved Wi-Fi/SETUP PASS. На ESP32 теперь rev12-ota и карта
+tv4-16m-ab-v1; на F407 ee7d179 без изменений. Backup8f0d899/two-NVMe сохранён,
+restore не испытывался. P1 configured install/confirm/rollback/power-loss и
+RAM/stack/performance budget ещё открыты: historical internal minimum112bytes
+требует разбора, не устанавливает simultaneous OOM/floor. Сеанс закрыт.
 
+## Исторический итог P0 и программной подготовки
 
 22 ноября 2026, база main `07fb406e37ebd1f1e019dbee0b54e8bb5571be1a`, PR #1–57 слиты.
 После отдельного разрешения один стенд ee7d179 завершён за16,196s, exit0:
@@ -32,7 +35,7 @@ P1 интегрирован программно: [installer/rollback/migration]
 | Приоритет | Законченный результат | Зависимости и приёмка | Текущий статус |
 |---|---|---|---|
 | P0 — STM32F407 firmware | Настоящий ELF/BIN на HSI с RAM/SWD diagnostics, exception/watchdog handling, без активации motion outputs | Официальная карта VGT6/SRAM/CCM/Flash sectors/vectors; real startup/linker; map/size/hash/source и memory/vector CI; ST-Link install/restore runbook; запись только отдельно разрешена | **PASS базового стенда ee7d179**: program/verify/identity/RUNNING/progress, data-BSS/CCM word/guards, watchdog reset и UsageFault. Образ оставлен running; стресс/частоты/physical outputs не подтверждены |
-| P1 — ESP32 OTA | Установка проверенного образа в неактивный слот, boot self-test, подтверждение или rollback с работающими LVGL/GT911/Wi-Fi | Расчёт/утверждение 16 МиБ factory recovery+otadata+двух OTA-слотов; отдельная USB-миграция; existing HTTPS/signature/local key/SHA/size/hardware checks; Wi-Fi/power-loss tests; реальные SRAM/PSRAM/stack измерения | Программная интеграция rev12-ota: реальный ELF/BIN/USB bundle, SDK inactive writer/UI/self-test/rollback. Без owner key/context установка заблокирована; USB migration/configured OTA/power loss/resources аппаратно ещё не приняты. Fresh16MiB snapshot/две NVMe копии/legacy layout PASS. Ordinary profiles и разметка на плате прежние |
+| P1 — ESP32 OTA | Установка проверенного образа в неактивный слот, boot self-test, подтверждение или rollback с работающими LVGL/GT911/Wi-Fi | Расчёт/утверждение 16 МиБ factory recovery+otadata+двух OTA-слотов; отдельная USB-миграция; existing HTTPS/signature/local key/SHA/size/hardware checks; Wi-Fi/power-loss tests; реальные SRAM/PSRAM/stack измерения | USB migration/factory fecc05d/rev12-ota/XiP/owner HMI и SETUP PASS, backup/two-NVMe сохранён. Configured install/slot confirm/rollback/recovery/network/power loss не испытаны; key/context отсутствуют. 16 samples и internal history112 требуют фазного RAM/stack review; production floors/performance не утверждены |
 | P2 — Releases | Настоящие воспроизводимые бинарники, SemVer/source binding, signed manifest/SHA-256, prerelease/stable, экран «ПО и обновления» | Рабочий OTA P1; проверка воспроизводимости, trust/signer/licensing; ручное утверждение владельцем exact SHA/tag/channel/assets; push/merge не выпускают release | CI/metadata-only review база существует; production signing/publication/discovery ещё нет; P1 UI включён только в explicit OTA profile. Фиктивный STM32 BIN запрещён |
 | P3 — physical CAN | Минимальный проверенный обмен ESP32-S3↔STM32F407 с ошибками/тайм-аутами/восстановлением | Получить трансиверы; проверить уровни/терминаторы/pinout/mux/IDs/bitrate на изолированном стенде; отдельное hardware permission | Физический CAN не проверен. Существующий протокол сохраняется; новые слои только для конкретной интеграции |
 | P4 — STM32 CAN OTA | Независимый bootloader, проверенная запись Flash/recovery после прерывания, existing independent crypto и ESP32 OTA Manager | Реальная карта/профиль P0 и physical CAN P3; reviewed bootloader/app/staging layout; fresh quiescent/operator/recovery gates; обновления при движении запрещены | Host transport/verifier подготовлены. Адреса загрузчика сейчас не резервируются, Flash writer/boot activation ещё нет |

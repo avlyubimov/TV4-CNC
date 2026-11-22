@@ -1,0 +1,263 @@
+{
+  "kind": "esp32-first-ab-usb-migration-evidence",
+  "date": "2026-11-22",
+  "timezone": "Asia/Almaty",
+  "documentation_base_main": "c41a3d24bbca9f6c55015de9431dcef32651cd92",
+  "installed_source_commit": "fecc05d676a0b1e3376db5317fa241274e8e310a",
+  "profile": "rev12-ota",
+  "sdk": "6.1.1",
+  "provisioned": false,
+  "app_bytes": 1597984,
+  "app_sha256": "de55953fc9e3c4080cb277d734ca7d1f02c74880db38dac0f4b53830f587d021",
+  "package_plan_sha256": "897da89ab7a8fd3384ef0a26735c166de9a839e3c4d2cefd6cb0d467bd5bdd2b",
+  "physical_flash_bytes": 16777216,
+  "physical_psram_bytes": 8388608,
+  "security_flags": 0,
+  "secure_boot": false,
+  "flash_encryption": false,
+  "expected_board_identity_matched": true,
+  "legacy_table_and_app_verified": true,
+  "write_regions": [
+    {
+      "bytes": 20720,
+      "file": "bootloader.bin",
+      "offset": 0,
+      "sha256": "d89ad804ccd1ed6d8344cec87c37db8bdcda8b474697bf0bc4b8ad65e7af82cb"
+    },
+    {
+      "bytes": 3072,
+      "file": "partition-table.bin",
+      "offset": 32768,
+      "sha256": "b4c64dbabb0eb8a6fb1a735fb3f3a7981a36520560b70e267851144211e401f1"
+    },
+    {
+      "bytes": 1597984,
+      "file": "factory-recovery.bin",
+      "offset": 65536,
+      "sha256": "de55953fc9e3c4080cb277d734ca7d1f02c74880db38dac0f4b53830f587d021"
+    },
+    {
+      "bytes": 8192,
+      "file": "otadata-erased.bin",
+      "offset": 2162688,
+      "sha256": "7d2c7ac4888bfd75cd5f56e8d61f69595121183afc81556c876732fd3782c62f"
+    }
+  ],
+  "four_region_device_md5_verified": true,
+  "nvs_phy_byte_identical_before_app_boot": true,
+  "partition_table_readback_verified": true,
+  "otadata_ff_readback_verified": true,
+  "factory_boot_offset": 65536,
+  "boot_observations": {
+    "expected_app": true,
+    "expected_sdk": true,
+    "psram_8mib": true,
+    "psram_sdk_test": true,
+    "instructions_in_psram": true,
+    "rodata_in_psram": true,
+    "rgb_initialized": true,
+    "gt911_initialized": true,
+    "ui_ready": true,
+    "single_app_boot": true,
+    "no_fatal_log": true
+  },
+  "started_utc": "2026-11-22T09:03:54.916587+00:00",
+  "finished_utc": "2026-11-22T09:05:52.726124+00:00",
+  "elapsed_seconds": 117.80953472701367,
+  "uart_capture_attempts": 1,
+  "uart_capture_seconds": 89.11360193198198,
+  "uart_capture_bytes": 19800,
+  "diagnostic_samples": 16,
+  "diagnostic_uptime_ms": {
+    "min": 7330,
+    "max": 82404,
+    "last": 82404
+  },
+  "metrics": {
+    "render_samples": {
+      "min": 0,
+      "max": 0,
+      "last": 0
+    },
+    "event_samples": {
+      "min": 0,
+      "max": 0,
+      "last": 0
+    },
+    "touch_age_ms": {
+      "min": 1,
+      "max": 17,
+      "last": 10
+    },
+    "window_ms": {
+      "min": 1000,
+      "max": 1002,
+      "last": 1002
+    },
+    "lvgl_refresh_hz": {
+      "min": 0,
+      "max": 0,
+      "last": 0
+    },
+    "render_max_ms": {
+      "min": 0,
+      "max": 0,
+      "last": 0
+    },
+    "render_p95_upper_ms": {
+      "min": 0,
+      "max": 0,
+      "last": 0
+    },
+    "event_max_ms": {
+      "min": 0,
+      "max": 0,
+      "last": 0
+    },
+    "event_p95_upper_ms": {
+      "min": 0,
+      "max": 0,
+      "last": 0
+    },
+    "owner_max_us": {
+      "min": 168,
+      "max": 490,
+      "last": 356
+    },
+    "owner_busy_permille": {
+      "min": 7,
+      "max": 9,
+      "last": 9
+    },
+    "internal_free": {
+      "min": 22851,
+      "max": 22907,
+      "last": 22907
+    },
+    "internal_min": {
+      "min": 112,
+      "max": 112,
+      "last": 112
+    },
+    "internal_largest": {
+      "min": 7680,
+      "max": 7680,
+      "last": 7680
+    },
+    "psram_free": {
+      "min": 6090732,
+      "max": 6090732,
+      "last": 6090732
+    },
+    "psram_min": {
+      "min": 6076588,
+      "max": 6076588,
+      "last": 6076588
+    },
+    "psram_total": {
+      "min": 6865688,
+      "max": 6865688,
+      "last": 6865688
+    },
+    "owner_stack": {
+      "min": 10708,
+      "max": 10708,
+      "last": 10708
+    },
+    "touch_stack": {
+      "min": 2504,
+      "max": 2504,
+      "last": 2504
+    },
+    "wifi_stack": {
+      "min": 1104,
+      "max": 1104,
+      "last": 1104
+    },
+    "export_stack": {
+      "min": 1104,
+      "max": 1648,
+      "last": 1104
+    },
+    "queue_drops": {
+      "min": 0,
+      "max": 0,
+      "last": 0
+    },
+    "mock_can_timeouts": {
+      "min": 0,
+      "max": 0,
+      "last": 0
+    },
+    "display_errors": {
+      "min": 0,
+      "max": 0,
+      "last": 0
+    },
+    "export_drops": {
+      "min": 0,
+      "max": 0,
+      "last": 0
+    },
+    "wifi_attempts": {
+      "min": 1,
+      "max": 1,
+      "last": 1
+    },
+    "wifi_disconnects": {
+      "min": 0,
+      "max": 0,
+      "last": 0
+    },
+    "wifi_ip_events": {
+      "min": 0,
+      "max": 1,
+      "last": 1
+    },
+    "wifi_queue_drops": {
+      "min": 0,
+      "max": 0,
+      "last": 0
+    },
+    "touch_errors": {
+      "min": 0,
+      "max": 0,
+      "last": 0
+    },
+    "reset_reason": {
+      "min": 1,
+      "max": 1,
+      "last": 1
+    },
+    "watchdog_boot": {
+      "min": 0,
+      "max": 0,
+      "last": 0
+    }
+  },
+  "internal_min_semantics": "SDK sum of per-heap historical minima; not a simultaneous free-space sample or an approved OTA floor",
+  "cpu_percent_measured": false,
+  "touch_to_display_measured": false,
+  "rgb_scanout_measured": false,
+  "rendering_benchmark_valid": false,
+  "ota_worker_stack_watermark_measured": false,
+  "owner_confirmation": {
+    "hmi_touch_wifi": true,
+    "ota_setup_state": true
+  },
+  "ota_self_test_pass_confirmed": true,
+  "ota_self_test_note": "Factory health/memory/layout success inferred from owner-observed SETUP state and reviewed worker/UI transitions; no explicit UART success marker; OTA-slot pending verification and rollback not exercised",
+  "recovery_attempts": 0,
+  "snapshot_restore_tested": false,
+  "backup_sha256": "47c4f9c4e6d7fb1fcfce2b0065c2f69af0ea01664d1407b3504ee6e4a6a13107",
+  "signed_network_install_tested": false,
+  "ota_slot_confirmation_tested": false,
+  "rollback_tested": false,
+  "power_loss_tested": false,
+  "efuse_write": false,
+  "stm32_access": false,
+  "can_motion_access": false,
+  "session_closed": true,
+  "installed_left_running": "fecc05d-rev12-ota-factory",
+  "raw_uart_and_nvs_published": false
+}

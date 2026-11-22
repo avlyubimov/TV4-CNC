@@ -1,5 +1,27 @@
 # Аппаратный статус TV4-CNC
 
+## 22 ноября, 14:05: ESP32 переведён на factory + A/B
+
+Отдельно разрешённая USB migration fecc05d/rev12-ota/ESP-IDF6.1.1 завершена за
+117,810s. Четыре записи/MD5/readback PASS; NVS/PHY до app boot побайтно сохранены.
+Действующая карта теперь tv4-16m-ab-v1: factory2MiB + два OTA slots3MiB.
+Загрузился factory fecc05d; PSRAM8MiB, instructions/rodata XiP, SDK memory test,
+RGB/GT911/LVGL ready подтверждены UART. Один capture89,114s, без panic/reboot loop.
+Владелец подтвердил экран/касания/saved Wi-Fi и OTA SETUP с недоступными
+проверкой/установкой. Ключ/context отсутствуют. [Подробный отчёт](evidence/hardware/2026-11-22-esp32-ota-migration/README.md).
+
+16 periodic samples: internal free22851–22907/largest7680/history112bytes;
+PSRAM free6090732bytes. History112 требует разбора по фазам; это SDK сумма
+per-heap minima, не simultaneous peak/OOM или production floor. Render/event
+samples0 не позволяют судить о FPS/latency; OTA-worker stack не измерен.
+Configured install/slot confirm/rollback/network/power loss/recovery/soak ещё
+не проверены. Условный restore не выполнялся; обе private16MiB NVMe копии
+снимка8f0d899 и original factory backup сохранены. Новый полный snapshot не делался.
+
+На ESP32 оставлен fecc05d factory. F407 ee7d179 не открывался; eFuse/STM32/CAN/
+motion не затронуты. Сеанс завершён, после него новых UART/reset/Flash операций нет.
+История ниже описывает состояние до миграции, не текущую установленную firmware.
+
 ## 22 ноября, 13:28: резервный снимок ESP32 перед OTA
 
 По отдельному разрешению выполнены read-only preflight, полный snapshot16МиБ,

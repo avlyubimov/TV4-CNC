@@ -27,7 +27,10 @@ docs/BOARD_ADAPTER.md, docs/RUNTIME_DIAGNOSTICS.md и docs/OTA_ARCHITECTURE.md.
   Первый boot подтверждать после self-test; Wi-Fi/AP или microSD не обязательны
   для успешной загрузки HMI. Установка — только после подтверждения оператора.
 - Не включать eFuse/Secure Boot/Flash Encryption в рамках настройки OTA.
-  Текущий factory 2 МиБ не менять до отдельно проверенной USB-миграции.
+  Legacy ordinary factory 2 МиБ и explicit A/B profile не смешивать. После
+  отдельно разрешённой миграции fecc05d на плате tv4-16m-ab-v1/factory; ordinary
+  flash не является разрешённым откатом. Актуальный статус — корневой AGENTS.md
+  и docs/HARDWARE_STATUS.md.
 - P1 от main d1317a8: только explicit rev12-ota включает installer/worker,
   rollback/watchdog и ota/partitions.ab.csv. Ordinary profiles/factory2MiB
   прежние; candidate CSV остаётся историческим read-only input. Читайте

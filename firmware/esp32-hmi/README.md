@@ -1,9 +1,14 @@
-# HMI ESP32-S3 · симуляция
+# HMI ESP32-S3
 
 P1 добавляет отдельный `rev12-ota`: настоящий SDK inactive installer, self-test/
 rollback, экран OTA и prepare/verify USB migration bundle. Владелец выбрал
-настройку **без ключа**, поэтому установка закрыта. Обычные профили/разметка
-на устройстве прежние. [Инструкция и аппаратные границы](../../docs/ESP32_OTA_INSTALLATION.md),
+настройку **без ключа**, поэтому установка закрыта. После отдельно разрешённой
+миграции22ноября на плате fecc05d/rev12-ota/factory и карта tv4-16m-ab-v1;
+XiP/PSRAM8MiB/GT911/UI и owner saved Wi-Fi/SETUP PASS. [Аппаратный отчёт](../../docs/evidence/hardware/2026-11-22-esp32-ota-migration/README.md).
+Configured OTA/rollback/resources/performance ещё не приняты; historical internal
+minimum112bytes требует разбора. Обычные конфигурации в исходниках по-прежнему
+legacy factory2MiB: их flash поверх действующей A/B-карты не выполнять.
+[Инструкция и аппаратные границы](../../docs/ESP32_OTA_INSTALLATION.md),
 [план](../../docs/plans/P1_ESP32_OTA.md). Предыдущие описания read-only относятся
 к ordinary profiles и историческим этапам; ни один build script не прошивает.
 
@@ -14,7 +19,7 @@ rollback, экран OTA и prepare/verify USB migration bundle. Владеле�
 По умолчанию headless выполняет полный UI без GPIO/I²C/RGB/GT911/CAN.
 Rev12 включает дисплей, касание и сетевую worker-задачу Wi-Fi. Команд двигателям/реальному шпинделю нет.
 
-PR-08a: «Параметры» → Wi-Fi / «ПО и обновления». Новая страница показывает
+Исторический PR-08a: «Параметры» → Wi-Fi / «ПО и обновления». Страница показывает
 local app build/SDK/profile и неизвестные STM32/CAN версии; updater ещё не
 настроен. См. [контракт и host previews](../../docs/FIRMWARE_INFO_UI.md).
 Она не вызывает сеть/OTA verifier/installer и не меняет физическую готовность.
@@ -50,8 +55,9 @@ SDK из locks/. Каждый профиль имеет собственный s
 ## Память и устройства
 
 Все новые сборки нацелены на Flash **16 МБ**, соответствующую сохранённому
-заводскому бэкапу. Для Wi-Fi single factory app увеличен до 2 МиБ по адресу 0x10000; остальная flash пока не
-размечена под программы/файлы. Инспектор проверяет sdkconfig, заголовки app и
+заводскому бэкапу. В legacy ordinary profiles single factory app имеет 2 МиБ
+по адресу0x10000, оставшаяся Flash не размечена. В rev12-ota и на текущей плате
+действует отдельная factory+A/B карта, указанная выше. Инспектор проверяет sdkconfig, заголовки app и
 bootloader, ESP32-S3 chip id, размеры разделов и заполнение app partition.
 Rev12 требует octal PSRAM 80 MHz; headless не инициализирует PSRAM.
 

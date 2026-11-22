@@ -1,5 +1,23 @@
 # TV4 CNC
 
+## Проверенное состояние, 22 ноября 2026
+
+STM32F407 ee7d179 прошёл [базовый HSI/no-motion стенд](docs/evidence/hardware/2026-11-22-f407-ee7d179-bench/README.md).
+ESP32 после отдельно разрешённой [USB-миграции](docs/evidence/hardware/2026-11-22-esp32-ota-migration/README.md)
+работает на fecc05d/rev12-ota/ESP-IDF6.1.1: factory + два OTA-слота, PSRAM8MiB/
+XiP/GT911, owner screen/touch/saved Wi-Fi PASS. Две private копии прежней Flash
+на разных NVMe сохранены; restore не выполнялся. Ключ/context отсутствуют,
+сетевые проверка/установка закрыты. Configured install/confirm/rollback/power
+loss и production RAM/stack/performance ещё не приняты; historical internal
+minimum112bytes требует фазного разбора. CAN и приводы не подключались.
+
+[Аппаратный статус](docs/HARDWARE_STATUS.md), [следующий результат P1](docs/NEXT_STAGE.md),
+[процедура и разметка](docs/ESP32_OTA_INSTALLATION.md). Разрешённые сеансы закрыты;
+новые Flash/reset/UART/SWD требуют отдельного разрешения. Обычный rev12 flash
+не является безопасным откатом действующей A/B-карты.
+
+## История программной подготовки
+
 Текущий P0 после main610f174/PR #55: первый настоящий
 [STM32F407VG HSI bench ELF/BIN](docs/STM32_FIRST_IMAGE.md) с memory/vector
 checks, RAM/SWD diagnostics и watchdog подготовлен к отдельно разрешённому
