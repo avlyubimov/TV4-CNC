@@ -1,0 +1,7 @@
+{
+  "source": "actual ESP app_main with SDK boundary and real LVGL headers",
+  "compiler": "GCC15.2.0",
+  "fanalyzer": "PASS",
+  "warnings_or_errors": false,
+  "device_access": false
+}

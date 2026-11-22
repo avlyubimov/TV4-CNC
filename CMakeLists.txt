@@ -46,7 +46,7 @@ if(DEFINED LVGL_DIR)
    "LINKER:--wrap=wifi_service_start" "LINKER:--wrap=boot_view_finish"
    "LINKER:--wrap=tv4_ota_service_start" "LINKER:--wrap=tv4_ota_service_health"
    "LINKER:--wrap=lv_init" "LINKER:--wrap=lv_malloc_core" "LINKER:--wrap=lv_realloc_core")
- foreach(case success held-touch board-fail buffer-fail backlight-fail touch-fail flush-fail dashboard-flush-fail export-fail wifi-fail)
+ foreach(case success held-touch board-fail buffer-fail backlight-fail touch-fail flush-fail dashboard-flush-fail export-fail wifi-fail touch-clock-race touch-report-race touch-stale)
    add_test(NAME startup_${case} COMMAND startup_tests ${case})
    set_tests_properties(startup_${case} PROPERTIES TIMEOUT 15)
  endforeach()

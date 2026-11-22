@@ -1,4 +1,26 @@
-# P1 — UTC/HEAD в существующем OTA-worker8192
+# P1 — исправить clock-before-touch-snapshot перед повтором TLS-стенда
+
+## 22 ноября: контроль a5f8b7e остановлен, fecc05d возвращён
+
+[Стенд](evidence/hardware/2026-11-22-esp32-worker-tls-control/README.md) завершён
+за608.667s: fresh16MiB/device MD5/SHA-256/two-NVMe PASS, control8192 app-only
+write/verify/UART90.101s. Одно touch_age_ms=4294967295 на uptime26335ms из16
+samples при touch_errors0; остальные0–19ms. touch_fresh FAIL сохранён,
+TLS image не записывался, SNTP/HEAD не запускались. Весь factory2MiB fecc05d
+возвращён из свежего снимка/verify/UART30.046s/owner HMI-touch-Wi-Fi-SETUP PASS.
+Две writes/два captures, полный16MiB restore не понадобился. На ESP32 fecc05d,
+F407 ee7d179 не открывался; разрешение использовано, новых аппаратных действий нет.
+
+В actual app_main найдены два clock-before-snapshot paths. Host injections
+воспроизводят underflow/false-health, исправление копирует snapshot прежде clock.
+Пороги100/500ms, polling20ms и строгий hardware parser сохраняются. Исправление
+ещё не испытывалось на плате; TLS/crypto/install/floors/rollback остаются открыты.
+
+Следующий шаг: review исправления с actual app_main regression, обоими pinned
+SDK и CI; затем новый exact-image пакет/отдельное разрешение. Повторить control
+и только после его полного PASS переходить к трём TLS boots. Не обходить
+исходную touch_fresh проверку и не повторять использованный пакет a5f8b7e.
+[План](plans/P1_TOUCH_SNAPSHOT_CLOCK.md). Ниже сохранена история подготовки.
 
 Актуальная база main `53b0715`, аппаратный отчёт PR #68 слит владельцем.
 Следующий [программный image](ESP32_OTA_WORKER_TLS_BENCH.md) включает default-off

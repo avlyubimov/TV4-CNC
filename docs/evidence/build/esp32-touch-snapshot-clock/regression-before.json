@@ -1,0 +1,22 @@
+{
+  "actual_app_main": "unmodified a5f8b7e",
+  "sdk_clock": "host fault injection only",
+  "results": [
+    {
+      "mode": "touch-clock-race",
+      "returncode": -6,
+      "expected_success": false
+    },
+    {
+      "mode": "touch-report-race",
+      "returncode": -6,
+      "expected_success": false
+    },
+    {
+      "mode": "touch-stale",
+      "returncode": 0,
+      "expected_success": true
+    }
+  ],
+  "device_access": false
+}

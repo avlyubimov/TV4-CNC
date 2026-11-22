@@ -1,5 +1,11 @@
 # ESP32 HMI — специализированные правила
 
+После стенда a5f8b7e: control touch_fresh FAIL (один UINT32_MAX age), TLS image
+не записан, весь factory fecc05d возвращён/owner PASS, разрешение закрыто.
+Читать docs/plans/P1_TOUCH_SNAPSHOT_CLOCK.md от корня. В actual main freshness
+и diagnostics копировать touch snapshot до consumer clock; не clamp age и не
+ослаблять100/500ms. Исправление ещё не hardware-qualified; новых devices нет.
+
 P1 после main53b0715/PR #68: opt-in UTC/HEAD в том же OTA-worker8192 описан в
 docs/ESP32_OTA_WORKER_TLS_BENCH.md от корня. Новый TV4_OTA_WORKER_TLS_BENCH
 требует unprovisioned OTA+trace+stack flags, default off. Native backend нового

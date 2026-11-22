@@ -1,5 +1,21 @@
 # Аппаратный статус TV4-CNC
 
+## 22 ноября: контроль a5f8b7e остановлен, fecc05d возвращён
+
+[Стенд](evidence/hardware/2026-11-22-esp32-worker-tls-control/README.md) завершён
+за608.667s: fresh16MiB/device MD5/SHA-256/two-NVMe PASS, control8192 app-only
+write/verify/UART90.101s. Одно touch_age_ms=4294967295 на uptime26335ms из16
+samples при touch_errors0; остальные0–19ms. touch_fresh FAIL сохранён,
+TLS image не записывался, SNTP/HEAD не запускались. Весь factory2MiB fecc05d
+возвращён из свежего снимка/verify/UART30.046s/owner HMI-touch-Wi-Fi-SETUP PASS.
+Две writes/два captures, полный16MiB restore не понадобился. На ESP32 fecc05d,
+F407 ee7d179 не открывался; разрешение использовано, новых аппаратных действий нет.
+
+В actual app_main найдены два clock-before-snapshot paths. Host injections
+воспроизводят underflow/false-health, исправление копирует snapshot прежде clock.
+Пороги100/500ms, polling20ms и строгий hardware parser сохраняются. Исправление
+ещё не испытывалось на плате; TLS/crypto/install/floors/rollback остаются открыты.
+
 ## 22 ноября,20:37: контроль3072/worker8192 и возврат fecc05d
 
 База main `dfa9f28`, PR #1–67 слиты. [Стенд3072/8192](evidence/hardware/2026-11-22-esp32-worker-stack/README.md)

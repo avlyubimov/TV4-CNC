@@ -1,0 +1,167 @@
+{
+  "baseline_matrix_source": "d27142ef0b6b39ac2d274a177aed13823416dc97",
+  "new_source": "a6856147203ccc58a486a4bbc6880869ab65f308",
+  "dependency_locks_identical": true,
+  "variants": [
+    {
+      "variant": "6.1.1-headless",
+      "sdkconfig_identical": true,
+      "partition_table_identical": true,
+      "app_bytes": 1061072,
+      "app_size_delta_bytes": 0,
+      "app_main_compiler_frame": 1040,
+      "pre_fix_app_main_compiler_frame": 1040,
+      "runtime_performance_measured": false
+    },
+    {
+      "variant": "6.1.1-rev12",
+      "sdkconfig_identical": true,
+      "partition_table_identical": true,
+      "app_bytes": 1579296,
+      "app_size_delta_bytes": 0,
+      "app_main_compiler_frame": 1104,
+      "pre_fix_app_main_compiler_frame": 1104,
+      "runtime_performance_measured": false
+    },
+    {
+      "variant": "6.1.1-rev12-memory-bench",
+      "sdkconfig_identical": true,
+      "partition_table_identical": true,
+      "app_bytes": 1580992,
+      "app_size_delta_bytes": 0,
+      "app_main_compiler_frame": 1120,
+      "pre_fix_app_main_compiler_frame": 1120,
+      "runtime_performance_measured": false
+    },
+    {
+      "variant": "6.1.1-rev12-tls-bench",
+      "sdkconfig_identical": true,
+      "partition_table_identical": true,
+      "app_bytes": 1584192,
+      "app_size_delta_bytes": 0,
+      "app_main_compiler_frame": 1120,
+      "pre_fix_app_main_compiler_frame": 1120,
+      "runtime_performance_measured": false
+    },
+    {
+      "variant": "6.1.1-rev12-ota",
+      "sdkconfig_identical": true,
+      "partition_table_identical": true,
+      "app_bytes": 1598560,
+      "app_size_delta_bytes": 0,
+      "app_main_compiler_frame": 1232,
+      "pre_fix_app_main_compiler_frame": 1232,
+      "runtime_performance_measured": false
+    },
+    {
+      "variant": "6.1.1-rev12-ota-memory-diagnostics",
+      "sdkconfig_identical": true,
+      "partition_table_identical": true,
+      "app_bytes": 1600576,
+      "app_size_delta_bytes": 0,
+      "app_main_compiler_frame": 1232,
+      "pre_fix_app_main_compiler_frame": 1232,
+      "runtime_performance_measured": false
+    },
+    {
+      "variant": "6.1.1-rev12-ota-memory-diagnostics-worker-stack-bench",
+      "sdkconfig_identical": true,
+      "partition_table_identical": true,
+      "app_bytes": 1600640,
+      "app_size_delta_bytes": 16,
+      "app_main_compiler_frame": 1232,
+      "pre_fix_app_main_compiler_frame": 1232,
+      "runtime_performance_measured": false
+    },
+    {
+      "variant": "6.1.1-rev12-ota-memory-diagnostics-worker-stack-bench-worker-tls-bench",
+      "sdkconfig_identical": true,
+      "partition_table_identical": true,
+      "app_bytes": 1603456,
+      "app_size_delta_bytes": 0,
+      "app_main_compiler_frame": 1232,
+      "pre_fix_app_main_compiler_frame": 1232,
+      "runtime_performance_measured": false
+    },
+    {
+      "variant": "5.3.2-headless",
+      "sdkconfig_identical": true,
+      "partition_table_identical": true,
+      "app_bytes": 1075504,
+      "app_size_delta_bytes": 0,
+      "app_main_compiler_frame": 1040,
+      "pre_fix_app_main_compiler_frame": 1040,
+      "runtime_performance_measured": false
+    },
+    {
+      "variant": "5.3.2-rev12",
+      "sdkconfig_identical": true,
+      "partition_table_identical": true,
+      "app_bytes": 1535088,
+      "app_size_delta_bytes": 0,
+      "app_main_compiler_frame": 1104,
+      "pre_fix_app_main_compiler_frame": 1104,
+      "runtime_performance_measured": false
+    },
+    {
+      "variant": "5.3.2-rev12-memory-bench",
+      "sdkconfig_identical": true,
+      "partition_table_identical": true,
+      "app_bytes": 1536800,
+      "app_size_delta_bytes": 16,
+      "app_main_compiler_frame": 1120,
+      "pre_fix_app_main_compiler_frame": 1120,
+      "runtime_performance_measured": false
+    },
+    {
+      "variant": "5.3.2-rev12-tls-bench",
+      "sdkconfig_identical": true,
+      "partition_table_identical": true,
+      "app_bytes": 1540080,
+      "app_size_delta_bytes": 0,
+      "app_main_compiler_frame": 1120,
+      "pre_fix_app_main_compiler_frame": 1120,
+      "runtime_performance_measured": false
+    },
+    {
+      "variant": "5.3.2-rev12-ota",
+      "sdkconfig_identical": true,
+      "partition_table_identical": true,
+      "app_bytes": 1551088,
+      "app_size_delta_bytes": 0,
+      "app_main_compiler_frame": 1232,
+      "pre_fix_app_main_compiler_frame": 1232,
+      "runtime_performance_measured": false
+    },
+    {
+      "variant": "5.3.2-rev12-ota-memory-diagnostics",
+      "sdkconfig_identical": true,
+      "partition_table_identical": true,
+      "app_bytes": 1553120,
+      "app_size_delta_bytes": 0,
+      "app_main_compiler_frame": 1232,
+      "pre_fix_app_main_compiler_frame": 1232,
+      "runtime_performance_measured": false
+    },
+    {
+      "variant": "5.3.2-rev12-ota-memory-diagnostics-worker-stack-bench",
+      "sdkconfig_identical": true,
+      "partition_table_identical": true,
+      "app_bytes": 1553184,
+      "app_size_delta_bytes": 0,
+      "app_main_compiler_frame": 1232,
+      "pre_fix_app_main_compiler_frame": 1232,
+      "runtime_performance_measured": false
+    },
+    {
+      "variant": "5.3.2-rev12-ota-memory-diagnostics-worker-stack-bench-worker-tls-bench",
+      "sdkconfig_identical": true,
+      "partition_table_identical": true,
+      "app_bytes": 1556016,
+      "app_size_delta_bytes": 16,
+      "app_main_compiler_frame": 1232,
+      "pre_fix_app_main_compiler_frame": 1232,
+      "runtime_performance_measured": false
+    }
+  ]
+}
