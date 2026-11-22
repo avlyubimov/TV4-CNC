@@ -1,0 +1,16 @@
+{
+  "source_commit": "5e9ae14dd0b74cfdf16e187b8af61f3f8568debe",
+  "source_tree": "337f68e65862ab1c6698e91d26a2a2b2748dca62",
+  "firmware_source_clean_at_build": true,
+  "device_access": false,
+  "host_suites": 97,
+  "asan_ubsan_lsan_suites": 97,
+  "startup_integration_cases": 10,
+  "sdk_builds": 12,
+  "first_frame_identical_to_baseline": true,
+  "hardware_ram_improvement_measured": false,
+  "installed_esp32": "fecc05d/factory/tv4-16m-ab-v1",
+  "installed_stm32": "ee7d179",
+  "board_permission": "none; previous session closed",
+  "dependency_locks_unchanged": true
+}

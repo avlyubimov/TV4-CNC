@@ -7,6 +7,8 @@ factory2MiB fecc05d return/verify/4samples и owner HMI/touch/saved Wi-Fi/SETUP 
 На ESP32 fecc05d/factory/tv4-16m-ab-v1; F407 ee7d179 не открывался.
 Сеанс608.700s закрыт, повторных UART/SWD/reset/Flash разрешений нет.
 
+[Проверенная software сборка и cold-render evidence](evidence/build/esp32-startup-memory-order/README.md).
+
 ## Полученный результат
 
 Исторический112 не был уже готовым APP_ENTRY минимумом в diagnostic image:

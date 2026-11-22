@@ -18,6 +18,8 @@ startup overlap, не доказывает экономию ESP32 RAM или п�
 [План](plans/P1_STARTUP_MEMORY_ORDER.md); затем отдельно разрешённый замер и
 configured budget после owner key/context решений.
 
+[Проверенная software сборка и cold-render evidence](evidence/build/esp32-startup-memory-order/README.md).
+
 ## Исторический итог P0 и программной подготовки
 
 22 ноября 2026, база main `07fb406e37ebd1f1e019dbee0b54e8bb5571be1a`, PR #1–57 слиты.

@@ -1,0 +1,70 @@
+{
+  "baseline_source_commit": "973a9baf5ce51906416f543073655e1a3223a57e",
+  "changed_source_commit": "5e9ae14dd0b74cfdf16e187b8af61f3f8568debe",
+  "baseline_method": "actual baseline app_main compiled with the same new host SDK boundary and real LVGL; not an ESP32 image",
+  "baseline_main_sha256": "9b6424519b135fd2dea2155e86c0bbfbdd76ba4efddae09293968fd9c2f9cc34",
+  "changed_main_sha256": "5df2734bc54fd907e56f56dc0db076b990f7274e703a3d8a730fe6e640fcfd04",
+  "harness_sha256": "7ebdbe3acd17888748f139f0ae79582dd08219bd1ba66877134a9cf590da3915",
+  "baseline": {
+    "host_only": true,
+    "target_heap_placement_tested": false,
+    "clock_simulated": true,
+    "first_frame_hash": "28aa175eb0678f9d",
+    "wifi_at_first_frame": true,
+    "export_at_first_frame": true,
+    "lvgl_pool_peak": 181488,
+    "after_dashboard_pool_peak": 181488,
+    "largest_before_ui": 14339,
+    "largest_after_dashboard": 14339,
+    "wifi_at_after_dashboard_peak": true,
+    "phase_order": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ]
+  },
+  "changed": {
+    "host_only": true,
+    "target_heap_placement_tested": false,
+    "clock_simulated": true,
+    "first_frame_hash": "28aa175eb0678f9d",
+    "wifi_at_first_frame": false,
+    "export_at_first_frame": false,
+    "lvgl_pool_peak": 181488,
+    "after_dashboard_pool_peak": 181488,
+    "largest_before_ui": 14339,
+    "largest_after_dashboard": 14339,
+    "wifi_at_after_dashboard_peak": false,
+    "phase_order": [
+      0,
+      1,
+      2,
+      3,
+      5,
+      6,
+      4
+    ]
+  },
+  "first_frame_identical": true,
+  "first_frame_ppm_sha256": "b9e1a7245e9e70de868263d592817fa23a47f9082cc32fc364c709e501dfd4f6",
+  "allocation_observation_scope": "successful LVGL malloc/realloc requests after lv_init; builtin 256 KiB pool / 64-bit host ABI; no ESP32 placement or real radio allocations",
+  "largest_after_dashboard_callchain": [
+    "lv_malloc",
+    "buf_malloc",
+    "draw_buf_malloc",
+    "lv_draw_buf_create_ex",
+    "lv_draw_buf_create",
+    "lv_draw_layer_alloc_buf",
+    "dispatch",
+    "lv_draw_dispatch_layer",
+    "lv_draw_dispatch",
+    "lv_draw_finalize_task_creation"
+  ],
+  "hardware_memory_improvement": "not measured",
+  "hardware_performance": "not measured",
+  "device_access": false
+}

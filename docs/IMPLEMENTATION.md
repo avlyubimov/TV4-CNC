@@ -1,5 +1,7 @@
 # Реализация: main, открытые PR и аппаратные границы
 
+[Проверенная software сборка и cold-render evidence](evidence/build/esp32-startup-memory-order/README.md).
+
 ## Текущий результат P1 (база main973a9ba, PR #1–63 слиты)
 
 Existing signed HTTPS/session соединены с inactive SDK installer/UI approval/

@@ -1,5 +1,7 @@
 # ESP32 OTA: фазные измерения RAM и стека
 
+[Проверенная software сборка и cold-render evidence](evidence/build/esp32-startup-memory-order/README.md).
+
 ## Порядок старта после main973a9ba
 
 Первый полный dashboard refresh и UI_READY теперь предшествуют запуску
