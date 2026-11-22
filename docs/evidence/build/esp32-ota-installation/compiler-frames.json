@@ -1,0 +1,363 @@
+{
+  "sdk": "6.1.1",
+  "profile": "rev12-ota",
+  "context": "unprovisioned",
+  "method": "actual target translation units, -fstack-usage; individual frames, not call-chain or runtime watermark",
+  "frames": [
+    {
+      "unit": "service",
+      "function": "now_ms",
+      "frame_bytes": 32,
+      "kind": "static"
+    },
+    {
+      "unit": "service",
+      "function": "cancelled",
+      "frame_bytes": 32,
+      "kind": "static"
+    },
+    {
+      "unit": "service",
+      "function": "commit",
+      "frame_bytes": 32,
+      "kind": "static"
+    },
+    {
+      "unit": "service",
+      "function": "configured",
+      "frame_bytes": 32,
+      "kind": "static"
+    },
+    {
+      "unit": "service",
+      "function": "publish",
+      "frame_bytes": 32,
+      "kind": "static"
+    },
+    {
+      "unit": "service",
+      "function": "write_chunk",
+      "frame_bytes": 32,
+      "kind": "static"
+    },
+    {
+      "unit": "service",
+      "function": "fetch",
+      "frame_bytes": 48,
+      "kind": "static"
+    },
+    {
+      "unit": "service",
+      "function": "tv4_ota_boot_observe",
+      "frame_bytes": 32,
+      "kind": "static"
+    },
+    {
+      "unit": "service",
+      "function": "tv4_ota_service_start",
+      "frame_bytes": 64,
+      "kind": "static"
+    },
+    {
+      "unit": "service",
+      "function": "tv4_ota_service_health",
+      "frame_bytes": 32,
+      "kind": "static"
+    },
+    {
+      "unit": "service",
+      "function": "tv4_ota_service_snapshot",
+      "frame_bytes": 32,
+      "kind": "static"
+    },
+    {
+      "unit": "service",
+      "function": "operation",
+      "frame_bytes": 432,
+      "kind": "static"
+    },
+    {
+      "unit": "service",
+      "function": "worker",
+      "frame_bytes": 64,
+      "kind": "static"
+    },
+    {
+      "unit": "service",
+      "function": "tv4_ota_service_request",
+      "frame_bytes": 48,
+      "kind": "static"
+    },
+    {
+      "unit": "installer_sdk",
+      "function": "known_app",
+      "frame_bytes": 32,
+      "kind": "static"
+    },
+    {
+      "unit": "installer_sdk",
+      "function": "part",
+      "frame_bytes": 32,
+      "kind": "static"
+    },
+    {
+      "unit": "installer_sdk",
+      "function": "tv4_ota_sdk_layout_valid",
+      "frame_bytes": 48,
+      "kind": "static"
+    },
+    {
+      "unit": "installer_sdk",
+      "function": "target",
+      "frame_bytes": 48,
+      "kind": "static"
+    },
+    {
+      "unit": "installer_sdk",
+      "function": "tv4_ota_sdk_finish_boot",
+      "frame_bytes": 48,
+      "kind": "static"
+    },
+    {
+      "unit": "installer_sdk",
+      "function": "tv4_ota_sdk_begin",
+      "frame_bytes": 32,
+      "kind": "static"
+    },
+    {
+      "unit": "installer_sdk",
+      "function": "tv4_ota_sdk_write",
+      "frame_bytes": 32,
+      "kind": "static"
+    },
+    {
+      "unit": "installer_sdk",
+      "function": "tv4_ota_sdk_seal",
+      "frame_bytes": 32,
+      "kind": "static"
+    },
+    {
+      "unit": "installer_sdk",
+      "function": "tv4_ota_sdk_activate",
+      "frame_bytes": 32,
+      "kind": "static"
+    },
+    {
+      "unit": "installer_sdk",
+      "function": "tv4_ota_sdk_abort",
+      "frame_bytes": 32,
+      "kind": "static"
+    },
+    {
+      "unit": "session",
+      "function": "clear_received",
+      "frame_bytes": 32,
+      "kind": "static"
+    },
+    {
+      "unit": "session",
+      "function": "stop",
+      "frame_bytes": 32,
+      "kind": "static"
+    },
+    {
+      "unit": "session",
+      "function": "image",
+      "frame_bytes": 32,
+      "kind": "static"
+    },
+    {
+      "unit": "session",
+      "function": "metadata",
+      "frame_bytes": 32,
+      "kind": "static"
+    },
+    {
+      "unit": "session",
+      "function": "fetch",
+      "frame_bytes": 96,
+      "kind": "static"
+    },
+    {
+      "unit": "session",
+      "function": "failed",
+      "frame_bytes": 32,
+      "kind": "static"
+    },
+    {
+      "unit": "session",
+      "function": "run",
+      "frame_bytes": 96,
+      "kind": "static"
+    },
+    {
+      "unit": "session",
+      "function": "tv4_ota_session_reset",
+      "frame_bytes": 32,
+      "kind": "static"
+    },
+    {
+      "unit": "session",
+      "function": "tv4_ota_session_run",
+      "frame_bytes": 48,
+      "kind": "static"
+    },
+    {
+      "unit": "session",
+      "function": "tv4_ota_session_run_guarded",
+      "frame_bytes": 64,
+      "kind": "static"
+    },
+    {
+      "unit": "session",
+      "function": "tv4_ota_session_install_guarded",
+      "frame_bytes": 64,
+      "kind": "static"
+    },
+    {
+      "unit": "https",
+      "function": "short_length",
+      "frame_bytes": 32,
+      "kind": "static"
+    },
+    {
+      "unit": "https",
+      "function": "header_compare",
+      "frame_bytes": 32,
+      "kind": "static"
+    },
+    {
+      "unit": "https",
+      "function": "cancelled",
+      "frame_bytes": 32,
+      "kind": "static"
+    },
+    {
+      "unit": "https",
+      "function": "clock_read",
+      "frame_bytes": 32,
+      "kind": "static"
+    },
+    {
+      "unit": "https",
+      "function": "now",
+      "frame_bytes": 32,
+      "kind": "static"
+    },
+    {
+      "unit": "https",
+      "function": "close_client",
+      "frame_bytes": 32,
+      "kind": "static"
+    },
+    {
+      "unit": "https",
+      "function": "complete_client",
+      "frame_bytes": 32,
+      "kind": "static"
+    },
+    {
+      "unit": "https",
+      "function": "read_client",
+      "frame_bytes": 32,
+      "kind": "static"
+    },
+    {
+      "unit": "https",
+      "function": "open_client",
+      "frame_bytes": 192,
+      "kind": "static"
+    },
+    {
+      "unit": "https",
+      "function": "headers",
+      "frame_bytes": 32,
+      "kind": "static"
+    },
+    {
+      "unit": "https",
+      "function": "tv4_https_read",
+      "frame_bytes": 128,
+      "kind": "static"
+    },
+    {
+      "unit": "sntp_source",
+      "function": "finish",
+      "frame_bytes": 32,
+      "kind": "static"
+    },
+    {
+      "unit": "sntp_source",
+      "function": "budget",
+      "frame_bytes": 32,
+      "kind": "static"
+    },
+    {
+      "unit": "sntp_source",
+      "function": "tv4_sntp_run",
+      "frame_bytes": 96,
+      "kind": "static"
+    },
+    {
+      "unit": "sntp_sdk",
+      "function": "cancelled",
+      "frame_bytes": 32,
+      "kind": "static"
+    },
+    {
+      "unit": "sntp_sdk",
+      "function": "now",
+      "frame_bytes": 32,
+      "kind": "static"
+    },
+    {
+      "unit": "sntp_sdk",
+      "function": "clock_read",
+      "frame_bytes": 32,
+      "kind": "static"
+    },
+    {
+      "unit": "sntp_sdk",
+      "function": "stop",
+      "frame_bytes": 32,
+      "kind": "static"
+    },
+    {
+      "unit": "sntp_sdk",
+      "function": "start",
+      "frame_bytes": 32,
+      "kind": "static"
+    },
+    {
+      "unit": "sntp_sdk",
+      "function": "stop_tcpip",
+      "frame_bytes": 32,
+      "kind": "static"
+    },
+    {
+      "unit": "sntp_sdk",
+      "function": "source_poll",
+      "frame_bytes": 32,
+      "kind": "static"
+    },
+    {
+      "unit": "sntp_sdk",
+      "function": "start_tcpip",
+      "frame_bytes": 80,
+      "kind": "static"
+    },
+    {
+      "unit": "sntp_sdk",
+      "function": "online",
+      "frame_bytes": 960,
+      "kind": "static"
+    },
+    {
+      "unit": "sntp_sdk",
+      "function": "tv4_sntp_sync",
+      "frame_bytes": 96,
+      "kind": "static"
+    }
+  ],
+  "source_commit": "f3ecd916cab47483f994977795c180271c746777"
+}
