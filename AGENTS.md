@@ -142,28 +142,32 @@ PR и Actions; не копировать код уже открытого PR. Д
    теги, релизы, секреты CI и публикации под видом обычного push.
 6. Обновлять актуальный статус; исторические отчёты сохранять с явной пометкой.
 
-## Текущее задание: P1 — стенд после PR #70
+## Текущее задание: P1 — AES/DMA memory после HEAD FAIL
 
-База main `3927063`, PR #70 слит, все 15 main CI jobs PASS. Clock-after-snapshot
-проверен actual app_main tests и обоими pinned SDK; hardware result ещё нет.
-[Новый пакет](docs/ESP32_OTA_BENCH_3927063.md): control touch_fresh → только PASS →
-SNTP/verified HEAD в worker8192 → возврат всего factory fecc05d. Четыре чистые
-сборки и 39 host-only procedure tests PASS; exact BIN/ELF/plan hashes сохранены.
-Исходный failed sample a5f8b7e и использованное разрешение не переиспользовать.
-Владелец предварительно разрешил подключение; запись нового exact пакета требует
-отдельного согласования по правилу8. Firmware/CHECK/INSTALL/key gates сохранены.
+База main70eaf1d, PR #71/#72 слиты владельцем; main15/15 и оба PR30/30 CI PASS.
+[Разрешённый стенд3927063](docs/evidence/hardware/2026-11-22-esp32-worker-tls-3927063/README.md)
+завершён за743,183s: fresh16MiB/two-NVMe, control touch_fresh PASS2–19ms,
+SNTP PASS. Первый HEAD FAIL после hardware-AES allocation, generic TLS132,
+status-1/cleanup1; следующие boots остановлены. Весь factory2MiB fecc05d
+возвращён/verify/UART/owner HMI-touch-Wi-Fi-SETUP PASS. Temporary3927063 тоже
+подтверждён владельцем. F407 ee7d179 не открывался. Сеанс/разрешение использованы;
+новых UART/reset/Flash действий нет, старые пакеты не повторять.
 
-На ESP32 остаётся fecc05d/factory/tv4-16m-ab-v1, на F407 ee7d179. Touch thresholds
-100/500ms, polling20ms, default-off TLS probe, serialized monitor, startup IDs/
-windows1–6, TLS16384/4096/DMA64KiB/PSRAM/pins/clocks неизменны. После verified
-HTTPS — reviewed owner key/SemVer/time/resource settings и измерение настоящей
-signed SESSION4; затем отдельные install/confirm/rollback и release acceptance.
-Не угадывать floors и не подставлять keys ради PASS.
+Читать docs/plans/P1_AES_DMA_MEMORY.md. Следующий результат — конкретные DMA
+capability/request/caps/failure данные в реальном diagnostic image двух SDK,
+затем обоснованное устранение дефицита. Internal8BIT minima не DMA largest и
+не production floors; не угадывать allocator site/size по одной строке SDK.
+Не отключать hardware AES/CA/hostname/date, не уменьшать TLS16384/4096,
+DMA64KiB/framebuffer/pins/clocks/stack/touch thresholds ради PASS. Один monitor
+owner/полные тайм-ауты/остановка после FAIL сохраняются. После HTTPS — reviewed
+owner key/SemVer/time/resources и настоящий signed CHECK, затем install/rollback/
+release приёмка. CHECK/INSTALL без настройки закрыты, test keys не подставлять.
 
-Параллельное разрешённое software задание: план первого closed-loop NEMA23
-3,1 Н·м и host-тестируемый проект hardware-timer STEP/DIR STM32 без физических
-выходов. Точные motor/driver model, питание, ток, ENA polarity, pins и частоты
-не заданы. Независимая hardware E-stop цепь обязательна; motion не разрешён.
+NEMA23 software project завершён в PR #72: docs/NEMA23_BENCH_PLAN.md и opt-in
+pinless TIM design, host/sanitizer160/20000 cases; real P0 image не включает его.
+Точные motor/driver models ещё неизвестны. Питание/ток/ENA/pins не назначать,
+physical outputs/motion не включать; independent hardware emergency chain
+остаётся обязательной. Не дублировать слитый проект новой абстракцией.
 
 ### Завершённый стенд worker8192 — основание следующего шага
 

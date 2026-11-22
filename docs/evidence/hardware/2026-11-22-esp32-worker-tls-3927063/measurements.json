@@ -1,0 +1,685 @@
+{
+  "schema": 1,
+  "source_commit": "392706355193b7544132e2296f7ef8572e1f3c10",
+  "source_tree": "6e0a2b006670714a7c63c0dfa9a5cfa42ba6a9a7",
+  "profile": "rev12-ota",
+  "sdk": "6.1.1",
+  "plan_sha256": "eaf753199d207e237d4d19d11ff1306b4875b58373e352ca0a0742185b02d246",
+  "apps": {
+    "return": {
+      "version": "fecc05d",
+      "bytes": 1597984,
+      "sha256": "de55953fc9e3c4080cb277d734ca7d1f02c74880db38dac0f4b53830f587d021",
+      "elf_sha256": "77d6fd8aa3a90c52599bd4bfc20d083496bc97111d823c4f677ccb775aa434a6"
+    },
+    "control": {
+      "version": "3927063",
+      "bytes": 1600640,
+      "sha256": "6ecae5f0e4cce3ed29c880fe308be288ae6b4c2fe2e2ee60782de3504697adc5",
+      "elf_sha256": "f8a7d3ab395de533ae45bdf81aa94d0aaed1ad02c93193aea75e18fc8351388b"
+    },
+    "worker-tls": {
+      "version": "3927063",
+      "bytes": 1603456,
+      "sha256": "cbfb26497c1b09e5b345df61de43f278a8ef7ee951a1a5a63ad5b03635c4ecfd",
+      "elf_sha256": "2c4ecfbb06c893a3dc8c71e3c01af1bd2abe11aa4dbaf07ad97d47475c92751f"
+    }
+  },
+  "start_utc": "2026-11-22T18:25:29.623239+00:00",
+  "finish_utc": "2026-11-22T18:37:52.806055+00:00",
+  "elapsed_seconds": 743.1827969829901,
+  "maximum_seconds": 1800,
+  "result": "FAIL: AES allocation during first HTTPS HEAD; remaining TLS boots stopped",
+  "counters": {
+    "control_write_attempts": 1,
+    "worker_write_attempts": 1,
+    "return_write_attempts": 1,
+    "recovery_write_attempts": 0,
+    "uart_capture_attempts": 3
+  },
+  "backup": {
+    "bytes": 16777216,
+    "sha256": "ce6af4e88d755254f65ca2cf952d17ad9892a8ec7f487b0ed4391eccc3355e5a",
+    "device_md5_verified": true,
+    "two_independent_nvme_verified": true,
+    "host_copies_reverified": true,
+    "original_copies_not_overwritten": true,
+    "private_file_mode": "0600",
+    "private_directory_mode": "0700",
+    "factory_bytes": 2097152,
+    "factory_sha256": "081d99e707f578824cc9058d1d18c4f87700b2e60a09afa907e98a9c33bffd1a"
+  },
+  "preservation": {
+    "control_write_preservation_verified": true,
+    "worker_write_preservation_verified": true,
+    "factory_return_verified": true
+  },
+  "preservation_scope": "outside-factory MD5 checked after each write and before app boot; no post-return full Flash readback or NVS decode",
+  "observations": {
+    "control8192": {
+      "observation_pass": true,
+      "checks": {
+        "expected_app": true,
+        "expected_sdk": true,
+        "factory_boot": true,
+        "single_app_boot": true,
+        "psram_8mib": true,
+        "psram_sdk_test": true,
+        "instructions_in_psram": true,
+        "rodata_in_psram": true,
+        "rgb_initialized": true,
+        "gt911_initialized": true,
+        "ui_ready": true,
+        "no_fatal_log": true,
+        "periodic_resources": true,
+        "resource_errors_clear": true,
+        "touch_fresh": true,
+        "increasing_uptime": true,
+        "heap_samples_consistent": true,
+        "comparable_wifi_load": true,
+        "optional_services_started": true,
+        "explicit_self_test": true,
+        "complete_startup": true,
+        "single_complete_boot_window": true,
+        "startup_scope": true,
+        "phase_times_ordered": true,
+        "nonzero_measured_stacks": true,
+        "phase_heap_samples_consistent": true,
+        "worker_stack_published": true,
+        "nonzero_valid_periodic_stack": true,
+        "explicit_stack_mode": true,
+        "worker_watermarks_within_request": true,
+        "adequate_periodic_samples": true,
+        "no_unexpected_network_probe": true,
+        "no_network_windows": true
+      },
+      "capture_seconds": 90.14571237200289,
+      "samples": 16,
+      "summary": {
+        "internal_free": {
+          "min": 16975,
+          "max": 16995
+        },
+        "internal_min": {
+          "min": 7816,
+          "max": 7816
+        },
+        "internal_largest": {
+          "min": 7680,
+          "max": 7680
+        },
+        "psram_free": {
+          "min": 6090060,
+          "max": 6090060
+        },
+        "psram_min": {
+          "min": 6090024,
+          "max": 6090024
+        },
+        "owner_stack": {
+          "min": 10516,
+          "max": 10516
+        },
+        "touch_stack": {
+          "min": 2508,
+          "max": 2572
+        },
+        "worker_stack_bytes_requested": 8192,
+        "worker_stack_remaining": [6736, 6736]
+      },
+      "touch_columns": [
+        "uptime_ms",
+        "age_ms",
+        "errors"
+      ],
+      "touch_rows": [
+        [6363, 9, 0],
+        [11378, 3, 0],
+        [16383, 8, 0],
+        [21388, 12, 0],
+        [26393, 17, 0],
+        [31398, 2, 0],
+        [36403, 6, 0],
+        [41408, 10, 0],
+        [46412, 14, 0],
+        [51417, 19, 0],
+        [56423, 4, 0],
+        [61428, 9, 0],
+        [66432, 14, 0],
+        [71438, 19, 0],
+        [76443, 2, 0],
+        [81448, 6, 0]
+      ],
+      "wifi_ip_event_observed": true,
+      "startup_columns": [
+        "id",
+        "sample_ms",
+        "scope"
+      ],
+      "startup_rows": [
+        [0, 51, 0],
+        [1, 376, 1],
+        [2, 380, 1],
+        [3, 698, 1],
+        [4, 2298, 1],
+        [5, 1385, 1],
+        [6, 2287, 1]
+      ],
+      "boot_window_points": [
+        {
+          "kind": 1,
+          "id": 1,
+          "sample_ms": 51,
+          "scope": 0,
+          "internal": 267039,
+          "minimum": 202308,
+          "largest": 172032,
+          "psram": 6860348,
+          "psram_min": 6860348,
+          "psram_largest": 6684672,
+          "sample_stack": 14756,
+          "worker_stack_at_emit": 6736
+        },
+        {
+          "kind": 2,
+          "id": 1,
+          "sample_ms": 52,
+          "scope": 1,
+          "internal": 267039,
+          "minimum": 267039,
+          "largest": 172032,
+          "psram": 6860320,
+          "psram_min": 6860320,
+          "psram_largest": 6684672,
+          "sample_stack": 14756,
+          "worker_stack_at_emit": 6736
+        },
+        {
+          "kind": 3,
+          "id": 1,
+          "sample_ms": 5454,
+          "scope": 1,
+          "internal": 18047,
+          "minimum": 16107,
+          "largest": 9728,
+          "psram": 6090740,
+          "psram_min": 6090480,
+          "psram_largest": 6029312,
+          "sample_stack": 7216,
+          "worker_stack_at_emit": 6736
+        },
+        {
+          "kind": 4,
+          "id": 1,
+          "sample_ms": 5455,
+          "scope": 0,
+          "internal": 18047,
+          "minimum": 7816,
+          "largest": 9728,
+          "psram": 6090768,
+          "psram_min": 6090480,
+          "psram_largest": 6029312,
+          "sample_stack": 7216,
+          "worker_stack_at_emit": 6736
+        }
+      ],
+      "window_results": [
+        {
+          "window": 1,
+          "start_result": 0,
+          "stop_result": 0,
+          "complete": 1
+        }
+      ]
+    },
+    "worker-tls-1": {
+      "observation_pass": false,
+      "checks": {
+        "expected_app": true,
+        "expected_sdk": true,
+        "factory_boot": true,
+        "single_app_boot": true,
+        "psram_8mib": true,
+        "psram_sdk_test": true,
+        "instructions_in_psram": true,
+        "rodata_in_psram": true,
+        "rgb_initialized": true,
+        "gt911_initialized": true,
+        "ui_ready": true,
+        "no_fatal_log": true,
+        "periodic_resources": true,
+        "resource_errors_clear": true,
+        "touch_fresh": true,
+        "increasing_uptime": true,
+        "heap_samples_consistent": true,
+        "comparable_wifi_load": true,
+        "optional_services_started": true,
+        "explicit_self_test": true,
+        "complete_startup": true,
+        "single_complete_boot_window": true,
+        "startup_scope": true,
+        "phase_times_ordered": true,
+        "nonzero_measured_stacks": true,
+        "phase_heap_samples_consistent": true,
+        "worker_stack_published": true,
+        "nonzero_valid_periodic_stack": true,
+        "explicit_stack_mode": true,
+        "worker_watermarks_within_request": true,
+        "adequate_periodic_samples": true,
+        "one_explicit_network_probe": true,
+        "complete_probe_stage_sequence": true,
+        "sntp_sync_and_cleanup": true,
+        "verified_head_and_cleanup": false,
+        "explicit_probe_success": false,
+        "probe_numeric_resources": true,
+        "three_serialized_windows": true,
+        "two_complete_network_windows": true,
+        "network_window_times_ordered": true,
+        "tls_after_boot_self_test": true
+      },
+      "capture_seconds": 90.10040525798104,
+      "samples": 16,
+      "summary": {
+        "internal_free": {
+          "min": 15923,
+          "max": 17459
+        },
+        "internal_min": {
+          "min": 2408,
+          "max": 16431
+        },
+        "internal_largest": {
+          "min": 6656,
+          "max": 7680
+        },
+        "psram_free": {
+          "min": 6088912,
+          "max": 6088940
+        },
+        "psram_min": {
+          "min": 6055088,
+          "max": 6088912
+        },
+        "owner_stack": {
+          "min": 10580,
+          "max": 10580
+        },
+        "touch_stack": {
+          "min": 2508,
+          "max": 2508
+        },
+        "worker_stack_bytes_requested": 8192,
+        "worker_stack_remaining": [3792, 6784]
+      },
+      "touch_columns": [
+        "uptime_ms",
+        "age_ms",
+        "errors"
+      ],
+      "touch_rows": [
+        [6315, 10, 0],
+        [11328, 13, 0],
+        [16333, 17, 0],
+        [21339, 19, 0],
+        [26346, 4, 0],
+        [31351, 9, 0],
+        [36356, 13, 0],
+        [41360, 18, 0],
+        [46366, 2, 0],
+        [51371, 7, 0],
+        [56375, 12, 0],
+        [61381, 16, 0],
+        [66386, 2, 0],
+        [71391, 7, 0],
+        [76395, 12, 0],
+        [81400, 17, 0]
+      ],
+      "wifi_ip_event_observed": true,
+      "startup_columns": [
+        "id",
+        "sample_ms",
+        "scope"
+      ],
+      "startup_rows": [
+        [0, 51, 0],
+        [1, 376, 1],
+        [2, 380, 1],
+        [3, 700, 1],
+        [4, 2301, 1],
+        [5, 1409, 1],
+        [6, 2292, 1]
+      ],
+      "boot_window_points": [
+        {
+          "kind": 1,
+          "id": 1,
+          "sample_ms": 51,
+          "scope": 0,
+          "internal": 267023,
+          "minimum": 202292,
+          "largest": 172032,
+          "psram": 6859228,
+          "psram_min": 6859228,
+          "psram_largest": 6684672,
+          "sample_stack": 14820,
+          "worker_stack_at_emit": 6784
+        },
+        {
+          "kind": 2,
+          "id": 1,
+          "sample_ms": 52,
+          "scope": 1,
+          "internal": 267023,
+          "minimum": 267023,
+          "largest": 172032,
+          "psram": 6859200,
+          "psram_min": 6859200,
+          "psram_largest": 6684672,
+          "sample_stack": 14820,
+          "worker_stack_at_emit": 6784
+        },
+        {
+          "kind": 3,
+          "id": 1,
+          "sample_ms": 5453,
+          "scope": 1,
+          "internal": 17891,
+          "minimum": 15623,
+          "largest": 9216,
+          "psram": 6089620,
+          "psram_min": 6089360,
+          "psram_largest": 6029312,
+          "sample_stack": 7056,
+          "worker_stack_at_emit": 6784
+        },
+        {
+          "kind": 4,
+          "id": 1,
+          "sample_ms": 5454,
+          "scope": 0,
+          "internal": 17891,
+          "minimum": 7828,
+          "largest": 9216,
+          "psram": 6089648,
+          "psram_min": 6089360,
+          "psram_largest": 6029312,
+          "sample_stack": 7056,
+          "worker_stack_at_emit": 6784
+        }
+      ],
+      "window_results": [
+        {
+          "window": 1,
+          "start_result": 0,
+          "stop_result": 0,
+          "complete": 1
+        },
+        {
+          "window": 3,
+          "start_result": 0,
+          "stop_result": 0,
+          "complete": 1
+        },
+        {
+          "window": 6,
+          "start_result": 0,
+          "stop_result": 0,
+          "complete": 1
+        }
+      ],
+      "tls_probe": {
+        "snapshots": [
+          {
+            "internal_free": 16827,
+            "internal_min": 7828,
+            "internal_largest": 7680,
+            "psram_free": 6088940,
+            "psram_min": 6088904,
+            "stack": 6720,
+            "stage": "sntp_before",
+            "log_ordinal": 148
+          },
+          {
+            "internal_free": 16827,
+            "internal_min": 16827,
+            "internal_largest": 7680,
+            "psram_free": 6088912,
+            "psram_min": 6088912,
+            "stack": 6640,
+            "stage": "sntp_window_start",
+            "log_ordinal": 149
+          },
+          {
+            "internal_free": 16383,
+            "internal_min": 14351,
+            "internal_largest": 7680,
+            "psram_free": 6088912,
+            "psram_min": 6088912,
+            "stack": 6192,
+            "stage": "sntp_window_end",
+            "log_ordinal": 151
+          },
+          {
+            "internal_free": 16383,
+            "internal_min": 7828,
+            "internal_largest": 7680,
+            "psram_free": 6088940,
+            "psram_min": 6088904,
+            "stack": 6192,
+            "stage": "tls_before",
+            "log_ordinal": 159
+          },
+          {
+            "internal_free": 16383,
+            "internal_min": 16383,
+            "internal_largest": 7680,
+            "psram_free": 6088912,
+            "psram_min": 6088912,
+            "stack": 6192,
+            "stage": "tls_window_start",
+            "log_ordinal": 160
+          },
+          {
+            "internal_free": 16383,
+            "internal_min": 16383,
+            "internal_largest": 7680,
+            "psram_free": 6088912,
+            "psram_min": 6088912,
+            "stack": 6192,
+            "stage": "http_before_init",
+            "log_ordinal": 161
+          },
+          {
+            "internal_free": 12603,
+            "internal_min": 12587,
+            "internal_largest": 7680,
+            "psram_free": 6088912,
+            "psram_min": 6088912,
+            "stack": 6192,
+            "stage": "http_after_init",
+            "log_ordinal": 162
+          },
+          {
+            "internal_free": 6847,
+            "internal_min": 2571,
+            "internal_largest": 5120,
+            "psram_free": 6066552,
+            "psram_min": 6055088,
+            "stack": 3792,
+            "stage": "http_after_open",
+            "log_ordinal": 163
+          },
+          {
+            "internal_free": 8731,
+            "internal_min": 2571,
+            "internal_largest": 6656,
+            "psram_free": 6066552,
+            "psram_min": 6055088,
+            "stack": 3792,
+            "stage": "http_after_headers",
+            "log_ordinal": 167
+          },
+          {
+            "internal_free": 15531,
+            "internal_min": 2571,
+            "internal_largest": 6656,
+            "psram_free": 6088912,
+            "psram_min": 6055088,
+            "stack": 3792,
+            "stage": "http_after_cleanup",
+            "log_ordinal": 168
+          },
+          {
+            "internal_free": 15531,
+            "internal_min": 2571,
+            "internal_largest": 6656,
+            "psram_free": 6088912,
+            "psram_min": 6055088,
+            "stack": 3792,
+            "stage": "tls_window_end",
+            "log_ordinal": 169
+          },
+          {
+            "internal_free": 15575,
+            "internal_min": 2408,
+            "internal_largest": 6656,
+            "psram_free": 6088940,
+            "psram_min": 6055088,
+            "stack": 3792,
+            "stage": "worker_end",
+            "log_ordinal": 176
+          }
+        ],
+        "sntp": [
+          {
+            "sntp_result": 0,
+            "time_result": 0,
+            "elapsed_ms": 1603,
+            "cleanup": 1,
+            "source": 2
+          }
+        ],
+        "tls": [
+          {
+            "tls_result": 6,
+            "status": -1,
+            "elapsed_ms": 2805,
+            "cleanup": 1,
+            "native_error": -1,
+            "tls_error": 132,
+            "cert_flags": 0,
+            "header_bytes": 0
+          }
+        ],
+        "completion": [
+          {
+            "pass": 0,
+            "stage": "tls"
+          }
+        ],
+        "production_budget_qualified": false,
+        "source_authenticated": false
+      }
+    },
+    "return-fecc05d": {
+      "observation_pass": true,
+      "checks": {
+        "expected_app": true,
+        "expected_sdk": true,
+        "factory_boot": true,
+        "single_app_boot": true,
+        "psram_8mib": true,
+        "psram_sdk_test": true,
+        "instructions_in_psram": true,
+        "rodata_in_psram": true,
+        "rgb_initialized": true,
+        "gt911_initialized": true,
+        "ui_ready": true,
+        "no_fatal_log": true,
+        "periodic_resources": true,
+        "resource_errors_clear": true,
+        "touch_fresh": true,
+        "increasing_uptime": true,
+        "heap_samples_consistent": true,
+        "no_unexpected_network_probe": true
+      },
+      "capture_seconds": 30.042636072990717,
+      "samples": 4,
+      "summary": {
+        "internal_free": {
+          "min": 22323,
+          "max": 22795
+        },
+        "internal_min": {
+          "min": 112,
+          "max": 112
+        },
+        "internal_largest": {
+          "min": 7680,
+          "max": 7680
+        },
+        "psram_free": {
+          "min": 6090732,
+          "max": 6090732
+        },
+        "psram_min": {
+          "min": 6076588,
+          "max": 6076588
+        },
+        "owner_stack": {
+          "min": 10708,
+          "max": 10708
+        },
+        "touch_stack": {
+          "min": 2504,
+          "max": 2504
+        }
+      },
+      "touch_columns": [
+        "uptime_ms",
+        "age_ms",
+        "errors"
+      ],
+      "touch_rows": [
+        [6327, 4, 0],
+        [11340, 18, 0],
+        [16346, 3, 0],
+        [21351, 8, 0]
+      ],
+      "wifi_ip_event_observed": true
+    }
+  },
+  "uart_private_artifact_digests": {
+    "control8192-uart.private.raw": {
+      "bytes": 23138,
+      "sha256": "5eda8d160221073c9c6c5108aaee6c8ee280b858144b40cd18dd028ba426af84"
+    },
+    "return-fecc05d-uart.private.raw": {
+      "bytes": 10378,
+      "sha256": "16c469d8f996835f79455c155790171698a84230f2a2758e43c615be5777111b"
+    },
+    "worker-tls-1-uart.private.raw": {
+      "bytes": 27815,
+      "sha256": "7590f1c90032d119f4f37781b0fd88556e30becc79bcaa7bcf4f88a2e006b86a"
+    }
+  },
+  "private_record_sha256": "9cb74d82b07427ec78fa2d9fa9b952908013509bffc3437d88d8206a0899cff5",
+  "observed_errors": [
+    "esp-aes: Failed to allocate memory",
+    "esp-tls-mbedtls: read error :-0x0084",
+    "transport_base: esp_tls_conn_read error, errno=I/O error"
+  ],
+  "allocator_request_size_caps_captured": false,
+  "dma_heap_metrics_captured": false,
+  "owner_temporary_ui_confirmed": true,
+  "owner_returned_fecc05d_ui_confirmed": true,
+  "left_running": "fecc05d-rev12-ota-factory",
+  "authorization_consumed": true,
+  "new_hardware_allowed": false,
+  "efuse_changed": false,
+  "stm32_access": false,
+  "can_motion_access": false,
+  "configured_signed_session_measured": false,
+  "install_rollback_measured": false,
+  "performance_qualified": false
+}

@@ -1,19 +1,25 @@
 # План реализации TV4-CNC: функциональные приоритеты P0–P5
 
-## Активный этап после main 3927063
+## Активный P1 после main70eaf1d
 
-PR #70 слит, все 15 main CI jobs PASS. Исправление clock-after-snapshot проверено
-обоими SDK; [новый точный пакет](ESP32_OTA_BENCH_3927063.md) собран из чистого main.
-Четыре сборки/39 procedure tests/три actual app_main clock tests PASS. Сначала
-control touch_fresh, только затем SNTP/verified HEAD в том же worker8192.
-Это software preparation, не hardware HTTPS PASS; на плате остаётся fecc05d.
-Запись нового пакета отдельно согласуется; подключение предварительно разрешено.
+PR #71/#72 слиты владельцем, main CI15/15 PASS. [Стенд3927063](evidence/hardware/2026-11-22-esp32-worker-tls-3927063/README.md)
+реально выполнен по отдельному разрешению: control touch_fresh PASS, SNTP PASS,
+первый HTTPS HEAD FAIL на hardware-AES allocation. Остальные TLS boots отменены.
+Весь factory fecc05d возвращён, verify/UART/owner UI-touch-Wi-Fi-SETUP PASS;
+сеанс743,183s закрыт. На F407 ee7d179 изменений нет.
 
-После HTTPS: owner key/SemVer/time/resource context → настоящая signed SESSION4
-с измерением ресурсов → inactive-slot install/self-test/confirm/rollback → P2
-Releases с ручным утверждением. CHECK/INSTALL без настройки закрыты.
-Параллельно — software-only план NEMA23/STM32 timer STEP-DIR; без предположений
-о модели драйвера, питании/токе/ENA/pins и без физических выходов.
+Следующая [одна интеграция](plans/P1_AES_DMA_MEMORY.md): конкретные DMA-capability
+и allocation-failure данные → обоснованная экономия/размещение памяти → новый
+reviewed exact-image пакет/отдельное разрешение. Не отключать hardware AES,
+CA/hostname/date, не снижать TLS16384/4096/DMA64KiB/display/clock/touch требования.
+После HTTPS — owner settings и реальная signed SESSION4/resource CHECK,
+затем install/self-test/confirm/rollback и ручная release acceptance. Пока
+ключ/context/floors отсутствуют, CHECK/INSTALL закрыты. Не угадывать настройки.
+
+[NEMA23/STEP-DIR design](NEMA23_BENCH_PLAN.md) выполнен в PR #72: host160/
+sanitizer160/20000 cases/ARM archive и запрет physical outputs. Следующий
+аппаратный этап motor/driver ждёт exact моделей и отдельного разрешения;
+питание/ток/ENA/pins не назначены, independent E-stop обязателен.
 
 ## История перед PR #70
 
@@ -85,11 +91,11 @@ P1 интегрирован программно: [installer/rollback/migration]
 | Приоритет | Законченный результат | Зависимости и приёмка | Текущий статус |
 |---|---|---|---|
 | P0 — STM32F407 firmware | Настоящий ELF/BIN на HSI с RAM/SWD diagnostics, exception/watchdog handling, без активации motion outputs | Официальная карта VGT6/SRAM/CCM/Flash sectors/vectors; real startup/linker; map/size/hash/source и memory/vector CI; ST-Link install/restore runbook; запись только отдельно разрешена | **PASS базового стенда ee7d179**: program/verify/identity/RUNNING/progress, data-BSS/CCM word/guards, watchdog reset и UsageFault. Образ оставлен running; стресс/частоты/physical outputs не подтверждены |
-| P1 — ESP32 OTA | Установка проверенного образа в неактивный слот, boot self-test, подтверждение или rollback с работающими LVGL/GT911/Wi-Fi | Расчёт/утверждение 16 МиБ factory recovery+otadata+двух OTA-слотов; отдельная USB-миграция; existing HTTPS/signature/local key/SHA/size/hardware checks; Wi-Fi/power-loss tests; реальные SRAM/PSRAM/stack измерения | Migration/factory/порядок старта и unprovisioned worker8192×3 PASS; watermark6608–6784/largest7680 не production budget. Вернулся fecc05d; configured TLS/crypto/install/confirm/rollback/power-loss/full recovery и owner settings открыты |
+| P1 — ESP32 OTA | Установка проверенного образа в неактивный слот, boot self-test, подтверждение или rollback с работающими LVGL/GT911/Wi-Fi | Расчёт/утверждение 16 МиБ factory recovery+otadata+двух OTA-слотов; отдельная USB-миграция; existing HTTPS/signature/local key/SHA/size/hardware checks; Wi-Fi/power-loss tests; реальные SRAM/PSRAM/stack измерения | Migration/factory/worker8192 reset и новый control touch_fresh PASS. На3927063 SNTP PASS, первый HEAD FAIL в hardware-AES allocation; следующие boots остановлены, fecc05d возвращён/owner PASS. DMA request/caps, production budget и configured signed install/confirm/rollback/power-loss/owner settings открыты |
 | P2 — Releases | Настоящие воспроизводимые бинарники, SemVer/source binding, signed manifest/SHA-256, prerelease/stable, экран «ПО и обновления» | Рабочий OTA P1; проверка воспроизводимости, trust/signer/licensing; ручное утверждение владельцем exact SHA/tag/channel/assets; push/merge не выпускают release | CI/metadata-only review база существует; production signing/publication/discovery ещё нет; P1 UI включён только в explicit OTA profile. Фиктивный STM32 BIN запрещён |
 | P3 — physical CAN | Минимальный проверенный обмен ESP32-S3↔STM32F407 с ошибками/тайм-аутами/восстановлением | Получить трансиверы; проверить уровни/терминаторы/pinout/mux/IDs/bitrate на изолированном стенде; отдельное hardware permission | Физический CAN не проверен. Существующий протокол сохраняется; новые слои только для конкретной интеграции |
 | P4 — STM32 CAN OTA | Независимый bootloader, проверенная запись Flash/recovery после прерывания, existing independent crypto и ESP32 OTA Manager | Реальная карта/профиль P0 и physical CAN P3; reviewed bootloader/app/staging layout; fresh quiescent/operator/recovery gates; обновления при движении запрещены | Host transport/verifier подготовлены. Адреса загрузчика сейчас не резервируются, Flash writer/boot activation ещё нет |
-| P5 — microSD/G-code/CNC | microSD/tools/parser/planner/timer STEP-DIR/encoders/homing/thread sync/coordinates/manual-CNC | Стабилизированные базовые контроллеры, проверенная механика/электрика/защита; каждое испытание движения отдельно разрешено | Дальнейший этап; существующие HMI simulation/tools не выдавать за управление станком |
+| P5 — microSD/G-code/CNC | microSD/tools/parser/planner/timer STEP-DIR/encoders/homing/thread sync/coordinates/manual-CNC | Стабилизированные базовые контроллеры, проверенная механика/электрика/защита; каждое испытание движения отдельно разрешено | PR #72: pinless timer register design/host160/sanitizer160/20000 cases/ARM archive PASS; physical outputs и motor/driver ещё не проверены. Существующие simulation/tools не выдавать за управление станком |
 
 ## Разрешения и доказательства
 

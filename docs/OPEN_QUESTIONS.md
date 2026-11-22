@@ -1,5 +1,19 @@
 # Открытые вопросы и блокирующие решения
 
+## 22 ноября,23:25–23:37: touch PASS, AES allocation в HTTPS
+
+[Новый стенд3927063](evidence/hardware/2026-11-22-esp32-worker-tls-3927063/README.md) завершён за743,183s:
+fresh16MiB/MD5/SHA/two-NVMe PASS; control touch_fresh16/16, age2–19ms/errors0.
+SNTP PASS; первый HEAD FAIL после `esp-aes: Failed to allocate memory`, TLS132/
+status-1/cleanup1. Остальные TLS boots остановлены. Три writes/три captures,
+весь factory2MiB fecc05d возвращён/verify/UART/owner UI-touch-Wi-Fi-SETUP PASS.
+Владелец подтвердил и временный3927063. F407 ee7d179 не открывался; full restore
+не понадобился, сеанс/разрешение закрыты. [Следующая работа](plans/P1_AES_DMA_MEMORY.md)
+— измерить request/caps/DMA fragmentation и устранить дефицит без отключения
+AES/CA/time или уменьшения TLS/DMA/display параметров. Signed OTA ещё не принят.
+
+## История прежних стендов
+
 ## 22 ноября: контроль a5f8b7e остановлен, fecc05d возвращён
 
 [Стенд](evidence/hardware/2026-11-22-esp32-worker-tls-control/README.md) завершён
@@ -217,6 +231,7 @@ stop/join не освобождает actual claim. Верхние image/crypto/
 | OTA-KEY-01 | Owner-provisioned public key/fingerprint, signer custody, алгоритм/encoding/test vectors/key rotation, manifest schema/min versions | Любая доверенная установка; приватных ключей в Git/логах нет |
 | OTA-CONTEXT-01 | Утвердить SemVer HMI release вместо текущего git-derived project version; источник версии bootloader/production protocol/реального layout и peer compatibility | PR-04b policy готовит проверку, но не подставляет тестовые версии; installer заблокирован неизвестным context |
 | OTA-MOTION-01 | Утвердить production release/component schema и link общего signed bundle с Motion document, trusted installed context, numeric counter/boot/protocol policy и signer build provenance | PR-05c offline cohort review и PR-07g/h draft/coordinator не закрывают production contract/context/protocol mapping; legacy11/release15 раздельны |
+| OTA-AES-DMA-01 | На3927063 control touch/SNTP PASS, HEAD stopped на SDK AES allocation; request size/caps и transient DMA largest пока неизвестны | Следующий exact diagnostic image и измеренный memory fix без отключения AES/CA/time/TLS/DMA/display gates; signed session остаётся закрыта |
 | OTA-TLS-01 | Правильное время для TLS, CA bundle/host allowlist/redirect bounds GitHub, отсутствие insecure fallback | Реальный HTTPS download; статичные часы HMI не источник доверенного времени |
 | OTA-F407-01 | По подтверждённым секторам и RAM budget выбрать staging medium/A-B/recovery; metadata/vector/commit/power-loss план | PR-07i RAM backend не утверждает размер RAM/full-image fit и не даёт durable recovery; кэш ESP32 не заменяет решение |
 | OTA-STATE-01 | Fresh подтверждение F407 без движения/оборотов/программы, session lifecycle и повтор после reboot; согласованный safe state | CAN install; симуляция/heartbeat/ACK доставки не подтверждают останов |
