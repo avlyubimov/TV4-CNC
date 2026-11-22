@@ -1,4 +1,18 @@
-# P1 — после аппаратного стенда worker8192
+# P1 — UTC/HEAD в существующем OTA-worker8192
+
+Актуальная база main `53b0715`, аппаратный отчёт PR #68 слит владельцем.
+Следующий [программный image](ESP32_OTA_WORKER_TLS_BENCH.md) включает default-off
+пробу existing SNTP/verified HTTPS HEAD в том же worker8192, без owner key/context
+и установки. [План](plans/P1_OTA_WORKER_TLS_BENCH.md): реальные ELF/BIN двух SDK,
+actual-source fault tests, sanitizer/analyzer/ELF/monitor-owner gates и CI.
+Он не записан на плату. Следующий аппаратный шаг — отдельно разрешённый замер
+этой конкретной пробы с возвратом fecc05d; configured crypto/install/rollback
+ещё требуют reviewed local settings и отдельных измерений. Новых разрешений нет.
+
+[Software evidence](evidence/build/esp32-ota-worker-tls-bench/README.md):
+код d27142e, 16/16 SDK builds, host156/sanitizers156/analyzer7 PASS.
+
+## Основание: завершённый аппаратный стенд worker8192
 
 База main `dfa9f28`, PR #1–67 слиты. [Стенд3072/8192](evidence/hardware/2026-11-22-esp32-worker-stack/README.md)
 завершён22ноября за928.998s по отдельному разрешению: fresh16MiB/device MD5/

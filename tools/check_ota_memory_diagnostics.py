@@ -45,12 +45,13 @@ def source_owner_guard():
     require('depends on TV4_BOARD_REV12 && SPIRAM && !TV4_OTA_MEMORY_BENCH && !TV4_UTC_TLS_BENCH' in kconfig,'OTA/TLS monitor owner exclusion missing')
     require(re.search(r'config TV4_OTA_MEMORY_DIAGNOSTICS\n.*?depends on TV4_OTA_ENABLED\n\s+default n',kconfig,re.S),'trace must default off behind OTA')
     require(re.search(r'config TV4_OTA_WORKER_STACK_BENCH\n.*?depends on TV4_OTA_MEMORY_DIAGNOSTICS\n\s+default n',kconfig,re.S),'stack bench must default off behind trace')
+    require(re.search(r'config TV4_OTA_WORKER_TLS_BENCH\n.*?depends on TV4_OTA_WORKER_STACK_BENCH\n\s+default n',kconfig,re.S),'worker TLS bench must default off behind stack bench')
     service=(ROOT/'firmware/esp32-hmi/ota/service.c').read_text()
     require('if(!committed)tv4_ota_memory_window_begin(TV4_MEM_CLEANUP);' in service,'monitor allocation added after boot selection')
     return sorted(owners)
 
-def inspect(build,profile,sdk,trace=False,worker_stack_bench=False):
-    validation=check_idf_build.verify(build,profile,sdk,write_report=False,memory_diagnostics=trace,worker_stack_bench=worker_stack_bench)
+def inspect(build,profile,sdk,trace=False,worker_stack_bench=False,worker_tls_bench=False):
+    validation=check_idf_build.verify(build,profile,sdk,write_report=False,memory_diagnostics=trace,worker_stack_bench=worker_stack_bench,worker_tls_bench=worker_tls_bench)
     build=Path(build);elf=build/'tv4_hmi.elf'
     symbols=subprocess.check_output(['readelf','-Ws',str(elf)],text=True)
     names={p[-1] for line in symbols.splitlines() if len(p:=line.split())>=8 and p[3]=='FUNC' and p[6]!='UND'}
@@ -87,7 +88,25 @@ def inspect(build,profile,sdk,trace=False,worker_stack_bench=False):
             fields=line.split('\t')
             require(len(fields)==3 and fields[2] in ('static','dynamic,bounded'),'unbounded service compiler frame')
             service_frames[fields[0].rsplit(':',1)[-1]]=int(fields[1])
+    require(('tv4_utc_tls_bench_run_in_ota_worker' in names)==worker_tls_bench,'worker TLS entry/selection mismatch')
+    require((b'tv4_ota_worker_tls\0' in elf.read_bytes())==worker_tls_bench,'worker TLS marker/selection mismatch')
+    tls_frames={};tls_monitor_imports=[]
+    if worker_tls_bench:
+        tls_obj=build/'esp-idf/main/CMakeFiles/__idf_main.dir/__/ota/utc_tls_bench.c.obj'
+        tls_symbols=subprocess.check_output(['readelf','-Ws',str(tls_obj)],text=True)
+        imports={p[-1] for line in tls_symbols.splitlines() if len(p:=line.split())>=8 and p[6]=='UND'}
+        require(not(monitor&imports),'native worker TLS must not directly own the SDK monitor')
+        tls_monitor_imports=sorted(imports&{'tv4_ota_memory_window_begin','tv4_ota_memory_window_end','tv4_ota_memory_report_window'})
+        require(len(tls_monitor_imports)==3,'native TLS must use the existing OTA monitor adapter')
+        require(not any(n.startswith('xTaskCreate') or n=='vTaskDelete' for n in imports),'worker TLS must not create/delete an RTOS task')
+        require({'mbedtls_x509_time_cmp','mbedtls_x509_time_gmtime'}<=names,'TLS certificate dates not linked')
+        for line in tls_obj.with_suffix('.su').read_text().splitlines():
+            fields=line.split('\t')
+            require(len(fields)==3 and fields[2] in ('static','dynamic,bounded'),'unbounded TLS compiler frame')
+            tls_frames[fields[0].rsplit(':',1)[-1]]=int(fields[1])
+        require(tls_frames,'native TLS compiler frames missing')
     return dict(profile=profile,sdk=sdk,memory_diagnostics=trace,worker_stack_bench=worker_stack_bench,
+        worker_tls_bench=worker_tls_bench,tls_compiler_frames=tls_frames,tls_monitor_adapter_imports=tls_monitor_imports,
         worker_stack_bytes_requested=requested,worker_stack_runtime_qualified=False,service_compiler_frames=service_frames,module_writable_bytes=writable,
         module_writable_ceiling=512,compiler_frames=stack,compiler_frame_ceiling=192,
         sdk_monitor_linked=sorted(monitor&names),source_monitor_owners=source_owner_guard(),
@@ -96,6 +115,7 @@ def inspect(build,profile,sdk,trace=False,worker_stack_bench=False):
 
 if __name__=='__main__':
     p=argparse.ArgumentParser(description=__doc__);p.add_argument('build',type=Path);p.add_argument('profile');p.add_argument('sdk');p.add_argument('--memory-diagnostics',action='store_true');p.add_argument('--worker-stack-bench',action='store_true')
+    p.add_argument('--worker-tls-bench',action='store_true')
     a=p.parse_args()
-    try:print(json.dumps(inspect(a.build,a.profile,a.sdk,a.memory_diagnostics,a.worker_stack_bench),indent=2))
+    try:print(json.dumps(inspect(a.build,a.profile,a.sdk,a.memory_diagnostics,a.worker_stack_bench,a.worker_tls_bench),indent=2))
     except (ValueError,OSError,KeyError,subprocess.CalledProcessError) as e:raise SystemExit('Memory diagnostics validation failed: '+str(e))

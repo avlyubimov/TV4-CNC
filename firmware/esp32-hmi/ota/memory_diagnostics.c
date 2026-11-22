@@ -85,7 +85,12 @@ bool tv4_ota_memory_startup(tv4_ota_startup_phase phase) {
     portEXIT_CRITICAL(&memory_mux);return ok;
 }
 bool tv4_ota_memory_window_begin(tv4_ota_memory_window id) {
-    if(window_open || (unsigned)id<TV4_MEM_BOOT || (unsigned)id>TV4_MEM_CLEANUP)return false;
+#if defined(ESP_PLATFORM) && CONFIG_TV4_OTA_WORKER_TLS_BENCH
+    const unsigned last=TV4_MEM_TLS_PROBE;
+#else
+    const unsigned last=TV4_MEM_CLEANUP;
+#endif
+    if(window_open || (unsigned)id<TV4_MEM_BOOT || (unsigned)id>last)return false;
     window_id=id;window_open=true;window_reported=false;owned=false;
     start_result=stop_result=-1;
     tv4_ota_memory_capture(&before);

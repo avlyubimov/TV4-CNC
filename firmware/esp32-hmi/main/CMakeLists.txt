@@ -34,6 +34,11 @@ target_link_options(${COMPONENT_LIB} INTERFACE "LINKER:--undefined=tv4_tls_probe
 
 target_link_options(${COMPONENT_LIB} INTERFACE "LINKER:--undefined=tv4_ota_session_run_guarded" "LINKER:--undefined=tv4_ota_resource_check" "LINKER:--undefined=tv4_ota_resource_sample_current")
 
+if(CONFIG_TV4_OTA_WORKER_TLS_BENCH AND
+   (NOT CONFIG_TV4_OTA_ENABLED OR NOT CONFIG_TV4_OTA_MEMORY_DIAGNOSTICS OR
+    NOT CONFIG_TV4_OTA_WORKER_STACK_BENCH OR CONFIG_TV4_UTC_TLS_BENCH OR TV4_OTA_CONTEXT))
+    message(FATAL_ERROR "Worker TLS bench requires exclusive unprovisioned OTA stack/trace diagnostics")
+endif()
 if(CONFIG_TV4_OTA_ENABLED)
     if(CONFIG_TV4_OTA_WORKER_STACK_BENCH AND
        (NOT CONFIG_TV4_OTA_MEMORY_DIAGNOSTICS OR TV4_OTA_CONTEXT))
@@ -61,4 +66,4 @@ endif()
 # own frame bounded; these numbers are not a full SDK/logging call-stack bound.
 set_source_files_properties("../ota/memory_diagnostics.c" PROPERTIES
     COMPILE_OPTIONS "-fstack-usage;-Wframe-larger-than=192")
-set_property(SOURCE "main.c" "../ota/service.c" APPEND PROPERTY COMPILE_OPTIONS "-fstack-usage")
+set_property(SOURCE "main.c" "../ota/service.c" "../ota/utc_tls_bench.c" APPEND PROPERTY COMPILE_OPTIONS "-fstack-usage")

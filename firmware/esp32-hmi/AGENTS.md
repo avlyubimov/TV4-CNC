@@ -1,5 +1,12 @@
 # ESP32 HMI — специализированные правила
 
+P1 после main53b0715/PR #68: opt-in UTC/HEAD в том же OTA-worker8192 описан в
+docs/ESP32_OTA_WORKER_TLS_BENCH.md от корня. Новый TV4_OTA_WORKER_TLS_BENCH
+требует unprovisioned OTA+trace+stack flags, default off. Native backend нового
+режима использует только existing diagnostic adapter, не SDK monitor напрямую
+и не второй task. SNTP3/TLS_PROBE6 после BOOT закрываются последовательно;
+SETUP/CHECK/INSTALL gates прежние. Software image не hardware разрешение.
+
 Наследовать корневой AGENTS.md. Прочитать README.md этого каталога,
 docs/BOARD_ADAPTER.md, docs/RUNTIME_DIAGNOSTICS.md и docs/OTA_ARCHITECTURE.md.
 

@@ -16,7 +16,7 @@ def require(condition, message):
         raise ValueError(message)
 
 
-def verify(build, profile, version, *, write_report=True, memory_diagnostics=False, worker_stack_bench=False):
+def verify(build, profile, version, *, write_report=True, memory_diagnostics=False, worker_stack_bench=False, worker_tls_bench=False):
     require(profile in {"headless", "rev12", "rev12-memory-bench", "rev12-tls-bench", "rev12-ota"}, "unknown profile")
     require(version in {"5.3.2", "6.1.1"}, "unvalidated SDK")
     build = Path(build)
@@ -41,6 +41,10 @@ def verify(build, profile, version, *, write_report=True, memory_diagnostics=Fal
             "worker stack bench requires explicit OTA memory diagnostics")
     require(config.get("TV4_OTA_WORKER_STACK_BENCH", False)==worker_stack_bench,
             "worker stack bench must match explicit build selection")
+    require(type(worker_tls_bench) is bool and (not worker_tls_bench or (ota and memory_diagnostics and worker_stack_bench)),
+            "worker TLS bench requires explicit OTA stack/trace diagnostics")
+    require(config.get("TV4_OTA_WORKER_TLS_BENCH", False)==worker_tls_bench,
+            "worker TLS bench must match explicit build selection")
     if worker_stack_bench:
         context=json.loads((build/'ota-local/ota_local_context.json').read_text())
         require(type(context) is dict and context.get('provisioned') is False and context.get('private_key_present') is False,
@@ -110,6 +114,7 @@ def verify(build, profile, version, *, write_report=True, memory_diagnostics=Fal
                   device_access=False, physical_performance="not measured")
     if ota:result['ota_memory_diagnostics']=memory_diagnostics
     if worker_stack_bench:result['ota_worker_stack_bench']=True
+    if worker_tls_bench:result['ota_worker_tls_bench']=True
     if write_report:
         (build / "validation.json").write_text(json.dumps(result, indent=2) + "\n")
         print(json.dumps(result, indent=2))
@@ -121,8 +126,9 @@ if __name__ == "__main__":
     parser.add_argument('build');parser.add_argument('profile');parser.add_argument('sdk')
     parser.add_argument('--memory-diagnostics',action='store_true')
     parser.add_argument('--worker-stack-bench',action='store_true')
+    parser.add_argument('--worker-tls-bench',action='store_true')
     args=parser.parse_args()
     try:
-        verify(args.build,args.profile,args.sdk,memory_diagnostics=args.memory_diagnostics,worker_stack_bench=args.worker_stack_bench)
+        verify(args.build,args.profile,args.sdk,memory_diagnostics=args.memory_diagnostics,worker_stack_bench=args.worker_stack_bench,worker_tls_bench=args.worker_tls_bench)
     except (ValueError, KeyError, OSError, struct.error) as error:
         raise SystemExit(f"Build validation failed: {error}")

@@ -18,3 +18,7 @@ typedef struct {
 tv4_tls_result tv4_tls_probe_run(tv4_time_anchor *,uint32_t timeout_ms,const tv4_tls_ops *,tv4_tls_report *);
 /* Explicit diagnostic image only, schedules once after UI startup delay. */
 bool tv4_utc_tls_bench_start(void);
+/* Explicit unprovisioned OTA diagnostic only. Runs once in the existing worker,
+ * after boot self-test; never schedules a task or grants install authority.
+ * Caller supplies current HMI-health cancellation, not a production time policy. */
+bool tv4_utc_tls_bench_run_in_ota_worker(bool (*cancelled)(void *),void *context);

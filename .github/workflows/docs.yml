@@ -18,6 +18,8 @@ jobs:
           test -s docs/ARCHITECTURE.md
           test -s docs/IMPLEMENTATION_PRIORITIES.md
           test -s docs/ESP32_OTA_INSTALLATION.md
+          test -s docs/ESP32_OTA_WORKER_TLS_BENCH.md
+          test -s docs/plans/P1_OTA_WORKER_TLS_BENCH.md
           test -s docs/plans/P1_ESP32_OTA.md
           test -s docs/evidence/build/esp32-ota-installation/README.md
           test -s docs/STM32_FIRST_IMAGE.md

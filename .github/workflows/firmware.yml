@@ -102,7 +102,7 @@ jobs:
             --source-commit "$TV4_SOURCE_SHA" --sdk '${{ matrix.sdk }}' \
             --profile '${{ matrix.profile }}' --candidate-sha256 "$candidate_pin" \
             > build-ci-evidence/candidate-verify.json
-      # Keep all baseline jobs; OTA adds trace control and stack bench builds.
+      # Keep all baseline jobs; OTA adds trace control, stack and worker TLS builds.
       - name: Verify bounded memory instrumentation (no hardware)
         shell: bash
         run: |
@@ -117,6 +117,9 @@ jobs:
             TV4_OTA_MEMORY_DIAGNOSTICS=1 TV4_OTA_WORKER_STACK_BENCH=1 ./tools/build_idf.sh rev12-ota '${{ matrix.sdk }}' local > build-ci-evidence/worker-stack-bench-build.log 2>&1
             python tools/check_ota_memory_diagnostics.py 'build-idf-${{ matrix.sdk }}-rev12-ota-memory-diagnostics-worker-stack-bench' rev12-ota '${{ matrix.sdk }}' --memory-diagnostics --worker-stack-bench > build-ci-evidence/worker-stack-bench.json
             cp 'build-idf-${{ matrix.sdk }}-rev12-ota-memory-diagnostics-worker-stack-bench/validation.json' build-ci-evidence/worker-stack-bench-validation.json
+            TV4_OTA_MEMORY_DIAGNOSTICS=1 TV4_OTA_WORKER_STACK_BENCH=1 TV4_OTA_WORKER_TLS_BENCH=1 ./tools/build_idf.sh rev12-ota '${{ matrix.sdk }}' local > build-ci-evidence/worker-tls-bench-build.log 2>&1
+            python tools/check_ota_memory_diagnostics.py 'build-idf-${{ matrix.sdk }}-rev12-ota-memory-diagnostics-worker-stack-bench-worker-tls-bench' rev12-ota '${{ matrix.sdk }}' --memory-diagnostics --worker-stack-bench --worker-tls-bench > build-ci-evidence/worker-tls-bench.json
+            cp 'build-idf-${{ matrix.sdk }}-rev12-ota-memory-diagnostics-worker-stack-bench-worker-tls-bench/validation.json' build-ci-evidence/worker-tls-bench-validation.json
             sha256sum -c build-ci-evidence/locks-before-diagnostics.sha256
           fi
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2

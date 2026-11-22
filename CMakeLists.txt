@@ -147,6 +147,43 @@ foreach(group cli cohort)
   set_tests_properties(release_review_${group} PROPERTIES TIMEOUT 60)
 endforeach()
 
+# Native UTC/HEAD and the same memory adapter, against both pinned API shapes.
+# These executables contain SDK doubles only and never access a live network.
+add_test(NAME ota_worker_tls_build_guards COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/tests/ota_worker_tls_build_tests.py)
+set_tests_properties(ota_worker_tls_build_guards PROPERTIES TIMEOUT 30)
+foreach(tls_sdk 5 6)
+  foreach(standalone 0 1)
+    set(tls_test ota_worker_tls_${tls_sdk}_${standalone}_tests)
+    add_executable(${tls_test} tests/ota_worker_tls_tests.c
+      ${HMI}/ota/utc_tls_bench.c ${HMI}/ota/memory_diagnostics.c)
+    target_include_directories(${tls_test} PRIVATE tests/ota_tls_sdk tests/ota_service_sdk
+      tests ${HMI}/ota ${HMI}/network)
+    if(standalone)
+      set(tls_worker 0)
+    else()
+      set(tls_worker 1)
+    endif()
+    target_compile_definitions(${tls_test} PRIVATE ESP_PLATFORM=1 TLS_TEST_SDK=${tls_sdk}
+      TLS_TEST_STANDALONE=${standalone} SERVICE_TEST_OTA=${tls_worker}
+      SERVICE_TEST_DIAGNOSTICS=${tls_worker} SERVICE_TEST_BENCH=${tls_worker}
+      SERVICE_TEST_TLS_BENCH=${tls_worker})
+    target_compile_options(${tls_test} PRIVATE -Wall -Wextra -Werror -UNDEBUG)
+    target_link_libraries(${tls_test} PRIVATE tv4_ota_verification)
+    target_link_options(${tls_test} PRIVATE "LINKER:--wrap=tv4_time_clock_read")
+    if(standalone)
+      set(tls_cases success open-fail)
+    else()
+      set(tls_cases success offline cancel-settle cancel-sntp cancel-open timeout-open
+        sntp-fail start1-fail start2-fail stop1-fail stop2-fail guard init-fail
+        open-fail headers-fail status cleanup-fail large-headers clock-jump)
+    endif()
+    foreach(case IN LISTS tls_cases)
+      add_test(NAME ota_worker_tls_${tls_sdk}_${standalone}_${case} COMMAND ${tls_test} ${case})
+      set_tests_properties(ota_worker_tls_${tls_sdk}_${standalone}_${case} PROPERTIES TIMEOUT 15)
+    endforeach()
+  endforeach()
+endforeach()
+
 add_test(NAME release_build_binding COMMAND ${Python3_EXECUTABLE}
   ${CMAKE_CURRENT_SOURCE_DIR}/tests/release_build_tests.py
   --driver $<TARGET_FILE:boot_motion_review> --signer $<TARGET_FILE:ota_policy_driver>)
@@ -176,11 +213,12 @@ add_test(NAME ota_memory_diagnostics_artifacts COMMAND ${Python3_EXECUTABLE} ${C
 # Execute the real ESP service against an SDK boundary, never a board/network.
 add_test(NAME ota_worker_stack_build_guards COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/tests/ota_worker_stack_build_tests.py)
 set_tests_properties(ota_worker_stack_build_guards PROPERTIES TIMEOUT 30)
-foreach(stack_bench 0 1)
+foreach(stack_bench 0 1 2)
   set(service_test ota_worker_stack_${stack_bench}_tests)
   add_executable(${service_test} tests/ota_worker_stack_tests.c ${HMI}/ota/service.c)
   target_include_directories(${service_test} PRIVATE tests/ota_service_sdk tests ${HMI}/ota ${HMI}/network)
-  target_compile_definitions(${service_test} PRIVATE ESP_PLATFORM=1 SERVICE_TEST_BENCH=${stack_bench})
+  target_compile_definitions(${service_test} PRIVATE ESP_PLATFORM=1
+    SERVICE_TEST_BENCH=$<BOOL:${stack_bench}> SERVICE_TEST_TLS_BENCH=$<STREQUAL:${stack_bench},2>)
   target_compile_options(${service_test} PRIVATE -Wall -Wextra -Werror -UNDEBUG)
   target_link_libraries(${service_test} PRIVATE tv4_ota_verification)
   target_link_options(${service_test} PRIVATE "LINKER:--wrap=tv4_ota_sdk_layout_valid" "LINKER:--wrap=tv4_ota_sdk_finish_boot")
