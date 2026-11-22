@@ -19,3 +19,7 @@ TLS image не записывался, SNTP/HEAD и full recovery не выпо�
 Критерий: обе regression injections падают на исходном app_main, проходят
 после исправления; действительно устаревшие данные продолжают fault/health
 refusal. Ни clamp, ни исключение плохого hardware sample из результата.
+
+Software приёмка выполнена: [evidence](../evidence/build/esp32-touch-snapshot-clock/README.md),
+host159/sanitizers159/SDK16 PASS; actual app_main analyzer PASS. На устройстве
+исправление не запускалось, повторного hardware разрешения нет.

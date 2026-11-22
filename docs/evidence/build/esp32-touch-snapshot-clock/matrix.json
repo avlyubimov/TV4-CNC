@@ -1,0 +1,2258 @@
+{
+  "source_commit": "a6856147203ccc58a486a4bbc6880869ab65f308",
+  "source_tree": "334cf64b9ca3f2e92169353b348f978691c8563f",
+  "source_display_version": "a685614",
+  "source_worktree_clean": true,
+  "dependency_lock_sha256": {
+    "firmware/esp32-hmi/locks/idf-5.3.2.lock": "bdabdb06b5b4572369ca86e5cfc446ab6c270c56dab0500a304dcf7e112c94d0",
+    "firmware/esp32-hmi/locks/idf-6.1.1.lock": "d09551b18bfceae3a3f4c5c50583d81907bc7f2e47e3629182cbf1d1914a10b1"
+  },
+  "device_access": false,
+  "hardware_performance": "not measured",
+  "worker_stack_runtime_qualified": false,
+  "tls_runtime_qualified": false,
+  "started_utc": "2026-11-22T17:30:34.481778+00:00",
+  "builds": [
+    {
+      "sdk": "6.1.1",
+      "mode": "local",
+      "profile": "headless",
+      "memory_diagnostics": false,
+      "worker_stack_bench": false,
+      "worker_tls_bench": false,
+      "status": "PASS",
+      "duration_seconds": 12.704,
+      "validation": {
+        "profile": "headless",
+        "sdk": "6.1.1",
+        "target": "esp32s3",
+        "flash_bytes": 16777216,
+        "mbedtls_allocator": "internal-only",
+        "mbedtls_certificate_dates": false,
+        "tls_record_in": 16384,
+        "tls_record_out": 4096,
+        "memory_bench": false,
+        "tls_bench": false,
+        "psram": "disabled",
+        "images": {
+          "tv4_hmi.bin": {
+            "bytes": 1061072,
+            "sha256": "33220126b28e2c3ccf9b889ff80fd53725e425805243410babfca278e41d1fe3"
+          },
+          "bootloader/bootloader.bin": {
+            "bytes": 20656,
+            "sha256": "0fbba2571d2fea48e4be15b525ef5d28c3e730ddc737f6abfbe0af550c4fa307"
+          }
+        },
+        "partitions": [
+          {
+            "kind": 1,
+            "subtype": 2,
+            "address": 36864,
+            "size": 24576,
+            "label": "nvs"
+          },
+          {
+            "kind": 1,
+            "subtype": 1,
+            "address": 61440,
+            "size": 4096,
+            "label": "phy_init"
+          },
+          {
+            "kind": 0,
+            "subtype": 0,
+            "address": 65536,
+            "size": 2097152,
+            "label": "factory"
+          }
+        ],
+        "device_access": false,
+        "physical_performance": "not measured"
+      },
+      "diagnostics": {
+        "profile": "headless",
+        "sdk": "6.1.1",
+        "memory_diagnostics": false,
+        "worker_stack_bench": false,
+        "worker_tls_bench": false,
+        "tls_compiler_frames": {},
+        "tls_monitor_adapter_imports": [],
+        "worker_stack_bytes_requested": 0,
+        "worker_stack_runtime_qualified": false,
+        "service_compiler_frames": {},
+        "module_writable_bytes": 0,
+        "module_writable_ceiling": 512,
+        "compiler_frames": {
+          "tv4_ota_memory_capture": 32,
+          "tv4_ota_memory_scope_revision": 32,
+          "tv4_ota_memory_scope_since": 32,
+          "tv4_ota_memory_startup": 32,
+          "tv4_ota_memory_window_begin": 32,
+          "tv4_ota_memory_window_end": 32,
+          "tv4_ota_memory_report_window": 32,
+          "tv4_ota_memory_report_startup": 32
+        },
+        "compiler_frame_ceiling": 192,
+        "sdk_monitor_linked": [],
+        "source_monitor_owners": [
+          "firmware/esp32-hmi/ota/memory_diagnostics.c",
+          "firmware/esp32-hmi/ota/utc_tls_bench.c"
+        ],
+        "app_bytes": 1061072,
+        "device_access": false,
+        "runtime_stack_peak_coverage": false,
+        "hardware_performance": "not measured"
+      },
+      "app": {
+        "bytes": 1061072,
+        "sha256": "33220126b28e2c3ccf9b889ff80fd53725e425805243410babfca278e41d1fe3",
+        "project": "tv4_hmi",
+        "version": "a685614",
+        "idf_version": "v6.1.1",
+        "elf_sha256": "917ccd054a579967872859fda7a394ca4ce9a7b9cf978a32b04933ca40a7dcc2",
+        "segments": 6,
+        "chip_revision_min": 0,
+        "chip_revision_max": 99,
+        "flash_bytes": 16777216,
+        "flash_mode": "dio",
+        "flash_frequency_mhz": 80
+      },
+      "elf_sha256": "917ccd054a579967872859fda7a394ca4ce9a7b9cf978a32b04933ca40a7dcc2",
+      "sdkconfig_sha256": "a28935407150b4c250e587d01ec9cde5b71735ca67b46fdb25d3a3ab8dd6bfe1",
+      "partition_table_sha256": "5e71c3c890e04714daa03b21a0d23953a2dadf9fdf15eec02b886f7b6e9f8c81"
+    },
+    {
+      "sdk": "6.1.1",
+      "mode": "local",
+      "profile": "rev12",
+      "memory_diagnostics": false,
+      "worker_stack_bench": false,
+      "worker_tls_bench": false,
+      "status": "PASS",
+      "duration_seconds": 11.447,
+      "validation": {
+        "profile": "rev12",
+        "sdk": "6.1.1",
+        "target": "esp32s3",
+        "flash_bytes": 16777216,
+        "mbedtls_allocator": "internal-only",
+        "mbedtls_certificate_dates": false,
+        "tls_record_in": 16384,
+        "tls_record_out": 4096,
+        "memory_bench": false,
+        "tls_bench": false,
+        "psram": "octal 80MHz",
+        "images": {
+          "tv4_hmi.bin": {
+            "bytes": 1579296,
+            "sha256": "311236552c3b9daf7f29de44eb483ad7925326d58faf053851eeb8141c38b32b"
+          },
+          "bootloader/bootloader.bin": {
+            "bytes": 20656,
+            "sha256": "1d632735694f18b68e98c4bec61e19589b8fb2fe1458829baa51ecb3431ba35b"
+          }
+        },
+        "partitions": [
+          {
+            "kind": 1,
+            "subtype": 2,
+            "address": 36864,
+            "size": 24576,
+            "label": "nvs"
+          },
+          {
+            "kind": 1,
+            "subtype": 1,
+            "address": 61440,
+            "size": 4096,
+            "label": "phy_init"
+          },
+          {
+            "kind": 0,
+            "subtype": 0,
+            "address": 65536,
+            "size": 2097152,
+            "label": "factory"
+          }
+        ],
+        "device_access": false,
+        "physical_performance": "not measured"
+      },
+      "diagnostics": {
+        "profile": "rev12",
+        "sdk": "6.1.1",
+        "memory_diagnostics": false,
+        "worker_stack_bench": false,
+        "worker_tls_bench": false,
+        "tls_compiler_frames": {},
+        "tls_monitor_adapter_imports": [],
+        "worker_stack_bytes_requested": 0,
+        "worker_stack_runtime_qualified": false,
+        "service_compiler_frames": {},
+        "module_writable_bytes": 0,
+        "module_writable_ceiling": 512,
+        "compiler_frames": {
+          "tv4_ota_memory_capture": 32,
+          "tv4_ota_memory_scope_revision": 32,
+          "tv4_ota_memory_scope_since": 32,
+          "tv4_ota_memory_startup": 32,
+          "tv4_ota_memory_window_begin": 32,
+          "tv4_ota_memory_window_end": 32,
+          "tv4_ota_memory_report_window": 32,
+          "tv4_ota_memory_report_startup": 32
+        },
+        "compiler_frame_ceiling": 192,
+        "sdk_monitor_linked": [],
+        "source_monitor_owners": [
+          "firmware/esp32-hmi/ota/memory_diagnostics.c",
+          "firmware/esp32-hmi/ota/utc_tls_bench.c"
+        ],
+        "app_bytes": 1579296,
+        "device_access": false,
+        "runtime_stack_peak_coverage": false,
+        "hardware_performance": "not measured"
+      },
+      "app": {
+        "bytes": 1579296,
+        "sha256": "311236552c3b9daf7f29de44eb483ad7925326d58faf053851eeb8141c38b32b",
+        "project": "tv4_hmi",
+        "version": "a685614",
+        "idf_version": "v6.1.1",
+        "elf_sha256": "ba4962490e6e7de6af8d2e46638b173505175720214e63249b5a5b834546bafb",
+        "segments": 6,
+        "chip_revision_min": 0,
+        "chip_revision_max": 99,
+        "flash_bytes": 16777216,
+        "flash_mode": "dio",
+        "flash_frequency_mhz": 80
+      },
+      "elf_sha256": "ba4962490e6e7de6af8d2e46638b173505175720214e63249b5a5b834546bafb",
+      "sdkconfig_sha256": "d6d64adda9ddd620805ddffeee820f2dd9d8657c69f57bb3da3aa57c4f51bb83",
+      "partition_table_sha256": "5e71c3c890e04714daa03b21a0d23953a2dadf9fdf15eec02b886f7b6e9f8c81"
+    },
+    {
+      "sdk": "6.1.1",
+      "mode": "local",
+      "profile": "rev12-memory-bench",
+      "memory_diagnostics": false,
+      "worker_stack_bench": false,
+      "worker_tls_bench": false,
+      "status": "PASS",
+      "duration_seconds": 10.958,
+      "validation": {
+        "profile": "rev12-memory-bench",
+        "sdk": "6.1.1",
+        "target": "esp32s3",
+        "flash_bytes": 16777216,
+        "mbedtls_allocator": "internal-only",
+        "mbedtls_certificate_dates": false,
+        "tls_record_in": 16384,
+        "tls_record_out": 4096,
+        "memory_bench": true,
+        "tls_bench": false,
+        "psram": "octal 80MHz",
+        "images": {
+          "tv4_hmi.bin": {
+            "bytes": 1580992,
+            "sha256": "476abeb7c9d94f0836f38e0ea390368a105d640a77a314ecfb6e516532440729"
+          },
+          "bootloader/bootloader.bin": {
+            "bytes": 20656,
+            "sha256": "4e0fd4312cb82d22e24a4a13bfb32813a5d7cacb627186e683d720f35c35005f"
+          }
+        },
+        "partitions": [
+          {
+            "kind": 1,
+            "subtype": 2,
+            "address": 36864,
+            "size": 24576,
+            "label": "nvs"
+          },
+          {
+            "kind": 1,
+            "subtype": 1,
+            "address": 61440,
+            "size": 4096,
+            "label": "phy_init"
+          },
+          {
+            "kind": 0,
+            "subtype": 0,
+            "address": 65536,
+            "size": 2097152,
+            "label": "factory"
+          }
+        ],
+        "device_access": false,
+        "physical_performance": "not measured"
+      },
+      "diagnostics": {
+        "profile": "rev12-memory-bench",
+        "sdk": "6.1.1",
+        "memory_diagnostics": false,
+        "worker_stack_bench": false,
+        "worker_tls_bench": false,
+        "tls_compiler_frames": {},
+        "tls_monitor_adapter_imports": [],
+        "worker_stack_bytes_requested": 0,
+        "worker_stack_runtime_qualified": false,
+        "service_compiler_frames": {},
+        "module_writable_bytes": 0,
+        "module_writable_ceiling": 512,
+        "compiler_frames": {
+          "tv4_ota_memory_capture": 32,
+          "tv4_ota_memory_scope_revision": 32,
+          "tv4_ota_memory_scope_since": 32,
+          "tv4_ota_memory_startup": 32,
+          "tv4_ota_memory_window_begin": 32,
+          "tv4_ota_memory_window_end": 32,
+          "tv4_ota_memory_report_window": 32,
+          "tv4_ota_memory_report_startup": 32
+        },
+        "compiler_frame_ceiling": 192,
+        "sdk_monitor_linked": [],
+        "source_monitor_owners": [
+          "firmware/esp32-hmi/ota/memory_diagnostics.c",
+          "firmware/esp32-hmi/ota/utc_tls_bench.c"
+        ],
+        "app_bytes": 1580992,
+        "device_access": false,
+        "runtime_stack_peak_coverage": false,
+        "hardware_performance": "not measured"
+      },
+      "app": {
+        "bytes": 1580992,
+        "sha256": "476abeb7c9d94f0836f38e0ea390368a105d640a77a314ecfb6e516532440729",
+        "project": "tv4_hmi",
+        "version": "a685614",
+        "idf_version": "v6.1.1",
+        "elf_sha256": "0880ba4812f35ab3a9d595b8875b3437215f1385b820797624398b12889cde79",
+        "segments": 6,
+        "chip_revision_min": 0,
+        "chip_revision_max": 99,
+        "flash_bytes": 16777216,
+        "flash_mode": "dio",
+        "flash_frequency_mhz": 80
+      },
+      "elf_sha256": "0880ba4812f35ab3a9d595b8875b3437215f1385b820797624398b12889cde79",
+      "sdkconfig_sha256": "6e9cbc45bf541091852fba2f1a322d32efcef5eb8f5bb70f95b6092bde69ca4b",
+      "partition_table_sha256": "5e71c3c890e04714daa03b21a0d23953a2dadf9fdf15eec02b886f7b6e9f8c81"
+    },
+    {
+      "sdk": "6.1.1",
+      "mode": "local",
+      "profile": "rev12-tls-bench",
+      "memory_diagnostics": false,
+      "worker_stack_bench": false,
+      "worker_tls_bench": false,
+      "status": "PASS",
+      "duration_seconds": 10.863,
+      "validation": {
+        "profile": "rev12-tls-bench",
+        "sdk": "6.1.1",
+        "target": "esp32s3",
+        "flash_bytes": 16777216,
+        "mbedtls_allocator": "spiram-only",
+        "mbedtls_certificate_dates": true,
+        "tls_record_in": 16384,
+        "tls_record_out": 4096,
+        "memory_bench": false,
+        "tls_bench": true,
+        "psram": "octal 80MHz",
+        "images": {
+          "tv4_hmi.bin": {
+            "bytes": 1584192,
+            "sha256": "d14972013e6dfad6bd9617fc6bcb70fa463a996b32b9f91dcae8c1c7b4dbe681"
+          },
+          "bootloader/bootloader.bin": {
+            "bytes": 20656,
+            "sha256": "875a5e5a7e77ff31924e2effb38ee946dcb4f53aeda5d5238366c75299cdc144"
+          }
+        },
+        "partitions": [
+          {
+            "kind": 1,
+            "subtype": 2,
+            "address": 36864,
+            "size": 24576,
+            "label": "nvs"
+          },
+          {
+            "kind": 1,
+            "subtype": 1,
+            "address": 61440,
+            "size": 4096,
+            "label": "phy_init"
+          },
+          {
+            "kind": 0,
+            "subtype": 0,
+            "address": 65536,
+            "size": 2097152,
+            "label": "factory"
+          }
+        ],
+        "device_access": false,
+        "physical_performance": "not measured"
+      },
+      "diagnostics": {
+        "profile": "rev12-tls-bench",
+        "sdk": "6.1.1",
+        "memory_diagnostics": false,
+        "worker_stack_bench": false,
+        "worker_tls_bench": false,
+        "tls_compiler_frames": {},
+        "tls_monitor_adapter_imports": [],
+        "worker_stack_bytes_requested": 0,
+        "worker_stack_runtime_qualified": false,
+        "service_compiler_frames": {},
+        "module_writable_bytes": 0,
+        "module_writable_ceiling": 512,
+        "compiler_frames": {
+          "tv4_ota_memory_capture": 32,
+          "tv4_ota_memory_scope_revision": 32,
+          "tv4_ota_memory_scope_since": 32,
+          "tv4_ota_memory_startup": 32,
+          "tv4_ota_memory_window_begin": 32,
+          "tv4_ota_memory_window_end": 32,
+          "tv4_ota_memory_report_window": 32,
+          "tv4_ota_memory_report_startup": 32
+        },
+        "compiler_frame_ceiling": 192,
+        "sdk_monitor_linked": [
+          "heap_caps_monitor_local_minimum_free_size_start",
+          "heap_caps_monitor_local_minimum_free_size_stop"
+        ],
+        "source_monitor_owners": [
+          "firmware/esp32-hmi/ota/memory_diagnostics.c",
+          "firmware/esp32-hmi/ota/utc_tls_bench.c"
+        ],
+        "app_bytes": 1584192,
+        "device_access": false,
+        "runtime_stack_peak_coverage": false,
+        "hardware_performance": "not measured"
+      },
+      "app": {
+        "bytes": 1584192,
+        "sha256": "d14972013e6dfad6bd9617fc6bcb70fa463a996b32b9f91dcae8c1c7b4dbe681",
+        "project": "tv4_hmi",
+        "version": "a685614",
+        "idf_version": "v6.1.1",
+        "elf_sha256": "b026ae85294adbf0056f157a70c2ba695688f6762fb4aa0227ac923d20d6ca60",
+        "segments": 6,
+        "chip_revision_min": 0,
+        "chip_revision_max": 99,
+        "flash_bytes": 16777216,
+        "flash_mode": "dio",
+        "flash_frequency_mhz": 80
+      },
+      "elf_sha256": "b026ae85294adbf0056f157a70c2ba695688f6762fb4aa0227ac923d20d6ca60",
+      "sdkconfig_sha256": "0c24666051dd9a3d0d3d1b8083fbb54ee3c0718b91c9cce3ed8e4d1faea6462c",
+      "partition_table_sha256": "5e71c3c890e04714daa03b21a0d23953a2dadf9fdf15eec02b886f7b6e9f8c81"
+    },
+    {
+      "sdk": "6.1.1",
+      "mode": "local",
+      "profile": "rev12-ota",
+      "memory_diagnostics": false,
+      "worker_stack_bench": false,
+      "worker_tls_bench": false,
+      "status": "PASS",
+      "duration_seconds": 10.847,
+      "validation": {
+        "profile": "rev12-ota",
+        "sdk": "6.1.1",
+        "target": "esp32s3",
+        "flash_bytes": 16777216,
+        "mbedtls_allocator": "spiram-only",
+        "mbedtls_certificate_dates": true,
+        "tls_record_in": 16384,
+        "tls_record_out": 4096,
+        "memory_bench": false,
+        "tls_bench": false,
+        "psram": "octal 80MHz",
+        "images": {
+          "tv4_hmi.bin": {
+            "bytes": 1598560,
+            "sha256": "da6afcff7029473c543631f3b322b0633898dba87b947779a4a6c28159bd3a06"
+          },
+          "bootloader/bootloader.bin": {
+            "bytes": 20720,
+            "sha256": "d89ad804ccd1ed6d8344cec87c37db8bdcda8b474697bf0bc4b8ad65e7af82cb"
+          }
+        },
+        "partitions": [
+          {
+            "kind": 1,
+            "subtype": 2,
+            "address": 36864,
+            "size": 24576,
+            "label": "nvs"
+          },
+          {
+            "kind": 1,
+            "subtype": 1,
+            "address": 61440,
+            "size": 4096,
+            "label": "phy_init"
+          },
+          {
+            "kind": 0,
+            "subtype": 0,
+            "address": 65536,
+            "size": 2097152,
+            "label": "factory"
+          },
+          {
+            "kind": 1,
+            "subtype": 0,
+            "address": 2162688,
+            "size": 8192,
+            "label": "otadata"
+          },
+          {
+            "kind": 0,
+            "subtype": 16,
+            "address": 2228224,
+            "size": 3145728,
+            "label": "ota_0"
+          },
+          {
+            "kind": 0,
+            "subtype": 17,
+            "address": 5373952,
+            "size": 3145728,
+            "label": "ota_1"
+          },
+          {
+            "kind": 1,
+            "subtype": 64,
+            "address": 8519680,
+            "size": 3145728,
+            "label": "resources"
+          },
+          {
+            "kind": 1,
+            "subtype": 65,
+            "address": 11665408,
+            "size": 5111808,
+            "label": "store"
+          }
+        ],
+        "device_access": false,
+        "physical_performance": "not measured",
+        "ota_memory_diagnostics": false
+      },
+      "diagnostics": {
+        "profile": "rev12-ota",
+        "sdk": "6.1.1",
+        "memory_diagnostics": false,
+        "worker_stack_bench": false,
+        "worker_tls_bench": false,
+        "tls_compiler_frames": {},
+        "tls_monitor_adapter_imports": [],
+        "worker_stack_bytes_requested": 3072,
+        "worker_stack_runtime_qualified": false,
+        "service_compiler_frames": {
+          "publish": 32,
+          "now_ms": 32,
+          "cancelled": 32,
+          "commit": 32,
+          "configured": 32,
+          "worker_stack": 32,
+          "write_chunk": 32,
+          "fetch": 48,
+          "tv4_ota_boot_observe": 32,
+          "tv4_ota_service_start": 64,
+          "tv4_ota_service_health": 32,
+          "tv4_ota_service_snapshot": 32,
+          "operation": 432,
+          "worker": 80,
+          "tv4_ota_service_request": 48
+        },
+        "module_writable_bytes": 0,
+        "module_writable_ceiling": 512,
+        "compiler_frames": {
+          "tv4_ota_memory_scope_revision": 32,
+          "tv4_ota_memory_scope_since": 32,
+          "tv4_ota_memory_capture": 64,
+          "tv4_ota_memory_startup": 32,
+          "tv4_ota_memory_window_begin": 32,
+          "tv4_ota_memory_window_end": 32,
+          "tv4_ota_memory_report_window": 32,
+          "tv4_ota_memory_report_startup": 32
+        },
+        "compiler_frame_ceiling": 192,
+        "sdk_monitor_linked": [],
+        "source_monitor_owners": [
+          "firmware/esp32-hmi/ota/memory_diagnostics.c",
+          "firmware/esp32-hmi/ota/utc_tls_bench.c"
+        ],
+        "app_bytes": 1598560,
+        "device_access": false,
+        "runtime_stack_peak_coverage": false,
+        "hardware_performance": "not measured"
+      },
+      "app": {
+        "bytes": 1598560,
+        "sha256": "da6afcff7029473c543631f3b322b0633898dba87b947779a4a6c28159bd3a06",
+        "project": "tv4_hmi",
+        "version": "a685614",
+        "idf_version": "v6.1.1",
+        "elf_sha256": "f5cb4210527ff61d83d3a13c4612d89c4000c3a86da890a0378568c0d09aefde",
+        "segments": 6,
+        "chip_revision_min": 0,
+        "chip_revision_max": 99,
+        "flash_bytes": 16777216,
+        "flash_mode": "dio",
+        "flash_frequency_mhz": 80
+      },
+      "elf_sha256": "f5cb4210527ff61d83d3a13c4612d89c4000c3a86da890a0378568c0d09aefde",
+      "sdkconfig_sha256": "5e3bbdee08d6b58070fbb55d7a9ddac3498d79fddc5fc2bbb1bf2589fd9cf814",
+      "partition_table_sha256": "b4c64dbabb0eb8a6fb1a735fb3f3a7981a36520560b70e267851144211e401f1"
+    },
+    {
+      "sdk": "6.1.1",
+      "mode": "local",
+      "profile": "rev12-ota",
+      "memory_diagnostics": true,
+      "worker_stack_bench": false,
+      "worker_tls_bench": false,
+      "status": "PASS",
+      "duration_seconds": 10.886,
+      "validation": {
+        "profile": "rev12-ota",
+        "sdk": "6.1.1",
+        "target": "esp32s3",
+        "flash_bytes": 16777216,
+        "mbedtls_allocator": "spiram-only",
+        "mbedtls_certificate_dates": true,
+        "tls_record_in": 16384,
+        "tls_record_out": 4096,
+        "memory_bench": false,
+        "tls_bench": false,
+        "psram": "octal 80MHz",
+        "images": {
+          "tv4_hmi.bin": {
+            "bytes": 1600576,
+            "sha256": "a3397b086fb08cfe0f46dab96478844550615fc03bb8f13f81c09dadcc7232d3"
+          },
+          "bootloader/bootloader.bin": {
+            "bytes": 20720,
+            "sha256": "c361d764df9bd1e9a1443447843ba89b3521798d9db1a61eb70ffe5ffb29891e"
+          }
+        },
+        "partitions": [
+          {
+            "kind": 1,
+            "subtype": 2,
+            "address": 36864,
+            "size": 24576,
+            "label": "nvs"
+          },
+          {
+            "kind": 1,
+            "subtype": 1,
+            "address": 61440,
+            "size": 4096,
+            "label": "phy_init"
+          },
+          {
+            "kind": 0,
+            "subtype": 0,
+            "address": 65536,
+            "size": 2097152,
+            "label": "factory"
+          },
+          {
+            "kind": 1,
+            "subtype": 0,
+            "address": 2162688,
+            "size": 8192,
+            "label": "otadata"
+          },
+          {
+            "kind": 0,
+            "subtype": 16,
+            "address": 2228224,
+            "size": 3145728,
+            "label": "ota_0"
+          },
+          {
+            "kind": 0,
+            "subtype": 17,
+            "address": 5373952,
+            "size": 3145728,
+            "label": "ota_1"
+          },
+          {
+            "kind": 1,
+            "subtype": 64,
+            "address": 8519680,
+            "size": 3145728,
+            "label": "resources"
+          },
+          {
+            "kind": 1,
+            "subtype": 65,
+            "address": 11665408,
+            "size": 5111808,
+            "label": "store"
+          }
+        ],
+        "device_access": false,
+        "physical_performance": "not measured",
+        "ota_memory_diagnostics": true
+      },
+      "diagnostics": {
+        "profile": "rev12-ota",
+        "sdk": "6.1.1",
+        "memory_diagnostics": true,
+        "worker_stack_bench": false,
+        "worker_tls_bench": false,
+        "tls_compiler_frames": {},
+        "tls_monitor_adapter_imports": [],
+        "worker_stack_bytes_requested": 3072,
+        "worker_stack_runtime_qualified": false,
+        "service_compiler_frames": {
+          "publish": 32,
+          "now_ms": 32,
+          "cancelled": 32,
+          "commit": 32,
+          "configured": 32,
+          "worker_stack": 32,
+          "write_chunk": 32,
+          "fetch": 48,
+          "tv4_ota_boot_observe": 32,
+          "tv4_ota_service_start": 64,
+          "tv4_ota_service_health": 32,
+          "tv4_ota_service_snapshot": 32,
+          "operation": 432,
+          "worker": 80,
+          "tv4_ota_service_request": 48
+        },
+        "module_writable_bytes": 432,
+        "module_writable_ceiling": 512,
+        "compiler_frames": {
+          "transition": 32,
+          "report": 112,
+          "tv4_ota_memory_scope_revision": 32,
+          "tv4_ota_memory_scope_since": 32,
+          "tv4_ota_memory_capture": 64,
+          "tv4_ota_memory_startup": 80,
+          "tv4_ota_memory_window_begin": 32,
+          "tv4_ota_memory_window_end": 32,
+          "tv4_ota_memory_report_window": 48,
+          "tv4_ota_memory_report_startup": 48
+        },
+        "compiler_frame_ceiling": 192,
+        "sdk_monitor_linked": [
+          "heap_caps_monitor_local_minimum_free_size_start",
+          "heap_caps_monitor_local_minimum_free_size_stop"
+        ],
+        "source_monitor_owners": [
+          "firmware/esp32-hmi/ota/memory_diagnostics.c",
+          "firmware/esp32-hmi/ota/utc_tls_bench.c"
+        ],
+        "app_bytes": 1600576,
+        "device_access": false,
+        "runtime_stack_peak_coverage": false,
+        "hardware_performance": "not measured"
+      },
+      "app": {
+        "bytes": 1600576,
+        "sha256": "a3397b086fb08cfe0f46dab96478844550615fc03bb8f13f81c09dadcc7232d3",
+        "project": "tv4_hmi",
+        "version": "a685614",
+        "idf_version": "v6.1.1",
+        "elf_sha256": "794cab23b4813acad2f09e4d4848a0dc0e51099f579751c2cda0262e132058d0",
+        "segments": 6,
+        "chip_revision_min": 0,
+        "chip_revision_max": 99,
+        "flash_bytes": 16777216,
+        "flash_mode": "dio",
+        "flash_frequency_mhz": 80
+      },
+      "elf_sha256": "794cab23b4813acad2f09e4d4848a0dc0e51099f579751c2cda0262e132058d0",
+      "sdkconfig_sha256": "85c3bb256f12a5f65f85ead07a8547095582767276b74c7cf7e97dec4048bc97",
+      "partition_table_sha256": "b4c64dbabb0eb8a6fb1a735fb3f3a7981a36520560b70e267851144211e401f1"
+    },
+    {
+      "sdk": "6.1.1",
+      "mode": "local",
+      "profile": "rev12-ota",
+      "memory_diagnostics": true,
+      "worker_stack_bench": true,
+      "worker_tls_bench": false,
+      "status": "PASS",
+      "duration_seconds": 11.088,
+      "validation": {
+        "profile": "rev12-ota",
+        "sdk": "6.1.1",
+        "target": "esp32s3",
+        "flash_bytes": 16777216,
+        "mbedtls_allocator": "spiram-only",
+        "mbedtls_certificate_dates": true,
+        "tls_record_in": 16384,
+        "tls_record_out": 4096,
+        "memory_bench": false,
+        "tls_bench": false,
+        "psram": "octal 80MHz",
+        "images": {
+          "tv4_hmi.bin": {
+            "bytes": 1600640,
+            "sha256": "d2612a95bce23baf0fcc4353b2796771a2b99bbfb57b72303168421ec5bba9ca"
+          },
+          "bootloader/bootloader.bin": {
+            "bytes": 20720,
+            "sha256": "d725d8aece7aa66c5d61d12481ab5335501c8f7e0ccc3f32b0ab2db74a4e4b5c"
+          }
+        },
+        "partitions": [
+          {
+            "kind": 1,
+            "subtype": 2,
+            "address": 36864,
+            "size": 24576,
+            "label": "nvs"
+          },
+          {
+            "kind": 1,
+            "subtype": 1,
+            "address": 61440,
+            "size": 4096,
+            "label": "phy_init"
+          },
+          {
+            "kind": 0,
+            "subtype": 0,
+            "address": 65536,
+            "size": 2097152,
+            "label": "factory"
+          },
+          {
+            "kind": 1,
+            "subtype": 0,
+            "address": 2162688,
+            "size": 8192,
+            "label": "otadata"
+          },
+          {
+            "kind": 0,
+            "subtype": 16,
+            "address": 2228224,
+            "size": 3145728,
+            "label": "ota_0"
+          },
+          {
+            "kind": 0,
+            "subtype": 17,
+            "address": 5373952,
+            "size": 3145728,
+            "label": "ota_1"
+          },
+          {
+            "kind": 1,
+            "subtype": 64,
+            "address": 8519680,
+            "size": 3145728,
+            "label": "resources"
+          },
+          {
+            "kind": 1,
+            "subtype": 65,
+            "address": 11665408,
+            "size": 5111808,
+            "label": "store"
+          }
+        ],
+        "device_access": false,
+        "physical_performance": "not measured",
+        "ota_memory_diagnostics": true,
+        "ota_worker_stack_bench": true
+      },
+      "diagnostics": {
+        "profile": "rev12-ota",
+        "sdk": "6.1.1",
+        "memory_diagnostics": true,
+        "worker_stack_bench": true,
+        "worker_tls_bench": false,
+        "tls_compiler_frames": {},
+        "tls_monitor_adapter_imports": [],
+        "worker_stack_bytes_requested": 8192,
+        "worker_stack_runtime_qualified": false,
+        "service_compiler_frames": {
+          "publish": 32,
+          "now_ms": 32,
+          "cancelled": 32,
+          "commit": 32,
+          "configured": 32,
+          "worker_stack": 32,
+          "write_chunk": 32,
+          "fetch": 48,
+          "tv4_ota_boot_observe": 32,
+          "tv4_ota_service_start": 64,
+          "tv4_ota_service_health": 32,
+          "tv4_ota_service_snapshot": 32,
+          "operation": 432,
+          "worker": 80,
+          "tv4_ota_service_request": 48
+        },
+        "module_writable_bytes": 432,
+        "module_writable_ceiling": 512,
+        "compiler_frames": {
+          "transition": 32,
+          "report": 112,
+          "tv4_ota_memory_scope_revision": 32,
+          "tv4_ota_memory_scope_since": 32,
+          "tv4_ota_memory_capture": 64,
+          "tv4_ota_memory_startup": 80,
+          "tv4_ota_memory_window_begin": 32,
+          "tv4_ota_memory_window_end": 32,
+          "tv4_ota_memory_report_window": 48,
+          "tv4_ota_memory_report_startup": 48
+        },
+        "compiler_frame_ceiling": 192,
+        "sdk_monitor_linked": [
+          "heap_caps_monitor_local_minimum_free_size_start",
+          "heap_caps_monitor_local_minimum_free_size_stop"
+        ],
+        "source_monitor_owners": [
+          "firmware/esp32-hmi/ota/memory_diagnostics.c",
+          "firmware/esp32-hmi/ota/utc_tls_bench.c"
+        ],
+        "app_bytes": 1600640,
+        "device_access": false,
+        "runtime_stack_peak_coverage": false,
+        "hardware_performance": "not measured"
+      },
+      "app": {
+        "bytes": 1600640,
+        "sha256": "d2612a95bce23baf0fcc4353b2796771a2b99bbfb57b72303168421ec5bba9ca",
+        "project": "tv4_hmi",
+        "version": "a685614",
+        "idf_version": "v6.1.1",
+        "elf_sha256": "b213afee15aafc90b0eb4771068f78972ab36f5da72724235b3cc72bae251c33",
+        "segments": 6,
+        "chip_revision_min": 0,
+        "chip_revision_max": 99,
+        "flash_bytes": 16777216,
+        "flash_mode": "dio",
+        "flash_frequency_mhz": 80
+      },
+      "elf_sha256": "b213afee15aafc90b0eb4771068f78972ab36f5da72724235b3cc72bae251c33",
+      "sdkconfig_sha256": "043275d0e7412b35ff13f24986b2c509b69282b52c035011ef4594e1d44e45fa",
+      "partition_table_sha256": "b4c64dbabb0eb8a6fb1a735fb3f3a7981a36520560b70e267851144211e401f1"
+    },
+    {
+      "sdk": "6.1.1",
+      "mode": "local",
+      "profile": "rev12-ota",
+      "memory_diagnostics": true,
+      "worker_stack_bench": true,
+      "worker_tls_bench": true,
+      "status": "PASS",
+      "duration_seconds": 10.948,
+      "validation": {
+        "profile": "rev12-ota",
+        "sdk": "6.1.1",
+        "target": "esp32s3",
+        "flash_bytes": 16777216,
+        "mbedtls_allocator": "spiram-only",
+        "mbedtls_certificate_dates": true,
+        "tls_record_in": 16384,
+        "tls_record_out": 4096,
+        "memory_bench": false,
+        "tls_bench": false,
+        "psram": "octal 80MHz",
+        "images": {
+          "tv4_hmi.bin": {
+            "bytes": 1603456,
+            "sha256": "a57c7e89baca2747c039ef9ae8e87aa24b2478fdcf3b6e095a5d332d9d268c1f"
+          },
+          "bootloader/bootloader.bin": {
+            "bytes": 20720,
+            "sha256": "b2bd36b02e3f575db051f8844f1141966375e0a0735a7b0210741a431660877e"
+          }
+        },
+        "partitions": [
+          {
+            "kind": 1,
+            "subtype": 2,
+            "address": 36864,
+            "size": 24576,
+            "label": "nvs"
+          },
+          {
+            "kind": 1,
+            "subtype": 1,
+            "address": 61440,
+            "size": 4096,
+            "label": "phy_init"
+          },
+          {
+            "kind": 0,
+            "subtype": 0,
+            "address": 65536,
+            "size": 2097152,
+            "label": "factory"
+          },
+          {
+            "kind": 1,
+            "subtype": 0,
+            "address": 2162688,
+            "size": 8192,
+            "label": "otadata"
+          },
+          {
+            "kind": 0,
+            "subtype": 16,
+            "address": 2228224,
+            "size": 3145728,
+            "label": "ota_0"
+          },
+          {
+            "kind": 0,
+            "subtype": 17,
+            "address": 5373952,
+            "size": 3145728,
+            "label": "ota_1"
+          },
+          {
+            "kind": 1,
+            "subtype": 64,
+            "address": 8519680,
+            "size": 3145728,
+            "label": "resources"
+          },
+          {
+            "kind": 1,
+            "subtype": 65,
+            "address": 11665408,
+            "size": 5111808,
+            "label": "store"
+          }
+        ],
+        "device_access": false,
+        "physical_performance": "not measured",
+        "ota_memory_diagnostics": true,
+        "ota_worker_stack_bench": true,
+        "ota_worker_tls_bench": true
+      },
+      "diagnostics": {
+        "profile": "rev12-ota",
+        "sdk": "6.1.1",
+        "memory_diagnostics": true,
+        "worker_stack_bench": true,
+        "worker_tls_bench": true,
+        "tls_compiler_frames": {
+          "head_cancelled": 32,
+          "bounded": 32,
+          "headers_event": 32,
+          "clock_read": 32,
+          "errors": 32,
+          "now_ms": 32,
+          "snapshot": 80,
+          "head_close": 32,
+          "head_headers": 32,
+          "head_open": 192,
+          "monitor_start": 32,
+          "monitor_stop": 32,
+          "tv4_utc_tls_bench_run_in_ota_worker": 224,
+          "tv4_utc_tls_bench_start": 32
+        },
+        "tls_monitor_adapter_imports": [
+          "tv4_ota_memory_report_window",
+          "tv4_ota_memory_window_begin",
+          "tv4_ota_memory_window_end"
+        ],
+        "worker_stack_bytes_requested": 8192,
+        "worker_stack_runtime_qualified": false,
+        "service_compiler_frames": {
+          "publish": 32,
+          "now_ms": 32,
+          "cancelled": 32,
+          "commit": 32,
+          "configured": 32,
+          "worker_stack": 32,
+          "write_chunk": 32,
+          "fetch": 48,
+          "tv4_ota_boot_observe": 32,
+          "tv4_ota_service_start": 64,
+          "tv4_ota_service_health": 32,
+          "tv4_ota_service_snapshot": 32,
+          "operation": 432,
+          "worker": 80,
+          "tv4_ota_service_request": 48
+        },
+        "module_writable_bytes": 432,
+        "module_writable_ceiling": 512,
+        "compiler_frames": {
+          "transition": 32,
+          "report": 112,
+          "tv4_ota_memory_scope_revision": 32,
+          "tv4_ota_memory_scope_since": 32,
+          "tv4_ota_memory_capture": 64,
+          "tv4_ota_memory_startup": 80,
+          "tv4_ota_memory_window_begin": 32,
+          "tv4_ota_memory_window_end": 32,
+          "tv4_ota_memory_report_window": 48,
+          "tv4_ota_memory_report_startup": 48
+        },
+        "compiler_frame_ceiling": 192,
+        "sdk_monitor_linked": [
+          "heap_caps_monitor_local_minimum_free_size_start",
+          "heap_caps_monitor_local_minimum_free_size_stop"
+        ],
+        "source_monitor_owners": [
+          "firmware/esp32-hmi/ota/memory_diagnostics.c",
+          "firmware/esp32-hmi/ota/utc_tls_bench.c"
+        ],
+        "app_bytes": 1603456,
+        "device_access": false,
+        "runtime_stack_peak_coverage": false,
+        "hardware_performance": "not measured"
+      },
+      "app": {
+        "bytes": 1603456,
+        "sha256": "a57c7e89baca2747c039ef9ae8e87aa24b2478fdcf3b6e095a5d332d9d268c1f",
+        "project": "tv4_hmi",
+        "version": "a685614",
+        "idf_version": "v6.1.1",
+        "elf_sha256": "01975b75bc0747962ff0d175d492d4460cb643c7cf4c92e3af2755419df1ec6d",
+        "segments": 6,
+        "chip_revision_min": 0,
+        "chip_revision_max": 99,
+        "flash_bytes": 16777216,
+        "flash_mode": "dio",
+        "flash_frequency_mhz": 80
+      },
+      "elf_sha256": "01975b75bc0747962ff0d175d492d4460cb643c7cf4c92e3af2755419df1ec6d",
+      "sdkconfig_sha256": "d3c7e256161bdfc5b245c352880e39efe8ce9cfb2375567f36391d156be73c8a",
+      "partition_table_sha256": "b4c64dbabb0eb8a6fb1a735fb3f3a7981a36520560b70e267851144211e401f1"
+    },
+    {
+      "sdk": "5.3.2",
+      "mode": "docker",
+      "profile": "headless",
+      "memory_diagnostics": false,
+      "worker_stack_bench": false,
+      "worker_tls_bench": false,
+      "status": "PASS",
+      "duration_seconds": 12.28,
+      "validation": {
+        "profile": "headless",
+        "sdk": "5.3.2",
+        "target": "esp32s3",
+        "flash_bytes": 16777216,
+        "mbedtls_allocator": "internal-only",
+        "mbedtls_certificate_dates": false,
+        "tls_record_in": 16384,
+        "tls_record_out": 4096,
+        "memory_bench": false,
+        "tls_bench": false,
+        "psram": "disabled",
+        "images": {
+          "tv4_hmi.bin": {
+            "bytes": 1075504,
+            "sha256": "30d3589d0876022fbe4d59e8ff57930b1083117e0b51504fb51d09f47b3dff7e"
+          },
+          "bootloader/bootloader.bin": {
+            "bytes": 21648,
+            "sha256": "976278da84e855b28df9cf7791db5758fbbb2d555d052adb7018456512528d6d"
+          }
+        },
+        "partitions": [
+          {
+            "kind": 1,
+            "subtype": 2,
+            "address": 36864,
+            "size": 24576,
+            "label": "nvs"
+          },
+          {
+            "kind": 1,
+            "subtype": 1,
+            "address": 61440,
+            "size": 4096,
+            "label": "phy_init"
+          },
+          {
+            "kind": 0,
+            "subtype": 0,
+            "address": 65536,
+            "size": 2097152,
+            "label": "factory"
+          }
+        ],
+        "device_access": false,
+        "physical_performance": "not measured"
+      },
+      "diagnostics": {
+        "profile": "headless",
+        "sdk": "5.3.2",
+        "memory_diagnostics": false,
+        "worker_stack_bench": false,
+        "worker_tls_bench": false,
+        "tls_compiler_frames": {},
+        "tls_monitor_adapter_imports": [],
+        "worker_stack_bytes_requested": 0,
+        "worker_stack_runtime_qualified": false,
+        "service_compiler_frames": {},
+        "module_writable_bytes": 0,
+        "module_writable_ceiling": 512,
+        "compiler_frames": {
+          "tv4_ota_memory_capture": 32,
+          "tv4_ota_memory_scope_revision": 32,
+          "tv4_ota_memory_scope_since": 32,
+          "tv4_ota_memory_startup": 32,
+          "tv4_ota_memory_window_begin": 32,
+          "tv4_ota_memory_window_end": 32,
+          "tv4_ota_memory_report_window": 32,
+          "tv4_ota_memory_report_startup": 32
+        },
+        "compiler_frame_ceiling": 192,
+        "sdk_monitor_linked": [],
+        "source_monitor_owners": [
+          "firmware/esp32-hmi/ota/memory_diagnostics.c",
+          "firmware/esp32-hmi/ota/utc_tls_bench.c"
+        ],
+        "app_bytes": 1075504,
+        "device_access": false,
+        "runtime_stack_peak_coverage": false,
+        "hardware_performance": "not measured"
+      },
+      "app": {
+        "bytes": 1075504,
+        "sha256": "30d3589d0876022fbe4d59e8ff57930b1083117e0b51504fb51d09f47b3dff7e",
+        "project": "tv4_hmi",
+        "version": "a685614",
+        "idf_version": "v5.3.2",
+        "elf_sha256": "e15b3a68cb9d5dbd6d19f5bb6c4aa17e51c22e2f526af97611b1a26480da7f3b",
+        "segments": 5,
+        "chip_revision_min": 0,
+        "chip_revision_max": 99,
+        "flash_bytes": 16777216,
+        "flash_mode": "dio",
+        "flash_frequency_mhz": 80
+      },
+      "elf_sha256": "e15b3a68cb9d5dbd6d19f5bb6c4aa17e51c22e2f526af97611b1a26480da7f3b",
+      "sdkconfig_sha256": "5f9bb296f300fc2c9bc3dc2906ef763c2620c6887a9466ab8e46ef3f31aa44af",
+      "partition_table_sha256": "5e71c3c890e04714daa03b21a0d23953a2dadf9fdf15eec02b886f7b6e9f8c81"
+    },
+    {
+      "sdk": "5.3.2",
+      "mode": "docker",
+      "profile": "rev12",
+      "memory_diagnostics": false,
+      "worker_stack_bench": false,
+      "worker_tls_bench": false,
+      "status": "PASS",
+      "duration_seconds": 17.919,
+      "validation": {
+        "profile": "rev12",
+        "sdk": "5.3.2",
+        "target": "esp32s3",
+        "flash_bytes": 16777216,
+        "mbedtls_allocator": "internal-only",
+        "mbedtls_certificate_dates": false,
+        "tls_record_in": 16384,
+        "tls_record_out": 4096,
+        "memory_bench": false,
+        "tls_bench": false,
+        "psram": "octal 80MHz",
+        "images": {
+          "tv4_hmi.bin": {
+            "bytes": 1535088,
+            "sha256": "92dc04dd8ed044837ed712351c1069d32bc99b450f6b886d69ad735da8699786"
+          },
+          "bootloader/bootloader.bin": {
+            "bytes": 21648,
+            "sha256": "c82b2a66063b94c1b4ed368d4affdc42e9f81231b1c507638e2b68c6587cbe2f"
+          }
+        },
+        "partitions": [
+          {
+            "kind": 1,
+            "subtype": 2,
+            "address": 36864,
+            "size": 24576,
+            "label": "nvs"
+          },
+          {
+            "kind": 1,
+            "subtype": 1,
+            "address": 61440,
+            "size": 4096,
+            "label": "phy_init"
+          },
+          {
+            "kind": 0,
+            "subtype": 0,
+            "address": 65536,
+            "size": 2097152,
+            "label": "factory"
+          }
+        ],
+        "device_access": false,
+        "physical_performance": "not measured"
+      },
+      "diagnostics": {
+        "profile": "rev12",
+        "sdk": "5.3.2",
+        "memory_diagnostics": false,
+        "worker_stack_bench": false,
+        "worker_tls_bench": false,
+        "tls_compiler_frames": {},
+        "tls_monitor_adapter_imports": [],
+        "worker_stack_bytes_requested": 0,
+        "worker_stack_runtime_qualified": false,
+        "service_compiler_frames": {},
+        "module_writable_bytes": 0,
+        "module_writable_ceiling": 512,
+        "compiler_frames": {
+          "tv4_ota_memory_capture": 32,
+          "tv4_ota_memory_scope_revision": 32,
+          "tv4_ota_memory_scope_since": 32,
+          "tv4_ota_memory_startup": 32,
+          "tv4_ota_memory_window_begin": 32,
+          "tv4_ota_memory_window_end": 32,
+          "tv4_ota_memory_report_window": 32,
+          "tv4_ota_memory_report_startup": 32
+        },
+        "compiler_frame_ceiling": 192,
+        "sdk_monitor_linked": [],
+        "source_monitor_owners": [
+          "firmware/esp32-hmi/ota/memory_diagnostics.c",
+          "firmware/esp32-hmi/ota/utc_tls_bench.c"
+        ],
+        "app_bytes": 1535088,
+        "device_access": false,
+        "runtime_stack_peak_coverage": false,
+        "hardware_performance": "not measured"
+      },
+      "app": {
+        "bytes": 1535088,
+        "sha256": "92dc04dd8ed044837ed712351c1069d32bc99b450f6b886d69ad735da8699786",
+        "project": "tv4_hmi",
+        "version": "a685614",
+        "idf_version": "v5.3.2",
+        "elf_sha256": "2507378766bcab9e110e2f40fcc0c4cba5163ee017eafd434ef53340421ef5b4",
+        "segments": 5,
+        "chip_revision_min": 0,
+        "chip_revision_max": 99,
+        "flash_bytes": 16777216,
+        "flash_mode": "dio",
+        "flash_frequency_mhz": 80
+      },
+      "elf_sha256": "2507378766bcab9e110e2f40fcc0c4cba5163ee017eafd434ef53340421ef5b4",
+      "sdkconfig_sha256": "1837e05da5a7c009bdd99ecb7393ca8d0cc56d51b0c73e3eb347e03489b6b347",
+      "partition_table_sha256": "5e71c3c890e04714daa03b21a0d23953a2dadf9fdf15eec02b886f7b6e9f8c81"
+    },
+    {
+      "sdk": "5.3.2",
+      "mode": "docker",
+      "profile": "rev12-memory-bench",
+      "memory_diagnostics": false,
+      "worker_stack_bench": false,
+      "worker_tls_bench": false,
+      "status": "PASS",
+      "duration_seconds": 18.326,
+      "validation": {
+        "profile": "rev12-memory-bench",
+        "sdk": "5.3.2",
+        "target": "esp32s3",
+        "flash_bytes": 16777216,
+        "mbedtls_allocator": "internal-only",
+        "mbedtls_certificate_dates": false,
+        "tls_record_in": 16384,
+        "tls_record_out": 4096,
+        "memory_bench": true,
+        "tls_bench": false,
+        "psram": "octal 80MHz",
+        "images": {
+          "tv4_hmi.bin": {
+            "bytes": 1536800,
+            "sha256": "2b8965984c29fd2201892573183ebd084f69de3735248722557833537d955c80"
+          },
+          "bootloader/bootloader.bin": {
+            "bytes": 21648,
+            "sha256": "53e478b6d94fe35f944f8d0e341137d61a8cc8ee651f31270b0c3a5de7f2515c"
+          }
+        },
+        "partitions": [
+          {
+            "kind": 1,
+            "subtype": 2,
+            "address": 36864,
+            "size": 24576,
+            "label": "nvs"
+          },
+          {
+            "kind": 1,
+            "subtype": 1,
+            "address": 61440,
+            "size": 4096,
+            "label": "phy_init"
+          },
+          {
+            "kind": 0,
+            "subtype": 0,
+            "address": 65536,
+            "size": 2097152,
+            "label": "factory"
+          }
+        ],
+        "device_access": false,
+        "physical_performance": "not measured"
+      },
+      "diagnostics": {
+        "profile": "rev12-memory-bench",
+        "sdk": "5.3.2",
+        "memory_diagnostics": false,
+        "worker_stack_bench": false,
+        "worker_tls_bench": false,
+        "tls_compiler_frames": {},
+        "tls_monitor_adapter_imports": [],
+        "worker_stack_bytes_requested": 0,
+        "worker_stack_runtime_qualified": false,
+        "service_compiler_frames": {},
+        "module_writable_bytes": 0,
+        "module_writable_ceiling": 512,
+        "compiler_frames": {
+          "tv4_ota_memory_capture": 32,
+          "tv4_ota_memory_scope_revision": 32,
+          "tv4_ota_memory_scope_since": 32,
+          "tv4_ota_memory_startup": 32,
+          "tv4_ota_memory_window_begin": 32,
+          "tv4_ota_memory_window_end": 32,
+          "tv4_ota_memory_report_window": 32,
+          "tv4_ota_memory_report_startup": 32
+        },
+        "compiler_frame_ceiling": 192,
+        "sdk_monitor_linked": [],
+        "source_monitor_owners": [
+          "firmware/esp32-hmi/ota/memory_diagnostics.c",
+          "firmware/esp32-hmi/ota/utc_tls_bench.c"
+        ],
+        "app_bytes": 1536800,
+        "device_access": false,
+        "runtime_stack_peak_coverage": false,
+        "hardware_performance": "not measured"
+      },
+      "app": {
+        "bytes": 1536800,
+        "sha256": "2b8965984c29fd2201892573183ebd084f69de3735248722557833537d955c80",
+        "project": "tv4_hmi",
+        "version": "a685614",
+        "idf_version": "v5.3.2",
+        "elf_sha256": "71c6ca9861bd047f04c00b53b271c975fd7eac0e64ac735ce86471ac34d7fd23",
+        "segments": 5,
+        "chip_revision_min": 0,
+        "chip_revision_max": 99,
+        "flash_bytes": 16777216,
+        "flash_mode": "dio",
+        "flash_frequency_mhz": 80
+      },
+      "elf_sha256": "71c6ca9861bd047f04c00b53b271c975fd7eac0e64ac735ce86471ac34d7fd23",
+      "sdkconfig_sha256": "5050a74945c02cd09ae48925c2044587fcc8582df5ad4675481a60f3740dd5bf",
+      "partition_table_sha256": "5e71c3c890e04714daa03b21a0d23953a2dadf9fdf15eec02b886f7b6e9f8c81"
+    },
+    {
+      "sdk": "5.3.2",
+      "mode": "docker",
+      "profile": "rev12-tls-bench",
+      "memory_diagnostics": false,
+      "worker_stack_bench": false,
+      "worker_tls_bench": false,
+      "status": "PASS",
+      "duration_seconds": 17.711,
+      "validation": {
+        "profile": "rev12-tls-bench",
+        "sdk": "5.3.2",
+        "target": "esp32s3",
+        "flash_bytes": 16777216,
+        "mbedtls_allocator": "spiram-only",
+        "mbedtls_certificate_dates": true,
+        "tls_record_in": 16384,
+        "tls_record_out": 4096,
+        "memory_bench": false,
+        "tls_bench": true,
+        "psram": "octal 80MHz",
+        "images": {
+          "tv4_hmi.bin": {
+            "bytes": 1540080,
+            "sha256": "3dbf88a0d95ef133f107d52491420b270eca3406a3e2adc83ca51fe4f0be37e2"
+          },
+          "bootloader/bootloader.bin": {
+            "bytes": 21648,
+            "sha256": "2c3d52530a81a933c02dea14b8112eaa80d1454afcd27821063b6df2f254b8c4"
+          }
+        },
+        "partitions": [
+          {
+            "kind": 1,
+            "subtype": 2,
+            "address": 36864,
+            "size": 24576,
+            "label": "nvs"
+          },
+          {
+            "kind": 1,
+            "subtype": 1,
+            "address": 61440,
+            "size": 4096,
+            "label": "phy_init"
+          },
+          {
+            "kind": 0,
+            "subtype": 0,
+            "address": 65536,
+            "size": 2097152,
+            "label": "factory"
+          }
+        ],
+        "device_access": false,
+        "physical_performance": "not measured"
+      },
+      "diagnostics": {
+        "profile": "rev12-tls-bench",
+        "sdk": "5.3.2",
+        "memory_diagnostics": false,
+        "worker_stack_bench": false,
+        "worker_tls_bench": false,
+        "tls_compiler_frames": {},
+        "tls_monitor_adapter_imports": [],
+        "worker_stack_bytes_requested": 0,
+        "worker_stack_runtime_qualified": false,
+        "service_compiler_frames": {},
+        "module_writable_bytes": 0,
+        "module_writable_ceiling": 512,
+        "compiler_frames": {
+          "tv4_ota_memory_capture": 32,
+          "tv4_ota_memory_scope_revision": 32,
+          "tv4_ota_memory_scope_since": 32,
+          "tv4_ota_memory_startup": 32,
+          "tv4_ota_memory_window_begin": 32,
+          "tv4_ota_memory_window_end": 32,
+          "tv4_ota_memory_report_window": 32,
+          "tv4_ota_memory_report_startup": 32
+        },
+        "compiler_frame_ceiling": 192,
+        "sdk_monitor_linked": [
+          "heap_caps_monitor_local_minimum_free_size_start",
+          "heap_caps_monitor_local_minimum_free_size_stop"
+        ],
+        "source_monitor_owners": [
+          "firmware/esp32-hmi/ota/memory_diagnostics.c",
+          "firmware/esp32-hmi/ota/utc_tls_bench.c"
+        ],
+        "app_bytes": 1540080,
+        "device_access": false,
+        "runtime_stack_peak_coverage": false,
+        "hardware_performance": "not measured"
+      },
+      "app": {
+        "bytes": 1540080,
+        "sha256": "3dbf88a0d95ef133f107d52491420b270eca3406a3e2adc83ca51fe4f0be37e2",
+        "project": "tv4_hmi",
+        "version": "a685614",
+        "idf_version": "v5.3.2",
+        "elf_sha256": "5cdde3ae92ff07f824151733be977b4d59b891cf32e329155fa96b0f1649a1f4",
+        "segments": 5,
+        "chip_revision_min": 0,
+        "chip_revision_max": 99,
+        "flash_bytes": 16777216,
+        "flash_mode": "dio",
+        "flash_frequency_mhz": 80
+      },
+      "elf_sha256": "5cdde3ae92ff07f824151733be977b4d59b891cf32e329155fa96b0f1649a1f4",
+      "sdkconfig_sha256": "3cbf43779246118f68fae79edc23e992dcbee6b7ecfbeadba9c59d8f3e5ee4e7",
+      "partition_table_sha256": "5e71c3c890e04714daa03b21a0d23953a2dadf9fdf15eec02b886f7b6e9f8c81"
+    },
+    {
+      "sdk": "5.3.2",
+      "mode": "docker",
+      "profile": "rev12-ota",
+      "memory_diagnostics": false,
+      "worker_stack_bench": false,
+      "worker_tls_bench": false,
+      "status": "PASS",
+      "duration_seconds": 17.85,
+      "validation": {
+        "profile": "rev12-ota",
+        "sdk": "5.3.2",
+        "target": "esp32s3",
+        "flash_bytes": 16777216,
+        "mbedtls_allocator": "spiram-only",
+        "mbedtls_certificate_dates": true,
+        "tls_record_in": 16384,
+        "tls_record_out": 4096,
+        "memory_bench": false,
+        "tls_bench": false,
+        "psram": "octal 80MHz",
+        "images": {
+          "tv4_hmi.bin": {
+            "bytes": 1551088,
+            "sha256": "561824a741b1741748e7c879fe6cfb3a5ba011c50b2846b09272cad85fe8fab6"
+          },
+          "bootloader/bootloader.bin": {
+            "bytes": 21728,
+            "sha256": "4abf8011cded10241e09e8f7fade8c75544cde22a7572bf4ad10e8871c4543ba"
+          }
+        },
+        "partitions": [
+          {
+            "kind": 1,
+            "subtype": 2,
+            "address": 36864,
+            "size": 24576,
+            "label": "nvs"
+          },
+          {
+            "kind": 1,
+            "subtype": 1,
+            "address": 61440,
+            "size": 4096,
+            "label": "phy_init"
+          },
+          {
+            "kind": 0,
+            "subtype": 0,
+            "address": 65536,
+            "size": 2097152,
+            "label": "factory"
+          },
+          {
+            "kind": 1,
+            "subtype": 0,
+            "address": 2162688,
+            "size": 8192,
+            "label": "otadata"
+          },
+          {
+            "kind": 0,
+            "subtype": 16,
+            "address": 2228224,
+            "size": 3145728,
+            "label": "ota_0"
+          },
+          {
+            "kind": 0,
+            "subtype": 17,
+            "address": 5373952,
+            "size": 3145728,
+            "label": "ota_1"
+          },
+          {
+            "kind": 1,
+            "subtype": 64,
+            "address": 8519680,
+            "size": 3145728,
+            "label": "resources"
+          },
+          {
+            "kind": 1,
+            "subtype": 65,
+            "address": 11665408,
+            "size": 5111808,
+            "label": "store"
+          }
+        ],
+        "device_access": false,
+        "physical_performance": "not measured",
+        "ota_memory_diagnostics": false
+      },
+      "diagnostics": {
+        "profile": "rev12-ota",
+        "sdk": "5.3.2",
+        "memory_diagnostics": false,
+        "worker_stack_bench": false,
+        "worker_tls_bench": false,
+        "tls_compiler_frames": {},
+        "tls_monitor_adapter_imports": [],
+        "worker_stack_bytes_requested": 3072,
+        "worker_stack_runtime_qualified": false,
+        "service_compiler_frames": {
+          "publish": 32,
+          "now_ms": 32,
+          "cancelled": 32,
+          "commit": 32,
+          "configured": 32,
+          "worker_stack": 32,
+          "write_chunk": 32,
+          "fetch": 48,
+          "tv4_ota_boot_observe": 32,
+          "tv4_ota_service_start": 64,
+          "tv4_ota_service_health": 32,
+          "tv4_ota_service_snapshot": 32,
+          "operation": 432,
+          "worker": 80,
+          "tv4_ota_service_request": 48
+        },
+        "module_writable_bytes": 0,
+        "module_writable_ceiling": 512,
+        "compiler_frames": {
+          "tv4_ota_memory_scope_revision": 32,
+          "tv4_ota_memory_scope_since": 32,
+          "tv4_ota_memory_capture": 64,
+          "tv4_ota_memory_startup": 32,
+          "tv4_ota_memory_window_begin": 32,
+          "tv4_ota_memory_window_end": 32,
+          "tv4_ota_memory_report_window": 32,
+          "tv4_ota_memory_report_startup": 32
+        },
+        "compiler_frame_ceiling": 192,
+        "sdk_monitor_linked": [],
+        "source_monitor_owners": [
+          "firmware/esp32-hmi/ota/memory_diagnostics.c",
+          "firmware/esp32-hmi/ota/utc_tls_bench.c"
+        ],
+        "app_bytes": 1551088,
+        "device_access": false,
+        "runtime_stack_peak_coverage": false,
+        "hardware_performance": "not measured"
+      },
+      "app": {
+        "bytes": 1551088,
+        "sha256": "561824a741b1741748e7c879fe6cfb3a5ba011c50b2846b09272cad85fe8fab6",
+        "project": "tv4_hmi",
+        "version": "a685614",
+        "idf_version": "v5.3.2",
+        "elf_sha256": "73fcdefcc45ceb692a0b25ada506bf8303a64736d3d8b5f2eb5a5c4861ad1c83",
+        "segments": 5,
+        "chip_revision_min": 0,
+        "chip_revision_max": 99,
+        "flash_bytes": 16777216,
+        "flash_mode": "dio",
+        "flash_frequency_mhz": 80
+      },
+      "elf_sha256": "73fcdefcc45ceb692a0b25ada506bf8303a64736d3d8b5f2eb5a5c4861ad1c83",
+      "sdkconfig_sha256": "d840242ce25fd73b472de148de0c68b2567c95ed23c21f8d348da2bb0d9e63bf",
+      "partition_table_sha256": "b4c64dbabb0eb8a6fb1a735fb3f3a7981a36520560b70e267851144211e401f1"
+    },
+    {
+      "sdk": "5.3.2",
+      "mode": "docker",
+      "profile": "rev12-ota",
+      "memory_diagnostics": true,
+      "worker_stack_bench": false,
+      "worker_tls_bench": false,
+      "status": "PASS",
+      "duration_seconds": 17.795,
+      "validation": {
+        "profile": "rev12-ota",
+        "sdk": "5.3.2",
+        "target": "esp32s3",
+        "flash_bytes": 16777216,
+        "mbedtls_allocator": "spiram-only",
+        "mbedtls_certificate_dates": true,
+        "tls_record_in": 16384,
+        "tls_record_out": 4096,
+        "memory_bench": false,
+        "tls_bench": false,
+        "psram": "octal 80MHz",
+        "images": {
+          "tv4_hmi.bin": {
+            "bytes": 1553120,
+            "sha256": "46f730be1bb1e2d25fa9f760767591dfec9247c5a764a1b4cfb5063c81d3e922"
+          },
+          "bootloader/bootloader.bin": {
+            "bytes": 21728,
+            "sha256": "4eb6e679ac88d820d0ed3ca0b28c1aabb6819e9b0f4c2d6d5ec83610285b3219"
+          }
+        },
+        "partitions": [
+          {
+            "kind": 1,
+            "subtype": 2,
+            "address": 36864,
+            "size": 24576,
+            "label": "nvs"
+          },
+          {
+            "kind": 1,
+            "subtype": 1,
+            "address": 61440,
+            "size": 4096,
+            "label": "phy_init"
+          },
+          {
+            "kind": 0,
+            "subtype": 0,
+            "address": 65536,
+            "size": 2097152,
+            "label": "factory"
+          },
+          {
+            "kind": 1,
+            "subtype": 0,
+            "address": 2162688,
+            "size": 8192,
+            "label": "otadata"
+          },
+          {
+            "kind": 0,
+            "subtype": 16,
+            "address": 2228224,
+            "size": 3145728,
+            "label": "ota_0"
+          },
+          {
+            "kind": 0,
+            "subtype": 17,
+            "address": 5373952,
+            "size": 3145728,
+            "label": "ota_1"
+          },
+          {
+            "kind": 1,
+            "subtype": 64,
+            "address": 8519680,
+            "size": 3145728,
+            "label": "resources"
+          },
+          {
+            "kind": 1,
+            "subtype": 65,
+            "address": 11665408,
+            "size": 5111808,
+            "label": "store"
+          }
+        ],
+        "device_access": false,
+        "physical_performance": "not measured",
+        "ota_memory_diagnostics": true
+      },
+      "diagnostics": {
+        "profile": "rev12-ota",
+        "sdk": "5.3.2",
+        "memory_diagnostics": true,
+        "worker_stack_bench": false,
+        "worker_tls_bench": false,
+        "tls_compiler_frames": {},
+        "tls_monitor_adapter_imports": [],
+        "worker_stack_bytes_requested": 3072,
+        "worker_stack_runtime_qualified": false,
+        "service_compiler_frames": {
+          "publish": 32,
+          "now_ms": 32,
+          "cancelled": 32,
+          "commit": 32,
+          "configured": 32,
+          "worker_stack": 32,
+          "write_chunk": 32,
+          "fetch": 48,
+          "tv4_ota_boot_observe": 32,
+          "tv4_ota_service_start": 64,
+          "tv4_ota_service_health": 32,
+          "tv4_ota_service_snapshot": 32,
+          "operation": 432,
+          "worker": 80,
+          "tv4_ota_service_request": 48
+        },
+        "module_writable_bytes": 432,
+        "module_writable_ceiling": 512,
+        "compiler_frames": {
+          "transition": 32,
+          "report": 112,
+          "tv4_ota_memory_scope_revision": 32,
+          "tv4_ota_memory_scope_since": 32,
+          "tv4_ota_memory_capture": 64,
+          "tv4_ota_memory_startup": 80,
+          "tv4_ota_memory_window_begin": 32,
+          "tv4_ota_memory_window_end": 32,
+          "tv4_ota_memory_report_window": 48,
+          "tv4_ota_memory_report_startup": 48
+        },
+        "compiler_frame_ceiling": 192,
+        "sdk_monitor_linked": [
+          "heap_caps_monitor_local_minimum_free_size_start",
+          "heap_caps_monitor_local_minimum_free_size_stop"
+        ],
+        "source_monitor_owners": [
+          "firmware/esp32-hmi/ota/memory_diagnostics.c",
+          "firmware/esp32-hmi/ota/utc_tls_bench.c"
+        ],
+        "app_bytes": 1553120,
+        "device_access": false,
+        "runtime_stack_peak_coverage": false,
+        "hardware_performance": "not measured"
+      },
+      "app": {
+        "bytes": 1553120,
+        "sha256": "46f730be1bb1e2d25fa9f760767591dfec9247c5a764a1b4cfb5063c81d3e922",
+        "project": "tv4_hmi",
+        "version": "a685614",
+        "idf_version": "v5.3.2",
+        "elf_sha256": "cf98ae48f22995aa796ce829368e75c04c33c5597f4d3fd1a1cb504c158f0093",
+        "segments": 5,
+        "chip_revision_min": 0,
+        "chip_revision_max": 99,
+        "flash_bytes": 16777216,
+        "flash_mode": "dio",
+        "flash_frequency_mhz": 80
+      },
+      "elf_sha256": "cf98ae48f22995aa796ce829368e75c04c33c5597f4d3fd1a1cb504c158f0093",
+      "sdkconfig_sha256": "1caca634af75c19411ae2bf1e1aa3dd356aa02b91860be9bfdd1c549f792eaad",
+      "partition_table_sha256": "b4c64dbabb0eb8a6fb1a735fb3f3a7981a36520560b70e267851144211e401f1"
+    },
+    {
+      "sdk": "5.3.2",
+      "mode": "docker",
+      "profile": "rev12-ota",
+      "memory_diagnostics": true,
+      "worker_stack_bench": true,
+      "worker_tls_bench": false,
+      "status": "PASS",
+      "duration_seconds": 17.913,
+      "validation": {
+        "profile": "rev12-ota",
+        "sdk": "5.3.2",
+        "target": "esp32s3",
+        "flash_bytes": 16777216,
+        "mbedtls_allocator": "spiram-only",
+        "mbedtls_certificate_dates": true,
+        "tls_record_in": 16384,
+        "tls_record_out": 4096,
+        "memory_bench": false,
+        "tls_bench": false,
+        "psram": "octal 80MHz",
+        "images": {
+          "tv4_hmi.bin": {
+            "bytes": 1553184,
+            "sha256": "cbfc138190e91e0b47dc286e0aa9405a82e5efcfc4fc3aed6601f911bb53dc14"
+          },
+          "bootloader/bootloader.bin": {
+            "bytes": 21728,
+            "sha256": "817e2c3f43168662f312f810292055a88854706f086478e70de2677500057128"
+          }
+        },
+        "partitions": [
+          {
+            "kind": 1,
+            "subtype": 2,
+            "address": 36864,
+            "size": 24576,
+            "label": "nvs"
+          },
+          {
+            "kind": 1,
+            "subtype": 1,
+            "address": 61440,
+            "size": 4096,
+            "label": "phy_init"
+          },
+          {
+            "kind": 0,
+            "subtype": 0,
+            "address": 65536,
+            "size": 2097152,
+            "label": "factory"
+          },
+          {
+            "kind": 1,
+            "subtype": 0,
+            "address": 2162688,
+            "size": 8192,
+            "label": "otadata"
+          },
+          {
+            "kind": 0,
+            "subtype": 16,
+            "address": 2228224,
+            "size": 3145728,
+            "label": "ota_0"
+          },
+          {
+            "kind": 0,
+            "subtype": 17,
+            "address": 5373952,
+            "size": 3145728,
+            "label": "ota_1"
+          },
+          {
+            "kind": 1,
+            "subtype": 64,
+            "address": 8519680,
+            "size": 3145728,
+            "label": "resources"
+          },
+          {
+            "kind": 1,
+            "subtype": 65,
+            "address": 11665408,
+            "size": 5111808,
+            "label": "store"
+          }
+        ],
+        "device_access": false,
+        "physical_performance": "not measured",
+        "ota_memory_diagnostics": true,
+        "ota_worker_stack_bench": true
+      },
+      "diagnostics": {
+        "profile": "rev12-ota",
+        "sdk": "5.3.2",
+        "memory_diagnostics": true,
+        "worker_stack_bench": true,
+        "worker_tls_bench": false,
+        "tls_compiler_frames": {},
+        "tls_monitor_adapter_imports": [],
+        "worker_stack_bytes_requested": 8192,
+        "worker_stack_runtime_qualified": false,
+        "service_compiler_frames": {
+          "publish": 32,
+          "now_ms": 32,
+          "cancelled": 32,
+          "commit": 32,
+          "configured": 32,
+          "worker_stack": 32,
+          "write_chunk": 32,
+          "fetch": 48,
+          "tv4_ota_boot_observe": 32,
+          "tv4_ota_service_start": 64,
+          "tv4_ota_service_health": 32,
+          "tv4_ota_service_snapshot": 32,
+          "operation": 432,
+          "worker": 80,
+          "tv4_ota_service_request": 48
+        },
+        "module_writable_bytes": 432,
+        "module_writable_ceiling": 512,
+        "compiler_frames": {
+          "transition": 32,
+          "report": 112,
+          "tv4_ota_memory_scope_revision": 32,
+          "tv4_ota_memory_scope_since": 32,
+          "tv4_ota_memory_capture": 64,
+          "tv4_ota_memory_startup": 80,
+          "tv4_ota_memory_window_begin": 32,
+          "tv4_ota_memory_window_end": 32,
+          "tv4_ota_memory_report_window": 48,
+          "tv4_ota_memory_report_startup": 48
+        },
+        "compiler_frame_ceiling": 192,
+        "sdk_monitor_linked": [
+          "heap_caps_monitor_local_minimum_free_size_start",
+          "heap_caps_monitor_local_minimum_free_size_stop"
+        ],
+        "source_monitor_owners": [
+          "firmware/esp32-hmi/ota/memory_diagnostics.c",
+          "firmware/esp32-hmi/ota/utc_tls_bench.c"
+        ],
+        "app_bytes": 1553184,
+        "device_access": false,
+        "runtime_stack_peak_coverage": false,
+        "hardware_performance": "not measured"
+      },
+      "app": {
+        "bytes": 1553184,
+        "sha256": "cbfc138190e91e0b47dc286e0aa9405a82e5efcfc4fc3aed6601f911bb53dc14",
+        "project": "tv4_hmi",
+        "version": "a685614",
+        "idf_version": "v5.3.2",
+        "elf_sha256": "beef81cdd4527167c613f5bb0284510f070aa356a5a10ae21150d1cacd4c5fa3",
+        "segments": 5,
+        "chip_revision_min": 0,
+        "chip_revision_max": 99,
+        "flash_bytes": 16777216,
+        "flash_mode": "dio",
+        "flash_frequency_mhz": 80
+      },
+      "elf_sha256": "beef81cdd4527167c613f5bb0284510f070aa356a5a10ae21150d1cacd4c5fa3",
+      "sdkconfig_sha256": "2b173a13887c51bb0ce56b4fc4c10910c092d63f903e4a37567cb742a4c34abd",
+      "partition_table_sha256": "b4c64dbabb0eb8a6fb1a735fb3f3a7981a36520560b70e267851144211e401f1"
+    },
+    {
+      "sdk": "5.3.2",
+      "mode": "docker",
+      "profile": "rev12-ota",
+      "memory_diagnostics": true,
+      "worker_stack_bench": true,
+      "worker_tls_bench": true,
+      "status": "PASS",
+      "duration_seconds": 17.916,
+      "validation": {
+        "profile": "rev12-ota",
+        "sdk": "5.3.2",
+        "target": "esp32s3",
+        "flash_bytes": 16777216,
+        "mbedtls_allocator": "spiram-only",
+        "mbedtls_certificate_dates": true,
+        "tls_record_in": 16384,
+        "tls_record_out": 4096,
+        "memory_bench": false,
+        "tls_bench": false,
+        "psram": "octal 80MHz",
+        "images": {
+          "tv4_hmi.bin": {
+            "bytes": 1556016,
+            "sha256": "e0abc45acf39a383d94d533bd8c87828ee02a184f1f919fe0d16aba881ffff9e"
+          },
+          "bootloader/bootloader.bin": {
+            "bytes": 21728,
+            "sha256": "2c53947bfdfe0da6b6dc6b5439eed97e0de37a78a7eab994c9435cf8775d2008"
+          }
+        },
+        "partitions": [
+          {
+            "kind": 1,
+            "subtype": 2,
+            "address": 36864,
+            "size": 24576,
+            "label": "nvs"
+          },
+          {
+            "kind": 1,
+            "subtype": 1,
+            "address": 61440,
+            "size": 4096,
+            "label": "phy_init"
+          },
+          {
+            "kind": 0,
+            "subtype": 0,
+            "address": 65536,
+            "size": 2097152,
+            "label": "factory"
+          },
+          {
+            "kind": 1,
+            "subtype": 0,
+            "address": 2162688,
+            "size": 8192,
+            "label": "otadata"
+          },
+          {
+            "kind": 0,
+            "subtype": 16,
+            "address": 2228224,
+            "size": 3145728,
+            "label": "ota_0"
+          },
+          {
+            "kind": 0,
+            "subtype": 17,
+            "address": 5373952,
+            "size": 3145728,
+            "label": "ota_1"
+          },
+          {
+            "kind": 1,
+            "subtype": 64,
+            "address": 8519680,
+            "size": 3145728,
+            "label": "resources"
+          },
+          {
+            "kind": 1,
+            "subtype": 65,
+            "address": 11665408,
+            "size": 5111808,
+            "label": "store"
+          }
+        ],
+        "device_access": false,
+        "physical_performance": "not measured",
+        "ota_memory_diagnostics": true,
+        "ota_worker_stack_bench": true,
+        "ota_worker_tls_bench": true
+      },
+      "diagnostics": {
+        "profile": "rev12-ota",
+        "sdk": "5.3.2",
+        "memory_diagnostics": true,
+        "worker_stack_bench": true,
+        "worker_tls_bench": true,
+        "tls_compiler_frames": {
+          "head_cancelled": 32,
+          "bounded": 32,
+          "errors": 32,
+          "clock_read": 32,
+          "headers_event": 48,
+          "now_ms": 32,
+          "snapshot": 80,
+          "head_close": 32,
+          "head_headers": 32,
+          "head_open": 192,
+          "monitor_start": 32,
+          "monitor_stop": 32,
+          "tv4_utc_tls_bench_run_in_ota_worker": 224,
+          "tv4_utc_tls_bench_start": 32
+        },
+        "tls_monitor_adapter_imports": [
+          "tv4_ota_memory_report_window",
+          "tv4_ota_memory_window_begin",
+          "tv4_ota_memory_window_end"
+        ],
+        "worker_stack_bytes_requested": 8192,
+        "worker_stack_runtime_qualified": false,
+        "service_compiler_frames": {
+          "publish": 32,
+          "now_ms": 32,
+          "cancelled": 32,
+          "commit": 32,
+          "configured": 32,
+          "worker_stack": 32,
+          "write_chunk": 32,
+          "fetch": 48,
+          "tv4_ota_boot_observe": 32,
+          "tv4_ota_service_start": 64,
+          "tv4_ota_service_health": 32,
+          "tv4_ota_service_snapshot": 32,
+          "operation": 432,
+          "worker": 80,
+          "tv4_ota_service_request": 48
+        },
+        "module_writable_bytes": 432,
+        "module_writable_ceiling": 512,
+        "compiler_frames": {
+          "transition": 32,
+          "report": 112,
+          "tv4_ota_memory_scope_revision": 32,
+          "tv4_ota_memory_scope_since": 32,
+          "tv4_ota_memory_capture": 64,
+          "tv4_ota_memory_startup": 80,
+          "tv4_ota_memory_window_begin": 32,
+          "tv4_ota_memory_window_end": 32,
+          "tv4_ota_memory_report_window": 48,
+          "tv4_ota_memory_report_startup": 48
+        },
+        "compiler_frame_ceiling": 192,
+        "sdk_monitor_linked": [
+          "heap_caps_monitor_local_minimum_free_size_start",
+          "heap_caps_monitor_local_minimum_free_size_stop"
+        ],
+        "source_monitor_owners": [
+          "firmware/esp32-hmi/ota/memory_diagnostics.c",
+          "firmware/esp32-hmi/ota/utc_tls_bench.c"
+        ],
+        "app_bytes": 1556016,
+        "device_access": false,
+        "runtime_stack_peak_coverage": false,
+        "hardware_performance": "not measured"
+      },
+      "app": {
+        "bytes": 1556016,
+        "sha256": "e0abc45acf39a383d94d533bd8c87828ee02a184f1f919fe0d16aba881ffff9e",
+        "project": "tv4_hmi",
+        "version": "a685614",
+        "idf_version": "v5.3.2",
+        "elf_sha256": "bb7055fe7a0aec02809aa623d592667baf8ab256dbe1d13236434be1f59aafc3",
+        "segments": 5,
+        "chip_revision_min": 0,
+        "chip_revision_max": 99,
+        "flash_bytes": 16777216,
+        "flash_mode": "dio",
+        "flash_frequency_mhz": 80
+      },
+      "elf_sha256": "bb7055fe7a0aec02809aa623d592667baf8ab256dbe1d13236434be1f59aafc3",
+      "sdkconfig_sha256": "f5227c17086e04e83e6097b600326c259febf09a9d29a8d36978fdb2b4dbdef0",
+      "partition_table_sha256": "b4c64dbabb0eb8a6fb1a735fb3f3a7981a36520560b70e267851144211e401f1"
+    }
+  ],
+  "completed_utc": "2026-11-22T17:34:22.099787+00:00"
+}
