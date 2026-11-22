@@ -8,6 +8,11 @@ restore не испытывался. P1 configured install/confirm/rollback/powe
 RAM/stack/performance budget ещё открыты: historical internal minimum112bytes
 требует разбора, не устанавливает simultaneous OOM/floor. Сеанс закрыт.
 
+Следующий software результат P1 — [фазный диагностический ELF/BIN](ESP32_OTA_MEMORY_PHASES.md)
+с opt-in minimum monitor и достоверным OTA-worker stack. Normal flag0 сохраняет
+global history; измерения flag1 требуют нового отдельно разрешённого стенда.
+Новые compile/host результаты не заменяют hardware данные fecc05d выше.
+
 ## Исторический итог P0 и программной подготовки
 
 22 ноября 2026, база main `07fb406e37ebd1f1e019dbee0b54e8bb5571be1a`, PR #1–57 слиты.

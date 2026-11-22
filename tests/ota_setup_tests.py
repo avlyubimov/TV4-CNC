@@ -50,6 +50,18 @@ class ContextTests(unittest.TestCase):
         for profile,mode in (('rev12','local'),('headless','docker'),('rev12-ota','docker')):
             result=subprocess.run([str(ROOT/'tools/build_idf.sh'),profile,'6.1.1',mode],cwd=ROOT,env=env,text=True,capture_output=True)
             self.assertEqual(result.returncode,2);self.assertIn('requires explicit rev12-ota/local',result.stderr)
+    def test_memory_trace_is_explicit_and_container_flag_is_forwarded(self):
+        import os
+        clean={**os.environ};clean.pop('TV4_OTA_CONTEXT',None)
+        for profile,value in (('rev12','1'),('headless','1'),('rev12-ota','yes'),('rev12-ota','2')):
+            run=subprocess.run([str(ROOT/'tools/build_idf.sh'),profile,'6.1.1','docker'],env={**clean,'TV4_OTA_MEMORY_DIAGNOSTICS':value},text=True,capture_output=True)
+            self.assertEqual(run.returncode,2);self.assertEqual(run.stdout,'')
+        bindir=self.root/'bin';bindir.mkdir();docker=bindir/'docker'
+        docker.write_text('#!/bin/sh\nprintf "%s\\n" "$@"\n');docker.chmod(0o700)
+        env={**clean,'PATH':str(bindir)+os.pathsep+clean['PATH'],'TV4_OTA_MEMORY_DIAGNOSTICS':'1'}
+        run=subprocess.run([str(ROOT/'tools/build_idf.sh'),'rev12-ota','6.1.1','docker'],env=env,text=True,capture_output=True)
+        self.assertEqual(run.returncode,0,run.stderr)
+        self.assertIn('TV4_OTA_MEMORY_DIAGNOSTICS=1',run.stdout.splitlines());self.assertNotIn('--device',run.stdout)
     def test_missing_unreviewed_and_unknown_settings_fail(self):
         good=copy.deepcopy(self.value)
         for field in good:
@@ -93,6 +105,18 @@ class MigrationTests(CandidateTests):
         self.assertEqual([x['offset'] for x in result['writes']],[0,0x8000,0x10000,0x210000])
         self.assertEqual((self.output/'otadata-erased.bin').read_bytes(),b'\xff'*8192)
         with self.assertRaises(ValueError):self.prepare_migration()
+    def test_trace_is_valid_only_with_explicit_inspector_and_not_a_normal_usb_bundle(self):
+        p=self.build/'config/sdkconfig.json';c=json.loads(p.read_text());c['TV4_OTA_MEMORY_DIAGNOSTICS']=True;p.write_text(json.dumps(c))
+        with self.assertRaises(ValueError):migration.check_idf_build.verify(self.build,'rev12-ota',self.sdk,write_report=False)
+        result=migration.check_idf_build.verify(self.build,'rev12-ota',self.sdk,write_report=False,memory_diagnostics=True)
+        self.assertTrue(result['ota_memory_diagnostics'])
+        with self.assertRaises(ValueError):self.prepare_migration()
+        for profile in ('headless','rev12','rev12-tls-bench'):
+            with self.subTest(profile=profile),self.assertRaises(ValueError):
+                migration.check_idf_build.verify(self.build,profile,self.sdk,write_report=False,memory_diagnostics=True)
+        for wrong in (1,'yes',None):
+            with self.subTest(wrong=wrong),self.assertRaises(ValueError):
+                migration.check_idf_build.verify(self.build,'rev12-ota',self.sdk,write_report=False,memory_diagnostics=wrong)
     def test_corrupt_payload_and_unexpected_inventory(self):
         self.prepare_migration()
         for name,_,_ in migration.WRITES:

@@ -32,4 +32,14 @@ config TV4_OTA_ENABLED
         trust/context and measured resource policy must be provisioned before
         operator-triggered HTTPS/installation. No key/version defaults, eFuse,
         CAN or motion control. Ordinary profiles retain factory-only layout.
+config TV4_OTA_MEMORY_DIAGNOSTICS
+    bool "Enable finite OTA memory phase tracing (explicit diagnostic build only)"
+    depends on TV4_OTA_ENABLED
+    default n
+    help
+        Uses SDK local minimum windows during boot and operator-requested OTA.
+        SDK bookkeeping allocates memory/asserts on failure; diagnostic guards
+        are not reservations. A single owner restores global history after each
+        window. Adds bounded worker-only logs, no keys/network probes/Flash
+        actions by itself. Requires separate exact-image board authorization.
 endmenu

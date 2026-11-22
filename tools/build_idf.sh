@@ -4,6 +4,11 @@ set -euo pipefail
 profile="${1:-headless}"
 version="${2:-6.1.1}"
 mode="${3:-docker}"
+memory_diagnostics="${TV4_OTA_MEMORY_DIAGNOSTICS:-0}"
+case "$memory_diagnostics" in 0|1) ;; *) echo 'TV4_OTA_MEMORY_DIAGNOSTICS must be 0 or 1' >&2; exit 2 ;; esac
+if [[ "$memory_diagnostics" == 1 && "$profile" != rev12-ota ]]; then
+  echo 'Memory phase tracing belongs only to explicit rev12-ota' >&2; exit 2
+fi
 case "$profile" in headless|rev12|rev12-memory-bench|rev12-tls-bench|rev12-ota) ;; *) echo 'Profile: headless, rev12, rev12-memory-bench, rev12-tls-bench or rev12-ota' >&2; exit 2 ;; esac
 case "$version" in
   5.3.2) image='espressif/idf@sha256:5b8f58d9d9caa45b689a31a0b6a0cc53b84594e0ba5fdd8d28eeef7d6123242a' ;;
@@ -32,6 +37,7 @@ if [[ "$mode" == docker ]]; then
   # Re-enter in the official immutable SDK container. No device passthrough.
   exec docker run --rm --cap-drop=ALL --security-opt=no-new-privileges \
     -e "TV4_BUILD_PROJECT_VERSION=$project_version" \
+    -e "TV4_OTA_MEMORY_DIAGNOSTICS=$memory_diagnostics" \
     -v "$project_root:/project" -w /project "$image" \
     bash /project/tools/build_idf.sh "$profile" "$version" local
 elif [[ "$mode" != local ]]; then
@@ -46,6 +52,7 @@ set -u
 actual="$(idf.py --version)"
 if [[ "$actual" != "ESP-IDF v$version" ]]; then echo "Wrong SDK: $actual (expected v$version)" >&2; exit 2; fi
 build="$project_root/build-idf-$version-$profile"
+if [[ "$memory_diagnostics" == 1 ]]; then build+="-memory-diagnostics"; fi
 version_args=()
 if [[ -n "$project_version" ]]; then version_args+=("-DPROJECT_VER=$project_version"); fi
 defaults="$project_root/firmware/esp32-hmi/sdkconfig.defaults"
@@ -53,8 +60,15 @@ if [[ "$profile" != headless ]]; then defaults+=";$project_root/firmware/esp32-h
 if [[ "$profile" == rev12-ota ]]; then defaults+=";$project_root/firmware/esp32-hmi/sdkconfig.ota"; fi
 if [[ "$profile" == rev12-memory-bench ]]; then defaults+=";$project_root/firmware/esp32-hmi/sdkconfig.memory-bench"; fi
 if [[ "$profile" == rev12-tls-bench ]]; then defaults+=";$project_root/firmware/esp32-hmi/sdkconfig.tls-bench"; fi
+memory_args=()
+if [[ "$memory_diagnostics" == 1 ]]; then
+  mkdir -p -- "$build"
+  printf '%s\n' 'CONFIG_TV4_OTA_MEMORY_DIAGNOSTICS=y' > "$build/sdkconfig.memory-diagnostics.defaults"
+  defaults+=";$build/sdkconfig.memory-diagnostics.defaults"
+  memory_args+=(--memory-diagnostics)
+fi
 ota_args=()
 if [[ -n "${TV4_OTA_CONTEXT:-}" ]]; then ota_args+=("-DTV4_OTA_CONTEXT=$(realpath -- "$TV4_OTA_CONTEXT")"); else ota_args+=("-DTV4_OTA_CONTEXT="); fi
 idf.py -C "$project_root/firmware/esp32-hmi" -B "$build" \
   -DIDF_TARGET=esp32s3 "-DSDKCONFIG=$build/sdkconfig" "-DSDKCONFIG_DEFAULTS=$defaults" "${version_args[@]}" "${ota_args[@]}" build
-python "$project_root/tools/check_idf_build.py" "$build" "$profile" "$version"
+python "$project_root/tools/check_idf_build.py" "$build" "$profile" "$version" "${memory_args[@]}"

@@ -25,6 +25,15 @@ self-test/rollback/watchdog и prepare/independent verify USB migration bundle.
 
 ## Что уже проверено и что делать дальше
 
+Следующая [программная интеграция фазных измерений](ESP32_OTA_MEMORY_PHASES.md)
+готовит настоящий rev12-ota ELF/BIN: явный boot result, OTA-worker stack и
+отдельный opt-in TV4_OTA_MEMORY_DIAGNOSTICS=1 вариант в другом build tree.
+Normal default off не вызывает SDK minimum monitor. Наблюдённые432bytes state/
+112bytes own compiler frame и host/sanitizer tests относятся к software build,
+не к установленной firmware или runtime пикам. [Evidence](evidence/build/esp32-ota-memory-phases/README.md).
+Новый стенд требует отдельного разрешения на exact image/backup/возврат; на
+плате пока fecc05d. Действующую A/B карту не мигрировать повторно.
+
 1. **Готово:** clean-main fecc05d, rev12-ota/SDK6.1.1 без ключа собран;
    prepare/independent verify bundle PASS. App SHA-256
    `de55953fc9e3c4080cb277d734ca7d1f02c74880db38dac0f4b53830f587d021`.
