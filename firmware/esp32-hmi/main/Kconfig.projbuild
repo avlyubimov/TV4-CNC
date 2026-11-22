@@ -42,4 +42,14 @@ config TV4_OTA_MEMORY_DIAGNOSTICS
         are not reservations. A single owner restores global history after each
         window. Adds bounded worker-only logs, no keys/network probes/Flash
         actions by itself. Requires separate exact-image board authorization.
+config TV4_OTA_WORKER_STACK_BENCH
+    bool "Use 8192-byte unprovisioned OTA worker for explicit memory bench"
+    depends on TV4_OTA_MEMORY_DIAGNOSTICS
+    default n
+    help
+        Reserves the same worker stack size as configured OTA, without keys or
+        network/install authority. Only an unprovisioned rev12-ota trace build
+        accepts this flag. Ordinary and trace-control builds keep their stack.
+        It does not exercise TLS/installation or approve resource floors.
+        Requires separate exact-image board authorization before recording.
 endmenu

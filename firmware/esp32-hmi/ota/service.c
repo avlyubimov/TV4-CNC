@@ -10,6 +10,9 @@ tv4_ota_boot_result tv4_ota_boot_observe(tv4_ota_boot_window *w,uint32_t now,boo
 }
 #ifdef ESP_PLATFORM
 #include "sdkconfig.h"
+#if CONFIG_TV4_OTA_WORKER_STACK_BENCH && (!CONFIG_TV4_OTA_ENABLED || !CONFIG_TV4_OTA_MEMORY_DIAGNOSTICS)
+#error "Worker stack bench requires explicit OTA memory diagnostics"
+#endif
 #endif
 #if defined(ESP_PLATFORM) && CONFIG_TV4_OTA_ENABLED
 #if !CONFIG_BOOTLOADER_APP_ROLLBACK_ENABLE || CONFIG_BOOTLOADER_APP_ANTI_ROLLBACK || CONFIG_SECURE_BOOT || CONFIG_SECURE_FLASH_ENC_ENABLED || !CONFIG_ESP_TASK_WDT_INIT || !CONFIG_ESP_TASK_WDT_PANIC || !CONFIG_ESP_INT_WDT || !CONFIG_ESP_SYSTEM_PANIC_PRINT_REBOOT
@@ -19,6 +22,14 @@ tv4_ota_boot_result tv4_ota_boot_observe(tv4_ota_boot_window *w,uint32_t now,boo
 #error "OTA profile requires PSRAM TLS and X.509 certificate dates"
 #endif
 #include "ota_local_context.h"
+#if CONFIG_TV4_OTA_WORKER_STACK_BENCH && TV4_OTA_PROVISIONED
+#error "Worker stack bench must remain unprovisioned"
+#endif
+#if TV4_OTA_PROVISIONED || CONFIG_TV4_OTA_WORKER_STACK_BENCH
+#define OTA_WORKER_STACK_BYTES 8192
+#else
+#define OTA_WORKER_STACK_BYTES 3072
+#endif
 #include "installer_sdk.h"
 #include "memory.h"
 #include "memory_diagnostics.h"
@@ -153,7 +164,12 @@ static void worker(void *c) {
     tv4_ota_memory_window_end(TV4_MEM_BOOT);
     tv4_ota_memory_report_startup();tv4_ota_memory_report_window();
     bool finished=tv4_ota_sdk_finish_boot(passed);
+#if CONFIG_TV4_OTA_WORKER_STACK_BENCH
+    ESP_LOGI("tv4_ota","boot_self_test checks_pass=%u sdk_finish=%u worker_stack_bytes=%u stack_bench=1 provisioned=0",
+        (unsigned)passed,(unsigned)finished,(unsigned)OTA_WORKER_STACK_BYTES);
+#else
     ESP_LOGI("tv4_ota","boot_self_test checks_pass=%u sdk_finish=%u",(unsigned)passed,(unsigned)finished);
+#endif
     worker_stack();
     if(!finished)esp_restart();
     if(esp_task_wdt_delete(NULL)!=ESP_OK)esp_restart();
@@ -169,7 +185,7 @@ bool tv4_ota_service_start(void) {
     if(started)return false;
     started=true;commands=xQueueCreateStatic(1,sizeof(tv4_update_command),queue_bytes,&queue_state);
     tv4_ota_memory_window_begin(TV4_MEM_BOOT);
-    bool ok=commands && xTaskCreate(worker,"tv4_ota",TV4_OTA_PROVISIONED?8192:3072,NULL,1,NULL)==pdPASS;
+    bool ok=commands && xTaskCreate(worker,"tv4_ota",OTA_WORKER_STACK_BYTES,NULL,1,NULL)==pdPASS;
     if(!ok) {tv4_ota_memory_window_end(TV4_MEM_BOOT);publish(TV4_UPDATE_SETUP,21);const esp_partition_t *r=esp_ota_get_running_partition();esp_ota_img_states_t state;
         if(r && esp_ota_get_state_partition(r,&state)==ESP_OK && state==ESP_OTA_IMG_PENDING_VERIFY)esp_restart();}
     return ok;

@@ -56,6 +56,12 @@ worker1664из3072 — single-run, не configured floor. Вернулся fecc0
 израсходовано. Worker8192/TLS/install/repeatability и owner settings открыты.
 Новые device операции только отдельно, прежние image/config/trust gates сохранять.
 
+`TV4_OTA_WORKER_STACK_BENCH` default off: только unprovisioned rev12-ota с
+memory diagnostics1 и отдельным build tree. Читать docs/ESP32_OTA_WORKER_STACK_BENCH.md
+от корня. Тот же worker получает8192, SETUP/CHECK/INSTALL прежние; requested
+stack/log/host SDK doubles не runtime resource qualification. Не подставлять
+test keys/context и не включать новые network/Flash operations ради замера.
+
 Исторические контракты ниже описывают слитые read-only этапы; P1 расширяет только
 explicit OTA profile, не включает installer в прежних профилях и не снимает
 аппаратные/ключевые/ресурсные gates.

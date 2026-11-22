@@ -35,6 +35,10 @@ target_link_options(${COMPONENT_LIB} INTERFACE "LINKER:--undefined=tv4_tls_probe
 target_link_options(${COMPONENT_LIB} INTERFACE "LINKER:--undefined=tv4_ota_session_run_guarded" "LINKER:--undefined=tv4_ota_resource_check" "LINKER:--undefined=tv4_ota_resource_sample_current")
 
 if(CONFIG_TV4_OTA_ENABLED)
+    if(CONFIG_TV4_OTA_WORKER_STACK_BENCH AND
+       (NOT CONFIG_TV4_OTA_MEMORY_DIAGNOSTICS OR TV4_OTA_CONTEXT))
+        message(FATAL_ERROR "Worker stack bench requires unprovisioned OTA diagnostics")
+    endif()
     set(ota_context_args "")
     if(TV4_OTA_CONTEXT)
         list(APPEND ota_context_args --context "${TV4_OTA_CONTEXT}")

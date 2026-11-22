@@ -49,6 +49,14 @@ jobs:
             -Ifirmware/esp32-hmi/ota -Itests -c firmware/esp32-hmi/ota/installer_sdk.c \
             -o build/policy-analysis/installer.o >> build/policy-analysis.log 2>&1
           printf 'OTA session/service-window/actual SDK adapter: analyzer PASS\n' >> build/policy-analysis.log
+          for stack_bench in 0 1; do
+            gcc -std=c11 -Wall -Wextra -Werror -fanalyzer -DESP_PLATFORM=1 \
+              -DSERVICE_TEST_BENCH="$stack_bench" -Itests/ota_service_sdk -Itests \
+              -Ifirmware/esp32-hmi/ota -Ifirmware/esp32-hmi/network \
+              -c firmware/esp32-hmi/ota/service.c \
+              -o "build/policy-analysis/service-sdk-$stack_bench.o" >> build/policy-analysis.log 2>&1
+          done
+          printf 'Actual ESP service/control+worker8192 SDK boundary: analyzer PASS\n' >> build/policy-analysis.log
           gcc -std=c11 -Wall -Wextra -Werror -fanalyzer \
             -Ifirmware/esp32-hmi/core -c firmware/esp32-hmi/core/firmware_info.c \
             -o build/policy-analysis/firmware_info.o >> build/policy-analysis.log 2>&1

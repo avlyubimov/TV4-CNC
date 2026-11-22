@@ -182,6 +182,12 @@ Local owner key/SemVer/time/resource context отсутствуют по реш�
 Не повторять migration и не писать ordinary rev12 поверх действующей A/B-карты.
 Нет eFuse/option bytes/OTP/CAN/motion или самостоятельных merge/release.
 
+Текущий отдельный software PR готовит opt-in OTA-worker8192 без provisioning,
+см. docs/plans/P1_OTA_WORKER_STACK_BENCH.md. Owner confirmations/уточнения
+PR #66 не дублировать; фактический main и merge-state сверять через Git.
+Не менять default3072/provisioned8192 или открывать OTA authority ради замера.
+Все новые аппаратные действия по-прежнему требуют отдельного разрешения.
+
 ## Исторические контракты слитых этапов
 
 Ниже сохранены ограничения существующих компонентов и исторические результаты.

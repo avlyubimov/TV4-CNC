@@ -44,12 +44,13 @@ def source_owner_guard():
     kconfig=(ROOT/'firmware/esp32-hmi/main/Kconfig.projbuild').read_text()
     require('depends on TV4_BOARD_REV12 && SPIRAM && !TV4_OTA_MEMORY_BENCH && !TV4_UTC_TLS_BENCH' in kconfig,'OTA/TLS monitor owner exclusion missing')
     require(re.search(r'config TV4_OTA_MEMORY_DIAGNOSTICS\n.*?depends on TV4_OTA_ENABLED\n\s+default n',kconfig,re.S),'trace must default off behind OTA')
+    require(re.search(r'config TV4_OTA_WORKER_STACK_BENCH\n.*?depends on TV4_OTA_MEMORY_DIAGNOSTICS\n\s+default n',kconfig,re.S),'stack bench must default off behind trace')
     service=(ROOT/'firmware/esp32-hmi/ota/service.c').read_text()
     require('if(!committed)tv4_ota_memory_window_begin(TV4_MEM_CLEANUP);' in service,'monitor allocation added after boot selection')
     return sorted(owners)
 
-def inspect(build,profile,sdk,trace=False):
-    validation=check_idf_build.verify(build,profile,sdk,write_report=False,memory_diagnostics=trace)
+def inspect(build,profile,sdk,trace=False,worker_stack_bench=False):
+    validation=check_idf_build.verify(build,profile,sdk,write_report=False,memory_diagnostics=trace,worker_stack_bench=worker_stack_bench)
     build=Path(build);elf=build/'tv4_hmi.elf'
     symbols=subprocess.check_output(['readelf','-Ws',str(elf)],text=True)
     names={p[-1] for line in symbols.splitlines() if len(p:=line.split())>=8 and p[3]=='FUNC' and p[6]!='UND'}
@@ -73,14 +74,28 @@ def inspect(build,profile,sdk,trace=False):
         require(b'boot_self_test checks_pass=%u sdk_finish=%u' in elf.read_bytes(),'explicit boot result missing')
     else:
         require(not any(n.startswith('tv4_ota_memory_scope_') for n in names),'OTA scope sampler retained in ordinary image')
-    return dict(profile=profile,sdk=sdk,memory_diagnostics=trace,module_writable_bytes=writable,
+    requested=0;service_frames={}
+    marker=b'worker_stack_bytes=%u stack_bench=1 provisioned=0'
+    if profile=='rev12-ota':
+        context=json.loads((build/'ota-local/ota_local_context.json').read_text())
+        require(type(context) is dict and type(context.get('provisioned')) is bool,'missing provisioning state')
+        requested=8192 if context['provisioned'] or worker_stack_bench else 3072
+        require((marker in elf.read_bytes())==worker_stack_bench,'worker stack bench marker/selection mismatch')
+        service_usage=build/'esp-idf/main/CMakeFiles/__idf_main.dir/__/ota/service.c.su'
+        require(service_usage.is_file(),'service compiler stack-usage missing')
+        for line in service_usage.read_text().splitlines():
+            fields=line.split('\t')
+            require(len(fields)==3 and fields[2] in ('static','dynamic,bounded'),'unbounded service compiler frame')
+            service_frames[fields[0].rsplit(':',1)[-1]]=int(fields[1])
+    return dict(profile=profile,sdk=sdk,memory_diagnostics=trace,worker_stack_bench=worker_stack_bench,
+        worker_stack_bytes_requested=requested,worker_stack_runtime_qualified=False,service_compiler_frames=service_frames,module_writable_bytes=writable,
         module_writable_ceiling=512,compiler_frames=stack,compiler_frame_ceiling=192,
         sdk_monitor_linked=sorted(monitor&names),source_monitor_owners=source_owner_guard(),
         app_bytes=validation['images']['tv4_hmi.bin']['bytes'],device_access=False,
         runtime_stack_peak_coverage=False,hardware_performance='not measured')
 
 if __name__=='__main__':
-    p=argparse.ArgumentParser(description=__doc__);p.add_argument('build',type=Path);p.add_argument('profile');p.add_argument('sdk');p.add_argument('--memory-diagnostics',action='store_true')
+    p=argparse.ArgumentParser(description=__doc__);p.add_argument('build',type=Path);p.add_argument('profile');p.add_argument('sdk');p.add_argument('--memory-diagnostics',action='store_true');p.add_argument('--worker-stack-bench',action='store_true')
     a=p.parse_args()
-    try:print(json.dumps(inspect(a.build,a.profile,a.sdk,a.memory_diagnostics),indent=2))
+    try:print(json.dumps(inspect(a.build,a.profile,a.sdk,a.memory_diagnostics,a.worker_stack_bench),indent=2))
     except (ValueError,OSError,KeyError,subprocess.CalledProcessError) as e:raise SystemExit('Memory diagnostics validation failed: '+str(e))
