@@ -142,51 +142,46 @@ PR и Actions; не копировать код уже открытого PR. Д
    теги, релизы, секреты CI и публикации под видом обычного push.
 6. Обновлять актуальный статус; исторические отчёты сохранять с явной пометкой.
 
-## Текущее задание: P1 после аппаратного замера порядка старта
+## Текущее задание: P1 после аппаратного стенда worker8192
 
-База mainb5f4b38, PR #1–64 слиты. [Стенд нового порядка старта](docs/evidence/hardware/2026-11-22-esp32-startup-order/README.md) завершён
-по отдельному разрешению за609.074s: fresh16MiB/device MD5/SHA-256/two-NVMe,
-app-only diagnostic b5f4b38/verify/capture90.173s, factory2MiB fecc05d return/
-verify/capture30.048s PASS. Владелец подтвердил экран/касания/Wi-Fi/OTA SETUP на b5f4b38 и после возврата fecc05d.
-На ESP32 fecc05d/factory/tv4-16m-ab-v1, F407 ee7d179 не открывался.
-Полный16MiB restore не понадобился; разрешение использовано, новых операций нет.
+База main `dfa9f28`, PR #1–67 слиты. [Стенд3072/8192](docs/evidence/hardware/2026-11-22-esp32-worker-stack/README.md)
+завершён22ноября за928.998s по отдельному разрешению: fresh16MiB/device MD5/
+SHA-256/two-NVMe, контроль3072 и три reset-запуска8192, три app/factory writes,
+пять UART captures и возврат всего factory2MiB fecc05d/verify PASS.
+Владелец подтвердил HMI/касания/Wi-Fi/OTA SETUP временного8192 и возвращённого
+fecc05d. На ESP32 fecc05d/factory/tv4-16m-ab-v1; F407 ee7d179 не открывался.
+Полный16MiB restore не понадобился; сеанс и разрешение закрыты.
 
-BOOT local minimum20715 против1887 в fc90200, history7796 после stop;
-periodic free21575..21751/largest12288, PSRAM6090108, OTA-worker1664из3072.
-Это один instrumented run, per-heap minima не simultaneous free/OOM/floor.
-Largest вырос, steady free немного меньше. Тот же returned fecc05d дал history6956
-вместо прежнего112: повторяемость и нагрузка ещё требуют проверки.
-Configured8192/TLS/install/key/context/floors остаются открытыми, CHECK/INSTALL
-без настройки закрыты. FPS/latency/soak/slot confirm/rollback/power-loss не приняты.
+Worker8192 watermark6608–6784bytes, BOOT local15767–15863; periodic internal
+free14291–16863/largest7680 против control21795–21799/largest12288 после IP event.
+Первый8192 включал UI-проверку: нагрузка различалась. Это unprovisioned reset
+boot evidence, не configured TLS/install/production floor или cold-power/soak.
+Ключ/context не заданы, CHECK/INSTALL закрыты. FPS/latency/slot confirm/rollback/
+power-loss/full recovery не приняты. Новых hardware разрешений нет.
 
-Читайте docs/evidence/hardware/2026-11-22-esp32-startup-order/README.md, docs/BACKUP_STATUS.md, docs/NEXT_STAGE.md и
- docs/ESP32_OTA_MEMORY_PHASES.md. Fresh snapshot SHA-256:
-ce6af4e88d755254f65ca2cf952d17ad9892a8ec7f487b0ed4391eccc3355e5a.
-Дампы/NVS/пароли/raw UART приватны; public — числовой allowlist.
+Стенд показал реальную аллокацию/работу8192 без provisioning, а не полный
+configured installer. Читайте docs/ESP32_OTA_WORKER_STACK_BENCH.md,
+docs/ESP32_OTA_MEMORY_PHASES.md, docs/BACKUP_STATUS.md и docs/NEXT_STAGE.md.
+Три reset-пробы и одна owner UI-проверка не заменяют холодный старт или soak.
+SDK per-heap minima нельзя выдавать за simultaneous free/OOM/floor.
+IP event не доказывает непрерывную связь или радионагрузку в BOOT window.
 
-Слитый PR #64 завершил первый dashboard frame/UI_READY до export/Wi-Fi start.
-Temporal order0,1,2,3,5,6,4 подтверждён; logger выводит ID-order0..6.
-Семь стабильных ID, OTA deadline до board init и touch-release gate сохранены.
-SDK/dependency pins, DMA64KiB/TLS records/framebuffer/clocks прежние.
-Конкретный target allocator не изолирован; не переносить host pool на ESP32.
-TV4_OTA_MEMORY_DIAGNOSTICS default off; SDK monitor start allocates/asserts и
-не отвергает nested start: один serialized owner/Kconfig/source/ELF guards.
+Следующий измеримый P1 результат — реальная TLS/crypto/installer нагрузка
+в том же worker8192 с existing HTTPS/crypto, затем reviewed local owner
+key/SemVer/time/resource settings и signed inactive-slot install/confirmation/
+rollback. Не подставлять test keys или guessed floors ради PASS; установка
+без настройки закрыта. Не заменять измерения новой host abstraction/library.
 
-Следующий измеримый P1 результат — повторяемость и configured-like8192/TLS/
-installer resource qualification с существующим HTTPS/crypto. Не подменять
-нагрузочный замер арифметикой, новыми host abstractions или test keys в firmware.
-Local owner key/SemVer/time/resource context отсутствуют по решению владельца;
-не угадывать значения или floors. Factory self-test не OTA-slot confirmation.
+PR #67 software режим завершён: flag default off, normal/trace-control3072 и
+provisioned8192 неизменны, один serialized SDK monitor owner. Семь startup IDs,
+UI_READY до optional services, touch-release gate, deadline до board init,
+DMA64KiB/TLS16384/4096/framebuffer/PSRAM/PCLK и dependency pins сохранены.
 
-Новые UART/SWD/reset/Flash — только по новому exact-image разрешению.
-Не повторять migration и не писать ordinary rev12 поверх действующей A/B-карты.
-Нет eFuse/option bytes/OTP/CAN/motion или самостоятельных merge/release.
-
-Текущий отдельный software PR готовит opt-in OTA-worker8192 без provisioning,
-см. docs/plans/P1_OTA_WORKER_STACK_BENCH.md. Owner confirmations/уточнения
-PR #66 не дублировать; фактический main и merge-state сверять через Git.
-Не менять default3072/provisioned8192 или открывать OTA authority ради замера.
-Все новые аппаратные действия по-прежнему требуют отдельного разрешения.
+Fresh snapshot SHA-256 ce6af4e88d755254f65ca2cf952d17ad9892a8ec7f487b0ed4391eccc3355e5a
+снова считан с платы; raw UART/dumps/NVS/пароли приватны. Нет разрешения на
+новые UART/SWD/reset/Flash или повтор использованного пакета. Не повторять
+migration и ordinary rev12 flash поверх A/B. Нет новых eFuse/option bytes/
+OTP/CAN/motion/keys/releases или самостоятельного merge.
 
 ## Исторические контракты слитых этапов
 

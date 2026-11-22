@@ -1,13 +1,26 @@
 # OTA TV4-CNC — проект архитектуры
 
-## Текущее состояние после замера b5f4b38
+## Текущее состояние после стенда worker8192
 
-[Аппаратный результат](evidence/hardware/2026-11-22-esp32-startup-order/README.md) подтверждает новый temporal order и single-run
-BOOT local20715/steady largest12288/worker1664из3072. Сумма minima не floor;
-configured8192/TLS/install/repeatability/soak и key/context пока открыты.
-Вернулся fecc05d/factory/прежняя A/B-карта, сеанс закрыт. Подтверждение владельца
-после возврата: PASS. Нет новых writes/keys/eFuse или
-разрешений. Исторический минимум112 не единственный текущий memory evidence.
+База main `dfa9f28`, PR #1–67 слиты. [Стенд3072/8192](evidence/hardware/2026-11-22-esp32-worker-stack/README.md)
+завершён22ноября за928.998s по отдельному разрешению: fresh16MiB/device MD5/
+SHA-256/two-NVMe, контроль3072 и три reset-запуска8192, три app/factory writes,
+пять UART captures и возврат всего factory2MiB fecc05d/verify PASS.
+Владелец подтвердил HMI/касания/Wi-Fi/OTA SETUP временного8192 и возвращённого
+fecc05d. На ESP32 fecc05d/factory/tv4-16m-ab-v1; F407 ee7d179 не открывался.
+Полный16MiB restore не понадобился; сеанс и разрешение закрыты.
+
+Worker8192 watermark6608–6784bytes, BOOT local15767–15863; periodic internal
+free14291–16863/largest7680 против control21795–21799/largest12288 после IP event.
+Первый8192 включал UI-проверку: нагрузка различалась. Это unprovisioned reset
+boot evidence, не configured TLS/install/production floor или cold-power/soak.
+Ключ/context не заданы, CHECK/INSTALL закрыты. FPS/latency/slot confirm/rollback/
+power-loss/full recovery не приняты. Новых hardware разрешений нет.
+
+Аппаратная аллокация8192/три reset boots не проверяют configured TLS/crypto/
+installer peak, signature authority, OTA-slot confirmation/rollback или Flash
+writes при работающем RGB. Existing HTTPS/crypto/SDK installer сохраняются;
+ключ/context/floors не назначены. [Следующий этап](NEXT_STAGE.md).
 
 ## История интеграции P1 после первой USB-миграции
 

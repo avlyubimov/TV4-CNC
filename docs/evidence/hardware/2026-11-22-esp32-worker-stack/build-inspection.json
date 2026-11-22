@@ -1,0 +1,124 @@
+{
+  "source_commit": "dfa9f281e9fe686d31e956a9bd05c8354ba81363",
+  "source_tree": "6ab1079b3a20262ef5bd5efb02ba170a62ffb667",
+  "source_worktree_clean": true,
+  "device_access": false,
+  "sdk": "6.1.1",
+  "profiles": {
+    "control": {
+      "profile": "rev12-ota",
+      "sdk": "6.1.1",
+      "memory_diagnostics": true,
+      "worker_stack_bench": false,
+      "worker_stack_bytes_requested": 3072,
+      "worker_stack_runtime_qualified": false,
+      "service_compiler_frames": {
+        "publish": 32,
+        "now_ms": 32,
+        "cancelled": 32,
+        "commit": 32,
+        "configured": 32,
+        "worker_stack": 32,
+        "write_chunk": 32,
+        "fetch": 48,
+        "tv4_ota_boot_observe": 32,
+        "tv4_ota_service_start": 64,
+        "tv4_ota_service_health": 32,
+        "tv4_ota_service_snapshot": 32,
+        "operation": 432,
+        "worker": 80,
+        "tv4_ota_service_request": 48
+      },
+      "module_writable_bytes": 432,
+      "module_writable_ceiling": 512,
+      "compiler_frames": {
+        "transition": 32,
+        "report": 112,
+        "tv4_ota_memory_scope_revision": 32,
+        "tv4_ota_memory_scope_since": 32,
+        "tv4_ota_memory_capture": 64,
+        "tv4_ota_memory_startup": 80,
+        "tv4_ota_memory_window_begin": 32,
+        "tv4_ota_memory_window_end": 32,
+        "tv4_ota_memory_report_window": 48,
+        "tv4_ota_memory_report_startup": 48
+      },
+      "compiler_frame_ceiling": 192,
+      "sdk_monitor_linked": [
+        "heap_caps_monitor_local_minimum_free_size_start",
+        "heap_caps_monitor_local_minimum_free_size_stop"
+      ],
+      "source_monitor_owners": [
+        "firmware/esp32-hmi/ota/memory_diagnostics.c",
+        "firmware/esp32-hmi/ota/utc_tls_bench.c"
+      ],
+      "app_bytes": 1600576,
+      "device_access": false,
+      "runtime_stack_peak_coverage": false,
+      "hardware_performance": "not measured"
+    },
+    "worker8192": {
+      "profile": "rev12-ota",
+      "sdk": "6.1.1",
+      "memory_diagnostics": true,
+      "worker_stack_bench": true,
+      "worker_stack_bytes_requested": 8192,
+      "worker_stack_runtime_qualified": false,
+      "service_compiler_frames": {
+        "publish": 32,
+        "now_ms": 32,
+        "cancelled": 32,
+        "commit": 32,
+        "configured": 32,
+        "worker_stack": 32,
+        "write_chunk": 32,
+        "fetch": 48,
+        "tv4_ota_boot_observe": 32,
+        "tv4_ota_service_start": 64,
+        "tv4_ota_service_health": 32,
+        "tv4_ota_service_snapshot": 32,
+        "operation": 432,
+        "worker": 80,
+        "tv4_ota_service_request": 48
+      },
+      "module_writable_bytes": 432,
+      "module_writable_ceiling": 512,
+      "compiler_frames": {
+        "transition": 32,
+        "report": 112,
+        "tv4_ota_memory_scope_revision": 32,
+        "tv4_ota_memory_scope_since": 32,
+        "tv4_ota_memory_capture": 64,
+        "tv4_ota_memory_startup": 80,
+        "tv4_ota_memory_window_begin": 32,
+        "tv4_ota_memory_window_end": 32,
+        "tv4_ota_memory_report_window": 48,
+        "tv4_ota_memory_report_startup": 48
+      },
+      "compiler_frame_ceiling": 192,
+      "sdk_monitor_linked": [
+        "heap_caps_monitor_local_minimum_free_size_start",
+        "heap_caps_monitor_local_minimum_free_size_stop"
+      ],
+      "source_monitor_owners": [
+        "firmware/esp32-hmi/ota/memory_diagnostics.c",
+        "firmware/esp32-hmi/ota/utc_tls_bench.c"
+      ],
+      "app_bytes": 1600624,
+      "device_access": false,
+      "runtime_stack_peak_coverage": false,
+      "hardware_performance": "not measured"
+    }
+  },
+  "sdkconfig_delta": {
+    "TV4_OTA_WORKER_STACK_BENCH": [
+      false,
+      true
+    ]
+  },
+  "partitions_identical_to_installed_layout": true,
+  "dependency_locks": {
+    "firmware/esp32-hmi/locks/idf-5.3.2.lock": "bdabdb06b5b4572369ca86e5cfc446ab6c270c56dab0500a304dcf7e112c94d0",
+    "firmware/esp32-hmi/locks/idf-6.1.1.lock": "d09551b18bfceae3a3f4c5c50583d81907bc7f2e47e3629182cbf1d1914a10b1"
+  }
+}

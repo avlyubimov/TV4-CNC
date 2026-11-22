@@ -1,5 +1,24 @@
 # Аппаратный статус TV4-CNC
 
+## 22 ноября,20:37: контроль3072/worker8192 и возврат fecc05d
+
+База main `dfa9f28`, PR #1–67 слиты. [Стенд3072/8192](evidence/hardware/2026-11-22-esp32-worker-stack/README.md)
+завершён22ноября за928.998s по отдельному разрешению: fresh16MiB/device MD5/
+SHA-256/two-NVMe, контроль3072 и три reset-запуска8192, три app/factory writes,
+пять UART captures и возврат всего factory2MiB fecc05d/verify PASS.
+Владелец подтвердил HMI/касания/Wi-Fi/OTA SETUP временного8192 и возвращённого
+fecc05d. На ESP32 fecc05d/factory/tv4-16m-ab-v1; F407 ee7d179 не открывался.
+Полный16MiB restore не понадобился; сеанс и разрешение закрыты.
+
+Worker8192 watermark6608–6784bytes, BOOT local15767–15863; periodic internal
+free14291–16863/largest7680 против control21795–21799/largest12288 после IP event.
+Первый8192 включал UI-проверку: нагрузка различалась. Это unprovisioned reset
+boot evidence, не configured TLS/install/production floor или cold-power/soak.
+Ключ/context не заданы, CHECK/INSTALL закрыты. FPS/latency/slot confirm/rollback/
+power-loss/full recovery не приняты. Новых hardware разрешений нет.
+
+Ниже сохранены результаты предыдущих завершённых сеансов.
+
 ## 22 ноября, 18:21: замер нового старта и возврат fecc05d
 
 База mainb5f4b38, PR #1–64 слиты. [Стенд нового порядка старта](evidence/hardware/2026-11-22-esp32-startup-order/README.md) завершён

@@ -3,20 +3,20 @@
 ## Проверенное состояние, 22 ноября2026
 
 STM32F407 ee7d179 прошёл [базовый HSI/no-motion стенд](docs/evidence/hardware/2026-11-22-f407-ee7d179-bench/README.md).
-База mainb5f4b38, PR #1–64 слиты. [Стенд нового порядка старта](docs/evidence/hardware/2026-11-22-esp32-startup-order/README.md) завершён
-по отдельному разрешению за609.074s: fresh16MiB/device MD5/SHA-256/two-NVMe,
-app-only diagnostic b5f4b38/verify/capture90.173s, factory2MiB fecc05d return/
-verify/capture30.048s PASS. Владелец подтвердил экран/касания/Wi-Fi/OTA SETUP на b5f4b38 и после возврата fecc05d.
-На ESP32 fecc05d/factory/tv4-16m-ab-v1, F407 ee7d179 не открывался.
-Полный16MiB restore не понадобился; разрешение использовано, новых операций нет.
+База main `dfa9f28`, PR #1–67 слиты. [Стенд3072/8192](docs/evidence/hardware/2026-11-22-esp32-worker-stack/README.md)
+завершён22ноября за928.998s по отдельному разрешению: fresh16MiB/device MD5/
+SHA-256/two-NVMe, контроль3072 и три reset-запуска8192, три app/factory writes,
+пять UART captures и возврат всего factory2MiB fecc05d/verify PASS.
+Владелец подтвердил HMI/касания/Wi-Fi/OTA SETUP временного8192 и возвращённого
+fecc05d. На ESP32 fecc05d/factory/tv4-16m-ab-v1; F407 ee7d179 не открывался.
+Полный16MiB restore не понадобился; сеанс и разрешение закрыты.
 
-BOOT local minimum20715 против1887 в fc90200, history7796 после stop;
-periodic free21575..21751/largest12288, PSRAM6090108, OTA-worker1664из3072.
-Это один instrumented run, per-heap minima не simultaneous free/OOM/floor.
-Largest вырос, steady free немного меньше. Тот же returned fecc05d дал history6956
-вместо прежнего112: повторяемость и нагрузка ещё требуют проверки.
-Configured8192/TLS/install/key/context/floors остаются открытыми, CHECK/INSTALL
-без настройки закрыты. FPS/latency/soak/slot confirm/rollback/power-loss не приняты.
+Worker8192 watermark6608–6784bytes, BOOT local15767–15863; periodic internal
+free14291–16863/largest7680 против control21795–21799/largest12288 после IP event.
+Первый8192 включал UI-проверку: нагрузка различалась. Это unprovisioned reset
+boot evidence, не configured TLS/install/production floor или cold-power/soak.
+Ключ/context не заданы, CHECK/INSTALL закрыты. FPS/latency/slot confirm/rollback/
+power-loss/full recovery не приняты. Новых hardware разрешений нет.
 
 [Аппаратный статус](docs/HARDWARE_STATUS.md), [следующий этап](docs/NEXT_STAGE.md),
 [backup status](docs/BACKUP_STATUS.md). Новых UART/SWD/reset/Flash разрешений нет;

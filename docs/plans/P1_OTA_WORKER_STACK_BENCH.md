@@ -28,3 +28,9 @@ OTA-worker со стеком8192 вместо unprovisioned3072, без owner ke
 Программные критерии выполнены: [evidence](../evidence/build/esp32-ota-worker-stack-bench/README.md).
 Локальные14/14 clean SDK builds и host/sanitizers108/108 PASS; аппаратных
 действий/merge/release нет. Аппаратная квалификация остаётся следующим этапом.
+
+Аппаратное продолжение после owner merge PR #67 выполнено на main dfa9f28:
+[контроль3072/три boots8192/fresh snapshot/factory return](../evidence/hardware/2026-11-22-esp32-worker-stack/README.md)
+PASS за928.998s, owner temporary/returned UI PASS. Испытание unprovisioned,
+без TLS/install/floors; все аппаратные разрешения закрыты. Этот report PR
+обновляет только документацию и numeric evidence, исполняемый код не меняет.

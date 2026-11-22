@@ -1,10 +1,25 @@
 # ESP32: OTA-worker8192 без ключа
 
-Этот software режим готовит реальный ELF/BIN для следующего ресурсного стенда.
-На ESP32 остаётся fecc05d/factory/tv4-16m-ab-v1, на F407 ee7d179. Последний
-b5f4b38 сеанс закрыт; его worker3072/BOOT20715/connected largest12288 не
-квалифицируют worker8192, TLS/installer или production floors. Подтверждения
-владельца — отдельный [PR #66](https://github.com/avlyubimov/TV4-CNC/pull/66).
+## Выполненный аппаратный стенд
+
+База main `dfa9f28`, PR #1–67 слиты. [Стенд3072/8192](evidence/hardware/2026-11-22-esp32-worker-stack/README.md)
+завершён22ноября за928.998s по отдельному разрешению: fresh16MiB/device MD5/
+SHA-256/two-NVMe, контроль3072 и три reset-запуска8192, три app/factory writes,
+пять UART captures и возврат всего factory2MiB fecc05d/verify PASS.
+Владелец подтвердил HMI/касания/Wi-Fi/OTA SETUP временного8192 и возвращённого
+fecc05d. На ESP32 fecc05d/factory/tv4-16m-ab-v1; F407 ee7d179 не открывался.
+Полный16MiB restore не понадобился; сеанс и разрешение закрыты.
+
+Worker8192 watermark6608–6784bytes, BOOT local15767–15863; periodic internal
+free14291–16863/largest7680 против control21795–21799/largest12288 после IP event.
+Первый8192 включал UI-проверку: нагрузка различалась. Это unprovisioned reset
+boot evidence, не configured TLS/install/production floor или cold-power/soak.
+Ключ/context не заданы, CHECK/INSTALL закрыты. FPS/latency/slot confirm/rollback/
+power-loss/full recovery не приняты. Новых hardware разрешений нет.
+
+Software evidence ниже фиксирует подготовку до hardware; его static
+`worker_stack_runtime_qualified=false` не заменяется общим production PASS.
+Реальная scope-limited приёмка описана в отдельном hardware report.
 
 ## Выбор и границы
 
@@ -72,8 +87,8 @@ Docker script и Actions SDK containers явно задают `nofile=4096:4096`
 daemon default; это настройка среды компиляции, не изменение памяти firmware.
 [Формат Docker ulimit](https://docs.docker.com/reference/cli/docker/container/run/#set-ulimits-in-container---ulimit).
 
-Следующий exact-image стенд требует отдельного разрешения: реальная аллокация,
-повторяемость/стеки/UI/Wi-Fi/SETUP и возврат текущего factory. Не вычитать5120
+Выполнены реальные аллокация/три reset boots/стеки/UI/Wi-Fi/SETUP и возврат
+factory. Следующий exact-image стенд снова требует отдельного разрешения. Не вычитать5120
 из старых minimum вместо замера и не открывать TLS/install без reviewed local
 trust/settings. Этот PR не выполняет UART/SWD/reset/Flash/eFuse/CAN/motion.
 

@@ -1,0 +1,8 @@
+{
+  "source": "fresh session snapshot, factory range only; no NVS decoding",
+  "both_snapshot_copies_factory_equal": true,
+  "factory": {
+    "bytes": 2097152,
+    "sha256": "081d99e707f578824cc9058d1d18c4f87700b2e60a09afa907e98a9c33bffd1a"
+  }
+}

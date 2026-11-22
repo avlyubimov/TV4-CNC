@@ -1,5 +1,19 @@
 # Резервные копии ESP32 — заводская и перед миграцией OTA
 
+## Новый fecc05d checkpoint перед worker8192,22 ноября,20:22–20:37
+
+Свежие16777216bytes снова считаны с устройства, device MD5/SHA-256 и две
+новые независимые NVMe-копии0600/папки0700/fsync PASS. SHA-256 снова
+`ce6af4e88d755254f65ca2cf952d17ad9892a8ec7f487b0ed4391eccc3355e5a`:
+совпадение с прошлым checkpoint не означает повторное использование старого файла.
+Factory2MiB возвращён из этого нового snapshot, verify/MD5 вне factory до boot
+и owner HMI/касания/saved Wi-Fi/SETUP PASS; полный16MiB restore не потребовался.
+Factory SHA-256 `081d99e707f578824cc9058d1d18c4f87700b2e60a09afa907e98a9c33bffd1a`.
+NVS не декодировалась/после всех boot побайтно не сравнивалась. Это pre-test
+checkpoint, не новый полный readback после возврата. Старые копии сохранены.
+[Отчёт](evidence/hardware/2026-11-22-esp32-worker-stack/README.md). Сеанс928.998s
+и разрешение закрыты; ниже история прежних snapshots.
+
 ## Fresh fecc05d checkpoint перед b5f4b38, 22 ноября, 18:11–18:21
 
 16777216bytes, device MD5 и SHA-256 двух одинаковых private копий на разных

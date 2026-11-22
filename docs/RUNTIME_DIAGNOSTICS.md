@@ -1,6 +1,17 @@
 # Диагностика HMI: instrumentation и границы измерений
 
-## P1: реальные startup/BOOT samples fc90200
+## P1: контроль3072 и три reset-запуска8192
+
+[Стенд dfa9f28](evidence/hardware/2026-11-22-esp32-worker-stack/README.md) завершён:
+unprovisioned worker8192 действительно создан, watermark6608–6784bytes,
+BOOT local15767–15863, periodic largest7680. Контроль3072 дал watermark1568,
+BOOT local20815/largest12288 в periodic. В первой8192 пробе владелец проверял UI,
+поэтому runtime нагрузка различалась. Scope0/IP-event samples и per-heap history
+не являются production floor, нагрузкой BOOT Wi-Fi или full configured peak.
+Весь factory2MiB fecc05d возвращён/verify/owner HMI PASS, разрешение закрыто.
+Ни TLS/crypto/install, ни FPS/latency/soak этим не проверены. Ниже история.
+
+## История: реальные startup/BOOT samples fc90200
 
 [Стенд22ноября](evidence/hardware/2026-11-22-esp32-ota-memory/README.md) завершён, fecc05d/factory возвращён и owner HMI PASS.
 7startup slots/mask127, BOOT start0/stop0,16diag+4return samples, explicit
