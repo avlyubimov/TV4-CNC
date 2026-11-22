@@ -2,25 +2,25 @@
 
 [Проверенная software сборка и cold-render evidence](evidence/build/esp32-startup-memory-order/README.md).
 
-## Текущий результат P1 (база main973a9ba, PR #1–63 слиты)
+## Текущий результат P1: mainb5f4b38, PR #1–64 слиты
 
-Existing signed HTTPS/session соединены с inactive SDK installer/UI approval/
-boot self-test/rollback и USB migration. На ESP32 после диагностического
-[стенда fc90200](evidence/hardware/2026-11-22-esp32-ota-memory/README.md) возвращён fecc05d/factory/tv4-16m-ab-v1, owner HMI/
-touch/saved Wi-Fi/SETUP PASS; F407 ee7d179 не открывался. Fresh16MiB snapshot
-и две NVMe-копии проверены; factory2MiB restore PASS, full recovery не испытан.
+База mainb5f4b38, PR #1–64 слиты. [Стенд нового порядка старта](evidence/hardware/2026-11-22-esp32-startup-order/README.md) завершён
+по отдельному разрешению за609.074s: fresh16MiB/device MD5/SHA-256/two-NVMe,
+app-only diagnostic b5f4b38/verify/capture90.173s, factory2MiB fecc05d return/
+verify/capture30.048s PASS. Подтверждение владельца экрана/касаний/saved Wi-Fi/OTA SETUP после возврата ожидается; UART-проверки PASS.
+На ESP32 fecc05d/factory/tv4-16m-ab-v1, F407 ee7d179 не открывался.
+Полный16MiB restore не понадобился; разрешение использовано, новых операций нет.
 
-[Фазная firmware](ESP32_OTA_MEMORY_PHASES.md), слитый PR #62, дала реальные
-7startup points/BOOT window/16samples: history202308 на APP_ENTRY → local1887
-к UI_READY → history112 после stop, OTA-worker остаток1488из3072bytes.
-Это не approved budget configured8192/TLS/install или simultaneous OOM proof.
-Текущий software результат — первый dashboard refresh/UI_READY до export/
-Wi-Fi start, actual app_main/real LVGL cold-render/failure checks и оба SDK.
-Этот source-level порядок ещё не проверен на устройстве; причины minimum1887,
-configured budget и key/context/floors не назначаются. CHECK/INSTALL остаются закрыты без настройки.
-Оба UART capture завершены, сеанс608.700s закрыт, новых device actions нет.
-[План software интеграции](plans/P1_STARTUP_MEMORY_ORDER.md), [дальнейшие gates](NEXT_STAGE.md).
-Ниже — история слитых этапов, не текущая очередь абстракций.
+BOOT local minimum20715 против1887 в fc90200, history7796 после stop;
+periodic free21575..21751/largest12288, PSRAM6090108, OTA-worker1664из3072.
+Это один instrumented run, per-heap minima не simultaneous free/OOM/floor.
+Largest вырос, steady free немного меньше. Тот же returned fecc05d дал history6956
+вместо прежнего112: повторяемость и нагрузка ещё требуют проверки.
+Configured8192/TLS/install/key/context/floors остаются открытыми, CHECK/INSTALL
+без настройки закрыты. FPS/latency/soak/slot confirm/rollback/power-loss не приняты.
+
+[PR #64 software evidence](evidence/build/esp32-startup-memory-order/README.md)
+и [следующий функциональный шаг](NEXT_STAGE.md). Ниже история слитых этапов.
 
 ## История P0 — первая прошиваемая сборка F407
 

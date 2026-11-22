@@ -142,55 +142,45 @@ PR и Actions; не копировать код уже открытого PR. Д
    теги, релизы, секреты CI и публикации под видом обычного push.
 6. Обновлять актуальный статус; исторические отчёты сохранять с явной пометкой.
 
-## Текущее задание: P1 после фазного стенда ESP32
+## Текущее задание: P1 после аппаратного замера порядка старта
 
-База mainfc9020087e426c5c06129654f8a242612e184079, PR #1–62 слиты.
-Отдельно разрешённый стенд fc90200/rev12-ota/SDK6.1.1/diagnostics1 завершён
-22ноября за608.700s: fresh16MiB snapshot/device MD5/SHA256/two-NVMe PASS,
-app-only запись/verify/MD5 сохранности вне factory, capture90.103s,
-возврат factory2MiB fecc05d из свежего снимка/verify/capture30.051s PASS.
-Owner подтвердил экран/касания/saved Wi-Fi/OTA SETUP. На ESP32 оставлен
-fecc05d factory с tv4-16m-ab-v1; F407 ee7d179 не открывался.
-Factory-partition restore проверен; полный16MiB recovery не выполнялся.
-Vendor backup и legacy8f0d899/two-NVMe сохранены, автоматически не возвращать.
+База mainb5f4b38, PR #1–64 слиты. [Стенд нового порядка старта](docs/evidence/hardware/2026-11-22-esp32-startup-order/README.md) завершён
+по отдельному разрешению за609.074s: fresh16MiB/device MD5/SHA-256/two-NVMe,
+app-only diagnostic b5f4b38/verify/capture90.173s, factory2MiB fecc05d return/
+verify/capture30.048s PASS. Подтверждение владельца экрана/касаний/saved Wi-Fi/OTA SETUP после возврата ожидается; UART-проверки PASS.
+На ESP32 fecc05d/factory/tv4-16m-ab-v1, F407 ee7d179 не открывался.
+Полный16MiB restore не понадобился; разрешение использовано, новых операций нет.
 
-Читайте docs/evidence/hardware/2026-11-22-esp32-ota-memory/README.md,
-docs/BACKUP_STATUS.md, docs/NEXT_STAGE.md и docs/ESP32_OTA_MEMORY_PHASES.md.
-Fresh fecc05d snapshot SHA256:
-d84fe13900806d9646e1e2edb8df0c4fe897aa6de85f14c28bfd0624f101ff46.
-Дампы/NVS/пароли/сырые UART logs приватны; public только allowlist.
+BOOT local minimum20715 против1887 в fc90200, history7796 после stop;
+periodic free21575..21751/largest12288, PSRAM6090108, OTA-worker1664из3072.
+Это один instrumented run, per-heap minima не simultaneous free/OOM/floor.
+Largest вырос, steady free немного меньше. Тот же returned fecc05d дал history6956
+вместо прежнего112: повторяемость и нагрузка ещё требуют проверки.
+Configured8192/TLS/install/key/context/floors остаются открытыми, CHECK/INSTALL
+без настройки закрыты. FPS/latency/soak/slot confirm/rollback/power-loss не приняты.
 
-Измерено7startup points/одно BOOT window/16diag+4return periodic samples.
-APP_ENTRY history202308, BOOT local minimum1887 к UI_READY после dashboard,
-после SDK stop history112. Гипотеза112 до HMI не подтверждена этим образом.
-SDK по каждому heap объединяет saved/local minimum, затем суммирует: это не
-simultaneous global free/OOM proof и не production floor. Конкретные transient
-allocations между DASHBOARD_READY и UI_READY требуют локализации.
-Steady internal free22279..22343/largest7680, PSRAM6090124; OTA-worker
-watermark1488bytes из3072. Configured worker8192 и TLS/install не измерены.
-Render/event0 не FPS/latency benchmark; stack sampler и late emitter различать.
-TV4_OTA_MEMORY_DIAGNOSTICS default off. SDK start выделяет/asserts bookkeeping
-и не отвергает nested start: один serialized owner, Kconfig/source/ELF guards
-сохраняются. Не начинать monitor из callbacks/per-chunk/соседних workers.
+Читайте docs/evidence/hardware/2026-11-22-esp32-startup-order/README.md, docs/BACKUP_STATUS.md, docs/NEXT_STAGE.md и
+ docs/ESP32_OTA_MEMORY_PHASES.md. Fresh snapshot SHA-256:
+ce6af4e88d755254f65ca2cf952d17ad9892a8ec7f487b0ed4391eccc3355e5a.
+Дампы/NVS/пароли/raw UART приватны; public — числовой allowlist.
 
-Следующий измеримый software результат P1 — локализовать startup internal RAM
-transient и устранить подтверждённую причину без ухудшения HMI/GT911/Wi-Fi.
-Дать настоящий ELF/BIN и проверки, без новой цепочки абстракций. Не урезать
-DMA reserve64KiB/TLS records/framebuffer и не назначать production floors.
-Key/SemVer/time/resource context по решению владельца пока отсутствуют:
-CHECK/INSTALL закрыты, test keys только host. Factory self-test явно PASS;
-OTA-slot PENDING_VERIFY/confirm/rollback/power loss этим не проверялись.
+Слитый PR #64 завершил первый dashboard frame/UI_READY до export/Wi-Fi start.
+Temporal order0,1,2,3,5,6,4 подтверждён; logger выводит ID-order0..6.
+Семь стабильных ID, OTA deadline до board init и touch-release gate сохранены.
+SDK/dependency pins, DMA64KiB/TLS records/framebuffer/clocks прежние.
+Конкретный target allocator не изолирован; не переносить host pool на ESP32.
+TV4_OTA_MEMORY_DIAGNOSTICS default off; SDK monitor start allocates/asserts и
+не отвергает nested start: один serialized owner/Kconfig/source/ELF guards.
 
-Отчётный docs-only PR #63 завершён и слит владельцем в main973a9ba.
-По продолжению владельца следующий отдельный software PR меняет порядок
-старта HMI/services и даёт проверенный ELF/BIN, см.
-docs/plans/P1_STARTUP_MEMORY_ORDER.md. Hardware improvement до нового стенда
-не утверждать. Прошлый аппаратный сеанс закрыт; новые UART/SWD/reset/Flash
-требуют нового exact-image разрешения.
-Не повторять USB migration или ordinary rev12 flash поверх действующей A/B карты.
-SDK/dependency pins, eFuse/option bytes/OTP/CAN/motion и самостоятельные
-merge/release не менять. Полные RAM/stack/FPS/latency/soak и P1–P5 не объявлять
-принятыми; дальнейшая аппаратная оптимизация требует отдельного стенда.
+Следующий измеримый P1 результат — повторяемость и configured-like8192/TLS/
+installer resource qualification с существующим HTTPS/crypto. Не подменять
+нагрузочный замер арифметикой, новыми host abstractions или test keys в firmware.
+Local owner key/SemVer/time/resource context отсутствуют по решению владельца;
+не угадывать значения или floors. Factory self-test не OTA-slot confirmation.
+
+Новые UART/SWD/reset/Flash — только по новому exact-image разрешению.
+Не повторять migration и не писать ordinary rev12 поверх действующей A/B-карты.
+Нет eFuse/option bytes/OTP/CAN/motion или самостоятельных merge/release.
 
 ## Исторические контракты слитых этапов
 

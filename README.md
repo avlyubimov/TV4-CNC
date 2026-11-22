@@ -1,25 +1,26 @@
 # TV4 CNC
 
-## Проверенное состояние, 22 ноября 2026
+## Проверенное состояние, 22 ноября2026
 
 STM32F407 ee7d179 прошёл [базовый HSI/no-motion стенд](docs/evidence/hardware/2026-11-22-f407-ee7d179-bench/README.md).
-ESP32 после [фазного BOOT стенда fc90200](docs/evidence/hardware/2026-11-22-esp32-ota-memory/README.md) возвращён на
-fecc05d/rev12-ota/factory, та же16MiB A/B-карта. Fresh16MiB snapshot и две
-NVMe-копии, app-only verify/preservation, factory2MiB return/verify и owner
-экран/касания/saved Wi-Fi/OTA SETUP PASS. Полный16MiB restore не испытывался.
+База mainb5f4b38, PR #1–64 слиты. [Стенд нового порядка старта](docs/evidence/hardware/2026-11-22-esp32-startup-order/README.md) завершён
+по отдельному разрешению за609.074s: fresh16MiB/device MD5/SHA-256/two-NVMe,
+app-only diagnostic b5f4b38/verify/capture90.173s, factory2MiB fecc05d return/
+verify/capture30.048s PASS. Подтверждение владельца экрана/касаний/saved Wi-Fi/OTA SETUP после возврата ожидается; UART-проверки PASS.
+На ESP32 fecc05d/factory/tv4-16m-ab-v1, F407 ee7d179 не открывался.
+Полный16MiB restore не понадобился; разрешение использовано, новых операций нет.
 
-Измерены7startup points и OTA-worker: local BOOT minimum1887bytes,
-steady internal22279..22343/largest7680, stack1488из3072bytes.
-Historical112 после stop — per-heap сумма, не simultaneous free/OOM/floor.
-Следующий P1 результат — startup RAM transient review и configured budget;
-ключ/context отсутствуют, CHECK/INSTALL закрыты. Configured install/slot
-confirm/rollback/power-loss и FPS/latency/soak ещё не приняты. CAN/приводы не
-подключались, F407 в этом сеансе не открывался.
+BOOT local minimum20715 против1887 в fc90200, history7796 после stop;
+periodic free21575..21751/largest12288, PSRAM6090108, OTA-worker1664из3072.
+Это один instrumented run, per-heap minima не simultaneous free/OOM/floor.
+Largest вырос, steady free немного меньше. Тот же returned fecc05d дал history6956
+вместо прежнего112: повторяемость и нагрузка ещё требуют проверки.
+Configured8192/TLS/install/key/context/floors остаются открытыми, CHECK/INSTALL
+без настройки закрыты. FPS/latency/soak/slot confirm/rollback/power-loss не приняты.
 
-[Аппаратный статус](docs/HARDWARE_STATUS.md), [следующий шаг](docs/NEXT_STAGE.md),
-[резервные копии](docs/BACKUP_STATUS.md). Сеанс608.700s закрыт, новые Flash/
-reset/UART/SWD требуют отдельного разрешения. Ordinary rev12 flash не является
-откатом действующей A/B-карты.
+[Аппаратный статус](docs/HARDWARE_STATUS.md), [следующий этап](docs/NEXT_STAGE.md),
+[backup status](docs/BACKUP_STATUS.md). Новых UART/SWD/reset/Flash разрешений нет;
+обычный rev12 flash не является откатом действующей A/B-карты.
 
 ## История программной подготовки
 

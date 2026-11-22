@@ -1,6 +1,15 @@
 # OTA TV4-CNC — проект архитектуры
 
-## Текущая интеграция P1 после первой USB-миграции
+## Текущее состояние после замера b5f4b38
+
+[Аппаратный результат](evidence/hardware/2026-11-22-esp32-startup-order/README.md) подтверждает новый temporal order и single-run
+BOOT local20715/steady largest12288/worker1664из3072. Сумма minima не floor;
+configured8192/TLS/install/repeatability/soak и key/context пока открыты.
+Вернулся fecc05d/factory/прежняя A/B-карта, сеанс закрыт. Подтверждение владельца
+после возврата: ожидается. Нет новых writes/keys/eFuse или
+разрешений. Исторический минимум112 не единственный текущий memory evidence.
+
+## История интеграции P1 после первой USB-миграции
 
 База отчёта main c41a3d2/PR #1–60. [ESP32 OTA installation](ESP32_OTA_INSTALLATION.md) добавляет
 explicit rev12-ota: существующие signature/HTTPS/session соединены с SDK inactive

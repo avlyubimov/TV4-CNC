@@ -1,5 +1,18 @@
 # Резервные копии ESP32 — заводская и перед миграцией OTA
 
+## Fresh fecc05d checkpoint перед b5f4b38, 22 ноября, 18:11–18:21
+
+16777216bytes, device MD5 и SHA-256 двух одинаковых private копий на разных
+физических NVMe PASS; files0600/folders0700/fsync. Snapshot SHA-256:
+`ce6af4e88d755254f65ca2cf952d17ad9892a8ec7f487b0ed4391eccc3355e5a`.
+Старые d84fe1…/legacy8f0d899/vendor08ede6… сохранены, не перезаписаны.
+Из свежего снимка возвращены все factory2MiB fecc05d с verify/MD5 preservation,
+reset/30.048s UART PASS. Factory SHA-256 `081d99e707f578824cc9058d1d18c4f87700b2e60a09afa907e98a9c33bffd1a`.
+Подтверждение владельца экрана/касаний/saved Wi-Fi/OTA SETUP после возврата ожидается; UART-проверки PASS.
+Full16MiB/vendor recovery не выполнялись; NVS после boot побайтно не сравнивалась.
+Checkpoint до диагностики, не full read после возврата. [Отчёт](evidence/hardware/2026-11-22-esp32-startup-order/README.md).
+Сеанс609.074s закрыт; новых device permissions нет. Разделы ниже — история.
+
 ## Снимок fecc05d перед фазным стендом, 22 ноября 2026
 
 Полный16777216bytes snapshot текущего fecc05d/tv4-16m-ab-v1 считан по отдельному

@@ -1,0 +1,175 @@
+{
+  "baseline_source": "fc9020087e426c5c06129654f8a242612e184079",
+  "new_source": "b5f4b381fd392877498b5df210b3bb85c551985b",
+  "old_chronology": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6
+  ],
+  "new_chronology": [
+    0,
+    1,
+    2,
+    3,
+    5,
+    6,
+    4
+  ],
+  "single_boot_each": true,
+  "simultaneous_global_minimum": false,
+  "production_floor_approved": false,
+  "configured_installer_load_tested": false,
+  "boot_end": {
+    "internal": {
+      "before": 22311,
+      "after": 22787
+    },
+    "minimum": {
+      "before": 1887,
+      "after": 20715
+    },
+    "largest": {
+      "before": 7680,
+      "after": 14336
+    },
+    "psram": {
+      "before": 6090096,
+      "after": 6090788
+    },
+    "sample_stack": {
+      "before": 2096,
+      "after": 1968
+    }
+  },
+  "history_after_stop": {
+    "before": 112,
+    "after": 7796
+  },
+  "periodic": {
+    "internal_free": {
+      "before": {
+        "min": 22279,
+        "max": 22343,
+        "last": 22315
+      },
+      "after": {
+        "min": 21575,
+        "max": 21751,
+        "last": 21739
+      }
+    },
+    "internal_min": {
+      "before": {
+        "min": 112,
+        "max": 112,
+        "last": 112
+      },
+      "after": {
+        "min": 7796,
+        "max": 7796,
+        "last": 7796
+      }
+    },
+    "internal_largest": {
+      "before": {
+        "min": 7680,
+        "max": 7680,
+        "last": 7680
+      },
+      "after": {
+        "min": 12288,
+        "max": 12288,
+        "last": 12288
+      }
+    },
+    "psram_free": {
+      "before": {
+        "min": 6090124,
+        "max": 6090124,
+        "last": 6090124
+      },
+      "after": {
+        "min": 6090108,
+        "max": 6090108,
+        "last": 6090108
+      }
+    },
+    "ota_stack": {
+      "before": {
+        "min": 1488,
+        "max": 1488,
+        "last": 1488
+      },
+      "after": {
+        "min": 1664,
+        "max": 1664,
+        "last": 1664
+      }
+    },
+    "owner_stack": {
+      "before": {
+        "min": 10580,
+        "max": 10580,
+        "last": 10580
+      },
+      "after": {
+        "min": 10516,
+        "max": 10516,
+        "last": 10516
+      }
+    },
+    "touch_stack": {
+      "before": {
+        "min": 2504,
+        "max": 2568,
+        "last": 2504
+      },
+      "after": {
+        "min": 2504,
+        "max": 2504,
+        "last": 2504
+      }
+    },
+    "wifi_stack": {
+      "before": {
+        "min": 1104,
+        "max": 1104,
+        "last": 1104
+      },
+      "after": {
+        "min": 1112,
+        "max": 1112,
+        "last": 1112
+      }
+    },
+    "export_stack": {
+      "before": {
+        "min": 1220,
+        "max": 1636,
+        "last": 1220
+      },
+      "after": {
+        "min": 1184,
+        "max": 1632,
+        "last": 1184
+      }
+    }
+  },
+  "same_fecc05d_return_history": {
+    "previous": {
+      "min": 112,
+      "max": 112,
+      "last": 112
+    },
+    "current": {
+      "min": 6956,
+      "max": 6956,
+      "last": 6956
+    },
+    "interpretation": "Even identical fecc05d had different history; one run cannot establish a guaranteed memory floor or isolate each allocation."
+  }
+}
