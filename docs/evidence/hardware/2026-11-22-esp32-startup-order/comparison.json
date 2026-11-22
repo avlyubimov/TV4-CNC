@@ -171,5 +171,62 @@
       "last": 6956
     },
     "interpretation": "Even identical fecc05d had different history; one run cannot establish a guaranteed memory floor or isolate each allocation."
-  }
+  },
+  "connected_periodic": {
+    "before": {
+      "samples": 15,
+      "first_uptime_ms": 11335,
+      "last_uptime_ms": 81405,
+      "metrics": {
+        "internal_free": {
+          "min": 22279,
+          "max": 22315,
+          "last": 22315
+        },
+        "internal_min": {
+          "min": 112,
+          "max": 112,
+          "last": 112
+        },
+        "internal_largest": {
+          "min": 7680,
+          "max": 7680,
+          "last": 7680
+        },
+        "ota_stack": {
+          "min": 1488,
+          "max": 1488,
+          "last": 1488
+        }
+      }
+    },
+    "after": {
+      "samples": 15,
+      "first_uptime_ms": 11389,
+      "last_uptime_ms": 81465,
+      "metrics": {
+        "internal_free": {
+          "min": 21575,
+          "max": 21739,
+          "last": 21739
+        },
+        "internal_min": {
+          "min": 7796,
+          "max": 7796,
+          "last": 7796
+        },
+        "internal_largest": {
+          "min": 12288,
+          "max": 12288,
+          "last": 12288
+        },
+        "ota_stack": {
+          "min": 1664,
+          "max": 1664,
+          "last": 1664
+        }
+      }
+    }
+  },
+  "boot_window_network_timing": "HMI health/PSRAM self-test closes BOOT without waiting for DHCP/IP; first new periodic sample had no IP event, later samples did."
 }

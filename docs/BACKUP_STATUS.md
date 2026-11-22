@@ -8,7 +8,7 @@
 Старые d84fe1…/legacy8f0d899/vendor08ede6… сохранены, не перезаписаны.
 Из свежего снимка возвращены все factory2MiB fecc05d с verify/MD5 preservation,
 reset/30.048s UART PASS. Factory SHA-256 `081d99e707f578824cc9058d1d18c4f87700b2e60a09afa907e98a9c33bffd1a`.
-Подтверждение владельца экрана/касаний/saved Wi-Fi/OTA SETUP после возврата ожидается; UART-проверки PASS.
+Владелец подтвердил экран/касания/Wi-Fi/OTA SETUP на b5f4b38 и после возврата fecc05d.
 Full16MiB/vendor recovery не выполнялись; NVS после boot побайтно не сравнивалась.
 Checkpoint до диагностики, не full read после возврата. [Отчёт](evidence/hardware/2026-11-22-esp32-startup-order/README.md).
 Сеанс609.074s закрыт; новых device permissions нет. Разделы ниже — история.

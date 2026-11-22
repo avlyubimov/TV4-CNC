@@ -378,7 +378,9 @@
   "provisioned_worker_stack_tested": false,
   "configured_tls_install_budget_measured": false,
   "owner_confirmation": {
-    "hmi_touch_saved_wifi_and_setup": null
+    "hmi_touch_saved_wifi_and_setup": true,
+    "after_return_app": "fecc05d",
+    "received_utc": "2026-11-22T13:36:02.239635+00:00"
   },
   "factory_self_test_explicit_pass": true,
   "ota_slot_confirmation_tested": false,
@@ -393,5 +395,40 @@
   "can_motion_access": false,
   "session_closed": true,
   "installed_left_running": "fecc05d-rev12-ota-factory",
-  "raw_uart_nvs_or_credentials_published": false
+  "raw_uart_nvs_or_credentials_published": false,
+  "boot_window_waits_for_network_ip": false,
+  "connected_periodic": {
+    "samples": 15,
+    "first_uptime_ms": 11389,
+    "last_uptime_ms": 81465,
+    "metrics": {
+      "internal_free": {
+        "min": 21575,
+        "max": 21739,
+        "last": 21739
+      },
+      "internal_min": {
+        "min": 7796,
+        "max": 7796,
+        "last": 7796
+      },
+      "internal_largest": {
+        "min": 12288,
+        "max": 12288,
+        "last": 12288
+      },
+      "ota_stack": {
+        "min": 1664,
+        "max": 1664,
+        "last": 1664
+      }
+    }
+  },
+  "diagnostic_owner_confirmation": {
+    "app": "b5f4b38",
+    "hmi_touch_saved_wifi_and_setup": true,
+    "version_page_checked_reported": true,
+    "received_utc": "2026-11-22T13:36:02.239635+00:00",
+    "observation_utc": "not specified by owner"
+  }
 }

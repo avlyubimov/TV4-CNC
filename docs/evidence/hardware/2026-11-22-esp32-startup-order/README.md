@@ -31,7 +31,7 @@ Raw UART/SDK logs, dump/NVS/credentials и идентификаторы устр
    app prefix `de55953fc9e3c4080cb277d734ca7d1f02c74880db38dac0f4b53830f587d021`.
    Capture30.048s подтвердил одну загрузку fecc05d,
    PSRAM/XiP/RGB/GT911/UI и4 periodic samples без ошибок, Wi-Fi IP event.
-6. Подтверждение владельца экрана/касаний/saved Wi-Fi/OTA SETUP после возврата ожидается; UART-проверки PASS.
+6. Владелец подтвердил экран/касания/Wi-Fi/OTA SETUP на b5f4b38 и после возврата fecc05d.
    На ESP32 оставлен fecc05d/factory/tv4-16m-ab-v1. Full16MiB recovery не
    понадобился и не испытывался; factory-partition return проверен.
 
@@ -101,6 +101,17 @@ history зависит от runtime/сети/расписания. SDK сумм�
 измеряет simultaneous global free. Нельзя объявлять20715 резервом под TLS.
 UI_READY почти совпал в двух запусках; Wi-Fi стартует позже по замыслу PR #64.
 Это не измерение полной boot/network latency, FPS, tearing или touch-to-display.
+
+BOOT window заканчивается по HMI health/PSRAM checks, не ждёт Wi-Fi/DHCP/IP.
+И в baseline, и в новом run первый periodic sample имел wifi_ip_events0;
+следующие —1. Факт выдачи IP известен из периодических counters, не точной
+привязки каждого transient allocation к DHCP.
+Поэтому BOOT minima не сравнивают одинаковую завершённую сетевую нагрузку.
+В connected-only subset: baseline15samples против новых15samples,
+новые uptime11389..81465ms, internal free
+21575..21739, largest12288,
+history7796, OTA stack1664. Largest выше baseline7680 и после наблюдаемого IP,
+но transient peak/производительность TLS/install этим не измерены.
 
 ## Программные проверки и оставшиеся аппаратные gates
 

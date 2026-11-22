@@ -7,7 +7,7 @@ Local minimum20715 (fc90200:1887), history7796, largest в BOOT14336/steady12288
 steady free21575..21751 и worker1664из3072. One-shot/per-heap, не новый floor.
 Сравнение не доказывает каждый allocator; тот же returned fecc05d дал history6956
 вместо112. Ключ/context отсутствуют, configured8192/TLS/install не измерены.
-Factory fecc05d возвращён/verify PASS, Подтверждение владельца экрана/касаний/saved Wi-Fi/OTA SETUP после возврата ожидается; UART-проверки PASS.
+Factory fecc05d возвращён/verify PASS, Владелец подтвердил экран/касания/Wi-Fi/OTA SETUP на b5f4b38 и после возврата fecc05d.
 Сеанс609.074s использован и закрыт; дальнейших UART/reset/Flash нет.
 Ниже сохранены software contract PR #64 и исторический report fc90200.
 

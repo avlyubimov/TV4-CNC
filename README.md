@@ -6,7 +6,7 @@ STM32F407 ee7d179 прошёл [базовый HSI/no-motion стенд](docs/ev
 База mainb5f4b38, PR #1–64 слиты. [Стенд нового порядка старта](docs/evidence/hardware/2026-11-22-esp32-startup-order/README.md) завершён
 по отдельному разрешению за609.074s: fresh16MiB/device MD5/SHA-256/two-NVMe,
 app-only diagnostic b5f4b38/verify/capture90.173s, factory2MiB fecc05d return/
-verify/capture30.048s PASS. Подтверждение владельца экрана/касаний/saved Wi-Fi/OTA SETUP после возврата ожидается; UART-проверки PASS.
+verify/capture30.048s PASS. Владелец подтвердил экран/касания/Wi-Fi/OTA SETUP на b5f4b38 и после возврата fecc05d.
 На ESP32 fecc05d/factory/tv4-16m-ab-v1, F407 ee7d179 не открывался.
 Полный16MiB restore не понадобился; разрешение использовано, новых операций нет.
 
