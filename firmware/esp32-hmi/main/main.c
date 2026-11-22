@@ -175,8 +175,11 @@ void app_main(void) {
         int64_t work_started=esp_timer_get_time();
 #if CONFIG_TV4_BOARD_REV12
         board_touch_t sample;
+        /* Copy first: the higher-priority producer may publish while this
+         * task is preempted. An earlier clock would underflow sample age. */
+        bool sampled=board_rev12_touch(&sample);
         uint32_t now=tick_ms();
-        if(board_rev12_touch(&sample) && sample.valid && (uint32_t)(now-sample.ms)<100) last_good_touch=now;
+        if(sampled && sample.valid && (uint32_t)(now-sample.ms)<100) last_good_touch=now;
         if((uint32_t)(now-last_good_touch)>=500) {
             dashboard_post_event(EV_TOUCH_FAULT); /* Keep fault active until valid data resumes; never auto-ack. */
             if(!touch_fault_logged) { ESP_LOGE(TAG,"Touch data invalid/stale; UI fault latched"); touch_fault_logged=true; }
@@ -215,7 +218,10 @@ void app_main(void) {
             }
 #if CONFIG_TV4_BOARD_REV12
             board_touch_t health;
-            if(board_rev12_touch(&health)) {r->touch_stack=health.stack_watermark;r->touch_errors=health.errors;r->touch_age_ms=report_now-health.ms;}
+            if(board_rev12_touch(&health)) {
+                r->touch_stack=health.stack_watermark;r->touch_errors=health.errors;
+                r->touch_age_ms=tick_ms()-health.ms; /* Clock after the copied snapshot, not before resource reads. */
+            }
 #endif
             last_resources=report_now;
         }

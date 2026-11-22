@@ -142,18 +142,28 @@ PR и Actions; не копировать код уже открытого PR. Д
    теги, релизы, секреты CI и публикации под видом обычного push.
 6. Обновлять актуальный статус; исторические отчёты сохранять с явной пометкой.
 
-## Текущее задание: P1 — UTC/HEAD в OTA-worker8192
+## Текущее задание: P1 — clock после touch snapshot
 
-База main `53b0715`, PR #68 слит владельцем. Читать
-docs/ESP32_OTA_WORKER_TLS_BENCH.md и docs/plans/P1_OTA_WORKER_TLS_BENCH.md.
-Новый default-off TV4_OTA_WORKER_TLS_BENCH только для unprovisioned rev12-ota
-с diagnostics1/stack-bench1: один existing SNTP/verified HEAD после self-test
-из того же worker8192. Никакого дополнительного task/monitor owner, body,
-ключа/context или install authority. SDK5/6 builds и host doubles — software
-evidence; runtime budget остаётся открытым до нового согласованного стенда.
-Семь startup IDs и windows1–5 сохраняются, diagnostic TLS_PROBE6 только под
-новым флагом. Старый standalone TLS probe не запускается одновременно с OTA.
-На ESP32 по-прежнему fecc05d/factory; новых hardware разрешений нет.
+База main a5f8b7e, PR #69 слит. Разрешённый стенд остановлен на control8192:
+одно touch_age_ms=4294967295 из16 samples при touch_errors0, touch_fresh FAIL.
+[Отчёт](docs/evidence/hardware/2026-11-22-esp32-worker-tls-control/README.md):
+fresh16MiB/two-NVMe/две writes/два captures/возврат всего factory2MiB fecc05d/
+verify/owner HMI-touch-Wi-Fi-SETUP PASS за608.667s. TLS image не записывался,
+SNTP/HEAD и full recovery не выполнялись. На ESP32 fecc05d, F407 ee7d179;
+сеанс/разрешение закрыты, новых device/UART/SWD/reset/Flash действий нет.
+
+Читать docs/plans/P1_TOUCH_SNAPSHOT_CLOCK.md и docs/ESP32_OTA_WORKER_TLS_BENCH.md.
+Два actual app_main paths читают clock до snapshot более приоритетного touch
+producer. Host injection воспроизводит unsigned underflow и false-health;
+исправить порядок, не clamp и не послабление100/500ms. Новый image/host tests/
+SDK builds не аппаратная приёмка. Не исключать исходный failed sample и не
+продолжать использованный пакет. Следующий hardware тест — новый exact-image
+пакет и отдельное разрешение после review/CI.
+
+Default-off TLS bench/worker8192/один serialized monitor owner, seven startup
+IDs/windows1–6, queue/polling20ms/пины/клоки/буферы/TLS records/DMA reserve,
+SETUP/CHECK/INSTALL и owner key/context gates сохраняются. TLS/crypto/installer
+resources ещё не измерены в этом worker; не угадывать floors или test keys.
 
 ### Завершённый стенд worker8192 — основание следующего шага
 

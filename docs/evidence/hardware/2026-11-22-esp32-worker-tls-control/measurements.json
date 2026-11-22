@@ -1,0 +1,280 @@
+{
+  "control8192": {
+    "periodic_samples": 16,
+    "global_scope_samples": 16,
+    "ip_event_seen_global_samples": 15,
+    "capture_seconds": 90.10103625699412,
+    "all_global": {
+      "internal_free": {
+        "min": 16759,
+        "max": 17143
+      },
+      "internal_min": {
+        "min": 7848,
+        "max": 7848
+      },
+      "internal_largest": {
+        "min": 7680,
+        "max": 7680
+      },
+      "psram_free": {
+        "min": 6090060,
+        "max": 6090060
+      },
+      "psram_min": {
+        "min": 6090024,
+        "max": 6090024
+      },
+      "owner_stack": {
+        "min": 10580,
+        "max": 10580
+      },
+      "touch_stack": {
+        "min": 2508,
+        "max": 2508
+      },
+      "wifi_stack": {
+        "min": 1112,
+        "max": 1112
+      },
+      "export_stack": {
+        "min": 1216,
+        "max": 1632
+      }
+    },
+    "ip_event_seen_global": {
+      "internal_free": {
+        "min": 16759,
+        "max": 16795
+      },
+      "internal_min": {
+        "min": 7848,
+        "max": 7848
+      },
+      "internal_largest": {
+        "min": 7680,
+        "max": 7680
+      },
+      "psram_free": {
+        "min": 6090060,
+        "max": 6090060
+      },
+      "psram_min": {
+        "min": 6090024,
+        "max": 6090024
+      },
+      "owner_stack": {
+        "min": 10580,
+        "max": 10580
+      },
+      "touch_stack": {
+        "min": 2508,
+        "max": 2508
+      },
+      "wifi_stack": {
+        "min": 1112,
+        "max": 1112
+      },
+      "export_stack": {
+        "min": 1216,
+        "max": 1264
+      }
+    },
+    "ip_events_do_not_prove_continuous_connection": true,
+    "worker_stack_requested": 8192,
+    "worker_watermark": {
+      "ota_stack": {
+        "min": 6784,
+        "max": 6784
+      }
+    },
+    "boot_window_wifi_load_qualified": false,
+    "boot_local_minimum": 15719,
+    "boot_end_internal_free": 17847,
+    "boot_end_largest": 9216,
+    "after_stop_global_history": 7848,
+    "startup_time_order": [
+      {
+        "id": 0,
+        "internal": 267039,
+        "kind": 0,
+        "largest": 172032,
+        "minimum": 202308,
+        "psram": 6860348,
+        "psram_largest": 6684672,
+        "psram_min": 6860348,
+        "sample_ms": 51,
+        "sample_stack": 14980,
+        "scope": 0,
+        "worker_stack_at_emit": 7216
+      },
+      {
+        "id": 1,
+        "internal": 225043,
+        "kind": 0,
+        "largest": 139264,
+        "minimum": 225043,
+        "psram": 6091508,
+        "psram_largest": 6029312,
+        "psram_min": 6091508,
+        "sample_ms": 376,
+        "sample_stack": 14036,
+        "scope": 1,
+        "worker_stack_at_emit": 6784
+      },
+      {
+        "id": 2,
+        "internal": 186463,
+        "kind": 0,
+        "largest": 106496,
+        "minimum": 186463,
+        "psram": 6091508,
+        "psram_largest": 6029312,
+        "psram_min": 6091508,
+        "sample_ms": 380,
+        "sample_stack": 14036,
+        "scope": 1,
+        "worker_stack_at_emit": 6784
+      },
+      {
+        "id": 3,
+        "internal": 173979,
+        "kind": 0,
+        "largest": 100352,
+        "minimum": 161195,
+        "psram": 6091308,
+        "psram_largest": 6029312,
+        "psram_min": 6091308,
+        "sample_ms": 698,
+        "sample_stack": 12196,
+        "scope": 1,
+        "worker_stack_at_emit": 6784
+      },
+      {
+        "id": 5,
+        "internal": 73463,
+        "kind": 0,
+        "largest": 63488,
+        "minimum": 73463,
+        "psram": 6091308,
+        "psram_largest": 6029312,
+        "psram_min": 6091308,
+        "sample_ms": 1380,
+        "sample_stack": 12196,
+        "scope": 1,
+        "worker_stack_at_emit": 6784
+      },
+      {
+        "id": 6,
+        "internal": 81455,
+        "kind": 0,
+        "largest": 63488,
+        "minimum": 55671,
+        "psram": 6091308,
+        "psram_largest": 6029312,
+        "psram_min": 6091308,
+        "sample_ms": 2291,
+        "sample_stack": 10580,
+        "scope": 1,
+        "worker_stack_at_emit": 6784
+      },
+      {
+        "id": 4,
+        "internal": 57771,
+        "kind": 0,
+        "largest": 49152,
+        "minimum": 55671,
+        "psram": 6090844,
+        "psram_largest": 6029312,
+        "psram_min": 6090844,
+        "sample_ms": 2300,
+        "sample_stack": 10580,
+        "scope": 1,
+        "worker_stack_at_emit": 6784
+      }
+    ]
+  },
+  "return-fecc05d": {
+    "periodic_samples": 4,
+    "global_scope_samples": 4,
+    "ip_event_seen_global_samples": 3,
+    "capture_seconds": 30.04591700999299,
+    "all_global": {
+      "internal_free": {
+        "min": 22731,
+        "max": 22779
+      },
+      "internal_min": {
+        "min": 6956,
+        "max": 6956
+      },
+      "internal_largest": {
+        "min": 7680,
+        "max": 7680
+      },
+      "psram_free": {
+        "min": 6090732,
+        "max": 6090732
+      },
+      "psram_min": {
+        "min": 6076588,
+        "max": 6076588
+      },
+      "owner_stack": {
+        "min": 10708,
+        "max": 10708
+      },
+      "touch_stack": {
+        "min": 2504,
+        "max": 2504
+      },
+      "wifi_stack": {
+        "min": 1104,
+        "max": 1104
+      },
+      "export_stack": {
+        "min": 1288,
+        "max": 1656
+      }
+    },
+    "ip_event_seen_global": {
+      "internal_free": {
+        "min": 22731,
+        "max": 22779
+      },
+      "internal_min": {
+        "min": 6956,
+        "max": 6956
+      },
+      "internal_largest": {
+        "min": 7680,
+        "max": 7680
+      },
+      "psram_free": {
+        "min": 6090732,
+        "max": 6090732
+      },
+      "psram_min": {
+        "min": 6076588,
+        "max": 6076588
+      },
+      "owner_stack": {
+        "min": 10708,
+        "max": 10708
+      },
+      "touch_stack": {
+        "min": 2504,
+        "max": 2504
+      },
+      "wifi_stack": {
+        "min": 1104,
+        "max": 1104
+      },
+      "export_stack": {
+        "min": 1288,
+        "max": 1288
+      }
+    },
+    "ip_events_do_not_prove_continuous_connection": true
+  }
+}

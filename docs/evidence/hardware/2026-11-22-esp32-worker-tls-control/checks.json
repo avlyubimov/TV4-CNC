@@ -1,0 +1,19 @@
+{
+  "session_seconds": 608.6668918940122,
+  "limit_seconds": 1800,
+  "control_fails_touch_fresh": true,
+  "all_other_control_boot_checks_pass": true,
+  "return_checks_pass": true,
+  "factory_2mib_return_verify": true,
+  "full_recovery_attempts": 0,
+  "diagnostic_tls_writes": 0,
+  "uart_capture_attempts": 2,
+  "outside_factory_preserved_before_boot": true,
+  "fresh_snapshot_sha256": "ce6af4e88d755254f65ca2cf952d17ad9892a8ec7f487b0ed4391eccc3355e5a",
+  "snapshot_bytes": 16777216,
+  "device_md5_verified": true,
+  "two_independent_nvme_copies_verified": true,
+  "owner_return_hmi_confirmed": true,
+  "no_new_hardware_permission": true,
+  "raw_uart_or_dumps_published": false
+}

@@ -28,6 +28,8 @@ static const char *mode;
 static bool audit,lv_initialized,boot_removed,frame_complete,fatal,returned;
 static bool wifi_at_first_frame,export_at_first_frame;
 static unsigned wifi_calls,export_calls,health_calls,board_calls,backlight_calls;
+static unsigned reports,touch_advances,stale_health,stale_logs;
+static bool resource_snapshot;
 static uint32_t clock_ms,ui_ms;
 static unsigned phases[TV4_MEM_STARTUP_COUNT],phase_count;
 static uint16_t pixels[800*480];
@@ -88,9 +90,21 @@ bool diag_export_start(void) {
     if(!audit)assert(frame_complete && ui_ready && boot_removed);
     return strcmp(mode,"export-fail")!=0;
 }
-bool diag_export_submit(const diag_record_t *record) {assert(record);return true;}
+static bool touch_mode(void) {return !strcmp(mode,"touch-clock-race") || !strcmp(mode,"touch-report-race") || !strcmp(mode,"touch-stale");}
+static unsigned health_limit(void) {return touch_mode()?600:8;}
+bool diag_export_submit(const diag_record_t *record) {
+    assert(record);++reports;
+    if(!strcmp(mode,"touch-stale"))assert(record->touch_age_ms>=1000);
+    else if(touch_mode())assert(record->touch_age_ms<100);
+    return true;
+}
 bool __wrap_tv4_ota_service_start(void) {assert(!board_calls);return true;}
-void __wrap_tv4_ota_service_health(bool healthy) {assert(healthy && frame_complete);++health_calls;}
+void __wrap_tv4_ota_service_health(bool healthy) {
+    assert(frame_complete);
+    if(!strcmp(mode,"touch-stale")) {if(!healthy)++stale_health;}
+    else assert(healthy);
+    ++health_calls;
+}
 bool tv4_ota_memory_startup(tv4_ota_startup_phase phase) {
     assert((unsigned)phase<TV4_MEM_STARTUP_COUNT && phase_count<TV4_MEM_STARTUP_COUNT);
     phases[phase_count++]=phase;
@@ -109,20 +123,25 @@ int64_t esp_timer_get_time(void) {return (int64_t)clock_ms*1000;}
 void vTaskDelay(uint32_t ticks) {
     clock_ms+=ticks;
     assert(clock_ms<10000);
-    if(fatal || health_calls>=8)longjmp(done,1);
+    if(fatal || health_calls>=health_limit())longjmp(done,1);
 }
 unsigned uxTaskGetStackHighWaterMark(void *task) {assert(!task);return 16384;}
 void *heap_caps_malloc(size_t size,uint32_t caps) {
     assert(size==sizeof(draw_buffer) && caps==(MALLOC_CAP_INTERNAL|MALLOC_CAP_8BIT));
     return !strcmp(mode,"buffer-fail")?NULL:draw_buffer;
 }
-size_t heap_caps_get_free_size(uint32_t caps) {(void)caps;return 100000;}
+size_t heap_caps_get_free_size(uint32_t caps) {
+    (void)caps;
+    if(ui_ready && !strcmp(mode,"touch-report-race"))resource_snapshot=true;
+    return 100000;
+}
 size_t heap_caps_get_total_size(uint32_t caps) {(void)caps;return 8*1024*1024;}
 size_t heap_caps_get_minimum_free_size(uint32_t caps) {(void)caps;return 50000;}
 size_t heap_caps_get_largest_free_block(uint32_t caps) {(void)caps;return 50000;}
 void startup_test_log(bool error,const char *format,...) {
     char line[256];va_list args;va_start(args,format);vsnprintf(line,sizeof(line),format,args);va_end(args);
     if(error && strstr(line,"Startup stopped:"))fatal=true;
+    if(error && strstr(line,"Touch data invalid/stale"))++stale_logs;
 }
 esp_err_t board_rev12_init(esp_lcd_panel_handle_t *panel) {
     ++board_calls;*panel=(esp_lcd_panel_handle_t)(uintptr_t)1;
@@ -134,8 +153,13 @@ esp_err_t board_rev12_backlight(bool on) {
 }
 esp_err_t board_rev12_touch_init(void) {return !strcmp(mode,"touch-fail")?ESP_FAIL:ESP_OK;}
 bool board_rev12_touch(board_touch_t *sample) {
+    /* Model a higher-priority producer publishing during queue-peek. The
+     * actual app_main must obtain its age/freshness clock AFTER this copy. */
+    if(ui_ready && (!strcmp(mode,"touch-clock-race") || resource_snapshot)) {
+        ++clock_ms;++touch_advances;resource_snapshot=false;
+    }
     *sample=(board_touch_t){.x=224,.y=346,.pressed=!strcmp(mode,"held-touch") && health_calls<2,
-        .valid=true,.ms=clock_ms,.errors=0,.stack_watermark=2048};return true;
+        .valid=true,.ms=clock_ms-(ui_ready && !strcmp(mode,"touch-stale")?1000u:0u),.errors=0,.stack_watermark=2048};return true;
 }
 esp_err_t esp_lcd_panel_draw_bitmap(esp_lcd_panel_handle_t panel,int x0,int y0,int x1,int y1,const void *map) {
     assert(panel && 0<=x0 && x0<x1 && x1<=800 && 0<=y0 && y0<y1 && y1<=480);
@@ -181,7 +205,7 @@ int main(int argc,char **argv) {
         assert(returned || fatal);
     }else {
         assert(!returned && frame_complete && ui_ready && ui_ms>=1200);
-        assert(wifi_calls==1 && export_calls==1 && health_calls==8);
+        assert(wifi_calls==1 && export_calls==1 && health_calls==health_limit());
         assert(backlight_calls==1 && phase_count==TV4_MEM_STARTUP_COUNT);
         if(!audit) {
             static const unsigned expected[]={0,1,2,3,5,6,4};
@@ -190,6 +214,11 @@ int main(int argc,char **argv) {
         }
         check_dashboard_layout(lv_screen_active());
         assert(dashboard_snapshot().x_um==25430);
+        if(touch_mode()) {
+            assert(reports>=1);
+            if(!strcmp(mode,"touch-stale"))assert(stale_health>0 && stale_logs==1);
+            else assert(touch_advances>0 && !stale_logs && !stale_health);
+        }
         if(audit)audit_output();
     }
     if(lv_initialized)lv_deinit();
