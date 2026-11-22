@@ -1,5 +1,18 @@
 # OTA TV4-CNC — проект архитектуры
 
+## Текущая интеграция P1 (база main d1317a8)
+
+PR #1–58 слиты. [ESP32 OTA installation](ESP32_OTA_INSTALLATION.md) добавляет
+explicit rev12-ota: существующие signature/HTTPS/session соединены с SDK inactive
+writer, UI approval, boot self-test/rollback/watchdog и prepare/verify USB bundle.
+Владелец выбрал unprovisioned настройку: ключ/production context отсутствуют,
+install закрыт, test key в firmware нет. Ordinary profiles прежние. Устройства
+не открывали: ESP32 ordinary8f0d899 и F407 ee7d179 остаются установленными.
+Hardware migration/configured OTA/power loss/RAM/stack ещё не подтверждены;
+[evidence](evidence/build/esp32-ota-installation/README.md), [следующий этап](NEXT_STAGE.md).
+Ниже — история слитой базы; прежние «нет installer/OTA» относятся к тем этапам.
+
+
 PR-07v от main `5e76626`: [подписанный threaded HOST link](STM32_THREADED_LINK.md)
 передаёт full signed update через отдельный driver pthread и concurrent RX.
 Host75/sanitizers75/standalone49/TSan8+1 PASS; upper windows, independent crypto/

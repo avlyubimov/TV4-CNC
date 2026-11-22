@@ -6,7 +6,7 @@ enum { FIRMWARE_INFO_TEXT_CAPACITY=32 };
 typedef enum { FIRMWARE_INFO_UNKNOWN, FIRMWARE_INFO_DEVICE, FIRMWARE_INFO_SIMULATOR } firmware_info_source_t;
 typedef enum {
     FIRMWARE_PROFILE_UNKNOWN, FIRMWARE_PROFILE_HEADLESS, FIRMWARE_PROFILE_REV12,
-    FIRMWARE_PROFILE_MEMORY_BENCH, FIRMWARE_PROFILE_TLS_BENCH
+    FIRMWARE_PROFILE_MEMORY_BENCH, FIRMWARE_PROFILE_TLS_BENCH, FIRMWARE_PROFILE_OTA
 } firmware_info_profile_t;
 /* Local display metadata only: never SemVer/trust/peer/install authority.
  * No candidate, network data, secrets or update readiness flags. */

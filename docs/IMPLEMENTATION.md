@@ -1,6 +1,19 @@
 # Реализация: main, открытые PR и аппаратные границы
 
-## Текущий P0 — первая прошиваемая сборка F407
+## Текущая интеграция P1 (база main d1317a8)
+
+PR #1–58 слиты. [ESP32 OTA installation](ESP32_OTA_INSTALLATION.md) добавляет
+explicit rev12-ota: существующие signature/HTTPS/session соединены с SDK inactive
+writer, UI approval, boot self-test/rollback/watchdog и prepare/verify USB bundle.
+Владелец выбрал unprovisioned настройку: ключ/production context отсутствуют,
+install закрыт, test key в firmware нет. Ordinary profiles прежние. Устройства
+не открывали: ESP32 ordinary8f0d899 и F407 ee7d179 остаются установленными.
+Hardware migration/configured OTA/power loss/RAM/stack ещё не подтверждены;
+[evidence](evidence/build/esp32-ota-installation/README.md), [следующий этап](NEXT_STAGE.md).
+Ниже — история слитой базы; прежние «нет installer/OTA» относятся к тем этапам.
+
+
+## История P0 — первая прошиваемая сборка F407
 
 22 ноября 2026, от main610f174/слитого PR #55. Подготовлен
 [standalone STM32F407VG bench](STM32_FIRST_IMAGE.md), ELF/BIN/map с HSI16MHz,

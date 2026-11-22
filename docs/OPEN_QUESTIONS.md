@@ -1,5 +1,14 @@
 # Открытые вопросы и блокирующие решения
 
+Текущий P1 от main d1317a8: [installer/self-test/rollback/USB package](ESP32_OTA_INSTALLATION.md)
+подключены программно в explicit rev12-ota. Владелец выбрал настройку без ключа;
+OTA-KEY/CONTEXT и production resource/time floors остаются открытыми, установка
+fail-closed. OTA-ESP-01 теперь требует отдельно разрешённой USB migration/recovery
+и configured install/rollback/network/power-loss испытаний, не ещё одной модели.
+Реальная peak/low-water RAM/PSRAM/stack нагрузка installer не измерена; HEAD bench
+не заменяет её. Устройства/текущие образы не менялись; сведения ниже исторические.
+
+
 22 ноября 2026, база main `07fb406e37ebd1f1e019dbee0b54e8bb5571be1a`, PR #1–57 слиты.
 После отдельного разрешения один стенд ee7d179 завершён за16,196s, exit0:
 program/verify/exact identity, RUNNING, data/BSS/один CCM word/guards, progress,

@@ -1,41 +1,44 @@
-# Следующий этап: P1 — полноценный ESP32 OTA
+# P1 — интеграция ESP32 OTA и следующий аппаратный этап
 
-22 ноября 2026, база main `07fb406e37ebd1f1e019dbee0b54e8bb5571be1a`, PR #1–57 слиты.
-**P0 достигнут на базовом стенде**: на F407 работает exact clean ee7d179,
-program/verify/identity/RUNNING, data-BSS/CCM word/guards/progress, watchdog reset
-и UsageFault capture/reset PASS. [Измерения и пределы](evidence/hardware/2026-11-22-f407-ee7d179-bench/README.md).
-Сеанс16,196s завершён; новых аппаратных операций или перепрошивки он не разрешает.
-На ESP32 остаётся ordinary8f0d899; CAN/приводы/option bytes/OTP не затронуты.
+База main `d1317a89f6a29cf4ba950092a00ba00c78f80f1b`, PR #1–58 слиты.
+P0 ee7d179 принят на базовом стенде; [аппаратный отчёт](evidence/hardware/2026-11-22-f407-ee7d179-bench/README.md)
+не переносится на новые образы. На устройствах остаются F407 ee7d179 и ESP32
+ordinary8f0d899; их не открывали и не перепрошивали в P1.
 
-## Следующий измеримый результат
+## Программный результат P1
 
-Существующий HMI устанавливает проверенный образ в неактивный OTA slot,
-выполняет boot self-test и подтверждает его либо штатно откатывается.
-HTTPS/crypto/verification/session/resource checks уже существуют; использовать их,
-не начинать заново протокол, криптографию или очередную библиотеку без installer.
+[Интегрирован](ESP32_OTA_INSTALLATION.md) один explicit rev12-ota: existing signed
+HTTPS session → неактивный SDK slot → full digest/EOF/SDK validation → boot select,
+UI version/size/двухшаговое подтверждение, cancel/error cleanup, bounded boot
+self-test/rollback/watchdog и prepare/independent verify USB migration bundle.
+[План](plans/P1_ESP32_OTA.md), [проверки и пределы](evidence/build/esp32-ota-installation/README.md).
+Обычные4профиля сохраняют прежний factory2MiB; только новый профиль использует
+reviewed16MiB factory recovery + otadata +2slots. На плате эта карта ещё не действует.
 
-1. Рассмотреть **существующий** [16MiB candidate](../firmware/esp32-hmi/ota/partitions.ab.candidate.csv):
-   factory recovery, otadata, два OTA slots и данные. Проверить размеры/границы,
-   бюджеты реальных images и parsing обоими SDK; candidate пока не активен.
-   [Текущая разметка](../firmware/esp32-hmi/partitions.csv) остаётся factory2MiB.
-2. Подготовить отдельный USB migration/recovery bundle с проверкой полного
-   backup и настроек. Не мигрировать partition table обычным app OTA.
-3. Интегрировать существующие signature/SHA/size/hardware/protocol/trusted local
-   public key/context проверки с worker записи в inactive slot. Не выдавать
-   тестовый ключ или неизвестную production version за доверенный context.
-4. Добавить self-test/rollback и bounded обработку потери Wi-Fi/питания;
-   LVGL/GT911/Wi-Fi сохраняют отзывчивость. Реальные SRAM/PSRAM/stack margins
-   проверяются отдельно; не переносить host budget или старую TLS probe на installer.
-5. CI/negative/repro проверки, конкретные migration/OTA артефакты и отдельное
-   разрешение перед аппаратным испытанием. eFuse/Secure Boot/Flash Encryption
-   и необратимые настройки не включать. Релизы P2 — только с ручным owner gate.
+Владелец выбрал **настройку без ключа**. Работоспособная unprovisioned сборка
+не имеет test key/выдуманных production SemVer/floors; экран сообщает о настройке,
+сетевые CHECK/INSTALL заблокированы. Это не завершённая аппаратная приёмка P1.
 
-В текущем PR только аппаратный отчёт и статусы; исполняемые прошивки не меняются.
-Полные SRAM/CCM stress/high-water, частоты HSI/LSI/HSE и физические GPIO/CAN F407
-пока открыты. Пины движения не назначать; физический CAN P3 после трансиверов,
-независимый CAN loader/layout/recovery P4 после P3. Bench sector0 не резервирует
-будущие loader/app/staging addresses. P5 движение — только после проверки защит
-и отдельного commissioning permission. [Полный порядок](IMPLEMENTATION_PRIORITIES.md).
+## Что нужно перед следующим аппаратным испытанием
+
+1. После review/merge выбрать exact clean-source SDK6.1.1 unprovisioned bundle
+   и сверить независимый verify/hash/адреса. Не прошивать самостоятельно.
+2. Отдельно согласовать fresh16MiB snapshot текущего ESP32, hash и копию на другом
+   физическом носителе: factory backup не содержит последних Wi-Fi/NVS/настроек.
+3. Отдельное разрешение на USB migration с проверенным recovery/BOOT-RESET путём,
+   только изолированная плата/питание/USB. Начальная смена bootloader/table/factory
+   при потере питания может потребовать USB recovery; app rollback её не защищает.
+4. Проверить factory boot/HMI/GT911/Wi-Fi/PSRAM/NVS и memory/stack/latency. Затем
+   подготовить owner public key и утверждённые SemVer/time/resource context,
+   provisioned build/release binding и отдельно разрешённые install/confirm/
+   rollback/network/power-loss пробы. Готовые defaults не угадывать.
+5. Пока P1 не стабилизирован, P2 публикацию, physical CAN P3 и STM32 CAN OTA P4
+   не объявлять завершёнными. Адреса F407 loader/staging не резервировать.
+
+Не подключаться к устройствам по завершённым разрешениям. eFuse/Secure Boot/
+Flash Encryption/option bytes/OTP/CAN/motion и самостоятельные merge/release
+запрещены. HSE/пины/полный RAM stress/частоты F407 остаются отдельными блокерами,
+не препятствующими текущей P1 software integration.
 
 ## История слитой программной базы
 

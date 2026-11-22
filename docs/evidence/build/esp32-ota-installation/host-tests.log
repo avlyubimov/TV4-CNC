@@ -1,0 +1,163 @@
+Test project <WORKTREE>/build-host
+      Start  1: build_validation
+ 1/79 Test  #1: build_validation ....................   Passed    0.04 sec
+      Start  2: build_candidate
+ 2/79 Test  #2: build_candidate .....................   Passed    0.45 sec
+      Start  3: core
+ 3/79 Test  #3: core ................................   Passed    0.00 sec
+      Start  4: firmware_info
+ 4/79 Test  #4: firmware_info .......................   Passed    0.00 sec
+      Start  5: wifi_profiles
+ 5/79 Test  #5: wifi_profiles .......................   Passed    0.00 sec
+      Start  6: render
+ 6/79 Test  #6: render ..............................   Passed    0.57 sec
+      Start  7: render_rgb565
+ 7/79 Test  #7: render_rgb565 .......................   Passed    0.55 sec
+      Start  8: diagnostics
+ 8/79 Test  #8: diagnostics .........................   Passed    0.00 sec
+      Start  9: ota_crypto
+ 9/79 Test  #9: ota_crypto ..........................   Passed    0.00 sec
+      Start 10: ota_candidate
+10/79 Test #10: ota_candidate .......................   Passed    0.19 sec
+      Start 11: ota_manifest
+11/79 Test #11: ota_manifest ........................   Passed    0.06 sec
+      Start 12: ota_json
+12/79 Test #12: ota_json ............................   Passed    0.01 sec
+      Start 13: ota_policy_conformance
+13/79 Test #13: ota_policy_conformance ..............   Passed    0.30 sec
+      Start 14: ota_stream
+14/79 Test #14: ota_stream ..........................   Passed    0.00 sec
+      Start 15: ota_http
+15/79 Test #15: ota_http ............................   Passed    0.00 sec
+      Start 16: ota_session
+16/79 Test #16: ota_session .........................   Passed    0.01 sec
+      Start 17: ota_memory
+17/79 Test #17: ota_memory ..........................   Passed    0.00 sec
+      Start 18: ota_time
+18/79 Test #18: ota_time ............................   Passed    0.00 sec
+      Start 19: ota_sntp
+19/79 Test #19: ota_sntp ............................   Passed    0.00 sec
+      Start 20: ota_tls_probe
+20/79 Test #20: ota_tls_probe .......................   Passed    0.00 sec
+      Start 21: ota_resource
+21/79 Test #21: ota_resource ........................   Passed    0.00 sec
+      Start 22: release_review_cli
+22/79 Test #22: release_review_cli ..................   Passed    0.09 sec
+      Start 23: release_review_cohort
+23/79 Test #23: release_review_cohort ...............   Passed    0.25 sec
+      Start 24: release_build_binding
+24/79 Test #24: release_build_binding ...............   Passed    0.63 sec
+      Start 25: ota_installer
+25/79 Test #25: ota_installer .......................   Passed    0.00 sec
+      Start 26: ota_setup
+26/79 Test #26: ota_setup ...........................   Passed    0.22 sec
+      Start 27: motion_supervisor
+27/79 Test #27: motion_supervisor ...................   Passed    0.00 sec
+      Start 28: motion_startup_noio
+28/79 Test #28: motion_startup_noio .................   Passed    0.00 sec
+      Start 29: stm32_bench_hardware_model
+29/79 Test #29: stm32_bench_hardware_model ..........   Passed    0.00 sec
+      Start 30: stm32_bench_reference
+30/79 Test #30: stm32_bench_reference ...............   Passed    0.03 sec
+      Start 31: update_driver_dispatch_threads
+31/79 Test #31: update_driver_dispatch_threads ......   Passed    0.01 sec
+      Start 32: update_frame_ingress_threads
+32/79 Test #32: update_frame_ingress_threads ........   Passed    0.14 sec
+      Start 33: update_ingress_owner_threads
+33/79 Test #33: update_ingress_owner_threads ........   Passed    0.00 sec
+      Start 34: update_completion_mailbox_threads
+34/79 Test #34: update_completion_mailbox_threads ...   Passed    0.16 sec
+      Start 35: update_metadata_setup_reference
+35/79 Test #35: update_metadata_setup_reference .....   Passed    0.03 sec
+      Start 36: update_wire_reference
+36/79 Test #36: update_wire_reference ...............   Passed    0.02 sec
+      Start 37: update_fragment_reference
+37/79 Test #37: update_fragment_reference ...........   Passed    0.03 sec
+      Start 38: update_metadata_reference
+38/79 Test #38: update_metadata_reference ...........   Passed    0.03 sec
+      Start 39: update_session
+39/79 Test #39: update_session ......................   Passed    0.00 sec
+      Start 40: update_loopback
+40/79 Test #40: update_loopback .....................   Passed    0.04 sec
+      Start 41: update_outcome
+41/79 Test #41: update_outcome ......................   Passed    0.01 sec
+      Start 42: update_negotiation
+42/79 Test #42: update_negotiation ..................   Passed    0.00 sec
+      Start 43: update_wire
+43/79 Test #43: update_wire .........................   Passed    0.05 sec
+      Start 44: update_fragment
+44/79 Test #44: update_fragment .....................   Passed    0.04 sec
+      Start 45: update_fragment_timing
+45/79 Test #45: update_fragment_timing ..............   Passed    0.01 sec
+      Start 46: update_metadata
+46/79 Test #46: update_metadata .....................   Passed    0.05 sec
+      Start 47: update_metadata_setup
+47/79 Test #47: update_metadata_setup ...............   Passed    0.01 sec
+      Start 48: update_fragment_raw
+48/79 Test #48: update_fragment_raw .................   Passed    0.01 sec
+      Start 49: update_channel
+49/79 Test #49: update_channel ......................   Passed    0.03 sec
+      Start 50: update_frame_queue
+50/79 Test #50: update_frame_queue ..................   Passed    0.00 sec
+      Start 51: update_egress
+51/79 Test #51: update_egress .......................   Passed    0.00 sec
+      Start 52: update_driver_events
+52/79 Test #52: update_driver_events ................   Passed    0.00 sec
+      Start 53: update_completion_mailbox
+53/79 Test #53: update_completion_mailbox ...........   Passed    0.00 sec
+      Start 54: update_completion_owner
+54/79 Test #54: update_completion_owner .............   Passed    0.01 sec
+      Start 55: update_driver_dispatch
+55/79 Test #55: update_driver_dispatch ..............   Passed    0.00 sec
+      Start 56: update_frame_ingress
+56/79 Test #56: update_frame_ingress ................   Passed    0.00 sec
+      Start 57: update_ingress_owner
+57/79 Test #57: update_ingress_owner ................   Passed    0.00 sec
+      Start 58: boot_image_admission
+58/79 Test #58: boot_image_admission ................   Passed    0.14 sec
+      Start 59: boot_crypto_source
+59/79 Test #59: boot_crypto_source ..................   Passed    0.11 sec
+      Start 60: boot_staging_source
+60/79 Test #60: boot_staging_source .................   Passed    0.00 sec
+      Start 61: boot_update_handoff
+61/79 Test #61: boot_update_handoff .................   Passed    0.30 sec
+      Start 62: boot_staging_handoff
+62/79 Test #62: boot_staging_handoff ................   Passed    0.03 sec
+      Start 63: boot_wire_handoff
+63/79 Test #63: boot_wire_handoff ...................   Passed    0.03 sec
+      Start 64: boot_fragment_handoff
+64/79 Test #64: boot_fragment_handoff ...............   Passed    0.03 sec
+      Start 65: boot_fragment_timing
+65/79 Test #65: boot_fragment_timing ................   Passed    0.02 sec
+      Start 66: boot_egress_handoff
+66/79 Test #66: boot_egress_handoff .................   Passed    0.03 sec
+      Start 67: boot_driver_events_handoff
+67/79 Test #67: boot_driver_events_handoff ..........   Passed    0.04 sec
+      Start 68: boot_completion_mailbox_handoff
+68/79 Test #68: boot_completion_mailbox_handoff .....   Passed    0.04 sec
+      Start 69: boot_driver_dispatch_handoff
+69/79 Test #69: boot_driver_dispatch_handoff ........   Passed    0.05 sec
+      Start 70: boot_frame_ingress_handoff
+70/79 Test #70: boot_frame_ingress_handoff ..........   Passed    0.05 sec
+      Start 71: boot_threaded_ingress_handoff
+71/79 Test #71: boot_threaded_ingress_handoff .......   Passed    0.22 sec
+      Start 72: boot_ingress_owner_handoff
+72/79 Test #72: boot_ingress_owner_handoff ..........   Passed    0.05 sec
+      Start 73: boot_channel_handoff
+73/79 Test #73: boot_channel_handoff ................   Passed    0.03 sec
+      Start 74: boot_metadata_setup_handoff
+74/79 Test #74: boot_metadata_setup_handoff .........   Passed    0.03 sec
+      Start 75: boot_metadata_handoff
+75/79 Test #75: boot_metadata_handoff ...............   Passed    0.02 sec
+      Start 76: boot_release_handoff
+76/79 Test #76: boot_release_handoff ................   Passed    0.08 sec
+      Start 77: boot_image_profile
+77/79 Test #77: boot_image_profile ..................   Passed    0.00 sec
+      Start 78: boot_release_admission
+78/79 Test #78: boot_release_admission ..............   Passed    0.10 sec
+      Start 79: boot_release_versions
+79/79 Test #79: boot_release_versions ...............   Passed    0.04 sec
+
+100% tests passed, 0 tests failed out of 79
+
+Total Test time (real) =   5.58 sec

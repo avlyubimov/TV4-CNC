@@ -3,17 +3,18 @@
 #include "envelope.h"
 #include "image_stream.h"
 #include "resource_guard.h"
-/* Read-only, single worker-owned operation. No task, UI, storage or install.
+/* Single worker-owned operation. Existing run APIs are read-only; only the
+ * explicit install_guarded entry accepts a storage sink. No owned task or UI.
  * Zero initialize once; reset after every terminal result before reuse.
  * Request/context/strings must remain immutable outside the session workspace.
  * No concurrent calls/reads: future UI must receive copied snapshots. */
 typedef enum { TV4_SESSION_IDLE,TV4_SESSION_MANIFEST,TV4_SESSION_ENVELOPE,
     TV4_SESSION_AUTHENTICATING,TV4_SESSION_IMAGE,TV4_SESSION_FINISHING,
     TV4_SESSION_CANDIDATE_READY,TV4_SESSION_IMAGE_VERIFIED,
-    TV4_SESSION_FAILED,TV4_SESSION_CANCELLED } tv4_session_state;
+    TV4_SESSION_FAILED,TV4_SESSION_CANCELLED,TV4_SESSION_INSTALLED } tv4_session_state;
 typedef enum { TV4_SESSION_NONE,TV4_SESSION_ARGUMENT,TV4_SESSION_TRANSPORT,
     TV4_SESSION_POLICY,TV4_SESSION_FORMAT,TV4_SESSION_TIMEOUT,
-    TV4_SESSION_CANCEL,TV4_SESSION_RESOURCE } tv4_session_error;
+    TV4_SESSION_CANCEL,TV4_SESSION_RESOURCE,TV4_SESSION_STORAGE } tv4_session_error;
 typedef struct {
     tv4_session_state state,failed_stage;
     tv4_session_error error;
@@ -52,7 +53,7 @@ typedef struct {
  * remains read-only; IMAGE_VERIFIED is integrity/format, not bootability.
  * Legacy portable coordinator: no resource admission. Not a runtime enable gate. */
 bool tv4_ota_session_run(tv4_ota_session *,const tv4_session_request *,const tv4_session_io *);
-/* Resource-checked entry for future worker integration, not runtime activation.
+/* Resource-checked read-only entry, also used by the runtime metadata check.
  * Policy is immutable; reader/context outlive run. Report is writable by this
  * runner only, disjoint from workspace/inputs, same worker. No default floors.
  * Checks before/after fetch/crypto/finish and in consumers, not inside TLS/SDK.
@@ -61,5 +62,23 @@ bool tv4_ota_session_run(tv4_ota_session *,const tv4_session_request *,const tv4
  * Report is separate so the bounded session workspace does not grow. */
 bool tv4_ota_session_run_guarded(tv4_ota_session *,const tv4_session_request *,const tv4_session_io *,
     const tv4_ota_resource_policy *,tv4_ota_resource_reader,void *,tv4_ota_resource_report *);
+/* Explicit installer path; existing run APIs remain read-only. Single worker.
+ * begin is called only after signature/policy and must independently bind the
+ * candidate to the operator's approved version/hash and an inactive partition.
+ * Every chunk passes the existing verifier before write. seal performs SDK
+ * validation; activate is LAST, after full digest/EOF/cleanup/resource/cancel
+ * checks. No failing check may follow activation. abort must be idempotent,
+ * including a partially failed begin/seal. No pointer retained after run. */
+typedef struct {
+    void *context;
+    bool (*begin)(void *,const tv4_ota_candidate *);
+    bool (*write)(void *,const uint8_t *,size_t);
+    bool (*seal)(void *);
+    bool (*activate)(void *);
+    void (*abort)(void *);
+} tv4_session_sink;
+bool tv4_ota_session_install_guarded(tv4_ota_session *,const tv4_session_request *,const tv4_session_io *,
+    const tv4_ota_resource_policy *,tv4_ota_resource_reader,void *,tv4_ota_resource_report *,
+    const tv4_session_sink *);
 /* Single owner, outside run only. Releases hash contexts and clears all state. */
 void tv4_ota_session_reset(tv4_ota_session *);

@@ -1,0 +1,121 @@
+{
+  "source_commit": "f3ecd916cab47483f994977795c180271c746777",
+  "clean_source": true,
+  "sdk_commit": "051e4c4eb20346e043cdd47bc388fde75ff8af63",
+  "profiles": [
+    {
+      "profile": "headless",
+      "sdk": "6.1.1",
+      "application": {
+        "bytes": 1061040,
+        "sha256": "54f2391bdbbecbf6828e4e90194ca1fa2802f78a6d3acfee883e0d10edbf6390"
+      },
+      "bootloader": {
+        "bytes": 20656,
+        "sha256": "0fbba2571d2fea48e4be15b525ef5d28c3e730ddc737f6abfbe0af550c4fa307"
+      },
+      "partitions": 3,
+      "workspace": {
+        "workspace_bytes": 34000,
+        "method": "linked target sizeof constant; not runtime measurement"
+      },
+      "ota_writer_linked": false
+    },
+    {
+      "profile": "rev12",
+      "sdk": "6.1.1",
+      "application": {
+        "bytes": 1579232,
+        "sha256": "1870bab1f6478fceabaaabcc5462eb13ea2938e2b257e4b1cd216340e8a6c6a1"
+      },
+      "bootloader": {
+        "bytes": 20656,
+        "sha256": "1d632735694f18b68e98c4bec61e19589b8fb2fe1458829baa51ecb3431ba35b"
+      },
+      "partitions": 3,
+      "workspace": {
+        "workspace_bytes": 34000,
+        "method": "linked target sizeof constant; not runtime measurement"
+      },
+      "ota_writer_linked": false
+    },
+    {
+      "profile": "rev12-memory-bench",
+      "sdk": "6.1.1",
+      "application": {
+        "bytes": 1580928,
+        "sha256": "770c2ac56957d4b2f1383734bebc8d3d3623741abcd5071caa8d4ad9884c576e"
+      },
+      "bootloader": {
+        "bytes": 20656,
+        "sha256": "4e0fd4312cb82d22e24a4a13bfb32813a5d7cacb627186e683d720f35c35005f"
+      },
+      "partitions": 3,
+      "workspace": {
+        "workspace_bytes": 34000,
+        "method": "linked target sizeof constant; not runtime measurement"
+      },
+      "ota_writer_linked": false
+    },
+    {
+      "profile": "rev12-tls-bench",
+      "sdk": "6.1.1",
+      "application": {
+        "bytes": 1584112,
+        "sha256": "1d459bfe66fd7585b3d12065a3bfc93e8316fa3e18539ae8e6a37dc31cf4db83"
+      },
+      "bootloader": {
+        "bytes": 20656,
+        "sha256": "875a5e5a7e77ff31924e2effb38ee946dcb4f53aeda5d5238366c75299cdc144"
+      },
+      "partitions": 3,
+      "workspace": {
+        "workspace_bytes": 34000,
+        "method": "linked target sizeof constant; not runtime measurement"
+      },
+      "ota_writer_linked": false
+    },
+    {
+      "profile": "rev12-ota",
+      "sdk": "6.1.1",
+      "application": {
+        "bytes": 1597984,
+        "sha256": "7c14adb9c65ee5550f16bed2fce43b572ffb1eb3f254e84b3c8dc2205fcfbf32"
+      },
+      "bootloader": {
+        "bytes": 20720,
+        "sha256": "d89ad804ccd1ed6d8344cec87c37db8bdcda8b474697bf0bc4b8ad65e7af82cb"
+      },
+      "partitions": 8,
+      "workspace": {
+        "workspace_bytes": 34000,
+        "method": "linked target sizeof constant; not runtime measurement"
+      },
+      "ota_writer_linked": true,
+      "xip": {
+        "method": "ELF reserved ranges rounded to SDK64KiB MMU pages; static reservation, not runtime free heap",
+        "regions": [
+          {
+            "kind": "rodata",
+            "start": "0x3c100020",
+            "end": "0x3c173ce8",
+            "page_bytes": 524288
+          },
+          {
+            "kind": "instructions",
+            "start": "0x42000020",
+            "end": "0x420f5f8e",
+            "page_bytes": 1048576
+          }
+        ],
+        "total_page_bytes": 1572864,
+        "psram_nominal_bytes": 8388608
+      }
+    }
+  ],
+  "device_access": false,
+  "hardware_performance": "not measured",
+  "target_compiler": "xtensa-esp-elf-gcc (crosstool-NG esp-15.2.0_20251204) 15.2.0",
+  "host_compiler": "gcc (Ubuntu 15.2.0-16ubuntu1) 15.2.0",
+  "sdk_python": "Python 3.14.4"
+}

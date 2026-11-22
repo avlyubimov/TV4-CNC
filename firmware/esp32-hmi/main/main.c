@@ -4,6 +4,7 @@
 #include "boot_view.h"
 #include "wifi_service.h"
 #include "export.h"
+#include "service.h"
 #if CONFIG_TV4_OTA_MEMORY_BENCH
 #include "memory_probe.h"
 #endif
@@ -55,6 +56,10 @@ static void boot_error(lv_display_t *display,string_id reason,esp_err_t error) {
     for(;;) { lv_timer_handler();vTaskDelay(pdMS_TO_TICKS(20)); }
 }
 void app_main(void) {
+#if CONFIG_TV4_OTA_ENABLED
+    /* Starts the bounded first-boot rollback deadline before any board I/O. */
+    if(!tv4_ota_service_start())ESP_LOGE(TAG,"OTA worker unavailable");
+#endif
 #if CONFIG_TV4_BOARD_REV12
     ESP_LOGW(TAG,"Uncommissioned Rev 1.2 display bench profile; CAN and motion absent");
     if(board_rev12_init(&panel)!=ESP_OK) { ESP_LOGE(TAG,"Board initialization failed; backlight remains off"); return; }
@@ -107,7 +112,9 @@ void app_main(void) {
     firmware_info_t info;firmware_info_reset(&info);
     const esp_app_desc_t *app=esp_app_get_description();
     firmware_info_profile_t profile=FIRMWARE_PROFILE_HEADLESS;
-#if CONFIG_TV4_OTA_MEMORY_BENCH
+#if CONFIG_TV4_OTA_ENABLED
+    profile=FIRMWARE_PROFILE_OTA;
+#elif CONFIG_TV4_OTA_MEMORY_BENCH
     profile=FIRMWARE_PROFILE_MEMORY_BENCH;
 #elif CONFIG_TV4_UTC_TLS_BENCH
     profile=FIRMWARE_PROFILE_TLS_BENCH;
@@ -161,6 +168,9 @@ void app_main(void) {
 #endif
         if(display_failed)dashboard_post_event(EV_DISPLAY_FAULT);
         dashboard_update(); lv_timer_handler();
+#if CONFIG_TV4_OTA_ENABLED
+        tv4_ota_service_health(!display_failed && (uint32_t)(tick_ms()-last_good_touch)<500);
+#endif
         int64_t work_us=esp_timer_get_time()-work_started;
         diagnostics_work(diagnostics,work_us>UINT32_MAX?UINT32_MAX:(uint32_t)work_us);
         uint32_t report_now=tick_ms();

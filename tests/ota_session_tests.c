@@ -208,10 +208,68 @@ static void resource_regressions(void) {
     assert(report.result==TV4_RESOURCE_OK);
     printf("Guarded signed session: resource fault at all %u boundaries, active/cleanup/authenticated candidate revocation PASS\n",boundaries);
 }
+typedef struct {server *server;unsigned begin,write,seal,activate,abort,fail;bool selected,cancel_seal;size_t used;uint8_t bytes[480];} install_fixture;
+static bool install_begin(void *v,const tv4_ota_candidate *c) {
+    install_fixture *f=v;f->begin++;assert(f->server->calls==2 && c->size_bytes==480 && !strcmp(c->version,"0.2.0"));return f->fail!=1;
+}
+static bool install_write(void *v,const uint8_t *p,size_t n) {
+    install_fixture *f=v;f->write++;assert(f->begin==1 && !f->seal && !f->activate && n<=480-f->used);
+    if(f->fail==2)return false;
+    memcpy(f->bytes+f->used,p,n);f->used+=n;return true;
+}
+static bool install_seal(void *v) {
+    install_fixture *f=v;f->seal++;assert(f->used==480 && !memcmp(f->bytes,binary,480));
+    assert(f->server->closes==3 && session.result.state==TV4_SESSION_FINISHING && !session.image.whole_hash.context && !session.image.body_hash.context);
+    if(f->cancel_seal)f->server->cancel=true;
+    return f->fail!=3;
+}
+static bool install_activate(void *v) {install_fixture *f=v;f->activate++;assert(f->seal==1);if(f->fail==4)return false;f->selected=true;return true;}
+static void install_abort(void *v) {install_fixture *f=v;f->abort++;assert(!f->selected);}
+static bool installing(server *s,install_fixture *f,resource_fixture *rf,tv4_ota_resource_report *report) {
+    f->server=s;tv4_session_io io={s,fetch,now,cancel};tv4_session_request r=request();
+    tv4_session_sink sink={f,install_begin,install_write,install_seal,install_activate,install_abort};
+    bool ok=tv4_ota_session_install_guarded(&session,&r,&io,&resource_policy,resource_read,rf,report,&sink);
+    assert(s->opens==s->closes && !session.image.whole_hash.context && !session.image.body_hash.context);return ok;
+}
+static void installation_regressions(void) {
+    fixture();server s=healthy();install_fixture f={0};resource_fixture rf={.server=&s};tv4_ota_resource_report report;
+    assert(installing(&s,&f,&rf,&report));assert(session.result.state==TV4_SESSION_INSTALLED && f.selected && f.activate==1 && !f.abort);
+    unsigned checks=report.checks;
+    for(unsigned phase=1;phase<=4;phase++) {
+        fixture();s=healthy();f=(install_fixture){.fail=phase};rf=(resource_fixture){.server=&s};
+        assert(!installing(&s,&f,&rf,&report) && session.result.error==TV4_SESSION_STORAGE && f.abort==1 && !f.selected);
+    }
+    fixture();s=healthy();f=(install_fixture){.cancel_seal=true};rf=(resource_fixture){.server=&s};
+    assert(!installing(&s,&f,&rf,&report) && session.result.state==TV4_SESSION_CANCELLED && f.seal==1 && !f.activate && f.abort==1);
+    fixture();s=healthy();binary[479]^=1;f=(install_fixture){0};rf=(resource_fixture){.server=&s};
+    assert(!installing(&s,&f,&rf,&report) && f.used>0 && f.used<=480 && !f.seal && !f.activate && f.abort==1);
+    fixture();s=healthy();manifest[0]='[';f=(install_fixture){0};rf=(resource_fixture){.server=&s};
+    assert(!installing(&s,&f,&rf,&report) && !f.begin && !f.write && !f.activate);
+    fixture();s=healthy();f=(install_fixture){0};rf=(resource_fixture){.server=&s};
+    assert(installing(&s,&f,&rf,&report));checks=report.checks;
+    for(unsigned boundary=1;boundary<=checks;boundary++) {
+        tv4_ota_session_reset(&session);s=healthy();f=(install_fixture){0};rf=(resource_fixture){.server=&s,.fail_at=boundary};
+        assert(!installing(&s,&f,&rf,&report) && !f.selected && !f.activate && f.abort==1);
+    }
+    for(unsigned call=1;call<=3;call++) {
+        fixture();s=healthy();s.fail_call=call;f=(install_fixture){0};rf=(resource_fixture){.server=&s};
+        assert(!installing(&s,&f,&rf,&report) && !f.selected && !f.activate);
+    }
+    for(unsigned call=1;call<=3;call++) {
+        fixture();s=healthy();s.cancel_call=call;f=(install_fixture){0};rf=(resource_fixture){.server=&s};
+        assert(!installing(&s,&f,&rf,&report) && !f.selected && !f.activate && session.result.state==TV4_SESSION_CANCELLED);
+    }
+    for(size_t cut=0;cut<sizeof(binary);cut+=17) {
+        fixture();s=healthy();s.cut=cut;f=(install_fixture){0};rf=(resource_fixture){.server=&s};
+        assert(!installing(&s,&f,&rf,&report) && !f.selected && !f.activate);
+    }
+    printf("Installer actual signed session: positive + begin/write/seal/activate failures, cancel after seal, digest/signature/transport and %u resource boundaries; no premature boot selection PASS\n",checks);
+}
 int main(void) {
     key=EVP_PKEY_Q_keygen(NULL,NULL,"EC","prime256v1");assert(key);
     int public_length=i2d_PUBKEY(key,&public_key);assert(public_length==91);
     trust=(tv4_ota_context){"test-only","0.1.0","0.1.0","1.0.0",NULL,"tv4-16m-ab-v1",false,true,public_key,(size_t)public_length};
+    installation_regressions();
     resource_regressions();
     fixture();server s=healthy();assert(run(&s,request()));
     assert(session.result.state==TV4_SESSION_IMAGE_VERIFIED && session.result.image_bytes==sizeof(binary));

@@ -1,0 +1,10 @@
+Source: clean f3ecd916cab47483f994977795c180271c746777 (executable code); later evidence-only commit does not relabel local binaries.
+Native GCC -Wall -Wextra -Werror -fanalyzer: actual session.c PASS; service.c boot window/host stubs PASS; installer_sdk.c TV4_OTA_SDK_TEST PASS.
+Bash -n tools/build_idf.sh PASS; Python py_compile changed tools PASS; git diff --check PASS.
+Workflow YAML parse (firmware/host/docs) PASS. Changed-document local links: 283 PASS before this evidence inventory; final link pass repeated before commit.
+ESP-IDF6.1.1 final build/config/partition/image validation: headless PASS, rev12 PASS, rev12-memory-bench PASS, rev12-tls-bench PASS, rev12-ota PASS.
+ELF symbols: esp_ota_begin absent in ordinary4profiles; service/sdk begin/write/end/set_boot present in explicit OTA profile. Bench workers exclusive.
+Target linked workspace constant: 34000 bytes, all5profiles PASS.
+USB bundle f3ecd91 create PASS; independent verify PASS. Empty8192byte otadata, factory boot, NVS/PHY not written, exact app/ELF/source binding.
+No signing key generated for firmware; owner context absent by choice. No devices, serial, USB, SWD, flash, erase, reset, eFuse, option bytes, CAN or motion operations.
+No merge/release performed. SDK5.3.2 validation delegated to existing pinned CI containers, not claimed as local execution.

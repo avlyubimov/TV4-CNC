@@ -10,6 +10,7 @@ typedef struct {
     tv4_ota_resource_reader resource_reader;
     void *resource_context;
     tv4_ota_resource_report *resources;
+    const tv4_session_sink *sink;
 } operation;
 static bool stop(operation *op) {
     tv4_session_result *r=&op->session->result;
@@ -43,7 +44,11 @@ static bool metadata(void *context,const uint8_t *bytes,size_t length) {
 static bool image(void *context,const uint8_t *bytes,size_t length) {
     operation *op=context;if(stop(op))return false;
     bool ok=tv4_image_feed(&op->session->image,bytes,length,op->io->now_ms(op->io->context));
-    op->session->result.image_bytes=op->session->image.received;return ok;
+    op->session->result.image_bytes=op->session->image.received;
+    if(ok && op->sink && !op->sink->write(op->sink->context,bytes,length)) {
+        op->session->result.error=TV4_SESSION_STORAGE;return false;
+    }
+    return ok && (!op->sink || !stop(op));
 }
 static bool fetch(operation *op,const char *url,uint32_t maximum,uint32_t expected,tv4_http_consume consume) {
     if(stop(op))return false;
@@ -58,6 +63,7 @@ static bool fetch(operation *op,const char *url,uint32_t maximum,uint32_t expect
     op->session->result.http=op->io->fetch(op->io->context,&request,&op->session->http,consume,op,&report);
     if(stop(op))return false;
     if(op->session->result.http!=TV4_HTTP_OK) {
+        if(op->session->result.error!=TV4_SESSION_NONE)return false;
         if(op->session->result.http==TV4_HTTP_CANCELLED)op->session->result.error=TV4_SESSION_CANCEL;
         else if(op->session->result.http==TV4_HTTP_TIMEOUT)op->session->result.error=TV4_SESSION_TIMEOUT;
         else op->session->result.error=TV4_SESSION_TRANSPORT;
@@ -88,7 +94,8 @@ void tv4_ota_session_reset(tv4_ota_session *s) {
     tv4_image_close(&s->image);memset(s,0,sizeof(*s));
 }
 static bool run(tv4_ota_session *s,const tv4_session_request *r,const tv4_session_io *io,
-    const tv4_ota_resource_policy *policy,tv4_ota_resource_reader reader,void *context,tv4_ota_resource_report *report) {
+    const tv4_ota_resource_policy *policy,tv4_ota_resource_reader reader,void *context,tv4_ota_resource_report *report,
+    const tv4_session_sink *sink) {
     if(!s || s->result.state!=TV4_SESSION_IDLE)return false;
     if(!r || !io || !io->fetch || !io->now_ms || !r->trust ||
        !r->idle_timeout_ms || r->total_timeout_ms<r->idle_timeout_ms || r->total_timeout_ms>INT32_MAX ||
@@ -100,7 +107,7 @@ static bool run(tv4_ota_session *s,const tv4_session_request *r,const tv4_sessio
     if(!asset || strcmp(asset+1,"manifest.json")) {s->result.error=TV4_SESSION_ARGUMENT;return failed(s);}
     size_t prefix=(size_t)(asset+1-r->manifest_url);
     memcpy(s->envelope_url,r->manifest_url,prefix);memcpy(s->envelope_url+prefix,"manifest.sig",13);
-    operation op={s,r,io,io->now_ms(io->context),policy,reader,context,report};
+    operation op={s,r,io,io->now_ms(io->context),policy,reader,context,report,sink};
     s->result.state=TV4_SESSION_MANIFEST;
     if(!fetch(&op,r->manifest_url,sizeof(s->manifest),0,metadata))return failed(s);
     s->result.state=TV4_SESSION_ENVELOPE;
@@ -125,6 +132,9 @@ static bool run(tv4_ota_session *s,const tv4_session_request *r,const tv4_sessio
     if(!tv4_image_start(&s->image,&s->candidate,r->image_limits,io->now_ms(io->context))) {
         s->result.error=TV4_SESSION_FORMAT;return failed(s);
     }
+    if(sink && !sink->begin(sink->context,&s->candidate)) {
+        s->result.error=TV4_SESSION_STORAGE;return failed(s);
+    }
     if(!fetch(&op,s->candidate.url,s->candidate.size_bytes,s->candidate.size_bytes,image))return failed(s);
     s->result.state=TV4_SESSION_FINISHING;
     if(stop(&op))return failed(s);
@@ -133,10 +143,16 @@ static bool run(tv4_ota_session *s,const tv4_session_request *r,const tv4_sessio
     if(!ok) {s->result.error=TV4_SESSION_FORMAT;return failed(s);}
     tv4_image_close(&s->image);memset(&s->http,0,sizeof(s->http));
     if(stop(&op))return failed(s);
+    if(sink) {
+        if(!sink->seal(sink->context)) {s->result.error=TV4_SESSION_STORAGE;return failed(s);}
+        if(stop(&op))return failed(s);
+        if(!sink->activate(sink->context)) {s->result.error=TV4_SESSION_STORAGE;return failed(s);}
+        s->result.state=TV4_SESSION_INSTALLED;return true;
+    }
     s->result.state=TV4_SESSION_IMAGE_VERIFIED;return true;
 }
 bool tv4_ota_session_run(tv4_ota_session *s,const tv4_session_request *r,const tv4_session_io *io) {
-    return run(s,r,io,NULL,NULL,NULL,NULL);
+    return run(s,r,io,NULL,NULL,NULL,NULL,NULL);
 }
 bool tv4_ota_session_run_guarded(tv4_ota_session *s,const tv4_session_request *r,const tv4_session_io *io,
     const tv4_ota_resource_policy *policy,tv4_ota_resource_reader reader,void *context,tv4_ota_resource_report *report) {
@@ -146,5 +162,18 @@ bool tv4_ota_session_run_guarded(tv4_ota_session *s,const tv4_session_request *r
     report->result=tv4_ota_resource_policy_validate(policy);
     if(report->result==TV4_RESOURCE_OK && !reader)report->result=TV4_RESOURCE_ARGUMENT;
     if(report->result!=TV4_RESOURCE_OK) {s->result.error=TV4_SESSION_RESOURCE;return failed(s);}
-    return run(s,r,io,policy,reader,context,report);
+    return run(s,r,io,policy,reader,context,report,NULL);
+}
+bool tv4_ota_session_install_guarded(tv4_ota_session *s,const tv4_session_request *r,const tv4_session_io *io,
+    const tv4_ota_resource_policy *policy,tv4_ota_resource_reader reader,void *context,tv4_ota_resource_report *report,
+    const tv4_session_sink *sink) {
+    if(!s || s->result.state!=TV4_SESSION_IDLE)return false;
+    if(!r || !r->verify_image || !report || !sink || !sink->begin || !sink->write ||
+       !sink->seal || !sink->activate || !sink->abort) {s->result.error=TV4_SESSION_ARGUMENT;return failed(s);}
+    *report=(tv4_ota_resource_report){0};report->result=tv4_ota_resource_policy_validate(policy);
+    if(report->result==TV4_RESOURCE_OK && !reader)report->result=TV4_RESOURCE_ARGUMENT;
+    if(report->result!=TV4_RESOURCE_OK) {s->result.error=TV4_SESSION_RESOURCE;return failed(s);}
+    bool ok=run(s,r,io,policy,reader,context,report,sink);
+    if(!ok)sink->abort(sink->context);
+    return ok;
 }

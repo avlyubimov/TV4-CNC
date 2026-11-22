@@ -20,7 +20,7 @@ bool firmware_info_set(firmware_info_t *out,const char *build,size_t build_capac
     if(!out)return false;
     firmware_info_t next={0};
     bool valid=(source==FIRMWARE_INFO_DEVICE || source==FIRMWARE_INFO_SIMULATOR) &&
-        profile>=FIRMWARE_PROFILE_HEADLESS && profile<=FIRMWARE_PROFILE_TLS_BENCH &&
+        profile>=FIRMWARE_PROFILE_HEADLESS && profile<=FIRMWARE_PROFILE_OTA &&
         copy_text(next.build,build,build_capacity) && copy_text(next.sdk,sdk,sdk_capacity);
     if(!valid) { firmware_info_reset(out);return false; }
     next.source=source;next.profile=profile;*out=next;return true;

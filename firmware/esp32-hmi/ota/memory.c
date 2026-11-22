@@ -42,7 +42,7 @@ tv4_ota_memory_result tv4_ota_memory_release(tv4_ota_memory *lease) {
     if(!lease->session)return TV4_MEMORY_OK;
     switch(lease->session->result.state) {
         case TV4_SESSION_IDLE:case TV4_SESSION_CANDIDATE_READY:case TV4_SESSION_IMAGE_VERIFIED:
-        case TV4_SESSION_FAILED:case TV4_SESSION_CANCELLED:break;
+        case TV4_SESSION_FAILED:case TV4_SESSION_CANCELLED:case TV4_SESSION_INSTALLED:break;
         default:return TV4_MEMORY_BUSY;
     }
     /* Only a successfully acquired lease may be released. */

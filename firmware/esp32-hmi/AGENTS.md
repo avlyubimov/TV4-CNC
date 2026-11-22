@@ -28,6 +28,17 @@ docs/BOARD_ADAPTER.md, docs/RUNTIME_DIAGNOSTICS.md и docs/OTA_ARCHITECTURE.md.
   для успешной загрузки HMI. Установка — только после подтверждения оператора.
 - Не включать eFuse/Secure Boot/Flash Encryption в рамках настройки OTA.
   Текущий factory 2 МиБ не менять до отдельно проверенной USB-миграции.
+- P1 от main d1317a8: только explicit rev12-ota включает installer/worker,
+  rollback/watchdog и ota/partitions.ab.csv. Ordinary profiles/factory2MiB
+  прежние; candidate CSV остаётся историческим read-only input. Читайте
+  docs/ESP32_OTA_INSTALLATION.md. Отсутствующий owner-local trust/context
+  блокирует установку; проверочные ключи только host. Подготовка USB-пакета
+  не разрешает его запись. Текущие установленные образы этим PR не меняются.
+
+Исторические контракты ниже описывают слитые read-only этапы; P1 расширяет только
+explicit OTA profile, не включает installer в прежних профилях и не снимает
+аппаратные/ключевые/ресурсные gates.
+
 - PR-04a/04b/04c добавляют verification/native policy/read-only stream;
   PR-04d добавляет envelope/read-only HTTPS primitives; PR-04e — bounded
   read-only session coordinator; PR-04f — PSRAM-only workspace/admission.

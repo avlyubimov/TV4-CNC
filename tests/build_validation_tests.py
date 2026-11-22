@@ -33,8 +33,8 @@ class BuildValidationTests(unittest.TestCase):
             (self.root / name).write_bytes(header)
         self.partition()
 
-    def partition(self, address=0x10000, size=0x100000):
-        data = struct.pack("<HBBII16sI", 0x50AA, 0, 0, address, size, b"factory", 0)
+    def partition(self, address=0x10000, size=0x200000):
+        data = struct.pack("<HBBII16sI", 0x50AA, 1, 2, 0x9000, 0x6000, b"nvs", 0) + struct.pack("<HBBII16sI", 0x50AA, 1, 1, 0xf000, 0x1000, b"phy_init", 0) + struct.pack("<HBBII16sI", 0x50AA, 0, 0, address, size, b"factory", 0)
         (self.root / "partition_table/partition-table.bin").write_bytes(data)
 
     def check(self, profile="headless"):
