@@ -1,6 +1,6 @@
 # P1 — после фазного стенда ESP32
 
-База mainfc9020087e426c5c06129654f8a242612e184079, PR #1–62 слиты.
+Текущая software база main973a9ba, PR #1–63 слиты; аппаратный образ стенда — fc90200.
 [Аппаратный стенд fc90200](evidence/hardware/2026-11-22-esp32-ota-memory/README.md) завершён по отдельному разрешению:
 fresh16MiB/two-NVMe, diagnostic app-only write,7startup/BOOT window/16samples,
 factory2MiB fecc05d return/verify/4samples и owner HMI/touch/saved Wi-Fi/SETUP PASS.
@@ -21,22 +21,33 @@ Fresh fecc05d snapshot: d84fe13900806d9646e1e2edb8df0c4fe897aa6de85f14c28bfd0624
 restore из него проверен; условный full16MiB restore не выполнялся.
 Legacy8f0d899 имеет прежнюю карту, не является текущим running image.
 
-## Следующий функциональный шаг P1
+## Текущая программная интеграция от main973a9ba
 
-1. Локализовать startup internal allocations между DASHBOARD_READY и UI_READY
-   (1516..2307ms): export task start, splash ready refresh/deletion и первый
-   dashboard refresh, параллельные Wi-Fi/RTOS задачи. Это кандидаты по
-   общему heap/source interval, не установленный виновник.
-   Исправить подтверждённую причину и дать проверенный ELF/BIN. Не заменять
-   интеграцию новой моделью и не урезать DMA64KiB/TLS16384/4096/framebuffer.
-2. Проверить влияние будущего worker8192 и настоящей TLS/install нагрузки:
-   текущий замер относится к3072 без ключа. Production floors не утверждены;
+PR #63 слит владельцем, аппаратный отчёт сохранён. [План следующего PR](plans/P1_STARTUP_MEMORY_ORDER.md):
+первый полный dashboard refresh/UI_READY до существующих export/Wi-Fi services.
+OTA worker/rollback deadline остаются до board init; touch-release gate,
+заставка, DMA64KiB/TLS16384/4096/framebuffer и частоты прежние. При неудачном
+первом flush services не запускаются. Семь startup ID стабильны; хронология
+теперь0,1,2,3,5,6,4, worker выводит ID-order, не time-order.
+
+Actual app_main/real LVGL host integration проверяет cold frame и отказы;
+SDK/board doubles не доказывают ESP32 heap/performance. В исходниках устранено
+перекрытие service startup с cold GUI render. Это не доказательство причины
+аппаратного minimum1887 или улучшения на плате. На устройстве по-прежнему fecc05d;
+новых UART/SWD/reset/Flash операций нет.
+
+## Следующие аппаратные и ресурсные gates P1
+
+1. После review/CI отдельно согласовать exact-image измерение нового startup
+   order: сравнить internal free/largest/local minima и стеки с fc90200,
+   проверить UI/touch/saved Wi-Fi/SETUP. Не повторять USB migration и не
+   прошивать ordinary rev12 поверх действующей A/B-карты.
+2. Проверить будущий worker8192 и настоящую TLS/install нагрузку: текущий
+   аппаратный замер относится к3072 без ключа. Floors не утверждены;
    арифметическое вычитание5120 из суммы минимумов1887 не доказывает OOM.
-   Новый exact-image hardware тест согласуется отдельно, текущая A/B-карта
-   не мигрируется повторно. Обычный rev12 flash не является откатом.
 3. Owner key, SemVer, trust/time/resource context пока отсутствуют по решению
    владельца. CHECK/INSTALL закрыты, test keys только host. После решений и
-   ресурcной приёмки — реальный signed install в inactive slot, reboot/self-test/
+   ресурcной приёмки — signed install в inactive slot, reboot/self-test/
    confirmation/rollback и Wi-Fi/power-loss сценарии по отдельному разрешению.
 4. Factory self-test marker PASS не означает испытание PENDING_VERIFY.
    Полный16MiB recovery, CPU/FPS/latency/tearing/soak и P2–P5 остаются открытыми.
@@ -44,7 +55,6 @@ Legacy8f0d899 имеет прежнюю карту, не является тек
 
 История [миграции fecc05d](evidence/hardware/2026-11-22-esp32-ota-migration/README.md)
 и [software builds](evidence/build/esp32-ota-memory-phases/README.md) сохранена.
-Этот PR добавляет отчёт, не новую исполняемую firmware.
 
 ## История слитой программной базы
 

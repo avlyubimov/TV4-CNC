@@ -1,5 +1,10 @@
 # Открытые вопросы и блокирующие решения
 
+Программное продолжение от main973a9ba переносит optional export/Wi-Fi start
+после первого полного HMI frame/UI_READY. Это ещё не аппаратная проверка или
+подтверждённое улучшение памяти; установленный fecc05d и закрытый scope прежнего
+сеанса сохраняются. [План и границы проверки](plans/P1_STARTUP_MEMORY_ORDER.md).
+
 ## 22 ноября: уточнение RAM/stack после реального BOOT стенда
 
 [fc90200](evidence/hardware/2026-11-22-esp32-ota-memory/README.md): APP_ENTRY history202308 → local BOOT minimum1887 к UI_READY

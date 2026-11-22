@@ -111,11 +111,6 @@ void app_main(void) {
 #endif
     MEMORY_PHASE(TV4_MEM_TOUCH_READY);
     boot_view_stage(BOOT_NETWORK);lv_refr_now(display);
-#if CONFIG_TV4_BOARD_REV12
-    /* Networking is optional; connection/DHCP never holds up the HMI boot. */
-    if(!wifi_service_start()) ESP_LOGE(TAG,"Wi-Fi task creation failed");
-#endif
-    MEMORY_PHASE(TV4_MEM_WIFI_STARTED);
     boot_view_stage(BOOT_INTERFACE);lv_refr_now(display);
     dashboard_create();
     /* Local running-build metadata, sampled once by LVGL owner at startup.
@@ -144,7 +139,6 @@ void app_main(void) {
     esp_reset_reason_t reset=esp_reset_reason();
     diagnostics->record.reset_reason=(uint32_t)reset;
     diagnostics->record.watchdog_boot=reset==ESP_RST_INT_WDT || reset==ESP_RST_TASK_WDT || reset==ESP_RST_WDT;
-    if(!diag_export_start())ESP_LOGE(TAG,"Diagnostic export worker unavailable");
     boot_view_stage(BOOT_READY);lv_refr_now(display);
     /* Keep the splash readable without blocking LVGL or waiting for Wi-Fi. */
     while((uint32_t)(tick_ms()-boot_started)<1200) {
@@ -157,6 +151,7 @@ void app_main(void) {
     lv_indev_wait_release(input); /* Never carry a held boot-time touch into JOG. */
 #endif
     lv_refr_now(display);
+    if(display_failed)boot_error(display,S_FAULT_DISPLAY,ESP_FAIL);
 #if CONFIG_TV4_BOARD_REV12
     uint32_t last_good_touch=tick_ms();
     bool touch_fault_logged=false;
@@ -164,6 +159,14 @@ void app_main(void) {
     ESP_LOGI(TAG,"UI ready: LVGL %d.%d.%d, 800x480 RGB565, draw buffer=%u bytes",
         LVGL_VERSION_MAJOR,LVGL_VERSION_MINOR,LVGL_VERSION_PATCH,(unsigned)bytes);
     MEMORY_PHASE(TV4_MEM_UI_READY);
+    /* Complete the cold GUI render before allocating optional service tasks.
+     * Phase IDs remain stable; WIFI_STARTED now follows UI_READY in time. */
+    if(!diag_export_start())ESP_LOGE(TAG,"Diagnostic export worker unavailable");
+#if CONFIG_TV4_BOARD_REV12
+    /* Connection/DHCP never holds up the HMI boot. */
+    if(!wifi_service_start())ESP_LOGE(TAG,"Wi-Fi task creation failed");
+#endif
+    MEMORY_PHASE(TV4_MEM_WIFI_STARTED);
 #if CONFIG_TV4_OTA_MEMORY_BENCH || CONFIG_TV4_UTC_TLS_BENCH
     uint32_t bench_ready=tick_ms();bool bench_requested=false;
 #endif

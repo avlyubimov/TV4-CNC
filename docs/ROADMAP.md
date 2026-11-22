@@ -1,6 +1,6 @@
 # План реализации TV4-CNC: функциональные приоритеты P0–P5
 
-База mainfc90200 / PR #1–62. [Фазный стенд ESP32](evidence/hardware/2026-11-22-esp32-ota-memory/README.md) выполнен:
+Software база main973a9ba / PR #1–63. [Фазный стенд ESP32](evidence/hardware/2026-11-22-esp32-ota-memory/README.md) выполнен:
 fresh16MiB/two-NVMe, app-only diagnostic write/capture90.103s, возврат всего
 factory2MiB fecc05d/verify/capture30.051s и owner HMI/touch/saved Wi-Fi/SETUP PASS.
 На ESP32 fecc05d/tv4-16m-ab-v1; F407 ee7d179 без обращения.
@@ -11,10 +11,12 @@ Factory-partition restore проверен, full16MiB recovery не выполн
 local minimum1887 к UI_READY, history112 после SDK stop. Это per-heap minima,
 не simultaneous free/OOM или production floor. Worker watermark1488из3072;
 configured8192/TLS/install, slot confirm/rollback/power-loss и performance
-ещё не измерены. Следующий P1 результат — локализация/исправление startup
-internal transient, затем configured budget после owner key/context решений.
-[Software builds](evidence/build/esp32-ota-memory-phases/README.md) сохранены;
-этот отчёт меняет только документацию.
+ещё не измерены. Текущий software PR переносит существующие export/Wi-Fi
+services после полного первого dashboard refresh/UI_READY, с actual app_main/
+real LVGL integration и прежними буферами/часами. Это устраняет source-level
+startup overlap, не доказывает экономию ESP32 RAM или причину minimum1887.
+[План](plans/P1_STARTUP_MEMORY_ORDER.md); затем отдельно разрешённый замер и
+configured budget после owner key/context решений.
 
 ## Исторический итог P0 и программной подготовки
 
