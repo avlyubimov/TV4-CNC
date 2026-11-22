@@ -1,0 +1,80 @@
+{
+  "base_commit": "392706355193b7544132e2296f7ef8572e1f3c10",
+  "source_files_sha256": {
+    "firmware/stm32-motion/stepdir/timer_plan.c": "e092d9a7dfe1d12adfdd9a6f475557e712e58ac2c69ae1b757fd0a1899b30a9a",
+    "firmware/stm32-motion/stepdir/timer_plan.h": "10cf1e289a61fcdb8c0d79e35b4304b1aa211be196c417644bfc97a18fa8c4b5",
+    "firmware/stm32-motion/tests/stepdir_plan_tests.c": "b828d3bb4a351247d9291d4c7f7362452c97f35d5171a98dddca6570648e3da9",
+    "firmware/stm32-motion/tests/stepdir_scope_tests.py": "39643ca00fa0b87647a90802d507e05ae68c49569bf81ef6026d1d3348077649",
+    "tools/check_stepdir_design.py": "26ff05f35ab237d515c303bbd37504313cfbf543851d24f5e5be67011e11742c",
+    "firmware/stm32-motion/CMakeLists.txt": "1e67d347d718132a36c3cb973cf294d60dede8d1b80d55476d7d82a53db6cf3f",
+    ".github/workflows/motion.yml": "d38cedd754ed9c743af1399ed4410c42a736f3baa2117bd15703a070577bcf64"
+  },
+  "toolchain": {
+    "arm_gcc": "14.2.1",
+    "host_gcc": "15.2.0",
+    "python": "3.14.4",
+    "cmake": "4.2.3",
+    "lvgl": "9.2.2",
+    "mbedtls": "3.6.7"
+  },
+  "arm": {
+    "text": 464,
+    "data": 0,
+    "bss": 0,
+    "text_ceiling": 1024,
+    "frames": {
+      "tv4_stepdir_compile": 72
+    },
+    "frame_ceiling": 96,
+    "imports": [
+      "__aeabi_uldivmod",
+      "memset"
+    ],
+    "exports": [
+      "tv4_stepdir_compile"
+    ],
+    "physical_outputs": false,
+    "device_access": false,
+    "firmware_image": false,
+    "runtime_stack_peak_qualified": false
+  },
+  "host": {
+    "total": 160,
+    "passed": 160
+  },
+  "sanitizers": {
+    "total": 160,
+    "passed": 160,
+    "enabled": [
+      "address",
+      "undefined",
+      "leak"
+    ],
+    "sandbox_initial_failure": "LSan ptrace restriction; full rerun outside sandbox, no checks disabled"
+  },
+  "property_cases": {
+    "total": 20000,
+    "accepted": 9709,
+    "refused": 10291
+  },
+  "timer_model": {
+    "pulse_count_domain": "1..256",
+    "full_counter_simulations": [
+      1,
+      2,
+      256
+    ],
+    "external_pulses": 0
+  },
+  "checks": {
+    "actual_source_fanalyzer": "PASS",
+    "default_arm_design_exclusion": "PASS",
+    "real_and_synthetic_mixed_design_refusals": "PASS",
+    "p0_image_contract": "PASS",
+    "p0_elf_stepdir_symbols": "absent",
+    "p0_board_startup_and_protocol_runtime_sources": "unchanged",
+    "hardware": "not run",
+    "driver_settings": "unknown",
+    "independent_emergency_chain": "not qualified by software"
+  }
+}
