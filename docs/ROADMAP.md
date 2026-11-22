@@ -1,18 +1,20 @@
 # План реализации TV4-CNC: функциональные приоритеты P0–P5
 
-База текущей интеграции main6f95d27 / PR #1–61. 22 ноября [первая USB migration ESP32](evidence/hardware/2026-11-22-esp32-ota-migration/README.md)
-завершена: four writes/verify/NVS preservation/factory fecc05d/PSRAM8MiB/XiP/
-owner HMI/touch/saved Wi-Fi/SETUP PASS. На ESP32 теперь rev12-ota и карта
-tv4-16m-ab-v1; на F407 ee7d179 без изменений. Backup8f0d899/two-NVMe сохранён,
-restore не испытывался. P1 configured install/confirm/rollback/power-loss и
-RAM/stack/performance budget ещё открыты: historical internal minimum112bytes
-требует разбора, не устанавливает simultaneous OOM/floor. Сеанс закрыт.
+База mainfc90200 / PR #1–62. [Фазный стенд ESP32](evidence/hardware/2026-11-22-esp32-ota-memory/README.md) выполнен:
+fresh16MiB/two-NVMe, app-only diagnostic write/capture90.103s, возврат всего
+factory2MiB fecc05d/verify/capture30.051s и owner HMI/touch/saved Wi-Fi/SETUP PASS.
+На ESP32 fecc05d/tv4-16m-ab-v1; F407 ee7d179 без обращения.
+Factory-partition restore проверен, full16MiB recovery не выполнялся.
+Сеанс608.700s закрыт; новые device/reset/Flash требуют нового разрешения.
 
-Получен software результат P1 — [фазный диагностический ELF/BIN](ESP32_OTA_MEMORY_PHASES.md)
-с opt-in minimum monitor и достоверным OTA-worker stack. Normal flag0 сохраняет
-global history; измерения flag1 требуют нового отдельно разрешённого стенда.
-Clean391d429:12/12 build variants и host/sanitizers87/87 PASS; новые compile/host
-результаты не заменяют hardware данные fecc05d выше.
+Получены7startup points/BOOT window/16samples: APP_ENTRY history202308,
+local minimum1887 к UI_READY, history112 после SDK stop. Это per-heap minima,
+не simultaneous free/OOM или production floor. Worker watermark1488из3072;
+configured8192/TLS/install, slot confirm/rollback/power-loss и performance
+ещё не измерены. Следующий P1 результат — локализация/исправление startup
+internal transient, затем configured budget после owner key/context решений.
+[Software builds](evidence/build/esp32-ota-memory-phases/README.md) сохранены;
+этот отчёт меняет только документацию.
 
 ## Исторический итог P0 и программной подготовки
 
@@ -42,7 +44,7 @@ P1 интегрирован программно: [installer/rollback/migration]
 | Приоритет | Законченный результат | Зависимости и приёмка | Текущий статус |
 |---|---|---|---|
 | P0 — STM32F407 firmware | Настоящий ELF/BIN на HSI с RAM/SWD diagnostics, exception/watchdog handling, без активации motion outputs | Официальная карта VGT6/SRAM/CCM/Flash sectors/vectors; real startup/linker; map/size/hash/source и memory/vector CI; ST-Link install/restore runbook; запись только отдельно разрешена | **PASS базового стенда ee7d179**: program/verify/identity/RUNNING/progress, data-BSS/CCM word/guards, watchdog reset и UsageFault. Образ оставлен running; стресс/частоты/physical outputs не подтверждены |
-| P1 — ESP32 OTA | Установка проверенного образа в неактивный слот, boot self-test, подтверждение или rollback с работающими LVGL/GT911/Wi-Fi | Расчёт/утверждение 16 МиБ factory recovery+otadata+двух OTA-слотов; отдельная USB-миграция; existing HTTPS/signature/local key/SHA/size/hardware checks; Wi-Fi/power-loss tests; реальные SRAM/PSRAM/stack измерения | USB migration/factory fecc05d/rev12-ota/XiP/owner HMI и SETUP PASS, backup/two-NVMe сохранён. Configured install/slot confirm/rollback/recovery/network/power loss не испытаны; key/context отсутствуют. 16 samples и internal history112 требуют фазного RAM/stack review; production floors/performance не утверждены |
+| P1 — ESP32 OTA | Установка проверенного образа в неактивный слот, boot self-test, подтверждение или rollback с работающими LVGL/GT911/Wi-Fi | Расчёт/утверждение 16 МиБ factory recovery+otadata+двух OTA-слотов; отдельная USB-миграция; existing HTTPS/signature/local key/SHA/size/hardware checks; Wi-Fi/power-loss tests; реальные SRAM/PSRAM/stack измерения | Migration/factory и startup BOOT instrumentation проверены; fresh16MiB/two-NVMe и factory2MiB return PASS, на плате fecc05d/owner HMI PASS. Local minimum1887, worker1488из3072 требуют startup RAM review. Configured8192/TLS/install/slot confirm/rollback/full recovery/power-loss не испытаны; key/context/floors не утверждены |
 | P2 — Releases | Настоящие воспроизводимые бинарники, SemVer/source binding, signed manifest/SHA-256, prerelease/stable, экран «ПО и обновления» | Рабочий OTA P1; проверка воспроизводимости, trust/signer/licensing; ручное утверждение владельцем exact SHA/tag/channel/assets; push/merge не выпускают release | CI/metadata-only review база существует; production signing/publication/discovery ещё нет; P1 UI включён только в explicit OTA profile. Фиктивный STM32 BIN запрещён |
 | P3 — physical CAN | Минимальный проверенный обмен ESP32-S3↔STM32F407 с ошибками/тайм-аутами/восстановлением | Получить трансиверы; проверить уровни/терминаторы/pinout/mux/IDs/bitrate на изолированном стенде; отдельное hardware permission | Физический CAN не проверен. Существующий протокол сохраняется; новые слои только для конкретной интеграции |
 | P4 — STM32 CAN OTA | Независимый bootloader, проверенная запись Flash/recovery после прерывания, existing independent crypto и ESP32 OTA Manager | Реальная карта/профиль P0 и physical CAN P3; reviewed bootloader/app/staging layout; fresh quiescent/operator/recovery gates; обновления при движении запрещены | Host transport/verifier подготовлены. Адреса загрузчика сейчас не резервируются, Flash writer/boot activation ещё нет |

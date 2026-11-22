@@ -1,23 +1,26 @@
 # Диагностика HMI: instrumentation и границы измерений
 
-## P1: после стенда fecc05d
+## P1: реальные startup/BOOT samples fc90200
 
-[Аппаратные16samples](evidence/hardware/2026-11-22-esp32-ota-migration/README.md)
-дали historical internal minimum112bytes при текущих22851..22907. Причина пока
-не установлена: SDK суммирует per-heap history, включая изменения DMA reserve
-ещё до app_main. Следующая [фазная firmware instrumentation](ESP32_OTA_MEMORY_PHASES.md)
-готовится без новых device operations. Добавочные schema1 поля только в OTA:
-`ota_stack_valid`, `ota_stack`, `heap_min_scope` (history/window/unknown).
-Во время scope transition минимум помечается unknown; другие heap values не
-объявляются атомарным simultaneous snapshot. Ordinary JSON сохраняет прежние поля.
+[Стенд22ноября](evidence/hardware/2026-11-22-esp32-ota-memory/README.md) завершён, fecc05d/factory возвращён и owner HMI PASS.
+7startup slots/mask127, BOOT start0/stop0,16diag+4return samples, explicit
+factory self-test checks_pass1/sdk_finish1. На APP_ENTRY historical202308,
+в BOOT local minimum1887 к UI_READY после dashboard, после stop history112.
+Гипотеза112 до HMI данным образом не подтверждена; конкретный allocator не найден.
+SDK restore min(saved,local) по каждому heap объясняет, почему последующая
+сумма может быть меньше обеих прежних сумм; simultaneous peak/OOM/floor не измерен.
 
-SDK local-minimum windows только при явном TV4_OTA_MEMORY_DIAGNOSTICS=1;
-default off. Startup samples публикует main, bounded UART вывод делает OTA-worker
-после self-test. `sample_stack` относится к sampler, `worker_stack_at_emit` — к
-позднему выводу; не смешивать их. В normal OTA есть явный boot_self_test marker
-и watermark действительного worker, без ложного main stack при task-create fail.
-Полный call-stack peak, CPU/FPS/latency и configured TLS/install budget ещё
-не подтверждены; bookkeeping guards не являются production floors.
+OTA-worker watermark1488из3072bytes во всех16valid samples; configured8192/
+TLS/install не тестировались. Scope0(history) во всех periodic records.
+Startup sample_stack относится к main, worker_stack_at_emit — к более позднему
+выводу; ни compiler frame112, ни эти числа не полный call-chain peak.
+Main10580/touch минимум2504/Wi-Fi1104/export1220bytes; render/event0 не FPS/latency.
+
+TV4_OTA_MEMORY_DIAGNOSTICS default off; только explicit flag1 включает SDK
+minimum monitor и ledger. Normal OTA сохраняет global history/stack validity
+и boot marker. Обычный fecc05d после возврата не содержит этой instrumentation.
+Следующий результат — startup RAM transient review без урезания DMA/TLS/буферов.
+Новых устройств/UART/reset/Flash после закрытого сеанса нет.
 
 ## Исторический baseline PR-03
 

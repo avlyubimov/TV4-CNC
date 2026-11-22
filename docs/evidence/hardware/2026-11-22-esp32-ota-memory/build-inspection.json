@@ -1,0 +1,32 @@
+{
+  "profile": "rev12-ota",
+  "sdk": "6.1.1",
+  "memory_diagnostics": true,
+  "module_writable_bytes": 432,
+  "module_writable_ceiling": 512,
+  "compiler_frames": {
+    "transition": 32,
+    "report": 112,
+    "tv4_ota_memory_scope_revision": 32,
+    "tv4_ota_memory_scope_since": 32,
+    "tv4_ota_memory_capture": 64,
+    "tv4_ota_memory_startup": 80,
+    "tv4_ota_memory_window_begin": 32,
+    "tv4_ota_memory_window_end": 32,
+    "tv4_ota_memory_report_window": 48,
+    "tv4_ota_memory_report_startup": 48
+  },
+  "compiler_frame_ceiling": 192,
+  "sdk_monitor_linked": [
+    "heap_caps_monitor_local_minimum_free_size_start",
+    "heap_caps_monitor_local_minimum_free_size_stop"
+  ],
+  "source_monitor_owners": [
+    "firmware/esp32-hmi/ota/memory_diagnostics.c",
+    "firmware/esp32-hmi/ota/utc_tls_bench.c"
+  ],
+  "app_bytes": 1600528,
+  "device_access": false,
+  "runtime_stack_peak_coverage": false,
+  "hardware_performance": "not measured"
+}

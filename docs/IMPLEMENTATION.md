@@ -1,21 +1,22 @@
 # Реализация: main, открытые PR и аппаратные границы
 
-## Текущая интеграция P1 (база main6f95d27, PR #1–61 слиты)
+## Текущий результат P1 (база mainfc90200, PR #1–62 слиты)
 
-[ESP32 OTA installation](ESP32_OTA_INSTALLATION.md) добавляет
-explicit rev12-ota: существующие signature/HTTPS/session соединены с SDK inactive
-writer, UI approval, boot self-test/rollback/watchdog и prepare/verify USB bundle.
-Владелец выбрал unprovisioned настройку: ключ/production context отсутствуют,
-install закрыт, test key в firmware нет. На ESP32 после отдельно разрешённого
-стенда работает fecc05d/rev12-ota/factory и tv4-16m-ab-v1; F407 ee7d179 не
-открывался. [Аппаратная миграция](evidence/hardware/2026-11-22-esp32-ota-migration/README.md)
-подтверждена, configured OTA/power loss/RAM-stack budget ещё открыты.
-[Фазная диагностика](ESP32_OTA_MEMORY_PHASES.md) собрана из clean391d429:
-12/12 build variants, host/sanitizers87/87 PASS. Это software integration,
-новых device operations нет; installed fecc05d не заменяется.
-[evidence](evidence/build/esp32-ota-installation/README.md), [следующий этап](NEXT_STAGE.md).
-Ниже — история слитой базы; прежние «нет installer/OTA» относятся к тем этапам.
+Existing signed HTTPS/session соединены с inactive SDK installer/UI approval/
+boot self-test/rollback и USB migration. На ESP32 после диагностического
+[стенда fc90200](evidence/hardware/2026-11-22-esp32-ota-memory/README.md) возвращён fecc05d/factory/tv4-16m-ab-v1, owner HMI/
+touch/saved Wi-Fi/SETUP PASS; F407 ee7d179 не открывался. Fresh16MiB snapshot
+и две NVMe-копии проверены; factory2MiB restore PASS, full recovery не испытан.
 
+[Фазная firmware](ESP32_OTA_MEMORY_PHASES.md), слитый PR #62, дала реальные
+7startup points/BOOT window/16samples: history202308 на APP_ENTRY → local1887
+к UI_READY → history112 после stop, OTA-worker остаток1488из3072bytes.
+Это не approved budget configured8192/TLS/install или simultaneous OOM proof.
+Следующий software результат — локализация/исправление startup transient;
+key/context/floors не угадываются. CHECK/INSTALL остаются закрыты без настройки.
+Оба UART capture завершены, сеанс608.700s закрыт, новых device actions нет.
+Этот отчётный PR не меняет firmware исходники; [дальнейший план](NEXT_STAGE.md).
+Ниже — история слитых этапов, не текущая очередь абстракций.
 
 ## История P0 — первая прошиваемая сборка F407
 
