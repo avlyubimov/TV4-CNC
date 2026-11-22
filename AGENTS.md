@@ -140,28 +140,33 @@ PR и Actions; не копировать код уже открытого PR. Д
    теги, релизы, секреты CI и публикации под видом обычного push.
 6. Обновлять актуальный статус; исторические отчёты сохранять с явной пометкой.
 
-## Текущее задание: P1 ESP32 OTA
+## Текущее задание: P1, от резервного snapshot к USB migration
 
-База main d1317a89f6a29cf4ba950092a00ba00c78f80f1b, PR #1–58 слиты.
-P0 ee7d179 работает на F407; аппаратный отчёт принят. Все прежние разрешённые
-сеансы завершены. Установленные F407 ee7d179 и ESP32 ordinary8f0d899 сохраняются;
-код P1/новый commit не означает, что он записан в устройства.
+База main fecc05d676a0b1e3376db5317fa241274e8e310a, PR #1–59 слиты.
+Installer/UI/self-test/rollback/XiP/USB bundle интегрированы в explicit rev12-ota.
+Clean-main fecc05d/SDK6.1.1 unprovisioned bundle собран/проверен локально; main CI
+зелёный. Владелец выбрал настройку без ключа; production key/versions/resource/
+time context не угадывать, сетевые CHECK/INSTALL закрыты. Test keys только host.
 
-Одна интеграция P1: existing HTTPS/signature/session → SDK inactive writer,
-UI confirmation, boot self-test/rollback/watchdog, explicit rev12-ota layout и
-prepare/verify USB bundle. Читать docs/plans/P1_ESP32_OTA.md,
-docs/ESP32_OTA_INSTALLATION.md, NEXT_STAGE и evidence/build/esp32-ota-installation.
-Владелец выбрал настройку без ключа: build/run разрешены, отсутствующий локальный
-public key/production versions/resource/time context блокирует сетевую установку.
-Проверочные ключи только в host tests; в firmware/CI их не встраивать.
+22 ноября разрешённый read-only ESP32 preflight/snapshot/reset завершён:
+один full16MiB read, transfer MD5 и отдельный device MD5, SHA-256 двух приватных
+копий на разных NVMe PASS; legacy factory2MiB/app8f0d899 подтверждены offline.
+Owner после reset: HMI/touch/Wi-Fi работают как прежде. Читайте
+docs/evidence/hardware/2026-11-22-esp32-pre-ota-snapshot/README.md,
+docs/BACKUP_STATUS.md, docs/NEXT_STAGE.md и docs/ESP32_OTA_INSTALLATION.md.
+Дампы/NVS/пароли/полные UART logs приватны; в PR только текст/метаданные.
 
-Проверить host/fault/layout/negative/sanitizers и5profiles×2SDK CI. Подготовить
-реальный clean-source unprovisioned BIN/ELF/migration bundle; в публичное evidence
-выгружать только текст/метаданные, без binaries/ключей/дампов. Compiler frame/
-ELF size не runtime margins. USB migration, configured install/rollback, Wi-Fi/
-power-loss и реальные heap/stack/touch/FPS остаются отдельным аппаратным этапом
-с точным образом/сценарием/разрешением. Не начинать P2–P5 под видом этой работы.
-Никаких устройств, eFuse/OTP/option bytes, CAN/motion, self-merge или release.
+Новая firmware не записана. На ESP32 остаётся ordinary8f0d899, F407 ee7d179
+не открывался. Разрешение на read/reset завершено и не разрешает Flash write,
+новый UART/SWD или hardware tests. Следующая USB migration требует отдельного
+exact-bundle owner разрешения с проверенным snapshot/recovery и изоляцией платы.
+Initial bootloader/table/factory migration не защищается app rollback. Restore
+snapshot, XiP boot, signed OTA/rollback/power loss и runtime memory/FPS пока
+не подтверждены. Не объявлять P1 hardware acceptance или P2–P5 завершёнными.
+
+Текущий отчётный PR только docs/evidence: исполняемые firmware/SDK/dependency/
+CI pins не менять. Никакого самостоятельного merge/release, eFuse/option bytes/
+OTP/CAN/motion. Hardware action only after an explicit applicable owner approval.
 
 ## Исторические контракты слитых этапов
 

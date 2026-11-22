@@ -1,9 +1,10 @@
 # P1 — интеграция ESP32 OTA и следующий аппаратный этап
 
-База main `d1317a89f6a29cf4ba950092a00ba00c78f80f1b`, PR #1–58 слиты.
+База main `fecc05d676a0b1e3376db5317fa241274e8e310a`, PR #1–59 слиты.
 P0 ee7d179 принят на базовом стенде; [аппаратный отчёт](evidence/hardware/2026-11-22-f407-ee7d179-bench/README.md)
 не переносится на новые образы. На устройствах остаются F407 ee7d179 и ESP32
-ordinary8f0d899; их не открывали и не перепрошивали в P1.
+ordinary8f0d899. ESP32 теперь прочитан/сброшен по отдельному разрешению,
+новая firmware не записывалась; F407 не открывался.
 
 ## Программный результат P1
 
@@ -21,10 +22,14 @@ reviewed16MiB factory recovery + otadata +2slots. На плате эта кар�
 
 ## Что нужно перед следующим аппаратным испытанием
 
-1. После review/merge выбрать exact clean-source SDK6.1.1 unprovisioned bundle
-   и сверить независимый verify/hash/адреса. Не прошивать самостоятельно.
-2. Отдельно согласовать fresh16MiB snapshot текущего ESP32, hash и копию на другом
-   физическом носителе: factory backup не содержит последних Wi-Fi/NVS/настроек.
+1. **Готово:** clean-main fecc05d, rev12-ota/SDK6.1.1 без ключа собран;
+   prepare/independent verify bundle PASS. App SHA-256
+   `de55953fc9e3c4080cb277d734ca7d1f02c74880db38dac0f4b53830f587d021`.
+2. **Готово:** [fresh16MiB snapshot + independent NVMe copy](evidence/hardware/2026-11-22-esp32-pre-ota-snapshot/README.md),
+   whole-device MD5/local SHA-256/legacy layout/app inspection PASS; после reset
+   owner HMI/touch/Wi-Fi PASS. Snapshot SHA-256
+   `47c4f9c4e6d7fb1fcfce2b0065c2f69af0ea01664d1407b3504ee6e4a6a13107`.
+   Это checkpoint текущего8f0d899; factory backup сохранён отдельно.
 3. Отдельное разрешение на USB migration с проверенным recovery/BOOT-RESET путём,
    только изолированная плата/питание/USB. Начальная смена bootloader/table/factory
    при потере питания может потребовать USB recovery; app rollback её не защищает.
