@@ -50,6 +50,12 @@ docs/BOARD_ADAPTER.md, docs/RUNTIME_DIAGNOSTICS.md и docs/OTA_ARCHITECTURE.md.
   own compiler frames за full runtime stack. Install/crypto/resource authority,
   heap clocks/DMA reserve/TLS records/framebuffer и installed fecc05d прежние.
 
+После PR #64 аппаратный b5f4b38 стенд завершён за609.074s; читать
+ docs/evidence/hardware/2026-11-22-esp32-startup-order/README.md от корня. Temporal order подтверждён, local20715/steady largest12288/
+worker1664из3072 — single-run, не configured floor. Вернулся fecc05d; разрешение
+израсходовано. Worker8192/TLS/install/repeatability и owner settings открыты.
+Новые device операции только отдельно, прежние image/config/trust gates сохранять.
+
 Исторические контракты ниже описывают слитые read-only этапы; P1 расширяет только
 explicit OTA profile, не включает installer в прежних профилях и не снимает
 аппаратные/ключевые/ресурсные gates.

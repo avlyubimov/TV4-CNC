@@ -1,0 +1,14 @@
+{
+  "result": "PASS",
+  "numeric_schema_consistency": true,
+  "known_before_after_values_checked": true,
+  "public_numeric_only_diagnostics": true,
+  "docs_only_scope": true,
+  "relative_markdown_links_checked": 391,
+  "procedure_tests": 32,
+  "new_firmware_source_changes": false,
+  "new_local_firmware_build_after_bench": false,
+  "session_closed": true,
+  "no_further_device_access": true,
+  "owner_post_return_confirmation": null
+}

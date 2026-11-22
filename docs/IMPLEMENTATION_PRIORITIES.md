@@ -10,42 +10,27 @@ PR #1–54 слиты. PR #54 завершил threaded host tests; он бол�
 Исторические PR и их проверки остаются доказательствами выполненной работы,
 но не задают порядок дальнейшей разработки.
 
-## Текущее состояние: startup RAM измерен, configured P1 ещё открыт
+## Текущее состояние: порядок старта проверен, configured P1 открыт
 
-База mainfc90200/PR #1–62. [BOOT memory стенд ESP32](evidence/hardware/2026-11-22-esp32-ota-memory/README.md) и возврат
-factory2MiB fecc05d прошли; owner HMI/touch/saved Wi-Fi/SETUP PASS.
-Fresh16MiB/two-NVMe сохранён, full recovery не выполнялся. На ESP32 fecc05d/
-tv4-16m-ab-v1, F407 ee7d179 без обращения. Сеанс608.700s закрыт.
-APP_ENTRY history202308 → local1887 к UI_READY → restored history112;
-worker watermark1488из3072. Это не simultaneous OOM или production floor.
-Следующий функциональный результат P1 — локализовать startup transient и
-исправить подтверждённую причину, затем измерить configured8192/TLS/install
-после owner key/context решений. SDK/DMA/TLS/framebuffer не урезать.
-P1 signed install/slot confirmation/rollback/power-loss/full recovery и
-performance, а также P2–P5 ещё не приняты.
+База mainb5f4b38, PR #1–64 слиты. [Стенд нового порядка старта](evidence/hardware/2026-11-22-esp32-startup-order/README.md) завершён
+по отдельному разрешению за609.074s: fresh16MiB/device MD5/SHA-256/two-NVMe,
+app-only diagnostic b5f4b38/verify/capture90.173s, factory2MiB fecc05d return/
+verify/capture30.048s PASS. Подтверждение владельца экрана/касаний/saved Wi-Fi/OTA SETUP после возврата ожидается; UART-проверки PASS.
+На ESP32 fecc05d/factory/tv4-16m-ab-v1, F407 ee7d179 не открывался.
+Полный16MiB restore не понадобился; разрешение использовано, новых операций нет.
 
-### Базовый стенд P0 и программная подготовка P1
+BOOT local minimum20715 против1887 в fc90200, history7796 после stop;
+periodic free21575..21751/largest12288, PSRAM6090108, OTA-worker1664из3072.
+Это один instrumented run, per-heap minima не simultaneous free/OOM/floor.
+Largest вырос, steady free немного меньше. Тот же returned fecc05d дал history6956
+вместо прежнего112: повторяемость и нагрузка ещё требуют проверки.
+Configured8192/TLS/install/key/context/floors остаются открытыми, CHECK/INSTALL
+без настройки закрыты. FPS/latency/soak/slot confirm/rollback/power-loss не приняты.
 
-22 ноября 2026, база main `07fb406e37ebd1f1e019dbee0b54e8bb5571be1a`, PR #1–57 слиты.
-После отдельного разрешения один стенд ee7d179 завершён за16,196s, exit0:
-program/verify/exact identity, RUNNING, data/BSS/один CCM word/guards, progress,
-watchdog reset и UsageFault capture/reset **PASS**. На F407 оставлен работающим
-clean `ee7d179435f3f9e7598c7646b85ff64f4d5e9a32`, BIN2540bytes. Условный restore
-не понадобился. Предыдущий c09 FAIL8 и проверенный полный snapshot restore — история.
-
-Плата изолирована, только питание/SWD; option bytes/OTP/CAN/motion/ESP32 не менялись.
-Этот разрешённый сеанс завершён. Полный RAM/CCM stress, stack high-water,
-точные HSI/LSI/HSE частоты, physical GPIO/CAN/inhibit и power-loss остаются открытыми.
-P0 выполнен на базовом стенде; следующий приоритет — P1 ESP32 OTA с existing
-HTTPS/crypto и review16MiB factory+двух OTA slots/USB migration. Новых hardware
-операций или будущих CAN loader addresses это не разрешает.
-
-[Успешный стенд ee7d179](evidence/hardware/2026-11-22-f407-ee7d179-bench/README.md). Следующий измеримый результат — P1 runtime ESP32 OTA,
-не дальнейшее расширение host-модели F407. Отчёт #58 уже слит; текущая база
-main d1317a8 для программной интеграции. [P1 installation](ESP32_OTA_INSTALLATION.md) интегрирует реальный
-rev12-ota SDK writer/self-test/rollback/USB bundle и UI. Владелец выбрал настройку
-без ключа; install fail-closed. Базовая hardware migration с тех пор пройдена,
-configured OTA/resources остаются открытыми, как указано в текущем статусе выше.
+Следующий результат — resource qualification/repeatability и затем configured
+OTA install/confirm/rollback, с реальным образом/замером, не новыми абстракциями.
+Сохранять existing HTTPS/crypto, закрытые trust/install gates и performance
+границы. Новые аппаратные тесты только по отдельному разрешению.
 
 ## P0 — первая настоящая прошивка STM32F407
 

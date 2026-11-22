@@ -1,62 +1,47 @@
-# P1 — после фазного стенда ESP32
+# P1 — после аппаратного замера порядка старта
 
-Текущая software база main973a9ba, PR #1–63 слиты; аппаратный образ стенда — fc90200.
-[Аппаратный стенд fc90200](evidence/hardware/2026-11-22-esp32-ota-memory/README.md) завершён по отдельному разрешению:
-fresh16MiB/two-NVMe, diagnostic app-only write,7startup/BOOT window/16samples,
-factory2MiB fecc05d return/verify/4samples и owner HMI/touch/saved Wi-Fi/SETUP PASS.
-На ESP32 fecc05d/factory/tv4-16m-ab-v1; F407 ee7d179 не открывался.
-Сеанс608.700s закрыт, повторных UART/SWD/reset/Flash разрешений нет.
+База mainb5f4b38, PR #1–64 слиты. [Стенд нового порядка старта](evidence/hardware/2026-11-22-esp32-startup-order/README.md) завершён
+по отдельному разрешению за609.074s: fresh16MiB/device MD5/SHA-256/two-NVMe,
+app-only diagnostic b5f4b38/verify/capture90.173s, factory2MiB fecc05d return/
+verify/capture30.048s PASS. Подтверждение владельца экрана/касаний/saved Wi-Fi/OTA SETUP после возврата ожидается; UART-проверки PASS.
+На ESP32 fecc05d/factory/tv4-16m-ab-v1, F407 ee7d179 не открывался.
+Полный16MiB restore не понадобился; разрешение использовано, новых операций нет.
 
-[Проверенная software сборка и cold-render evidence](evidence/build/esp32-startup-memory-order/README.md).
+BOOT local minimum20715 против1887 в fc90200, history7796 после stop;
+periodic free21575..21751/largest12288, PSRAM6090108, OTA-worker1664из3072.
+Это один instrumented run, per-heap minima не simultaneous free/OOM/floor.
+Largest вырос, steady free немного меньше. Тот же returned fecc05d дал history6956
+вместо прежнего112: повторяемость и нагрузка ещё требуют проверки.
+Configured8192/TLS/install/key/context/floors остаются открытыми, CHECK/INSTALL
+без настройки закрыты. FPS/latency/soak/slot confirm/rollback/power-loss не приняты.
 
-## Полученный результат
+## Подтверждённый результат и инженерные пределы
 
-Исторический112 не был уже готовым APP_ENTRY минимумом в diagnostic image:
-на входе202308, local BOOT minimum1887 к UI_READY, после stop history112.
-SDK по каждому heap берёт min(saved,local); сумма не simultaneous peak/OOM.
-Конкретная transient allocation ещё не локализована. OTA-worker watermark1488
-из3072bytes; steady internal22279..22343/largest7680, PSRAM6090124.
-Числа относятся к instrumented unprovisioned build, не configured installer.
+PR #64 действительно даёт UI_READY до optional services; хронология
+0,1,2,3,5,6,4. В этой пробе local minimum/largest выросли, free немного меньше;
+конкретная allocation не изолирована, одно наблюдение не production budget.
+Семь startup samples/BOOT window/16 periodic/4 return samples сохранены.
+Factory bytes fecc05d возвращены точно; NVS после boot побайтно не сравнивалась.
 
-Fresh fecc05d snapshot: d84fe13900806d9646e1e2edb8df0c4fe897aa6de85f14c28bfd0624f101ff46,
-16MiB/two independent NVMe. [Статус копий](BACKUP_STATUS.md). Factory-partition
-restore из него проверен; условный full16MiB restore не выполнялся.
-Legacy8f0d899 имеет прежнюю карту, не является текущим running image.
+## Следующий функциональный шаг P1
 
-## Текущая программная интеграция от main973a9ba
+1. Проверить повторяемость старта/нагрузку и будущий worker8192 без назначения
+   production floors из этой пробы; unprovisioned3072 не configured installer.
+   Подготовить реальный ELF/BIN и явный scope следующего отдельно разрешённого
+   замера, использовать существующие HTTPS/crypto и monitor ownership guards.
+2. Owner key/SemVer/trust/time/resource context пока отсутствуют. Сохранять
+   SETUP/CHECK/INSTALL gates; никаких test keys в firmware или guessed policy.
+   После reviewed settings и измерений — настоящий signed inactive-slot install,
+   reboot/self-test/confirmation/rollback и Wi-Fi/power-loss сценарии.
+3. Полные SRAM/PSRAM/stack/CPU/FPS/latency/tearing/soak и full16MiB recovery ещё
+   открыты; normal b5f4b38 не испытывался. Не урезать DMA64KiB/TLS16384/4096/
+   framebuffer/clocks ради PASS. Новый hardware scope согласуется отдельно.
+4. Сохранять A/B-карту и текущий fecc05d; ordinary rev12 flash не является
+   откатом. F407/physical CAN/motion/P2–P5 не объявлять принятыми.
 
-PR #63 слит владельцем, аппаратный отчёт сохранён. [План следующего PR](plans/P1_STARTUP_MEMORY_ORDER.md):
-первый полный dashboard refresh/UI_READY до существующих export/Wi-Fi services.
-OTA worker/rollback deadline остаются до board init; touch-release gate,
-заставка, DMA64KiB/TLS16384/4096/framebuffer и частоты прежние. При неудачном
-первом flush services не запускаются. Семь startup ID стабильны; хронология
-теперь0,1,2,3,5,6,4, worker выводит ID-order, не time-order.
-
-Actual app_main/real LVGL host integration проверяет cold frame и отказы;
-SDK/board doubles не доказывают ESP32 heap/performance. В исходниках устранено
-перекрытие service startup с cold GUI render. Это не доказательство причины
-аппаратного minimum1887 или улучшения на плате. На устройстве по-прежнему fecc05d;
-новых UART/SWD/reset/Flash операций нет.
-
-## Следующие аппаратные и ресурсные gates P1
-
-1. После review/CI отдельно согласовать exact-image измерение нового startup
-   order: сравнить internal free/largest/local minima и стеки с fc90200,
-   проверить UI/touch/saved Wi-Fi/SETUP. Не повторять USB migration и не
-   прошивать ordinary rev12 поверх действующей A/B-карты.
-2. Проверить будущий worker8192 и настоящую TLS/install нагрузку: текущий
-   аппаратный замер относится к3072 без ключа. Floors не утверждены;
-   арифметическое вычитание5120 из суммы минимумов1887 не доказывает OOM.
-3. Owner key, SemVer, trust/time/resource context пока отсутствуют по решению
-   владельца. CHECK/INSTALL закрыты, test keys только host. После решений и
-   ресурcной приёмки — signed install в inactive slot, reboot/self-test/
-   confirmation/rollback и Wi-Fi/power-loss сценарии по отдельному разрешению.
-4. Factory self-test marker PASS не означает испытание PENDING_VERIFY.
-   Полный16MiB recovery, CPU/FPS/latency/tearing/soak и P2–P5 остаются открытыми.
-   Никаких eFuse/option bytes/OTP/CAN/motion или самостоятельных merge/release.
-
-История [миграции fecc05d](evidence/hardware/2026-11-22-esp32-ota-migration/README.md)
-и [software builds](evidence/build/esp32-ota-memory-phases/README.md) сохранена.
+[Software evidence](evidence/build/esp32-startup-memory-order/README.md),
+[предыдущий фазный стенд](evidence/hardware/2026-11-22-esp32-ota-memory/README.md),
+[backup status](BACKUP_STATUS.md). История ниже не активная очередь абстракций.
 
 ## История слитой программной базы
 

@@ -1,0 +1,397 @@
+{
+  "startup_chronology": [
+    0,
+    1,
+    2,
+    3,
+    5,
+    6,
+    4
+  ],
+  "baseline_source_commit": "fc9020087e426c5c06129654f8a242612e184079",
+  "kind": "esp32-startup-order-memory-bench",
+  "date": "2026-11-22",
+  "documentation_base_main": "b5f4b381fd392877498b5df210b3bb85c551985b",
+  "diagnostic_source_commit": "b5f4b381fd392877498b5df210b3bb85c551985b",
+  "diagnostic_app_sha256": "e4a2ded8c559c0fb28c939e69c8332e022ed5733954d3026649519368787427f",
+  "diagnostic_app_bytes": 1600576,
+  "profile": "rev12-ota",
+  "sdk": "6.1.1",
+  "memory_diagnostics": true,
+  "provisioned": false,
+  "return_source_commit": "fecc05d676a0b1e3376db5317fa241274e8e310a",
+  "return_app_sha256": "de55953fc9e3c4080cb277d734ca7d1f02c74880db38dac0f4b53830f587d021",
+  "return_factory_bytes": 2097152,
+  "return_factory_sha256": "081d99e707f578824cc9058d1d18c4f87700b2e60a09afa907e98a9c33bffd1a",
+  "prepared_plan_sha256": "c2bd3feb53cfee2f737adf8afefdb89960917652033de7493c78ee3bb60733bf",
+  "procedure_sha256": "f09c6ff90da60ac92fa7d310f9e1ea0a04985e7c73caa90fb7473ea1182397aa",
+  "analyzer_sha256": "c8e3a7328cc356768513b3e23673593c9750a5fe8c40b7e3c67fbf4430e6a798",
+  "expected_chip_identity_security_flash_gate_pass": true,
+  "snapshot_bytes": 16777216,
+  "snapshot_sha256": "ce6af4e88d755254f65ca2cf952d17ad9892a8ec7f487b0ed4391eccc3355e5a",
+  "snapshot_device_md5_verified": true,
+  "snapshot_two_independent_nvme_copies_sha256_verified": true,
+  "exact_preexisting_ab_layout_and_fecc05d_verified": true,
+  "started_utc": "2026-11-22T13:11:01.516033+00:00",
+  "finished_utc": "2026-11-22T13:21:10.590533+00:00",
+  "elapsed_seconds": 609.0744742609968,
+  "diagnostic_write_offset": 65536,
+  "return_write_offset": 65536,
+  "diagnostic_write_attempts": 1,
+  "return_factory_write_attempts": 1,
+  "full_recovery_attempts": 0,
+  "uart_capture_attempts": 2,
+  "diagnostic_capture_seconds": 90.1728133559809,
+  "diagnostic_uart_bytes": 23103,
+  "return_capture_seconds": 30.048436678014696,
+  "return_uart_bytes": 10141,
+  "diagnostic_boot_checks": {
+    "expected_app": true,
+    "expected_sdk": true,
+    "factory_boot": true,
+    "single_app_boot": true,
+    "psram_8mib": true,
+    "psram_sdk_test": true,
+    "instructions_in_psram": true,
+    "rodata_in_psram": true,
+    "rgb_initialized": true,
+    "gt911_initialized": true,
+    "ui_ready": true,
+    "no_fatal_log": true,
+    "periodic_resources": true,
+    "resource_errors_clear": true,
+    "touch_fresh": true,
+    "increasing_uptime": true,
+    "heap_samples_consistent": true,
+    "comparable_wifi_load": true,
+    "optional_services_started": true,
+    "explicit_self_test": true,
+    "complete_startup": true,
+    "single_complete_boot_window": true,
+    "startup_scope": true,
+    "phase_times_ordered": true,
+    "nonzero_measured_stacks": true,
+    "phase_heap_samples_consistent": true,
+    "worker_stack_published": true,
+    "nonzero_valid_periodic_stack": true
+  },
+  "return_boot_checks": {
+    "expected_app": true,
+    "expected_sdk": true,
+    "factory_boot": true,
+    "single_app_boot": true,
+    "psram_8mib": true,
+    "psram_sdk_test": true,
+    "instructions_in_psram": true,
+    "rodata_in_psram": true,
+    "rgb_initialized": true,
+    "gt911_initialized": true,
+    "ui_ready": true,
+    "no_fatal_log": true,
+    "periodic_resources": true,
+    "resource_errors_clear": true,
+    "touch_fresh": true,
+    "increasing_uptime": true,
+    "heap_samples_consistent": true
+  },
+  "all_outside_factory_md5_unchanged_during_each_write_before_app_boot": true,
+  "bootloader_partition_table_otadata_unchanged": true,
+  "nvs_byte_comparison_performed": false,
+  "nvs_after_app_boot_byte_identity_asserted": false,
+  "startup_points": 7,
+  "startup_masks": [
+    {
+      "startup_mask": 127,
+      "expected_mask": 127,
+      "complete": 1
+    }
+  ],
+  "boot_windows": [
+    {
+      "window": 1,
+      "start_result": 0,
+      "stop_result": 0,
+      "complete": 1
+    }
+  ],
+  "periodic_samples": 16,
+  "return_periodic_samples": 4,
+  "diagnostic_metrics": {
+    "uptime_ms": {
+      "min": 6386,
+      "max": 81465,
+      "last": 81465
+    },
+    "internal_free": {
+      "min": 21575,
+      "max": 21751,
+      "last": 21739
+    },
+    "internal_min": {
+      "min": 7796,
+      "max": 7796,
+      "last": 7796
+    },
+    "internal_largest": {
+      "min": 12288,
+      "max": 12288,
+      "last": 12288
+    },
+    "psram_free": {
+      "min": 6090108,
+      "max": 6090108,
+      "last": 6090108
+    },
+    "psram_min": {
+      "min": 6090072,
+      "max": 6090072,
+      "last": 6090072
+    },
+    "psram_total": {
+      "min": 6865064,
+      "max": 6865064,
+      "last": 6865064
+    },
+    "owner_stack": {
+      "min": 10516,
+      "max": 10516,
+      "last": 10516
+    },
+    "touch_stack": {
+      "min": 2504,
+      "max": 2504,
+      "last": 2504
+    },
+    "wifi_stack": {
+      "min": 1112,
+      "max": 1112,
+      "last": 1112
+    },
+    "export_stack": {
+      "min": 1184,
+      "max": 1632,
+      "last": 1184
+    },
+    "queue_drops": {
+      "min": 0,
+      "max": 0,
+      "last": 0
+    },
+    "display_errors": {
+      "min": 0,
+      "max": 0,
+      "last": 0
+    },
+    "export_drops": {
+      "min": 0,
+      "max": 0,
+      "last": 0
+    },
+    "wifi_attempts": {
+      "min": 1,
+      "max": 1,
+      "last": 1
+    },
+    "wifi_disconnects": {
+      "min": 0,
+      "max": 0,
+      "last": 0
+    },
+    "wifi_ip_events": {
+      "min": 0,
+      "max": 1,
+      "last": 1
+    },
+    "wifi_queue_drops": {
+      "min": 0,
+      "max": 0,
+      "last": 0
+    },
+    "touch_errors": {
+      "min": 0,
+      "max": 0,
+      "last": 0
+    },
+    "reset_reason": {
+      "min": 1,
+      "max": 1,
+      "last": 1
+    },
+    "watchdog_boot": {
+      "min": 0,
+      "max": 0,
+      "last": 0
+    },
+    "touch_age_ms": {
+      "min": 1,
+      "max": 20,
+      "last": 3
+    },
+    "render_samples": {
+      "min": 0,
+      "max": 0,
+      "last": 0
+    },
+    "event_samples": {
+      "min": 0,
+      "max": 0,
+      "last": 0
+    },
+    "heap_min_scope": {
+      "min": 0,
+      "max": 0,
+      "last": 0
+    },
+    "ota_stack": {
+      "min": 1664,
+      "max": 1664,
+      "last": 1664
+    }
+  },
+  "valid_worker_stack_samples": 16,
+  "return_metrics": {
+    "uptime_ms": {
+      "min": 6333,
+      "max": 21357,
+      "last": 21357
+    },
+    "internal_free": {
+      "min": 22763,
+      "max": 22783,
+      "last": 22783
+    },
+    "internal_min": {
+      "min": 6956,
+      "max": 6956,
+      "last": 6956
+    },
+    "internal_largest": {
+      "min": 7680,
+      "max": 7680,
+      "last": 7680
+    },
+    "psram_free": {
+      "min": 6090732,
+      "max": 6090732,
+      "last": 6090732
+    },
+    "psram_min": {
+      "min": 6076588,
+      "max": 6076588,
+      "last": 6076588
+    },
+    "psram_total": {
+      "min": 6865688,
+      "max": 6865688,
+      "last": 6865688
+    },
+    "owner_stack": {
+      "min": 10740,
+      "max": 10740,
+      "last": 10740
+    },
+    "touch_stack": {
+      "min": 2504,
+      "max": 2504,
+      "last": 2504
+    },
+    "wifi_stack": {
+      "min": 1104,
+      "max": 1104,
+      "last": 1104
+    },
+    "export_stack": {
+      "min": 1232,
+      "max": 1648,
+      "last": 1232
+    },
+    "queue_drops": {
+      "min": 0,
+      "max": 0,
+      "last": 0
+    },
+    "display_errors": {
+      "min": 0,
+      "max": 0,
+      "last": 0
+    },
+    "export_drops": {
+      "min": 0,
+      "max": 0,
+      "last": 0
+    },
+    "wifi_attempts": {
+      "min": 1,
+      "max": 1,
+      "last": 1
+    },
+    "wifi_disconnects": {
+      "min": 0,
+      "max": 0,
+      "last": 0
+    },
+    "wifi_ip_events": {
+      "min": 0,
+      "max": 1,
+      "last": 1
+    },
+    "wifi_queue_drops": {
+      "min": 0,
+      "max": 0,
+      "last": 0
+    },
+    "touch_errors": {
+      "min": 0,
+      "max": 0,
+      "last": 0
+    },
+    "reset_reason": {
+      "min": 1,
+      "max": 1,
+      "last": 1
+    },
+    "watchdog_boot": {
+      "min": 0,
+      "max": 0,
+      "last": 0
+    },
+    "touch_age_ms": {
+      "min": 1,
+      "max": 17,
+      "last": 2
+    },
+    "render_samples": {
+      "min": 0,
+      "max": 0,
+      "last": 0
+    },
+    "event_samples": {
+      "min": 0,
+      "max": 0,
+      "last": 0
+    }
+  },
+  "phase_minimum_semantics": "SDK per-heap local-window cumulative minima, not simultaneous free memory or approved floors",
+  "sample_stack_semantics": "Watermark of sampler task; late worker_stack_at_emit belongs to emitting worker",
+  "worker_stack_bytes": 3072,
+  "future_provisioned_worker_stack_bytes": 8192,
+  "provisioned_worker_stack_tested": false,
+  "configured_tls_install_budget_measured": false,
+  "owner_confirmation": {
+    "hmi_touch_saved_wifi_and_setup": null
+  },
+  "factory_self_test_explicit_pass": true,
+  "ota_slot_confirmation_tested": false,
+  "rollback_tested": false,
+  "power_loss_tested": false,
+  "full_flash_restore_tested": false,
+  "factory_partition_restore_verified": true,
+  "fps_latency_soak_measured": false,
+  "production_resource_floors_approved": false,
+  "efuse_write": false,
+  "stm32_access": false,
+  "can_motion_access": false,
+  "session_closed": true,
+  "installed_left_running": "fecc05d-rev12-ota-factory",
+  "raw_uart_nvs_or_credentials_published": false
+}

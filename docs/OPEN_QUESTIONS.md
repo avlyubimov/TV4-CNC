@@ -1,9 +1,23 @@
 # Открытые вопросы и блокирующие решения
 
-Программное продолжение от main973a9ba переносит optional export/Wi-Fi start
-после первого полного HMI frame/UI_READY. Это ещё не аппаратная проверка или
-подтверждённое улучшение памяти; установленный fecc05d и закрытый scope прежнего
-сеанса сохраняются. [План и границы проверки](plans/P1_STARTUP_MEMORY_ORDER.md).
+## 22 ноября: текущие RAM/stack gates после b5f4b38
+
+База mainb5f4b38, PR #1–64 слиты. [Стенд нового порядка старта](evidence/hardware/2026-11-22-esp32-startup-order/README.md) завершён
+по отдельному разрешению за609.074s: fresh16MiB/device MD5/SHA-256/two-NVMe,
+app-only diagnostic b5f4b38/verify/capture90.173s, factory2MiB fecc05d return/
+verify/capture30.048s PASS. Подтверждение владельца экрана/касаний/saved Wi-Fi/OTA SETUP после возврата ожидается; UART-проверки PASS.
+На ESP32 fecc05d/factory/tv4-16m-ab-v1, F407 ee7d179 не открывался.
+Полный16MiB restore не понадобился; разрешение использовано, новых операций нет.
+
+BOOT local minimum20715 против1887 в fc90200, history7796 после stop;
+periodic free21575..21751/largest12288, PSRAM6090108, OTA-worker1664из3072.
+Это один instrumented run, per-heap minima не simultaneous free/OOM/floor.
+Largest вырос, steady free немного меньше. Тот же returned fecc05d дал history6956
+вместо прежнего112: повторяемость и нагрузка ещё требуют проверки.
+Configured8192/TLS/install/key/context/floors остаются открытыми, CHECK/INSTALL
+без настройки закрыты. FPS/latency/soak/slot confirm/rollback/power-loss не приняты.
+
+Исторические разделы ниже относятся к завершённым прежним сеансам.
 
 ## 22 ноября: уточнение RAM/stack после реального BOOT стенда
 

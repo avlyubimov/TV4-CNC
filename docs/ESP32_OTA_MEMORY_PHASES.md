@@ -1,5 +1,16 @@
 # ESP32 OTA: фазные измерения RAM и стека
 
+## Выполненный стенд b5f4b38 после PR #64
+
+[Новый отчёт](evidence/hardware/2026-11-22-esp32-startup-order/README.md): время ID0,1,2,3,5,6,4 подтверждено,7startup/BOOT/16samples.
+Local minimum20715 (fc90200:1887), history7796, largest в BOOT14336/steady12288,
+steady free21575..21751 и worker1664из3072. One-shot/per-heap, не новый floor.
+Сравнение не доказывает каждый allocator; тот же returned fecc05d дал history6956
+вместо112. Ключ/context отсутствуют, configured8192/TLS/install не измерены.
+Factory fecc05d возвращён/verify PASS, Подтверждение владельца экрана/касаний/saved Wi-Fi/OTA SETUP после возврата ожидается; UART-проверки PASS.
+Сеанс609.074s использован и закрыт; дальнейших UART/reset/Flash нет.
+Ниже сохранены software contract PR #64 и исторический report fc90200.
+
 [Проверенная software сборка и cold-render evidence](evidence/build/esp32-startup-memory-order/README.md).
 
 ## Порядок старта после main973a9ba
