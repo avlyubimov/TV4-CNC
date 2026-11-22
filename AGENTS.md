@@ -109,14 +109,16 @@ PR и Actions; не копировать код уже открытого PR. Д
 
 - GitHub Releases → HTTPS → ESP32 OTA Manager; отдельно ESP32 OTA A/B и
   ESP32 → CAN → независимый загрузчик F407. В explicit rev12-ota интегрирован
-  installer/self-test/rollback; configured OTA и USB migration аппаратно не приняты.
+  installer/self-test/rollback; первая USB migration/factory boot принята на fecc05d,
+  configured OTA/slot confirmation/rollback ещё не проверены аппаратно.
 - Подписанный манифест, доверенный локальный публичный ключ, SHA-256, hardware/
   protocol compatibility, ограниченные размеры, штатный rollback ESP-IDF.
   Не доверять одному SHA, TLS или имени релиза вместо подписи.
 - Разметку мигрировать только отдельной USB-процедурой с бэкапом/проверкой,
   не обычным app OTA. Обычные профили сохраняют factory2MiB; только explicit rev12-ota использует
-  reviewed 16MiB factory+A/B, и лишь после отдельно разрешённой USB-миграции
-  она станет действующей на плате. См. docs/ESP32_OTA_INSTALLATION.md.
+  reviewed 16MiB factory+A/B. После отдельно разрешённой миграции fecc05d
+  эта карта действует на ESP32; обычный rev12 flash поверх неё не выполнять.
+  См. docs/ESP32_OTA_INSTALLATION.md.
 - Для STM32 нужны подтверждённая геометрия Flash и состояние без движения,
   шпинделя и программы. Не выбирать адреса/сектора/A-B по предположению.
 - Автопроверка разрешена; установка требует явного подтверждения оператора
@@ -140,29 +142,37 @@ PR и Actions; не копировать код уже открытого PR. Д
    теги, релизы, секреты CI и публикации под видом обычного push.
 6. Обновлять актуальный статус; исторические отчёты сохранять с явной пометкой.
 
-## Текущее задание: P1, от резервного snapshot к USB migration
+## Текущее задание: P1 после первой USB migration
 
-База main fecc05d676a0b1e3376db5317fa241274e8e310a, PR #1–59 слиты.
-Installer/UI/self-test/rollback/XiP/USB bundle интегрированы в explicit rev12-ota.
-Clean-main fecc05d/SDK6.1.1 unprovisioned bundle собран/проверен локально; main CI
-зелёный. Владелец выбрал настройку без ключа; production key/versions/resource/
-time context не угадывать, сетевые CHECK/INSTALL закрыты. Test keys только host.
+База отчётного PR — main c41a3d24bbca9f6c55015de9431dcef32651cd92, PR #1–60 слиты.
+22 ноября отдельный разрешённый стенд fecc05d/rev12-ota/SDK6.1.1 завершён:
+четыре записи/MD5/readback, неизменность NVS/PHY до app boot, factory boot,
+PSRAM8MiB/XiP/RGB/GT911/UI и owner HMI/touch/saved Wi-Fi/OTA SETUP PASS.
+Один UART capture89.114s, весь сеанс117.810s; restore не потребовался.
+На ESP32 оставлен fecc05d factory с tv4-16m-ab-v1; F407 ee7d179 не открывался.
+Предыдущий ordinary8f0d899 теперь только recovery snapshot, не running firmware.
+Обе проверенные копии16MiB на разных NVMe и original factory backup сохранены.
 
-22 ноября разрешённый read-only ESP32 preflight/snapshot/reset завершён:
-один full16MiB read, transfer MD5 и отдельный device MD5, SHA-256 двух приватных
-копий на разных NVMe PASS; legacy factory2MiB/app8f0d899 подтверждены offline.
-Owner после reset: HMI/touch/Wi-Fi работают как прежде. Читайте
-docs/evidence/hardware/2026-11-22-esp32-pre-ota-snapshot/README.md,
+Читайте docs/evidence/hardware/2026-11-22-esp32-ota-migration/README.md,
 docs/BACKUP_STATUS.md, docs/NEXT_STAGE.md и docs/ESP32_OTA_INSTALLATION.md.
-Дампы/NVS/пароли/полные UART logs приватны; в PR только текст/метаданные.
+Дампы/NVS/пароли/полные UART logs приватны; public diagnostics только по allowlist.
+Наблюдено16 periodic samples: internal free22851..22907/largest7680/history112;
+PSRAM free6090732, main/touch/Wi-Fi/export watermarks10708/2504/1104/1104bytes.
+History112 — сумма SDK per-heap minima, не simultaneous peak/OOM proof и не
+утверждённый запас. Нужен разбор по фазам до configured installer. OTA-worker
+watermark отсутствует, render/event counters0 не FPS/latency benchmark.
 
-Новая firmware не записана. На ESP32 остаётся ordinary8f0d899, F407 ee7d179
-не открывался. Разрешение на read/reset завершено и не разрешает Flash write,
-новый UART/SWD или hardware tests. Следующая USB migration требует отдельного
-exact-bundle owner разрешения с проверенным snapshot/recovery и изоляцией платы.
-Initial bootloader/table/factory migration не защищается app rollback. Restore
-snapshot, XiP boot, signed OTA/rollback/power loss и runtime memory/FPS пока
-не подтверждены. Не объявлять P1 hardware acceptance или P2–P5 завершёнными.
+Следующий измеримый результат P1 — фазный RAM/stack budget и проверяемая
+configured install/confirm/rollback цепочка после owner key/SemVer/time/resource
+решений. Владелец пока выбрал без ключа: CHECK/INSTALL закрыты, defaults не
+угадывать, test keys только host. Factory self-test inferred из owner SETUP и
+worker/UI transitions; OTA-slot PENDING_VERIFY/rollback этим не испытывались.
+Restore ESP32, network/power loss, load/FPS/tearing/latency/soak остаются открытыми.
+Не объявлять P1 hardware acceptance или P2–P5 завершёнными.
+
+Разрешённый сеанс закрыт. Новые UART/SWD/reset/Flash/hardware tests требуют
+нового применимого разрешения. Initial bootloader/table/factory migration не
+защищается app rollback; ordinary flash/возврат старой карты не автоматизировать.
 
 Текущий отчётный PR только docs/evidence: исполняемые firmware/SDK/dependency/
 CI pins не менять. Никакого самостоятельного merge/release, eFuse/option bytes/

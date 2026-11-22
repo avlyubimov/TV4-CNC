@@ -1,10 +1,11 @@
-# P1 — интеграция ESP32 OTA и следующий аппаратный этап
+# P1 — после первой USB-миграции ESP32
 
-База main `fecc05d676a0b1e3376db5317fa241274e8e310a`, PR #1–59 слиты.
-P0 ee7d179 принят на базовом стенде; [аппаратный отчёт](evidence/hardware/2026-11-22-f407-ee7d179-bench/README.md)
-не переносится на новые образы. На устройствах остаются F407 ee7d179 и ESP32
-ordinary8f0d899. ESP32 теперь прочитан/сброшен по отдельному разрешению,
-новая firmware не записывалась; F407 не открывался.
+База отчёта — main `c41a3d24bbca9f6c55015de9431dcef32651cd92`, PR #1–60 слиты.
+На ESP32 после отдельно разрешённого стенда оставлен `fecc05d/rev12-ota`,
+factory, SDK6.1.1 и карта tv4-16m-ab-v1. [Миграция, UART и подтверждение владельца](evidence/hardware/2026-11-22-esp32-ota-migration/README.md).
+F407 ee7d179 не открывался; его [базовый стенд](evidence/hardware/2026-11-22-f407-ee7d179-bench/README.md)
+не доказывает физическую работу CAN/приводов. Оба разрешённых ESP32-сеанса
+(backup и migration) завершены; новые операции ими не разрешены.
 
 ## Программный результат P1
 
@@ -13,14 +14,16 @@ HTTPS session → неактивный SDK slot → full digest/EOF/SDK validati
 UI version/size/двухшаговое подтверждение, cancel/error cleanup, bounded boot
 self-test/rollback/watchdog и prepare/independent verify USB migration bundle.
 [План](plans/P1_ESP32_OTA.md), [проверки и пределы](evidence/build/esp32-ota-installation/README.md).
-Обычные4профиля сохраняют прежний factory2MiB; только новый профиль использует
-reviewed16MiB factory recovery + otadata +2slots. На плате эта карта ещё не действует.
+Обычные4профиля в исходниках сохраняют legacy factory2MiB; explicit rev12-ota
+использует reviewed16MiB factory recovery + otadata +2slots. Именно эта карта
+теперь действует на ESP32. Обычный rev12 flash поверх неё не является откатом
+и без отдельной проверенной процедуры не выполняется.
 
 Владелец выбрал **настройку без ключа**. Работоспособная unprovisioned сборка
 не имеет test key/выдуманных production SemVer/floors; экран сообщает о настройке,
 сетевые CHECK/INSTALL заблокированы. Это не завершённая аппаратная приёмка P1.
 
-## Что нужно перед следующим аппаратным испытанием
+## Что уже проверено и что делать дальше
 
 1. **Готово:** clean-main fecc05d, rev12-ota/SDK6.1.1 без ключа собран;
    prepare/independent verify bundle PASS. App SHA-256
@@ -30,14 +33,24 @@ reviewed16MiB factory recovery + otadata +2slots. На плате эта кар�
    owner HMI/touch/Wi-Fi PASS. Snapshot SHA-256
    `47c4f9c4e6d7fb1fcfce2b0065c2f69af0ea01664d1407b3504ee6e4a6a13107`.
    Это checkpoint текущего8f0d899; factory backup сохранён отдельно.
-3. Отдельное разрешение на USB migration с проверенным recovery/BOOT-RESET путём,
-   только изолированная плата/питание/USB. Начальная смена bootloader/table/factory
-   при потере питания может потребовать USB recovery; app rollback её не защищает.
-4. Проверить factory boot/HMI/GT911/Wi-Fi/PSRAM/NVS и memory/stack/latency. Затем
-   подготовить owner public key и утверждённые SemVer/time/resource context,
-   provisioned build/release binding и отдельно разрешённые install/confirm/
-   rollback/network/power-loss пробы. Готовые defaults не угадывать.
-5. Пока P1 не стабилизирован, P2 публикацию, physical CAN P3 и STM32 CAN OTA P4
+3. **Готово:** USB migration четырёх областей/verify/readback, NVS/PHY до boot,
+   factory boot/PSRAM8MiB/XiP/GT911/RGB/UI, owner HMI/touch/saved Wi-Fi/SETUP.
+   Один capture89.114s, весь сеанс117.810s, recovery не понадобился. Restore
+   snapshot и recovery после прерванной миграции этим не проверены.
+4. **Следующий результат:** разобрать RAM/stack бюджет по фазам, затем проверить
+   реальный configured installer. 16 срезов без нагрузки дали internal
+   free22851..22907/largest7680/history112 и PSRAM free6090732bytes. History112
+   — сумма SDK per-heap minima, не одновременный остаток/OOM proof и не floor;
+   причина/пик открыты. OTA-worker watermark отсутствует; render/event samples0
+   не измеряют FPS/latency. Не уменьшать DMA reserve/TLS records/framebuffer
+   ради прохождения. Не назначать production пороги по этим или HEAD-срезам.
+5. Нужны owner public key и утверждённые SemVer/time/resource context,
+   provisioned build/release binding, отдельные exact-image разрешения на
+   install/confirm/rollback/network/power-loss пробы. Владелец пока выбрал
+   без ключа; тестовые ключи не переносить из host в прошивку. Начальная смена
+   bootloader/table/factory app rollback не защищается, USB recovery остаётся
+   отдельным сценарием. Новые eFuse/защитные настройки не требуются.
+6. Пока P1 не стабилизирован, P2 публикацию, physical CAN P3 и STM32 CAN OTA P4
    не объявлять завершёнными. Адреса F407 loader/staging не резервировать.
 
 Не подключаться к устройствам по завершённым разрешениям. eFuse/Secure Boot/

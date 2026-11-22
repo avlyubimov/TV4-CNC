@@ -1,0 +1,14 @@
+Validation of the completed, separately authorized hardware session and report:
+- Exact fecc05d/rev12-ota/ESP-IDF6.1.1 unprovisioned USB bundle: independent prepare --verify PASS before device access.
+- Four file sizes/SHA-256 and plan897da89ab7a8fd3384ef0a26735c166de9a839e3c4d2cefd6cb0d467bd5bdd2b PASS.
+- Both private16MiB snapshots47c4f9c4e6d7fb1fcfce2b0065c2f69af0ea01664d1407b3504ee6e4a6a13107 rehashed; file0600/distinct filesystems/physical NVMe PASS before write.
+- Private host procedure with fake SDK: exact four writes/keep headers, 10 pre-write refusals, 4 write/verify/NVS/boot failure and single-snapshot recovery cases PASS. No real device in these software checks.
+- Actual hardware: expected ESP32-S3/16MiB/security, legacy table and installed app MD5, four SDK writes plus separate MD5 verify, table/FF-otadata readback, byte-identical pre/post NVS/PHY before app boot PASS.
+- Actual hardware: one89.114s capture,19800bytes,fecc05d/SDK6.1.1/factory0x10000/PSRAM8MiB/XiP/RGB/GT911/LVGL, single app boot/no panic/watchdog/reset loop PASS.
+- Owner confirmed screen/touch/saved Wi-Fi and SETUP with network check/install disabled. Factory self-test success is inferred from owner UI and reviewed worker transitions, not an explicit serial result or OTA-slot confirmation test.
+- Public diagnostics:16 allowlisted, typed JSON snapshots exactly match the private UART data; summary ranges/zeros/source/package/owner/receipt consistency PASS. Raw NVS/UART/board identity/local device paths excluded.
+- Source difference between built fecc05d and report-base c41a3d2 is documentation only. Current PR changes only Markdown and public JSON/text evidence; no executable firmware/config/pins/dependencies/CI changes.
+- Mandatory documentation presence,339 changed-document local links, privacy/scope checks and git diff --check PASS.
+- No firmware test cases added or extra local SDK rebuild claimed for this docs-only report. Existing CI matrix runs are reported in the PR after completion.
+- 117.810s total versus1200s limit; session closed, no subsequent device reopen/reset. Recovery not needed/not performed; no erase-all/eFuse/STM32/CAN/motion or power-cut tests.
+- Configured install/TLS load/slot confirmation/rollback/network-power loss/restore/production RAM-stack-FPS-soak remain unverified. Historical internal minimum112bytes and zero render/event samples do not supply production floors or performance acceptance.

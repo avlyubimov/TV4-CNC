@@ -1,15 +1,18 @@
 # OTA TV4-CNC — проект архитектуры
 
-## Текущая интеграция P1 (база main d1317a8)
+## Текущая интеграция P1 после первой USB-миграции
 
-PR #1–58 слиты. [ESP32 OTA installation](ESP32_OTA_INSTALLATION.md) добавляет
+База отчёта main c41a3d2/PR #1–60. [ESP32 OTA installation](ESP32_OTA_INSTALLATION.md) добавляет
 explicit rev12-ota: существующие signature/HTTPS/session соединены с SDK inactive
 writer, UI approval, boot self-test/rollback/watchdog и prepare/verify USB bundle.
 Владелец выбрал unprovisioned настройку: ключ/production context отсутствуют,
-install закрыт, test key в firmware нет. Ordinary profiles прежние. Устройства
-не открывали: ESP32 ordinary8f0d899 и F407 ee7d179 остаются установленными.
-Hardware migration/configured OTA/power loss/RAM/stack ещё не подтверждены;
-[evidence](evidence/build/esp32-ota-installation/README.md), [следующий этап](NEXT_STAGE.md).
+install закрыт, test key в firmware нет. Ordinary build profiles прежние, но на
+плате после отдельно разрешённой миграции fecc05d/rev12-ota и tv4-16m-ab-v1.
+Factory/XiP/PSRAM8MiB/GT911/UI/owner saved Wi-Fi и SETUP PASS; F407 ee7d179 не
+открывался. [Аппаратный отчёт](evidence/hardware/2026-11-22-esp32-ota-migration/README.md).
+Configured OTA/slot confirm/rollback/power loss/recovery/RAM-stack budget ещё
+не приняты: historical internal minimum112bytes требует фазного разбора.
+[Программный evidence](evidence/build/esp32-ota-installation/README.md), [следующий этап](NEXT_STAGE.md).
 Ниже — история слитой базы; прежние «нет installer/OTA» относятся к тем этапам.
 
 
@@ -163,10 +166,18 @@ ESP32 OTA и F407 update имеют собственные version/status/histor
 
 ## ESP32: текущая и проектируемая разметка
 
-Сейчас [partitions.csv](../firmware/esp32-hmi/partitions.csv) содержит NVS
-0x9000/0x6000, phy_init 0xf000/0x1000 и factory 0x10000/0x200000; **OTA слотов нет**.
-Предлагаемая карта 16 МиБ ниже — только таблица в Markdown, не конфигурация
-сборки и не инструкция немедленной записи. `layout_id` условно `tv4-16m-ab-v1`.
+Действующая карта rev12-ota и прошитой платы — [ota/partitions.ab.csv](../firmware/esp32-hmi/ota/partitions.ab.csv),
+`layout_id=tv4-16m-ab-v1`, см. [установку и точные subtype](ESP32_OTA_INSTALLATION.md).
+Legacy [partitions.csv](../firmware/esp32-hmi/partitions.csv) сохраняется только
+для ordinary profiles: NVS0x9000/0x6000, PHY0xf000/0x1000, factory0x10000/0x200000,
+без OTA slots. Это **не текущая карта устройства**. Новый flash/откат разрешать
+отдельно; никакой автоматической смены разметки обычным app OTA.
+
+### Исторический draft карты до P1
+
+Таблица и плановые абзацы ниже сохранены как исходный проект; placeholder
+subtype/filesystem не заменяют reviewed CSV. Утверждённая карта P1 проверена
+в обоих SDK и применена первой USB-миграцией, но power-loss/recovery не испытаны.
 
 | Область | Предлагаемые type/subtype | Offset | Size | End exclusive |
 |---|---|---:|---:|---:|
@@ -201,7 +212,9 @@ NVS/phy и начальный адрес factory сохраняются, но э
 2. Считать/проверить действующие Flash/security/layout и сохранить текущие
    данные/NVS отдельно от Git (они могут содержать пароли).
 3. Подготовить согласованный комплект bootloader + новая таблица + recovery
-   HMI с OTA и доверенным публичным ключом. Сверить hashes/offsets/объём.
+   HMI. Как в первой миграции fecc05d, без owner key/context installer остаётся
+   закрытым; настроенная сборка требует отдельного review доверенного локального
+   публичного ключа/context. Сверить hashes/offsets/объём.
 4. Отдельной проверенной процедурой записать по USB, проверить readback,
    загрузку recovery и отработку первичной OTA data. Прерывание во время
    смены таблицы может потребовать USB восстановления; это не A/B app OTA.
