@@ -1,5 +1,23 @@
 # ESP32 OTA: фазные измерения RAM и стека
 
+[Проверенная software сборка и cold-render evidence](evidence/build/esp32-startup-memory-order/README.md).
+
+## Порядок старта после main973a9ba
+
+Первый полный dashboard refresh и UI_READY теперь предшествуют запуску
+существующих export/Wi-Fi services. OTA worker/deadline по-прежнему запускается
+до board init; touch-release gate, минимальное время заставки и буферы сохранены.
+Семь ID стабильны, хронология теперь `0,1,2,3,5,6,4`. Worker печатает slots по
+ID, поэтому sample_ms важнее порядка строк: WIFI_STARTED может иметь более
+позднее время, чем UI_READY. Старые отчёты fc90200 не переинтерпретируются.
+При ошибке первого dashboard flush optional services не стартуют.
+
+Host integration компилирует настоящий app_main с настоящим LVGL9.2.2 и
+SDK/board doubles. Она проверяет полное покрытие кадра до services, отказы и
+held-touch. Её builtin pool/64-bit ABI/fake clock/radio не измеряют ESP32 heap,
+FPS или сетевую нагрузку. Изменение порядка требует нового отдельного стенда;
+на плате остаётся fecc05d, ни ключ, ни resource floors не назначены.
+
 ## Завершённый аппаратный стенд fc90200
 
 22ноября [новый стенд](evidence/hardware/2026-11-22-esp32-ota-memory/README.md) по отдельному разрешению выполнен:
@@ -87,7 +105,7 @@ OTA-worker после self-test выводит до семи строк `tv4_ota
 | 3 | GT911/input готовы |
 | 4 | Wi-Fi service start вернулся, не обещание DHCP |
 | 5 | Dashboard/firmware metadata созданы |
-| 6 | Splash закрыт, UI готов к основному циклу |
+| 6 | Splash закрыт, первый dashboard refresh завершён, до optional services |
 
 SDK окно BOOT начинается до создания worker/board init и заканчивается после
 health/256-byte PSRAM/layout checks. Startup minima после APP_ENTRY кумулятивны

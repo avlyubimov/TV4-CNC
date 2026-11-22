@@ -1,0 +1,199 @@
+Test project <source-worktree>/build-sanitize
+      Start  1: build_validation
+ 1/97 Test  #1: build_validation ....................   Passed    0.03 sec
+      Start  2: build_candidate
+ 2/97 Test  #2: build_candidate .....................   Passed    0.41 sec
+      Start  3: core
+ 3/97 Test  #3: core ................................   Passed    0.00 sec
+      Start  4: firmware_info
+ 4/97 Test  #4: firmware_info .......................   Passed    0.00 sec
+      Start  5: wifi_profiles
+ 5/97 Test  #5: wifi_profiles .......................   Passed    0.00 sec
+      Start  6: render
+ 6/97 Test  #6: render ..............................   Passed    1.93 sec
+      Start  7: render_rgb565
+ 7/97 Test  #7: render_rgb565 .......................   Passed    1.90 sec
+      Start  8: startup_success
+ 8/97 Test  #8: startup_success .....................   Passed    0.48 sec
+      Start  9: startup_held-touch
+ 9/97 Test  #9: startup_held-touch ..................   Passed    0.45 sec
+      Start 10: startup_board-fail
+10/97 Test #10: startup_board-fail ..................   Passed    0.01 sec
+      Start 11: startup_buffer-fail
+11/97 Test #11: startup_buffer-fail .................   Passed    0.01 sec
+      Start 12: startup_backlight-fail
+12/97 Test #12: startup_backlight-fail ..............   Passed    0.02 sec
+      Start 13: startup_touch-fail
+13/97 Test #13: startup_touch-fail ..................   Passed    0.04 sec
+      Start 14: startup_flush-fail
+14/97 Test #14: startup_flush-fail ..................   Passed    0.35 sec
+      Start 15: startup_dashboard-flush-fail
+15/97 Test #15: startup_dashboard-flush-fail ........   Passed    0.44 sec
+      Start 16: startup_export-fail
+16/97 Test #16: startup_export-fail .................   Passed    0.46 sec
+      Start 17: startup_wifi-fail
+17/97 Test #17: startup_wifi-fail ...................   Passed    0.46 sec
+      Start 18: diagnostics
+18/97 Test #18: diagnostics .........................   Passed    0.00 sec
+      Start 19: ota_crypto
+19/97 Test #19: ota_crypto ..........................   Passed    0.01 sec
+      Start 20: ota_candidate
+20/97 Test #20: ota_candidate .......................   Passed    0.19 sec
+      Start 21: ota_manifest
+21/97 Test #21: ota_manifest ........................   Passed    0.13 sec
+      Start 22: ota_json
+22/97 Test #22: ota_json ............................   Passed    0.05 sec
+      Start 23: ota_policy_conformance
+23/97 Test #23: ota_policy_conformance ..............   Passed    0.32 sec
+      Start 24: ota_stream
+24/97 Test #24: ota_stream ..........................   Passed    0.01 sec
+      Start 25: ota_http
+25/97 Test #25: ota_http ............................   Passed    0.00 sec
+      Start 26: ota_session
+26/97 Test #26: ota_session .........................   Passed    0.05 sec
+      Start 27: ota_memory
+27/97 Test #27: ota_memory ..........................   Passed    0.01 sec
+      Start 28: ota_time
+28/97 Test #28: ota_time ............................   Passed    0.00 sec
+      Start 29: ota_sntp
+29/97 Test #29: ota_sntp ............................   Passed    0.00 sec
+      Start 30: ota_tls_probe
+30/97 Test #30: ota_tls_probe .......................   Passed    0.00 sec
+      Start 31: ota_resource
+31/97 Test #31: ota_resource ........................   Passed    0.00 sec
+      Start 32: release_review_cli
+32/97 Test #32: release_review_cli ..................   Passed    0.25 sec
+      Start 33: release_review_cohort
+33/97 Test #33: release_review_cohort ...............   Passed    0.52 sec
+      Start 34: release_build_binding
+34/97 Test #34: release_build_binding ...............   Passed    0.92 sec
+      Start 35: ota_installer
+35/97 Test #35: ota_installer .......................   Passed    0.00 sec
+      Start 36: ota_setup
+36/97 Test #36: ota_setup ...........................   Passed    0.22 sec
+      Start 37: ota_memory_diagnostics_success
+37/97 Test #37: ota_memory_diagnostics_success ......   Passed    0.00 sec
+      Start 38: ota_memory_diagnostics_start-fail
+38/97 Test #38: ota_memory_diagnostics_start-fail ...   Passed    0.00 sec
+      Start 39: ota_memory_diagnostics_guard-fail
+39/97 Test #39: ota_memory_diagnostics_guard-fail ...   Passed    0.00 sec
+      Start 40: ota_memory_diagnostics_stop-fail
+40/97 Test #40: ota_memory_diagnostics_stop-fail ....   Passed    0.00 sec
+      Start 41: ota_memory_diagnostics_transition
+41/97 Test #41: ota_memory_diagnostics_transition ...   Passed    0.00 sec
+      Start 42: ota_memory_diagnostics_abandon
+42/97 Test #42: ota_memory_diagnostics_abandon ......   Passed    0.00 sec
+      Start 43: ota_memory_diagnostics_disabled
+43/97 Test #43: ota_memory_diagnostics_disabled .....   Passed    0.00 sec
+      Start 44: ota_memory_diagnostics_artifacts
+44/97 Test #44: ota_memory_diagnostics_artifacts ....   Passed    0.04 sec
+      Start 45: motion_supervisor
+45/97 Test #45: motion_supervisor ...................   Passed    0.01 sec
+      Start 46: motion_startup_noio
+46/97 Test #46: motion_startup_noio .................   Passed    0.00 sec
+      Start 47: stm32_bench_hardware_model
+47/97 Test #47: stm32_bench_hardware_model ..........   Passed    0.01 sec
+      Start 48: stm32_bench_reference
+48/97 Test #48: stm32_bench_reference ...............   Passed    0.03 sec
+      Start 49: update_driver_dispatch_threads
+49/97 Test #49: update_driver_dispatch_threads ......   Passed    0.03 sec
+      Start 50: update_frame_ingress_threads
+50/97 Test #50: update_frame_ingress_threads ........   Passed    0.25 sec
+      Start 51: update_ingress_owner_threads
+51/97 Test #51: update_ingress_owner_threads ........   Passed    0.02 sec
+      Start 52: update_completion_mailbox_threads
+52/97 Test #52: update_completion_mailbox_threads ...   Passed    0.22 sec
+      Start 53: update_metadata_setup_reference
+53/97 Test #53: update_metadata_setup_reference .....   Passed    0.03 sec
+      Start 54: update_wire_reference
+54/97 Test #54: update_wire_reference ...............   Passed    0.03 sec
+      Start 55: update_fragment_reference
+55/97 Test #55: update_fragment_reference ...........   Passed    0.03 sec
+      Start 56: update_metadata_reference
+56/97 Test #56: update_metadata_reference ...........   Passed    0.03 sec
+      Start 57: update_session
+57/97 Test #57: update_session ......................   Passed    0.00 sec
+      Start 58: update_loopback
+58/97 Test #58: update_loopback .....................   Passed    0.08 sec
+      Start 59: update_outcome
+59/97 Test #59: update_outcome ......................   Passed    0.01 sec
+      Start 60: update_negotiation
+60/97 Test #60: update_negotiation ..................   Passed    0.01 sec
+      Start 61: update_wire
+61/97 Test #61: update_wire .........................   Passed    0.18 sec
+      Start 62: update_fragment
+62/97 Test #62: update_fragment .....................   Passed    0.13 sec
+      Start 63: update_fragment_timing
+63/97 Test #63: update_fragment_timing ..............   Passed    0.06 sec
+      Start 64: update_metadata
+64/97 Test #64: update_metadata .....................   Passed    0.10 sec
+      Start 65: update_metadata_setup
+65/97 Test #65: update_metadata_setup ...............   Passed    0.03 sec
+      Start 66: update_fragment_raw
+66/97 Test #66: update_fragment_raw .................   Passed    0.02 sec
+      Start 67: update_channel
+67/97 Test #67: update_channel ......................   Passed    0.13 sec
+      Start 68: update_frame_queue
+68/97 Test #68: update_frame_queue ..................   Passed    0.01 sec
+      Start 69: update_egress
+69/97 Test #69: update_egress .......................   Passed    0.00 sec
+      Start 70: update_driver_events
+70/97 Test #70: update_driver_events ................   Passed    0.02 sec
+      Start 71: update_completion_mailbox
+71/97 Test #71: update_completion_mailbox ...........   Passed    0.01 sec
+      Start 72: update_completion_owner
+72/97 Test #72: update_completion_owner .............   Passed    0.02 sec
+      Start 73: update_driver_dispatch
+73/97 Test #73: update_driver_dispatch ..............   Passed    0.00 sec
+      Start 74: update_frame_ingress
+74/97 Test #74: update_frame_ingress ................   Passed    0.00 sec
+      Start 75: update_ingress_owner
+75/97 Test #75: update_ingress_owner ................   Passed    0.00 sec
+      Start 76: boot_image_admission
+76/97 Test #76: boot_image_admission ................   Passed    0.35 sec
+      Start 77: boot_crypto_source
+77/97 Test #77: boot_crypto_source ..................   Passed    0.09 sec
+      Start 78: boot_staging_source
+78/97 Test #78: boot_staging_source .................   Passed    0.01 sec
+      Start 79: boot_update_handoff
+79/97 Test #79: boot_update_handoff .................   Passed    0.76 sec
+      Start 80: boot_staging_handoff
+80/97 Test #80: boot_staging_handoff ................   Passed    0.09 sec
+      Start 81: boot_wire_handoff
+81/97 Test #81: boot_wire_handoff ...................   Passed    0.09 sec
+      Start 82: boot_fragment_handoff
+82/97 Test #82: boot_fragment_handoff ...............   Passed    0.10 sec
+      Start 83: boot_fragment_timing
+83/97 Test #83: boot_fragment_timing ................   Passed    0.07 sec
+      Start 84: boot_egress_handoff
+84/97 Test #84: boot_egress_handoff .................   Passed    0.14 sec
+      Start 85: boot_driver_events_handoff
+85/97 Test #85: boot_driver_events_handoff ..........   Passed    0.16 sec
+      Start 86: boot_completion_mailbox_handoff
+86/97 Test #86: boot_completion_mailbox_handoff .....   Passed    0.21 sec
+      Start 87: boot_driver_dispatch_handoff
+87/97 Test #87: boot_driver_dispatch_handoff ........   Passed    0.23 sec
+      Start 88: boot_frame_ingress_handoff
+88/97 Test #88: boot_frame_ingress_handoff ..........   Passed    0.21 sec
+      Start 89: boot_threaded_ingress_handoff
+89/97 Test #89: boot_threaded_ingress_handoff .......   Passed    0.40 sec
+      Start 90: boot_ingress_owner_handoff
+90/97 Test #90: boot_ingress_owner_handoff ..........   Passed    0.26 sec
+      Start 91: boot_channel_handoff
+91/97 Test #91: boot_channel_handoff ................   Passed    0.11 sec
+      Start 92: boot_metadata_setup_handoff
+92/97 Test #92: boot_metadata_setup_handoff .........   Passed    0.11 sec
+      Start 93: boot_metadata_handoff
+93/97 Test #93: boot_metadata_handoff ...............   Passed    0.08 sec
+      Start 94: boot_release_handoff
+94/97 Test #94: boot_release_handoff ................   Passed    0.20 sec
+      Start 95: boot_image_profile
+95/97 Test #95: boot_image_profile ..................   Passed    0.01 sec
+      Start 96: boot_release_admission
+96/97 Test #96: boot_release_admission ..............   Passed    0.26 sec
+      Start 97: boot_release_versions
+97/97 Test #97: boot_release_versions ...............   Passed    0.04 sec
+
+100% tests passed, 0 tests failed out of 97
+
+Total Test time (real) =  15.26 sec

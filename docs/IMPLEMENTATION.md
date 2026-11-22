@@ -1,6 +1,8 @@
 # Реализация: main, открытые PR и аппаратные границы
 
-## Текущий результат P1 (база mainfc90200, PR #1–62 слиты)
+[Проверенная software сборка и cold-render evidence](evidence/build/esp32-startup-memory-order/README.md).
+
+## Текущий результат P1 (база main973a9ba, PR #1–63 слиты)
 
 Existing signed HTTPS/session соединены с inactive SDK installer/UI approval/
 boot self-test/rollback и USB migration. На ESP32 после диагностического
@@ -12,10 +14,12 @@ touch/saved Wi-Fi/SETUP PASS; F407 ee7d179 не открывался. Fresh16MiB
 7startup points/BOOT window/16samples: history202308 на APP_ENTRY → local1887
 к UI_READY → history112 после stop, OTA-worker остаток1488из3072bytes.
 Это не approved budget configured8192/TLS/install или simultaneous OOM proof.
-Следующий software результат — локализация/исправление startup transient;
-key/context/floors не угадываются. CHECK/INSTALL остаются закрыты без настройки.
+Текущий software результат — первый dashboard refresh/UI_READY до export/
+Wi-Fi start, actual app_main/real LVGL cold-render/failure checks и оба SDK.
+Этот source-level порядок ещё не проверен на устройстве; причины minimum1887,
+configured budget и key/context/floors не назначаются. CHECK/INSTALL остаются закрыты без настройки.
 Оба UART capture завершены, сеанс608.700s закрыт, новых device actions нет.
-Этот отчётный PR не меняет firmware исходники; [дальнейший план](NEXT_STAGE.md).
+[План software интеграции](plans/P1_STARTUP_MEMORY_ORDER.md), [дальнейшие gates](NEXT_STAGE.md).
 Ниже — история слитых этапов, не текущая очередь абстракций.
 
 ## История P0 — первая прошиваемая сборка F407

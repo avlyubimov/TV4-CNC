@@ -43,6 +43,9 @@ docs/BOARD_ADAPTER.md, docs/RUNTIME_DIAGNOSTICS.md и docs/OTA_ARCHITECTURE.md.
   service owner, запрет concurrent TLS bench, source/ELF gates обязательны.
   Ни startup callbacks, ни per-chunk путь не логируют/не начинают окна. Main
   публикует семь фиксированных samples, существующий worker выводит ограниченно.
+  После main973a9ba UI_READY следует за первым dashboard refresh, optional
+  export/Wi-Fi запускаются после него: ID стабильны, time-order0,1,2,3,5,6,4.
+  Не сортировать историю по ID как хронологию и не переносить host heap на ESP32.
   Не приписывать late worker_stack_at_emit старой startup-точке; не выдавать
   own compiler frames за full runtime stack. Install/crypto/resource authority,
   heap clocks/DMA reserve/TLS records/framebuffer и installed fecc05d прежние.

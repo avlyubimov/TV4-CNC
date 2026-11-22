@@ -181,8 +181,12 @@ Key/SemVer/time/resource context по решению владельца пока
 CHECK/INSTALL закрыты, test keys только host. Factory self-test явно PASS;
 OTA-slot PENDING_VERIFY/confirm/rollback/power loss этим не проверялись.
 
-Этот отчётный PR меняет только документацию/evidence. Разрешённый аппаратный
-сеанс закрыт, новые UART/SWD/reset/Flash требуют нового exact-image разрешения.
+Отчётный docs-only PR #63 завершён и слит владельцем в main973a9ba.
+По продолжению владельца следующий отдельный software PR меняет порядок
+старта HMI/services и даёт проверенный ELF/BIN, см.
+docs/plans/P1_STARTUP_MEMORY_ORDER.md. Hardware improvement до нового стенда
+не утверждать. Прошлый аппаратный сеанс закрыт; новые UART/SWD/reset/Flash
+требуют нового exact-image разрешения.
 Не повторять USB migration или ordinary rev12 flash поверх действующей A/B карты.
 SDK/dependency pins, eFuse/option bytes/OTP/CAN/motion и самостоятельные
 merge/release не менять. Полные RAM/stack/FPS/latency/soak и P1–P5 не объявлять

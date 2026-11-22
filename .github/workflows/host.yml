@@ -91,6 +91,9 @@ jobs:
           ctest --test-dir build-boot-thread-sanitize -R '^boot_threaded_ingress_handoff$' \
             -V --output-log "$PWD/build/threaded-signed-sanitizer.log"
       - run: ctest --test-dir build --output-on-failure
+      - name: Record actual app_main cold-render ordering (host SDK boundary)
+        working-directory: build
+        run: ./startup_tests audit > startup-audit.log
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         if: always()
         with:
@@ -100,3 +103,5 @@ jobs:
             build/policy-analysis.log
             build/thread-sanitizer.log
             build/threaded-signed-sanitizer.log
+            build/startup-audit.log
+            build/startup-first-frame.ppm
