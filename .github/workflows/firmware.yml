@@ -18,6 +18,7 @@ jobs:
             image: espressif/idf@sha256:2b4f966c37eaedc19542b0637a5f850b2eff9478d8e858192aa0073d92c2dc91
     container:
       image: ${{ matrix.image }}
+      options: --ulimit nofile=4096:4096
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4, reviewed 2026-11-19
         with:

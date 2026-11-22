@@ -40,7 +40,9 @@ if [[ "$profile" == rev12-ota && -n "${TV4_OTA_CONTEXT:-}" ]]; then
 fi
 if [[ "$mode" == docker ]]; then
   # Re-enter in the official immutable SDK container. No device passthrough.
+  # Pin the descriptor limit instead of inheriting the Docker daemon's setting.
   exec docker run --rm --cap-drop=ALL --security-opt=no-new-privileges \
+    --ulimit nofile=4096:4096 \
     -e "TV4_BUILD_PROJECT_VERSION=$project_version" \
     -e "TV4_OTA_MEMORY_DIAGNOSTICS=$memory_diagnostics" \
     -e "TV4_OTA_WORKER_STACK_BENCH=$worker_stack_bench" \

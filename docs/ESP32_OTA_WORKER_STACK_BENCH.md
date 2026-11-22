@@ -66,6 +66,9 @@ tests — explicit selection, container flags и запрет migration.
 CI сохраняет10 matrix jobs и trace control. Два OTA jobs дополнительно строят
 worker-stack variant: всего14 SDK сборок. Evidence связывает source/image/ELF/
 config/requested stack, а runtime qualification остаётся false.
+Docker script и Actions SDK containers явно задают `nofile=4096:4096` вместо
+daemon default; это настройка среды компиляции, не изменение памяти firmware.
+[Формат Docker ulimit](https://docs.docker.com/reference/cli/docker/container/run/#set-ulimits-in-container---ulimit).
 
 Следующий exact-image стенд требует отдельного разрешения: реальная аллокация,
 повторяемость/стеки/UI/Wi-Fi/SETUP и возврат текущего factory. Не вычитать5120

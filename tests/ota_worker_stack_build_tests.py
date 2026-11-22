@@ -65,6 +65,7 @@ class Guards(unittest.TestCase):
                 self.assertEqual(run.returncode,0,run.stderr)
                 self.assertIn('TV4_OTA_WORKER_STACK_BENCH='+str(int(enabled)),run.stdout)
                 self.assertIn('TV4_OTA_MEMORY_DIAGNOSTICS='+str(int(enabled)),run.stdout)
+                self.assertIn('--ulimit\nnofile=4096:4096\n',run.stdout)
                 self.assertNotIn('--device',run.stdout)
     def test_actual_service_preprocessor_guards(self):
         base=[os.environ.get('CC','cc'),'-std=c11','-fsyntax-only','-DESP_PLATFORM=1',
