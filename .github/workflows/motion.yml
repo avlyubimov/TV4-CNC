@@ -35,6 +35,23 @@ jobs:
             firmware/stm32-motion/board/noio.c
           python3 tools/check_motion_size.py build-motion-arm/libtv4_motion_core.a | tee build-motion-evidence/core-size.txt
           python3 tools/check_motion_size.py build-motion-arm/libtv4_motion_boot_support.a | tee build-motion-evidence/boot-support-size.txt
+      - name: Verify pinless STEP-DIR timer design (no firmware or outputs)
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -s docs/NEMA23_BENCH_PLAN.md
+          test -s docs/evidence/build/stm32-stepdir-design/README.md
+          cmake -S firmware/stm32-motion -B build-stepdir-arm -G Ninja \
+            -DCMAKE_TOOLCHAIN_FILE=cmake/arm-none-eabi.cmake \
+            -DCMAKE_BUILD_TYPE=MinSizeRel -DTV4_MOTION_STEPDIR_DESIGN=ON
+          cmake --build build-stepdir-arm --target tv4_stepdir_design
+          python3 tools/check_stepdir_design.py build-stepdir-arm > build-motion-evidence/stepdir-design.json
+          python3 firmware/stm32-motion/tests/stepdir_scope_tests.py \
+            --default-arm-build build-motion-arm > build-motion-evidence/stepdir-scope.txt
+          gcc -std=c11 -Wall -Wextra -Werror -Wconversion -Wshadow -Wstrict-prototypes \
+            -fanalyzer -c firmware/stm32-motion/stepdir/timer_plan.c -o build-stepdir-arm/analyzer.o \
+            > build-motion-evidence/stepdir-analysis.txt 2>&1
+          printf 'PASS actual timer plan -fanalyzer\n' >> build-motion-evidence/stepdir-analysis.txt
       - name: Compile bounded update transport (no CAN or Flash backend)
         shell: bash
         run: |
@@ -184,6 +201,9 @@ jobs:
             build-motion-evidence/bench-*.txt
             build-motion-evidence/bench-image.json
             build-motion-evidence/compiler.txt
+            build-motion-evidence/stepdir-design.json
+            build-motion-evidence/stepdir-scope.txt
+            build-motion-evidence/stepdir-analysis.txt
             build-motion-evidence/core-size.txt
             build-motion-evidence/boot-support-size.txt
             build-motion-evidence/link-probe.json

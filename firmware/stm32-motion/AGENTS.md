@@ -46,6 +46,22 @@ docs/evidence/hardware/2026-11-22-f407-ee7d179-bench/README.md.
   board image в историческом PR-02; текущий явный P0 bench описан ниже.
   Операции с устройством этим не разрешаются.
 
+## STEP/DIR design — отдельное software задание владельца
+
+- Читать docs/NEMA23_BENCH_PLAN.md. Первый closed-loop3,1Н·м заказан, не получен;
+  точные motor/driver models, питание/ток, pins/ENABLE/STEP polarity неизвестны.
+  Никаких физических выходов или испытаний этим заданием не разрешено.
+- `stepdir/timer_plan` — arithmetic/register contract TIM1/TIM8 CH1 PWM2+OPM+RCR,
+  finite1..256 pulses; explicit synthetic clock/timing в tests, без board defaults.
+  OK не safety/admission/start permission. Только pure plan, без MMIO/HAL/IRQ/
+  callbacks/heap или изменения hardware.c. CEN/CCER/MOE остаются disabled.
+- ARM archive только opt-in `TV4_MOTION_STEPDIR_DESIGN=ON`; default ARM и P0
+  image не содержат его. Комбинации real/synthetic image+design запрещены.
+  Host model не доказывает физические pulses, DIR hold, stop или безопасность.
+- Future adapter/осциллограф/driver/motor запуск требуют exact model/pinout/
+  clock/independent inhibit review и отдельного аппаратного разрешения.
+  Физический E-stop/STO/контактор независим от MCU/CAN/UI; noio по-прежнему false.
+
 ## PR-02b — историческая граница synthetic startup
 
 - Читать docs/STM32_STARTUP.md/NEXT_STAGE.md. Generic Cortex-M4 reset/support
