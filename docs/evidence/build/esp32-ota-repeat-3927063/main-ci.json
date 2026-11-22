@@ -1,0 +1,115 @@
+{
+  "sha": "392706355193b7544132e2296f7ef8572e1f3c10",
+  "runs": [
+    {
+      "run": 45050719219,
+      "workflow": "Documentation checks",
+      "url": "https://github.com/avlyubimov/TV4-CNC/actions/runs/45050719219",
+      "jobs": [
+        {
+          "id": 137295014208,
+          "name": "check",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "run": 45050719226,
+      "workflow": "STM32 image admission (no hardware)",
+      "url": "https://github.com/avlyubimov/TV4-CNC/actions/runs/45050719226",
+      "jobs": [
+        {
+          "id": 137295014168,
+          "name": "crypto-arm",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "run": 45050719218,
+      "workflow": "STM32 foundation (no hardware)",
+      "url": "https://github.com/avlyubimov/TV4-CNC/actions/runs/45050719218",
+      "jobs": [
+        {
+          "id": 137295014307,
+          "name": "arm-core",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "run": 45050719225,
+      "workflow": "Host logic and LVGL render",
+      "url": "https://github.com/avlyubimov/TV4-CNC/actions/runs/45050719225",
+      "jobs": [
+        {
+          "id": 137295014261,
+          "name": "host (true)",
+          "conclusion": "success"
+        },
+        {
+          "id": 137295014495,
+          "name": "host (false)",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "run": 45050719285,
+      "workflow": "ESP-IDF compatibility",
+      "url": "https://github.com/avlyubimov/TV4-CNC/actions/runs/45050719285",
+      "jobs": [
+        {
+          "id": 137295015076,
+          "name": "build (5.3.2, rev12-ota)",
+          "conclusion": "success"
+        },
+        {
+          "id": 137295015115,
+          "name": "build (5.3.2, headless)",
+          "conclusion": "success"
+        },
+        {
+          "id": 137295015126,
+          "name": "build (5.3.2, rev12)",
+          "conclusion": "success"
+        },
+        {
+          "id": 137295015128,
+          "name": "build (6.1.1, rev12-tls-bench)",
+          "conclusion": "success"
+        },
+        {
+          "id": 137295015136,
+          "name": "build (5.3.2, rev12-tls-bench)",
+          "conclusion": "success"
+        },
+        {
+          "id": 137295015156,
+          "name": "build (6.1.1, rev12-memory-bench)",
+          "conclusion": "success"
+        },
+        {
+          "id": 137295015161,
+          "name": "build (6.1.1, headless)",
+          "conclusion": "success"
+        },
+        {
+          "id": 137295015203,
+          "name": "build (5.3.2, rev12-memory-bench)",
+          "conclusion": "success"
+        },
+        {
+          "id": 137295015233,
+          "name": "build (6.1.1, rev12-ota)",
+          "conclusion": "success"
+        },
+        {
+          "id": 137295015251,
+          "name": "build (6.1.1, rev12)",
+          "conclusion": "success"
+        }
+      ]
+    }
+  ]
+}
