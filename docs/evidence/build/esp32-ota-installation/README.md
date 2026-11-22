@@ -4,7 +4,7 @@
 software integration; устройства не открывались, Flash/reset не выполнялись.
 
 Host79/79 PASS, actual signed session и SDK-adapter mock faults, boot window/
-accept/rollback,11 trust/context/migration negative tests и LVGL32/RGB565 layout/
+accept/rollback,13 trust/context/migration negative tests и LVGL32/RGB565 layout/
 confirmation. Первый ASan/UBSan/LSan79/79 PASS; финальные журналы/clean-source
 build и bundle identity будут добавлены после фиксации исполняемых исходников.
 Программные проверки не подтверждают USB migration, configured OTA, power loss,

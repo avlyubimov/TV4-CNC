@@ -3,7 +3,8 @@
 База main d1317a8, PR #1–58 слиты; P0 ee7d179 hardware report принят владельцем.
 
 1. Один explicit rev12-ota: reviewed 16MiB factory/двух OTA slots, SDK rollback,
-   boot watchdog/self-test, без изменения ordinary профилей и неподтверждённых pins.
+   boot watchdog/self-test, PSRAM XiP для RGB bounce buffers при Flash writes,
+   без изменения ordinary профилей и неподтверждённых pins.
 2. Existing signed session → bounded SDK inactive writer → full digest/EOF/SDK end
    → boot selection последней операцией. Связать одобрение UI с полным образом,
    re-fetch metadata без потери binding; cancel/error cleanup без boot activation.

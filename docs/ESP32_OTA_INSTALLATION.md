@@ -163,7 +163,15 @@ binding и не подменяется этим пакетом.
 Session workspace остаётся 34000 байт и размещается только в PSRAM; download
 не хранит весь образ. TLS использует существующий SDK external allocator,
 records 16384/4096, CA bundle и certificate-date checks. DMA reserve 64 КиБ,
-RGB single framebuffer и драйверы GT911/CH422G не меняются. В unconfigured
+RGB single framebuffer/bounce buffers и драйверы GT911/CH422G не меняются.
+Только OTA profile включает SDK `SPIRAM_XIP_FROM_PSRAM` (оба FETCH_INSTRUCTIONS/
+RODATA): инструкции/константы копируются в PSRAM, чтобы cache оставался доступен
+RGB bounce ISR при Flash writes. Без этого текущий bounce-buffer режим не
+совместим с OTA/NVS-записью: [официальное ограничение RGB LCD](https://docs.espressif.com/projects/esp-idf/en/v6.1.1/esp32s3/api-reference/peripherals/lcd/rgb_lcd.html#bounce-buffer-with-single-psram-frame-buffer).
+Это требует дополнительной PSRAM под MMU pages кода/rodata и отдельного замера
+bandwidth/FPS на плате; clock80MHz, DMA reserve и framebuffer не урезаются.
+Ordinary profiles не получают XiP. Target section/page budget указан в evidence;
+это не подтверждение отсутствия tearing или снижения latency. В unconfigured
 профиле worker stack 3072 байта; настроенный installer требует 8192 байта.
 Queue одна, status/approval ограничены, UI создаёт три кнопки только на странице ПО.
 

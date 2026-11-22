@@ -35,6 +35,8 @@ def verify(build, profile, version, *, write_report=True):
             "UTC/TLS probe must be enabled only for explicit TLS bench profile")
     ota = profile == "rev12-ota"
     require(config.get("TV4_OTA_ENABLED", False) == ota, "OTA requires explicit migration profile")
+    for name in ("SPIRAM_XIP_FROM_PSRAM","SPIRAM_FETCH_INSTRUCTIONS","SPIRAM_RODATA"):
+        require(config.get(name,False)==ota, "PSRAM XiP is required only in the explicit OTA profile")
     if ota:
         require(config.get("BOOTLOADER_APP_ROLLBACK_ENABLE", False), "OTA rollback required")
         require(all(config.get(n,False) for n in ("ESP_TASK_WDT_EN","ESP_TASK_WDT_INIT","ESP_TASK_WDT_PANIC","ESP_TASK_WDT_CHECK_IDLE_TASK_CPU0","ESP_TASK_WDT_CHECK_IDLE_TASK_CPU1","ESP_INT_WDT","ESP_SYSTEM_PANIC_PRINT_REBOOT")) and config.get("ESP_TASK_WDT_TIMEOUT_S")==5, "bounded watchdog/reset required")

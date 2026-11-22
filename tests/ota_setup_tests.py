@@ -38,6 +38,18 @@ class ContextTests(unittest.TestCase):
         self.assertEqual(result['installed_version'],'0.1.0')
         header=(self.output/'ota_local_context.h').read_bytes()
         self.assertNotIn(b'PRIVATE',header);self.assertNotIn(str(self.root).encode(),header)
+    def test_removing_context_clears_previously_generated_public_trust(self):
+        self.run_context();context.prepare(None,self.output)
+        h=(self.output/'ota_local_context.h').read_text()
+        self.assertIn('TV4_OTA_PROVISIONED 0',h);self.assertNotIn('host-fixture-only',h)
+        self.assertIn('ota_public_key[] = {0}',h)
+        self.assertIsNone(json.loads((self.output/'ota_local_context.json').read_text())['public_key_sha256'])
+    def test_context_cannot_leak_to_ordinary_or_ci_builds(self):
+        import os
+        env={**os.environ,'TV4_OTA_CONTEXT':str(self.config)}
+        for profile,mode in (('rev12','local'),('headless','docker'),('rev12-ota','docker')):
+            result=subprocess.run([str(ROOT/'tools/build_idf.sh'),profile,'6.1.1',mode],cwd=ROOT,env=env,text=True,capture_output=True)
+            self.assertEqual(result.returncode,2);self.assertIn('requires explicit rev12-ota/local',result.stderr)
     def test_missing_unreviewed_and_unknown_settings_fail(self):
         good=copy.deepcopy(self.value)
         for field in good:
@@ -70,7 +82,7 @@ class MigrationTests(CandidateTests):
     # already registered independently by CTest.
     def configure(self):
         self.profile='rev12-tls-bench';super().configure();self.profile='rev12-ota'
-        p=self.build/'config/sdkconfig.json';c=json.loads(p.read_text());c.update(TV4_UTC_TLS_BENCH=False,TV4_OTA_ENABLED=True,BOOTLOADER_APP_ROLLBACK_ENABLE=True,PARTITION_TABLE_CUSTOM_FILENAME='ota/partitions.ab.csv',ESP_TASK_WDT_EN=True,ESP_TASK_WDT_INIT=True,ESP_TASK_WDT_PANIC=True,ESP_TASK_WDT_TIMEOUT_S=5,ESP_TASK_WDT_CHECK_IDLE_TASK_CPU0=True,ESP_TASK_WDT_CHECK_IDLE_TASK_CPU1=True,ESP_INT_WDT=True,ESP_SYSTEM_PANIC_PRINT_REBOOT=True);p.write_text(json.dumps(c))
+        p=self.build/'config/sdkconfig.json';c=json.loads(p.read_text());c.update(TV4_UTC_TLS_BENCH=False,TV4_OTA_ENABLED=True,BOOTLOADER_APP_ROLLBACK_ENABLE=True,PARTITION_TABLE_CUSTOM_FILENAME='ota/partitions.ab.csv',ESP_TASK_WDT_EN=True,ESP_TASK_WDT_INIT=True,ESP_TASK_WDT_PANIC=True,ESP_TASK_WDT_TIMEOUT_S=5,ESP_TASK_WDT_CHECK_IDLE_TASK_CPU0=True,ESP_TASK_WDT_CHECK_IDLE_TASK_CPU1=True,ESP_INT_WDT=True,ESP_SYSTEM_PANIC_PRINT_REBOOT=True,SPIRAM_XIP_FROM_PSRAM=True,SPIRAM_FETCH_INSTRUCTIONS=True,SPIRAM_RODATA=True);p.write_text(json.dumps(c))
         table=b''.join(struct.pack('<HBBII16sI',0x50aa,k,s,a,n,label.encode(),0) for k,s,a,n,label in migration.check_idf_build.OTA_PARTITIONS)
         (self.build/'partition_table/partition-table.bin').write_bytes(table)
         (self.build/'ota-local').mkdir();context.prepare(None,self.build/'ota-local')
@@ -105,7 +117,7 @@ class MigrationTests(CandidateTests):
         with self.assertRaisesRegex(ValueError,'clean'):self.prepare_migration()
     def test_rollback_security_and_wrong_layout(self):
         p=self.build/'config/sdkconfig.json';good=json.loads(p.read_text())
-        for change in ({'ESP_TASK_WDT_PANIC':False},{'ESP_SYSTEM_PANIC_PRINT_REBOOT':False},{'BOOTLOADER_APP_ROLLBACK_ENABLE':False},{'BOOTLOADER_APP_ANTI_ROLLBACK':True},{'SECURE_BOOT':True},{'SECURE_FLASH_ENC_ENABLED':True},{'TV4_OTA_ENABLED':False},{'MBEDTLS_INTERNAL_MEM_ALLOC':True}):
+        for change in ({'SPIRAM_XIP_FROM_PSRAM':False},{'SPIRAM_FETCH_INSTRUCTIONS':False},{'SPIRAM_RODATA':False},{'ESP_TASK_WDT_PANIC':False},{'ESP_SYSTEM_PANIC_PRINT_REBOOT':False},{'BOOTLOADER_APP_ROLLBACK_ENABLE':False},{'BOOTLOADER_APP_ANTI_ROLLBACK':True},{'SECURE_BOOT':True},{'SECURE_FLASH_ENC_ENABLED':True},{'TV4_OTA_ENABLED':False},{'MBEDTLS_INTERNAL_MEM_ALLOC':True}):
             c=copy.deepcopy(good);c.update(change);p.write_text(json.dumps(c))
             with self.subTest(change=change),self.assertRaises(ValueError):self.prepare_migration()
         p.write_text(json.dumps(good));p=self.build/'partition_table/partition-table.bin';raw=bytearray(p.read_bytes());struct.pack_into('<I',raw,4*32+4,0x10000);p.write_bytes(raw)
