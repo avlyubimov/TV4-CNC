@@ -24,8 +24,8 @@ PR и Actions; не копировать код уже открытого PR. Д
 - Каждая задача завершается измеримым результатом: прошиваемым образом,
   работающим драйвером, подтверждённой связью, тестом обновления или настоящим
   релизным артефактом. Отчёт различает программную проверку и аппаратный результат.
-  Разовый docs-only PR #55 завершён; текущий P0 должен дать настоящий образ,
-  последующий стенд отдельно проверяет его работу.
+  Разовый docs-only PR #55 и P0 bench/report #56–58 завершены; текущий P1
+  должен дать реальный installer/rollback/migration образ, а не новую модель.
 - Не расширять бесконечно программную модель, когда отсутствующий аппаратный
   адаптер или базовая прошивка блокируют использование готового кода. Новые
   библиотеки/уровни нужны только конкретной интеграции и её потребителю.
@@ -108,12 +108,15 @@ PR и Actions; не копировать код уже открытого PR. Д
 ## OTA и релизы — обязательная будущая функциональность
 
 - GitHub Releases → HTTPS → ESP32 OTA Manager; отдельно ESP32 OTA A/B и
-  ESP32 → CAN → независимый загрузчик F407. Пока это проект, а не готовый OTA.
+  ESP32 → CAN → независимый загрузчик F407. В explicit rev12-ota интегрирован
+  installer/self-test/rollback; configured OTA и USB migration аппаратно не приняты.
 - Подписанный манифест, доверенный локальный публичный ключ, SHA-256, hardware/
   protocol compatibility, ограниченные размеры, штатный rollback ESP-IDF.
   Не доверять одному SHA, TLS или имени релиза вместо подписи.
 - Разметку мигрировать только отдельной USB-процедурой с бэкапом/проверкой,
-  не обычным app OTA. Текущий factory 2 МиБ остаётся до отдельного PR миграции.
+  не обычным app OTA. Обычные профили сохраняют factory2MiB; только explicit rev12-ota использует
+  reviewed 16MiB factory+A/B, и лишь после отдельно разрешённой USB-миграции
+  она станет действующей на плате. См. docs/ESP32_OTA_INSTALLATION.md.
 - Для STM32 нужны подтверждённая геометрия Flash и состояние без движения,
   шпинделя и программы. Не выбирать адреса/сектора/A-B по предположению.
 - Автопроверка разрешена; установка требует явного подтверждения оператора
@@ -137,30 +140,28 @@ PR и Actions; не копировать код уже открытого PR. Д
    теги, релизы, секреты CI и публикации под видом обычного push.
 6. Обновлять актуальный статус; исторические отчёты сохранять с явной пометкой.
 
-## Текущее задание: сохранить стенд P0 и перейти к P1 ESP32 OTA
+## Текущее задание: P1 ESP32 OTA
 
-22 ноября 2026, база main `07fb406e37ebd1f1e019dbee0b54e8bb5571be1a`, PR #1–57 слиты.
-После отдельного разрешения один стенд ee7d179 завершён за16,196s, exit0:
-program/verify/exact identity, RUNNING, data/BSS/один CCM word/guards, progress,
-watchdog reset и UsageFault capture/reset **PASS**. На F407 оставлен работающим
-clean `ee7d179435f3f9e7598c7646b85ff64f4d5e9a32`, BIN2540bytes. Условный restore
-не понадобился. Предыдущий c09 FAIL8 и проверенный полный snapshot restore — история.
+База main d1317a89f6a29cf4ba950092a00ba00c78f80f1b, PR #1–58 слиты.
+P0 ee7d179 работает на F407; аппаратный отчёт принят. Все прежние разрешённые
+сеансы завершены. Установленные F407 ee7d179 и ESP32 ordinary8f0d899 сохраняются;
+код P1/новый commit не означает, что он записан в устройства.
 
-Плата изолирована, только питание/SWD; option bytes/OTP/CAN/motion/ESP32 не менялись.
-Этот разрешённый сеанс завершён. Полный RAM/CCM stress, stack high-water,
-точные HSI/LSI/HSE частоты, physical GPIO/CAN/inhibit и power-loss остаются открытыми.
-P0 выполнен на базовом стенде; следующий приоритет — P1 ESP32 OTA с existing
-HTTPS/crypto и review16MiB factory+двух OTA slots/USB migration. Новых hardware
-операций или будущих CAN loader addresses это не разрешает.
+Одна интеграция P1: existing HTTPS/signature/session → SDK inactive writer,
+UI confirmation, boot self-test/rollback/watchdog, explicit rev12-ota layout и
+prepare/verify USB bundle. Читать docs/plans/P1_ESP32_OTA.md,
+docs/ESP32_OTA_INSTALLATION.md, NEXT_STAGE и evidence/build/esp32-ota-installation.
+Владелец выбрал настройку без ключа: build/run разрешены, отсутствующий локальный
+public key/production versions/resource/time context блокирует сетевую установку.
+Проверочные ключи только в host tests; в firmware/CI их не встраивать.
 
-Читать docs/evidence/hardware/2026-11-22-f407-ee7d179-bench/README.md,
-docs/NEXT_STAGE.md и docs/OTA_ARCHITECTURE.md. Текущий отчётный PR — только
-документация/evidence; исполняемый код/SDK/dependency/CI pins не менять.
-Не повторять прошивку или SWD по завершённому разрешению. Установленный exact
-source ee7d179 сохранять отдельно от коммитов отчёта/новых CI builds.
-После отчёта следующий функциональный результат — installer/rollback/migration
-ESP32 OTA на существующем коде, без новой криптографии или transport layers.
-Никакого self-merge/release/движения; дальнейшие аппаратные действия отдельно.
+Проверить host/fault/layout/negative/sanitizers и5profiles×2SDK CI. Подготовить
+реальный clean-source unprovisioned BIN/ELF/migration bundle; в публичное evidence
+выгружать только текст/метаданные, без binaries/ключей/дампов. Compiler frame/
+ELF size не runtime margins. USB migration, configured install/rollback, Wi-Fi/
+power-loss и реальные heap/stack/touch/FPS остаются отдельным аппаратным этапом
+с точным образом/сценарием/разрешением. Не начинать P2–P5 под видом этой работы.
+Никаких устройств, eFuse/OTP/option bytes, CAN/motion, self-merge или release.
 
 ## Исторические контракты слитых этапов
 

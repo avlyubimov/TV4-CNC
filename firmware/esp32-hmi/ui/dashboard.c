@@ -547,6 +547,7 @@ void dashboard_create(void) {
     dashboard_update();
 }
 void dashboard_update(void) {
+    if(view==VIEW_FIRMWARE) {tv4_update_snapshot update;tv4_ota_service_snapshot(&update);firmware_view_ota_update(&firmware_view,&update);}
     if(resource_requested) {
         resource_view=!resource_view;resource_requested=false;view_valid=false;
         if(resource_view) {

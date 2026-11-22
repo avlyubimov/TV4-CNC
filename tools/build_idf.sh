@@ -4,7 +4,7 @@ set -euo pipefail
 profile="${1:-headless}"
 version="${2:-6.1.1}"
 mode="${3:-docker}"
-case "$profile" in headless|rev12|rev12-memory-bench|rev12-tls-bench) ;; *) echo 'Profile: headless, rev12, rev12-memory-bench or rev12-tls-bench' >&2; exit 2 ;; esac
+case "$profile" in headless|rev12|rev12-memory-bench|rev12-tls-bench|rev12-ota) ;; *) echo 'Profile: headless, rev12, rev12-memory-bench, rev12-tls-bench or rev12-ota' >&2; exit 2 ;; esac
 case "$version" in
   5.3.2) image='espressif/idf@sha256:5b8f58d9d9caa45b689a31a0b6a0cc53b84594e0ba5fdd8d28eeef7d6123242a' ;;
   6.1.1) image='espressif/idf@sha256:2b4f966c37eaedc19542b0637a5f850b2eff9478d8e858192aa0073d92c2dc91' ;;
@@ -20,6 +20,13 @@ if [[ -z "$project_version" ]]; then
 fi
 if [[ -n "$project_version" && ( ${#project_version} -gt 31 || ! "$project_version" =~ ^[A-Za-z0-9._-]+$ ) ]]; then
   echo 'Unsupported project display version; expected <=31 ASCII version characters' >&2; exit 2
+fi
+if [[ -n "${TV4_OTA_CONTEXT:-}" && ( "$profile" != rev12-ota || "$mode" != local ) ]]; then
+  echo 'Provisioned local OTA context requires explicit rev12-ota/local; ordinary/CI profiles never receive keys' >&2; exit 2
+fi
+if [[ "$profile" == rev12-ota && -n "${TV4_OTA_CONTEXT:-}" ]]; then
+  python3 "$project_root/tools/prepare_ota_context.py" --context "$TV4_OTA_CONTEXT" --output "$project_root/build-ota-context" >/dev/null
+  project_version="$(python3 -c 'import json,sys; print(json.load(open(sys.argv[1]))["installed_version"])' "$project_root/build-ota-context/ota_local_context.json")"
 fi
 if [[ "$mode" == docker ]]; then
   # Re-enter in the official immutable SDK container. No device passthrough.
@@ -43,8 +50,11 @@ version_args=()
 if [[ -n "$project_version" ]]; then version_args+=("-DPROJECT_VER=$project_version"); fi
 defaults="$project_root/firmware/esp32-hmi/sdkconfig.defaults"
 if [[ "$profile" != headless ]]; then defaults+=";$project_root/firmware/esp32-hmi/sdkconfig.rev12"; fi
+if [[ "$profile" == rev12-ota ]]; then defaults+=";$project_root/firmware/esp32-hmi/sdkconfig.ota"; fi
 if [[ "$profile" == rev12-memory-bench ]]; then defaults+=";$project_root/firmware/esp32-hmi/sdkconfig.memory-bench"; fi
 if [[ "$profile" == rev12-tls-bench ]]; then defaults+=";$project_root/firmware/esp32-hmi/sdkconfig.tls-bench"; fi
+ota_args=()
+if [[ -n "${TV4_OTA_CONTEXT:-}" ]]; then ota_args+=("-DTV4_OTA_CONTEXT=$(realpath -- "$TV4_OTA_CONTEXT")"); else ota_args+=("-DTV4_OTA_CONTEXT="); fi
 idf.py -C "$project_root/firmware/esp32-hmi" -B "$build" \
-  -DIDF_TARGET=esp32s3 "-DSDKCONFIG=$build/sdkconfig" "-DSDKCONFIG_DEFAULTS=$defaults" "${version_args[@]}" build
+  -DIDF_TARGET=esp32s3 "-DSDKCONFIG=$build/sdkconfig" "-DSDKCONFIG_DEFAULTS=$defaults" "${version_args[@]}" "${ota_args[@]}" build
 python "$project_root/tools/check_idf_build.py" "$build" "$profile" "$version"

@@ -23,4 +23,13 @@ config TV4_UTC_TLS_BENCH
         Changes system UTC, no response body/installer/machine commands.
         Isolated 2026 bench policy, not production TLS budget. Separate board
         authorization needed; ordinary profiles never enable this flag.
+config TV4_OTA_ENABLED
+    bool "Enable explicit rev12-ota layout, worker and app rollback"
+    depends on TV4_BOARD_REV12 && SPIRAM && !TV4_OTA_MEMORY_BENCH && !TV4_UTC_TLS_BENCH
+    default n
+    help
+        Requires a separately authorized USB partition migration. Local public
+        trust/context and measured resource policy must be provisioned before
+        operator-triggered HTTPS/installation. No key/version defaults, eFuse,
+        CAN or motion control. Ordinary profiles retain factory-only layout.
 endmenu

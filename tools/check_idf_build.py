@@ -7,13 +7,17 @@ import sys
 from pathlib import Path
 
 
+OTA_PARTITIONS=[(1,2,0x9000,0x6000,"nvs"),(1,1,0xf000,0x1000,"phy_init"),(0,0,0x10000,0x200000,"factory"),
+            (1,0,0x210000,0x2000,"otadata"),(0,0x10,0x220000,0x300000,"ota_0"),(0,0x11,0x520000,0x300000,"ota_1"),
+            (1,0x40,0x820000,0x300000,"resources"),(1,0x41,0xb20000,0x4e0000,"store")]
+
 def require(condition, message):
     if not condition:
         raise ValueError(message)
 
 
 def verify(build, profile, version, *, write_report=True):
-    require(profile in {"headless", "rev12", "rev12-memory-bench", "rev12-tls-bench"}, "unknown profile")
+    require(profile in {"headless", "rev12", "rev12-memory-bench", "rev12-tls-bench", "rev12-ota"}, "unknown profile")
     require(version in {"5.3.2", "6.1.1"}, "unvalidated SDK")
     build = Path(build)
     config = json.loads((build / "config/sdkconfig.json").read_text())
@@ -29,7 +33,14 @@ def verify(build, profile, version, *, write_report=True):
             "memory probe must be enabled only for explicit bench profile")
     require(config.get("TV4_UTC_TLS_BENCH", False) == (profile == "rev12-tls-bench"),
             "UTC/TLS probe must be enabled only for explicit TLS bench profile")
-    tls_bench = profile == "rev12-tls-bench"
+    ota = profile == "rev12-ota"
+    require(config.get("TV4_OTA_ENABLED", False) == ota, "OTA requires explicit migration profile")
+    if ota:
+        require(config.get("BOOTLOADER_APP_ROLLBACK_ENABLE", False), "OTA rollback required")
+        require(all(config.get(n,False) for n in ("ESP_TASK_WDT_EN","ESP_TASK_WDT_INIT","ESP_TASK_WDT_PANIC","ESP_TASK_WDT_CHECK_IDLE_TASK_CPU0","ESP_TASK_WDT_CHECK_IDLE_TASK_CPU1","ESP_INT_WDT","ESP_SYSTEM_PANIC_PRINT_REBOOT")) and config.get("ESP_TASK_WDT_TIMEOUT_S")==5, "bounded watchdog/reset required")
+        require(not any(config.get(n,False) for n in ("BOOTLOADER_APP_ANTI_ROLLBACK","SECURE_BOOT","SECURE_FLASH_ENC_ENABLED")), "irreversible security options forbidden")
+        require(config.get("PARTITION_TABLE_CUSTOM_FILENAME") == "ota/partitions.ab.csv", "reviewed migration table required")
+    tls_bench = profile in {"rev12-tls-bench", "rev12-ota"}
     allocation_modes = {name for name in ("INTERNAL", "EXTERNAL", "DEFAULT", "CUSTOM", "IRAM_8BIT")
                         if config.get(f"MBEDTLS_{name}_MEM_ALLOC", False)}
     expected_allocation = "EXTERNAL" if tls_bench else "INTERNAL"
@@ -58,12 +69,17 @@ def verify(build, profile, version, *, write_report=True):
         magic, = struct.unpack_from("<H", raw, offset)
         if magic != 0x50AA:
             continue
-        _, kind, subtype, address, size, label, _ = struct.unpack_from("<HBBII16sI", raw, offset)
+        _, kind, subtype, address, size, label, flags = struct.unpack_from("<HBBII16sI", raw, offset)
+        require(flags == 0, "partition encryption/unknown flags forbidden")
         require(address + size <= 16 * 1024 * 1024, "partition exceeds 16 MB")
         partitions.append(dict(kind=kind, subtype=subtype, address=address, size=size,
                                label=label.rstrip(b"\0").decode()))
     apps = [p for p in partitions if p["kind"] == 0 and p["subtype"] == 0]
     require(len(apps) == 1 and apps[0]["address"] == 0x10000, "expected single factory app at 0x10000")
+    if ota:
+        require([(p['kind'],p['subtype'],p['address'],p['size'],p['label']) for p in partitions]==OTA_PARTITIONS,"OTA layout mismatch")
+    else:
+        require([(p["kind"],p["subtype"],p["address"],p["size"],p["label"]) for p in partitions]==[(1,2,0x9000,0x6000,"nvs"),(1,1,0xf000,0x1000,"phy_init"),(0,0,0x10000,0x200000,"factory")], "ordinary profile must retain factory-only layout")
     images = {}
     for rel in ("tv4_hmi.bin", "bootloader/bootloader.bin"):
         image = (build / rel).read_bytes()
@@ -87,7 +103,7 @@ def verify(build, profile, version, *, write_report=True):
 
 if __name__ == "__main__":
     if len(sys.argv) != 4:
-        raise SystemExit("Usage: check_idf_build.py BUILD_DIR headless|rev12|rev12-memory-bench|rev12-tls-bench 5.3.2|6.1.1")
+        raise SystemExit("Usage: check_idf_build.py BUILD_DIR headless|rev12|rev12-memory-bench|rev12-tls-bench|rev12-ota 5.3.2|6.1.1")
     try:
         verify(*sys.argv[1:])
     except (ValueError, KeyError, OSError, struct.error) as error:

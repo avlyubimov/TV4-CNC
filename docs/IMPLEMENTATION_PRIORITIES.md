@@ -27,7 +27,10 @@ HTTPS/crypto и review16MiB factory+двух OTA slots/USB migration. Новых
 операций или будущих CAN loader addresses это не разрешает.
 
 [Успешный стенд ee7d179](evidence/hardware/2026-11-22-f407-ee7d179-bench/README.md). Следующий измеримый результат — P1 runtime ESP32 OTA,
-не дальнейшее расширение host-модели F407. В этом отчётном PR нет firmware изменений.
+не дальнейшее расширение host-модели F407. Отчёт #58 уже слит; текущая база
+main d1317a8. [P1 installation](ESP32_OTA_INSTALLATION.md) интегрирует реальный
+rev12-ota SDK writer/self-test/rollback/USB bundle и UI. Владелец выбрал настройку
+без ключа; install fail-closed, hardware migration/OTA/resources ещё не проверены.
 
 ## P0 — первая настоящая прошивка STM32F407
 

@@ -53,12 +53,12 @@ void firmware_view_create(firmware_view_t *view,lv_obj_t *parent,
         view->value[i]=text(view->panel,tr(NULL,S_FW_UNKNOWN),180,89+(int)i*31,505,&tv4_ru_14,0xc1d6e8);
     }
     separator(view->panel,248);
-    text(view->panel,tr(NULL,S_FW_UPDATE_OFF),20,266,665,&tv4_ru_14,0xffcb61);
-    text(view->panel,tr(NULL,S_FW_UPDATE_NOTE),20,292,665,&tv4_ru_12,0x9fb4c8);
+    view->update_state=text(view->panel,tr(NULL,S_FW_UPDATE_OFF),20,266,665,&tv4_ru_14,0xffcb61);
+    view->update_note=text(view->panel,tr(NULL,S_FW_UPDATE_NOTE),20,292,665,&tv4_ru_12,0x9fb4c8);
 }
 void firmware_view_update(firmware_view_t *view,const firmware_info_t *info) {
     if(!view->panel)return;
-    static const string_id profiles[]={S_FW_UNKNOWN,S_FW_HEADLESS,S_FW_REV12,S_FW_MEMORY_BENCH,S_FW_TLS_BENCH};
+    static const string_id profiles[]={S_FW_UNKNOWN,S_FW_HEADLESS,S_FW_REV12,S_FW_MEMORY_BENCH,S_FW_TLS_BENCH,S_OTA_PROFILE};
     string_id source=info->source==FIRMWARE_INFO_DEVICE?S_FW_DEVICE:
         info->source==FIRMWARE_INFO_SIMULATOR?S_FW_SIMULATOR:S_FW_UNKNOWN;
     bool known=info->source!=FIRMWARE_INFO_UNKNOWN;
@@ -67,11 +67,57 @@ void firmware_view_update(firmware_view_t *view,const firmware_info_t *info) {
     lv_label_set_text(view->value[0],known?info->build:tr(NULL,S_FW_UNKNOWN));
     lv_label_set_text(view->value[1],known?info->sdk:tr(NULL,S_FW_UNKNOWN));
     unsigned profile=(unsigned)info->profile;
-    lv_label_set_text(view->value[2],tr(NULL,profile<=FIRMWARE_PROFILE_TLS_BENCH?profiles[profile]:S_FW_UNKNOWN));
+    lv_label_set_text(view->value[2],tr(NULL,profile<=FIRMWARE_PROFILE_OTA?profiles[profile]:S_FW_UNKNOWN));
     lv_label_set_text(view->value[3],tr(NULL,S_FW_PEER_UNKNOWN));
     lv_label_set_text(view->value[4],tr(NULL,S_FW_PEER_UNKNOWN));
 }
 void firmware_view_destroy(firmware_view_t *view) {
     if(view->panel)lv_obj_delete(view->panel);
     memset(view,0,sizeof(*view));
+}
+
+static void ota_action(lv_event_t *event) {
+    firmware_view_t *v=lv_event_get_user_data(event);tv4_update_snapshot s;
+    tv4_ota_service_snapshot(&s);lv_obj_t *button=lv_event_get_target(event);
+    if(button==v->action[0]) {v->confirm=false;tv4_ota_service_request(TV4_UPDATE_CHECK);}
+    else if(button==v->action[2]) {
+        if(v->confirm)v->confirm=false;else tv4_ota_service_request(TV4_UPDATE_CANCEL);
+    }else if(s.state==TV4_UPDATE_RESTART)tv4_ota_service_request(TV4_UPDATE_REBOOT);
+    else if(s.state==TV4_UPDATE_READY) {
+        if(v->confirm && !memcmp(v->confirm_digest,s.sha256,32)) {
+            v->confirm=false;tv4_ota_service_request(TV4_UPDATE_INSTALL);
+        }else {v->confirm=true;memcpy(v->confirm_digest,s.sha256,32);}
+    }
+    memset(&v->rendered,0,sizeof(v->rendered));
+}
+void firmware_view_ota_update(firmware_view_t *v,const tv4_update_snapshot *s) {
+    if(!v->panel || !s || !s->enabled)return;
+    if(!memcmp(&v->rendered,s,sizeof(*s)))return;
+    v->rendered=*s;
+    if(s->state!=TV4_UPDATE_READY || memcmp(v->confirm_digest,s->sha256,32))v->confirm=false;
+    if(!v->action[0]) {
+        lv_obj_add_flag(v->update_note,LV_OBJ_FLAG_HIDDEN);
+        lv_obj_set_pos(v->update_state,20,259);
+        for(unsigned i=0;i<3;i++) {
+            lv_obj_t *b=lv_button_create(v->panel);v->action[i]=b;
+            lv_obj_set_pos(b,18+(int)i*228,295);lv_obj_set_size(b,212,44);
+            lv_obj_set_style_bg_color(b,lv_color_hex(0x096cb1),0);
+            lv_obj_set_style_opa(b,LV_OPA_50,LV_STATE_DISABLED);
+            v->caption[i]=text(b,"",0,0,198,&tv4_ru_12,0xffffff);
+            lv_obj_set_style_text_align(v->caption[i],LV_TEXT_ALIGN_CENTER,0);lv_obj_center(v->caption[i]);
+            lv_obj_add_event_cb(b,ota_action,LV_EVENT_CLICKED,v);
+        }
+    }
+    static const string_id states[]={S_FW_UPDATE_OFF,S_OTA_SETUP,S_OTA_BOOT,S_OTA_IDLE,S_OTA_CHECKING,
+        S_OTA_READY,S_OTA_WRITING,S_OTA_COMMIT,S_OTA_RESTART,S_OTA_ERROR,S_OTA_BOOT_FAILED};
+    if(v->confirm)lv_label_set_text(v->update_state,tr(NULL,S_OTA_CONFIRM_NOTE));
+    else if(s->state==TV4_UPDATE_READY)lv_label_set_text_fmt(v->update_state,tr(NULL,S_OTA_READY),s->version,(unsigned long)((s->total+1023)/1024));
+    else if(s->state==TV4_UPDATE_WRITING)lv_label_set_text_fmt(v->update_state,tr(NULL,S_OTA_WRITING),(unsigned long)(s->received/1024),(unsigned long)((s->total+1023)/1024));
+    else lv_label_set_text(v->update_state,tr(NULL,s->state<=TV4_UPDATE_BOOT_FAILED?states[s->state]:S_OTA_ERROR));
+    bool allow[]={s->state==TV4_UPDATE_IDLE || s->state==TV4_UPDATE_READY || s->state==TV4_UPDATE_ERROR,
+        s->state==TV4_UPDATE_READY || s->state==TV4_UPDATE_RESTART,
+        v->confirm || s->state==TV4_UPDATE_CHECKING || s->state==TV4_UPDATE_WRITING};
+    const string_id captions[]={S_OTA_CHECK,s->state==TV4_UPDATE_RESTART?S_OTA_REBOOT:v->confirm?S_OTA_CONFIRM:S_OTA_INSTALL,S_CANCEL};
+    for(unsigned i=0;i<3;i++) {lv_label_set_text(v->caption[i],tr(NULL,captions[i]));
+        if(allow[i])lv_obj_remove_state(v->action[i],LV_STATE_DISABLED);else lv_obj_add_state(v->action[i],LV_STATE_DISABLED);}
 }

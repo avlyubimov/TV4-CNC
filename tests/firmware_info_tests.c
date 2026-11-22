@@ -17,7 +17,7 @@ int main(void) {
     firmware_info_reset(&info);unknown(&info);firmware_info_reset(NULL);
     const char build[]="git-build-dirty",sdk[]="v6.1.1";
     for(unsigned source=FIRMWARE_INFO_DEVICE;source<=FIRMWARE_INFO_SIMULATOR;source++)
-        for(unsigned profile=FIRMWARE_PROFILE_HEADLESS;profile<=FIRMWARE_PROFILE_TLS_BENCH;profile++) {
+        for(unsigned profile=FIRMWARE_PROFILE_HEADLESS;profile<=FIRMWARE_PROFILE_OTA;profile++) {
             assert(firmware_info_set(&info,build,sizeof(build),sdk,sizeof(sdk),
                 (firmware_info_source_t)source,(firmware_info_profile_t)profile));
             assert(!strcmp(info.build,build) && !strcmp(info.sdk,sdk));

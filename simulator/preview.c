@@ -10,6 +10,19 @@
 #include "wifi_editor.h"
 #include "src/widgets/buttonmatrix/lv_buttonmatrix_private.h"
 #include "layout_checks.h"
+#include "firmware_view.h"
+static bool ota_fixture;
+static tv4_update_snapshot ota_sample;
+static unsigned ota_posts;static tv4_update_command ota_posted;
+void __real_tv4_ota_service_snapshot(tv4_update_snapshot *);
+bool __real_tv4_ota_service_request(tv4_update_command);
+void __wrap_tv4_ota_service_snapshot(tv4_update_snapshot *out) {
+    if(ota_fixture)*out=ota_sample;else __real_tv4_ota_service_snapshot(out);
+}
+bool __wrap_tv4_ota_service_request(tv4_update_command cmd) {
+    if(!ota_fixture)return __real_tv4_ota_service_request(cmd);
+    ota_posts++;ota_posted=cmd;return true;
+}
 static uint32_t pixels[800*480];
 _Alignas(4) static uint8_t drawbuf[800*40*4];
 static bool rgb565;
@@ -91,7 +104,7 @@ static void firmware_navigation(lv_obj_t *root,lv_obj_t *wifi_password) {
     assert(has_label(root,tr(NULL,S_FW_UNKNOWN)) && !has_label(root,build));
     save_frame("firmware-info-unknown");
     char longest[32];memset(longest,'W',31);longest[31]=0;
-    for(unsigned profile=FIRMWARE_PROFILE_HEADLESS;profile<=FIRMWARE_PROFILE_TLS_BENCH;profile++) {
+    for(unsigned profile=FIRMWARE_PROFILE_HEADLESS;profile<=FIRMWARE_PROFILE_OTA;profile++) {
         assert(firmware_info_set(&info,longest,sizeof(longest),longest,sizeof(longest),
             FIRMWARE_INFO_SIMULATOR,(firmware_info_profile_t)profile));
         dashboard_set_firmware_info(&info);check_dashboard_layout(root);
@@ -131,6 +144,41 @@ static void firmware_navigation(lv_obj_t *root,lv_obj_t *wifi_password) {
     assert(!dashboard_set_view((dashboard_view_t)(VIEW_FIRMWARE+1)));
     puts("Firmware UI PASS: local/simulator/unknown/31-byte/profile states, Wi-Fi editor cleanup, "
         "64 navigation cycles with identical host-pool free bytes, persistent STOP/fault/no motion");
+}
+static void ota_preview(lv_obj_t *original) {
+    /* Explicit SIMULATOR fixture, not a claim of running OTA or device health. */
+    lv_obj_t *screen=lv_obj_create(NULL);lv_screen_load(screen);
+    firmware_view_t view={0};firmware_view_create(&view,screen,NULL,NULL);
+    firmware_info_t info;const char build[]="host-fixture-only",sdk[]="v6.1.1";
+    assert(firmware_info_set(&info,build,sizeof(build),sdk,sizeof(sdk),FIRMWARE_INFO_SIMULATOR,FIRMWARE_PROFILE_OTA));
+    firmware_view_update(&view,&info);ota_fixture=true;ota_posts=0;
+    ota_sample=(tv4_update_snapshot){.enabled=true,.total=3145728,.received=1048576};
+    strcpy(ota_sample.version,"4294967295.4294967295.4294967295");
+    for(unsigned state=TV4_UPDATE_SETUP;state<=TV4_UPDATE_BOOT_FAILED;state++) {
+        ota_sample.state=(tv4_update_state)state;firmware_view_ota_update(&view,&ota_sample);
+        check_dashboard_layout(screen);
+        bool idle=state==TV4_UPDATE_IDLE || state==TV4_UPDATE_READY || state==TV4_UPDATE_ERROR;
+        bool install=state==TV4_UPDATE_READY || state==TV4_UPDATE_RESTART;
+        assert(lv_obj_has_state(view.action[0],LV_STATE_DISABLED)==!idle);
+        assert(lv_obj_has_state(view.action[1],LV_STATE_DISABLED)==!install);
+        if(state==TV4_UPDATE_SETUP)save_frame("ota-unconfigured");
+        if(state==TV4_UPDATE_WRITING)save_frame("ota-writing-fixture");
+    }
+    ota_sample.state=TV4_UPDATE_READY;firmware_view_ota_update(&view,&ota_sample);
+    lv_obj_send_event(view.action[1],LV_EVENT_CLICKED,NULL);firmware_view_ota_update(&view,&ota_sample);
+    assert(view.confirm && !ota_posts);check_dashboard_layout(screen);save_frame("ota-confirm-fixture");
+    lv_obj_send_event(view.action[2],LV_EVENT_CLICKED,NULL);firmware_view_ota_update(&view,&ota_sample);
+    assert(!view.confirm && !ota_posts);
+    lv_obj_send_event(view.action[1],LV_EVENT_CLICKED,NULL);firmware_view_ota_update(&view,&ota_sample);
+    ota_sample.sha256[0]^=1;firmware_view_ota_update(&view,&ota_sample);assert(!view.confirm);
+    lv_obj_send_event(view.action[1],LV_EVENT_CLICKED,NULL);firmware_view_ota_update(&view,&ota_sample);
+    lv_obj_send_event(view.action[1],LV_EVENT_CLICKED,NULL);assert(ota_posts==1 && ota_posted==TV4_UPDATE_INSTALL);
+    ota_sample.state=TV4_UPDATE_WRITING;firmware_view_ota_update(&view,&ota_sample);
+    lv_obj_send_event(view.action[2],LV_EVENT_CLICKED,NULL);assert(ota_posted==TV4_UPDATE_CANCEL);
+    ota_sample.state=TV4_UPDATE_RESTART;firmware_view_ota_update(&view,&ota_sample);
+    lv_obj_send_event(view.action[1],LV_EVENT_CLICKED,NULL);assert(ota_posted==TV4_UPDATE_REBOOT);
+    firmware_view_destroy(&view);assert(!view.panel && !view.confirm);ota_fixture=false;
+    lv_screen_load(original);lv_obj_delete(screen);
 }
 int main(int argc,char **argv) {
     assert(wifi_credentials_valid("bench","12345678"));
@@ -392,5 +440,6 @@ int main(int argc,char **argv) {
     save_frame("tools");press(root,S_HOME);check_dashboard_layout(root);
     assert(has_label(root,"T02") && has_label(root,"0.800"));
     firmware_navigation(root,wifi_password);
+    ota_preview(root);
     puts("LVGL 9 render and Cyrillic coverage passed"); return 0;
 }

@@ -10,7 +10,7 @@ jobs:
       fail-fast: false
       matrix:
         sdk: [5.3.2, 6.1.1]
-        profile: [headless, rev12, rev12-memory-bench, rev12-tls-bench]
+        profile: [headless, rev12, rev12-memory-bench, rev12-tls-bench, rev12-ota]
         include:
           - sdk: 5.3.2
             image: espressif/idf@sha256:5b8f58d9d9caa45b689a31a0b6a0cc53b84594e0ba5fdd8d28eeef7d6123242a
@@ -20,10 +20,12 @@ jobs:
       image: ${{ matrix.image }}
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4, reviewed 2026-11-19
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
       - name: Validate exact checkout inside SDK container
         shell: bash
         env:
-          TV4_SOURCE_SHA: ${{ github.sha }}
+          TV4_SOURCE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
         run: |
           set -euo pipefail
           # Checkout's temporary HOME does not carry safe.directory into later
@@ -41,6 +43,13 @@ jobs:
           ./tools/build_idf.sh '${{ matrix.profile }}' '${{ matrix.sdk }}' local 2>&1 | tee build-ci-evidence/build.log
           cp 'build-idf-${{ matrix.sdk }}-${{ matrix.profile }}/validation.json' build-ci-evidence/
           diff -ru "$lock_snapshot/" firmware/esp32-hmi/locks/
+      - name: Prepare USB migration bundle without device access
+        if: matrix.profile == 'rev12-ota'
+        shell: bash
+        run: |
+          python tools/prepare_ota_migration.py --build build-idf-${{ matrix.sdk }}-${{ matrix.profile }} --sdk ${{ matrix.sdk }} --output build-idf-${{ matrix.sdk }}-${{ matrix.profile }}/migration > build-ci-evidence/migration-create.json
+          python tools/prepare_ota_migration.py --verify build-idf-${{ matrix.sdk }}-${{ matrix.profile }}/migration > build-ci-evidence/migration-verify.json
+          cp build-idf-${{ matrix.sdk }}-${{ matrix.profile }}/ota-local/ota_local_context.json build-ci-evidence/
       - name: Verify inactive OTA layout, symbol linkage and memory bounds
         shell: bash
         run: |
@@ -66,12 +75,18 @@ jobs:
                   assert any(symbol in line and ' UND ' not in line for line in output.splitlines()), 'X.509 date check not linked: ' + symbol
           else:
               assert not any('tv4_utc_tls_bench_start' in line for line in output.splitlines()), 'UTC/TLS worker retained outside TLS bench'
-          print('OTA symbols/profile gates verified; no installer enabled')
+          if '${{ matrix.profile }}' == 'rev12-ota':
+              for symbol in ['tv4_ota_service_start','tv4_ota_sdk_begin','tv4_ota_sdk_activate','esp_ota_begin','esp_ota_end','esp_ota_set_boot_partition']:
+                  assert any(line.split()[-1] == symbol and ' UND ' not in line for line in output.splitlines() if line.split()), symbol
+          else:
+              assert not any(line.split()[-1] == 'esp_ota_begin' for line in output.splitlines() if line.split()), 'installer in ordinary image'
+          print('OTA profile gates verified; no devices accessed')
           PYCODE
       - name: Create and independently verify unsigned review candidate
+        if: matrix.profile != 'rev12-ota'
         shell: bash
         env:
-          TV4_SOURCE_SHA: ${{ github.sha }}
+          TV4_SOURCE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
         run: |
           set -euo pipefail
           python tools/build_candidate.py create --repo . \
@@ -94,6 +109,7 @@ jobs:
           if-no-files-found: error
           retention-days: 14
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        if: matrix.profile != 'rev12-ota'
         with:
           name: review-candidate-${{ matrix.sdk }}-${{ matrix.profile }}
           # Explicit metadata allowlist. Never upload app/ELF/build/NVS dumps.

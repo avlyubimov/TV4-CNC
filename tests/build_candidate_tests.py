@@ -175,9 +175,9 @@ class CandidateTests(unittest.TestCase):
         raw = bytearray((self.build / 'partition_table/partition-table.bin').read_bytes())
         struct.pack_into('<I', raw, 64 + 8, 0x100000)
         (self.build / 'partition_table/partition-table.bin').write_bytes(raw)
-        report = candidate.check_idf_build.verify(self.build, self.profile, self.sdk, write_report=False)
-        (self.build / 'validation.json').write_bytes(candidate.encoded(report))
-        with self.assertRaisesRegex(ValueError, 'factory layout'):
+        with self.assertRaisesRegex(ValueError, 'factory-only layout'):
+            candidate.check_idf_build.verify(self.build, self.profile, self.sdk, write_report=False)
+        with self.assertRaisesRegex(ValueError, 'factory-only layout'):
             self.create()
 
     def test_repeat_output_preserves_existing_bundle(self):

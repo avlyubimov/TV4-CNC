@@ -38,3 +38,6 @@ factory-backup*/
 # Keep reviewed compiler/test evidence, not build trees
 !docs/evidence/build/
 !docs/evidence/build/*.log
+
+# Owner-local public OTA context (never commit provisioning decisions by accident)
+.ota-context*.json
