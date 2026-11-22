@@ -10,5 +10,9 @@
   "new_local_firmware_build_after_bench": false,
   "session_closed": true,
   "no_further_device_access": true,
-  "owner_post_return_confirmation": null
+  "owner_post_return_confirmation": true,
+  "connected_subset_derived_from_numeric_ip_event_counter": true,
+  "boot_window_not_equal_completed_network_load": true,
+  "diagnostic_owner_confirmation": true,
+  "connected_subset_values_checked": true
 }

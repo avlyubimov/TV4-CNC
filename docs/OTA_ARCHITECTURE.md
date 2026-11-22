@@ -6,7 +6,7 @@
 BOOT local20715/steady largest12288/worker1664из3072. Сумма minima не floor;
 configured8192/TLS/install/repeatability/soak и key/context пока открыты.
 Вернулся fecc05d/factory/прежняя A/B-карта, сеанс закрыт. Подтверждение владельца
-после возврата: ожидается. Нет новых writes/keys/eFuse или
+после возврата: PASS. Нет новых writes/keys/eFuse или
 разрешений. Исторический минимум112 не единственный текущий memory evidence.
 
 ## История интеграции P1 после первой USB-миграции
