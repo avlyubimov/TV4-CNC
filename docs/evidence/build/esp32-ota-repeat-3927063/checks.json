@@ -1,0 +1,21 @@
+{
+  "device_access": false,
+  "procedure_tests": 39,
+  "result": "PASS",
+  "command": "python3 -m unittest check_procedure -q",
+  "clock_tests": [
+    "startup_touch-clock-race",
+    "startup_touch-report-race",
+    "startup_touch-stale"
+  ],
+  "clock_tests_result": "3/3 PASS",
+  "plan_sha256": "eaf753199d207e237d4d19d11ff1306b4875b58373e352ca0a0742185b02d246",
+  "script_hashes": {
+    "bench.py": "caaee774064212b286ad21218e1d128ec8e9ac18fb35a23c7b56ec3a2cb9fe9b",
+    "analyze_memory.py": "dedab1f0c60bf78688ecc728ffead386a461b5795ec0d5cc5135570b49cfa068",
+    "check_procedure.py": "586d92377aa4f212b380c871dcf3a540265a088553b62db0d372f3a6a3ab2fb7",
+    "prepare_bundle.py": "2f15ce0f88827ac02e108c7c67c4af8dbb547c4a67161b9ed138bd2724d379ed"
+  },
+  "strict_analyzer_unchanged": true,
+  "hardware_bench_result": "not run; separate exact write authorization required"
+}

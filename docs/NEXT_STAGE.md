@@ -1,4 +1,21 @@
-# P1 — исправить clock-before-touch-snapshot перед повтором TLS-стенда
+# P1 — контроль touch_fresh и HTTPS после PR #70
+
+## Активный этап после main 3927063
+
+PR #70 слит, все 15 main CI jobs PASS. Исправление clock-after-snapshot проверено
+обоими SDK; [новый точный пакет](ESP32_OTA_BENCH_3927063.md) собран из чистого main.
+Четыре сборки/39 procedure tests/три actual app_main clock tests PASS. Сначала
+control touch_fresh, только затем SNTP/verified HEAD в том же worker8192.
+Это software preparation, не hardware HTTPS PASS; на плате остаётся fecc05d.
+Запись нового пакета отдельно согласуется; подключение предварительно разрешено.
+
+После HTTPS: owner key/SemVer/time/resource context → настоящая signed SESSION4
+с измерением ресурсов → inactive-slot install/self-test/confirm/rollback → P2
+Releases с ручным утверждением. CHECK/INSTALL без настройки закрыты.
+Параллельно — software-only план NEMA23/STM32 timer STEP-DIR; без предположений
+о модели драйвера, питании/токе/ENA/pins и без физических выходов.
+
+## История перед PR #70
 
 ## 22 ноября: контроль a5f8b7e остановлен, fecc05d возвращён
 
