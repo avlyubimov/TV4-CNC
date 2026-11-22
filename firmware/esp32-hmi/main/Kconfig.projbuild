@@ -52,4 +52,16 @@ config TV4_OTA_WORKER_STACK_BENCH
         accepts this flag. Ordinary and trace-control builds keep their stack.
         It does not exercise TLS/installation or approve resource floors.
         Requires separate exact-image board authorization before recording.
+config TV4_OTA_WORKER_TLS_BENCH
+    bool "Run one UTC/verified HEAD in the unprovisioned 8192-byte OTA worker"
+    depends on TV4_OTA_WORKER_STACK_BENCH
+    default n
+    help
+        Explicit network diagnostic: after self-test and a 15-second settling
+        delay, wait for Wi-Fi, synchronize unauthenticated SNTP, then issue one
+        certificate-verified HTTPS HEAD. Uses the existing OTA memory monitor;
+        no extra task, body download, keys, installer or Flash writes. The
+        isolated 2026 time policy is not production authority. Requires a new
+        exact-image board authorization; default and trace-control builds do
+        not perform this probe.
 endmenu

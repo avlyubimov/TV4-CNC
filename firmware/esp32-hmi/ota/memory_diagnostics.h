@@ -12,7 +12,7 @@ typedef enum {TV4_MEM_APP_ENTRY,TV4_MEM_RGB_READY,TV4_MEM_DRAW_READY,
     TV4_MEM_TOUCH_READY,TV4_MEM_WIFI_STARTED,TV4_MEM_DASHBOARD_READY,
     TV4_MEM_UI_READY,TV4_MEM_STARTUP_COUNT} tv4_ota_startup_phase;
 typedef enum {TV4_MEM_BOOT=1,TV4_MEM_WORKSPACE,TV4_MEM_SNTP,
-    TV4_MEM_SESSION,TV4_MEM_CLEANUP} tv4_ota_memory_window;
+    TV4_MEM_SESSION,TV4_MEM_CLEANUP,TV4_MEM_TLS_PROBE} tv4_ota_memory_window;
 /* Main posts each of seven fixed startup slots once; no logging/allocation.
  * Sampling is task-context only, never a LVGL callback or ISR. */
 void tv4_ota_memory_capture(tv4_ota_memory_sample *);

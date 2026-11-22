@@ -57,6 +57,7 @@ jobs:
               -o "build/policy-analysis/service-sdk-$stack_bench.o" >> build/policy-analysis.log 2>&1
           done
           printf 'Actual ESP service/control+worker8192 SDK boundary: analyzer PASS\n' >> build/policy-analysis.log
+          bash tools/analyze_ota_worker_tls.sh build/policy-analysis >> build/policy-analysis.log 2>&1
           gcc -std=c11 -Wall -Wextra -Werror -fanalyzer \
             -Ifirmware/esp32-hmi/core -c firmware/esp32-hmi/core/firmware_info.c \
             -o build/policy-analysis/firmware_info.o >> build/policy-analysis.log 2>&1

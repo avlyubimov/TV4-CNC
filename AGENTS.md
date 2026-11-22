@@ -142,7 +142,20 @@ PR и Actions; не копировать код уже открытого PR. Д
    теги, релизы, секреты CI и публикации под видом обычного push.
 6. Обновлять актуальный статус; исторические отчёты сохранять с явной пометкой.
 
-## Текущее задание: P1 после аппаратного стенда worker8192
+## Текущее задание: P1 — UTC/HEAD в OTA-worker8192
+
+База main `53b0715`, PR #68 слит владельцем. Читать
+docs/ESP32_OTA_WORKER_TLS_BENCH.md и docs/plans/P1_OTA_WORKER_TLS_BENCH.md.
+Новый default-off TV4_OTA_WORKER_TLS_BENCH только для unprovisioned rev12-ota
+с diagnostics1/stack-bench1: один existing SNTP/verified HEAD после self-test
+из того же worker8192. Никакого дополнительного task/monitor owner, body,
+ключа/context или install authority. SDK5/6 builds и host doubles — software
+evidence; runtime budget остаётся открытым до нового согласованного стенда.
+Семь startup IDs и windows1–5 сохраняются, diagnostic TLS_PROBE6 только под
+новым флагом. Старый standalone TLS probe не запускается одновременно с OTA.
+На ESP32 по-прежнему fecc05d/factory; новых hardware разрешений нет.
+
+### Завершённый стенд worker8192 — основание следующего шага
 
 База main `dfa9f28`, PR #1–67 слиты. [Стенд3072/8192](docs/evidence/hardware/2026-11-22-esp32-worker-stack/README.md)
 завершён22ноября за928.998s по отдельному разрешению: fresh16MiB/device MD5/

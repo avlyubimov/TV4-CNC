@@ -6,8 +6,13 @@ version="${2:-6.1.1}"
 mode="${3:-docker}"
 memory_diagnostics="${TV4_OTA_MEMORY_DIAGNOSTICS:-0}"
 worker_stack_bench="${TV4_OTA_WORKER_STACK_BENCH:-0}"
+worker_tls_bench="${TV4_OTA_WORKER_TLS_BENCH:-0}"
 case "$memory_diagnostics" in 0|1) ;; *) echo 'TV4_OTA_MEMORY_DIAGNOSTICS must be 0 or 1' >&2; exit 2 ;; esac
 case "$worker_stack_bench" in 0|1) ;; *) echo 'TV4_OTA_WORKER_STACK_BENCH must be 0 or 1' >&2; exit 2 ;; esac
+case "$worker_tls_bench" in 0|1) ;; *) echo 'TV4_OTA_WORKER_TLS_BENCH must be 0 or 1' >&2; exit 2 ;; esac
+if [[ "$worker_tls_bench" == 1 && ( "$profile" != rev12-ota || "$memory_diagnostics" != 1 || "$worker_stack_bench" != 1 || -n "${TV4_OTA_CONTEXT:-}" ) ]]; then
+  echo 'Worker TLS bench requires unprovisioned rev12-ota with memory diagnostics=1 and worker stack bench=1' >&2; exit 2
+fi
 if [[ "$worker_stack_bench" == 1 && ( "$profile" != rev12-ota || "$memory_diagnostics" != 1 || -n "${TV4_OTA_CONTEXT:-}" ) ]]; then
   echo 'Worker stack bench requires unprovisioned rev12-ota with memory diagnostics=1' >&2; exit 2
 fi
@@ -46,6 +51,7 @@ if [[ "$mode" == docker ]]; then
     -e "TV4_BUILD_PROJECT_VERSION=$project_version" \
     -e "TV4_OTA_MEMORY_DIAGNOSTICS=$memory_diagnostics" \
     -e "TV4_OTA_WORKER_STACK_BENCH=$worker_stack_bench" \
+    -e "TV4_OTA_WORKER_TLS_BENCH=$worker_tls_bench" \
     -v "$project_root:/project" -w /project "$image" \
     bash /project/tools/build_idf.sh "$profile" "$version" local
 elif [[ "$mode" != local ]]; then
@@ -62,6 +68,7 @@ if [[ "$actual" != "ESP-IDF v$version" ]]; then echo "Wrong SDK: $actual (expect
 build="$project_root/build-idf-$version-$profile"
 if [[ "$memory_diagnostics" == 1 ]]; then build+="-memory-diagnostics"; fi
 if [[ "$worker_stack_bench" == 1 ]]; then build+="-worker-stack-bench"; fi
+if [[ "$worker_tls_bench" == 1 ]]; then build+="-worker-tls-bench"; fi
 version_args=()
 if [[ -n "$project_version" ]]; then version_args+=("-DPROJECT_VER=$project_version"); fi
 defaults="$project_root/firmware/esp32-hmi/sdkconfig.defaults"
@@ -78,6 +85,10 @@ if [[ "$memory_diagnostics" == 1 ]]; then
     memory_args+=(--worker-stack-bench)
   fi
   defaults+=";$build/sdkconfig.memory-diagnostics.defaults"
+  if [[ "$worker_tls_bench" == 1 ]]; then
+    printf '%s\n' 'CONFIG_TV4_OTA_WORKER_TLS_BENCH=y' >> "$build/sdkconfig.memory-diagnostics.defaults"
+    memory_args+=(--worker-tls-bench)
+  fi
   memory_args+=(--memory-diagnostics)
 fi
 ota_args=()

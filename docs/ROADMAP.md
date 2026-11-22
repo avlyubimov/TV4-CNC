@@ -1,5 +1,11 @@
 # План реализации TV4-CNC: функциональные приоритеты P0–P5
 
+После main `53b0715`/слитого PR #68 следующий software результат P1 —
+[opt-in UTC/verified HEAD image в OTA-worker8192](ESP32_OTA_WORKER_TLS_BENCH.md).
+Он не даёт ключа/context/install authority; TLS runtime measurements и затем
+configured crypto/install/confirmation/rollback остаются отдельной приёмкой.
+На ESP32 fecc05d; новых hardware действий, merge или release не разрешено.
+
 База main `dfa9f28`, PR #1–67 слиты. [Стенд3072/8192](evidence/hardware/2026-11-22-esp32-worker-stack/README.md)
 завершён22ноября за928.998s по отдельному разрешению: fresh16MiB/device MD5/
 SHA-256/two-NVMe, контроль3072 и три reset-запуска8192, три app/factory writes,

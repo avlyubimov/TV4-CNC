@@ -2,7 +2,16 @@
 #ifdef ESP_PLATFORM
 #include "sdkconfig.h"
 #endif
-#if defined(ESP_PLATFORM) && CONFIG_TV4_UTC_TLS_BENCH
+#if defined(ESP_PLATFORM) && (CONFIG_TV4_UTC_TLS_BENCH || CONFIG_TV4_OTA_WORKER_TLS_BENCH)
+#if CONFIG_TV4_OTA_WORKER_TLS_BENCH && (!CONFIG_TV4_OTA_ENABLED || !CONFIG_TV4_OTA_MEMORY_DIAGNOSTICS || !CONFIG_TV4_OTA_WORKER_STACK_BENCH || CONFIG_TV4_UTC_TLS_BENCH)
+#error "Worker TLS bench requires exclusive OTA stack/trace diagnostics"
+#endif
+#if CONFIG_TV4_OTA_WORKER_TLS_BENCH
+#include "ota_local_context.h"
+#if TV4_OTA_PROVISIONED
+#error "Worker TLS bench must remain unprovisioned"
+#endif
+#endif
 #if !CONFIG_MBEDTLS_EXTERNAL_MEM_ALLOC || !CONFIG_SPIRAM
 #error "UTC/TLS bench requires the SDK PSRAM-only mbedTLS allocator"
 #endif
@@ -10,6 +19,7 @@
 #error "UTC/TLS bench requires certificate chain and validity-date verification"
 #endif
 #include "sntp_source.h"
+#include "memory_diagnostics.h"
 #include "wifi_service.h"
 #include "esp_http_client.h"
 #include "esp_idf_version.h"
@@ -21,7 +31,11 @@
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 static bool requested;
+#if CONFIG_TV4_OTA_WORKER_TLS_BENCH
+static const char *TAG="tv4_ota_worker_tls";
+#else
 static const char *TAG="tv4_utc_tls_bench";
+#endif
 enum { HTTP_RX_BYTES=2048, HTTP_TX_BYTES=512 };
 static void snapshot(const char *stage);
 /* Isolated 2026 bench acceptance window, NOT a production source policy.
@@ -31,7 +45,15 @@ typedef struct {
     esp_http_client_handle_t client;
     size_t header_bytes;bool bad_headers;
     int native_error,tls_error,cert_flags;
+#if CONFIG_TV4_OTA_WORKER_TLS_BENCH
+    bool (*cancelled)(void *);void *cancel_context;
+#endif
 } head_backend;
+#if CONFIG_TV4_OTA_WORKER_TLS_BENCH
+static bool head_cancelled(void *context) {
+    head_backend *b=context;return b->cancelled(b->cancel_context);
+}
+#endif
 static uint32_t now_ms(void *context) {(void)context;return (uint32_t)(esp_timer_get_time()/1000);}
 static tv4_time_result clock_read(void *context,tv4_time_sample *out) {(void)context;return tv4_time_clock_read(out);}
 static size_t bounded(const char *s,size_t maximum) {
@@ -106,7 +128,23 @@ static void snapshot(const char *stage) {
         (unsigned)heap_caps_get_largest_free_block(internal),(unsigned)heap_caps_get_free_size(external),
         (unsigned)heap_caps_get_minimum_free_size(external),(unsigned)uxTaskGetStackHighWaterMark(NULL));
 }
-static bool monitor_start(const char *stage) {
+#if CONFIG_TV4_OTA_WORKER_TLS_BENCH
+static bool monitor_start(tv4_ota_memory_window id,const char *stage) {
+    /* The OTA adapter remains the sole compiled SDK-monitor owner. The boot
+     * window is already closed; this worker serializes SNTP and HEAD windows. */
+    if(!tv4_ota_memory_window_begin(id)) {
+        tv4_ota_memory_window_end(id);tv4_ota_memory_report_window();
+        ESP_LOGE(TAG,"stage=%s monitor_start_failed",stage);return false;
+    }
+    snapshot(stage);return true;
+}
+static bool monitor_stop(tv4_ota_memory_window id,const char *stage) {
+    snapshot(stage);bool ok=tv4_ota_memory_window_end(id);
+    tv4_ota_memory_report_window();return ok;
+}
+#else
+static bool monitor_start(tv4_ota_memory_window id,const char *stage) {
+    (void)id;
     /* SDK global min monitor has a tiny bookkeeping allocation. Do not start
      * under severe pressure; no second owner of this monitor is allowed. */
     if(heap_caps_get_free_size(MALLOC_CAP_INTERNAL|MALLOC_CAP_8BIT)<8192 ||
@@ -117,38 +155,69 @@ static bool monitor_start(const char *stage) {
     if(error!=ESP_OK) {ESP_LOGE(TAG,"stage=%s monitor_start_failed=%d",stage,error);return false;}
     snapshot(stage);return true;
 }
-static bool monitor_stop(const char *stage) {
+static bool monitor_stop(tv4_ota_memory_window id,const char *stage) {
+    (void)id;
     snapshot(stage); /* Before stop: window minima, includes concurrent HMI/Wi-Fi. */
     esp_err_t error=heap_caps_monitor_local_minimum_free_size_stop();
     ESP_LOGI(TAG,"stage=%s monitor_stop=%d historical_min_restored=%u",stage,error,(unsigned)(error==ESP_OK));
     return error==ESP_OK;
 }
+#endif
+#if CONFIG_TV4_OTA_WORKER_TLS_BENCH
+bool tv4_utc_tls_bench_run_in_ota_worker(bool (*cancelled)(void *),void *context) {
+    if(requested || !cancelled)return false;
+    requested=true;
+#else
 static void worker(void *context) {
-    (void)context;tv4_time_anchor anchor={0};bool passed=false;const char *stage="network";
+    (void)context;
+#endif
+    tv4_time_anchor anchor={0};bool passed=false;const char *stage="network";
     ESP_LOGW(TAG,"ONE UTC/HEAD probe: SNTP unauthenticated; global heap minima temporarily windowed; no body/install");
     ESP_LOGI(TAG,"allocator=spiram tls_rx=%u tls_tx=%u cert_dates=1",
         (unsigned)CONFIG_MBEDTLS_SSL_IN_CONTENT_LEN,(unsigned)CONFIG_MBEDTLS_SSL_OUT_CONTENT_LEN);
     ESP_LOGI(TAG,"http_rx=%u http_tx=%u",(unsigned)HTTP_RX_BYTES,(unsigned)HTTP_TX_BYTES);
+#if CONFIG_TV4_OTA_WORKER_TLS_BENCH
+    /* No extra RTOS task, no UI callbacks, no watchdog lifetime change. The
+     * service has completed boot self-test and removed its boot subscription. */
+    stage="settle";uint32_t settling=now_ms(NULL);
+    while((uint32_t)(now_ms(NULL)-settling)<15000) {
+        if(cancelled(context))goto done;
+        vTaskDelay(pdMS_TO_TICKS(250));
+    }
+    stage="network";
+#endif
     uint32_t start=now_ms(NULL);bool online=false;
     while((uint32_t)(now_ms(NULL)-start)<15000) {
+#if CONFIG_TV4_OTA_WORKER_TLS_BENCH
+        if(cancelled(context))goto done;
+#endif
         if(wifi_service_online()) {online=true;break;}
         vTaskDelay(pdMS_TO_TICKS(250));
     }
     if(!online)goto done;
     tv4_sntp_report sync;
     snapshot("sntp_before");
-    stage="sntp_monitor";if(!monitor_start("sntp_window_start"))goto done;
+    stage="sntp_monitor";if(!monitor_start(TV4_MEM_SNTP,"sntp_window_start"))goto done;
+#if CONFIG_TV4_OTA_WORKER_TLS_BENCH
+    tv4_sntp_result synced=tv4_sntp_sync(&anchor,&policy,10000,cancelled,context,&sync);
+#else
     tv4_sntp_result synced=tv4_sntp_sync(&anchor,&policy,10000,NULL,NULL,&sync);
-    bool monitored=monitor_stop("sntp_window_end");
+#endif
+    bool monitored=monitor_stop(TV4_MEM_SNTP,"sntp_window_end");
     ESP_LOGI(TAG,"sntp_result=%u time_result=%u elapsed_ms=%u cleanup=%u source=%u",
         (unsigned)synced,(unsigned)sync.time_result,(unsigned)sync.elapsed_ms,(unsigned)sync.cleanup_ok,(unsigned)anchor.accepted.source);
     stage="sntp";if(!monitored || synced!=TV4_SNTP_OK || !sync.cleanup_ok)goto done;
     snapshot("tls_before");
-    stage="tls_monitor";if(!monitor_start("tls_window_start"))goto done;
+    stage="tls_monitor";if(!monitor_start(TV4_MEM_TLS_PROBE,"tls_window_start"))goto done;
     head_backend backend={0};tv4_tls_report report;
+#if CONFIG_TV4_OTA_WORKER_TLS_BENCH
+    backend.cancelled=cancelled;backend.cancel_context=context;
+    tv4_tls_ops ops={&backend,head_open,head_headers,head_close,clock_read,now_ms,head_cancelled};
+#else
     tv4_tls_ops ops={&backend,head_open,head_headers,head_close,clock_read,now_ms,NULL};
+#endif
     tv4_tls_result result=tv4_tls_probe_run(&anchor,15000,&ops,&report);
-    monitored=monitor_stop("tls_window_end");
+    monitored=monitor_stop(TV4_MEM_TLS_PROBE,"tls_window_end");
     ESP_LOGI(TAG,"tls_result=%u status=%d elapsed_ms=%u cleanup=%u native_error=%d tls_error=%d cert_flags=%d header_bytes=%u",
         (unsigned)result,report.http_status,(unsigned)report.elapsed_ms,(unsigned)report.cleanup_ok,
         backend.native_error,backend.tls_error,backend.cert_flags,(unsigned)backend.header_bytes);
@@ -156,8 +225,13 @@ static void worker(void *context) {
 done:
     tv4_time_forget(&anchor);snapshot("worker_end");
     ESP_LOGI(TAG,"finished pass=%u stage=%s; not an OTA/TLS-production-budget approval",(unsigned)passed,stage);
+#if CONFIG_TV4_OTA_WORKER_TLS_BENCH
+    return passed;
+#else
     vTaskDelete(NULL);
+#endif
 }
+#if CONFIG_TV4_UTC_TLS_BENCH
 bool tv4_utc_tls_bench_start(void) {
     if(requested)return false;
     requested=true;
@@ -172,4 +246,12 @@ bool tv4_utc_tls_bench_start(void) {
 }
 #else
 bool tv4_utc_tls_bench_start(void) {return false;}
+#endif
+#else
+bool tv4_utc_tls_bench_start(void) {return false;}
+#endif
+#if !defined(ESP_PLATFORM) || !CONFIG_TV4_OTA_WORKER_TLS_BENCH
+bool tv4_utc_tls_bench_run_in_ota_worker(bool (*cancelled)(void *),void *context) {
+    (void)cancelled;(void)context;return false;
+}
 #endif

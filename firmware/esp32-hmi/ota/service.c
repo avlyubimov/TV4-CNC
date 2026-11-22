@@ -10,6 +10,9 @@ tv4_ota_boot_result tv4_ota_boot_observe(tv4_ota_boot_window *w,uint32_t now,boo
 }
 #ifdef ESP_PLATFORM
 #include "sdkconfig.h"
+#if CONFIG_TV4_OTA_WORKER_TLS_BENCH && (!CONFIG_TV4_OTA_WORKER_STACK_BENCH || !CONFIG_TV4_OTA_MEMORY_DIAGNOSTICS || !CONFIG_TV4_OTA_ENABLED || CONFIG_TV4_UTC_TLS_BENCH)
+#error "Worker TLS bench requires the unprovisioned OTA stack/trace profile exclusively"
+#endif
 #if CONFIG_TV4_OTA_WORKER_STACK_BENCH && (!CONFIG_TV4_OTA_ENABLED || !CONFIG_TV4_OTA_MEMORY_DIAGNOSTICS)
 #error "Worker stack bench requires explicit OTA memory diagnostics"
 #endif
@@ -34,6 +37,7 @@ tv4_ota_boot_result tv4_ota_boot_observe(tv4_ota_boot_window *w,uint32_t now,boo
 #include "memory.h"
 #include "memory_diagnostics.h"
 #include "sntp_source.h"
+#include "tls_probe.h"
 #include "wifi_service.h"
 #include "esp_ota_ops.h"
 #include "esp_app_desc.h"
@@ -174,6 +178,13 @@ static void worker(void *c) {
     if(!finished)esp_restart();
     if(esp_task_wdt_delete(NULL)!=ESP_OK)esp_restart();
     publish(!passed?TV4_UPDATE_BOOT_FAILED:configured()?TV4_UPDATE_IDLE:TV4_UPDATE_SETUP,0);
+#if CONFIG_TV4_OTA_WORKER_TLS_BENCH
+    if(passed) {
+        bool probed=tv4_utc_tls_bench_run_in_ota_worker(cancelled,NULL);
+        ESP_LOGI("tv4_ota","worker_tls_bench pass=%u; SETUP/install gates unchanged",(unsigned)probed);
+        worker_stack();
+    }
+#endif
     for(;;) {
         worker_stack();
         tv4_update_command cmd;if(xQueueReceive(commands,&cmd,portMAX_DELAY)!=pdTRUE)continue;

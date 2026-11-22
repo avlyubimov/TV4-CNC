@@ -15,6 +15,7 @@ static TaskFunction_t entry;
 static unsigned requested,creates,locks,stack_reads,restarts,wdt_resets,wdt_deletes;
 static unsigned window_starts,window_ends,startup_reports,window_reports,sends,network_calls;
 static unsigned probes,finishes;
+static unsigned tls_probes;
 static uint32_t clock_ms;
 static bool running,start_result,finish_passed;
 static void *probe;
@@ -77,6 +78,15 @@ void heap_caps_free(void *p) {assert(!locks && p==probe);free(p);probe=NULL;}
 bool esp_ptr_external_ram(const void *p) {assert(!locks);return p && p==probe;}
 size_t heap_caps_get_free_size(unsigned caps) {(void)caps;return 100000;}
 bool wifi_service_online(void) {++network_calls;assert(!"network entered while SETUP");return false;}
+bool tv4_utc_tls_bench_run_in_ota_worker(bool (*cancelled)(void *),void *context) {
+    assert(SERVICE_TEST_TLS_BENCH && running && !locks && !context && cancelled);
+    assert(finishes==1 && finish_passed && wdt_deletes==1 && window_ends==1 && window_reports==1);
+    commands_blocked();tv4_update_snapshot state;tv4_ota_service_snapshot(&state);
+    assert(state.state==TV4_UPDATE_SETUP && !cancelled(context));
+    tv4_ota_service_health(false);assert(cancelled(context));
+    tv4_ota_service_health(true);assert(!cancelled(context));
+    ++tls_probes;return false; /* A failed optional probe must stay in SETUP. */
+}
 bool tv4_ota_memory_window_begin(tv4_ota_memory_window id) {
     assert(!locks && !running && id==TV4_MEM_BOOT);++window_starts;return true;
 }
@@ -87,8 +97,10 @@ void tv4_ota_memory_report_startup(void) {assert(!locks && running);++startup_re
 void tv4_ota_memory_report_window(void) {assert(!locks && running);++window_reports;}
 void service_test_log(const char *tag,const char *format,...) {
     assert(!locks && running && !strcmp(tag,"tv4_ota"));
-    va_list args;va_start(args,format);int n=vsnprintf(boot_log,sizeof(boot_log),format,args);va_end(args);
+    char message[256];va_list args;va_start(args,format);int n=vsnprintf(message,sizeof(message),format,args);va_end(args);
     assert(n>0 && (size_t)n<sizeof(boot_log));
+    if(strstr(message,"boot_self_test"))memcpy(boot_log,message,(size_t)n+1);
+    else assert(SERVICE_TEST_TLS_BENCH && tls_probes==1 && strstr(message,"worker_tls_bench pass=0"));
 }
 int main(int argc,char **argv) {
     assert(argc==2);mode=argv[1];
@@ -102,6 +114,7 @@ int main(int argc,char **argv) {
     }
     assert(creates==1 && requested==(SERVICE_TEST_BENCH?8192u:3072u));
     assert(!locks && !sends && !network_calls && !probe && window_starts==1 && window_ends==1);
+    assert(tls_probes==(unsigned)(SERVICE_TEST_TLS_BENCH && !strcmp(mode,"success")));
     if(!strcmp(mode,"task-fail") || !strcmp(mode,"pending-fail")) {
         assert(!stack_reads && !probes && !finishes && !startup_reports && !window_reports);
         assert(restarts==(!strcmp(mode,"pending-fail")));
