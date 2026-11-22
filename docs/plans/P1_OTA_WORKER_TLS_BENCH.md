@@ -19,3 +19,7 @@
 Приёмка: реальные проверенные ELF/BIN двух SDK и воспроизводимый opt-in build;
 обычные профили и прежний standalone TLS bench сохранены, сертификаты/date/CA
 не ослаблены, нет второго владельца SDK monitor или production trust defaults.
+
+Программная приёмка выполнена: [evidence](../evidence/build/esp32-ota-worker-tls-bench/README.md),
+код d27142e, 16/16 SDK builds, host156/sanitizers156/analyzer7 PASS.
+Аппаратный запуск и runtime budget не выполнялись; PR не сливать самостоятельно.

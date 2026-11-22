@@ -1,0 +1,11 @@
+{
+  "source_commit": "d27142ef0b6b39ac2d274a177aed13823416dc97",
+  "source_tree": "518b0e20c30b2c03bc58ea0946824273f765e36d",
+  "base_commit": "53b07153b1eb41d36360353399cdd71ef14725bd",
+  "worktree_clean": true,
+  "device_access": false,
+  "new_network_io_executed": false,
+  "host_sanitizers": "ASan+UBSan+LSan; detect_leaks=1; 156/156",
+  "host_tests": "156/156 with actual LVGL 9.2.2 startup/render and real service/native backend on SDK doubles",
+  "analyzer": "7 actual-source preprocessor variants PASS (GCC 15.2.0); SDK shape doubles, not target execution"
+}

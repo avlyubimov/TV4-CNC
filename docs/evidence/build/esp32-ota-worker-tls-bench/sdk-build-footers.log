@@ -1,0 +1,223 @@
+clean-5.3.2-headless.log
+    },
+    {
+      "kind": 0,
+      "subtype": 0,
+      "address": 65536,
+      "size": 2097152,
+      "label": "factory"
+    }
+  ],
+  "device_access": false,
+  "physical_performance": "not measured"
+}
+
+clean-5.3.2-rev12-memory-bench.log
+    },
+    {
+      "kind": 0,
+      "subtype": 0,
+      "address": 65536,
+      "size": 2097152,
+      "label": "factory"
+    }
+  ],
+  "device_access": false,
+  "physical_performance": "not measured"
+}
+
+clean-5.3.2-rev12-ota-memory-diagnostics-worker-stack-bench-worker-tls-bench.log
+      "subtype": 65,
+      "address": 11665408,
+      "size": 5111808,
+      "label": "store"
+    }
+  ],
+  "device_access": false,
+  "physical_performance": "not measured",
+  "ota_memory_diagnostics": true,
+  "ota_worker_stack_bench": true,
+  "ota_worker_tls_bench": true
+}
+
+clean-5.3.2-rev12-ota-memory-diagnostics-worker-stack-bench.log
+      "kind": 1,
+      "subtype": 65,
+      "address": 11665408,
+      "size": 5111808,
+      "label": "store"
+    }
+  ],
+  "device_access": false,
+  "physical_performance": "not measured",
+  "ota_memory_diagnostics": true,
+  "ota_worker_stack_bench": true
+}
+
+clean-5.3.2-rev12-ota-memory-diagnostics.log
+    {
+      "kind": 1,
+      "subtype": 65,
+      "address": 11665408,
+      "size": 5111808,
+      "label": "store"
+    }
+  ],
+  "device_access": false,
+  "physical_performance": "not measured",
+  "ota_memory_diagnostics": true
+}
+
+clean-5.3.2-rev12-ota.log
+    {
+      "kind": 1,
+      "subtype": 65,
+      "address": 11665408,
+      "size": 5111808,
+      "label": "store"
+    }
+  ],
+  "device_access": false,
+  "physical_performance": "not measured",
+  "ota_memory_diagnostics": false
+}
+
+clean-5.3.2-rev12-tls-bench.log
+    },
+    {
+      "kind": 0,
+      "subtype": 0,
+      "address": 65536,
+      "size": 2097152,
+      "label": "factory"
+    }
+  ],
+  "device_access": false,
+  "physical_performance": "not measured"
+}
+
+clean-5.3.2-rev12.log
+    },
+    {
+      "kind": 0,
+      "subtype": 0,
+      "address": 65536,
+      "size": 2097152,
+      "label": "factory"
+    }
+  ],
+  "device_access": false,
+  "physical_performance": "not measured"
+}
+
+clean-6.1.1-headless.log
+    },
+    {
+      "kind": 0,
+      "subtype": 0,
+      "address": 65536,
+      "size": 2097152,
+      "label": "factory"
+    }
+  ],
+  "device_access": false,
+  "physical_performance": "not measured"
+}
+
+clean-6.1.1-rev12-memory-bench.log
+    },
+    {
+      "kind": 0,
+      "subtype": 0,
+      "address": 65536,
+      "size": 2097152,
+      "label": "factory"
+    }
+  ],
+  "device_access": false,
+  "physical_performance": "not measured"
+}
+
+clean-6.1.1-rev12-ota-memory-diagnostics-worker-stack-bench-worker-tls-bench.log
+      "subtype": 65,
+      "address": 11665408,
+      "size": 5111808,
+      "label": "store"
+    }
+  ],
+  "device_access": false,
+  "physical_performance": "not measured",
+  "ota_memory_diagnostics": true,
+  "ota_worker_stack_bench": true,
+  "ota_worker_tls_bench": true
+}
+
+clean-6.1.1-rev12-ota-memory-diagnostics-worker-stack-bench.log
+      "kind": 1,
+      "subtype": 65,
+      "address": 11665408,
+      "size": 5111808,
+      "label": "store"
+    }
+  ],
+  "device_access": false,
+  "physical_performance": "not measured",
+  "ota_memory_diagnostics": true,
+  "ota_worker_stack_bench": true
+}
+
+clean-6.1.1-rev12-ota-memory-diagnostics.log
+    {
+      "kind": 1,
+      "subtype": 65,
+      "address": 11665408,
+      "size": 5111808,
+      "label": "store"
+    }
+  ],
+  "device_access": false,
+  "physical_performance": "not measured",
+  "ota_memory_diagnostics": true
+}
+
+clean-6.1.1-rev12-ota.log
+    {
+      "kind": 1,
+      "subtype": 65,
+      "address": 11665408,
+      "size": 5111808,
+      "label": "store"
+    }
+  ],
+  "device_access": false,
+  "physical_performance": "not measured",
+  "ota_memory_diagnostics": false
+}
+
+clean-6.1.1-rev12-tls-bench.log
+    },
+    {
+      "kind": 0,
+      "subtype": 0,
+      "address": 65536,
+      "size": 2097152,
+      "label": "factory"
+    }
+  ],
+  "device_access": false,
+  "physical_performance": "not measured"
+}
+
+clean-6.1.1-rev12.log
+    },
+    {
+      "kind": 0,
+      "subtype": 0,
+      "address": 65536,
+      "size": 2097152,
+      "label": "factory"
+    }
+  ],
+  "device_access": false,
+  "physical_performance": "not measured"
+}

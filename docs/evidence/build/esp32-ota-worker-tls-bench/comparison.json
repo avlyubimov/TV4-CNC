@@ -1,0 +1,123 @@
+{
+  "config_differences_stack_to_tls": {
+    "6.1.1": {
+      "TV4_OTA_WORKER_TLS_BENCH": [
+        false,
+        true
+      ]
+    },
+    "5.3.2": {
+      "TV4_OTA_WORKER_TLS_BENCH": [
+        false,
+        true
+      ]
+    }
+  },
+  "baseline_matrix_source": "f655e56b16ec09a86c0b0b9eb9163bd4c517e11a",
+  "baseline_app_size_deltas": [
+    {
+      "sdk": "6.1.1",
+      "profile": "headless",
+      "memory_diagnostics": false,
+      "worker_stack_bench": false,
+      "app_size_delta_bytes": 0
+    },
+    {
+      "sdk": "6.1.1",
+      "profile": "rev12",
+      "memory_diagnostics": false,
+      "worker_stack_bench": false,
+      "app_size_delta_bytes": 0
+    },
+    {
+      "sdk": "6.1.1",
+      "profile": "rev12-memory-bench",
+      "memory_diagnostics": false,
+      "worker_stack_bench": false,
+      "app_size_delta_bytes": 0
+    },
+    {
+      "sdk": "6.1.1",
+      "profile": "rev12-tls-bench",
+      "memory_diagnostics": false,
+      "worker_stack_bench": false,
+      "app_size_delta_bytes": 16
+    },
+    {
+      "sdk": "6.1.1",
+      "profile": "rev12-ota",
+      "memory_diagnostics": false,
+      "worker_stack_bench": false,
+      "app_size_delta_bytes": 0
+    },
+    {
+      "sdk": "6.1.1",
+      "profile": "rev12-ota",
+      "memory_diagnostics": true,
+      "worker_stack_bench": false,
+      "app_size_delta_bytes": 0
+    },
+    {
+      "sdk": "6.1.1",
+      "profile": "rev12-ota",
+      "memory_diagnostics": true,
+      "worker_stack_bench": true,
+      "app_size_delta_bytes": 0
+    },
+    {
+      "sdk": "5.3.2",
+      "profile": "headless",
+      "memory_diagnostics": false,
+      "worker_stack_bench": false,
+      "app_size_delta_bytes": 0
+    },
+    {
+      "sdk": "5.3.2",
+      "profile": "rev12",
+      "memory_diagnostics": false,
+      "worker_stack_bench": false,
+      "app_size_delta_bytes": 0
+    },
+    {
+      "sdk": "5.3.2",
+      "profile": "rev12-memory-bench",
+      "memory_diagnostics": false,
+      "worker_stack_bench": false,
+      "app_size_delta_bytes": 0
+    },
+    {
+      "sdk": "5.3.2",
+      "profile": "rev12-tls-bench",
+      "memory_diagnostics": false,
+      "worker_stack_bench": false,
+      "app_size_delta_bytes": 16
+    },
+    {
+      "sdk": "5.3.2",
+      "profile": "rev12-ota",
+      "memory_diagnostics": false,
+      "worker_stack_bench": false,
+      "app_size_delta_bytes": 0
+    },
+    {
+      "sdk": "5.3.2",
+      "profile": "rev12-ota",
+      "memory_diagnostics": true,
+      "worker_stack_bench": false,
+      "app_size_delta_bytes": 0
+    },
+    {
+      "sdk": "5.3.2",
+      "profile": "rev12-ota",
+      "memory_diagnostics": true,
+      "worker_stack_bench": true,
+      "app_size_delta_bytes": 0
+    }
+  ],
+  "compiler_tools": {
+    "6.1.1": "xtensa-esp-elf/esp-15.2.0_20251204/xtensa-esp-elf/bin/xtensa-esp32s3-elf-gcc",
+    "5.3.2": "xtensa-esp-elf/esp-13.2.0_20240530/xtensa-esp-elf/bin/xtensa-esp32s3-elf-gcc"
+  },
+  "performance_measured": false,
+  "device_access": false
+}

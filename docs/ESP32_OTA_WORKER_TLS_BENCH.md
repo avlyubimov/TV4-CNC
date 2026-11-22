@@ -5,6 +5,9 @@
 он не записан на устройство. На ESP32 остаётся fecc05d/factory/tv4-16m-ab-v1,
 F407 ee7d179. Прежнее аппаратное разрешение закрыто.
 
+[Software evidence](evidence/build/esp32-ota-worker-tls-bench/README.md):
+16/16 реальных SDK builds, host156/sanitizers156/analyzer7 PASS.
+
 ## Выбор и поведение
 
 `TV4_OTA_WORKER_TLS_BENCH=1` принимается только вместе с

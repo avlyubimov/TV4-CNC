@@ -9,6 +9,9 @@ actual-source fault tests, sanitizer/analyzer/ELF/monitor-owner gates и CI.
 этой конкретной пробы с возвратом fecc05d; configured crypto/install/rollback
 ещё требуют reviewed local settings и отдельных измерений. Новых разрешений нет.
 
+[Software evidence](evidence/build/esp32-ota-worker-tls-bench/README.md):
+код d27142e, 16/16 SDK builds, host156/sanitizers156/analyzer7 PASS.
+
 ## Основание: завершённый аппаратный стенд worker8192
 
 База main `dfa9f28`, PR #1–67 слиты. [Стенд3072/8192](evidence/hardware/2026-11-22-esp32-worker-stack/README.md)
