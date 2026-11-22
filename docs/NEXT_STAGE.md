@@ -1,19 +1,25 @@
-# P1 — контроль touch_fresh и HTTPS после PR #70
+# P1 — устранить AES/DMA memory blocker
 
-## Активный этап после main 3927063
+## Активный P1 после main70eaf1d
 
-PR #70 слит, все 15 main CI jobs PASS. Исправление clock-after-snapshot проверено
-обоими SDK; [новый точный пакет](ESP32_OTA_BENCH_3927063.md) собран из чистого main.
-Четыре сборки/39 procedure tests/три actual app_main clock tests PASS. Сначала
-control touch_fresh, только затем SNTP/verified HEAD в том же worker8192.
-Это software preparation, не hardware HTTPS PASS; на плате остаётся fecc05d.
-Запись нового пакета отдельно согласуется; подключение предварительно разрешено.
+PR #71/#72 слиты владельцем, main CI15/15 PASS. [Стенд3927063](evidence/hardware/2026-11-22-esp32-worker-tls-3927063/README.md)
+реально выполнен по отдельному разрешению: control touch_fresh PASS, SNTP PASS,
+первый HTTPS HEAD FAIL на hardware-AES allocation. Остальные TLS boots отменены.
+Весь factory fecc05d возвращён, verify/UART/owner UI-touch-Wi-Fi-SETUP PASS;
+сеанс743,183s закрыт. На F407 ee7d179 изменений нет.
 
-После HTTPS: owner key/SemVer/time/resource context → настоящая signed SESSION4
-с измерением ресурсов → inactive-slot install/self-test/confirm/rollback → P2
-Releases с ручным утверждением. CHECK/INSTALL без настройки закрыты.
-Параллельно — software-only план NEMA23/STM32 timer STEP-DIR; без предположений
-о модели драйвера, питании/токе/ENA/pins и без физических выходов.
+Следующая [одна интеграция](plans/P1_AES_DMA_MEMORY.md): конкретные DMA-capability
+и allocation-failure данные → обоснованная экономия/размещение памяти → новый
+reviewed exact-image пакет/отдельное разрешение. Не отключать hardware AES,
+CA/hostname/date, не снижать TLS16384/4096/DMA64KiB/display/clock/touch требования.
+После HTTPS — owner settings и реальная signed SESSION4/resource CHECK,
+затем install/self-test/confirm/rollback и ручная release acceptance. Пока
+ключ/context/floors отсутствуют, CHECK/INSTALL закрыты. Не угадывать настройки.
+
+[NEMA23/STEP-DIR design](NEMA23_BENCH_PLAN.md) выполнен в PR #72: host160/
+sanitizer160/20000 cases/ARM archive и запрет physical outputs. Следующий
+аппаратный этап motor/driver ждёт exact моделей и отдельного разрешения;
+питание/ток/ENA/pins не назначены, independent E-stop обязателен.
 
 ## История перед PR #70
 

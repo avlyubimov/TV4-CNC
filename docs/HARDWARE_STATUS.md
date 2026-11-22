@@ -1,5 +1,19 @@
 # Аппаратный статус TV4-CNC
 
+## 22 ноября,23:25–23:37: touch PASS, AES allocation в HTTPS
+
+[Новый стенд3927063](evidence/hardware/2026-11-22-esp32-worker-tls-3927063/README.md) завершён за743,183s:
+fresh16MiB/MD5/SHA/two-NVMe PASS; control touch_fresh16/16, age2–19ms/errors0.
+SNTP PASS; первый HEAD FAIL после `esp-aes: Failed to allocate memory`, TLS132/
+status-1/cleanup1. Остальные TLS boots остановлены. Три writes/три captures,
+весь factory2MiB fecc05d возвращён/verify/UART/owner UI-touch-Wi-Fi-SETUP PASS.
+Владелец подтвердил и временный3927063. F407 ee7d179 не открывался; full restore
+не понадобился, сеанс/разрешение закрыты. [Следующая работа](plans/P1_AES_DMA_MEMORY.md)
+— измерить request/caps/DMA fragmentation и устранить дефицит без отключения
+AES/CA/time или уменьшения TLS/DMA/display параметров. Signed OTA ещё не принят.
+
+## История прежних стендов
+
 ## 22 ноября: контроль a5f8b7e остановлен, fecc05d возвращён
 
 [Стенд](evidence/hardware/2026-11-22-esp32-worker-tls-control/README.md) завершён

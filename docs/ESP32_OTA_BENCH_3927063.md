@@ -1,5 +1,14 @@
 # P1: повтор touch_fresh → UTC/HTTPS на main 3927063
 
+## Пакет использован, аппаратный сеанс закрыт
+
+[Результат](evidence/hardware/2026-11-22-esp32-worker-tls-3927063/README.md): control touch_fresh PASS,
+SNTP PASS; первый HEAD FAIL на hardware-AES allocation, следующие TLS boots
+отменены. За743,183s выполнены три writes/три captures и возврат всего factory
+fecc05d/verify/UART/owner PASS. Нового разрешения нет, пакет не повторять.
+Далее сохранена точная software подготовка; её «не выполнено на устройстве»
+относится к моменту подготовки, а не к текущему аппаратному статусу.
+
 ## Готовый программный пакет
 
 Источник: `392706355193b7544132e2296f7ef8572e1f3c10`, PR #70 слит.
