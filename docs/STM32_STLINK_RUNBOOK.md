@@ -1,12 +1,14 @@
 # STM32F407VG: первый ST-Link bench и восстановление
 
-**c09a20e был записан и проверен, но boot завершился FAULT/error8. Полный
-проверенный snapshot1MiB восстановлен, verify/reset-run прошли. Сейчас на плате
-прежнее ПО.** [Факты пяти завершённых сеансов](evidence/hardware/2026-11-22-f407-swd-preflight/README.md).
-Исправляются IWDG start-before-sync и DBG_SLEEP; c09a20e повторно не использовать.
-Надпись STM32F407VGT6 владелец сверил; current snapshot и независимая копия
-на другом физическом NVMe SHA-проверены. Их factory происхождение не доказано.
-NRST к ST-Link не подключён; подписанная RESET доступна и отпущена.
+**22 ноября базовый стенд ee7d179 прошёл:** exact program/verify/identity,
+RUNNING/data-BSS/CCM word/guards/progress, watchdog reset и UsageFault capture/reset.
+Образ оставлен работающим, сеанс16,196s/exit0 завершён;
+[лог и пределы](evidence/hardware/2026-11-22-f407-ee7d179-bench/README.md).
+Это исполнение уже отдельно разрешённого exact образа, не разрешение повторить
+процедуру. Предыдущий c09 FAIL8/потеря SWD/успешный полный snapshot restore
+сохранены [отдельно](evidence/hardware/2026-11-22-f407-swd-preflight/README.md).
+Надпись STM32F407VGT6 сверена; verified current snapshot/independent NVMe copy
+сохранены приватно. NRST не подключён; новый manual RESET не понадобился.
 
 Build/CI/PR не разрешают новый SWD/read/reset/write/capture сеанс. Прежние
 разрешения ESP32 к F407 не относятся. Перед исполнением владелец отдельно

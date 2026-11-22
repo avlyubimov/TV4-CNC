@@ -1,12 +1,38 @@
 # Аппаратный статус TV4-CNC
 
-## 22 ноября: первый запуск F407 завершился отказом, snapshot восстановлен
+## 22 ноября, 11:33: успешный базовый стенд F407
+
+22 ноября 2026, база main `07fb406e37ebd1f1e019dbee0b54e8bb5571be1a`, PR #1–57 слиты.
+После отдельного разрешения один стенд ee7d179 завершён за16,196s, exit0:
+program/verify/exact identity, RUNNING, data/BSS/один CCM word/guards, progress,
+watchdog reset и UsageFault capture/reset **PASS**. На F407 оставлен работающим
+clean `ee7d179435f3f9e7598c7646b85ff64f4d5e9a32`, BIN2540bytes. Условный restore
+не понадобился. Предыдущий c09 FAIL8 и проверенный полный snapshot restore — история.
+
+Плата изолирована, только питание/SWD; option bytes/OTP/CAN/motion/ESP32 не менялись.
+Этот разрешённый сеанс завершён. Полный RAM/CCM stress, stack high-water,
+точные HSI/LSI/HSE частоты, physical GPIO/CAN/inhibit и power-loss остаются открытыми.
+P0 выполнен на базовом стенде; следующий приоритет — P1 ESP32 OTA с existing
+HTTPS/crypto и review16MiB factory+двух OTA slots/USB migration. Новых hardware
+операций или будущих CAN loader addresses это не разрешает.
+
+[Успешный стенд ee7d179](evidence/hardware/2026-11-22-f407-ee7d179-bench/README.md), [пять snapshots](evidence/hardware/2026-11-22-f407-ee7d179-bench/snapshots.md).
+Ticks1499→2997 и heartbeat/feed14→29 при boot1; watchdog request дал boot2,
+UsageFault request — boot3/CFSR.UNDEFINSTR/валидный frame/PC0x0800044c в точном
+ELF. После fault ticks3005→4501, heartbeat/feed30→45, boot3 неизменен. Пять
+warm-history CRC проверены локально. Это минимальный init/probe, не full RAM test.
+Probe sample3.255666V не является calibrated/load measurement; nominal HSI16MHz
+не измеряет частоту. NRST не подключён; новый manual RESET не понадобился.
+Backup2×1MiB и independent NVMe copy сохранены, новые full-Flash reads не делались.
+ESP32 ordinary8f0d899 прежний. Остальные аппаратные blockers ниже сохраняются.
+
+## История до 11:33: c09 отказал, snapshot восстановлен
 
 22 ноября 2026, main `4fe84f10a70228b9f440f41c6ccc50869919042a`, PR #1–56 слиты.
 Первый реальный c09a20e был записан и verify прошёл, но boot bench завершился
 **FAULT/error8 (IWDG_TIMEOUT)**. После восстановления SWD с DBG_SLEEP полный
 проверенный снимок1MiB записан обратно, verify/reset-run успешны.
-**Сейчас на плате прежнее ПО, не c09a20e.** Все пять аппаратных сеансов завершены.
+**На завершение прежнего сеанса был восстановлен snapshot, не c09a20e.** Все пять аппаратных сеансов завершены.
 Надпись STM32F407VGT6 сверена владельцем; Flash1024KiB/driver12sectors/RDP0/
 nWRP0xFFF прочитаны. Current backup2×1MiB и SHA-проверенная копия на другом
 физическом NVMe сохранены приватно. NRST к ST-Link не подключён; RESET отпущен.
@@ -148,8 +174,8 @@ Factory/A-B/profile mismatch остаются blockers; устройства/bac
 | GT911 | На b93cf3b владелец подтвердил касания, удобную клавиатуру и показ/скрытие пароля | Покрытие углов, multitouch/ошибки, latency, воспроизводимый полный тест сенсора |
 | Wi-Fi | Физический список SSID/RSSI виден на фото; владелец сообщил ошибку 263 | На b93cf3b владелец подтвердил подключение/IP, агент видел wifi_ip_events=1 в обоих запусках. Неверный пароль, полный reconnect/NVS power-cycle stress ещё не проверены |
 | Защита ESP32 | По переданному get-security-info Secure Boot и Flash Encryption Disabled | Это не разрешение менять eFuse; не утверждается защита от физического чтения паролей |
-| F407 | DevEBox; надпись STM32F407VGT6 сверена owner22ноября; агент прочитал core r0p1/CPUID0x410fc241/ID0x101f6413/Flash1024KiB/driver12sectors/RDP0/nWRP0xFFF; c09 program/verify PASS, boot FAULT8; полный snapshot restore/verify/reset PASS | Исправленный boot/progress/CCM/watchdog/fault, HSE/частоты, RAM/stack stress, pinout/GPIO/CAN/inhibit и power-loss recovery неизвестны |
-| Backup F407 | Новый current snapshot2×1048576bytes byte/SHA/basic vectors PASS; independent copy на другом физическом NVMe SHA PASS; snapshot restore/verify/reset PASS. Старый owner dump не открывался | Factory provenance нового snapshot не доказана; power-loss recovery не испытан; dumps/их SHA и private пути не публикуются |
+| F407 | STM32F407VGT6 marking owner; core/ID/Flash1024KiB/driver12sectors/RDP0/nWRP0xFFF прочитаны; ee7d179 program/verify, базовый boot/CCM/guards/progress/watchdog reset/UsageFault PASS22ноября | Полные RAM/CCM stress/high-water, HSE/точные частоты, pinout/GPIO/CAN/inhibit и power-loss recovery неизвестны |
+| Backup F407 | Current snapshot2×1048576bytes byte/SHA/basic vectors PASS, independent NVMe copy SHA PASS; в прежнем failed-c09 сеансе snapshot restore/verify/reset PASS. В успешном ee7d179 restore не понадобился | Factory provenance snapshot не доказана; power-loss recovery не испытан; dumps/их SHA/private paths не публикуются |
 | USB F407 | Владелец сообщил 0483:5720 Mass Storage Device | Принадлежность именно F407 плате нужна отдельная проверка; VID/PID не определяет part number/память/bootloader |
 | ST-Link V2 | По отчёту владельца работает с Blue Pill и с конкретной F407 по SWD | Версии probe/debugger для нового F407 сеанса и испытание restore не сообщены; доступ не разрешает новые device operations |
 | Blue Pill | STM32F103C8T6; OpenOCD 0.12.0 видит Cortex-M3, Flash 64 КиБ, SWD работает; отчёт владельца | CAN, таймеры, bootloader, подключение к станку не испытаны |

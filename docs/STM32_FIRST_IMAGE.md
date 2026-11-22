@@ -1,13 +1,14 @@
 # P0 — первый прошиваемый STM32F407VG bench
 
-База текущего исправления main `4fe84f10a70228b9f440f41c6ccc50869919042a`
-после PR #56. Один standalone ELF/BIN, профиль `stm32f407vg-hsi-no-motion-v1`.
-**Первый c09a20e прошёл запись/verify, но boot дал FAULT8; snapshot восстановлен.**
-Исправленный IWDG/DBG_SLEEP образ программно проверяется; новый аппаратный
-запуск ещё не выполнен. [Факты](evidence/hardware/2026-11-22-f407-swd-preflight/README.md),
-[программные проверки исправления](evidence/build/stm32f407-bringup-fix/README.md),
-[исходные проверки PR56](evidence/build/stm32f407-first-image/README.md),
-[runbook](STM32_STLINK_RUNBOOK.md), [план](plans/F407_SWD_PREFLIGHT.md).
+База исправления main07fb406 после слитого владельцем PR #57.
+**Базовый аппаратный стенд clean ee7d179 PASS22ноября**: запись/verify/identity,
+RUNNING/progress/data-BSS/CCM word/guards, watchdog reset и UsageFault capture/reset.
+Этот exact образ2540bytes оставлен работающим; [фактический отчёт](evidence/hardware/2026-11-22-f407-ee7d179-bench/README.md).
+Предыдущий c09 FAIL8 и snapshot restore сохранены в
+[истории](evidence/hardware/2026-11-22-f407-swd-preflight/README.md).
+[Software evidence](evidence/build/stm32f407-bringup-fix/README.md),
+[runbook](STM32_STLINK_RUNBOOK.md). Новая сборка не наследует hardware PASS
+по profile name: нужна привязка к exact source/ELF/BIN и отдельный scope.
 
 ## Что является исходными данными
 
@@ -19,8 +20,8 @@ REV_ID0x101f означает silicon5/6, не точную ревизию ил�
 
 Карта ниже — официальная спецификация выбранного устройства. Частоты HSI/LSI/HSE,
 RAM/CCM/stack stress, GPIO/CAN/physical inhibit и power-loss recovery неизвестны.
-Нулевые RAM/CCM pass fields у c09 означают, что self-test не достигнут из-за
-IWDG init timeout. Неизвестный HSE не блокирует HSI/no-motion сборку.
+Нулевые RAM/CCM pass fields прежнего c09 означали, что self-test не достигнут
+из-за IWDG init timeout; на ee7d179 базовые self-tests пройдены. Неизвестный HSE не блокирует HSI/no-motion сборку.
 
 ## Проверенная спецификация и происхождение
 
@@ -120,7 +121,9 @@ frame не разыменовывается. Nested capture останавлив
 | `tv4_bench_history` (84 байта, `.noinit`) | Warm-reset record с magic-last + DMB + CRC; invalid/torn record отклоняется, boot count saturating |
 
 RUNNING=4/error=0, data_bss_pass=ccm_probe_pass=stack_guards_pass=watchdog_started=1
-и увеличивающиеся ticks/heartbeat — критерии будущего стенда, не результат этого PR.
+и увеличивающиеся ticks/heartbeat — критерии, подтверждённые на ee7d179.
+Сохранённый build-time image-check/profile hardware_tested=false не переписывается:
+новая аппаратная проверка привязана к exact SHA в отдельном hardware evidence.
 History не переживает гарантированно power loss, не является durable/authenticated
 identity или anti-rollback. New reset flags фиксируются до RMVF clear.
 Коды errors: 1 core,2 device,3 Flash size,4 HSI,5 clock switch,6 clock stop,
@@ -167,7 +170,8 @@ ELF/BIN byte-for-byte; checkout/action/archive SHA закреплены. Debug p
 проверяется в пределах одной точной toolchain; разные distro binutils не объявлены
 побитно эквивалентными. CI публикует **только текстовые результаты**, без ELF/BIN.
 
-Новый аппаратный стенд ещё должен подтвердить RUNNING/progress/CCM/guards,
-watchdog reset и fault capture. Старый c09 отказал до этих self-tests; его
-успешная запись и snapshot restore не заменяют исправленный boot bench.
-Новый образ разрешается отдельно по clean commit/ELF SHA и согласованному scope.
+Базовый стенд ee7d179 подтвердил RUNNING/progress/CCM/guards, watchdog reset
+и UsageFault capture. Предыдущий c09 отказал до этих self-tests; исторический
+FAIL8 не удаляется. Полные memory stress/stack high-water/точные частоты/physical
+GPIO/CAN и power-loss recovery не подтверждены. Следующий приоритет — ESP32 OTA P1.
+Новая аппаратная операция по exact image/reset/capture требует нового разрешения.

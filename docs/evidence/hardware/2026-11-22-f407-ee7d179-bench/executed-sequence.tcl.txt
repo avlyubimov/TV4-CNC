@@ -1,0 +1,130 @@
+# EXECUTED RECORD ONLY; private paths replaced, not directly runnable.
+# PREPARED ONLY. Requires new explicit owner permission for exact ee7d179,
+# programming/reset/RAM requests/watchdog/fault and ONE conditional restore.
+# Host launcher must verify the ELF and both backup SHA-256 values first.
+set tv4_elf <local-workspace>/outputs/stm32f407-ee7d179/tv4_stm32f407_bench.elf
+set tv4_backup <private-backup>/STM32F407/2026-11-22/current-flash-1mib.bin
+source <local-workspace>/outputs/stm32f407-ee7d179-bench/bench-symbols.tcl
+source <local-workspace>/outputs/stm32f407-ee7d179-bench/openocd.cfg
+gdb_port disabled
+tcl_port disabled
+telnet_port disabled
+
+proc tv4_require {condition message} {
+    if {![uplevel 1 [list expr $condition]]} { error $message }
+}
+proc tv4_guard {} {
+    set cpuid [lindex [read_memory 0xE000ED00 32 1] 0]
+    tv4_require {(($cpuid >> 4) & 0xfff) == 0xc24} "Unexpected core; Flash write forbidden"
+    set id [lindex [read_memory 0xE0042000 32 1] 0]
+    tv4_require {$id == 0x101f6413} "Unexpected exact device ID; Flash write forbidden"
+    set size [lindex [read_memory 0x1FFF7A22 16 1] 0]
+    tv4_require {$size == 1024} "Unexpected Flash size; Flash write forbidden"
+    set opt [lindex [read_memory 0x40023C14 32 1] 0]
+    tv4_require {(($opt >> 8) & 0xff) == 0xaa && (($opt >> 16) & 0xfff) == 0xfff} "Protection differs; no unlock or option changes permitted"
+    echo [format "TV4_BENCH GUARD CPUID=0x%08x ID=0x%08x OPTCR=0x%08x" $cpuid $id $opt]
+}
+proc tv4_identity {} {
+    global tv4_tv4_bench_build tv4_expected_build
+    set actual [read_memory $tv4_tv4_bench_build 32 26]
+    tv4_require {[llength $actual] == 26} "Missing identity words"
+    for {set i 0} {$i < 26} {incr i} {
+        tv4_require {[lindex $actual $i] == [lindex $tv4_expected_build $i]} "Exact ee7d179 build identity mismatch"
+    }
+    echo "TV4_BENCH IDENTITY_EE7D179_CLEAN_PASS"
+}
+proc tv4_snapshot {label} {
+    global tv4_tv4_bench_diag tv4_tv4_bench_history tv4___main_guard_start__ tv4___fault_guard_start__ tv4_SystemCoreClock tv4_ccm_probe
+    set d [read_memory $tv4_tv4_bench_diag 32 42]
+    echo "TV4_DIAG $label $d"
+    tv4_require {[llength $d] == 42} "Incomplete diagnostics"
+    foreach {index value} {0 0x54563444 1 1 2 168 3 4 4 0 7 0x410fc241 8 0x101f6413 9 1024 10 16000000 15 0 17 1 18 1 19 0 20 1 21 1 22 1 41 0} {
+        tv4_require {[lindex $d $index] == $value} "Diagnostic state/selftest mismatch at field $index"
+    }
+    tv4_require {[lindex $d 5] > 0 && ([lindex $d 14] & 3) == 3} "Missing boot/HSI ready"
+    tv4_require {([lindex $d 14] & 0x05010000) == 0} "Unexpected external clock/PLL enable"
+    set clock [lindex [read_memory $tv4_SystemCoreClock 32 1] 0]
+    set ccm [lindex [read_memory $tv4_ccm_probe 32 1] 0]
+    tv4_require {$clock == 16000000 && $ccm == 0x4070cc01} "Clock or CCM probe mismatch"
+    foreach address [list $tv4___main_guard_start__ $tv4___fault_guard_start__] {
+        set words [read_memory $address 32 8]
+        tv4_require {[llength $words] == 8} "Missing stack guards"
+        foreach word $words { tv4_require {$word == 0xa55a4070} "Stack guard corruption" }
+    }
+    echo "TV4_HISTORY $label [read_memory $tv4_tv4_bench_history 32 21]"
+    echo "TV4_BENCH SELFTEST $label PASS"
+    return $d
+}
+
+set tv4_initialized 0
+set tv4_program_attempted 0
+set tv4_result [catch {
+    init
+    set tv4_initialized 1
+    reset halt
+    tv4_guard
+    set tv4_program_attempted 1
+    program $tv4_elf verify
+    tv4_identity
+    reset run
+    sleep 1500
+    halt
+    set a [tv4_snapshot INITIAL]
+    resume
+    sleep 1500
+    halt
+    set b [tv4_snapshot PROGRESS]
+    tv4_require {[lindex $b 5] == [lindex $a 5]} "Unrequested reset during progress test"
+    tv4_require {[lindex $b 11] > [lindex $a 11] && [lindex $b 12] > [lindex $a 12] && [lindex $b 13] > [lindex $a 13]} "No tick/main/watchdog progress"
+    echo "TV4_BENCH MAIN_PROGRESS_PASS"
+
+    write_memory $tv4_request 32 {0x57444731}
+    resume
+    sleep 5000
+    halt
+    set c [tv4_snapshot WATCHDOG]
+    tv4_require {[lindex $c 5] == [lindex $b 5]+1 && [lindex $c 23] == 1 && [lindex $c 24] == 0x57444731 && ([lindex $c 6] & 0x20000000) != 0} "Watchdog reset/history not proven"
+    echo "TV4_BENCH WATCHDOG_RESET_PASS"
+
+    write_memory $tv4_request 32 {0x464c5431}
+    resume
+    sleep 5000
+    halt
+    set d [tv4_snapshot FAULT]
+    tv4_require {[lindex $d 5] == [lindex $c 5]+1 && [lindex $d 23] == 1 && [lindex $d 24] == 11 && ([lindex $d 6] & 0x20000000) != 0} "Fault reset/history not proven"
+    tv4_require {[lindex $d 25] == 6 && [lindex $d 28] == 1 && ([lindex $d 37] & 0x10000) != 0} "UsageFault frame/CFSR not proven"
+    set pc [lindex $d 35]
+    tv4_require {$pc >= $tv4_text_start && $pc < $tv4_text_end} "Fault PC outside exact ELF text"
+    echo "TV4_BENCH USAGEFAULT_CAPTURE_PASS"
+    resume
+    sleep 1500
+    halt
+    set e [tv4_snapshot FINAL]
+    tv4_require {[lindex $e 5] == [lindex $d 5] && [lindex $e 11] > [lindex $d 11] && [lindex $e 12] > [lindex $d 12]} "Post-fault stability/progress failed"
+    tv4_identity
+    resume
+    echo "TV4_BENCH SESSION_COMPLETE_EE7D179_RUNNING"
+} tv4_error]
+
+if {$tv4_result} {
+    echo "TV4_BENCH FAILED: $tv4_error"
+    if {$tv4_program_attempted} {
+        # Exactly ONE recovery attempt, only if included in owner permission.
+        set recovery [catch {
+            reset halt
+            tv4_guard
+            program $tv4_backup verify reset 0x08000000
+            echo "TV4_BENCH VERIFIED_SNAPSHOT_RESTORED"
+        } recovery_error]
+        if {$recovery} { echo "TV4_BENCH RESTORE_FAILED_STOPPED: $recovery_error" }
+    } elseif {$tv4_initialized} {
+        if {[catch {reset run} cleanup_error]} {
+            echo "TV4_BENCH CLEANUP_FAILED: $cleanup_error"
+        } else {
+            echo "TV4_BENCH ORIGINAL_RESET_RUN_COMPLETE"
+        }
+    }
+    shutdown error
+} else {
+    shutdown
+}
