@@ -1,5 +1,21 @@
 # Аппаратный статус TV4-CNC
 
+## 22 ноября, 13:28: резервный снимок ESP32 перед OTA
+
+По отдельному разрешению выполнены read-only preflight, полный snapshot16МиБ,
+проверка соответствия всей Flash по MD5, SHA-256 и приватные копии на двух
+физически разных NVMe. Security flags0, Secure Boot/Flash Encryption отключены;
+eFuse/Flash program/erase не выполнялись. [Результаты и пределы](evidence/hardware/2026-11-22-esp32-pre-ota-snapshot/README.md).
+Действующая карта NVS/PHY/factory2MiB и app descriptor8f0d899/ESP-IDF6.1.1
+проверены по локальному снимку. После reset владелец подтвердил прежний HMI,
+касания и Wi-Fi. Разрешённый12-минутный сеанс завершён, новые операции им не разрешены.
+
+Новый rev12-ota не записан; PSRAM XiP boot, USB migration/recovery, signed OTA,
+rollback/power-loss и runtime margins остаются открытыми. На F407 по-прежнему
+ee7d179; к нему, CAN и приводам в этом сеансе не обращались. Подготовленный
+clean-main fecc05d bundle — будущий образ, не installed firmware.
+
+
 ## 22 ноября, 11:33: успешный базовый стенд F407
 
 22 ноября 2026, база main `07fb406e37ebd1f1e019dbee0b54e8bb5571be1a`, PR #1–57 слиты.

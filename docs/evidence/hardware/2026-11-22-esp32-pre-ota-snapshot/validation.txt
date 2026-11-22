@@ -1,0 +1,12 @@
+Local checks after the completed, separately authorized read/reset session:
+- Both raw copies:16777216bytes, SHA-25647c4f9c4e6d7fb1fcfce2b0065c2f69af0ea01664d1407b3504ee6e4a6a13107 PASS.
+- Raw file0600 and destination directory0700: both copies PASS.
+- Distinct filesystem devices plus preflight findmnt/lsblk physical parent identities: two different NVMe PASS.
+- Snapshot partition-table MD5, installed app checksum/appended SHA, ESP32-S3/header/descriptor/bounds: PASS, offline only.
+- Installed8f0d899 / SDK6.1.1; legacy NVS/PHY/factory2MiB migration precondition PASS.
+- Public summary vs private receipts/inspection/hash/owner confirmation: PASS.
+- New firmware/source/SDK/CI/pins unchanged; docs/evidence-only scope PASS.
+- Changed-document local links:200 PASS. git diff --check PASS.
+- No UART reopened after reset. No Flash program/erase, eFuse, STM32, CAN, motion, factory restore, XiP boot or OTA tests performed.
+- No new host/firmware test claim for this docs-only report. Main fecc05d existing CI is green; its real rev12-ota6.1.1 bundle was rebuilt/independently verified before the read session.
+Private raw snapshots and full serial logs are excluded from the repository and public CI artifacts.

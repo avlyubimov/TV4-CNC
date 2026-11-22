@@ -1,0 +1,90 @@
+{
+  "kind": "esp32-pre-ota-read-only-evidence",
+  "date": "2026-11-22",
+  "timezone": "Asia/Almaty",
+  "prepared_for_migration_source_commit": "fecc05d676a0b1e3376db5317fa241274e8e310a",
+  "profile_not_flashed": "rev12-ota",
+  "esptool_version": "5.6.0",
+  "device_identity": {
+    "chip": "ESP32-S3",
+    "image_chip_id": 9,
+    "expected_board_identity_matched": true,
+    "physical_flash_bytes": 16777216,
+    "security_flags": 0,
+    "secure_boot_enabled": false,
+    "flash_crypt_count": 0,
+    "flash_encryption_enabled": false
+  },
+  "snapshot": {
+    "bytes": 16777216,
+    "sha256": "47c4f9c4e6d7fb1fcfce2b0065c2f69af0ea01664d1407b3504ee6e4a6a13107",
+    "stub_transfer_md5_verified": true,
+    "separate_device_flash_md5_verified": true,
+    "local_sha256_verified": true,
+    "second_copy_sha256_verified": true,
+    "two_different_physical_nvme": true,
+    "private_file_mode": "0600",
+    "private_directory_mode": "0700",
+    "read_seconds_tool_reported": 384.3,
+    "full_reads": 1
+  },
+  "running_app": {
+    "bytes": 1573568,
+    "sha256": "b2680a2abe0aa44b22875ff6445154b7c7331b91a2b65de4715792082a5365da",
+    "project": "tv4_hmi",
+    "version": "8f0d899",
+    "idf_version": "v6.1.1",
+    "elf_sha256": "f63e9c1ecfe1eb3dac8ffce32ac35635bc61b9966c5b8b88646c9c53d3dfb0cd",
+    "segments": 6,
+    "chip_revision_min": 0,
+    "chip_revision_max": 99,
+    "flash_bytes": 16777216,
+    "flash_mode": "dio",
+    "flash_frequency_mhz": 80
+  },
+  "layout": [
+    {
+      "kind": 1,
+      "subtype": 2,
+      "address": 36864,
+      "size": 24576,
+      "label": "nvs",
+      "flags": 0
+    },
+    {
+      "kind": 1,
+      "subtype": 1,
+      "address": 61440,
+      "size": 4096,
+      "label": "phy_init",
+      "flags": 0
+    },
+    {
+      "kind": 0,
+      "subtype": 0,
+      "address": 65536,
+      "size": 2097152,
+      "label": "factory",
+      "flags": 0
+    }
+  ],
+  "partition_md5_verified": true,
+  "migration_legacy_layout_precondition": true,
+  "raw_nvs_decoded": false,
+  "uart_runner_attempts": 2,
+  "first_attempt_outcome": "Stopped before full image read: missing standard ROM SPI attach; current firmware reset. Fixed and retried inside original 12-minute window.",
+  "authorized_window_start_utc": "2026-11-22T08:19:10Z",
+  "completed_observed_utc": "2026-11-22T08:28:21Z",
+  "authorized_maximum_seconds": 720,
+  "reset_current_firmware_requested": true,
+  "owner_confirmed_hmi_touch_wifi_after_reset": true,
+  "agent_flash_write": false,
+  "agent_flash_erase": false,
+  "agent_efuse_write": false,
+  "stm32_access": false,
+  "can_or_motion_access": false,
+  "restore_tested": false,
+  "ota_migration_tested": false,
+  "psram_xip_boot_tested": false,
+  "psram_stress_or_fps_measured": false
+}

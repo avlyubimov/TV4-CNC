@@ -1,4 +1,25 @@
-# Заводской Flash backup — завершён
+# Резервные копии ESP32 — заводская и перед OTA
+
+## Текущий snapshot перед OTA, 22 ноября 2026
+
+После отдельного разрешения считана вся Flash ESP32: **16777216bytes**.
+Один полный read, штатный transfer MD5 и отдельный device MD5 whole Flash,
+затем SHA-256 обеих локальных копий — PASS. Копии находятся на двух физически
+разных NVMe, files0600/folders0700; старые backup files не перезаписаны.
+
+```text
+47c4f9c4e6d7fb1fcfce2b0065c2f69af0ea01664d1407b3504ee6e4a6a13107
+```
+
+[Отчёт](evidence/hardware/2026-11-22-esp32-pre-ota-snapshot/README.md) различает этот snapshot установленного8f0d899
+и будущую сборку fecc05d. Partition MD5 и app checksum/appended SHA проверены;
+текущая карта factory2MiB соответствует precondition миграции. NVS не декодировалась.
+После reset владелец подтвердил экран/касания/Wi-Fi. Новой Flash записи не было;
+восстановление snapshot и USB migration пока не испытывались. Дампы/сырые UART
+логи остаются приватными и не включаются в Git/CI/PR.
+
+## Заводская копия — сохранена
+
 
 Пользователь подтвердил успешное считывание всей Flash платы: **16 МиБ**.
 На диске найден локальный `backups/waveshare_factory_16mb.bin` размером

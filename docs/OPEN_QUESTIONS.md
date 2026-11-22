@@ -1,5 +1,12 @@
 # Открытые вопросы и блокирующие решения
 
+22 ноября2026: [read-only pre-migration ESP32 snapshot](evidence/hardware/2026-11-22-esp32-pre-ota-snapshot/README.md)
+закрыл чтение реальной geometry/защиты/legacy table и fresh backup на двух NVMe.
+Installed descriptor8f0d899/SDK6.1.1, owner HMI/touch/Wi-Fi после reset PASS.
+Новый image не записан: OTA-ESP-01 остаётся открыт для USB migration/recovery/
+XiP boot/OTA/rollback/power loss; OTA-KEY/CONTEXT/resource floors не закрыты.
+
+
 Текущий P1 от main d1317a8: [installer/self-test/rollback/USB package](ESP32_OTA_INSTALLATION.md)
 подключены программно в explicit rev12-ota. Владелец выбрал настройку без ключа;
 OTA-KEY/CONTEXT и production resource/time floors остаются открытыми, установка
