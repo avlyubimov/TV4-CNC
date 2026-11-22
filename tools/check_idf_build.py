@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """Inspect compiler outputs only; never imports serial libraries or opens a device."""
+import argparse
 import hashlib
 import json
 import struct
-import sys
 from pathlib import Path
 
 
@@ -16,7 +16,7 @@ def require(condition, message):
         raise ValueError(message)
 
 
-def verify(build, profile, version, *, write_report=True, memory_diagnostics=False):
+def verify(build, profile, version, *, write_report=True, memory_diagnostics=False, worker_stack_bench=False):
     require(profile in {"headless", "rev12", "rev12-memory-bench", "rev12-tls-bench", "rev12-ota"}, "unknown profile")
     require(version in {"5.3.2", "6.1.1"}, "unvalidated SDK")
     build = Path(build)
@@ -37,6 +37,14 @@ def verify(build, profile, version, *, write_report=True, memory_diagnostics=Fal
     require(type(memory_diagnostics) is bool and (not memory_diagnostics or ota), "memory diagnostics require explicit OTA selection")
     require(config.get("TV4_OTA_MEMORY_DIAGNOSTICS", False)==memory_diagnostics,
             "memory tracing must match explicit build selection")
+    require(type(worker_stack_bench) is bool and (not worker_stack_bench or (ota and memory_diagnostics)),
+            "worker stack bench requires explicit OTA memory diagnostics")
+    require(config.get("TV4_OTA_WORKER_STACK_BENCH", False)==worker_stack_bench,
+            "worker stack bench must match explicit build selection")
+    if worker_stack_bench:
+        context=json.loads((build/'ota-local/ota_local_context.json').read_text())
+        require(type(context) is dict and context.get('provisioned') is False and context.get('private_key_present') is False,
+                "worker stack bench must remain unprovisioned")
     require(config.get("TV4_OTA_ENABLED", False) == ota, "OTA requires explicit migration profile")
     for name in ("SPIRAM_XIP_FROM_PSRAM","SPIRAM_FETCH_INSTRUCTIONS","SPIRAM_RODATA"):
         require(config.get(name,False)==ota, "PSRAM XiP is required only in the explicit OTA profile")
@@ -101,6 +109,7 @@ def verify(build, profile, version, *, write_report=True, memory_diagnostics=Fal
                   memory_bench=config.get("TV4_OTA_MEMORY_BENCH", False), tls_bench=config.get("TV4_UTC_TLS_BENCH", False), psram="octal 80MHz" if profile != "headless" else "disabled", images=images, partitions=partitions,
                   device_access=False, physical_performance="not measured")
     if ota:result['ota_memory_diagnostics']=memory_diagnostics
+    if worker_stack_bench:result['ota_worker_stack_bench']=True
     if write_report:
         (build / "validation.json").write_text(json.dumps(result, indent=2) + "\n")
         print(json.dumps(result, indent=2))
@@ -108,9 +117,12 @@ def verify(build, profile, version, *, write_report=True, memory_diagnostics=Fal
 
 
 if __name__ == "__main__":
-    if len(sys.argv) not in (4,5) or (len(sys.argv)==5 and sys.argv[4]!='--memory-diagnostics'):
-        raise SystemExit("Usage: check_idf_build.py BUILD_DIR PROFILE SDK [--memory-diagnostics]")
+    parser=argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('build');parser.add_argument('profile');parser.add_argument('sdk')
+    parser.add_argument('--memory-diagnostics',action='store_true')
+    parser.add_argument('--worker-stack-bench',action='store_true')
+    args=parser.parse_args()
     try:
-        verify(*sys.argv[1:4],memory_diagnostics=len(sys.argv)==5)
+        verify(args.build,args.profile,args.sdk,memory_diagnostics=args.memory_diagnostics,worker_stack_bench=args.worker_stack_bench)
     except (ValueError, KeyError, OSError, struct.error) as error:
         raise SystemExit(f"Build validation failed: {error}")

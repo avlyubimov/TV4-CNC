@@ -1,0 +1,29 @@
+BUILD 6.1.1-headless
+PASS 6.1.1-headless bytes=1061072 stack_request=0 diagnostic_state=0
+BUILD 6.1.1-rev12
+PASS 6.1.1-rev12 bytes=1579296 stack_request=0 diagnostic_state=0
+BUILD 6.1.1-rev12-memory-bench
+PASS 6.1.1-rev12-memory-bench bytes=1580992 stack_request=0 diagnostic_state=0
+BUILD 6.1.1-rev12-tls-bench
+PASS 6.1.1-rev12-tls-bench bytes=1584176 stack_request=0 diagnostic_state=0
+BUILD 6.1.1-rev12-ota
+PASS 6.1.1-rev12-ota bytes=1598560 stack_request=3072 diagnostic_state=0
+BUILD 6.1.1-rev12-ota-memory-diagnostics
+PASS 6.1.1-rev12-ota-memory-diagnostics bytes=1600576 stack_request=3072 diagnostic_state=432
+BUILD 6.1.1-rev12-ota-memory-diagnostics-worker-stack-bench
+PASS 6.1.1-rev12-ota-memory-diagnostics-worker-stack-bench bytes=1600624 stack_request=8192 diagnostic_state=432
+BUILD 5.3.2-headless
+PASS 5.3.2-headless bytes=1075504 stack_request=0 diagnostic_state=0
+BUILD 5.3.2-rev12
+PASS 5.3.2-rev12 bytes=1535088 stack_request=0 diagnostic_state=0
+BUILD 5.3.2-rev12-memory-bench
+PASS 5.3.2-rev12-memory-bench bytes=1536784 stack_request=0 diagnostic_state=0
+BUILD 5.3.2-rev12-tls-bench
+PASS 5.3.2-rev12-tls-bench bytes=1540064 stack_request=0 diagnostic_state=0
+BUILD 5.3.2-rev12-ota
+PASS 5.3.2-rev12-ota bytes=1551088 stack_request=3072 diagnostic_state=0
+BUILD 5.3.2-rev12-ota-memory-diagnostics
+PASS 5.3.2-rev12-ota-memory-diagnostics bytes=1553120 stack_request=3072 diagnostic_state=432
+BUILD 5.3.2-rev12-ota-memory-diagnostics-worker-stack-bench
+PASS 5.3.2-rev12-ota-memory-diagnostics-worker-stack-bench bytes=1553184 stack_request=8192 diagnostic_state=432
+PASS 14/14 clean builds, no device access

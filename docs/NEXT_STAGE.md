@@ -25,6 +25,13 @@ Factory bytes fecc05d возвращены точно; NVS после boot по�
 
 ## Следующий функциональный шаг P1
 
+Текущая отдельная software интеграция — [OTA-worker8192 без provisioning](ESP32_OTA_WORKER_STACK_BENCH.md).
+Default-off flag только rev12-ota/trace, отдельный build tree, прежние SETUP/
+CHECK/INSTALL gates. Actual service host tests и оба SDK готовят реальный
+ELF/BIN: [14/14 clean SDK builds и108/108 host/sanitizer tests](evidence/build/esp32-ota-worker-stack-bench/README.md)
+PASS; это ещё не hardware8192/TLS/install acceptance. PR #66 с owner
+confirmations/connected-only comparison остаётся отдельным изменением.
+
 1. Проверить повторяемость старта/нагрузку и будущий worker8192 без назначения
    production floors из этой пробы; unprovisioned3072 не configured installer.
    Подготовить реальный ELF/BIN и явный scope следующего отдельно разрешённого

@@ -1,0 +1,62 @@
+{
+  "source_commit": "f655e56b16ec09a86c0b0b9eb9163bd4c517e11a",
+  "source_tree": "2711d0dec8f9b6798bf7281e2ce03c682e742328",
+  "device_access": false,
+  "sdk_mode": {
+    "6.1.1": "local installed SDK",
+    "5.3.2": "pinned official Docker SDK"
+  },
+  "sdk_container_digests": {
+    "5.3.2": "espressif/idf@sha256:5b8f58d9d9caa45b689a31a0b6a0cc53b84594e0ba5fdd8d28eeef7d6123242a",
+    "6.1.1": "espressif/idf@sha256:2b4f966c37eaedc19542b0637a5f850b2eff9478d8e858192aa0073d92c2dc91"
+  },
+  "docker_nofile_soft_hard": [
+    4096,
+    4096
+  ],
+  "host_nofile_soft_hard": [
+    524288,
+    524288
+  ],
+  "first_matrix_attempt": {
+    "source_commit": "720f643",
+    "completed_builds": 13,
+    "failed_variant": "5.3.2-rev12-ota-memory-diagnostics-worker-stack-bench",
+    "observed_error": "NVS C++ compilation: Too many open files",
+    "docker_default_nofile_soft_hard": [
+      1048576,
+      1048576
+    ],
+    "underlying_fd_exhaustion_cause_proven": false
+  },
+  "bounded_container_retry": {
+    "source_commit": "720f643",
+    "same_failed_variant": "PASS",
+    "nofile_soft_hard": [
+      4096,
+      4096
+    ]
+  },
+  "final_matrix": {
+    "source_commit": "f655e56b16ec09a86c0b0b9eb9163bd4c517e11a",
+    "successful_builds": 14,
+    "failed_builds": 0
+  },
+  "host_tools": {
+    "cc": "cc (Ubuntu 15.2.0-16ubuntu1) 15.2.0",
+    "cmake": "cmake version 4.2.3",
+    "python": "Python 3.14.4",
+    "ninja": "1.13.2"
+  },
+  "sanitizer": {
+    "address": true,
+    "undefined": true,
+    "leak": true,
+    "detect_leaks": 1,
+    "host_checks_passed": 108,
+    "execution": "outside ptrace sandbox",
+    "sandbox_attempt": "LSan fatal: does not work under ptrace; no leak suppression used"
+  },
+  "runtime_stack_qualified": false,
+  "production_floors_qualified": false
+}

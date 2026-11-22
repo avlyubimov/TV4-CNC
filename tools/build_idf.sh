@@ -5,7 +5,12 @@ profile="${1:-headless}"
 version="${2:-6.1.1}"
 mode="${3:-docker}"
 memory_diagnostics="${TV4_OTA_MEMORY_DIAGNOSTICS:-0}"
+worker_stack_bench="${TV4_OTA_WORKER_STACK_BENCH:-0}"
 case "$memory_diagnostics" in 0|1) ;; *) echo 'TV4_OTA_MEMORY_DIAGNOSTICS must be 0 or 1' >&2; exit 2 ;; esac
+case "$worker_stack_bench" in 0|1) ;; *) echo 'TV4_OTA_WORKER_STACK_BENCH must be 0 or 1' >&2; exit 2 ;; esac
+if [[ "$worker_stack_bench" == 1 && ( "$profile" != rev12-ota || "$memory_diagnostics" != 1 || -n "${TV4_OTA_CONTEXT:-}" ) ]]; then
+  echo 'Worker stack bench requires unprovisioned rev12-ota with memory diagnostics=1' >&2; exit 2
+fi
 if [[ "$memory_diagnostics" == 1 && "$profile" != rev12-ota ]]; then
   echo 'Memory phase tracing belongs only to explicit rev12-ota' >&2; exit 2
 fi
@@ -35,9 +40,12 @@ if [[ "$profile" == rev12-ota && -n "${TV4_OTA_CONTEXT:-}" ]]; then
 fi
 if [[ "$mode" == docker ]]; then
   # Re-enter in the official immutable SDK container. No device passthrough.
+  # Pin the descriptor limit instead of inheriting the Docker daemon's setting.
   exec docker run --rm --cap-drop=ALL --security-opt=no-new-privileges \
+    --ulimit nofile=4096:4096 \
     -e "TV4_BUILD_PROJECT_VERSION=$project_version" \
     -e "TV4_OTA_MEMORY_DIAGNOSTICS=$memory_diagnostics" \
+    -e "TV4_OTA_WORKER_STACK_BENCH=$worker_stack_bench" \
     -v "$project_root:/project" -w /project "$image" \
     bash /project/tools/build_idf.sh "$profile" "$version" local
 elif [[ "$mode" != local ]]; then
@@ -53,6 +61,7 @@ actual="$(idf.py --version)"
 if [[ "$actual" != "ESP-IDF v$version" ]]; then echo "Wrong SDK: $actual (expected v$version)" >&2; exit 2; fi
 build="$project_root/build-idf-$version-$profile"
 if [[ "$memory_diagnostics" == 1 ]]; then build+="-memory-diagnostics"; fi
+if [[ "$worker_stack_bench" == 1 ]]; then build+="-worker-stack-bench"; fi
 version_args=()
 if [[ -n "$project_version" ]]; then version_args+=("-DPROJECT_VER=$project_version"); fi
 defaults="$project_root/firmware/esp32-hmi/sdkconfig.defaults"
@@ -64,6 +73,10 @@ memory_args=()
 if [[ "$memory_diagnostics" == 1 ]]; then
   mkdir -p -- "$build"
   printf '%s\n' 'CONFIG_TV4_OTA_MEMORY_DIAGNOSTICS=y' > "$build/sdkconfig.memory-diagnostics.defaults"
+  if [[ "$worker_stack_bench" == 1 ]]; then
+    printf '%s\n' 'CONFIG_TV4_OTA_WORKER_STACK_BENCH=y' >> "$build/sdkconfig.memory-diagnostics.defaults"
+    memory_args+=(--worker-stack-bench)
+  fi
   defaults+=";$build/sdkconfig.memory-diagnostics.defaults"
   memory_args+=(--memory-diagnostics)
 fi
