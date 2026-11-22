@@ -1,0 +1,36 @@
+{
+  "control_boots": 1,
+  "bench_boots": 3,
+  "controlled_config_change": "worker stack flag only; same source/SDK/partitions",
+  "requested_worker_stack_bytes": [
+    3072,
+    8192
+  ],
+  "control_boot_local_minimum": 20815,
+  "bench_boot_local_minimum_range": [
+    15767,
+    15863
+  ],
+  "isolated_allocator_cause_proven": false,
+  "simultaneous_global_minimum_proven": false,
+  "worst_case_budget_proven": false,
+  "normal_noninstrumented_performance_proven": false,
+  "scope_selector": "heap_min_scope==0 and wifi_ip_events>0",
+  "ip_event_counter_is_cumulative": true,
+  "identical_runtime_ui_load": false,
+  "first_worker_capture": {
+    "internal_free_before_ui_change": {
+      "uptime_ms": 46418,
+      "bytes": 16835
+    },
+    "internal_free_after_ui_change": {
+      "uptime_ms": 51434,
+      "bytes": 14291
+    },
+    "owner_stack_watermark_before_after": [
+      10516,
+      10068
+    ],
+    "cause_not_isolated": true
+  }
+}

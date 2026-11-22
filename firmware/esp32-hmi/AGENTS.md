@@ -50,11 +50,13 @@ docs/BOARD_ADAPTER.md, docs/RUNTIME_DIAGNOSTICS.md и docs/OTA_ARCHITECTURE.md.
   own compiler frames за full runtime stack. Install/crypto/resource authority,
   heap clocks/DMA reserve/TLS records/framebuffer и installed fecc05d прежние.
 
-После PR #64 аппаратный b5f4b38 стенд завершён за609.074s; читать
- docs/evidence/hardware/2026-11-22-esp32-startup-order/README.md от корня. Temporal order подтверждён, local20715/steady largest12288/
-worker1664из3072 — single-run, не configured floor. Вернулся fecc05d; разрешение
-израсходовано. Worker8192/TLS/install/repeatability и owner settings открыты.
-Новые device операции только отдельно, прежние image/config/trust gates сохранять.
+Стенд main dfa9f28 после PR #67 завершён за928.998s: контроль3072/три
+unprovisioned reset boots8192 PASS, fresh16MiB/two-NVMe и возврат factory2MiB
+fecc05d/verify/owner HMI-touch-Wi-Fi-SETUP PASS. Читать от корня
+ docs/evidence/hardware/2026-11-22-esp32-worker-stack/README.md. Worker watermark
+6608–6784/largest7680 не configured TLS/install/floor. Первый boot включал UI
+проверку; нагрузки различались. На ESP32 fecc05d, разрешение закрыто, новых
+hardware действий нет. Семь startup IDs/monitor ownership/пины/клоки прежние.
 
 `TV4_OTA_WORKER_STACK_BENCH` default off: только unprovisioned rev12-ota с
 memory diagnostics1 и отдельным build tree. Читать docs/ESP32_OTA_WORKER_STACK_BENCH.md

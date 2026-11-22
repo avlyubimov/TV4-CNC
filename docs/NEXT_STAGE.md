@@ -1,53 +1,51 @@
-# P1 — после аппаратного замера порядка старта
+# P1 — после аппаратного стенда worker8192
 
-База mainb5f4b38, PR #1–64 слиты. [Стенд нового порядка старта](evidence/hardware/2026-11-22-esp32-startup-order/README.md) завершён
-по отдельному разрешению за609.074s: fresh16MiB/device MD5/SHA-256/two-NVMe,
-app-only diagnostic b5f4b38/verify/capture90.173s, factory2MiB fecc05d return/
-verify/capture30.048s PASS. Владелец подтвердил экран/касания/Wi-Fi/OTA SETUP на b5f4b38 и после возврата fecc05d.
-На ESP32 fecc05d/factory/tv4-16m-ab-v1, F407 ee7d179 не открывался.
-Полный16MiB restore не понадобился; разрешение использовано, новых операций нет.
+База main `dfa9f28`, PR #1–67 слиты. [Стенд3072/8192](evidence/hardware/2026-11-22-esp32-worker-stack/README.md)
+завершён22ноября за928.998s по отдельному разрешению: fresh16MiB/device MD5/
+SHA-256/two-NVMe, контроль3072 и три reset-запуска8192, три app/factory writes,
+пять UART captures и возврат всего factory2MiB fecc05d/verify PASS.
+Владелец подтвердил HMI/касания/Wi-Fi/OTA SETUP временного8192 и возвращённого
+fecc05d. На ESP32 fecc05d/factory/tv4-16m-ab-v1; F407 ee7d179 не открывался.
+Полный16MiB restore не понадобился; сеанс и разрешение закрыты.
 
-BOOT local minimum20715 против1887 в fc90200, history7796 после stop;
-periodic free21575..21751/largest12288, PSRAM6090108, OTA-worker1664из3072.
-Это один instrumented run, per-heap minima не simultaneous free/OOM/floor.
-Largest вырос, steady free немного меньше. Тот же returned fecc05d дал history6956
-вместо прежнего112: повторяемость и нагрузка ещё требуют проверки.
-Configured8192/TLS/install/key/context/floors остаются открытыми, CHECK/INSTALL
-без настройки закрыты. FPS/latency/soak/slot confirm/rollback/power-loss не приняты.
+Worker8192 watermark6608–6784bytes, BOOT local15767–15863; periodic internal
+free14291–16863/largest7680 против control21795–21799/largest12288 после IP event.
+Первый8192 включал UI-проверку: нагрузка различалась. Это unprovisioned reset
+boot evidence, не configured TLS/install/production floor или cold-power/soak.
+Ключ/context не заданы, CHECK/INSTALL закрыты. FPS/latency/slot confirm/rollback/
+power-loss/full recovery не приняты. Новых hardware разрешений нет.
 
-## Подтверждённый результат и инженерные пределы
+## Подтверждено и ещё не подтверждено
 
-PR #64 действительно даёт UI_READY до optional services; хронология
-0,1,2,3,5,6,4. В этой пробе local minimum/largest выросли, free немного меньше;
-конкретная allocation не изолирована, одно наблюдение не production budget.
-Семь startup samples/BOOT window/16 periodic/4 return samples сохранены.
-Factory bytes fecc05d возвращены точно; NVS после boot побайтно не сравнивалась.
+Реальные ELF/BIN/source hashes связаны с контролем3072 и тремя boots8192.
+У каждого trace запуска7 startup points/BOOT window/16 periodic samples, у
+возврата4 samples. На физической плате прошли PSRAM8MiB/XiP/RGB/GT911/self-test,
+UI и Wi-Fi; owner UI подтверждение временного варианта одно, не три.
+[Software режим PR #67](ESP32_OTA_WORKER_STACK_BENCH.md) не меняет defaults.
+
+Largest7680 и диапазон free14291–16863 ограничены. UI-нагрузка в первой пробе
+отличалась, минимум history не simultaneous free/OOM. Три reset boots не
+доказывают full configured call stack, холодный старт, soak или performance.
+Полный16MiB restore и Flash writes installer при активном RGB не испытывались.
 
 ## Следующий функциональный шаг P1
 
-Текущая отдельная software интеграция — [OTA-worker8192 без provisioning](ESP32_OTA_WORKER_STACK_BENCH.md).
-Default-off flag только rev12-ota/trace, отдельный build tree, прежние SETUP/
-CHECK/INSTALL gates. Actual service host tests и оба SDK готовят реальный
-ELF/BIN: [14/14 clean SDK builds и108/108 host/sanitizer tests](evidence/build/esp32-ota-worker-stack-bench/README.md)
-PASS; это ещё не hardware8192/TLS/install acceptance. PR #66 с owner
-confirmations/connected-only comparison остаётся отдельным изменением.
+1. Получить реальные TLS/crypto/installer resource measurements в существующем
+   worker8192 с прежними HTTPS/crypto и единственным monitor owner. Использовать
+   конкретный target image и отдельный согласованный probe/installation scope;
+   не выводить floors арифметикой из этого ненастроенного boot-стенда.
+2. Local owner key/SemVer/trust/time/resource context пока не заданы. Сохранять
+   SETUP/CHECK/INSTALL gates; не подставлять test keys и не угадывать policy.
+   После reviewed настроек и замеров — signed inactive-slot install, reboot/
+   self-test/confirmation/rollback и Wi-Fi/power-loss сценарии.
+3. Не снижать DMA64KiB/TLS16384/4096/framebuffer/clocks ради PASS. Полные RAM/
+   PSRAM/stack/CPU/FPS/latency/tearing/soak и recovery остаются отдельной приёмкой.
+4. Оставлять текущий fecc05d/A-B; ordinary rev12 flash не является откатом.
+   F407/physical CAN/motion/P2–P5 не объявлять принятыми. Новый hardware доступ
+   требует нового разрешения; завершённый пакет не запускать повторно.
 
-1. Проверить повторяемость старта/нагрузку и будущий worker8192 без назначения
-   production floors из этой пробы; unprovisioned3072 не configured installer.
-   Подготовить реальный ELF/BIN и явный scope следующего отдельно разрешённого
-   замера, использовать существующие HTTPS/crypto и monitor ownership guards.
-2. Owner key/SemVer/trust/time/resource context пока отсутствуют. Сохранять
-   SETUP/CHECK/INSTALL gates; никаких test keys в firmware или guessed policy.
-   После reviewed settings и измерений — настоящий signed inactive-slot install,
-   reboot/self-test/confirmation/rollback и Wi-Fi/power-loss сценарии.
-3. Полные SRAM/PSRAM/stack/CPU/FPS/latency/tearing/soak и full16MiB recovery ещё
-   открыты; normal b5f4b38 не испытывался. Не урезать DMA64KiB/TLS16384/4096/
-   framebuffer/clocks ради PASS. Новый hardware scope согласуется отдельно.
-4. Сохранять A/B-карту и текущий fecc05d; ordinary rev12 flash не является
-   откатом. F407/physical CAN/motion/P2–P5 не объявлять принятыми.
-
-[Software evidence](evidence/build/esp32-startup-memory-order/README.md),
-[предыдущий фазный стенд](evidence/hardware/2026-11-22-esp32-ota-memory/README.md),
+[Аппаратные числа](evidence/hardware/2026-11-22-esp32-worker-stack/measurements.json),
+[предыдущий startup стенд](evidence/hardware/2026-11-22-esp32-startup-order/README.md),
 [backup status](BACKUP_STATUS.md). История ниже не активная очередь абстракций.
 
 ## История слитой программной базы

@@ -1,0 +1,93 @@
+{
+  "source_commit": "dfa9f281e9fe686d31e956a9bd05c8354ba81363",
+  "source_tree": "6ab1079b3a20262ef5bd5efb02ba170a62ffb667",
+  "sdk": "6.1.1",
+  "profile": "rev12-ota",
+  "provisioned": false,
+  "source_worktree_clean": true,
+  "apps": {
+    "return": {
+      "bytes": 1597984,
+      "sha256": "de55953fc9e3c4080cb277d734ca7d1f02c74880db38dac0f4b53830f587d021",
+      "project": "tv4_hmi",
+      "version": "fecc05d",
+      "idf_version": "v6.1.1",
+      "elf_sha256": "77d6fd8aa3a90c52599bd4bfc20d083496bc97111d823c4f677ccb775aa434a6",
+      "segments": 6,
+      "chip_revision_min": 0,
+      "chip_revision_max": 99,
+      "flash_bytes": 16777216,
+      "flash_mode": "dio",
+      "flash_frequency_mhz": 80
+    },
+    "control": {
+      "bytes": 1600576,
+      "sha256": "a1bbb2cd8ef13243ff27cd0d360b9a652214015b3dff6cf51faf05902cdd1aa3",
+      "project": "tv4_hmi",
+      "version": "dfa9f28",
+      "idf_version": "v6.1.1",
+      "elf_sha256": "cbb6976db2be1f171abbc8d5574f6dc3b991ff82ebe680c370f5a51b78d65ebc",
+      "segments": 6,
+      "chip_revision_min": 0,
+      "chip_revision_max": 99,
+      "flash_bytes": 16777216,
+      "flash_mode": "dio",
+      "flash_frequency_mhz": 80
+    },
+    "worker8192": {
+      "bytes": 1600624,
+      "sha256": "53763fac6aed56b3280defed4303ee66e808e6734b2fda2df675f2e9d551877a",
+      "project": "tv4_hmi",
+      "version": "dfa9f28",
+      "idf_version": "v6.1.1",
+      "elf_sha256": "fd5be3c21d982c1f2ea8c00156667c91ea71cf6fe6045bc4ecedd4752dce0407",
+      "segments": 6,
+      "chip_revision_min": 0,
+      "chip_revision_max": 99,
+      "flash_bytes": 16777216,
+      "flash_mode": "dio",
+      "flash_frequency_mhz": 80
+    }
+  },
+  "inventory": {
+    "bootloader.guard.bin": {
+      "bytes": 20720,
+      "sha256": "d89ad804ccd1ed6d8344cec87c37db8bdcda8b474697bf0bc4b8ad65e7af82cb"
+    },
+    "control.bin": {
+      "bytes": 1600576,
+      "sha256": "a1bbb2cd8ef13243ff27cd0d360b9a652214015b3dff6cf51faf05902cdd1aa3"
+    },
+    "control.elf": {
+      "bytes": 14964720,
+      "sha256": "cbb6976db2be1f171abbc8d5574f6dc3b991ff82ebe680c370f5a51b78d65ebc"
+    },
+    "fecc05d.bin": {
+      "bytes": 1597984,
+      "sha256": "de55953fc9e3c4080cb277d734ca7d1f02c74880db38dac0f4b53830f587d021"
+    },
+    "partition-table.guard.bin": {
+      "bytes": 3072,
+      "sha256": "b4c64dbabb0eb8a6fb1a735fb3f3a7981a36520560b70e267851144211e401f1"
+    },
+    "sdkconfig.control": {
+      "bytes": 107742,
+      "sha256": "85c3bb256f12a5f65f85ead07a8547095582767276b74c7cf7e97dec4048bc97"
+    },
+    "sdkconfig.worker8192": {
+      "bytes": 107720,
+      "sha256": "ee2ddbc8025c50ec285f60eee533907b54c0c9bdda08731e2d42a4ce645343c6"
+    },
+    "worker8192.bin": {
+      "bytes": 1600624,
+      "sha256": "53763fac6aed56b3280defed4303ee66e808e6734b2fda2df675f2e9d551877a"
+    },
+    "worker8192.elf": {
+      "bytes": 14964768,
+      "sha256": "fd5be3c21d982c1f2ea8c00156667c91ea71cf6fe6045bc4ecedd4752dce0407"
+    }
+  },
+  "prepared_plan_sha256": "0f7826768310eebe26edf4bd8e63700da63422989149dbff1c65dbfd953d029c",
+  "procedure_sha256": "0f68424a5a798e348a9911fd93e1e56e188f01fac61b2b8ff66dcc29678f3d7a",
+  "analyzer_sha256": "870a49f0db2c5b9aad3a5258cc4851f31a79154cdb714dc3af8a49e8cc110e8c"
+}
