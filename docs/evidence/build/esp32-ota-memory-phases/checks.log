@@ -1,0 +1,21 @@
+$ python3 tests/ota_setup_tests.py
+...............
+----------------------------------------------------------------------
+Ran 15 tests in 0.218s
+
+OK
+
+$ python3 tests/ota_memory_diagnostics_build_tests.py
+...
+----------------------------------------------------------------------
+Ran 3 tests in 0.008s
+
+OK
+
+$ bash -n tools/build_idf.sh
+
+PASS changed Python AST; 3 workflow YAML parses; 200 changed-document local links
+
+$ git diff --check 6f95d27
+
+PASS 12 build rows; source version, diagnostic state/frame bounds, app fit; no device access

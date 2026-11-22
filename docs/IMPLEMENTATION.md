@@ -2,7 +2,7 @@
 
 ## Текущая интеграция P1 (база main6f95d27, PR #1–61 слиты)
 
-PR #1–58 слиты. [ESP32 OTA installation](ESP32_OTA_INSTALLATION.md) добавляет
+[ESP32 OTA installation](ESP32_OTA_INSTALLATION.md) добавляет
 explicit rev12-ota: существующие signature/HTTPS/session соединены с SDK inactive
 writer, UI approval, boot self-test/rollback/watchdog и prepare/verify USB bundle.
 Владелец выбрал unprovisioned настройку: ключ/production context отсутствуют,
@@ -10,8 +10,9 @@ install закрыт, test key в firmware нет. На ESP32 после отд�
 стенда работает fecc05d/rev12-ota/factory и tv4-16m-ab-v1; F407 ee7d179 не
 открывался. [Аппаратная миграция](evidence/hardware/2026-11-22-esp32-ota-migration/README.md)
 подтверждена, configured OTA/power loss/RAM-stack budget ещё открыты.
-Следующая [фазная диагностика](ESP32_OTA_MEMORY_PHASES.md) — software integration,
-новых device operations не выполняет; installed fecc05d не заменяется.
+[Фазная диагностика](ESP32_OTA_MEMORY_PHASES.md) собрана из clean391d429:
+12/12 build variants, host/sanitizers87/87 PASS. Это software integration,
+новых device operations нет; installed fecc05d не заменяется.
 [evidence](evidence/build/esp32-ota-installation/README.md), [следующий этап](NEXT_STAGE.md).
 Ниже — история слитой базы; прежние «нет installer/OTA» относятся к тем этапам.
 
