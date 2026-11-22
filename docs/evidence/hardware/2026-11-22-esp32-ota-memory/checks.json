@@ -1,0 +1,21 @@
+{
+  "evidence_matches_completed_private_session": true,
+  "owner_post_return_confirmed": true,
+  "approved_source_and_image_verified": true,
+  "sample_counts_verified": [
+    7,
+    4,
+    16,
+    4
+  ],
+  "factory_restore_verified": true,
+  "full_flash_restore_performed": false,
+  "closed_session_under_limit": true,
+  "credential_and_path_allowlist_scan": "PASS",
+  "documentation_only_scope": "PASS",
+  "changed_document_local_links": 347,
+  "diff_whitespace": "PASS",
+  "new_device_access": false,
+  "host_procedure_tests": 26,
+  "firmware_tests_rerun_for_documentation": false
+}

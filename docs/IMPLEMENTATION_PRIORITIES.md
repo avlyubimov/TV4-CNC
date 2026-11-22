@@ -10,15 +10,19 @@ PR #1–54 слиты. PR #54 завершил threaded host tests; он бол�
 Исторические PR и их проверки остаются доказательствами выполненной работы,
 но не задают порядок дальнейшей разработки.
 
-## Текущее состояние: базовый P0 и первая USB-миграция P1 пройдены
+## Текущее состояние: startup RAM измерен, configured P1 ещё открыт
 
-База отчёта main c41a3d2/PR #1–60. После отдельно разрешённого [стенда ESP32](evidence/hardware/2026-11-22-esp32-ota-migration/README.md)
-работает fecc05d/rev12-ota/factory с tv4-16m-ab-v1. Verify/NVS preservation/
-PSRAM8MiB/XiP/owner HMI/saved Wi-Fi/SETUP PASS; snapshot8f0d899/two-NVMe сохранён,
-restore не выполнялся. Следующий P1 результат — фазный RAM/stack budget и
-configured install/confirm/rollback после owner key/context решений. Historical
-internal minimum112bytes требует разбора, FPS/latency/soak не измерены. Полный
-P1 и P2–P5 не завершены. Сеанс закрыт, новых hardware разрешений не даёт.
+База mainfc90200/PR #1–62. [BOOT memory стенд ESP32](evidence/hardware/2026-11-22-esp32-ota-memory/README.md) и возврат
+factory2MiB fecc05d прошли; owner HMI/touch/saved Wi-Fi/SETUP PASS.
+Fresh16MiB/two-NVMe сохранён, full recovery не выполнялся. На ESP32 fecc05d/
+tv4-16m-ab-v1, F407 ee7d179 без обращения. Сеанс608.700s закрыт.
+APP_ENTRY history202308 → local1887 к UI_READY → restored history112;
+worker watermark1488из3072. Это не simultaneous OOM или production floor.
+Следующий функциональный результат P1 — локализовать startup transient и
+исправить подтверждённую причину, затем измерить configured8192/TLS/install
+после owner key/context решений. SDK/DMA/TLS/framebuffer не урезать.
+P1 signed install/slot confirmation/rollback/power-loss/full recovery и
+performance, а также P2–P5 ещё не приняты.
 
 ### Базовый стенд P0 и программная подготовка P1
 

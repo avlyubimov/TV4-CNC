@@ -1,5 +1,18 @@
 # ESP32 OTA: интеграция установки и USB-пакет
 
+## 22 ноября: BOOT memory стенд и возврат текущего factory
+
+[fc90200](evidence/hardware/2026-11-22-esp32-ota-memory/README.md) испытан app-only на действующей A/B карте, затем весь factory2MiB
+fecc05d возвращён из свежего проверенного16MiB snapshot; две NVMe-копии/verify/
+owner HMI/touch/saved Wi-Fi/SETUP PASS. Bootloader/table/otadata не мигрировались.
+Factory-partition restore проверен; full16MiB restore не выполнялся.
+APP_ENTRY history202308, BOOT local1887, после stop history112; worker1488из3072.
+Конкретный startup transient и configured8192/TLS/install budget не определены,
+production floors не назначены. Factory self-test явно PASS, OTA-slot
+confirmation/rollback не испытывались. Ключ/context отсутствуют, установка
+по-прежнему закрыта. Сеанс608.700s завершён, новых hardware разрешений нет.
+Остальные датированные статусы ниже — история до этого измерения.
+
 ## Аппаратный статус после первой миграции
 
 22 ноября2026 отдельно разрешённый пакет fecc05d/rev12-ota/SDK6.1.1 записан и

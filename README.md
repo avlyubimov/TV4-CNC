@@ -3,18 +3,23 @@
 ## Проверенное состояние, 22 ноября 2026
 
 STM32F407 ee7d179 прошёл [базовый HSI/no-motion стенд](docs/evidence/hardware/2026-11-22-f407-ee7d179-bench/README.md).
-ESP32 после отдельно разрешённой [USB-миграции](docs/evidence/hardware/2026-11-22-esp32-ota-migration/README.md)
-работает на fecc05d/rev12-ota/ESP-IDF6.1.1: factory + два OTA-слота, PSRAM8MiB/
-XiP/GT911, owner screen/touch/saved Wi-Fi PASS. Две private копии прежней Flash
-на разных NVMe сохранены; restore не выполнялся. Ключ/context отсутствуют,
-сетевые проверка/установка закрыты. Configured install/confirm/rollback/power
-loss и production RAM/stack/performance ещё не приняты; historical internal
-minimum112bytes требует фазного разбора. CAN и приводы не подключались.
+ESP32 после [фазного BOOT стенда fc90200](docs/evidence/hardware/2026-11-22-esp32-ota-memory/README.md) возвращён на
+fecc05d/rev12-ota/factory, та же16MiB A/B-карта. Fresh16MiB snapshot и две
+NVMe-копии, app-only verify/preservation, factory2MiB return/verify и owner
+экран/касания/saved Wi-Fi/OTA SETUP PASS. Полный16MiB restore не испытывался.
 
-[Аппаратный статус](docs/HARDWARE_STATUS.md), [следующий результат P1](docs/NEXT_STAGE.md),
-[процедура и разметка](docs/ESP32_OTA_INSTALLATION.md). Разрешённые сеансы закрыты;
-новые Flash/reset/UART/SWD требуют отдельного разрешения. Обычный rev12 flash
-не является безопасным откатом действующей A/B-карты.
+Измерены7startup points и OTA-worker: local BOOT minimum1887bytes,
+steady internal22279..22343/largest7680, stack1488из3072bytes.
+Historical112 после stop — per-heap сумма, не simultaneous free/OOM/floor.
+Следующий P1 результат — startup RAM transient review и configured budget;
+ключ/context отсутствуют, CHECK/INSTALL закрыты. Configured install/slot
+confirm/rollback/power-loss и FPS/latency/soak ещё не приняты. CAN/приводы не
+подключались, F407 в этом сеансе не открывался.
+
+[Аппаратный статус](docs/HARDWARE_STATUS.md), [следующий шаг](docs/NEXT_STAGE.md),
+[резервные копии](docs/BACKUP_STATUS.md). Сеанс608.700s закрыт, новые Flash/
+reset/UART/SWD требуют отдельного разрешения. Ordinary rev12 flash не является
+откатом действующей A/B-карты.
 
 ## История программной подготовки
 

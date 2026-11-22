@@ -1,5 +1,25 @@
 # Аппаратный статус TV4-CNC
 
+## 22 ноября, 16:44: фазный BOOT стенд, fecc05d возвращён
+
+Отдельный разрешённый fc90200/rev12-ota/SDK6.1.1/diagnostics1 завершён за
+608.700s. Fresh16MiB snapshot MD5/SHA-256 и две private NVMe-копии PASS.
+SHA-256: d84fe13900806d9646e1e2edb8df0c4fe897aa6de85f14c28bfd0624f101ff46.
+App-only write/verify/MD5 вне factory, capture90.103s, возврат всего factory2MiB
+fecc05d/verify/capture30.051s PASS; bootloader/table/otadata сохранены.
+Owner подтвердил экран/касания/saved Wi-Fi/OTA SETUP. [Полный отчёт](evidence/hardware/2026-11-22-esp32-ota-memory/README.md).
+
+7startup points и BOOT window: APP_ENTRY history202308, local minimum1887
+к UI_READY, после stop history112. Конкретная transient allocation не найдена;
+SDK per-heap сумма не simultaneous free/OOM или разрешённый floor.
+16samples: internal free22279..22343/largest7680, PSRAM6090124,
+OTA-worker остаток1488bytes из3072; configured8192/TLS/install не испытывались.
+Factory self-test marker PASS; полный16MiB restore/slot confirmation/rollback/
+power-loss/FPS/latency/soak не испытаны. Factory-partition restore проверен.
+На плате fecc05d/factory/прежняя A/B-карта; F407 ee7d179 не открывался.
+Сеанс закрыт, новых устройств/reset/Flash после него нет. История ниже относится
+к более ранним этапам, включая прежнее отсутствие post-migration snapshot.
+
 ## 22 ноября, 14:05: ESP32 переведён на factory + A/B
 
 Отдельно разрешённая USB migration fecc05d/rev12-ota/ESP-IDF6.1.1 завершена за

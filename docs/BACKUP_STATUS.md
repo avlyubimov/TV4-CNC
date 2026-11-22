@@ -1,5 +1,24 @@
 # Резервные копии ESP32 — заводская и перед миграцией OTA
 
+## Снимок fecc05d перед фазным стендом, 22 ноября 2026
+
+Полный16777216bytes snapshot текущего fecc05d/tv4-16m-ab-v1 считан по отдельному
+разрешению: device MD5, SHA-256 обеих одинаковых private копий и разные
+физические NVMe PASS; files0600/folders0700, fsync. [Стенд](evidence/hardware/2026-11-22-esp32-ota-memory/README.md).
+
+SHA-256: d84fe13900806d9646e1e2edb8df0c4fe897aa6de85f14c28bfd0624f101ff46.
+
+Из этого снимка после диагностики возвращён весь factory2MiB с exact app
+fecc05d prefix de55953fc9e3c4080cb277d734ca7d1f02c74880db38dac0f4b53830f587d021.
+SDK verify/MD5 сохранности вне factory до boot и owner HMI/touch/saved Wi-Fi/
+OTA SETUP PASS. Проверено восстановление factory-раздела HMI; полный16MiB
+restore и восстановление vendor firmware этим не испытывались.
+NVS после app boot побайтно не сравнивалась. Это checkpoint перед диагностикой,
+не новый полный read после возврата. Сеанс закрыт; новые device operations
+требуют разрешения. Raw dumps/NVS/private UART не публикуются.
+Legacy8f0d899 и original factory backups ниже сохранены и не перезаписывались.
+Следующий раздел — история до этого fresh snapshot.
+
 ## После миграции, 22 ноября 2026
 
 На плате теперь fecc05d/rev12-ota factory, карта tv4-16m-ab-v1. [Миграция и первый запуск](evidence/hardware/2026-11-22-esp32-ota-migration/README.md)

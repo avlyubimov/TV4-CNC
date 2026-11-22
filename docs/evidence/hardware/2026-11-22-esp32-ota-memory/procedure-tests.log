@@ -1,0 +1,31 @@
+test_duplicate_json_key_refuses (__main__.Parser.test_duplicate_json_key_refuses) ... ok
+test_early_stack_unavailable_then_valid (__main__.Parser.test_early_stack_unavailable_then_valid) ... ok
+test_historical_actual_uart_accepts (__main__.Parser.test_historical_actual_uart_accepts) ... ok
+test_missing_duplicate_phase_or_selftest_rejected (__main__.Parser.test_missing_duplicate_phase_or_selftest_rejected) ... ok
+test_no_valid_worker_stack_refuses (__main__.Parser.test_no_valid_worker_stack_refuses) ... ok
+test_panic_second_boot_or_stale_touch_refuses (__main__.Parser.test_panic_second_boot_or_stale_touch_refuses) ... ok
+test_trace_accepts_complete_boot (__main__.Parser.test_trace_accepts_complete_boot) ... ok
+test_unknown_json_text_never_exported (__main__.Parser.test_unknown_json_text_never_exported) ... ok
+test_authorization_requires_current_scope_and_both_procedure_hashes (__main__.Procedure.test_authorization_requires_current_scope_and_both_procedure_hashes) ... ok
+test_capture_failure_after_return_has_one_full_restore (__main__.Procedure.test_capture_failure_after_return_has_one_full_restore) ... ok
+test_capture_failure_still_returns_factory (__main__.Procedure.test_capture_failure_still_returns_factory) ... ok
+test_changed_snapshot_map_app_or_otadata_no_write (__main__.Procedure.test_changed_snapshot_map_app_or_otadata_no_write) ... ok
+test_copy_preconditions_fail_before_directory_creation (__main__.Procedure.test_copy_preconditions_fail_before_directory_creation) ... ok
+test_failed_diagnostic_write_one_full_fresh_restore (__main__.Procedure.test_failed_diagnostic_write_one_full_fresh_restore) ... ok
+test_full_restore_failure_stops (__main__.Procedure.test_full_restore_failure_stops) ... ok
+test_identity_security_geometry_revision_refuse_before_write (__main__.Procedure.test_identity_security_geometry_revision_refuse_before_write) ... ok
+test_incompressible_recovery_aborts_before_write (__main__.Procedure.test_incompressible_recovery_aborts_before_write) ... ok
+test_independent_copy_failure_no_write (__main__.Procedure.test_independent_copy_failure_no_write) ... ok
+test_late_full_restore_never_starts (__main__.Procedure.test_late_full_restore_never_starts) ... ok
+test_late_snapshot_no_diagnostic_write (__main__.Procedure.test_late_snapshot_no_diagnostic_write) ... ok
+test_outside_corruption_requires_full_restore (__main__.Procedure.test_outside_corruption_requires_full_restore) ... ok
+test_private_file_modes_and_no_overwrite (__main__.Procedure.test_private_file_modes_and_no_overwrite) ... ok
+test_return_failure_one_full_restore_no_loop (__main__.Procedure.test_return_failure_one_full_restore_no_loop) ... ok
+test_success_only_factory_and_exact_return (__main__.Procedure.test_success_only_factory_and_exact_return) ... ok
+test_truncated_read_no_write (__main__.Procedure.test_truncated_read_no_write) ... ok
+test_write_scope_rejections (__main__.Procedure.test_write_scope_rejections) ... ok
+
+----------------------------------------------------------------------
+Ran 26 tests in 1.443s
+
+OK

@@ -1,5 +1,19 @@
 # Открытые вопросы и блокирующие решения
 
+## 22 ноября: уточнение RAM/stack после реального BOOT стенда
+
+[fc90200](evidence/hardware/2026-11-22-esp32-ota-memory/README.md): APP_ENTRY history202308 → local BOOT minimum1887 к UI_READY
+→ history112 после stop; OTA-worker остаток1488из3072. Нужна локализация
+startup transient allocations между dashboard и UI ready; конкретный allocator
+не измерен. Per-heap сумма не simultaneous OOM/floor. Configured8192/TLS/
+installer budget и production thresholds остаются открытыми.
+Fresh16MiB fecc05d/two-NVMe и factory2MiB return/verify/owner HMI PASS; full16MiB
+recovery не испытывался. На ESP32 fecc05d/A-B, F407 ee7d179 не открывался.
+Key/context отсутствуют, CHECK/INSTALL закрыты. Сеанс завершён; ниже история
+до фазного стенда, включая прежнее отсутствие OTA-worker watermark.
+
+## История до фазного стенда
+
 22 ноября2026: [первая USB migration](evidence/hardware/2026-11-22-esp32-ota-migration/README.md)
 закрыла базовый переход на tv4-16m-ab-v1/factory fecc05d, verify/NVS preservation,
 PSRAM8MiB/XiP/GT911/UI и owner saved Wi-Fi/SETUP. Два backup NVMe сохранены,

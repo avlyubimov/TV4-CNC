@@ -142,48 +142,51 @@ PR и Actions; не копировать код уже открытого PR. Д
    теги, релизы, секреты CI и публикации под видом обычного push.
 6. Обновлять актуальный статус; исторические отчёты сохранять с явной пометкой.
 
-## Текущее задание: P1 после первой USB migration
+## Текущее задание: P1 после фазного стенда ESP32
 
-База текущей интеграции — main6f95d27d90093d1dffcf43cf2bbc12acd1063fde, PR #1–61 слиты.
-22 ноября отдельный разрешённый стенд fecc05d/rev12-ota/SDK6.1.1 завершён:
-четыре записи/MD5/readback, неизменность NVS/PHY до app boot, factory boot,
-PSRAM8MiB/XiP/RGB/GT911/UI и owner HMI/touch/saved Wi-Fi/OTA SETUP PASS.
-Один UART capture89.114s, весь сеанс117.810s; restore не потребовался.
-На ESP32 оставлен fecc05d factory с tv4-16m-ab-v1; F407 ee7d179 не открывался.
-Предыдущий ordinary8f0d899 теперь только recovery snapshot, не running firmware.
-Обе проверенные копии16MiB на разных NVMe и original factory backup сохранены.
+База mainfc9020087e426c5c06129654f8a242612e184079, PR #1–62 слиты.
+Отдельно разрешённый стенд fc90200/rev12-ota/SDK6.1.1/diagnostics1 завершён
+22ноября за608.700s: fresh16MiB snapshot/device MD5/SHA256/two-NVMe PASS,
+app-only запись/verify/MD5 сохранности вне factory, capture90.103s,
+возврат factory2MiB fecc05d из свежего снимка/verify/capture30.051s PASS.
+Owner подтвердил экран/касания/saved Wi-Fi/OTA SETUP. На ESP32 оставлен
+fecc05d factory с tv4-16m-ab-v1; F407 ee7d179 не открывался.
+Factory-partition restore проверен; полный16MiB recovery не выполнялся.
+Vendor backup и legacy8f0d899/two-NVMe сохранены, автоматически не возвращать.
 
-Читайте docs/evidence/hardware/2026-11-22-esp32-ota-migration/README.md,
-docs/BACKUP_STATUS.md, docs/NEXT_STAGE.md и docs/ESP32_OTA_INSTALLATION.md.
-Дампы/NVS/пароли/полные UART logs приватны; public diagnostics только по allowlist.
-Наблюдено16 periodic samples: internal free22851..22907/largest7680/history112;
-PSRAM free6090732, main/touch/Wi-Fi/export watermarks10708/2504/1104/1104bytes.
-History112 — сумма SDK per-heap minima, не simultaneous peak/OOM proof и не
-утверждённый запас. Нужен разбор по фазам до configured installer. OTA-worker
-watermark отсутствует, render/event counters0 не FPS/latency benchmark.
+Читайте docs/evidence/hardware/2026-11-22-esp32-ota-memory/README.md,
+docs/BACKUP_STATUS.md, docs/NEXT_STAGE.md и docs/ESP32_OTA_MEMORY_PHASES.md.
+Fresh fecc05d snapshot SHA256:
+d84fe13900806d9646e1e2edb8df0c4fe897aa6de85f14c28bfd0624f101ff46.
+Дампы/NVS/пароли/сырые UART logs приватны; public только allowlist.
 
-Следующий измеримый результат P1 — фазный RAM/stack budget и проверяемая
-configured install/confirm/rollback цепочка после owner key/SemVer/time/resource
-решений. Владелец пока выбрал без ключа: CHECK/INSTALL закрыты, defaults не
-угадывать, test keys только host. Factory self-test inferred из owner SETUP и
-worker/UI transitions; OTA-slot PENDING_VERIFY/rollback этим не испытывались.
-Restore ESP32, network/power loss, load/FPS/tearing/latency/soak остаются открытыми.
-Не объявлять P1 hardware acceptance или P2–P5 завершёнными.
+Измерено7startup points/одно BOOT window/16diag+4return periodic samples.
+APP_ENTRY history202308, BOOT local minimum1887 к UI_READY после dashboard,
+после SDK stop history112. Гипотеза112 до HMI не подтверждена этим образом.
+SDK по каждому heap объединяет saved/local minimum, затем суммирует: это не
+simultaneous global free/OOM proof и не production floor. Конкретные transient
+allocations между DASHBOARD_READY и UI_READY требуют локализации.
+Steady internal free22279..22343/largest7680, PSRAM6090124; OTA-worker
+watermark1488bytes из3072. Configured worker8192 и TLS/install не измерены.
+Render/event0 не FPS/latency benchmark; stack sampler и late emitter различать.
+TV4_OTA_MEMORY_DIAGNOSTICS default off. SDK start выделяет/asserts bookkeeping
+и не отвергает nested start: один serialized owner, Kconfig/source/ELF guards
+сохраняются. Не начинать monitor из callbacks/per-chunk/соседних workers.
 
-Разрешённый сеанс закрыт. Новые UART/SWD/reset/Flash/hardware tests требуют
-нового применимого разрешения. Initial bootloader/table/factory migration не
-защищается app rollback; ordinary flash/возврат старой карты не автоматизировать.
+Следующий измеримый software результат P1 — локализовать startup internal RAM
+transient и устранить подтверждённую причину без ухудшения HMI/GT911/Wi-Fi.
+Дать настоящий ELF/BIN и проверки, без новой цепочки абстракций. Не урезать
+DMA reserve64KiB/TLS records/framebuffer и не назначать production floors.
+Key/SemVer/time/resource context по решению владельца пока отсутствуют:
+CHECK/INSTALL закрыты, test keys только host. Factory self-test явно PASS;
+OTA-slot PENDING_VERIFY/confirm/rollback/power loss этим не проверялись.
 
-Docs-only отчёт PR #61 завершён. По продолжению владельца следующий отдельный
-PR интегрирует измерения памяти/стека в реальную rev12-ota firmware, см.
-docs/plans/P1_ESP32_MEMORY_PHASES.md. SDK local-minimum monitor выделяет/asserts
-bookkeeping и не отвергает nested start: только один владелец в explicit
-TV4_OTA_MEMORY_DIAGNOSTICS=1 build, default off, отдельный build tree. Normal OTA
-получает stack validity и явный boot result без сброса глобальных minima.
-Не менять SDK/dependency pins, GPIO/Flash map/DMA reserve/TLS records/framebuffer
-или trust/context/floors. Новое ПО пока только build/tests, installed fecc05d
-не менять без нового exact-image разрешения. Никакого самостоятельного merge/release, eFuse/option bytes/
-OTP/CAN/motion. Hardware action only after an explicit applicable owner approval.
+Этот отчётный PR меняет только документацию/evidence. Разрешённый аппаратный
+сеанс закрыт, новые UART/SWD/reset/Flash требуют нового exact-image разрешения.
+Не повторять USB migration или ordinary rev12 flash поверх действующей A/B карты.
+SDK/dependency pins, eFuse/option bytes/OTP/CAN/motion и самостоятельные
+merge/release не менять. Полные RAM/stack/FPS/latency/soak и P1–P5 не объявлять
+принятыми; дальнейшая аппаратная оптимизация требует отдельного стенда.
 
 ## Исторические контракты слитых этапов
 

@@ -1,74 +1,50 @@
-# P1 — после первой USB-миграции ESP32
+# P1 — после фазного стенда ESP32
 
-База текущей интеграции — main `6f95d27d90093d1dffcf43cf2bbc12acd1063fde`,
-PR #1–61 слиты. Аппаратный отчёт миграции относится к более раннему fecc05d.
-На ESP32 после отдельно разрешённого стенда оставлен `fecc05d/rev12-ota`,
-factory, SDK6.1.1 и карта tv4-16m-ab-v1. [Миграция, UART и подтверждение владельца](evidence/hardware/2026-11-22-esp32-ota-migration/README.md).
-F407 ee7d179 не открывался; его [базовый стенд](evidence/hardware/2026-11-22-f407-ee7d179-bench/README.md)
-не доказывает физическую работу CAN/приводов. Оба разрешённых ESP32-сеанса
-(backup и migration) завершены; новые операции ими не разрешены.
+База mainfc9020087e426c5c06129654f8a242612e184079, PR #1–62 слиты.
+[Аппаратный стенд fc90200](evidence/hardware/2026-11-22-esp32-ota-memory/README.md) завершён по отдельному разрешению:
+fresh16MiB/two-NVMe, diagnostic app-only write,7startup/BOOT window/16samples,
+factory2MiB fecc05d return/verify/4samples и owner HMI/touch/saved Wi-Fi/SETUP PASS.
+На ESP32 fecc05d/factory/tv4-16m-ab-v1; F407 ee7d179 не открывался.
+Сеанс608.700s закрыт, повторных UART/SWD/reset/Flash разрешений нет.
 
-## Программный результат P1
+## Полученный результат
 
-[Интегрирован](ESP32_OTA_INSTALLATION.md) один explicit rev12-ota: existing signed
-HTTPS session → неактивный SDK slot → full digest/EOF/SDK validation → boot select,
-UI version/size/двухшаговое подтверждение, cancel/error cleanup, bounded boot
-self-test/rollback/watchdog и prepare/independent verify USB migration bundle.
-[План](plans/P1_ESP32_OTA.md), [проверки и пределы](evidence/build/esp32-ota-installation/README.md).
-Обычные4профиля в исходниках сохраняют legacy factory2MiB; explicit rev12-ota
-использует reviewed16MiB factory recovery + otadata +2slots. Именно эта карта
-теперь действует на ESP32. Обычный rev12 flash поверх неё не является откатом
-и без отдельной проверенной процедуры не выполняется.
+Исторический112 не был уже готовым APP_ENTRY минимумом в diagnostic image:
+на входе202308, local BOOT minimum1887 к UI_READY, после stop history112.
+SDK по каждому heap берёт min(saved,local); сумма не simultaneous peak/OOM.
+Конкретная transient allocation ещё не локализована. OTA-worker watermark1488
+из3072bytes; steady internal22279..22343/largest7680, PSRAM6090124.
+Числа относятся к instrumented unprovisioned build, не configured installer.
 
-Владелец выбрал **настройку без ключа**. Работоспособная unprovisioned сборка
-не имеет test key/выдуманных production SemVer/floors; экран сообщает о настройке,
-сетевые CHECK/INSTALL заблокированы. Это не завершённая аппаратная приёмка P1.
+Fresh fecc05d snapshot: d84fe13900806d9646e1e2edb8df0c4fe897aa6de85f14c28bfd0624f101ff46,
+16MiB/two independent NVMe. [Статус копий](BACKUP_STATUS.md). Factory-partition
+restore из него проверен; условный full16MiB restore не выполнялся.
+Legacy8f0d899 имеет прежнюю карту, не является текущим running image.
 
-## Что уже проверено и что делать дальше
+## Следующий функциональный шаг P1
 
-[Программная интеграция фазных измерений](ESP32_OTA_MEMORY_PHASES.md)
-дала настоящий rev12-ota ELF/BIN из clean391d429: явный boot result, OTA-worker stack и
-отдельный opt-in TV4_OTA_MEMORY_DIAGNOSTICS=1 вариант в другом build tree.
-Normal default off не вызывает SDK minimum monitor. Наблюдённые432bytes state/
-112bytes own compiler frame и host/sanitizer tests относятся к software build,
-не к установленной firmware или runtime пикам. Обе SDK×5 profiles и два trace
-варианта собраны:12/12 PASS; host/sanitizers87/87. [Evidence](evidence/build/esp32-ota-memory-phases/README.md).
-Новый стенд требует отдельного разрешения на exact image/backup/возврат; на
-плате пока fecc05d. Действующую A/B карту не мигрировать повторно.
+1. Локализовать startup internal allocations между DASHBOARD_READY и UI_READY
+   (1516..2307ms): export task start, splash ready refresh/deletion и первый
+   dashboard refresh, параллельные Wi-Fi/RTOS задачи. Это кандидаты по
+   общему heap/source interval, не установленный виновник.
+   Исправить подтверждённую причину и дать проверенный ELF/BIN. Не заменять
+   интеграцию новой моделью и не урезать DMA64KiB/TLS16384/4096/framebuffer.
+2. Проверить влияние будущего worker8192 и настоящей TLS/install нагрузки:
+   текущий замер относится к3072 без ключа. Production floors не утверждены;
+   арифметическое вычитание5120 из суммы минимумов1887 не доказывает OOM.
+   Новый exact-image hardware тест согласуется отдельно, текущая A/B-карта
+   не мигрируется повторно. Обычный rev12 flash не является откатом.
+3. Owner key, SemVer, trust/time/resource context пока отсутствуют по решению
+   владельца. CHECK/INSTALL закрыты, test keys только host. После решений и
+   ресурcной приёмки — реальный signed install в inactive slot, reboot/self-test/
+   confirmation/rollback и Wi-Fi/power-loss сценарии по отдельному разрешению.
+4. Factory self-test marker PASS не означает испытание PENDING_VERIFY.
+   Полный16MiB recovery, CPU/FPS/latency/tearing/soak и P2–P5 остаются открытыми.
+   Никаких eFuse/option bytes/OTP/CAN/motion или самостоятельных merge/release.
 
-1. **Готово:** clean-main fecc05d, rev12-ota/SDK6.1.1 без ключа собран;
-   prepare/independent verify bundle PASS. App SHA-256
-   `de55953fc9e3c4080cb277d734ca7d1f02c74880db38dac0f4b53830f587d021`.
-2. **Готово:** [fresh16MiB snapshot + independent NVMe copy](evidence/hardware/2026-11-22-esp32-pre-ota-snapshot/README.md),
-   whole-device MD5/local SHA-256/legacy layout/app inspection PASS; после reset
-   owner HMI/touch/Wi-Fi PASS. Snapshot SHA-256
-   `47c4f9c4e6d7fb1fcfce2b0065c2f69af0ea01664d1407b3504ee6e4a6a13107`.
-   Это checkpoint8f0d899 до миграции, не снимок нынешнего fecc05d;
-   factory backup сохранён отдельно.
-3. **Готово:** USB migration четырёх областей/verify/readback, NVS/PHY до boot,
-   factory boot/PSRAM8MiB/XiP/GT911/RGB/UI, owner HMI/touch/saved Wi-Fi/SETUP.
-   Один capture89.114s, весь сеанс117.810s, recovery не понадобился. Restore
-   snapshot и recovery после прерванной миграции этим не проверены.
-4. **Следующий результат:** разобрать RAM/stack бюджет по фазам, затем проверить
-   реальный configured installer. 16 срезов без нагрузки дали internal
-   free22851..22907/largest7680/history112 и PSRAM free6090732bytes. History112
-   — сумма SDK per-heap minima, не одновременный остаток/OOM proof и не floor;
-   причина/пик открыты. В отчёте fecc05d OTA-worker watermark отсутствует; render/event samples0
-   не измеряют FPS/latency. Не уменьшать DMA reserve/TLS records/framebuffer
-   ради прохождения. Не назначать production пороги по этим или HEAD-срезам.
-5. Нужны owner public key и утверждённые SemVer/time/resource context,
-   provisioned build/release binding, отдельные exact-image разрешения на
-   install/confirm/rollback/network/power-loss пробы. Владелец пока выбрал
-   без ключа; тестовые ключи не переносить из host в прошивку. Начальная смена
-   bootloader/table/factory app rollback не защищается, USB recovery остаётся
-   отдельным сценарием. Новые eFuse/защитные настройки не требуются.
-6. Пока P1 не стабилизирован, P2 публикацию, physical CAN P3 и STM32 CAN OTA P4
-   не объявлять завершёнными. Адреса F407 loader/staging не резервировать.
-
-Не подключаться к устройствам по завершённым разрешениям. eFuse/Secure Boot/
-Flash Encryption/option bytes/OTP/CAN/motion и самостоятельные merge/release
-запрещены. HSE/пины/полный RAM stress/частоты F407 остаются отдельными блокерами,
-не препятствующими текущей P1 software integration.
+История [миграции fecc05d](evidence/hardware/2026-11-22-esp32-ota-migration/README.md)
+и [software builds](evidence/build/esp32-ota-memory-phases/README.md) сохранена.
+Этот PR добавляет отчёт, не новую исполняемую firmware.
 
 ## История слитой программной базы
 

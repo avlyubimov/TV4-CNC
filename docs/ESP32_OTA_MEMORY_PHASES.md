@@ -1,5 +1,17 @@
 # ESP32 OTA: фазные измерения RAM и стека
 
+## Завершённый аппаратный стенд fc90200
+
+22ноября [новый стенд](evidence/hardware/2026-11-22-esp32-ota-memory/README.md) по отдельному разрешению выполнен:
+fresh16MiB/two-NVMe, app-only trace,7startup/BOOT window/16samples,
+возврат всего factory2MiB fecc05d/verify/4samples, owner HMI/touch/Wi-Fi/SETUP PASS.
+APP_ENTRY history202308 → local BOOT minimum1887 к UI_READY → history112 после
+stop; OTA-worker watermark1488из3072bytes. Гипотеза112 ещё до HMI не
+подтвердилась этим диагностическим образом. Конкретный startup allocator и
+configured8192/TLS/install budget остаются открытыми. На плате fecc05d,
+сеанс608.700s закрыт. Дальнейший текст сохраняет контракт подготовки PR #62;
+его «новых device операций нет» относится к программной интеграции.
+
 P1 от main `6f95d27d90093d1dffcf43cf2bbc12acd1063fde`, после слитого PR #61.
 На плате остаётся проверенный `fecc05d/rev12-ota`, factory + A/B. Этот этап
 готовит следующий ELF/BIN программно; новых UART/reset/Flash/backup операций нет.
@@ -14,8 +26,11 @@ P1 от main `6f95d27d90093d1dffcf43cf2bbc12acd1063fde`, после слитог
 `reclaim_startup_stack_memory_for_heap` включает startup heaps и выделяет резерв
 DMA. Резерв выделяется блоками из существующих heaps и регистрируется как новые
 heaps; после startup их historical minima инициализируются нулём. Эта комбинация
-может дать маленькую сумму ещё до HMI. **Причина hardware112 пока не доказана**:
-нужен APP_ENTRY sample и последующее отдельное окно на том же экземпляре.
+рассматривалась при программной подготовке как возможный источник малого
+минимума до HMI. Выполненный fc90200 дал APP_ENTRY202308, local BOOT1887 и
+history112 после stop: гипотеза малого112 уже на APP_ENTRY не подтвердилась.
+Конкретный allocator требует локализации; возвращаемая per-heap история не
+измеряет simultaneous free. Данные прежнего fecc05d до HMI не снимались.
 
 Официальные API: [6.1.1](https://docs.espressif.com/projects/esp-idf/en/v6.1.1/esp32s3/api-reference/system/mem_alloc.html),
 [5.3.2](https://docs.espressif.com/projects/esp-idf/en/v5.3.2/esp32s3/api-reference/system/mem_alloc.html).
