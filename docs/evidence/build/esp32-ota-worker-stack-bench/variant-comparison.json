@@ -1,0 +1,102 @@
+{
+  "source_commit": "f655e56b16ec09a86c0b0b9eb9163bd4c517e11a",
+  "source_tree": "2711d0dec8f9b6798bf7281e2ce03c682e742328",
+  "device_access": false,
+  "hardware_performance": "not measured",
+  "pairs": [
+    {
+      "sdk": "6.1.1",
+      "sdkconfig_delta": {
+        "TV4_OTA_WORKER_STACK_BENCH": [
+          false,
+          true
+        ]
+      },
+      "partition_table_identical": true,
+      "diagnostics_writable_bytes": 432,
+      "diagnostic_compiler_frames_identical": true,
+      "service_compiler_frames_identical": true,
+      "control_app": {
+        "bytes": 1600576,
+        "sha256": "288f06994a6fb185d960fa297c1dffb1251eab01d5867a24add21293ef425544",
+        "project": "tv4_hmi",
+        "version": "f655e56",
+        "idf_version": "v6.1.1",
+        "elf_sha256": "68f25f1748f4e815e7ed5f7088580fbfea13dd2a455ac48491d62f06726f708d",
+        "segments": 6,
+        "chip_revision_min": 0,
+        "chip_revision_max": 99,
+        "flash_bytes": 16777216,
+        "flash_mode": "dio",
+        "flash_frequency_mhz": 80
+      },
+      "bench_app": {
+        "bytes": 1600624,
+        "sha256": "028a6fdaa0eb5fa7c9dacd3e917c730b75ae49ddceae91986da8b8aa283f8fe7",
+        "project": "tv4_hmi",
+        "version": "f655e56",
+        "idf_version": "v6.1.1",
+        "elf_sha256": "f181246c81f2bd1586f8696b05afec8b21348c2c4266d06a6c404a92d1e34099",
+        "segments": 6,
+        "chip_revision_min": 0,
+        "chip_revision_max": 99,
+        "flash_bytes": 16777216,
+        "flash_mode": "dio",
+        "flash_frequency_mhz": 80
+      },
+      "app_size_delta_bytes": 48,
+      "requested_worker_stack_bytes": [
+        3072,
+        8192
+      ],
+      "runtime_stack_qualified": false
+    },
+    {
+      "sdk": "5.3.2",
+      "sdkconfig_delta": {
+        "TV4_OTA_WORKER_STACK_BENCH": [
+          false,
+          true
+        ]
+      },
+      "partition_table_identical": true,
+      "diagnostics_writable_bytes": 432,
+      "diagnostic_compiler_frames_identical": true,
+      "service_compiler_frames_identical": true,
+      "control_app": {
+        "bytes": 1553120,
+        "sha256": "4b634419668a2448d7396e4839f16b89fb3c3f32b407e71ab4360e1954ceb7d7",
+        "project": "tv4_hmi",
+        "version": "f655e56",
+        "idf_version": "v5.3.2",
+        "elf_sha256": "76b7fcc8d26c61100c5c9241b1a8415f968e2b89bfc0135bbbb1adfcdf91378b",
+        "segments": 5,
+        "chip_revision_min": 0,
+        "chip_revision_max": 99,
+        "flash_bytes": 16777216,
+        "flash_mode": "dio",
+        "flash_frequency_mhz": 80
+      },
+      "bench_app": {
+        "bytes": 1553184,
+        "sha256": "fdef54343d176b3fc20b104213a7ca14658e9cb84d45b58972e206d76fbd5ed5",
+        "project": "tv4_hmi",
+        "version": "f655e56",
+        "idf_version": "v5.3.2",
+        "elf_sha256": "211027428ddc07a37c12195e60a10b0059690ebd571f4bccfe2c5ca56ee8bff7",
+        "segments": 5,
+        "chip_revision_min": 0,
+        "chip_revision_max": 99,
+        "flash_bytes": 16777216,
+        "flash_mode": "dio",
+        "flash_frequency_mhz": 80
+      },
+      "app_size_delta_bytes": 64,
+      "requested_worker_stack_bytes": [
+        3072,
+        8192
+      ],
+      "runtime_stack_qualified": false
+    }
+  ]
+}

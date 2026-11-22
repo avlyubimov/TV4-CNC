@@ -24,3 +24,7 @@ OTA-worker со стеком8192 вместо unprovisioned3072, без owner ke
 5. Отдельный PR без merge/release или устройств. Не менять memory monitor
    ownership, DMA64KiB/TLS16384/4096/framebuffer/clocks/partition/trust gates.
    Следующий аппаратный сеанс требует нового exact-image разрешения.
+
+Программные критерии выполнены: [evidence](../evidence/build/esp32-ota-worker-stack-bench/README.md).
+Локальные14/14 clean SDK builds и host/sanitizers108/108 PASS; аппаратных
+действий/merge/release нет. Аппаратная квалификация остаётся следующим этапом.
