@@ -1,0 +1,262 @@
+{
+  "commit": "ee7d179435f3f9e7598c7646b85ff64f4d5e9a32",
+  "pr": 57,
+  "runs": [
+    {
+      "id": 44949939275,
+      "name": "Host logic and LVGL render",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/avlyubimov/TV4-CNC/actions/runs/44949939275",
+      "jobs": [
+        {
+          "id": 136985427681,
+          "name": "host (true)",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 136985427854,
+          "name": "host (false)",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "id": 44949939267,
+      "name": "STM32 image admission (no hardware)",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/avlyubimov/TV4-CNC/actions/runs/44949939267",
+      "jobs": [
+        {
+          "id": 136985427412,
+          "name": "crypto-arm",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "id": 44949939351,
+      "name": "STM32 foundation (no hardware)",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/avlyubimov/TV4-CNC/actions/runs/44949939351",
+      "jobs": [
+        {
+          "id": 136985427876,
+          "name": "arm-core",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "id": 44949939431,
+      "name": "Documentation checks",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/avlyubimov/TV4-CNC/actions/runs/44949939431",
+      "jobs": [
+        {
+          "id": 136985428064,
+          "name": "check",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "id": 44949939509,
+      "name": "ESP-IDF compatibility",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/avlyubimov/TV4-CNC/actions/runs/44949939509",
+      "jobs": [
+        {
+          "id": 136985428241,
+          "name": "build (5.3.2, rev12-tls-bench)",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 136985428387,
+          "name": "build (6.1.1, rev12)",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 136985428442,
+          "name": "build (5.3.2, rev12)",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 136985428485,
+          "name": "build (6.1.1, rev12-memory-bench)",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 136985428493,
+          "name": "build (6.1.1, rev12-tls-bench)",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 136985428547,
+          "name": "build (5.3.2, headless)",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 136985428596,
+          "name": "build (6.1.1, headless)",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 136985428682,
+          "name": "build (5.3.2, rev12-memory-bench)",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "id": 44949770046,
+      "name": "STM32 foundation (no hardware)",
+      "event": "push",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/avlyubimov/TV4-CNC/actions/runs/44949770046",
+      "jobs": [
+        {
+          "id": 136984902641,
+          "name": "arm-core",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "id": 44949770049,
+      "name": "STM32 image admission (no hardware)",
+      "event": "push",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/avlyubimov/TV4-CNC/actions/runs/44949770049",
+      "jobs": [
+        {
+          "id": 136984902473,
+          "name": "crypto-arm",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "id": 44949770001,
+      "name": "Documentation checks",
+      "event": "push",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/avlyubimov/TV4-CNC/actions/runs/44949770001",
+      "jobs": [
+        {
+          "id": 136984902349,
+          "name": "check",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "id": 44949770060,
+      "name": "Host logic and LVGL render",
+      "event": "push",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/avlyubimov/TV4-CNC/actions/runs/44949770060",
+      "jobs": [
+        {
+          "id": 136984902819,
+          "name": "host (false)",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 136984903095,
+          "name": "host (true)",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "id": 44949770031,
+      "name": "ESP-IDF compatibility",
+      "event": "push",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/avlyubimov/TV4-CNC/actions/runs/44949770031",
+      "jobs": [
+        {
+          "id": 136984902476,
+          "name": "build (5.3.2, rev12-tls-bench)",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 136984902588,
+          "name": "build (6.1.1, rev12-memory-bench)",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 136984902592,
+          "name": "build (6.1.1, headless)",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 136984902598,
+          "name": "build (6.1.1, rev12)",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 136984902626,
+          "name": "build (6.1.1, rev12-tls-bench)",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 136984902633,
+          "name": "build (5.3.2, headless)",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 136984902635,
+          "name": "build (5.3.2, rev12-memory-bench)",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 136984902692,
+          "name": "build (5.3.2, rev12)",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ]
+    }
+  ]
+}

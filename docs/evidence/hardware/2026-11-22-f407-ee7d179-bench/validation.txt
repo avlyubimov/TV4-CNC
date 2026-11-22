@@ -1,0 +1,20 @@
+PASS Markdown links/Bash syntax AGENTS.md
+PASS Markdown links/Bash syntax docs/HARDWARE_STATUS.md
+PASS Markdown links/Bash syntax docs/IMPLEMENTATION_PRIORITIES.md
+PASS Markdown links/Bash syntax docs/NEXT_STAGE.md
+PASS Markdown links/Bash syntax docs/OPEN_QUESTIONS.md
+PASS Markdown links/Bash syntax docs/ROADMAP.md
+PASS Markdown links/Bash syntax docs/STM32_FIRST_IMAGE.md
+PASS Markdown links/Bash syntax docs/STM32_STLINK_RUNBOOK.md
+PASS Markdown links/Bash syntax docs/evidence/hardware/2026-11-22-f407-ee7d179-bench/README.md
+PASS Markdown links/Bash syntax docs/evidence/hardware/2026-11-22-f407-ee7d179-bench/commands.md
+PASS Markdown links/Bash syntax docs/evidence/hardware/2026-11-22-f407-ee7d179-bench/snapshots.md
+PASS Markdown links/Bash syntax docs/evidence/hardware/2026-11-22-f407-swd-preflight/README.md
+PASS Markdown links/Bash syntax firmware/stm32-motion/AGENTS.md
+PASS five actual42-word snapshots/state4/error0, boot1->2->3 and post-fault progress
+PASS five actual21-word warm-history CRC32 records; firmware cookies/CCM/guards are minimal scope only
+PASS program/verify/two exact clean identity checks, no fallback/extra writes, session16.196s/exit0
+PASS unchanged exact tested executable inputs vs ee7d179; report changes docs/scoped instructions only
+PASS source CI26/26 bound to ee7d179, not a new local build/hardware result
+PASS no binary/dumps/private backup SHA or full private paths published; no new device/Flash/option/CAN/motion operations
+PASS clock accuracy/full memory stress/stack high-water/power-loss/physical inhibit/CAN remain unconfirmed

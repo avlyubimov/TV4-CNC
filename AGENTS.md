@@ -50,8 +50,9 @@ PR и Actions; не копировать код уже открытого PR. Д
 - STM32F407: DevEBox STM32F4VX_M Ver. 2.0; владелец сообщил STM32F407VGT6;
   owner SWD/ST-Link V2/Cortex-M4r0p1/raw ID0x101f6413/Flash1024KiB/3,252V/
   backup1048576bytes/vector structure PASS подтверждены. Владелец сверил полную надпись STM32F407VGT6;
-  driver12sectors/RDP0 и полный snapshot restore проверены. SRAM/CCM runtime,
-  кварц/распиновка/physical GPIO/CAN ещё не проверены. Только он отвечает за планирование, таймерный STEP/DIR,
+  driver12sectors/RDP0 и полный snapshot restore проверены. Базовые data/BSS/CCM/guards/
+  watchdog/fault PASS на ee7d179; RAM stress/частоты/распиновка/physical GPIO/CAN
+  ещё не проверены. Только он отвечает за планирование, таймерный STEP/DIR,
   энкодеры, homing, watchdog и состояние реальной машины после commissioning.
 - Blue Pill STM32F103C8T6: отдельный стенд протокола/таймеров/загрузчиков;
   не замена F407 и не контроллер станка. Подтверждение владельца: Flash 64 КиБ.
@@ -136,30 +137,30 @@ PR и Actions; не копировать код уже открытого PR. Д
    теги, релизы, секреты CI и публикации под видом обычного push.
 6. Обновлять актуальный статус; исторические отчёты сохранять с явной пометкой.
 
-## Текущее задание: исправление первого аппаратного запуска F407
+## Текущее задание: сохранить стенд P0 и перейти к P1 ESP32 OTA
 
-22 ноября 2026, main `4fe84f10a70228b9f440f41c6ccc50869919042a`, PR #1–56 слиты.
-Первый реальный c09a20e был записан и verify прошёл, но boot bench завершился
-**FAULT/error8 (IWDG_TIMEOUT)**. После восстановления SWD с DBG_SLEEP полный
-проверенный снимок1MiB записан обратно, verify/reset-run успешны.
-**Сейчас на плате прежнее ПО, не c09a20e.** Все пять аппаратных сеансов завершены.
-Надпись STM32F407VGT6 сверена владельцем; Flash1024KiB/driver12sectors/RDP0/
-nWRP0xFFF прочитаны. Current backup2×1MiB и SHA-проверенная копия на другом
-физическом NVMe сохранены приватно. NRST к ST-Link не подключён; RESET отпущен.
+22 ноября 2026, база main `07fb406e37ebd1f1e019dbee0b54e8bb5571be1a`, PR #1–57 слиты.
+После отдельного разрешения один стенд ee7d179 завершён за16,196s, exit0:
+program/verify/exact identity, RUNNING, data/BSS/один CCM word/guards, progress,
+watchdog reset и UsageFault capture/reset **PASS**. На F407 оставлен работающим
+clean `ee7d179435f3f9e7598c7646b85ff64f4d5e9a32`, BIN2540bytes. Условный restore
+не понадобился. Предыдущий c09 FAIL8 и проверенный полный snapshot restore — история.
 
-Исправлены IWDG start-before-sync и DBG_SLEEP в OpenOCD, обновлены
-регрессионные тесты и runbook. Новый ELF/BIN программно проверен; его работу
-на плате ещё не подтверждали. После CI/review потребуется **новое разрешение
-на точный образ и стендовые действия**. Watchdog/UsageFault/CCM/guards/progress
-пока не прошли; нет GPIO/CAN/motion, option-byte/OTP или изменений ESP32.
+Плата изолирована, только питание/SWD; option bytes/OTP/CAN/motion/ESP32 не менялись.
+Этот разрешённый сеанс завершён. Полный RAM/CCM stress, stack high-water,
+точные HSI/LSI/HSE частоты, physical GPIO/CAN/inhibit и power-loss остаются открытыми.
+P0 выполнен на базовом стенде; следующий приоритет — P1 ESP32 OTA с existing
+HTTPS/crypto и review16MiB factory+двух OTA slots/USB migration. Новых hardware
+операций или будущих CAN loader addresses это не разрешает.
 
-Читать docs/STM32_STLINK_RUNBOOK.md,
-docs/evidence/hardware/2026-11-22-f407-swd-preflight/README.md и
-docs/evidence/build/stm32f407-bringup-fix/README.md.
-Разделять фактический FAULT8/restore и инженерную причину; raw IWDG_SR не читался.
-Получить новый clean exact-head ELF/BIN, negative/repro/host/sanitizer/CI results,
-создать отдельный PR без self-merge. Прошлые разрешения завершены и не покрывают
-новый образ. Не резервировать CAN loader layout и не заменять boot новой библиотекой.
+Читать docs/evidence/hardware/2026-11-22-f407-ee7d179-bench/README.md,
+docs/NEXT_STAGE.md и docs/OTA_ARCHITECTURE.md. Текущий отчётный PR — только
+документация/evidence; исполняемый код/SDK/dependency/CI pins не менять.
+Не повторять прошивку или SWD по завершённому разрешению. Установленный exact
+source ee7d179 сохранять отдельно от коммитов отчёта/новых CI builds.
+После отчёта следующий функциональный результат — installer/rollback/migration
+ESP32 OTA на существующем коде, без новой криптографии или transport layers.
+Никакого self-merge/release/движения; дальнейшие аппаратные действия отдельно.
 
 ## Исторические контракты слитых этапов
 

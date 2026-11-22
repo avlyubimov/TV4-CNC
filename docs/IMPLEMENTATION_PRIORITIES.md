@@ -10,31 +10,31 @@ PR #1–54 слиты. PR #54 завершил threaded host tests; он бол�
 Исторические PR и их проверки остаются доказательствами выполненной работы,
 но не задают порядок дальнейшей разработки.
 
-## Текущее состояние после первого стенда P0
+## Текущее состояние: базовый P0 стенд пройден
 
-22 ноября 2026, main `4fe84f10a70228b9f440f41c6ccc50869919042a`, PR #1–56 слиты.
-Первый реальный c09a20e был записан и verify прошёл, но boot bench завершился
-**FAULT/error8 (IWDG_TIMEOUT)**. После восстановления SWD с DBG_SLEEP полный
-проверенный снимок1MiB записан обратно, verify/reset-run успешны.
-**Сейчас на плате прежнее ПО, не c09a20e.** Все пять аппаратных сеансов завершены.
-Надпись STM32F407VGT6 сверена владельцем; Flash1024KiB/driver12sectors/RDP0/
-nWRP0xFFF прочитаны. Current backup2×1MiB и SHA-проверенная копия на другом
-физическом NVMe сохранены приватно. NRST к ST-Link не подключён; RESET отпущен.
+22 ноября 2026, база main `07fb406e37ebd1f1e019dbee0b54e8bb5571be1a`, PR #1–57 слиты.
+После отдельного разрешения один стенд ee7d179 завершён за16,196s, exit0:
+program/verify/exact identity, RUNNING, data/BSS/один CCM word/guards, progress,
+watchdog reset и UsageFault capture/reset **PASS**. На F407 оставлен работающим
+clean `ee7d179435f3f9e7598c7646b85ff64f4d5e9a32`, BIN2540bytes. Условный restore
+не понадобился. Предыдущий c09 FAIL8 и проверенный полный snapshot restore — история.
 
-Исправлены IWDG start-before-sync и DBG_SLEEP в OpenOCD, обновлены
-регрессионные тесты и runbook. Новый ELF/BIN программно проверен; его работу
-на плате ещё не подтверждали. После CI/review потребуется **новое разрешение
-на точный образ и стендовые действия**. Watchdog/UsageFault/CCM/guards/progress
-пока не прошли; нет GPIO/CAN/motion, option-byte/OTP или изменений ESP32.
+Плата изолирована, только питание/SWD; option bytes/OTP/CAN/motion/ESP32 не менялись.
+Этот разрешённый сеанс завершён. Полный RAM/CCM stress, stack high-water,
+точные HSI/LSI/HSE частоты, physical GPIO/CAN/inhibit и power-loss остаются открытыми.
+P0 выполнен на базовом стенде; следующий приоритет — P1 ESP32 OTA с existing
+HTTPS/crypto и review16MiB factory+двух OTA slots/USB migration. Новых hardware
+операций или будущих CAN loader addresses это не разрешает.
 
-[аппаратные факты и логи](evidence/hardware/2026-11-22-f407-swd-preflight/README.md). Следующий функциональный результат — исправленный boot bench,
-после clean image/CI/review и нового exact-image разрешения.
+[Успешный стенд ee7d179](evidence/hardware/2026-11-22-f407-ee7d179-bench/README.md). Следующий измеримый результат — P1 runtime ESP32 OTA,
+не дальнейшее расширение host-модели F407. В этом отчётном PR нет firmware изменений.
 
 ## P0 — первая настоящая прошивка STM32F407
 
 Цель: воспроизводимо получить корректный ELF и полученный из него BIN для
 заявленного STM32F407VGT6, программно проверенные и готовые к отдельно
-разрешённому стендовому запуску через ST-Link. Настоящий запуск ещё не подтверждён.
+разрешённому стендовому запуску через ST-Link. Первый базовый запуск ee7d179 подтверждён22ноября; полные stress/physical
+проверки этим не закрыты.
 
 Подтверждённый исходный статус — [отчёт владельца](HARDWARE_STATUS.md):
 DevEBox STM32F4VX_M Ver. 2.0; сообщён VGT6; ST-Link V2/SWD работает;
@@ -88,13 +88,14 @@ Cortex-M4r0p1; raw ID 0x101f6413; Flash 1024 КиБ; 3,252 В;
 Приёмка P0: deployable ELF/BIN, map/size/hash/source/version evidence, успешные
 CI/проверки памяти и векторов, описанные HSI/fault/watchdog/no-motion поведение,
 SWD diagnostics и ST-Link install/restore runbook. Образ имеет статус
-«готов к отдельно разрешённому стендовому запуску», а не «работает на плате».
+«базовый стенд ee7d179 PASS» с явными пределами из hardware evidence.
+Новая сборка не наследует аппаратную проверку только по тому же profile name.
 
 HSE и motion pinout не являются предпосылками сборки HSI/no-motion образа.
 Проверка официальной памяти/векторов — часть P0, а не новая цепочка подготовительных
 PR. Полная надпись owner, driver sectors/protection и SHA/independent copy/full
-snapshot restore теперь подтверждены. Рабочие boot/RAM/CCM/watchdog/fault,
-частоты, GPIO/CAN и power-loss recovery ещё нужно проверить. Новый образ
+snapshot restore теперь подтверждены. Базовые boot/data-BSS/CCM-word/guards/watchdog/fault теперь PASS;
+полные RAM/CCM stress, частоты, GPIO/CAN и power-loss recovery ещё нужно проверить. Новый образ
 требует нового точного разрешения; предыдущие аппаратные сеансы завершены.
 
 ## P1 — полноценный ESP32-S3 OTA

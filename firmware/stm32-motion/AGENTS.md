@@ -1,25 +1,23 @@
 # STM32F407 Motion — специализированные правила
 
-Актуально после первого аппаратного запуска 22 ноября:
-22 ноября 2026, main `4fe84f10a70228b9f440f41c6ccc50869919042a`, PR #1–56 слиты.
-Первый реальный c09a20e был записан и verify прошёл, но boot bench завершился
-**FAULT/error8 (IWDG_TIMEOUT)**. После восстановления SWD с DBG_SLEEP полный
-проверенный снимок1MiB записан обратно, verify/reset-run успешны.
-**Сейчас на плате прежнее ПО, не c09a20e.** Все пять аппаратных сеансов завершены.
-Надпись STM32F407VGT6 сверена владельцем; Flash1024KiB/driver12sectors/RDP0/
-nWRP0xFFF прочитаны. Current backup2×1MiB и SHA-проверенная копия на другом
-физическом NVMe сохранены приватно. NRST к ST-Link не подключён; RESET отпущен.
+Актуально после успешного базового стенда 22 ноября:
+22 ноября 2026, база main `07fb406e37ebd1f1e019dbee0b54e8bb5571be1a`, PR #1–57 слиты.
+После отдельного разрешения один стенд ee7d179 завершён за16,196s, exit0:
+program/verify/exact identity, RUNNING, data/BSS/один CCM word/guards, progress,
+watchdog reset и UsageFault capture/reset **PASS**. На F407 оставлен работающим
+clean `ee7d179435f3f9e7598c7646b85ff64f4d5e9a32`, BIN2540bytes. Условный restore
+не понадобился. Предыдущий c09 FAIL8 и проверенный полный snapshot restore — история.
 
-Исправлены IWDG start-before-sync и DBG_SLEEP в OpenOCD, обновлены
-регрессионные тесты и runbook. Новый ELF/BIN программно проверен; его работу
-на плате ещё не подтверждали. После CI/review потребуется **новое разрешение
-на точный образ и стендовые действия**. Watchdog/UsageFault/CCM/guards/progress
-пока не прошли; нет GPIO/CAN/motion, option-byte/OTP или изменений ESP32.
+Плата изолирована, только питание/SWD; option bytes/OTP/CAN/motion/ESP32 не менялись.
+Этот разрешённый сеанс завершён. Полный RAM/CCM stress, stack high-water,
+точные HSI/LSI/HSE частоты, physical GPIO/CAN/inhibit и power-loss остаются открытыми.
+P0 выполнен на базовом стенде; следующий приоритет — P1 ESP32 OTA с existing
+HTTPS/crypto и review16MiB factory+двух OTA slots/USB migration. Новых hardware
+операций или будущих CAN loader addresses это не разрешает.
 
-Наследовать корневой AGENTS.md и docs/HARDWARE_STATUS.md. Факты и пределы —
-docs/evidence/hardware/2026-11-22-f407-swd-preflight/README.md.
-Далее сохранены контракты PR-02/P0; исторические неизвестные уточняются
-актуальным статусом выше. Новые SWD/Flash/reset действия требуют отдельного scope.
+Наследовать корневой AGENTS.md и docs/HARDWARE_STATUS.md. Факты/пределы —
+docs/evidence/hardware/2026-11-22-f407-ee7d179-bench/README.md.
+Ниже сохранены контракты PR-02/P0, а не новая очередь software abstractions.
 
 - Официальный контракт заявленного VGT6 проверен в docs/STM32_FIRST_IMAGE.md;
   фактическую маркировку/геометрию/защиту проверить отдельно перед hardware write.
@@ -85,5 +83,5 @@ docs/evidence/hardware/2026-11-22-f407-swd-preflight/README.md.
   отдельно разрешённого стенда, не как public release. Не коммитить бинарники.
 - Sector0/16KiB bench budget не резервирует будущий CAN loader. P4 layout/write/
   recovery решение после physical CAN P3 и protection/preflight; existing verifier
-  и протокол не переписывать. Новых device/SWD/reset/Flash/backup read/option-byte
-  действий в P0 нет. PR review не заменяет owner exact-image permission.
+  и протокол не переписывать. Успешный аппаратный сеанс P0 отдельно разрешён и завершён; новые
+  device/SWD/reset/Flash/backup read/option-byte действия этим не разрешаются. PR review не заменяет owner exact-image permission.

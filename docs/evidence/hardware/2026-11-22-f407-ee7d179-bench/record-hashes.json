@@ -1,0 +1,8 @@
+{
+  "openocd.txt": "419c32afe6127216497623ac125c3b8f0945a99e479b75df93f048512cf367e1",
+  "executed-sequence.tcl.txt": "8717ba838a03cd4f45493023bfea1b482f35efc2fba8d940cb4d09866e357f5a",
+  "result.json": "aadf05b0e5247e9e703e0e4aae48a278ec6a0b50fd8e3afbee591f7086ad840d",
+  "identity.json": "1d34db2b2e7ba4d925026e13b1b11bda00855f17d0e0540d5053624cf9b3d412",
+  "source-ci.json": "078ad21363596db959a7564c58231c46f4aff07317a892bb9ac0765e5d2706a1",
+  "snapshots.md": "5cc915f22aacff492efe9d6b5ec3391d3beb0528928a769f4fc60985b12685ec"
+}

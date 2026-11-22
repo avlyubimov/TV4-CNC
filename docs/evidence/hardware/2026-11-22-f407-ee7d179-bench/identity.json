@@ -1,0 +1,13 @@
+{
+  "profile": "stm32f407vg-hsi-no-motion-v1",
+  "source_commit": "ee7d179435f3f9e7598c7646b85ff64f4d5e9a32",
+  "source_dirty": false,
+  "elf_sha256": "18a56029ead4831339b825c6215d407cd55ef40b20939dd21ce6dc747acfdf53",
+  "bin_sha256": "ed68e329982046a951713aaf0d74c8720b652c7331c251aea01830cf75107b20",
+  "bin_bytes": 2540,
+  "map_sha256": "cc4e1a764285758ab3aca0872c1179616ef078732e2520e5949f7c51f9274891",
+  "sram_static_bytes": 268,
+  "ccm_bytes": 4,
+  "main_stack_bytes": 4096,
+  "fault_stack_bytes": 1024
+}

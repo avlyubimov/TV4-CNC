@@ -1,24 +1,22 @@
 # Открытые вопросы и блокирующие решения
 
-22 ноября 2026, main `4fe84f10a70228b9f440f41c6ccc50869919042a`, PR #1–56 слиты.
-Первый реальный c09a20e был записан и verify прошёл, но boot bench завершился
-**FAULT/error8 (IWDG_TIMEOUT)**. После восстановления SWD с DBG_SLEEP полный
-проверенный снимок1MiB записан обратно, verify/reset-run успешны.
-**Сейчас на плате прежнее ПО, не c09a20e.** Все пять аппаратных сеансов завершены.
-Надпись STM32F407VGT6 сверена владельцем; Flash1024KiB/driver12sectors/RDP0/
-nWRP0xFFF прочитаны. Current backup2×1MiB и SHA-проверенная копия на другом
-физическом NVMe сохранены приватно. NRST к ST-Link не подключён; RESET отпущен.
+22 ноября 2026, база main `07fb406e37ebd1f1e019dbee0b54e8bb5571be1a`, PR #1–57 слиты.
+После отдельного разрешения один стенд ee7d179 завершён за16,196s, exit0:
+program/verify/exact identity, RUNNING, data/BSS/один CCM word/guards, progress,
+watchdog reset и UsageFault capture/reset **PASS**. На F407 оставлен работающим
+clean `ee7d179435f3f9e7598c7646b85ff64f4d5e9a32`, BIN2540bytes. Условный restore
+не понадобился. Предыдущий c09 FAIL8 и проверенный полный snapshot restore — история.
 
-Исправлены IWDG start-before-sync и DBG_SLEEP в OpenOCD, обновлены
-регрессионные тесты и runbook. Новый ELF/BIN программно проверен; его работу
-на плате ещё не подтверждали. После CI/review потребуется **новое разрешение
-на точный образ и стендовые действия**. Watchdog/UsageFault/CCM/guards/progress
-пока не прошли; нет GPIO/CAN/motion, option-byte/OTP или изменений ESP32.
+Плата изолирована, только питание/SWD; option bytes/OTP/CAN/motion/ESP32 не менялись.
+Этот разрешённый сеанс завершён. Полный RAM/CCM stress, stack high-water,
+точные HSI/LSI/HSE частоты, physical GPIO/CAN/inhibit и power-loss остаются открытыми.
+P0 выполнен на базовом стенде; следующий приоритет — P1 ESP32 OTA с existing
+HTTPS/crypto и review16MiB factory+двух OTA slots/USB migration. Новых hardware
+операций или будущих CAN loader addresses это не разрешает.
 
-[аппаратные факты и логи](evidence/hardware/2026-11-22-f407-swd-preflight/README.md); [HARDWARE_STATUS.md](HARDWARE_STATUS.md).
-Полный marking теперь сверён владельцем; ответ20ноября «VGT6» — история,
-а не оставшийся запрос. Original owner backup не открывался; новый current
-snapshot и независимая копия проверены, именно snapshot успешно восстановлен.
+[Успешный стенд ee7d179](evidence/hardware/2026-11-22-f407-ee7d179-bench/README.md); [HARDWARE_STATUS.md](HARDWARE_STATUS.md).
+Ни одна оставшаяся неизвестная характеристика не блокирует software работу P1.
+Новый аппаратный сеанс/образ не покрываются завершённым разрешением ee7d179.
 
 PR-05b [release policy review](RELEASE_POLICY_REVIEW.md) проверяет существующий
 HMI contract и закрывает два encoding расхождения; actual local SemVer/key context,
@@ -126,9 +124,9 @@ stop/join не освобождает actual claim. Верхние image/crypto/
 | ID | Что нужно подтвердить/решить | Блокирует |
 |---|---|---|
 | HW-F407-01 | Надпись STM32F407VGT6 сверена владельцем; raw ID/core/Flash подтверждены. REV_ID0x101f означает5 или6; точная silicon revision/package pin routing ещё неизвестны | Полный board pinout/commissioning; не блокирует HSI/no-motion сборку |
-| HW-F407-02 | HSI clock registers прочитаны перед FAULT8; частоты/tick/LSI/HSE не измерены. NRST не подключён, manual RESET recovery с DBG_SLEEP выполнен | Проверка startup/progress/watchdog и дальнейшие timer/CAN measurements |
-| HW-F407-03 | RAM/CCM/guard self-tests не достигнуты из-за IWDG init timeout; полные stress/high-water также открыты. Официальный memory/vector contract проверен | Исправленный аппаратный boot bench; нулевые pass fields не доказывают плохую RAM |
-| HW-F407-04 | Driver12sectors/RDP0/nWRP0xFFF прочитаны; c09 program/verify и full1MiB snapshot restore/verify/reset выполнены. Power-loss/erase-boundary stress не выполнены | Новый exact-image bench; P4 loader layout/write/recovery остаётся отдельным решением |
+| HW-F407-02 | HSI/divider registers и nominal tick progress подтверждены ee7d179; watchdog/UsageFault reset PASS. Точные частоты HSI/LSI/HSE, схема пинов неизвестны; manual RESET recovery ранее проверен | Дальнейшие timer/CAN frequency measurements; не блокирует P1 software |
+| HW-F407-03 | Базовые data/BSS cookies, один CCM word и оба guards PASS; полные SRAM/CCM stress/high-water не измерены | Заявления о полной памяти/stack budget и долгой стабильности; базовый boot больше не блокер |
+| HW-F407-04 | Driver12sectors/RDP0/nWRP0xFFF, c09/ee7d179 program/verify и прежний full1MiB snapshot restore/verify/reset подтверждены; power-loss/erase-boundary stress не выполнены | P4 loader layout/write/recovery остаётся отдельным решением, адреса сейчас не резервируются |
 | HW-F407-05 | Физические GPIO/CAN, transceiver/pin routing, безопасные уровни/полярности ENABLE/STEP/DIR/шпинделя | Любой physical adapter/drive commissioning; no-I/O adapter не подтверждает physical inhibit |
 | HW-USB-01 | Отдельно подтвердить, что устройство 0483:5720 принадлежит именно F407 стенду | Идентификация; VID/PID не доказывает MCU/Flash/прошивку |
 | HW-DRIVE-01 | Получение первого NEMA23, точные двигатель/драйвер/питание, STEP/DIR/ENABLE polarity, encoder/alarm, второй привод | Любые испытания приводов/осей |
@@ -169,7 +167,8 @@ stop/join не освобождает actual claim. Верхние image/crypto/
 - F407 DevEBox получена; владелец подтвердил SWD/ST-Link V2, Cortex-M4r0p1,
   raw ID0x101f6413, Flash1024KiB,3,252V, backup1048576bytes/vector structure PASS.
   Теперь полная надпись сверена владельцем; driver geometry/protection/restore
-  проверены. Рабочий boot/RAM/CCM/HSE/GPIO/CAN ещё не подтверждены.
+  проверены. Базовые ee7d179 boot/CCM/guards/watchdog/fault PASS; HSE/частоты,
+  RAM stress и GPIO/CAN ещё не подтверждены.
   NEMA23 ещё нет, второго двигателя и трансиверов нет.
 - Blue Pill по отчёту владельца доступна через SWD/64 КиБ, backup сохранён;
   это не production motion target. Не подменять ей недостающую F407 geometry.

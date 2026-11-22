@@ -1,90 +1,41 @@
-# Следующий этап: P0 — исправленный первый запуск STM32F407
+# Следующий этап: P1 — полноценный ESP32 OTA
 
-22 ноября 2026, main `4fe84f10a70228b9f440f41c6ccc50869919042a`, PR #1–56 слиты.
-Первый реальный c09a20e был записан и verify прошёл, но boot bench завершился
-**FAULT/error8 (IWDG_TIMEOUT)**. После восстановления SWD с DBG_SLEEP полный
-проверенный снимок1MiB записан обратно, verify/reset-run успешны.
-**Сейчас на плате прежнее ПО, не c09a20e.** Все пять аппаратных сеансов завершены.
-Надпись STM32F407VGT6 сверена владельцем; Flash1024KiB/driver12sectors/RDP0/
-nWRP0xFFF прочитаны. Current backup2×1MiB и SHA-проверенная копия на другом
-физическом NVMe сохранены приватно. NRST к ST-Link не подключён; RESET отпущен.
+22 ноября 2026, база main `07fb406e37ebd1f1e019dbee0b54e8bb5571be1a`, PR #1–57 слиты.
+**P0 достигнут на базовом стенде**: на F407 работает exact clean ee7d179,
+program/verify/identity/RUNNING, data-BSS/CCM word/guards/progress, watchdog reset
+и UsageFault capture/reset PASS. [Измерения и пределы](evidence/hardware/2026-11-22-f407-ee7d179-bench/README.md).
+Сеанс16,196s завершён; новых аппаратных операций или перепрошивки он не разрешает.
+На ESP32 остаётся ordinary8f0d899; CAN/приводы/option bytes/OTP не затронуты.
 
-Исправлены IWDG start-before-sync и DBG_SLEEP в OpenOCD, обновлены
-регрессионные тесты и runbook. Новый ELF/BIN программно проверен; его работу
-на плате ещё не подтверждали. После CI/review потребуется **новое разрешение
-на точный образ и стендовые действия**. Watchdog/UsageFault/CCM/guards/progress
-пока не прошли; нет GPIO/CAN/motion, option-byte/OTP или изменений ESP32.
+## Следующий измеримый результат
 
-[аппаратные факты и логи](evidence/hardware/2026-11-22-f407-swd-preflight/README.md), [образ](STM32_FIRST_IMAGE.md),
-[runbook](STM32_STLINK_RUNBOOK.md),
-[новые программные проверки](evidence/build/stm32f407-bringup-fix/README.md).
-Измеримый следующий результат: RUNNING с продвижением ticks/heartbeat/feeds,
-data/BSS/CCM/guards PASS, watchdog reset и UsageFault context на новом exact image.
-До этого c09a20e не считать аппаратно рабочим. После этого сохраняется порядок P1–P5.
+Существующий HMI устанавливает проверенный образ в неактивный OTA slot,
+выполняет boot self-test и подтверждает его либо штатно откатывается.
+HTTPS/crypto/verification/session/resource checks уже существуют; использовать их,
+не начинать заново протокол, криптографию или очередную библиотеку без installer.
 
-## Подтверждено и ещё неизвестно
+1. Рассмотреть **существующий** [16MiB candidate](../firmware/esp32-hmi/ota/partitions.ab.candidate.csv):
+   factory recovery, otadata, два OTA slots и данные. Проверить размеры/границы,
+   бюджеты реальных images и parsing обоими SDK; candidate пока не активен.
+   [Текущая разметка](../firmware/esp32-hmi/partitions.csv) остаётся factory2MiB.
+2. Подготовить отдельный USB migration/recovery bundle с проверкой полного
+   backup и настроек. Не мигрировать partition table обычным app OTA.
+3. Интегрировать существующие signature/SHA/size/hardware/protocol/trusted local
+   public key/context проверки с worker записи в inactive slot. Не выдавать
+   тестовый ключ или неизвестную production version за доверенный context.
+4. Добавить self-test/rollback и bounded обработку потери Wi-Fi/питания;
+   LVGL/GT911/Wi-Fi сохраняют отзывчивость. Реальные SRAM/PSRAM/stack margins
+   проверяются отдельно; не переносить host budget или старую TLS probe на installer.
+5. CI/negative/repro проверки, конкретные migration/OTA артефакты и отдельное
+   разрешение перед аппаратным испытанием. eFuse/Secure Boot/Flash Encryption
+   и необратимые настройки не включать. Релизы P2 — только с ручным owner gate.
 
-ST-Link/SWD/core/raw ID/Flash/protection/driver sectors, physical marking owner
-и backup/independent copy/full restore подтверждены с пределами из evidence.
-RUNNING/CCM/watchdog/fault tests не достигнуты. Кварц HSE, package pin routing,
-physical GPIO/CAN/inhibit, полные RAM/stack/stress и power-loss recovery открыты.
-ESP32 ordinary8f0d899 не затронут, прежние HMI/touch/Wi-Fi PASS сохраняются.
-
-## Состав текущей P0 интеграции
-
-**Результат — настоящий программно проверенный ELF/BIN STM32F407, готовый
-к отдельно разрешённому стендовому запуску.** Существующие synthetic link probe
-и portable libraries использовать для проверок; они не являются этим результатом.
-
-| Часть одной интеграции | Проверяемый результат |
-|---|---|
-| Официальная память и startup | Проверенные источники/редакции ST для STM32F407VGT6: Flash/SRAM/CCM/секторы/IRQ/vectors; действительные linker MEMORY/sections, data/BSS, MSP/stack, Reset_Handler и полная vector table |
-| Первоначальный clock | Явный HSI-only путь без неподтверждённых HSE/PLL; согласованные clock/tick настройки |
-| Запрет движения | STEP/DIR, ENABLE, шпиндель и другие motion outputs не активируются при boot/reset/fault/watchdog; неизвестные GPIO/AF/полярности не назначены |
-| Диагностика и ошибки | RAM/SWD boot state/heartbeat/reset reason/fault context без обязательных LED/UART/semihosting; обработчики исключений и явная watchdog policy, не поддерживающая ошибочное исполнение |
-| Реальные артефакты и CI | ELF↔BIN↔map/size/SHA-256/source/toolchain identity; границы/overlap/overflow Flash/SRAM/CCM/stack, entry/SP/Thumb/reserved/IRQ vectors и отрицательные проверки |
-| Установка и recovery | Конкретный ST-Link install/verify/restore runbook с проверкой бэкапа/платы/защиты и exact-image gate перед отдельно разрешённой операцией |
-
-Эти части реализованы вместе в текущем P0; не подменять P0 новой библиотекой или подготовительным
-PR модели. В том же PR обновить нужные scoped instructions/профиль/CI guards,
-чтобы проверенный реальный образ собирался, а неподдерживаемые карты отклонялись.
-ST startup используется как pinned Apache-2.0 reference only; новых runtime
-CMSIS/HAL/LL зависимостей нет.
-
-## Сборка, стенд и будущий bootloader
-
-Официальная карта выбранного VGT6 проверена по ST в P0; аппаратная проверка
-конкретного экземпляра и поведения clock/RAM/watchdog остаётся отдельным стендом.
-Неизвестный HSE не блокирует подготовку HSI образа, неизвестный motion pinout
-запрещает выводы движения. Не угадывать безопасные уровни и не объявлять
-no-I/O/программный fault handler подтверждением physical inhibit.
-
-Образ не резервирует адреса будущего CAN bootloader/staging/app layout.
-Установка на плату требует отдельного разрешения на точные image/hash и
-SWD/write/reset/capture действия, проверки бэкапа/независимой копии и recovery
-процедуры. Публикация ELF/BIN в релиз и необратимые option bytes — отдельные
-решения; build/CI/PR не являются разрешением. Выполненные аппаратные сеансы описаны отдельно в evidence; новые действия
-эта документация не разрешает.
-
-## Порядок после P0
-
-1. P1 — рабочий ESP32 OTA: рассчитанная factory recovery+два OTA-слота в 16 МиБ,
-   отдельная USB-миграция, existing HTTPS/crypto/compatibility, inactive-slot write,
-   self-test/rollback, Wi-Fi/power-loss tests и реальные SRAM/PSRAM/stack measurements.
-2. P2 — настоящие воспроизводимые CI binaries/SemVer/source binding/signed manifest/
-   SHA-256/prerelease-stable и ручной owner release gate, экран «ПО и обновления».
-3. P3 — минимальный реальный CAN exchange после получения трансиверов: проверка
-   физических уровней/терминации/pinout/errors/timeouts/recovery. До этого hardware
-   CAN неизвестен; существующий протокол сохраняется.
-4. P4 — независимый STM32 CAN bootloader/Flash write/recovery по проверенной
-   карте и физическому CAN, existing verifier и ESP32 OTA Manager; no update during motion.
-5. P5 — microSD/tools/G-code/planner/STEP-DIR/encoders/homing/thread sync/coordinates/
-   manual-CNC после стабилизации базовых контроллеров, с отдельным motion approval.
-
-Для новой абстракции нужен конкретный потребитель текущей интеграции.
-Подробные результаты/зависимости/приёмка — [IMPLEMENTATION_PRIORITIES.md](IMPLEMENTATION_PRIORITIES.md).
-Все записи ниже — история; они не заменяют этот порядок следующей работой
-над production context, codebook или ещё одним host transport layer.
+В текущем PR только аппаратный отчёт и статусы; исполняемые прошивки не меняются.
+Полные SRAM/CCM stress/high-water, частоты HSI/LSI/HSE и физические GPIO/CAN F407
+пока открыты. Пины движения не назначать; физический CAN P3 после трансиверов,
+независимый CAN loader/layout/recovery P4 после P3. Bench sector0 не резервирует
+будущие loader/app/staging addresses. P5 движение — только после проверки защит
+и отдельного commissioning permission. [Полный порядок](IMPLEMENTATION_PRIORITIES.md).
 
 ## История слитой программной базы
 
