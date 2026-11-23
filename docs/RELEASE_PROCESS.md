@@ -7,7 +7,7 @@ factory и три verified HEAD проверены; signed CHECK/install/rollbac
 готовится отдельно от публикации. Ключ создан по поручению владельца вне Git;
 CI получает только ephemeral fixture keys. Binary Releases/protected publication
 ещё не включены. Push/merge не создаёт релиз и не разрешает выпуск.
-Лицензия приложения ещё не выбрана (LICENSE-NOTICE.md); public metadata-only
+Владелец выбрал MIT для собственного кода (LICENSE/атрибуции зависимостей); public metadata-only
 review artifact сохраняет прежний scope и не содержит binary.
 
 PR-05b: [review существующего release contract](RELEASE_POLICY_REVIEW.md),

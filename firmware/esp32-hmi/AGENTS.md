@@ -5,7 +5,8 @@ PR #75 слит владельцем, main1682da0. Стенд38f70b9: baseline/n
 UART PASS. Читать docs/NEXT_STAGE.md и docs/plans/P1_SIGNED_SESSION_RESOURCE.md
 от корня. Следующий результат — настоящий signed CHECK/resource SESSION4,
 затем install/rollback. Owner key уже создан локально, стендовые версии/метки
-согласованы; resource/time policy и публикация candidate ещё открыты, SETUP закрыт.
+согласованы; temporary resource/time policy для CHECK23ноября одобрена.
+Exact публикация отдельно; на установленном fecc05d SETUP закрывает OTA.
 Текущая host-only упаковка — docs/plans/P1_SIGNED_CHECK_BUNDLE.md. Приватный
 ключ и owner-local context не попадают в Git/build output/CI; firmware paths
 не менять ради подписи payload. Локальная подпись не разрешает публикацию.

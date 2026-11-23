@@ -1,0 +1,329 @@
+{
+  "schema": 1,
+  "source_commit": "3a2e03dad5d4a5ca083016cc3435c49caa564871",
+  "source_tree": "a15fc7659cca8a4570db31365185a952a335aff0",
+  "clean_checkout_during_real_builds": true,
+  "firmware_executable_sources_changed": false,
+  "source_file_sha256": {
+    "tools/prepare_ota_release.py": "ddedb66c8fb2c4d61431608d63002abde8bf1cbbd2fb59db609e2674bedd85fc",
+    "tests/ota_release_tests.py": "0be86e69137c8c35fbfe582e7efb26147d18c98eddb92ef3a2878e5d43116b42",
+    "firmware/esp32-hmi/ota/verification.c": "33658c2b1099f2980d567a2e85c23ef2f19bbc0d49d73e025ba6cb6e76e23c05",
+    "firmware/esp32-hmi/ota/manifest.c": "7e2d5445a5af6ceb28f48f357b83f1a3d3f2e7a9a113117569cd0d231cda1d31",
+    "firmware/esp32-hmi/ota/image_stream.c": "a8ae753617db2b71078beb02fc6e39bcaa3688fe48b38cfb51a3ebe00b589964",
+    "firmware/esp32-hmi/ota/service.c": "df4107911a27a7fa471edd9c0fa4454ea52221b2e1fc4c7a14842f612c9367fa"
+  },
+  "checks": {
+    "host_passed": 184,
+    "host_failed": 0,
+    "asan_ubsan_lsan_passed": 184,
+    "asan_ubsan_lsan_failed": 0,
+    "suppressions": false,
+    "new_signing_fault_test_methods": 21,
+    "real_sdk_builds_passed": 2,
+    "signed_actual_payloads_verified": 2,
+    "source_ci_jobs_passed": 15,
+    "source_ci_jobs_failed": 0
+  },
+  "versions_approved_by_owner": {
+    "hmi_initial": "0.1.0-bench.1",
+    "hmi_candidate": "0.1.0-bench.2",
+    "channel": "prerelease",
+    "bootloader_local_label": "0.1.0-bench.1",
+    "ota_metadata_protocol_label": "1.0.0",
+    "production_mapping": false
+  },
+  "builds": [
+    {
+      "sdk": "5.3.2",
+      "version": "0.1.0-bench.2",
+      "profile": "rev12-ota",
+      "application": {
+        "bytes": 1551088,
+        "chip_revision_max": 99,
+        "chip_revision_min": 0,
+        "elf_sha256": "f9bf574b3689e2ef3ad30d40d9387403bbb80f430868fde002e210b1b524fda4",
+        "flash_bytes": 16777216,
+        "flash_frequency_mhz": 80,
+        "flash_mode": "dio",
+        "idf_version": "v5.3.2",
+        "project": "tv4_hmi",
+        "segments": 5,
+        "sha256": "babb49b1d3bbda099e7f042867ad76dd792d668d851a729c206e9645244500ce",
+        "version": "0.1.0-bench.2"
+      },
+      "sdkconfig_sha256": "c8a880ac4c350aa5700dc9bd00918469dcac0de66cbd4e2926f3a4ed52a20acd",
+      "partition_table_sha256": "b4c64dbabb0eb8a6fb1a735fb3f3a7981a36520560b70e267851144211e401f1",
+      "dependency_lock_sha256": "bdabdb06b5b4572369ca86e5cfc446ab6c270c56dab0500a304dcf7e112c94d0",
+      "manifest_sha256": "0225b827c5b73c898c9b109d84ed9a89ce6891d34bcdcf3af3b4630af00ab5e4",
+      "signature_envelope_sha256": "0cd496268b43d695b4ea7c8e1e5b9b984067678f46c81ed55bf3b863d63a8418",
+      "inventory_sha256": "bbf9f2d1cffa829587ea250e628f6f0944d57741b945a5828dddaf99bef80303",
+      "signature_verified_offline": true,
+      "candidate_provisioned": false,
+      "memory_inspection": {
+        "worker_stack_bytes_requested": 3072,
+        "module_writable_bytes": 0,
+        "compiler_frames": {
+          "tv4_ota_memory_scope_revision": 32,
+          "tv4_ota_memory_scope_since": 32,
+          "tv4_ota_memory_capture": 64,
+          "tv4_ota_memory_startup": 32,
+          "tv4_ota_memory_window_begin": 32,
+          "tv4_ota_memory_window_end": 32,
+          "tv4_ota_memory_report_window": 32,
+          "tv4_ota_memory_report_startup": 32
+        },
+        "compiler_frame_ceiling": 192,
+        "worker_stack_runtime_qualified": false
+      },
+      "assets": [
+        {
+          "name": "README.txt",
+          "bytes": 315,
+          "sha256": "ed395723b3e0b1246bc9f847d58b17ca04fb8fd538683b7f3f669cfab51bd2d3"
+        },
+        {
+          "name": "build-evidence.json",
+          "bytes": 1316,
+          "sha256": "efa0040e1e855f875ed2d2cfeadc371d62cd22fca50dc1b4f4cd8dbbb6cdd920"
+        },
+        {
+          "name": "checksums.sha256",
+          "bytes": 506,
+          "sha256": "bbf9f2d1cffa829587ea250e628f6f0944d57741b945a5828dddaf99bef80303"
+        },
+        {
+          "name": "manifest.json",
+          "bytes": 1918,
+          "sha256": "0225b827c5b73c898c9b109d84ed9a89ce6891d34bcdcf3af3b4630af00ab5e4"
+        },
+        {
+          "name": "manifest.sig",
+          "bytes": 198,
+          "sha256": "0cd496268b43d695b4ea7c8e1e5b9b984067678f46c81ed55bf3b863d63a8418"
+        },
+        {
+          "name": "release-notes.md",
+          "bytes": 403,
+          "sha256": "423462d0ad99c4a536dcfcfbb836e91e2f223cac8fe25426ac15b655b87f278e"
+        },
+        {
+          "name": "tv4-hmi-esp32s3-v0.1.0-bench.2.bin",
+          "bytes": 1551088,
+          "sha256": "babb49b1d3bbda099e7f042867ad76dd792d668d851a729c206e9645244500ce"
+        }
+      ]
+    },
+    {
+      "sdk": "6.1.1",
+      "version": "0.1.0-bench.2",
+      "profile": "rev12-ota",
+      "application": {
+        "bytes": 1598560,
+        "chip_revision_max": 99,
+        "chip_revision_min": 0,
+        "elf_sha256": "cc9496949c243b22bb6bb6d5e33bdec8f8b54d4327c207df3ee239efb1f8d023",
+        "flash_bytes": 16777216,
+        "flash_frequency_mhz": 80,
+        "flash_mode": "dio",
+        "idf_version": "v6.1.1",
+        "project": "tv4_hmi",
+        "segments": 6,
+        "sha256": "017236a2abec4f71b8737a396a9601fe603d61931babc05405a9df874d1663de",
+        "version": "0.1.0-bench.2"
+      },
+      "sdkconfig_sha256": "439c1cc667b852a4139c3a39b4260bc4efd8d4a3022c8734682320c039985e4d",
+      "partition_table_sha256": "b4c64dbabb0eb8a6fb1a735fb3f3a7981a36520560b70e267851144211e401f1",
+      "dependency_lock_sha256": "d09551b18bfceae3a3f4c5c50583d81907bc7f2e47e3629182cbf1d1914a10b1",
+      "manifest_sha256": "d7f02913d9f5388ebeedcab9f4e0d3d49393d131fb9ce990596db87367c0bbed",
+      "signature_envelope_sha256": "d0a1aafda80ef74d4c9e6668d05e7da980f35da9c8176813d7547d65556bc77d",
+      "inventory_sha256": "ab553fe876a9144fccd2fd3d7c3f130b4c0933ee6308d70ff3575f89da69e5e8",
+      "signature_verified_offline": true,
+      "candidate_provisioned": false,
+      "memory_inspection": {
+        "worker_stack_bytes_requested": 3072,
+        "module_writable_bytes": 0,
+        "compiler_frames": {
+          "tv4_ota_memory_scope_revision": 32,
+          "tv4_ota_memory_scope_since": 32,
+          "tv4_ota_memory_capture": 64,
+          "tv4_ota_memory_startup": 32,
+          "tv4_ota_memory_window_begin": 32,
+          "tv4_ota_memory_window_end": 32,
+          "tv4_ota_memory_report_window": 32,
+          "tv4_ota_memory_report_startup": 32
+        },
+        "compiler_frame_ceiling": 192,
+        "worker_stack_runtime_qualified": false
+      },
+      "assets": [
+        {
+          "name": "README.txt",
+          "bytes": 315,
+          "sha256": "ed395723b3e0b1246bc9f847d58b17ca04fb8fd538683b7f3f669cfab51bd2d3"
+        },
+        {
+          "name": "build-evidence.json",
+          "bytes": 1316,
+          "sha256": "3ef98013690840200f7a1c674f00f132033f2e0b877ade8578d0f4307b9f7f3c"
+        },
+        {
+          "name": "checksums.sha256",
+          "bytes": 506,
+          "sha256": "ab553fe876a9144fccd2fd3d7c3f130b4c0933ee6308d70ff3575f89da69e5e8"
+        },
+        {
+          "name": "manifest.json",
+          "bytes": 1918,
+          "sha256": "d7f02913d9f5388ebeedcab9f4e0d3d49393d131fb9ce990596db87367c0bbed"
+        },
+        {
+          "name": "manifest.sig",
+          "bytes": 198,
+          "sha256": "d0a1aafda80ef74d4c9e6668d05e7da980f35da9c8176813d7547d65556bc77d"
+        },
+        {
+          "name": "release-notes.md",
+          "bytes": 403,
+          "sha256": "423462d0ad99c4a536dcfcfbb836e91e2f223cac8fe25426ac15b655b87f278e"
+        },
+        {
+          "name": "tv4-hmi-esp32s3-v0.1.0-bench.2.bin",
+          "bytes": 1598560,
+          "sha256": "017236a2abec4f71b8737a396a9601fe603d61931babc05405a9df874d1663de"
+        }
+      ]
+    }
+  ],
+  "native_policy": [
+    {
+      "sdk": "5.3.2",
+      "tampered": false,
+      "native_result": 0,
+      "output_zero": null
+    },
+    {
+      "sdk": "5.3.2",
+      "tampered": true,
+      "native_result": 2,
+      "output_zero": true
+    },
+    {
+      "sdk": "6.1.1",
+      "tampered": false,
+      "native_result": 0,
+      "output_zero": null
+    },
+    {
+      "sdk": "6.1.1",
+      "tampered": true,
+      "native_result": 2,
+      "output_zero": true
+    }
+  ],
+  "native_stream": [
+    {
+      "sdk": "5.3.2",
+      "tampered": false,
+      "manifest_result": 0,
+      "image_verified": true,
+      "received": 1551088,
+      "state": 2,
+      "error": 0,
+      "contexts_closed": true,
+      "chunk_bytes": 4096,
+      "synthetic_clock": true,
+      "device_access": false
+    },
+    {
+      "sdk": "5.3.2",
+      "tampered": true,
+      "manifest_result": 0,
+      "image_verified": false,
+      "received": 1548288,
+      "state": 3,
+      "error": 8,
+      "contexts_closed": true,
+      "chunk_bytes": 4096,
+      "synthetic_clock": true,
+      "device_access": false
+    },
+    {
+      "sdk": "6.1.1",
+      "tampered": false,
+      "manifest_result": 0,
+      "image_verified": true,
+      "received": 1598560,
+      "state": 2,
+      "error": 0,
+      "contexts_closed": true,
+      "chunk_bytes": 4096,
+      "synthetic_clock": true,
+      "device_access": false
+    },
+    {
+      "sdk": "6.1.1",
+      "tampered": true,
+      "manifest_result": 0,
+      "image_verified": false,
+      "received": 1597440,
+      "state": 3,
+      "error": 8,
+      "contexts_closed": true,
+      "chunk_bytes": 4096,
+      "synthetic_clock": true,
+      "device_access": false
+    }
+  ],
+  "configured_base": {
+    "sdk": "6.1.1",
+    "version": "0.1.0-bench.1",
+    "app_bytes": 1600880,
+    "app_sha256": "104e5df74e62ee72cedc00865acd336896e53f76fa7de0c6bc78f862acfbf3ea",
+    "elf_sha256": "23cdc16ea7e6afa9b4faa17988fa284009a3618e4e52baf01f1ab4d938426c05",
+    "provisioned": true,
+    "private_key_present": false,
+    "worker_stack_bytes_requested": 8192,
+    "service_compiler_frames": {
+      "publish": 32,
+      "now_ms": 32,
+      "cancelled": 32,
+      "commit": 32,
+      "configured": 32,
+      "worker_stack": 32,
+      "write_chunk": 32,
+      "fetch": 48,
+      "tv4_ota_boot_observe": 32,
+      "tv4_ota_service_start": 64,
+      "tv4_ota_service_health": 32,
+      "tv4_ota_service_snapshot": 32,
+      "operation": 432,
+      "worker": 80,
+      "tv4_ota_service_request": 48
+    },
+    "hardware_tested": false
+  },
+  "temporary_policy": {
+    "owner_approved_for": "one isolated CHECK bench, 2026-11-23 Asia/Almaty",
+    "production_qualified": false,
+    "internal_free": 65536,
+    "internal_largest": 32768,
+    "psram_free": 1048576,
+    "psram_largest": 131072,
+    "remaining_stack": 3072,
+    "unauthenticated_sntp_explicitly_allowed": true,
+    "maximum_anchor_age_ms": 600000,
+    "maximum_clock_skew_ms": 5000
+  },
+  "limits": {
+    "device_access": false,
+    "release_published": false,
+    "install_enabled": false,
+    "private_key_material_published": false,
+    "physical_fps_latency_measured": false,
+    "configured_session_hardware_qualified": false,
+    "rollback_power_loss_qualified": false,
+    "native_stream_clock": "synthetic; not network deadline or runtime resource evidence",
+    "native_stream_contexts_checked": "after explicit image_close",
+    "build_provenance_authenticated": false
+  }
+}

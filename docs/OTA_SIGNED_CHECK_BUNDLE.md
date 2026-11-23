@@ -56,3 +56,8 @@ Build-evidence — локальные claims; их digest не аутентиф�
 В результате явно false: install_enabled, release_published, device_access,
 production_resource_qualified. Не использовать его как разрешение публикации
 или доказательство прошедшей аппаратной signed session.
+
+По явному решению владельца собственный код распространяется под MIT. Новый
+bundle содержит LICENSE.txt и LICENSE-NOTICE.md, включая их inventory hashes.
+Полные notices third-party компонентов перед внешней публикацией прилагаются
+отдельно; permission на точный release не следует из выбора лицензии.

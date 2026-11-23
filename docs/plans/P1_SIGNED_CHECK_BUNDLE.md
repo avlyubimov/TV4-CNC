@@ -50,9 +50,11 @@ untracked, app version/ELF/table/config, чужой trust, повреждени�
 
 ## После этого пакета
 
-Нужна reviewed resource/time policy для configured CHECK-worker8192, ресурсные
+Начальная resource/time policy для CHECK-worker8192 уже одобрена владельцем
+только на23ноября; production policy этим не принята. Нужны ресурсные
 замеры SESSION4 и заранее утверждённые exact assets/публикация стендового
 кандидата. Отсутствующие значения не назначаются по HEAD minimum. Пока их нет,
-неактивный локальный context остаётся с reviewed:false и null, SETUP закрыт.
+прочие неутверждённые context поля не заполняются автоматически; на
+установленном fecc05d SETUP остаётся закрыт.
 План полного стенда — [P1_SIGNED_SESSION_RESOURCE](P1_SIGNED_SESSION_RESOURCE.md).
 Публикация или provisioning не следуют из генерации ключа, подписи или merge.

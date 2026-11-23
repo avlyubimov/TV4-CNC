@@ -21,6 +21,10 @@ class ReleaseTests(unittest.TestCase):
         f = fixtures.MigrationTests('test_bundle_and_no_overwrite')
         self.addCleanup(f.doCleanups); f.setUp()
         self.fixture=f; self.root=f.root; self.repo=f.repo; self.build=f.build
+        (self.repo/'LICENSE').write_bytes((ROOT/'LICENSE').read_bytes())
+        f.git('add','LICENSE');f.git('-c','user.name=TV4 test','-c','user.email=test@invalid',
+                                    '-c','commit.gpgsign=false','commit','-qm','Fixture license')
+        f.sha=f.git('rev-parse','HEAD')
         self.output=self.root/'signed-bench'; self.plan_path=self.root/'owner-plan.json'
         self.signer=self.root/'signer'; self.signer.mkdir(mode=0o700)
         self.private=self.signer/'private.pem'; self.public=self.signer/'public.der'

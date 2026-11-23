@@ -162,10 +162,15 @@ PASS. Firmware/LVGL/GT911/Wi-Fi/stack/DMA/TLS paths не менять ради h
 provenance. Keys/bootloader/table/NVS/otadata/STM32 files в пакет не включать.
 Не выполнять публикацию/теги/установку под видом подписания или merge.
 
-Далее нужна reviewed local resource/time policy, настоящий configured
+Владелец утвердил начальную resource/time policy только для CHECK23ноября;
+далее нужен настоящий configured
 CHECK/SESSION4 на плате, затем install/confirmation/rollback и release acceptance.
 Не назначать floors по HEAD minimum, не подставлять test keys или guessed
 policy, не снимать SETUP/INSTALL/ownership/timeout/CA/hostname/date gates.
+Стендовые guards: internal64KiB/largest32KiB,PSRAM1MiB/largest128KiB,stack3072.
+SNTP явно разрешён только в пределах23ноября Asia/Almaty,anchor10min/skew5s.
+Это не production qualification. Владелец также выбрал MIT для собственного
+кода; vendor notices сохраняются. Exact publication по-прежнему отдельная.
 Прежние NEMA23/CAN/motion/independent E-stop ограничения сохраняются.
 
 Сегодня23ноября2026 Asia/Almaty владелец уже разрешил необходимые P1 finite

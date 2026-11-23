@@ -32,7 +32,7 @@ NOTICE = (b'LOCAL SIGNED CHECK BENCH ONLY. Not publication or installation appro
           b'Resource, installer, rollback, power-loss and interactive performance acceptance remain open.\n'
           b'Use a separately reviewed local plan and trusted public key to verify.\n')
 META_FILES = {'manifest.json', 'manifest.sig', 'build-evidence.json',
-              'release-notes.md', 'README.txt'}
+              'release-notes.md', 'README.txt', 'LICENSE.txt', 'LICENSE-NOTICE.md'}
 EVIDENCE_FIELDS = {'schema', 'purpose', 'source_commit', 'source_tree', 'source_display_version',
     'sdk', 'profile', 'application', 'public_key_sha256', 'candidate_provisioned',
     'source_checked_locally', 'device_access', 'install_enabled', 'release_published',
@@ -94,6 +94,9 @@ def verify(directory, plan_path, public_key):
     require(regular_read(root/'checksums.sha256', 4096) == inventory(files), 'bundle inventory mismatch')
     require(files['README.txt'] == NOTICE and
             files['release-notes.md'] == (plan['release_notes']+'\n').encode('utf-8'), 'scope/notes mismatch')
+    require(b'Permission is hereby granted' in files['LICENSE.txt'] and
+            b'TV4-CNC contributors' in files['LICENSE.txt'] and
+            b'MIT license' in files['LICENSE-NOTICE.md'], 'application license/attribution missing')
     # Immutable captured bytes are checked; the local plan/key remain external.
     with tempfile.TemporaryDirectory(prefix='tv4-check-verify-') as tmp:
         captured = Path(tmp)
@@ -183,7 +186,9 @@ def prepare(build, output, plan_path, public_key, private_key, repo=None):
     with tempfile.TemporaryDirectory(prefix='.tv4-signed-check-', dir=out.parent) as tmp:
         stage = Path(tmp)/'bundle'; stage.mkdir(mode=0o700)
         files = {asset: app_raw, 'manifest.json': encoded(manifest), 'build-evidence.json': encoded(evidence),
-                 'README.txt': NOTICE, 'release-notes.md': (plan['release_notes']+'\n').encode('utf-8')}
+                 'README.txt': NOTICE, 'release-notes.md': (plan['release_notes']+'\n').encode('utf-8'),
+                 'LICENSE.txt': regular_read(root/'LICENSE', PLAN_MAX),
+                 'LICENSE-NOTICE.md': regular_read(root/'LICENSE-NOTICE.md', PLAN_MAX)}
         for name, data in files.items(): (stage/name).write_bytes(data)
         result = subprocess.run(['openssl', 'dgst', '-sha256', '-sign', str(private), '-passin', 'pass:',
                                  str(stage/'manifest.json')], capture_output=True, timeout=15)
