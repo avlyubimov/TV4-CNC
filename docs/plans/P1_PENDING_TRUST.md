@@ -42,7 +42,8 @@ restore при доступном USB; любой отказ отменяет о
 явное разрешение владельца на автономные обратимые проверки подключённых плат.
 Без eFuse/option bytes/CAN/приводов/потери питания, публикации и self-merge.
 
-Hardware PASS этого изменения пока отсутствует. Native slot tests отдельно
-проверяют bootloader/confirmation; настоящие HTTPS INSTALL/Flash peaks/отказ
+[Hardware PASS на a74bfcd](../evidence/hardware/2026-11-24-esp32-native-boot-a74bfcd/README.md)
+подтверждает native boot/confirmation и явный отказ/rollback unprovisioned pending
+с полным verified возвратом исходных разделов. Это USB fixture; настоящие HTTPS INSTALL/Flash peaks/отказ
 Wi-Fi и питания требуют configured signed installable payload и отдельного
 результата. Не выдавать USB slot fixture за скачанную OTA-установку.
