@@ -1,5 +1,19 @@
 # План реализации TV4-CNC: функциональные приоритеты P0–P5
 
+## 23 ноября: следующий P1 результат — LVGL heap в PSRAM
+
+[Стенд46cf400](evidence/hardware/2026-11-23-esp32-dma-46cf400/README.md)
+дал control PASS/SNTP PASS и TLS handshake FAIL с9 allocation failures
+DMA|INTERNAL|8BIT,4 retained/5 lost. Полный fresh16MiB restore fecc05d
+реально выполнен/verify/reset PASS после touch clock race старого baseline;
+последующий UART30s PASS. Physical UI/FPS/latency и signed OTA не приняты.
+
+Dashboard занял100516bytes internal при свободной PSRAM. Следующий отдельный
+PR — официальный CUSTOM allocator LVGL только OTA, оба SDK/host/fault/ELF,
+затем измеренное сравнение control → новый control → TLS. Действует заранее
+данное разрешение23ноября; пакет46cf400 одноразовый и уже закрыт. P2–P5 и
+motion/irreversible/merge/release сюда не входят.
+
 ## Активный P1 после main502a73d
 
 PR #71–73 слиты владельцем, main CI15/15 PASS. [Стенд3927063](evidence/hardware/2026-11-22-esp32-worker-tls-3927063/README.md)

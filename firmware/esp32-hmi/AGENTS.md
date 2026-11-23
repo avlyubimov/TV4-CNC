@@ -1,5 +1,13 @@
 # ESP32 HMI — специализированные правила
 
+Стенд46cf40023ноября закрыт: DMA shortage при handshake,9 failures/4 retained/
+5 lost, fecc05d full snapshot restore/verify и отдельный UART30s PASS. Следующий
+отдельный PR — официальный CUSTOM PSRAM allocator LVGL только explicit OTA;
+100516bytes dashboard internal — измеренное основание, не доказанный фикс.
+Actual LVGL9.2.2 API, оба SDK/ELF/config/host/fault и новый finite bench обязательны.
+Не трогать RGB draw/framebuffers, global malloc policy, records/DMA64KiB/stack/
+touch/timeouts. Сегодняшнее owner разрешение сохраняется, старый пакет закрыт.
+
 Текущий P1 после PR #73/main502a73d: clock fix на3927063 прошёл control/TLS
 touch2–19ms; HEAD остановлен на SDK AES allocation, fecc05d возвращён/owner PASS.
 Читать docs/plans/P1_DMA_ALLOCATION_TRACE.md от корня. Failure-only callback

@@ -1,0 +1,860 @@
+{
+  "schema": 1,
+  "source_commit": "46cf4000874b1dcd4cc0069e54fb88cbc157ff29",
+  "source_tree": "61b2e21773b5b45652230a57eb36eb04cc7a6daa",
+  "plan_sha256": "93b379d5ad89c84b4036a80a233c3dfa86b4b2657fcd372e22c9e90dac070bae",
+  "sdk": "6.1.1",
+  "profile": "rev12-ota",
+  "requested_worker_stack_bytes": 8192,
+  "context_provisioned": false,
+  "owner_permission": "Standing owner instruction for P1 board tests on2026-11-23 Asia/Almaty; no repeated permission request",
+  "apps": {
+    "return": {
+      "bytes": 1597984,
+      "sha256": "de55953fc9e3c4080cb277d734ca7d1f02c74880db38dac0f4b53830f587d021",
+      "version": "fecc05d",
+      "idf_version": "v6.1.1",
+      "elf_sha256": "77d6fd8aa3a90c52599bd4bfc20d083496bc97111d823c4f677ccb775aa434a6",
+      "flash_bytes": 16777216
+    },
+    "control": {
+      "bytes": 1600640,
+      "sha256": "b0cfc48c60f4b3f8df862f12a325f99c444cfefca4d8bdfaa94e187c50d93f63",
+      "version": "46cf400",
+      "idf_version": "v6.1.1",
+      "elf_sha256": "6a4b5af41586724407a0187c705145b919083ab20d334ac75433bb2e29ca5916",
+      "flash_bytes": 16777216
+    },
+    "worker-tls": {
+      "bytes": 1606064,
+      "sha256": "57a3925324e50bab5a8afd9d0696840159dfa9eb9509a4d10d82dc3a6db5fd65",
+      "version": "46cf400",
+      "idf_version": "v6.1.1",
+      "elf_sha256": "8f3a048979acc0488945ff6fee6cfe8ce0b02149b715e9eb732fe72f902b8163",
+      "flash_bytes": 16777216
+    }
+  },
+  "session": {
+    "started_utc": "2026-11-23T15:06:40.745016+00:00",
+    "finished_utc": "2026-11-23T15:20:11.499341+00:00",
+    "elapsed_seconds": 810.7543160370001,
+    "maximum_session_seconds": 1800,
+    "session_closed": true,
+    "identity_security_flash_verified": true,
+    "snapshot_device_md5_verified": true,
+    "independent_snapshot_copies_verified": true,
+    "fresh_snapshot_sha256": "ce6af4e88d755254f65ca2cf952d17ad9892a8ec7f487b0ed4391eccc3355e5a",
+    "snapshot_bytes": 16777216,
+    "control_write_attempts": 1,
+    "worker_write_attempts": 1,
+    "return_write_attempts": 1,
+    "recovery_write_attempts": 1,
+    "uart_capture_attempts": 3,
+    "control_write_preservation_verified": true,
+    "worker_write_preservation_verified": true,
+    "factory_return_verified": true,
+    "fresh_full_snapshot_restore_verified": true
+  },
+  "control": {
+    "observation_pass": true,
+    "boot_checks": {
+      "expected_app": true,
+      "expected_sdk": true,
+      "factory_boot": true,
+      "single_app_boot": true,
+      "psram_8mib": true,
+      "psram_sdk_test": true,
+      "instructions_in_psram": true,
+      "rodata_in_psram": true,
+      "rgb_initialized": true,
+      "gt911_initialized": true,
+      "ui_ready": true,
+      "no_fatal_log": true,
+      "periodic_resources": true,
+      "resource_errors_clear": true,
+      "touch_fresh": true,
+      "increasing_uptime": true,
+      "heap_samples_consistent": true,
+      "comparable_wifi_load": true,
+      "optional_services_started": true,
+      "explicit_self_test": true,
+      "complete_startup": true,
+      "single_complete_boot_window": true,
+      "startup_scope": true,
+      "phase_times_ordered": true,
+      "nonzero_measured_stacks": true,
+      "phase_heap_samples_consistent": true,
+      "worker_stack_published": true,
+      "nonzero_valid_periodic_stack": true,
+      "explicit_stack_mode": true,
+      "worker_watermarks_within_request": true,
+      "adequate_periodic_samples": true,
+      "no_unexpected_network_probe": true,
+      "no_network_windows": true,
+      "no_unexpected_dma_hook": true
+    },
+    "periodic_samples": 16,
+    "ranges": {
+      "internal_free": [
+        16787,
+        16843
+      ],
+      "internal_min": [
+        7816,
+        7816
+      ],
+      "internal_largest": [
+        7680,
+        7680
+      ],
+      "psram_free": [
+        6090060,
+        6090060
+      ],
+      "psram_min": [
+        6090024,
+        6090024
+      ],
+      "ota_stack": [
+        6784,
+        6784
+      ],
+      "touch_age_ms": [
+        1,
+        20
+      ]
+    },
+    "startup_points": [
+      {
+        "kind": 0,
+        "id": 0,
+        "sample_ms": 51,
+        "scope": 0,
+        "internal": 267039,
+        "minimum": 202308,
+        "largest": 172032,
+        "psram": 6860348,
+        "psram_min": 6860348,
+        "psram_largest": 6684672,
+        "sample_stack": 14980,
+        "worker_stack_at_emit": 7216
+      },
+      {
+        "kind": 0,
+        "id": 1,
+        "sample_ms": 376,
+        "scope": 1,
+        "internal": 225043,
+        "minimum": 225043,
+        "largest": 139264,
+        "psram": 6091508,
+        "psram_min": 6091508,
+        "psram_largest": 6029312,
+        "sample_stack": 14036,
+        "worker_stack_at_emit": 6784
+      },
+      {
+        "kind": 0,
+        "id": 2,
+        "sample_ms": 380,
+        "scope": 1,
+        "internal": 186463,
+        "minimum": 186463,
+        "largest": 106496,
+        "psram": 6091508,
+        "psram_min": 6091508,
+        "psram_largest": 6029312,
+        "sample_stack": 14036,
+        "worker_stack_at_emit": 6784
+      },
+      {
+        "kind": 0,
+        "id": 3,
+        "sample_ms": 698,
+        "scope": 1,
+        "internal": 173979,
+        "minimum": 161195,
+        "largest": 100352,
+        "psram": 6091308,
+        "psram_min": 6091308,
+        "psram_largest": 6029312,
+        "sample_stack": 12196,
+        "worker_stack_at_emit": 6784
+      },
+      {
+        "kind": 0,
+        "id": 4,
+        "sample_ms": 2298,
+        "scope": 1,
+        "internal": 47595,
+        "minimum": 47595,
+        "largest": 38912,
+        "psram": 6090844,
+        "psram_min": 6090844,
+        "psram_largest": 6029312,
+        "sample_stack": 10516,
+        "worker_stack_at_emit": 6784
+      },
+      {
+        "kind": 0,
+        "id": 5,
+        "sample_ms": 1385,
+        "scope": 1,
+        "internal": 73463,
+        "minimum": 73463,
+        "largest": 63488,
+        "psram": 6091308,
+        "psram_min": 6091308,
+        "psram_largest": 6029312,
+        "sample_stack": 12196,
+        "worker_stack_at_emit": 6784
+      },
+      {
+        "kind": 0,
+        "id": 6,
+        "sample_ms": 2287,
+        "scope": 1,
+        "internal": 81455,
+        "minimum": 55671,
+        "largest": 63488,
+        "psram": 6091308,
+        "psram_min": 6091308,
+        "psram_largest": 6029312,
+        "sample_stack": 10516,
+        "worker_stack_at_emit": 6784
+      }
+    ],
+    "wifi_ip_event_observed": true,
+    "capture_seconds": 90.14342009600023
+  },
+  "worker_tls": {
+    "observation_pass": false,
+    "boot_checks": {
+      "expected_app": true,
+      "expected_sdk": true,
+      "factory_boot": true,
+      "single_app_boot": true,
+      "psram_8mib": true,
+      "psram_sdk_test": true,
+      "instructions_in_psram": true,
+      "rodata_in_psram": true,
+      "rgb_initialized": true,
+      "gt911_initialized": true,
+      "ui_ready": true,
+      "no_fatal_log": true,
+      "periodic_resources": true,
+      "resource_errors_clear": true,
+      "touch_fresh": true,
+      "increasing_uptime": true,
+      "heap_samples_consistent": true,
+      "comparable_wifi_load": true,
+      "optional_services_started": true,
+      "explicit_self_test": true,
+      "complete_startup": true,
+      "single_complete_boot_window": true,
+      "startup_scope": true,
+      "phase_times_ordered": true,
+      "nonzero_measured_stacks": true,
+      "phase_heap_samples_consistent": true,
+      "worker_stack_published": true,
+      "nonzero_valid_periodic_stack": true,
+      "explicit_stack_mode": true,
+      "worker_watermarks_within_request": true,
+      "adequate_periodic_samples": true,
+      "one_explicit_network_probe": true,
+      "complete_probe_stage_sequence": false,
+      "sntp_sync_and_cleanup": true,
+      "verified_head_and_cleanup": false,
+      "explicit_probe_success": false,
+      "probe_numeric_resources": true,
+      "three_serialized_windows": true,
+      "two_complete_network_windows": true,
+      "network_window_times_ordered": true,
+      "tls_after_boot_self_test": true,
+      "dma_registered_once": true,
+      "dma_complete_phase_sequence": false,
+      "dma_exact_heaps_consistent": true,
+      "dma_complete_summary": false,
+      "dma_no_allocation_failure": false,
+      "dma_typed_error_record": false,
+      "dma_records_bounded_ordered": true,
+      "dma_failures_well_formed": true,
+      "dma_success_error_consistent": false
+    },
+    "periodic_samples": 16,
+    "ranges": {
+      "internal_free": [
+        15147,
+        17171
+      ],
+      "internal_min": [
+        2408,
+        16067
+      ],
+      "internal_largest": [
+        7680,
+        8704
+      ],
+      "psram_free": [
+        6088240,
+        6088976
+      ],
+      "psram_min": [
+        6054416,
+        6088688
+      ],
+      "ota_stack": [
+        3936,
+        6752
+      ],
+      "touch_age_ms": [
+        4,
+        19
+      ]
+    },
+    "startup_points": [
+      {
+        "kind": 0,
+        "id": 0,
+        "sample_ms": 51,
+        "scope": 0,
+        "internal": 266639,
+        "minimum": 201908,
+        "largest": 172032,
+        "psram": 6858556,
+        "psram_min": 6858556,
+        "psram_largest": 6684672,
+        "sample_stack": 14980,
+        "worker_stack_at_emit": 7216
+      },
+      {
+        "kind": 0,
+        "id": 1,
+        "sample_ms": 376,
+        "scope": 1,
+        "internal": 224643,
+        "minimum": 224643,
+        "largest": 139264,
+        "psram": 6089716,
+        "psram_min": 6089716,
+        "psram_largest": 6029312,
+        "sample_stack": 14084,
+        "worker_stack_at_emit": 6784
+      },
+      {
+        "kind": 0,
+        "id": 2,
+        "sample_ms": 380,
+        "scope": 1,
+        "internal": 186063,
+        "minimum": 186063,
+        "largest": 106496,
+        "psram": 6089716,
+        "psram_min": 6089716,
+        "psram_largest": 6029312,
+        "sample_stack": 14084,
+        "worker_stack_at_emit": 6784
+      },
+      {
+        "kind": 0,
+        "id": 3,
+        "sample_ms": 699,
+        "scope": 1,
+        "internal": 173579,
+        "minimum": 160795,
+        "largest": 100352,
+        "psram": 6089516,
+        "psram_min": 6089516,
+        "psram_largest": 6029312,
+        "sample_stack": 12196,
+        "worker_stack_at_emit": 6784
+      },
+      {
+        "kind": 0,
+        "id": 4,
+        "sample_ms": 2302,
+        "scope": 1,
+        "internal": 57387,
+        "minimum": 55315,
+        "largest": 47104,
+        "psram": 6089052,
+        "psram_min": 6089052,
+        "psram_largest": 6029312,
+        "sample_stack": 10580,
+        "worker_stack_at_emit": 6784
+      },
+      {
+        "kind": 0,
+        "id": 5,
+        "sample_ms": 1399,
+        "scope": 1,
+        "internal": 73063,
+        "minimum": 73063,
+        "largest": 63488,
+        "psram": 6089516,
+        "psram_min": 6089516,
+        "psram_largest": 6029312,
+        "sample_stack": 12196,
+        "worker_stack_at_emit": 6784
+      },
+      {
+        "kind": 0,
+        "id": 6,
+        "sample_ms": 2293,
+        "scope": 1,
+        "internal": 81055,
+        "minimum": 55315,
+        "largest": 63488,
+        "psram": 6089516,
+        "psram_min": 6089516,
+        "psram_largest": 6029312,
+        "sample_stack": 10580,
+        "worker_stack_at_emit": 6784
+      }
+    ],
+    "wifi_ip_event_observed": true,
+    "capture_seconds": 90.10661853400052,
+    "native_tls": {
+      "snapshots": [
+        {
+          "internal_free": 16463,
+          "internal_min": 7860,
+          "internal_largest": 7680,
+          "psram_free": 6088268,
+          "psram_min": 6088232,
+          "stack": 6640,
+          "stage": "sntp_before",
+          "log_ordinal": 149
+        },
+        {
+          "internal_free": 16463,
+          "internal_min": 16463,
+          "internal_largest": 7680,
+          "psram_free": 6088240,
+          "psram_min": 6088240,
+          "stack": 6608,
+          "stage": "sntp_window_start",
+          "log_ordinal": 150
+        },
+        {
+          "internal_free": 16023,
+          "internal_min": 13979,
+          "internal_largest": 7680,
+          "psram_free": 6088240,
+          "psram_min": 6088240,
+          "stack": 6000,
+          "stage": "sntp_window_end",
+          "log_ordinal": 154
+        },
+        {
+          "internal_free": 16059,
+          "internal_min": 7860,
+          "internal_largest": 7680,
+          "psram_free": 6088268,
+          "psram_min": 6088232,
+          "stack": 6000,
+          "stage": "tls_before",
+          "log_ordinal": 161
+        },
+        {
+          "internal_free": 16023,
+          "internal_min": 16023,
+          "internal_largest": 7680,
+          "psram_free": 6088240,
+          "psram_min": 6088240,
+          "stack": 6000,
+          "stage": "tls_window_start",
+          "log_ordinal": 162
+        },
+        {
+          "internal_free": 16023,
+          "internal_min": 16023,
+          "internal_largest": 7680,
+          "psram_free": 6088240,
+          "psram_min": 6088240,
+          "stack": 6000,
+          "stage": "http_before_init",
+          "log_ordinal": 163
+        },
+        {
+          "internal_free": 12287,
+          "internal_min": 12107,
+          "internal_largest": 7680,
+          "psram_free": 6088240,
+          "psram_min": 6088240,
+          "stack": 6000,
+          "stage": "http_after_init",
+          "log_ordinal": 166
+        },
+        {
+          "internal_free": 9943,
+          "internal_min": 2415,
+          "internal_largest": 6144,
+          "psram_free": 6088240,
+          "psram_min": 6054416,
+          "stack": 3936,
+          "stage": "http_after_open",
+          "log_ordinal": 179
+        },
+        {
+          "internal_free": 13715,
+          "internal_min": 2415,
+          "internal_largest": 6144,
+          "psram_free": 6088240,
+          "psram_min": 6054416,
+          "stack": 3936,
+          "stage": "http_after_cleanup",
+          "log_ordinal": 180
+        },
+        {
+          "internal_free": 13715,
+          "internal_min": 2415,
+          "internal_largest": 6144,
+          "psram_free": 6088240,
+          "psram_min": 6054416,
+          "stack": 3936,
+          "stage": "tls_window_end",
+          "log_ordinal": 181
+        },
+        {
+          "internal_free": 15287,
+          "internal_min": 2408,
+          "internal_largest": 7680,
+          "psram_free": 6088268,
+          "psram_min": 6054416,
+          "stack": 3936,
+          "stage": "worker_end",
+          "log_ordinal": 189
+        }
+      ],
+      "sntp": [
+        {
+          "sntp_result": 0,
+          "time_result": 0,
+          "elapsed_ms": 1020,
+          "cleanup": 1,
+          "source": 2
+        }
+      ],
+      "tls": [
+        {
+          "tls_result": 5,
+          "status": 0,
+          "elapsed_ms": 1878,
+          "cleanup": 1,
+          "native_error": 28674,
+          "tls_error": 32640,
+          "cert_flags": 0,
+          "header_bytes": 0
+        }
+      ],
+      "completion": [
+        {
+          "pass": 0,
+          "stage": "tls"
+        }
+      ],
+      "production_budget_qualified": false,
+      "source_authenticated": false
+    },
+    "dma_trace": {
+      "registration": [
+        {
+          "kind": 0,
+          "version": 1,
+          "installed": 1,
+          "result": 0,
+          "capacity": 4,
+          "log_ordinal": 131
+        }
+      ],
+      "phases": [
+        {
+          "kind": 1,
+          "phase": 1,
+          "edge": 0,
+          "dma_caps": 8,
+          "dma_free": 8675,
+          "dma_largest": 7168,
+          "idma_caps": 2060,
+          "idma_free": 8675,
+          "idma_largest": 7168,
+          "log_ordinal": 151
+        },
+        {
+          "kind": 1,
+          "phase": 1,
+          "edge": 1,
+          "dma_caps": 8,
+          "dma_free": 8235,
+          "dma_largest": 7168,
+          "idma_caps": 2060,
+          "idma_free": 8235,
+          "idma_largest": 7168,
+          "log_ordinal": 153
+        },
+        {
+          "kind": 1,
+          "phase": 2,
+          "edge": 0,
+          "dma_caps": 8,
+          "dma_free": 8235,
+          "dma_largest": 7168,
+          "idma_caps": 2060,
+          "idma_free": 8235,
+          "idma_largest": 7168,
+          "log_ordinal": 164
+        },
+        {
+          "kind": 1,
+          "phase": 2,
+          "edge": 1,
+          "dma_caps": 8,
+          "dma_free": 4463,
+          "dma_largest": 4352,
+          "idma_caps": 2060,
+          "idma_free": 4463,
+          "idma_largest": 4352,
+          "log_ordinal": 165
+        },
+        {
+          "kind": 1,
+          "phase": 3,
+          "edge": 0,
+          "dma_caps": 8,
+          "dma_free": 4499,
+          "dma_largest": 4352,
+          "idma_caps": 2060,
+          "idma_free": 4499,
+          "idma_largest": 4352,
+          "log_ordinal": 167
+        },
+        {
+          "kind": 1,
+          "phase": 3,
+          "edge": 1,
+          "dma_caps": 8,
+          "dma_free": 3719,
+          "dma_largest": 2944,
+          "idma_caps": 2060,
+          "idma_free": 3719,
+          "idma_largest": 2944,
+          "log_ordinal": 174
+        }
+      ],
+      "failures": [
+        {
+          "kind": 2,
+          "seq": 1,
+          "phase": 3,
+          "bytes": 190,
+          "caps": 2060,
+          "owner": 0,
+          "isr": 0,
+          "oversize": 0,
+          "allocator": 1,
+          "request_free": 3719,
+          "request_largest": 2944,
+          "log_ordinal": 175
+        },
+        {
+          "kind": 2,
+          "seq": 2,
+          "phase": 3,
+          "bytes": 190,
+          "caps": 2060,
+          "owner": 0,
+          "isr": 0,
+          "oversize": 0,
+          "allocator": 1,
+          "request_free": 3719,
+          "request_largest": 2944,
+          "log_ordinal": 176
+        },
+        {
+          "kind": 2,
+          "seq": 3,
+          "phase": 3,
+          "bytes": 190,
+          "caps": 2060,
+          "owner": 0,
+          "isr": 0,
+          "oversize": 0,
+          "allocator": 1,
+          "request_free": 3479,
+          "request_largest": 2944,
+          "log_ordinal": 177
+        },
+        {
+          "kind": 2,
+          "seq": 4,
+          "phase": 3,
+          "bytes": 136,
+          "caps": 2060,
+          "owner": 0,
+          "isr": 0,
+          "oversize": 0,
+          "allocator": 1,
+          "request_free": 3695,
+          "request_largest": 2944,
+          "log_ordinal": 178
+        }
+      ],
+      "summary": [
+        {
+          "kind": 3,
+          "valid": 0,
+          "total": 9,
+          "stored": 4,
+          "lost": 5,
+          "exhausted": 0,
+          "log_ordinal": 190
+        }
+      ],
+      "error_layers": [
+        {
+          "kind": 4,
+          "layer_known": 1,
+          "esp_error": 32794,
+          "mbedtls_code": 32640,
+          "cert_flags": 0,
+          "header_known": 0,
+          "header_result": 0,
+          "log_ordinal": 188
+        }
+      ],
+      "request_heap_sampled_after_unwind": true,
+      "failure_time_heap_sampled": false
+    }
+  },
+  "normal_return": {
+    "observation_pass": false,
+    "boot_checks": {
+      "expected_app": true,
+      "expected_sdk": true,
+      "factory_boot": true,
+      "single_app_boot": true,
+      "psram_8mib": true,
+      "psram_sdk_test": true,
+      "instructions_in_psram": true,
+      "rodata_in_psram": true,
+      "rgb_initialized": true,
+      "gt911_initialized": true,
+      "ui_ready": true,
+      "no_fatal_log": true,
+      "periodic_resources": true,
+      "resource_errors_clear": true,
+      "touch_fresh": false,
+      "increasing_uptime": true,
+      "heap_samples_consistent": true,
+      "no_unexpected_network_probe": true,
+      "no_unexpected_dma_hook": true
+    },
+    "periodic_samples": 4,
+    "ranges": {
+      "internal_free": [
+        22335,
+        22795
+      ],
+      "internal_min": [
+        6956,
+        6956
+      ],
+      "internal_largest": [
+        7680,
+        7680
+      ],
+      "psram_free": [
+        6090732,
+        6090732
+      ],
+      "psram_min": [
+        6076588,
+        6076588
+      ],
+      "touch_age_ms": [
+        0,
+        4294967295
+      ]
+    },
+    "startup_points": [],
+    "wifi_ip_event_observed": true,
+    "capture_seconds": 30.0424048950008,
+    "touch_age_ms": [
+      4294967295,
+      13,
+      17,
+      0
+    ]
+  },
+  "factory_partition_sha256": "081d99e707f578824cc9058d1d18c4f87700b2e60a09afa907e98a9c33bffd1a",
+  "post_recovery": {
+    "started_utc": "2026-11-23T15:23:15.134645+00:00",
+    "finished_utc": "2026-11-23T15:23:45.191962+00:00",
+    "elapsed_seconds": 30.057317992999742,
+    "maximum_session_seconds": 90,
+    "flash_operations": false,
+    "uart_capture_only": true,
+    "observation": {
+      "observation_pass": true,
+      "boot_checks": {
+        "expected_app": true,
+        "expected_sdk": true,
+        "factory_boot": true,
+        "single_app_boot": true,
+        "psram_8mib": true,
+        "psram_sdk_test": true,
+        "instructions_in_psram": true,
+        "rodata_in_psram": true,
+        "rgb_initialized": true,
+        "gt911_initialized": true,
+        "ui_ready": true,
+        "no_fatal_log": true,
+        "periodic_resources": true,
+        "resource_errors_clear": true,
+        "touch_fresh": true,
+        "increasing_uptime": true,
+        "heap_samples_consistent": true,
+        "no_unexpected_network_probe": true,
+        "no_unexpected_dma_hook": true
+      },
+      "periodic_samples": 5,
+      "ranges": {
+        "internal_free": [
+          22331,
+          22819
+        ],
+        "internal_min": [
+          112,
+          112
+        ],
+        "internal_largest": [
+          7680,
+          7680
+        ],
+        "psram_free": [
+          6090732,
+          6090732
+        ],
+        "psram_min": [
+          6076588,
+          6076588
+        ],
+        "touch_age_ms": [
+          3,
+          19
+        ]
+      },
+      "startup_points": [],
+      "wifi_ip_event_observed": true,
+      "capture_seconds": null
+    }
+  },
+  "left_running": "fecc05d-rev12-ota-factory; full fresh16MiB restore verified, then independent UART30s PASS",
+  "physical_ui_confirmation": false,
+  "physical_fps_latency_measured": false,
+  "signed_ota_check_install": false,
+  "efuse_or_options_written": false,
+  "stm32_access": false,
+  "can_or_motion_access": false
+}

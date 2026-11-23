@@ -1,5 +1,23 @@
 # Открытые вопросы и блокирующие решения
 
+## 23 ноября: DMA headroom и LVGL allocator
+
+[Стенд46cf400](evidence/hardware/2026-11-23-esp32-dma-46cf400/README.md)
+подтвердил9 failed DMA|INTERNAL|8BIT allocations при TLS handshake, сохранил4
+other-task requests190/190/190/136bytes. Потеря5 явно помечена; точный участок
+SDK/AES request не подтверждён. Не подменять DMA headroom generic internal
+largest. HTTPS HEAD, configured crypto/install/rollback и production floors
+пока не приняты. Dashboard потратил100516bytes internal без расхода PSRAM:
+следующий отдельный PR — официальный LVGL CUSTOM PSRAM backend только OTA.
+
+Full fresh16MiB USB restore/verify/reset теперь реально проверен, после него
+UART30s PASS. Это восстановление текущего fecc05d snapshot, не OTA rollback
+или power-loss test. В старом fecc05d один touch sample дал UINT32_MAX; причина
+соответствует известному clock-before-snapshot race. Сегодняшнего owner UI/
+physical touch/FPS/latency подтверждения нет. Ключ/context по-прежнему не заданы.
+
+## История до 23 ноября
+
 ## 22 ноября,23:25–23:37: touch PASS, AES allocation в HTTPS
 
 [Новый стенд3927063](evidence/hardware/2026-11-22-esp32-worker-tls-3927063/README.md) завершён за743,183s:

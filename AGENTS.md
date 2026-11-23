@@ -142,7 +142,20 @@ PR и Actions; не копировать код уже открытого PR. Д
    теги, релизы, секреты CI и публикации под видом обычного push.
 6. Обновлять актуальный статус; исторические отчёты сохранять с явной пометкой.
 
-## Текущее задание: P1 — AES/DMA memory после HEAD FAIL
+## Текущее задание: P1 — SRAM headroom LVGL после DMA trace
+
+[Стенд46cf400](docs/evidence/hardware/2026-11-23-esp32-dma-46cf400/README.md)
+завершён23ноября за810,754s: control PASS1–20ms, SNTP PASS, TLS open FAIL
+(HW_ACCEL_FAILED),9 allocation failures/caps DMA|INTERNAL|8BIT. Первые4
+сохранены (190/190/190/136bytes, other task),5 lost — trace invalid, остальные
+boots отменены. Factory fecc05d verify PASS; его старый touch clock race дал
+UINT32_MAX, поэтому один full fresh16MiB restore/verify/reset выполнен.
+Отдельный UART30s после restore PASS3–19ms; physical UI owner check не получен.
+Следующий отдельный PR — официальный LVGL CUSTOM PSRAM heap только OTA:
+dashboard забрал100516bytes internal без расхода PSRAM. Не менять глобальную
+malloc policy/stack/DMA reserve/TLS/AES/CA/time, не выводить floors из HEAD.
+Новый exact-image стенд после CI, со свежим снимком и возвратом; старый пакет
+46cf400 закрыт. Ни merge, ни motion/irreversible/release не разрешены.
 
 23ноября2026 (Asia/Almaty) владелец заранее разрешил доступ и необходимые
 стендовые операции P1 на подключаемых платах сегодня и потребовал не
