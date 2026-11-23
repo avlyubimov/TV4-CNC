@@ -94,7 +94,7 @@ class MigrationTests(CandidateTests):
     # already registered independently by CTest.
     def configure(self):
         self.profile='rev12-tls-bench';super().configure();self.profile='rev12-ota'
-        p=self.build/'config/sdkconfig.json';c=json.loads(p.read_text());c.update(TV4_UTC_TLS_BENCH=False,TV4_OTA_ENABLED=True,BOOTLOADER_APP_ROLLBACK_ENABLE=True,PARTITION_TABLE_CUSTOM_FILENAME='ota/partitions.ab.csv',ESP_TASK_WDT_EN=True,ESP_TASK_WDT_INIT=True,ESP_TASK_WDT_PANIC=True,ESP_TASK_WDT_TIMEOUT_S=5,ESP_TASK_WDT_CHECK_IDLE_TASK_CPU0=True,ESP_TASK_WDT_CHECK_IDLE_TASK_CPU1=True,ESP_INT_WDT=True,ESP_SYSTEM_PANIC_PRINT_REBOOT=True,SPIRAM_XIP_FROM_PSRAM=True,SPIRAM_FETCH_INSTRUCTIONS=True,SPIRAM_RODATA=True);p.write_text(json.dumps(c))
+        p=self.build/'config/sdkconfig.json';c=json.loads(p.read_text());c.update(TV4_UTC_TLS_BENCH=False,TV4_OTA_ENABLED=True,LV_USE_CLIB_MALLOC=False,LV_USE_CUSTOM_MALLOC=True,BOOTLOADER_APP_ROLLBACK_ENABLE=True,PARTITION_TABLE_CUSTOM_FILENAME='ota/partitions.ab.csv',ESP_TASK_WDT_EN=True,ESP_TASK_WDT_INIT=True,ESP_TASK_WDT_PANIC=True,ESP_TASK_WDT_TIMEOUT_S=5,ESP_TASK_WDT_CHECK_IDLE_TASK_CPU0=True,ESP_TASK_WDT_CHECK_IDLE_TASK_CPU1=True,ESP_INT_WDT=True,ESP_SYSTEM_PANIC_PRINT_REBOOT=True,SPIRAM_XIP_FROM_PSRAM=True,SPIRAM_FETCH_INSTRUCTIONS=True,SPIRAM_RODATA=True);p.write_text(json.dumps(c))
         table=b''.join(struct.pack('<HBBII16sI',0x50aa,k,s,a,n,label.encode(),0) for k,s,a,n,label in migration.check_idf_build.OTA_PARTITIONS)
         (self.build/'partition_table/partition-table.bin').write_bytes(table)
         (self.build/'ota-local').mkdir();context.prepare(None,self.build/'ota-local')
@@ -141,7 +141,7 @@ class MigrationTests(CandidateTests):
         with self.assertRaisesRegex(ValueError,'clean'):self.prepare_migration()
     def test_rollback_security_and_wrong_layout(self):
         p=self.build/'config/sdkconfig.json';good=json.loads(p.read_text())
-        for change in ({'SPIRAM_XIP_FROM_PSRAM':False},{'SPIRAM_FETCH_INSTRUCTIONS':False},{'SPIRAM_RODATA':False},{'ESP_TASK_WDT_PANIC':False},{'ESP_SYSTEM_PANIC_PRINT_REBOOT':False},{'BOOTLOADER_APP_ROLLBACK_ENABLE':False},{'BOOTLOADER_APP_ANTI_ROLLBACK':True},{'SECURE_BOOT':True},{'SECURE_FLASH_ENC_ENABLED':True},{'TV4_OTA_ENABLED':False},{'MBEDTLS_INTERNAL_MEM_ALLOC':True}):
+        for change in ({'LV_USE_CUSTOM_MALLOC':False},{'LV_USE_CLIB_MALLOC':True},{'SPIRAM_XIP_FROM_PSRAM':False},{'SPIRAM_FETCH_INSTRUCTIONS':False},{'SPIRAM_RODATA':False},{'ESP_TASK_WDT_PANIC':False},{'ESP_SYSTEM_PANIC_PRINT_REBOOT':False},{'BOOTLOADER_APP_ROLLBACK_ENABLE':False},{'BOOTLOADER_APP_ANTI_ROLLBACK':True},{'SECURE_BOOT':True},{'SECURE_FLASH_ENC_ENABLED':True},{'TV4_OTA_ENABLED':False},{'MBEDTLS_INTERNAL_MEM_ALLOC':True}):
             c=copy.deepcopy(good);c.update(change);p.write_text(json.dumps(c))
             with self.subTest(change=change),self.assertRaises(ValueError):self.prepare_migration()
         p.write_text(json.dumps(good));p=self.build/'partition_table/partition-table.bin';raw=bytearray(p.read_bytes());struct.pack_into('<I',raw,4*32+4,0x10000);p.write_bytes(raw)

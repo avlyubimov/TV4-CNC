@@ -1,5 +1,5 @@
 include(${CMAKE_CURRENT_LIST_DIR}/../../../third_party/cjson/check.cmake)
-set(platform_sources "../ota/memory_diagnostics.c" "../ota/dma_diagnostics.c")
+set(platform_sources "../ota/memory_diagnostics.c" "../ota/dma_diagnostics.c" "../ui/lvgl_psram.c")
 if(CONFIG_TV4_BOARD_REV12)
     if(NOT CONFIG_SPIRAM OR NOT CONFIG_SPIRAM_MODE_OCT)
         message(FATAL_ERROR "Rev 1.2 bench profile requires verified octal PSRAM configuration")
@@ -41,6 +41,9 @@ if(CONFIG_TV4_OTA_WORKER_TLS_BENCH AND
     message(FATAL_ERROR "Worker TLS bench requires exclusive unprovisioned OTA stack/trace diagnostics")
 endif()
 if(CONFIG_TV4_OTA_ENABLED)
+    # LVGL calls back into main's CUSTOM core. IDF6 links these archives
+    # without a rescan group, so load this one implementation before LVGL.
+    target_link_options(${COMPONENT_LIB} INTERFACE "LINKER:--undefined=lv_malloc_core")
     if(CONFIG_TV4_OTA_WORKER_STACK_BENCH AND
        (NOT CONFIG_TV4_OTA_MEMORY_DIAGNOSTICS OR TV4_OTA_CONTEXT))
         message(FATAL_ERROR "Worker stack bench requires unprovisioned OTA diagnostics")
@@ -67,4 +70,6 @@ endif()
 # own frame bounded; these numbers are not a full SDK/logging call-stack bound.
 set_source_files_properties("../ota/memory_diagnostics.c" "../ota/dma_diagnostics.c" PROPERTIES
     COMPILE_OPTIONS "-fstack-usage;-Wframe-larger-than=192")
+set_source_files_properties("../ui/lvgl_psram.c" PROPERTIES
+    COMPILE_OPTIONS "-fstack-usage;-Wframe-larger-than=128")
 set_property(SOURCE "main.c" "../ota/service.c" "../ota/utc_tls_bench.c" APPEND PROPERTY COMPILE_OPTIONS "-fstack-usage")

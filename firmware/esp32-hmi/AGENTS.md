@@ -1,5 +1,12 @@
 # ESP32 HMI — специализированные правила
 
+После слияния PR #74 база main00a6d86. Читать docs/plans/P1_LVGL_PSRAM_HEAP.md:
+только rev12-ota выбирает LVGL CUSTOM/PSRAM|8BIT, без internal fallback.
+SDK6 static archive требует anchor lv_malloc_core; проверять actual ELF и
+отсутствие второго core в LVGL archive. Old cached OTA CLIB отклоняется,
+генерируемый sdkconfig сохранить перед регенерацией. Живые buffers/IRQ не
+переносить; LVGL остаётся в task app_main. Новый hardware пакет только после CI.
+
 Стенд46cf40023ноября закрыт: DMA shortage при handshake,9 failures/4 retained/
 5 lost, fecc05d full snapshot restore/verify и отдельный UART30s PASS. Следующий
 отдельный PR — официальный CUSTOM PSRAM allocator LVGL только explicit OTA;

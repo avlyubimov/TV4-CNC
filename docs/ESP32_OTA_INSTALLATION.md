@@ -147,6 +147,14 @@ python3 tools/prepare_ota_migration.py --build build-idf-6.1.1-rev12-ota --sdk 6
 python3 tools/prepare_ota_migration.py --verify build-migration-review
 ```
 
+После исправления DMA headroom explicit OTA использует официальный CUSTOM
+allocator LVGL9 на SPIRAM|8BIT. Internal fallback отсутствует; глобальная malloc
+policy, RGB buffers и обычные профили CLIB прежние. Старый OTA `sdkconfig`
+мог сохранить CLIB choice: сначала сохраните этот генерируемый файл вне build
+tree, затем удалите только исходный `sdkconfig` и повторите сборку из defaults.
+Не удаляйте owner context/key или Flash backups. Несовместимый cached choice
+намеренно останавливает компиляцию. Flash map при этом не меняется.
+
 Build/prepare/verify не открывают serial/USB и не запускают esptool. Пакет
 готовится только из clean commit, с проверкой версии app/project/source,
 app checksum/встроенного SHA, ELF digest, точной карты, rollback/watchdog/security

@@ -144,6 +144,13 @@ PR и Actions; не копировать код уже открытого PR. Д
 
 ## Текущее задание: P1 — SRAM headroom LVGL после DMA trace
 
+PR #74 слит владельцем; база main00a6d86. Текущая отдельная интеграция —
+docs/plans/P1_LVGL_PSRAM_HEAP.md: официальный CUSTOM heap только OTA, новые
+прошиваемые ELF/BIN двух SDK и сравнительный стенд после CI. Старый control
+46cf400 допустим только как sealed comparator нового пакета со свежим backup;
+использованный пакет/авторизация не переиспользуются. Сегодняшнее общее
+разрешение владельца сохраняется без повторных вопросов.
+
 [Стенд46cf400](docs/evidence/hardware/2026-11-23-esp32-dma-46cf400/README.md)
 завершён23ноября за810,754s: control PASS1–20ms, SNTP PASS, TLS open FAIL
 (HW_ACCEL_FAILED),9 allocation failures/caps DMA|INTERNAL|8BIT. Первые4

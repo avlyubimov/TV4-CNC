@@ -23,7 +23,7 @@ class BuildValidationTests(unittest.TestCase):
             (self.root / name).mkdir()
         self.config = dict(ESPTOOLPY_FLASHSIZE="16MB", ESPTOOLPY_FLASHFREQ="80m", LV_COLOR_DEPTH=16,
                            FREERTOS_HZ=1000, ESP_DEFAULT_CPU_FREQ_MHZ=240, TV4_BOARD_REV12=False,
-                           MBEDTLS_INTERNAL_MEM_ALLOC=True)
+                           MBEDTLS_INTERNAL_MEM_ALLOC=True, LV_USE_CLIB_MALLOC=True)
         (self.root / "project_description.json").write_text(json.dumps(dict(target="esp32s3", git_revision="v6.1.1")))
         header = bytearray(24)
         header[0] = 0xE9
