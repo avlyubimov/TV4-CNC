@@ -20,6 +20,9 @@ for sdk in 5 6; do
       -o "$output/utc-$sdk-$standalone.o"
     printf 'native UTC/HEAD SDK%s standalone=%s: analyzer PASS\n' "$sdk" "$standalone"
     if [[ "$standalone" == 0 ]]; then
+      "$compiler" "${common[@]}" "${flags[@]}" -c firmware/esp32-hmi/ota/dma_diagnostics.c \
+        -o "$output/dma-$sdk.o"
+      printf 'actual DMA failure callback SDK%s: analyzer PASS\n' "$sdk"
       "$compiler" "${common[@]}" "${flags[@]}" -c firmware/esp32-hmi/ota/memory_diagnostics.c \
         -o "$output/monitor-$sdk.o"
       printf 'actual OTA monitor SDK%s: analyzer PASS\n' "$sdk"

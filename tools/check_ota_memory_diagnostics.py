@@ -6,6 +6,7 @@ import re
 import subprocess
 from pathlib import Path
 import check_idf_build
+import check_ota_dma_diagnostics
 
 ROOT=Path(__file__).resolve().parents[1]
 
@@ -105,7 +106,9 @@ def inspect(build,profile,sdk,trace=False,worker_stack_bench=False,worker_tls_be
             require(len(fields)==3 and fields[2] in ('static','dynamic,bounded'),'unbounded TLS compiler frame')
             tls_frames[fields[0].rsplit(':',1)[-1]]=int(fields[1])
         require(tls_frames,'native TLS compiler frames missing')
+    dma=check_ota_dma_diagnostics.inspect(build,worker_tls_bench)
     return dict(profile=profile,sdk=sdk,memory_diagnostics=trace,worker_stack_bench=worker_stack_bench,
+        dma_diagnostics=dma,
         worker_tls_bench=worker_tls_bench,tls_compiler_frames=tls_frames,tls_monitor_adapter_imports=tls_monitor_imports,
         worker_stack_bytes_requested=requested,worker_stack_runtime_qualified=False,service_compiler_frames=service_frames,module_writable_bytes=writable,
         module_writable_ceiling=512,compiler_frames=stack,compiler_frame_ceiling=192,

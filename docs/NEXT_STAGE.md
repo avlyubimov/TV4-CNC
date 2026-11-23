@@ -1,16 +1,20 @@
 # P1 — устранить AES/DMA memory blocker
 
-## Активный P1 после main70eaf1d
+## Активный P1 после main502a73d
 
-PR #71/#72 слиты владельцем, main CI15/15 PASS. [Стенд3927063](evidence/hardware/2026-11-22-esp32-worker-tls-3927063/README.md)
+PR #71–73 слиты владельцем, main CI15/15 PASS. [Стенд3927063](evidence/hardware/2026-11-22-esp32-worker-tls-3927063/README.md)
 реально выполнен по отдельному разрешению: control touch_fresh PASS, SNTP PASS,
 первый HTTPS HEAD FAIL на hardware-AES allocation. Остальные TLS boots отменены.
 Весь factory fecc05d возвращён, verify/UART/owner UI-touch-Wi-Fi-SETUP PASS;
 сеанс743,183s закрыт. На F407 ee7d179 изменений нет.
 
-Следующая [одна интеграция](plans/P1_AES_DMA_MEMORY.md): конкретные DMA-capability
-и allocation-failure данные → обоснованная экономия/размещение памяти → новый
-reviewed exact-image пакет/отдельное разрешение. Не отключать hardware AES,
+Следующая [одна интеграция](plans/P1_DMA_ALLOCATION_TRACE.md): прошиваемый
+diagnostic image обоих SDK с точными allocation bytes/caps/phase и DMA heaps →
+ограниченный exact-image стенд → обоснованная экономия/размещение памяти.
+Владелец заранее разрешил необходимые P1 подключения и стенды на23ноября2026
+(Asia/Almaty), без повторных запросов. Использовать новый одноразовый пакет,
+fresh16MiB/two-NVMe и автоматический возврат fecc05d; старый3927063 закрыт.
+Не отключать hardware AES,
 CA/hostname/date, не снижать TLS16384/4096/DMA64KiB/display/clock/touch требования.
 После HTTPS — owner settings и реальная signed SESSION4/resource CHECK,
 затем install/self-test/confirm/rollback и ручная release acceptance. Пока

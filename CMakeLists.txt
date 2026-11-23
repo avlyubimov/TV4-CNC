@@ -147,6 +147,27 @@ foreach(group cli cohort)
   set_tests_properties(release_review_${group} PROPERTIES TIMEOUT 60)
 endforeach()
 
+# Actual failure-only DMA callback and task/ISR ownership, no device access.
+find_package(Threads REQUIRED)
+add_test(NAME ota_dma_artifact_guards COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/tests/ota_dma_diagnostics_build_tests.py)
+set_tests_properties(ota_dma_artifact_guards PROPERTIES TIMEOUT 30)
+foreach(dma_enabled 0 1)
+  set(dma_test ota_dma_diagnostics_${dma_enabled}_tests)
+  add_executable(${dma_test} tests/ota_dma_diagnostics_tests.c ${HMI}/ota/dma_diagnostics.c)
+  target_include_directories(${dma_test} PRIVATE tests ${HMI}/ota)
+  target_compile_definitions(${dma_test} PRIVATE TV4_OTA_DMA_DIAG_TEST=1 TV4_OTA_DMA_DIAG_ENABLED=${dma_enabled})
+  target_compile_options(${dma_test} PRIVATE -Wall -Wextra -Werror -UNDEBUG)
+  target_link_libraries(${dma_test} PRIVATE Threads::Threads)
+  if(dma_enabled)
+    foreach(case happy outside isr other-task unknown overflow wrong-owner nested mismatch init-fail oversize concurrent begin-race)
+      add_test(NAME ota_dma_${case} COMMAND ${dma_test} ${case})
+      set_tests_properties(ota_dma_${case} PROPERTIES TIMEOUT 15)
+    endforeach()
+  else()
+    add_test(NAME ota_dma_disabled COMMAND ${dma_test} disabled)
+  endif()
+endforeach()
+
 # Native UTC/HEAD and the same memory adapter, against both pinned API shapes.
 # These executables contain SDK doubles only and never access a live network.
 add_test(NAME ota_worker_tls_build_guards COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/tests/ota_worker_tls_build_tests.py)
@@ -155,7 +176,7 @@ foreach(tls_sdk 5 6)
   foreach(standalone 0 1)
     set(tls_test ota_worker_tls_${tls_sdk}_${standalone}_tests)
     add_executable(${tls_test} tests/ota_worker_tls_tests.c
-      ${HMI}/ota/utc_tls_bench.c ${HMI}/ota/memory_diagnostics.c)
+      ${HMI}/ota/utc_tls_bench.c ${HMI}/ota/memory_diagnostics.c ${HMI}/ota/dma_diagnostics.c)
     target_include_directories(${tls_test} PRIVATE tests/ota_tls_sdk tests/ota_service_sdk
       tests ${HMI}/ota ${HMI}/network)
     if(standalone)
@@ -175,7 +196,8 @@ foreach(tls_sdk 5 6)
     else()
       set(tls_cases success offline cancel-settle cancel-sntp cancel-open timeout-open
         sntp-fail start1-fail start2-fail stop1-fail stop2-fail guard init-fail
-        open-fail headers-fail status cleanup-fail large-headers clock-jump)
+        open-fail headers-fail status cleanup-fail large-headers clock-jump
+        dma-init-fail aes-no-memory dma-overflow)
     endif()
     foreach(case IN LISTS tls_cases)
       add_test(NAME ota_worker_tls_${tls_sdk}_${standalone}_${case} COMMAND ${tls_test} ${case})

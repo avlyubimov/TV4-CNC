@@ -24,7 +24,17 @@ static TaskFunction_t standalone;
 static jmp_buf escape;
 static int cancel_cookie;
 static unsigned result;
+static esp_alloc_failed_hook_t failed_hook;
+static unsigned registrations,dma_events,dma_points,dma_finishes,layer_records;
+static bool dma_valid;
 static bool is(const char *s) {return !strcmp(mode,s);}
+TaskHandle_t xTaskGetCurrentTaskHandle(void) {return &cancel_cookie;}
+BaseType_t xPortInIsrContext(void) {return 0;}
+esp_err_t heap_caps_register_failed_alloc_callback(esp_alloc_failed_hook_t callback) {
+    assert(!locks && !failed_hook && callback);++registrations;
+    if(is("dma-init-fail"))return ESP_FAIL;
+    failed_hook=callback;return ESP_OK;
+}
 void service_test_lock(void) {assert(!locks);++locks;}
 void service_test_unlock(void) {assert(locks==1);--locks;}
 int64_t esp_timer_get_time(void) {return (int64_t)clock_ms*1000;}
@@ -102,13 +112,18 @@ int64_t esp_http_client_fetch_headers(esp_http_client_handle_t handle) {
         static char large[8194];memset(large,'a',sizeof(large)-1);large[sizeof(large)-1]=0;event.header_value=large;
         assert(client.config.event_handler(&event)==ESP_FAIL);
     }else assert(client.config.event_handler(&event)==ESP_OK);
-    return is("headers-fail")?-1:0;
+    if(is("aes-no-memory") || is("dma-overflow")) {
+        assert(failed_hook);
+        for(unsigned i=0;i<(is("dma-overflow")?5U:1U);i++)
+            failed_hook(1600,MALLOC_CAP_DMA,"heap_caps_aligned_alloc");
+    }
+    return is("headers-fail") || is("aes-no-memory")?-1:0;
 }
 int esp_http_client_get_status_code(esp_http_client_handle_t handle) {assert(handle==&client);return is("status")?302:200;}
 esp_err_t esp_http_client_cleanup(esp_http_client_handle_t handle) {
     assert(!locks && active && handle==&client && cleanups==0);++cleanups;
 #if TLS_TEST_SDK == 5
-    if(is("open-fail")) {
+    if(is("open-fail") || is("aes-no-memory")) {
         esp_http_client_event_t event={.event_id=HTTP_EVENT_DISCONNECTED,.data=&client,.user_data=client.config.user_data};
         assert(client.config.event_handler(&event)==ESP_OK);
     }
@@ -116,14 +131,31 @@ esp_err_t esp_http_client_cleanup(esp_http_client_handle_t handle) {
     return is("cleanup-fail")?ESP_FAIL:ESP_OK;
 }
 esp_err_t esp_tls_get_and_clear_last_error(esp_tls_error_handle_t handle,int *code,int *flags) {
-    assert(handle==&client);*code=-0x2700;*flags=8;return ESP_FAIL;
+    assert(handle==&client);
+    if(is("aes-no-memory")) {*code=132;*flags=0;return 0x8008;}
+    *code=-0x2700;*flags=8;return ESP_FAIL;
 }
 esp_err_t esp_http_client_get_and_clear_last_tls_error(esp_http_client_handle_t handle,int *code,int *flags) {
-    assert(handle==&client);*code=-0x2700;*flags=8;return ESP_FAIL;
+    return esp_tls_get_and_clear_last_error(handle,code,flags);
 }
 void service_test_log(const char *tag,const char *format,...) {
     assert(!locks);char line[512];va_list args;va_start(args,format);
     int n=vsnprintf(line,sizeof(line),format,args);va_end(args);assert(n>=0 && (size_t)n<sizeof(line));
+    if(!strcmp(tag,"tv4_ota_dma")) {
+        unsigned kind;assert(sscanf(line,"kind=%u",&kind)==1);
+        if(kind==1)++dma_points;
+        if(kind==2) {
+            ++dma_events;assert(strstr(line,"phase=4 bytes=1600 caps=8 owner=1 isr=0 oversize=0 allocator=4"));
+        }
+        if(kind==3) {
+            unsigned valid;assert(sscanf(line,"kind=3 valid=%u",&valid)==1);dma_valid=valid;++dma_finishes;
+            if(is("dma-overflow"))assert(strstr(line,"total=5 stored=4 lost=1 exhausted=0"));
+        }
+        if(kind==4) {
+            ++layer_records;
+            if(is("aes-no-memory"))assert(strstr(line,"layer_known=1 esp_error=32776 mbedtls_code=132 cert_flags=0 header_known=1 header_result=-1"));
+        }
+    }
     if(!strcmp(tag,"tv4_ota_mem") && !strncmp(line,"window=",7)) {
         unsigned id;assert(sscanf(line,"window=%u",&id)==1);++windows;
         assert(id==(windows==1?TV4_MEM_SNTP:TV4_MEM_TLS_PROBE));
@@ -154,7 +186,14 @@ int main(int argc,char **argv) {
         assert(windows==starts+(unsigned)is("guard"));
     }
     assert(finished && passed==is("success") && !locks);
-    if(is("cancel-settle") || is("offline")) {assert(!starts && !stops && !syncs && !inits);}
+    if(TLS_TEST_STANDALONE)assert(!registrations && !dma_points && !dma_events && !dma_finishes && !layer_records);
+    else {
+        assert(registrations==1 && dma_finishes==1);
+        assert(dma_valid==!(is("dma-init-fail") || is("dma-overflow")));
+        if(is("aes-no-memory"))assert(dma_events==1 && layer_records==1);
+        if(is("dma-overflow"))assert(dma_events==4 && layer_records==1);
+    }
+    if(is("cancel-settle") || is("offline") || is("dma-init-fail")) {assert(!starts && !stops && !syncs && !inits);}
     else if(is("guard") || is("start1-fail")) {assert(!syncs && !stops && !inits);}
     else if(is("sntp-fail") || is("cancel-sntp") || is("stop1-fail")) {assert(syncs==1 && stops==1 && !inits);}
     else if(is("start2-fail")) {assert(starts==2 && stops==1 && !inits);}
@@ -168,7 +207,7 @@ int main(int argc,char **argv) {
             else if(is("open-fail") || is("init-fail"))assert(!headers && result==TV4_TLS_OPEN);
             else if(is("cleanup-fail"))assert(result==TV4_TLS_CLEANUP);
             else if(is("status"))assert(result==TV4_TLS_STATUS);
-            else if(is("large-headers") || is("headers-fail"))assert(result==TV4_TLS_HEADERS);
+            else if(is("large-headers") || is("headers-fail") || is("aes-no-memory") || is("dma-overflow"))assert(result==TV4_TLS_HEADERS);
             else assert(result==TV4_TLS_OK);
         }
     }

@@ -1,0 +1,7 @@
+# The failure callback may run with caches unavailable. The remaining three
+# RTOS callees are already IRAM-resident; verify all four in the actual ELF.
+[mapping:tv4_dma_callback_task]
+archive: libfreertos.a
+entries:
+    if TV4_OTA_WORKER_TLS_BENCH = y:
+        tasks:xTaskGetCurrentTaskHandle (noflash_text)

@@ -144,7 +144,16 @@ PR и Actions; не копировать код уже открытого PR. Д
 
 ## Текущее задание: P1 — AES/DMA memory после HEAD FAIL
 
-База main70eaf1d, PR #71/#72 слиты владельцем; main15/15 и оба PR30/30 CI PASS.
+23ноября2026 (Asia/Almaty) владелец заранее разрешил доступ и необходимые
+стендовые операции P1 на подключаемых платах сегодня и потребовал не
+запрашивать это разрешение повторно. Использовать его для новых проверенных
+ограниченных пакетов с fresh backup/two-NVMe и возвратом fecc05d после CI;
+каждый пакет одноразовый, старый3927063 не повторять. Это разрешение на
+текущий диагностический этап, не на motion, необратимые защиты, merge/release.
+Реализация/приёмка — docs/plans/P1_DMA_ALLOCATION_TRACE.md. SDK failure callback
+не имеет native claim/getter: sole linked caller и IRAM/DRAM проверять в ELF.
+
+База main502a73d, PR #71–73 слиты владельцем; main15/15 и каждый PR30/30 CI PASS.
 [Разрешённый стенд3927063](docs/evidence/hardware/2026-11-22-esp32-worker-tls-3927063/README.md)
 завершён за743,183s: fresh16MiB/two-NVMe, control touch_fresh PASS2–19ms,
 SNTP PASS. Первый HEAD FAIL после hardware-AES allocation, generic TLS132,
