@@ -1,5 +1,15 @@
 # P1 — signed OTA CHECK после успешного HTTPS
 
+## Активный результат: локальный подписанный CHECK payload
+
+[Интеграция](plans/P1_SIGNED_CHECK_BUNDLE.md) добавляет штатную упаковку
+настоящего app-only BIN с manifest/signature/checksums, без публикации/установки.
+Ключ создан по поручению владельца и хранится вне Git. Согласованы только
+стендовые HMI0.1.0-bench.1→0.1.0-bench.2/prerelease, bootloader0.1.0-bench.1
+как привязка проверенного fecc05d и protocol1.0.0 для OTA metadata/image.
+Настройки времени/ресурсов и exact publication/аппаратный signed CHECK ещё
+открыты. [Команды](OTA_SIGNED_CHECK_BUNDLE.md). Не включать private key в CI.
+
 ## 23 ноября: LVGL PSRAM и HTTPS — PASS, далее signed CHECK
 
 PR #75 слит владельцем, main1682da0 CI15/15 PASS. [Стенд38f70b9](evidence/hardware/2026-11-23-esp32-lvgl-38f70b9/README.md)
@@ -20,8 +30,8 @@ render/event samples0, визуального owner подтверждения �
 Global malloc policy/stack/DMA64KiB/TLS16384/4096/RGB/pins/clocks/touch/CA/time
 не ослаблены. [Следующий этап](plans/P1_SIGNED_SESSION_RESOURCE.md) — настоящая
 signed CHECK/session4 с полным manifest/image stream в существующем worker8192,
-затем install/confirm/rollback и manual release acceptance. Ключ владельца,
-reviewed SemVer/time/resources и подписанный candidate пока отсутствуют;
+затем install/confirm/rollback и manual release acceptance. Локальный ключ уже создан; стендовые SemVer/метки согласованы.
+Reviewed time/resources и опубликованный подписанный candidate пока отсутствуют;
 SETUP/CHECK/INSTALL gates сохраняются, test keys/floors из HEAD не назначать.
 
 ## История до стенда38f70b9

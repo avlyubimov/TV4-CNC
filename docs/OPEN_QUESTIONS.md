@@ -20,8 +20,8 @@ render/event samples0, визуального owner подтверждения �
 Global malloc policy/stack/DMA64KiB/TLS16384/4096/RGB/pins/clocks/touch/CA/time
 не ослаблены. [Следующий этап](plans/P1_SIGNED_SESSION_RESOURCE.md) — настоящая
 signed CHECK/session4 с полным manifest/image stream в существующем worker8192,
-затем install/confirm/rollback и manual release acceptance. Ключ владельца,
-reviewed SemVer/time/resources и подписанный candidate пока отсутствуют;
+затем install/confirm/rollback и manual release acceptance. Локальный ключ уже создан; стендовые SemVer/метки согласованы.
+Reviewed time/resources и опубликованный подписанный candidate пока отсутствуют;
 SETUP/CHECK/INSTALL gates сохраняются, test keys/floors из HEAD не назначать.
 
 ## История до стенда38f70b9

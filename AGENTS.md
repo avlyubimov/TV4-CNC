@@ -142,42 +142,37 @@ PR и Actions; не копировать код уже открытого PR. Д
    теги, релизы, секреты CI и публикации под видом обычного push.
 6. Обновлять актуальный статус; исторические отчёты сохранять с явной пометкой.
 
-## Текущее задание: P1 — настоящая signed CHECK после HTTPS PASS
+## Текущее задание: P1 — локальный signed CHECK bundle
 
-PR #75 слит владельцем, база main1682da0. Читать docs/NEXT_STAGE.md,
-docs/plans/P1_SIGNED_SESSION_RESOURCE.md и аппаратный отчёт
- docs/evidence/hardware/2026-11-23-esp32-lvgl-38f70b9/README.md.
-Сравнительный стенд38f70b9 завершён за1063,692s: fresh16MiB/two-NVMe,
-baseline/new control и три verified HEAD HTTP200 PASS, весь factory fecc05d
-возвращён/verify/UART PASS1–11ms. Четыре writes/шесть captures, full restore0.
-Internal free вырос примерно на105KiB; TLS minimum108563–108867/stack3760–3904.
-DMA trace valid/no failures. Это reset/UART evidence, не физические FPS/касания.
-F407 ee7d179 не открывался; HMI на плате fecc05d/A-B. Старые пакеты закрыты.
+База main be8f3f4 после слитого владельцем PR #76. Стенд38f70b9 дал три
+verified HEAD200/no DMA failures; весь factory fecc05d возвращён/verify/UART
+PASS. Firmware/LVGL/GT911/Wi-Fi/stack/DMA/TLS paths не менять ради host tooling.
+Читать docs/plans/P1_SIGNED_CHECK_BUNDLE.md и docs/OTA_SIGNED_CHECK_BUNDLE.md.
 
-Следующий измеримый результат — full signed session CHECK в существующем
-worker8192 и ресурсная приёмка SESSION4, затем отдельные install/confirmation/
-rollback/release acceptance. Нужны owner public key, reviewed SemVer/time/
-resource context и настоящий подписанный candidate. Пока их нет, SETUP и
-CHECK/INSTALL gates сохраняются; test keys/guessed floors не подставлять.
-Не выводить production thresholds из HEAD, не создавать новую crypto/HTTPS
-абстракцию вместо existing service. Код LVGL PSRAM принят в PR #75; не дублировать.
+Владелец поручил создать настоящий локальный ключ P-256 и перенести его в
+домашнюю папку секретов. Пара создана/проверена; private key/пути/local context
+не публиковать в Git/CI. Утверждены только стендовые HMI0.1.0-bench.1 →
+0.1.0-bench.2/prerelease; bootloader0.1.0-bench.1 — локальная привязка
+проверенного fecc05d, protocol1.0.0 — OTA metadata/image, не physical CAN.
+Не переносить эти метки в production как измеренные hardware versions.
 
-Официальный CUSTOM heap только explicit OTA: SPIRAM|8BIT без internal fallback,
-LVGL task app_main; actual ELF/linker anchor SDK6 и оба SDK обязательны.
-Не менять global malloc policy/stack/DMA64KiB/TLS16384/4096/display/pins/clocks/
-touch100/500ms/CA/hostname/date ради PASS. History per-heap minimum и generic
-internal largest не являются simultaneous free/DMA heap или production floors.
+Текущий результат — реальный app-only BIN двух SDK и локальный подписанный
+пакет, повторно проверенный existing offline/native crypto. New prepare tool
+только CHECK bench; signed manifest не устанавливает CI/build/physical
+provenance. Keys/bootloader/table/NVS/otadata/STM32 files в пакет не включать.
+Не выполнять публикацию/теги/установку под видом подписания или merge.
 
-23ноября2026 Asia/Almaty владелец заранее разрешил необходимые P1 подключения/
-стенды на подключаемых платах сегодня и просил не спрашивать повторно. Новые
-пакеты finite/exact hashes/green CI/fresh16MiB/two-NVMe/возврат; закрытые пакеты
-не повторять. Это не motion/irreversible/merge/release approval и не разрешение
-на будущие даты. Правило8 применяется с учётом уже данного разрешения владельца.
+Далее нужна reviewed local resource/time policy, настоящий configured
+CHECK/SESSION4 на плате, затем install/confirmation/rollback и release acceptance.
+Не назначать floors по HEAD minimum, не подставлять test keys или guessed
+policy, не снимать SETUP/INSTALL/ownership/timeout/CA/hostname/date gates.
+Прежние NEMA23/CAN/motion/independent E-stop ограничения сохраняются.
 
-NEMA23 software project завершён в PR #72. Читать docs/NEMA23_BENCH_PLAN.md;
-exact motor/driver models неизвестны, питание/ток/ENA/pins не назначать,
-physical outputs/motion не включать. Independent аппаратная E-stop цепь обязательна.
-Слитые результаты и прежние ограничения сохраняются в исторических отчётах.
+Сегодня23ноября2026 Asia/Almaty владелец уже разрешил необходимые P1 finite
+стенды без повторных запросов доступа. Новые exact packages только после CI,
+fresh16MiB/two-NVMe/возврат. Старые пакеты закрыты; eFuse/option bytes/motion/
+merge/release этим не разрешены. На платах fecc05d/A-B и F407 ee7d179;
+после отчёта38f70b9 новых устройств не открывали.
 
 ## Исторические контракты слитых этапов
 

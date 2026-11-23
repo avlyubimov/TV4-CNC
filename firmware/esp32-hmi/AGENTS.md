@@ -4,7 +4,11 @@ PR #75 слит владельцем, main1682da0. Стенд38f70b9: baseline/n
 три verified HEAD200/no DMA failures и возврат всего factory fecc05d/verify/
 UART PASS. Читать docs/NEXT_STAGE.md и docs/plans/P1_SIGNED_SESSION_RESOURCE.md
 от корня. Следующий результат — настоящий signed CHECK/resource SESSION4,
-затем install/rollback; owner key/context/candidate пока нет, SETUP закрыт.
+затем install/rollback. Owner key уже создан локально, стендовые версии/метки
+согласованы; resource/time policy и публикация candidate ещё открыты, SETUP закрыт.
+Текущая host-only упаковка — docs/plans/P1_SIGNED_CHECK_BUNDLE.md. Приватный
+ключ и owner-local context не попадают в Git/build output/CI; firmware paths
+не менять ради подписи payload. Локальная подпись не разрешает публикацию.
 Не подменять их test keys/guessed floors или новой HTTPS/crypto библиотекой.
 
 Только rev12-ota выбирает LVGL CUSTOM SPIRAM|8BIT без internal fallback.

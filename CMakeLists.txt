@@ -85,6 +85,7 @@ target_link_libraries(ota_crypto_tests PRIVATE tv4_ota_verification)
 target_compile_options(ota_crypto_tests PRIVATE -Wall -Wextra -Werror -UNDEBUG)
 add_test(NAME ota_crypto COMMAND ota_crypto_tests)
 add_test(NAME ota_candidate COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/tests/ota_candidate_tests.py)
+add_test(NAME ota_signed_check_bundle COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/tests/ota_release_tests.py)
 
 add_executable(ota_manifest_tests tests/ota_manifest_tests.c)
 target_link_libraries(ota_manifest_tests PRIVATE tv4_ota_verification)
