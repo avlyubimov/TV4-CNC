@@ -3,8 +3,8 @@
 Текущий отдельный результат: local trust перед pending confirmation (docs/plans/P1_PENDING_TRUST.md от корня).
 Не подтверждать новый OTA-slot без рабочего локального context; factory recovery
 и ранее VALID без настроек сохраняются. AP/DHCP/SNTP не являются boot prerequisites.
-265 host/265 sanitizers, четыре ELF обоих pinned SDK и CI30 PASS; native slot
-hardware evidence нужен отдельно. Signed CHECK a29c9ed не доказывает исправление self-test или INSTALL.
+265 host/265 sanitizers, четыре ELF обоих pinned SDK и CI30 PASS. Native a74bfcd
+confirmation/INVALID rollback/полный возврат PASS; это USB fixture, не сетевой INSTALL.
 
 Текущий P1 — docs/plans/P1_AUTONOMOUS_SIGNED_CHECK.md от корня. a29c9ed:
 control/один full signed CHECK/возврат всего fecc05d PASS. IMAGE_VERIFIED/error0,

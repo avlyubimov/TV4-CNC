@@ -1,10 +1,27 @@
 # P1 — signed OTA CHECK после успешного HTTPS
 
+## Актуально: native pending confirmation/refusal/rollback a74bfcd — PASS
+
+[Реальный USB boot стенд](evidence/hardware/2026-11-24-esp32-native-boot-a74bfcd/README.md)
+закрыт за1031,352s/1800s: fresh16MiB/device MD5/SHA/two-NVMe → configured
+factory-control PASS → ota_0 NEW/VALID → unprovisioned ota_1 NEW/INVALID/native
+rollback в healthy ota_0 → полные исходные factory2MiB/otadata8KiB/два OTA slots
+по3MiB/verify/UART30 PASS. Native4KiB otadata writes ожидаемы; bootloader/table
+не записаны.9 обычных write calls/4 captures/full recovery0; на ESP32 fecc05d.
+
+Exact source a74bfcd, открытый PR81, оба pinned SDK/4 ELF и source CI30/main15,
+265 host/265 sanitizers/analyzer PASS до USB. Hardware только6.1.1. Это прямой
+USB fixture, не signed network INSTALL или SemVer upgrade. Published bench.2
+не использовался и остаётся read-only. Physical UI/FPS/latency ночью не наблюдались.
+Далее отдельный gate install_reviewed для CHECK-only context и настоящий
+configured signed installable payload/HTTPS INSTALL/resource check. Production
+budget, потеря Wi-Fi/питания и app Flash writes при активном RGB ещё не приняты.
+
 Текущий отдельный результат: [local trust перед pending confirmation](plans/P1_PENDING_TRUST.md).
 Не подтверждать новый OTA-slot без рабочего локального context; factory recovery
 и ранее VALID без настроек сохраняются. AP/DHCP/SNTP не являются boot prerequisites.
-265 host/265 sanitizers, четыре ELF обоих pinned SDK и CI30 PASS; native slot
-hardware evidence нужен отдельно. Signed CHECK a29c9ed не доказывает исправление self-test или INSTALL.
+265 host/265 sanitizers, четыре ELF обоих pinned SDK и CI30 PASS. Native a74bfcd
+confirmation/INVALID rollback/полный возврат PASS; это USB fixture, не сетевой INSTALL.
 
 ## Актуально: a29c9ed — полный signed CHECK и три reset-повтора PASS
 
