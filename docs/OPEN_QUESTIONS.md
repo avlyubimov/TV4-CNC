@@ -1,5 +1,31 @@
 # Открытые вопросы и блокирующие решения
 
+## 23 ноября: LVGL PSRAM и HTTPS — PASS, далее signed CHECK
+
+PR #75 слит владельцем, main1682da0 CI15/15 PASS. [Стенд38f70b9](evidence/hardware/2026-11-23-esp32-lvgl-38f70b9/README.md)
+завершён за1063,692s: fresh16MiB/device MD5/SHA/two-NVMe, baseline46cf400 →
+новый control → три TLS reset boots → весь factory2MiB fecc05d/verify/UART30 PASS.
+Четыре writes/шесть captures; full restore не понадобился. На плате fecc05d,
+F407 ee7d179 не открывался. Владелец заранее разрешил необходимые P1 стенды
+23ноября2026 Asia/Almaty без повторных вопросов; этот exact пакет уже закрыт.
+
+Свободная internal RAM control16771–16831 →124703–124755bytes, largest7680→63488.
+Три verified HEAD HTTP200, cleanup1, полные DMA traces без allocation failures;
+TLS local minimum108563–108867, remaining stack3760–3904/8192, touch2–19ms/errors0.
+Возврат fecc05d touch1–11ms PASS. Это UART evidence, не physical touch/FPS:
+render/event samples0, визуального owner подтверждения сегодня нет.
+
+[Software evidence](evidence/build/esp32-lvgl-psram/README.md):16 clean ELF/BIN
+двух SDK,183 host/183 sanitizer tests, actual allocator analyzer/ELF/config PASS.
+Global malloc policy/stack/DMA64KiB/TLS16384/4096/RGB/pins/clocks/touch/CA/time
+не ослаблены. [Следующий этап](plans/P1_SIGNED_SESSION_RESOURCE.md) — настоящая
+signed CHECK/session4 с полным manifest/image stream в существующем worker8192,
+затем install/confirm/rollback и manual release acceptance. Ключ владельца,
+reviewed SemVer/time/resources и подписанный candidate пока отсутствуют;
+SETUP/CHECK/INSTALL gates сохраняются, test keys/floors из HEAD не назначать.
+
+## История до стенда38f70b9
+
 ## 23 ноября: DMA headroom и LVGL allocator
 
 [Стенд46cf400](evidence/hardware/2026-11-23-esp32-dma-46cf400/README.md)
@@ -249,7 +275,7 @@ stop/join не освобождает actual claim. Верхние image/crypto/
 | OTA-KEY-01 | Owner-provisioned public key/fingerprint, signer custody, алгоритм/encoding/test vectors/key rotation, manifest schema/min versions | Любая доверенная установка; приватных ключей в Git/логах нет |
 | OTA-CONTEXT-01 | Утвердить SemVer HMI release вместо текущего git-derived project version; источник версии bootloader/production protocol/реального layout и peer compatibility | PR-04b policy готовит проверку, но не подставляет тестовые версии; installer заблокирован неизвестным context |
 | OTA-MOTION-01 | Утвердить production release/component schema и link общего signed bundle с Motion document, trusted installed context, numeric counter/boot/protocol policy и signer build provenance | PR-05c offline cohort review и PR-07g/h draft/coordinator не закрывают production contract/context/protocol mapping; legacy11/release15 раздельны |
-| OTA-AES-DMA-01 | На3927063 control touch/SNTP PASS, HEAD stopped на SDK AES allocation; request size/caps и transient DMA largest пока неизвестны | Следующий exact diagnostic image и измеренный memory fix без отключения AES/CA/time/TLS/DMA/display gates; signed session остаётся закрыта |
+| OTA-AES-DMA-01 | 46cf400 выявил DMA failures; PR #75 перенёс LVGL в PSRAM, на38f70b9 три verified HEAD200 с valid/no-failure DMA traces, internal free вырос примерно на105KiB | Наблюдавшийся blocker устранён для этих reset HEAD probes. Нужны full signed SESSION4/load/fault measurements и reviewed floors; HEAD не является production budget |
 | OTA-TLS-01 | Правильное время для TLS, CA bundle/host allowlist/redirect bounds GitHub, отсутствие insecure fallback | Реальный HTTPS download; статичные часы HMI не источник доверенного времени |
 | OTA-F407-01 | По подтверждённым секторам и RAM budget выбрать staging medium/A-B/recovery; metadata/vector/commit/power-loss план | PR-07i RAM backend не утверждает размер RAM/full-image fit и не даёт durable recovery; кэш ESP32 не заменяет решение |
 | OTA-STATE-01 | Fresh подтверждение F407 без движения/оборотов/программы, session lifecycle и повтор после reboot; согласованный safe state | CAN install; симуляция/heartbeat/ACK доставки не подтверждают останов |

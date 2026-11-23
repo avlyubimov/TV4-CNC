@@ -1,5 +1,31 @@
 # План реализации TV4-CNC: функциональные приоритеты P0–P5
 
+## 23 ноября: LVGL PSRAM и HTTPS — PASS, далее signed CHECK
+
+PR #75 слит владельцем, main1682da0 CI15/15 PASS. [Стенд38f70b9](evidence/hardware/2026-11-23-esp32-lvgl-38f70b9/README.md)
+завершён за1063,692s: fresh16MiB/device MD5/SHA/two-NVMe, baseline46cf400 →
+новый control → три TLS reset boots → весь factory2MiB fecc05d/verify/UART30 PASS.
+Четыре writes/шесть captures; full restore не понадобился. На плате fecc05d,
+F407 ee7d179 не открывался. Владелец заранее разрешил необходимые P1 стенды
+23ноября2026 Asia/Almaty без повторных вопросов; этот exact пакет уже закрыт.
+
+Свободная internal RAM control16771–16831 →124703–124755bytes, largest7680→63488.
+Три verified HEAD HTTP200, cleanup1, полные DMA traces без allocation failures;
+TLS local minimum108563–108867, remaining stack3760–3904/8192, touch2–19ms/errors0.
+Возврат fecc05d touch1–11ms PASS. Это UART evidence, не physical touch/FPS:
+render/event samples0, визуального owner подтверждения сегодня нет.
+
+[Software evidence](evidence/build/esp32-lvgl-psram/README.md):16 clean ELF/BIN
+двух SDK,183 host/183 sanitizer tests, actual allocator analyzer/ELF/config PASS.
+Global malloc policy/stack/DMA64KiB/TLS16384/4096/RGB/pins/clocks/touch/CA/time
+не ослаблены. [Следующий этап](plans/P1_SIGNED_SESSION_RESOURCE.md) — настоящая
+signed CHECK/session4 с полным manifest/image stream в существующем worker8192,
+затем install/confirm/rollback и manual release acceptance. Ключ владельца,
+reviewed SemVer/time/resources и подписанный candidate пока отсутствуют;
+SETUP/CHECK/INSTALL gates сохраняются, test keys/floors из HEAD не назначать.
+
+## История до стенда38f70b9
+
 ## 23 ноября: следующий P1 результат — LVGL heap в PSRAM
 
 [Стенд46cf400](evidence/hardware/2026-11-23-esp32-dma-46cf400/README.md)
@@ -14,7 +40,7 @@ PR — официальный CUSTOM allocator LVGL только OTA, оба SDK
 данное разрешение23ноября; пакет46cf400 одноразовый и уже закрыт. P2–P5 и
 motion/irreversible/merge/release сюда не входят.
 
-## Активный P1 после main502a73d
+## История P1 после main502a73d
 
 PR #71–73 слиты владельцем, main CI15/15 PASS. [Стенд3927063](evidence/hardware/2026-11-22-esp32-worker-tls-3927063/README.md)
 реально выполнен по отдельному разрешению: control touch_fresh PASS, SNTP PASS,
@@ -111,7 +137,7 @@ P1 интегрирован программно: [installer/rollback/migration]
 | Приоритет | Законченный результат | Зависимости и приёмка | Текущий статус |
 |---|---|---|---|
 | P0 — STM32F407 firmware | Настоящий ELF/BIN на HSI с RAM/SWD diagnostics, exception/watchdog handling, без активации motion outputs | Официальная карта VGT6/SRAM/CCM/Flash sectors/vectors; real startup/linker; map/size/hash/source и memory/vector CI; ST-Link install/restore runbook; запись только отдельно разрешена | **PASS базового стенда ee7d179**: program/verify/identity/RUNNING/progress, data-BSS/CCM word/guards, watchdog reset и UsageFault. Образ оставлен running; стресс/частоты/physical outputs не подтверждены |
-| P1 — ESP32 OTA | Установка проверенного образа в неактивный слот, boot self-test, подтверждение или rollback с работающими LVGL/GT911/Wi-Fi | Расчёт/утверждение 16 МиБ factory recovery+otadata+двух OTA-слотов; отдельная USB-миграция; existing HTTPS/signature/local key/SHA/size/hardware checks; Wi-Fi/power-loss tests; реальные SRAM/PSRAM/stack измерения | Migration/factory/worker8192 reset и новый control touch_fresh PASS. На3927063 SNTP PASS, первый HEAD FAIL в hardware-AES allocation; следующие boots остановлены, fecc05d возвращён/owner PASS. DMA request/caps, production budget и configured signed install/confirm/rollback/power-loss/owner settings открыты |
+| P1 — ESP32 OTA | Установка проверенного образа в неактивный слот, boot self-test, подтверждение или rollback с работающими LVGL/GT911/Wi-Fi | 16 МиБ factory recovery+otadata+два OTA-слота; подпись/local key/SHA/size/hardware; Wi-Fi/power-loss и resource acceptance | Migration/factory и control8192 проверены. PR #75: LVGL PSRAM, три verified HEAD200/no DMA failures на38f70b9; весь factory fecc05d возвращён/verify/UART PASS. Далее настоящий signed CHECK/SESSION4; owner key/context/candidate отсутствуют. Install/confirm/rollback/production budget ещё открыты |
 | P2 — Releases | Настоящие воспроизводимые бинарники, SemVer/source binding, signed manifest/SHA-256, prerelease/stable, экран «ПО и обновления» | Рабочий OTA P1; проверка воспроизводимости, trust/signer/licensing; ручное утверждение владельцем exact SHA/tag/channel/assets; push/merge не выпускают release | CI/metadata-only review база существует; production signing/publication/discovery ещё нет; P1 UI включён только в explicit OTA profile. Фиктивный STM32 BIN запрещён |
 | P3 — physical CAN | Минимальный проверенный обмен ESP32-S3↔STM32F407 с ошибками/тайм-аутами/восстановлением | Получить трансиверы; проверить уровни/терминаторы/pinout/mux/IDs/bitrate на изолированном стенде; отдельное hardware permission | Физический CAN не проверен. Существующий протокол сохраняется; новые слои только для конкретной интеграции |
 | P4 — STM32 CAN OTA | Независимый bootloader, проверенная запись Flash/recovery после прерывания, existing independent crypto и ESP32 OTA Manager | Реальная карта/профиль P0 и physical CAN P3; reviewed bootloader/app/staging layout; fresh quiescent/operator/recovery gates; обновления при движении запрещены | Host transport/verifier подготовлены. Адреса загрузчика сейчас не резервируются, Flash writer/boot activation ещё нет |

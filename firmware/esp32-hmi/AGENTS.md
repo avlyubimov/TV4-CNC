@@ -1,28 +1,25 @@
 # ESP32 HMI — специализированные правила
 
-После слияния PR #74 база main00a6d86. Читать docs/plans/P1_LVGL_PSRAM_HEAP.md:
-только rev12-ota выбирает LVGL CUSTOM/PSRAM|8BIT, без internal fallback.
-SDK6 static archive требует anchor lv_malloc_core; проверять actual ELF и
-отсутствие второго core в LVGL archive. Old cached OTA CLIB отклоняется,
-генерируемый sdkconfig сохранить перед регенерацией. Живые buffers/IRQ не
-переносить; LVGL остаётся в task app_main. Новый hardware пакет только после CI.
+PR #75 слит владельцем, main1682da0. Стенд38f70b9: baseline/new control,
+три verified HEAD200/no DMA failures и возврат всего factory fecc05d/verify/
+UART PASS. Читать docs/NEXT_STAGE.md и docs/plans/P1_SIGNED_SESSION_RESOURCE.md
+от корня. Следующий результат — настоящий signed CHECK/resource SESSION4,
+затем install/rollback; owner key/context/candidate пока нет, SETUP закрыт.
+Не подменять их test keys/guessed floors или новой HTTPS/crypto библиотекой.
 
-Стенд46cf40023ноября закрыт: DMA shortage при handshake,9 failures/4 retained/
-5 lost, fecc05d full snapshot restore/verify и отдельный UART30s PASS. Следующий
-отдельный PR — официальный CUSTOM PSRAM allocator LVGL только explicit OTA;
-100516bytes dashboard internal — измеренное основание, не доказанный фикс.
-Actual LVGL9.2.2 API, оба SDK/ELF/config/host/fault и новый finite bench обязательны.
-Не трогать RGB draw/framebuffers, global malloc policy, records/DMA64KiB/stack/
-touch/timeouts. Сегодняшнее owner разрешение сохраняется, старый пакет закрыт.
+Только rev12-ota выбирает LVGL CUSTOM SPIRAM|8BIT без internal fallback.
+SDK6 archive anchor lv_malloc_core, sole provider и actual ELF обоих SDK
+проверяются tools/check_lvgl_memory.py. Старый cached CLIB отклоняется;
+generated sdkconfig сохранить перед регенерацией. LVGL task app_main,
+RGB buffers/IRQ/global malloc policy/TLS records/DMA64KiB/stack/pins/clocks/
+touch/timeouts не менять. 16 clean images/183 host+183 sanitizers PASS.
 
-Текущий P1 после PR #73/main502a73d: clock fix на3927063 прошёл control/TLS
-touch2–19ms; HEAD остановлен на SDK AES allocation, fecc05d возвращён/owner PASS.
-Читать docs/plans/P1_DMA_ALLOCATION_TRACE.md от корня. Failure-only callback
-только opt-in worker TLS, bounded numeric ledger, no allocation/logging/string
-access в hook; sole registration/IRAM callees/DRAM/overflow/owner gates обязательны.
-Сегодня23ноября действует заранее данное владельцем разрешение на необходимые
-P1 подключения/стенды без повторных вопросов, с новыми проверенными пакетами/
-backup/возвратом. Слитые image/прежние разрешения не переиспользовать.
+Текущее installed fecc05d/factory/A-B; F407 не открывался. Пакет38f70b9 закрыт,
+full restore не понадобился. Сегодня23ноября2026 Asia/Almaty действует данное
+владельцем разрешение на необходимые P1 finite стенды без повторных вопросов:
+новый exact пакет/CI/fresh backup/two-NVMe/возврат. Старые пакеты не повторять;
+merge/release/motion/eFuse/option bytes этим не разрешены. Физические FPS/
+касания/soak и configured signed OTA ещё не приняты.
 
 Ниже исторические контракты; актуальные hardware facts — в корневых документах.
 

@@ -1,0 +1,317 @@
+{
+  "schema": 1,
+  "generated_utc": "2026-11-23T16:06:22.085508+00:00",
+  "source_commit": "38f70b92283d8fd0b50e5736aa3627763c947a5b",
+  "source_tree": "71ebecaa23694e9c97bbc77e1ac0be2d1a30180f",
+  "base_main": "00a6d86bf6f1a48cc1ac15b9606cea39cc9776a5",
+  "clean_checkout_during_matrix": true,
+  "source_code_sha256": {
+    "firmware/esp32-hmi/ui/lvgl_psram.c": "0d6d440c5d94345e1f17cd07381e22699949817f681e36920741e98af9a061e3",
+    "firmware/esp32-hmi/sdkconfig.ota": "35352dab0b2a1884773565e89cc1abb301530aeb1cd754ebae1ee8ff4be9861c",
+    "firmware/esp32-hmi/main/CMakeLists.txt": "12072b512cf3cba0aa87b3b909241a4b3a09173df1009e03785ba466fbfe0d84",
+    "tools/check_lvgl_memory.py": "43968e445c52834d1e36d76a88f68ce7aa6654477bc8ac64dcaf016b27192657",
+    "tools/check_idf_build.py": "1765190c2c3417254d2a25068cfbbf97ac5cf0ed6c895f7f564da082287d074e",
+    "tools/check_ota_memory_diagnostics.py": "a6f9403d74b7613437baf6c1dfedb90a6425444a047fbb6fae7ed5cc9e6b7727",
+    "tests/lvgl_psram_tests.c": "99ead9ca384ec4ae11a69473e78b4086843d36d359aabd594283839daec6c242",
+    "tests/lvgl_psram_build_tests.py": "176ca3404390c03fd4c3ad72bac3d0ca8c4fdf01b9bde58ef6ce44b9fb6e5420",
+    "tests/lvgl_psram_sdk.h": "14aa1855f78232096f49e94b92a04237b23a7b8713023554ee21956e4a28569c",
+    "CMakeLists.txt": "a9da4dad5b470f7a7b002e651b64b40a1449de55eeb381e6fb2ba48986f520ec"
+  },
+  "dependencies": {
+    "esp-idf-5.3.2-image": "espressif/idf@sha256:5b8f58d9d9caa45b689a31a0b6a0cc53b84594e0ba5fdd8d28eeef7d6123242a",
+    "esp-idf-6.1.1-image": "espressif/idf@sha256:2b4f966c37eaedc19542b0637a5f850b2eff9478d8e858192aa0073d92c2dc91",
+    "local-idf-6.1.1-commit": "051e4c4eb20346e043cdd47bc388fde75ff8af63",
+    "xtensa-gcc-5.3.2": "13.2.0",
+    "xtensa-gcc-6.1.1": "15.2.0",
+    "host-gcc": "15.2.0",
+    "host-cmake": "4.2.3",
+    "host-ninja": "1.13.2"
+  },
+  "dependency_locks": {
+    "firmware/esp32-hmi/locks/idf-5.3.2.lock": "bdabdb06b5b4572369ca86e5cfc446ab6c270c56dab0500a304dcf7e112c94d0",
+    "firmware/esp32-hmi/locks/idf-6.1.1.lock": "d09551b18bfceae3a3f4c5c50583d81907bc7f2e47e3629182cbf1d1914a10b1"
+  },
+  "checks": {
+    "host": {
+      "passed": 183,
+      "failed": 0
+    },
+    "asan_ubsan_lsan": {
+      "passed": 183,
+      "failed": 0,
+      "suppressions": false
+    },
+    "new_allocator_analyzer": {
+      "passed": true
+    },
+    "sdk_variants": {
+      "passed": 16,
+      "failed": 0
+    },
+    "non_ota_exact_sections_frames_config": {
+      "passed": 10,
+      "failed": 0
+    },
+    "ota_config_delta": {
+      "LV_USE_CLIB_MALLOC": [
+        true,
+        false
+      ],
+      "LV_USE_CUSTOM_MALLOC": [
+        false,
+        true
+      ]
+    }
+  },
+  "core_by_sdk": {
+    "5.3.2": {
+      "backend": "LVGL9 CUSTOM / SPIRAM|8BIT",
+      "custom_state_bytes": 0,
+      "imports": [
+        "heap_caps_check_integrity",
+        "heap_caps_free",
+        "heap_caps_malloc",
+        "heap_caps_realloc",
+        "memset"
+      ],
+      "compiler_frames": {
+        "lv_malloc_core": 32,
+        "lv_realloc_core": 32,
+        "lv_free_core": 32,
+        "lv_mem_init": 32,
+        "lv_mem_deinit": 32,
+        "lv_mem_add_pool": 32,
+        "lv_mem_remove_pool": 32,
+        "lv_mem_monitor_core": 32,
+        "lv_mem_test_core": 32
+      },
+      "frame_ceiling": 128,
+      "internal_fallback": false,
+      "runtime_stack_peak_qualified": false,
+      "device_access": false
+    },
+    "6.1.1": {
+      "backend": "LVGL9 CUSTOM / SPIRAM|8BIT",
+      "custom_state_bytes": 0,
+      "imports": [
+        "heap_caps_check_integrity",
+        "heap_caps_free",
+        "heap_caps_malloc",
+        "heap_caps_realloc",
+        "memset"
+      ],
+      "compiler_frames": {
+        "lv_malloc_core": 32,
+        "lv_realloc_core": 32,
+        "lv_free_core": 32,
+        "lv_mem_init": 32,
+        "lv_mem_deinit": 32,
+        "lv_mem_add_pool": 32,
+        "lv_mem_remove_pool": 32,
+        "lv_mem_monitor_core": 32,
+        "lv_mem_test_core": 32
+      },
+      "frame_ceiling": 128,
+      "internal_fallback": false,
+      "runtime_stack_peak_qualified": false,
+      "device_access": false
+    }
+  },
+  "variants": [
+    {
+      "sdk": "5.3.2",
+      "profile": "headless",
+      "trace": false,
+      "stack8192": false,
+      "worker_tls": false,
+      "app_bytes": 1075504,
+      "app_sha256": "23e2ef7a0de471b7a66aa776ad8c0bae0730768c4469df36470adde74592b79f",
+      "elf_sha256": "aa3e2bf033645a717c03ad5949507d99439c1ab20709b1bcf5ae2b9a20d99f91",
+      "gui_heap": "unchanged CLIB",
+      "ordinary_sections_frames_config_unchanged": true
+    },
+    {
+      "sdk": "5.3.2",
+      "profile": "rev12",
+      "trace": false,
+      "stack8192": false,
+      "worker_tls": false,
+      "app_bytes": 1535088,
+      "app_sha256": "94be481c16c1bfb896000469a571d3dfa068c64268d33a1e000783b6ab9639fe",
+      "elf_sha256": "3be15436c9bd87bd24e01fb6252acf4efe9383e15cee08335c134b7a1f2bc0ea",
+      "gui_heap": "unchanged CLIB",
+      "ordinary_sections_frames_config_unchanged": true
+    },
+    {
+      "sdk": "5.3.2",
+      "profile": "rev12-memory-bench",
+      "trace": false,
+      "stack8192": false,
+      "worker_tls": false,
+      "app_bytes": 1536800,
+      "app_sha256": "88bf5c74830bcc9213691e084ad69788b27d70bea1f5865471c00277685b16f5",
+      "elf_sha256": "8c0c7119f635383c03644719e1403520fe1f8189e6d40aaa9cec1c8651e26af9",
+      "gui_heap": "unchanged CLIB",
+      "ordinary_sections_frames_config_unchanged": true
+    },
+    {
+      "sdk": "5.3.2",
+      "profile": "rev12-tls-bench",
+      "trace": false,
+      "stack8192": false,
+      "worker_tls": false,
+      "app_bytes": 1540080,
+      "app_sha256": "448f5748a5ee0d957ede4d142fb4ff72abc098b1bc16c3295601811690d7f443",
+      "elf_sha256": "7df7d6f61f61dadce88fcda27c46206cbbff9106bc934def3fc7a03dc43e0495",
+      "gui_heap": "unchanged CLIB",
+      "ordinary_sections_frames_config_unchanged": true
+    },
+    {
+      "sdk": "5.3.2",
+      "profile": "rev12-ota",
+      "trace": false,
+      "stack8192": false,
+      "worker_tls": false,
+      "app_bytes": 1551088,
+      "app_sha256": "bc8e23765e231af465fa6db89941a3a232b81071e4b8bceb353446b5dd07de2b",
+      "elf_sha256": "7a7aec55624adf84383ea846720bb99f635880c27c801953c690c68909773afc",
+      "gui_heap": "LVGL9 CUSTOM / SPIRAM|8BIT",
+      "ordinary_sections_frames_config_unchanged": null
+    },
+    {
+      "sdk": "5.3.2",
+      "profile": "rev12-ota",
+      "trace": true,
+      "stack8192": false,
+      "worker_tls": false,
+      "app_bytes": 1553120,
+      "app_sha256": "800e719a7e6b56dbc22aacbd445b641055e689e4832a1f53215873898ac2e835",
+      "elf_sha256": "6c5c7a4cdf7c117838adbae6bdadd67c5c95dc50b3c0ecb8c7f8c146568b53de",
+      "gui_heap": "LVGL9 CUSTOM / SPIRAM|8BIT",
+      "ordinary_sections_frames_config_unchanged": null
+    },
+    {
+      "sdk": "5.3.2",
+      "profile": "rev12-ota",
+      "trace": true,
+      "stack8192": true,
+      "worker_tls": false,
+      "app_bytes": 1553184,
+      "app_sha256": "06e41734bcba13f2c8ec4a0fbe4528dbfbb157a66cecc9d48d3f2446eb50d75d",
+      "elf_sha256": "4f9dedaa7f7bc79d60582a41bc2778300ada3100691eb3c464205ffc476fb2d5",
+      "gui_heap": "LVGL9 CUSTOM / SPIRAM|8BIT",
+      "ordinary_sections_frames_config_unchanged": null
+    },
+    {
+      "sdk": "5.3.2",
+      "profile": "rev12-ota",
+      "trace": true,
+      "stack8192": true,
+      "worker_tls": true,
+      "app_bytes": 1558624,
+      "app_sha256": "78f142c4e7615272845835b2869489cc0ebda713ff73e357ab1faba7b5db2794",
+      "elf_sha256": "052cf2101f54c30ab277df832e925bc50b6124260ae2d5408ef6a18c8f1afc6d",
+      "gui_heap": "LVGL9 CUSTOM / SPIRAM|8BIT",
+      "ordinary_sections_frames_config_unchanged": null
+    },
+    {
+      "sdk": "6.1.1",
+      "profile": "headless",
+      "trace": false,
+      "stack8192": false,
+      "worker_tls": false,
+      "app_bytes": 1061072,
+      "app_sha256": "fe5c386033d2f0c1fe5a95d5a48dad6374ff6b4446c321096dba78f1840bbdab",
+      "elf_sha256": "5298b0ea9a2bf6353c4eb043b3561c1df4686573b5e366427641479c0a261042",
+      "gui_heap": "unchanged CLIB",
+      "ordinary_sections_frames_config_unchanged": true
+    },
+    {
+      "sdk": "6.1.1",
+      "profile": "rev12",
+      "trace": false,
+      "stack8192": false,
+      "worker_tls": false,
+      "app_bytes": 1579296,
+      "app_sha256": "1bd9d7933e21694f26b96711baff186548b42751182c49578b6e4ed4cbab4688",
+      "elf_sha256": "2bef91eba199807493180c6313de7554f928bb2e1a00a74b904dc77a80cb384c",
+      "gui_heap": "unchanged CLIB",
+      "ordinary_sections_frames_config_unchanged": true
+    },
+    {
+      "sdk": "6.1.1",
+      "profile": "rev12-memory-bench",
+      "trace": false,
+      "stack8192": false,
+      "worker_tls": false,
+      "app_bytes": 1580992,
+      "app_sha256": "8802e8bfc5301b2cef9a5b3981235a10c42ae140fd5c9da719c1bdb6328b7b6c",
+      "elf_sha256": "3931ff153cc380728a16c5cc5ea694f907c4b563d91557190343bbbc771aae4c",
+      "gui_heap": "unchanged CLIB",
+      "ordinary_sections_frames_config_unchanged": true
+    },
+    {
+      "sdk": "6.1.1",
+      "profile": "rev12-tls-bench",
+      "trace": false,
+      "stack8192": false,
+      "worker_tls": false,
+      "app_bytes": 1584192,
+      "app_sha256": "cd6d89ebb8cf9970a36c9355b9ad7331ac27251671bd7d9dddb1b971384ad64c",
+      "elf_sha256": "10696eac98eef84b4d51720f0f2ea3dd164e17fb3ee8e952e9a35dcba84d095f",
+      "gui_heap": "unchanged CLIB",
+      "ordinary_sections_frames_config_unchanged": true
+    },
+    {
+      "sdk": "6.1.1",
+      "profile": "rev12-ota",
+      "trace": false,
+      "stack8192": false,
+      "worker_tls": false,
+      "app_bytes": 1598560,
+      "app_sha256": "f8d33bb245ff77dbb1fea52c15b4f6dc7bf7b29bc71f66ceeaaa272d3ed577f8",
+      "elf_sha256": "da93a6b70b6793c55bde66e5350a74110bb8f79cb8c9535bd9ceae7b69dc5302",
+      "gui_heap": "LVGL9 CUSTOM / SPIRAM|8BIT",
+      "ordinary_sections_frames_config_unchanged": null
+    },
+    {
+      "sdk": "6.1.1",
+      "profile": "rev12-ota",
+      "trace": true,
+      "stack8192": false,
+      "worker_tls": false,
+      "app_bytes": 1600576,
+      "app_sha256": "f3305d76135f3b31592f839ad1340f78cee6114145d31090015d441ab332d410",
+      "elf_sha256": "46cdcfac5cffa0ce68163263c933c97a895e611e83619f69f50eb5ac3a7cf5e1",
+      "gui_heap": "LVGL9 CUSTOM / SPIRAM|8BIT",
+      "ordinary_sections_frames_config_unchanged": null
+    },
+    {
+      "sdk": "6.1.1",
+      "profile": "rev12-ota",
+      "trace": true,
+      "stack8192": true,
+      "worker_tls": false,
+      "app_bytes": 1600640,
+      "app_sha256": "bdef63452ef8e1b40ab3745052988ae68b26cb5f23bb6870fb95ecab4e8cfabd",
+      "elf_sha256": "c53dcfee947708e5d1cb772dc481c7813293f7a0efb2bfcb49b3f74858723682",
+      "gui_heap": "LVGL9 CUSTOM / SPIRAM|8BIT",
+      "ordinary_sections_frames_config_unchanged": null
+    },
+    {
+      "sdk": "6.1.1",
+      "profile": "rev12-ota",
+      "trace": true,
+      "stack8192": true,
+      "worker_tls": true,
+      "app_bytes": 1606064,
+      "app_sha256": "2ef2b917db09e329026ccd9013109ee9ef8486446f33bd17d99ff45022221541",
+      "elf_sha256": "4b73b13fba7a1b4c3610a17ea14f7c3b29c459f34f3f5528255d35f16995f75c",
+      "gui_heap": "LVGL9 CUSTOM / SPIRAM|8BIT",
+      "ordinary_sections_frames_config_unchanged": null
+    }
+  ],
+  "device_access": false,
+  "physical_performance_qualified": false,
+  "signed_ota_qualified": false
+}
