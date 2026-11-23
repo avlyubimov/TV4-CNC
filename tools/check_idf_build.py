@@ -50,6 +50,8 @@ def verify(build, profile, version, *, write_report=True, memory_diagnostics=Fal
         require(type(context) is dict and context.get('provisioned') is False and context.get('private_key_present') is False,
                 "worker stack bench must remain unprovisioned")
     require(config.get("TV4_OTA_ENABLED", False) == ota, "OTA requires explicit migration profile")
+    require(config.get("LV_USE_CUSTOM_MALLOC",False)==ota and config.get("LV_USE_CLIB_MALLOC",False)==(not ota),
+            "OTA requires the explicit LVGL PSRAM allocator; ordinary profiles require CLIB")
     for name in ("SPIRAM_XIP_FROM_PSRAM","SPIRAM_FETCH_INSTRUCTIONS","SPIRAM_RODATA"):
         require(config.get(name,False)==ota, "PSRAM XiP is required only in the explicit OTA profile")
     if ota:

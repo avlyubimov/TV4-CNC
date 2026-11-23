@@ -78,7 +78,7 @@ class CandidateTests(unittest.TestCase):
     def configure(self):
         tls = self.profile == 'rev12-tls-bench'
         config = dict(ESPTOOLPY_FLASHSIZE='16MB', ESPTOOLPY_FLASHFREQ='80m', LV_COLOR_DEPTH=16,
-                      FREERTOS_HZ=1000, ESP_DEFAULT_CPU_FREQ_MHZ=240,
+                      FREERTOS_HZ=1000, ESP_DEFAULT_CPU_FREQ_MHZ=240, LV_USE_CLIB_MALLOC=True,
                       TV4_BOARD_REV12=self.profile != 'headless',
                       TV4_OTA_MEMORY_BENCH=self.profile == 'rev12-memory-bench', TV4_UTC_TLS_BENCH=tls,
                       MBEDTLS_INTERNAL_MEM_ALLOC=not tls, MBEDTLS_EXTERNAL_MEM_ALLOC=tls)

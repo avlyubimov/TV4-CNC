@@ -59,6 +59,10 @@ jobs:
           printf 'Actual ESP service/control+worker8192 SDK boundary: analyzer PASS\n' >> build/policy-analysis.log
           bash tools/analyze_ota_worker_tls.sh build/policy-analysis >> build/policy-analysis.log 2>&1
           gcc -std=c11 -Wall -Wextra -Werror -fanalyzer \
+            -DTV4_LVGL_PSRAM_TEST=1 -DLV_CONF_SKIP=1 -DLV_USE_STDLIB_MALLOC=255 \
+            -Itests -Ivendor-lvgl -c firmware/esp32-hmi/ui/lvgl_psram.c \
+            -o build/policy-analysis/lvgl-psram.o >> build/policy-analysis.log 2>&1
+          gcc -std=c11 -Wall -Wextra -Werror -fanalyzer \
             -Ifirmware/esp32-hmi/core -c firmware/esp32-hmi/core/firmware_info.c \
             -o build/policy-analysis/firmware_info.o >> build/policy-analysis.log 2>&1
           printf 'firmware_info: actual-source analyzer PASS\n' >> build/policy-analysis.log

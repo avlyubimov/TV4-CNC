@@ -1,5 +1,22 @@
 # P1 — устранить AES/DMA memory blocker
 
+## 23 ноября: следующий PR — LVGL heap в PSRAM
+
+[Стенд46cf400](evidence/hardware/2026-11-23-esp32-dma-46cf400/README.md)
+выполнен: control PASS1–20ms, SNTP PASS, TLS handshake FAIL,9 allocation
+failures из DMA|INTERNAL|8BIT (4 retained/5 lost). Остальные boots отменены.
+Factory fecc05d возвращён; из-за UINT32_MAX touch age в старой прошивке
+выполнен один full fresh16MiB restore/verify/reset. Дополнительный UART30s
+PASS3–19ms; физические касания/экран владельцем сегодня не подтверждались.
+
+Dashboard использовал100516bytes internal, PSRAM не менялась. Следующий
+отдельный PR — штатный CUSTOM allocator LVGL на PSRAM только rev12-ota,
+оба SDK/ELF/fault tests и новый ограниченный control/comparison/TLS стенд.
+Global malloc policy/RGB/DMA reserve/stack/TLS/time/touch gates сохраняются.
+Сегодня действует уже данное разрешение; пакет46cf400 закрыт, повторять нельзя.
+
+Ниже — основание и история, не активный запрос ещё одной trace-абстракции.
+
 ## Активный P1 после main502a73d
 
 PR #71–73 слиты владельцем, main CI15/15 PASS. [Стенд3927063](evidence/hardware/2026-11-22-esp32-worker-tls-3927063/README.md)

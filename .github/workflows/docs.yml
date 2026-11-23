@@ -22,8 +22,11 @@ jobs:
           test -s docs/ESP32_OTA_BENCH_3927063.md
           test -s docs/plans/P1_AES_DMA_MEMORY.md
           test -s docs/plans/P1_DMA_ALLOCATION_TRACE.md
+          test -s docs/plans/P1_LVGL_PSRAM_HEAP.md
           test -s docs/evidence/build/esp32-ota-dma-trace/README.md
           python3 -m json.tool docs/evidence/build/esp32-ota-dma-trace/results.json > /dev/null
+          test -s docs/evidence/hardware/2026-11-23-esp32-dma-46cf400/README.md
+          python3 -m json.tool docs/evidence/hardware/2026-11-23-esp32-dma-46cf400/measurements.json > /dev/null
           test -s docs/evidence/hardware/2026-11-22-esp32-worker-tls-3927063/README.md
           python3 -m json.tool docs/evidence/hardware/2026-11-22-esp32-worker-tls-3927063/measurements.json > /dev/null
           test -s docs/evidence/build/esp32-ota-repeat-3927063/README.md

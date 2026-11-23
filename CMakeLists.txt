@@ -28,6 +28,15 @@ if(DEFINED LVGL_DIR)
  set(LV_CONF_BUILD_DISABLE_EXAMPLES ON CACHE BOOL "" FORCE)
  set(LV_CONF_BUILD_DISABLE_DEMOS ON CACHE BOOL "" FORCE)
  add_subdirectory(${LVGL_DIR} lvgl)
+ # Compile the actual OTA allocator against the pinned LVGL API, not a copied
+ # allocator interface. This target has only an SDK boundary and no hardware.
+ add_executable(lvgl_psram_tests tests/lvgl_psram_tests.c ${HMI}/ui/lvgl_psram.c)
+ target_include_directories(lvgl_psram_tests PRIVATE tests ${LVGL_DIR})
+ target_compile_definitions(lvgl_psram_tests PRIVATE TV4_LVGL_PSRAM_TEST=1 LV_CONF_SKIP=1 LV_USE_STDLIB_MALLOC=255)
+ target_compile_options(lvgl_psram_tests PRIVATE -Wall -Wextra -Werror -UNDEBUG)
+ add_test(NAME lvgl_psram_heap COMMAND lvgl_psram_tests)
+ add_test(NAME lvgl_psram_build_guards COMMAND ${Python3_EXECUTABLE}
+   ${CMAKE_CURRENT_SOURCE_DIR}/tests/lvgl_psram_build_tests.py ${LVGL_DIR})
  set(tv4_ui_sources ${HMI}/ui/firmware_view.c ${HMI}/ui/boot_view.c ${HMI}/ui/dashboard.c ${HMI}/ui/tools_view.c ${HMI}/ui/wifi_view.c ${HMI}/ui/wifi_editor.c ${HMI}/network/wifi_service.c ${HMI}/network/wifi_profiles.c ${HMI}/network/wifi_link.c ${HMI}/assets/tv4_icons.c ${HMI}/assets/tv4_lathe.c ${HMI}/assets/tv4_button_12.c ${HMI}/assets/tv4_bold_24.c ${HMI}/assets/tv4_boot_56.c ${HMI}/assets/tv4_ru_12.c ${HMI}/assets/tv4_ru_14.c ${HMI}/assets/tv4_ru_20.c ${HMI}/assets/tv4_digits_36.c ${HMI}/assets/tv4_digits_32.c)
  add_executable(preview simulator/preview.c tests/layout_checks.c ${tv4_ui_sources})
  target_include_directories(preview PRIVATE ${HMI}/ui ${HMI}/network ${CMAKE_CURRENT_SOURCE_DIR}/tests)

@@ -1,5 +1,23 @@
 # Аппаратный статус TV4-CNC
 
+## 23 ноября: DMA shortage, полный snapshot restore проверен
+
+[Стенд46cf400](evidence/hardware/2026-11-23-esp32-dma-46cf400/README.md):
+control PASS1–20ms, SNTP PASS, TLS handshake FAIL (ESP32794/Mbed32640),
+9 failed allocations из DMA|INTERNAL|8BIT,4 retained/5 lost. Headers не читались;
+точный failed request AES неизвестен. Плата возвращена на fecc05d: factory
+verify PASS, после старого UINT32_MAX touch race выполнен один full fresh16MiB
+restore/verify/reset PASS. Отдельный UART30s после него PASS3–19ms. Owner
+visual/touch check сегодня не получен; основной810,754s и дополнительный30s
+сеансы закрыты. eFuse/F407/CAN/motion не затрагивались. Действует заранее
+данное разрешение23ноября; использованный пакет повторять нельзя.
+
+Следующий P1 — официальный LVGL PSRAM heap только OTA: dashboard использовал
+100516bytes internal без расхода PSRAM. Это направление устранения дефицита,
+пока не hardware-qualified fix. Signed CHECK/install/rollback остаются открыты.
+
+## История до 23 ноября
+
 ## 22 ноября,23:25–23:37: touch PASS, AES allocation в HTTPS
 
 [Новый стенд3927063](evidence/hardware/2026-11-22-esp32-worker-tls-3927063/README.md) завершён за743,183s:
