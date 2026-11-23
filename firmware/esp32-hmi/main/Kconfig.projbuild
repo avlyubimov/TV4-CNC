@@ -64,4 +64,15 @@ config TV4_OTA_WORKER_TLS_BENCH
         isolated 2026 time policy is not production authority. Requires a new
         exact-image board authorization; default and trace-control builds do
         not perform this probe.
+config TV4_OTA_SIGNED_CHECK_BENCH
+    bool "Run one configured read-only signed CHECK after Wi-Fi settles"
+    depends on TV4_OTA_MEMORY_DIAGNOSTICS && !TV4_OTA_WORKER_STACK_BENCH && !TV4_OTA_WORKER_TLS_BENCH
+    default n
+    help
+        Explicit local configured bench only: one existing worker, reviewed
+        public trust/context required. Wait at most45 seconds for healthy Wi-Fi,
+        then perform exactly one guarded CHECK with signature/full-image checks.
+        CHECK/INSTALL/REBOOT commands are rejected in this image; cancellation
+        remains available. No Flash sink, extra task, or automatic retry.
+        Ordinary profiles keep this flag off.
 endmenu

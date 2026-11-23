@@ -142,39 +142,32 @@ PR и Actions; не копировать код уже открытого PR. Д
    теги, релизы, секреты CI и публикации под видом обычного push.
 6. Обновлять актуальный статус; исторические отчёты сохранять с явной пометкой.
 
-## Текущее задание: P1 — настоящий GET GitHub Releases
+## Текущее задание: P1 — один автономный signed CHECK
 
-PR #78 слит владельцем, mainb3551f3, source471e109 CI30/main15 PASS.
-Configured worker12288: чистый контроль PASS; CHECK дважды дал HTTP_OPEN,
-resource OK0/stack7072–7248. Полный signed stream ещё не проверен. Весь factory
-fecc05d возвращён/verify/UART/owner HMI-touch-Wi-Fi-SETUP PASS, full restore0.
-Читать docs/evidence/hardware/2026-11-24-esp32-signed-check-471e109/README.md
-и docs/plans/P1_GITHUB_HEADERS.md. Два запроса в UART при сообщении владельца
-об одном не считать однократной приёмкой; источник второго не установлен.
+PR #79 слит владельцем: main c3b82f0 CI15/source dcacb8d CI30 PASS.
+Читайте docs/plans/P1_AUTONOMOUS_SIGNED_CHECK.md. Default-off opt-in только
+configured rev12-ota+trace: тот же worker после self-test и healthy Wi-Fi
+выполняет один read-only full signed image CHECK; INSTALL/repeat CHECK/REBOOT
+из API закрыты, CANCEL сохраняется. Ordinary profiles/metadata CHECK прежние.
+Нет новых tasks/crypto/Flash sinks; trust/CA/time/resource/timeout gates прежние.
+Actual service SDK doubles/negative guards/analyzer/оба SDK/CI, затем exact
+control flag0 → PASS → auto flag1 → весь factory fecc05d/verify/UART return.
 
-Нужна одна конкретная adapter integration: bounded response headers16KiB/
-value8KiB (GitHub CSP4178,total5726), TX512..2080 по проверенному URL для полной
-GET request line SDK5/6. Сохранить key128/Location2048, framing/duplicate/
-encoding/body, allowlist, CA/hostname/date/time, floors и timeout/cleanup gates.
-Actual-source SDK doubles воспроизводят оба старых отказа; host/sanitizers,
-оба SDK/ELF/CI, затем новый exact BASE, clean control, один CHECK и возврат.
-Новых crypto/HTTPS clients/tasks не добавлять. Private key/context вне Git/CI.
+Владелец явно разрешил автономные проверки обеих подключённых изолированных
+плат до24ноября2026 08:00 Asia/Almaty и попросил больше не спрашивать доступ.
+Это действующее разрешение для необходимых обратимых non-motion стендов,
+а не отдельное разрешение на eFuse/option bytes, приводы/CAN, merge или новый
+release. Каждый аппаратный сеанс finite≤1800s, свежие16MiB/MD5/SHA/two-NVMe,
+recovery reserve до общего срока; закрытые пакеты не повторять. Не продлевать
+сетевые timeout и не снижать floors: internal64KiB/largest32KiB, PSRAM1MiB/
+largest128KiB, stack3072, anchor10min/skew5s. UI ночью владельцем не наблюдается.
 
-Prerelease v0.1.0-bench.2/c013ddf опубликован по отдельному разрешению:
-11 downloaded assets/SHA/signature/full BIN Python+C PASS, source30/main15/
-tag15 CI PASS. Не менять assets/tag и не устанавливать unprovisioned payload.
-Стендовые HMI0.1.0-bench.1→0.1.0-bench.2, bootloader local0.1.0-bench.1/
-protocol1.0.0 — не production или physical CAN labels.
-
-Owner явно разрешил продолжать проверку столько времени, сколько понадобится;
-это разрешение продлевает календарное окно CHECK, а не сетевые таймауты,
-сертификаты или resource floors. Каждый сеанс finite1800s, fresh16MiB/device
-MD5/SHA/two-NVMe, reserve и возврат всего factory. Floors: internal64KiB/
-largest32KiB, PSRAM1MiB/largest128KiB, stack3072; anchor10min/skew5s. Closed
-packets не повторять. Один read отменён до Flash write из-за ошибочной гипотезы
-агента о URL512; реальный limit2048 и URL903–907 разрешены native guard.
-Это не постоянное разрешение/INSTALL/eFuse/STM32/CAN/motion/merge/release.
-После полного CHECK нужны install/confirmation/rollback и отдельная P2 acceptance.
+На ESP32 fecc05d/factory+A/B, владелец после возврата подтвердил HMI-touch-Wi-Fi-
+SETUP; F407 ee7d179 прежний. Prerelease v0.1.0-bench.2/c013ddf уже опубликован
+по отдельному разрешению,11 downloaded assets/SHA/signature/full BIN PASS.
+Не менять tag/assets и не устанавливать unprovisioned payload. Local owner key/
+context вне Git/CI. Следующий результат после полного CHECK — configured
+install/confirmation/rollback и отдельная P2 acceptance, без фиктивной готовности.
 
 ## Исторические контракты слитых этапов
 

@@ -1,21 +1,29 @@
 # Открытые вопросы и блокирующие решения
 
-## Актуально: configured контроль PASS, далее реальные HTTP headers GitHub
+## Актуально: один автономный signed CHECK после PR #79
 
-PR #78 слит владельцем, mainb3551f3 CI15/source471e109 CI30 PASS.
-[Стенд471e109](evidence/hardware/2026-11-24-esp32-signed-check-471e109/README.md):
-clean control/worker12288 PASS; два HTTP_OPEN при resource OK и stack7072–7248.
-Весь factory fecc05d возвращён/verify/UART/owner PASS, full restore0. Full signed
-image и single CHECK не приняты; источник второго запроса не установлен.
+PR #79 слит владельцем, main c3b82f0: source CI 30/30 и main CI 15/15 PASS.
+Bounded GitHub headers/request line исправлены; аппаратный signed CHECK ещё
+не принят. На ESP32 возвращён fecc05d, владелец подтвердил HMI/касания/Wi-Fi/
+SETUP. F407 остаётся на ee7d179; новые GPIO/CAN/motion действия не выполнялись.
 
-[Следующая adapter integration](plans/P1_GITHUB_HEADERS.md): ответ302 GitHub
-имеет headers5726/CSP4178, прежний cap4096 его отвергает. SDK5/6 также требуют
-полную GET path+query в TX;512 мало для CDN URL. Новые конечные пределы:
-total16KiB/value8KiB, TX512..2080 по URL, без ослабления relevant headers,
-framing/encoding/allowlist/CA/time/подписи/size/floors. После тестов/обоих SDK/
-CI — новый exact BASE, clean control, один CHECK, возврат. Owner продлил время
-проверки; finite1800s/recovery reserve и reviewed guards сохраняются.
+[Следующая интеграция](plans/P1_AUTONOMOUS_SIGNED_CHECK.md): default-off
+`TV4_OTA_SIGNED_CHECK_BENCH`, только configured rev12-ota+memory trace. После
+self-test тот же worker ждёт healthy Wi-Fi не более45s и делает ровно один
+read-only CHECK **полного** подписанного образа. В этом режиме CHECK/INSTALL/
+REBOOT извне закрыты, CANCEL доступен; новых tasks/crypto/Flash sink нет.
+Обычный операторский CHECK по-прежнему проверяет метаданные. CI проверяет
+actual service/negative build guards; owner-local образ собирается на обоих SDK,
+публичных ключей/контекста владельца в CI нет.
 
+Владелец разрешил автономные проверки обеих подключённых изолированных плат
+до24ноября08:00 Asia/Almaty. Это конечное окно, не разрешение на движение,
+eFuse/option bytes, merge или новые релизы. Для ESP32: новый exact control с
+flag0 → только после PASS образ с flag1 → возврат **всего** factory fecc05d.
+Каждый сеанс ≤1800s, свежие16MiB/MD5/SHA/two-NVMe, recovery reserve и прежние
+floors/CA/hostname/date/timeouts сохраняются. После возврата UART/self-test
+и физическое наблюдение владельца отмечать отдельно: ночью владелец отсутствует.
+Published bench.2 остаётся только read-only payload; install/rollback не приняты.
 
 ## После PR #77: опубликованный payload и следующий configured CHECK
 

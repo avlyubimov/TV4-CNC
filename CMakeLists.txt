@@ -257,19 +257,30 @@ add_test(NAME ota_memory_diagnostics_artifacts COMMAND ${Python3_EXECUTABLE} ${C
 # Execute the real ESP service against an SDK boundary, never a board/network.
 add_test(NAME ota_worker_stack_build_guards COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/tests/ota_worker_stack_build_tests.py)
 set_tests_properties(ota_worker_stack_build_guards PROPERTIES TIMEOUT 30)
-foreach(stack_bench 0 1 2 3)
+foreach(stack_bench 0 1 2 3 4 5)
   set(service_test ota_worker_stack_${stack_bench}_tests)
   add_executable(${service_test} tests/ota_worker_stack_tests.c ${HMI}/ota/service.c)
   target_include_directories(${service_test} PRIVATE tests/ota_service_sdk tests ${HMI}/ota ${HMI}/network)
   target_compile_definitions(${service_test} PRIVATE ESP_PLATFORM=1
     SERVICE_TEST_BENCH=$<OR:$<STREQUAL:${stack_bench},1>,$<STREQUAL:${stack_bench},2>>
     SERVICE_TEST_TLS_BENCH=$<STREQUAL:${stack_bench},2>
-    SERVICE_TEST_PROVISIONED=$<STREQUAL:${stack_bench},3>)
+    SERVICE_TEST_PROVISIONED=$<OR:$<STREQUAL:${stack_bench},3>,$<STREQUAL:${stack_bench},4>,$<STREQUAL:${stack_bench},5>>
+    SERVICE_TEST_SIGNED_BENCH=$<OR:$<STREQUAL:${stack_bench},4>,$<STREQUAL:${stack_bench},5>>
+    SERVICE_TEST_VALID_TRUST=$<STREQUAL:${stack_bench},4>)
   target_compile_options(${service_test} PRIVATE -Wall -Wextra -Werror -UNDEBUG)
   target_link_libraries(${service_test} PRIVATE tv4_ota_verification)
   target_link_options(${service_test} PRIVATE "LINKER:--wrap=tv4_ota_sdk_layout_valid" "LINKER:--wrap=tv4_ota_sdk_finish_boot")
+  foreach(wrapped tv4_ota_memory_acquire_psram tv4_ota_memory_release tv4_sntp_sync tv4_ota_session_run_guarded tv4_ota_session_install_guarded)
+    target_link_options(${service_test} PRIVATE "LINKER:--wrap=${wrapped}")
+  endforeach()
   foreach(case success task-fail pending-fail probe-fail health-timeout)
     add_test(NAME ota_worker_stack_${stack_bench}_${case} COMMAND ${service_test} ${case})
     set_tests_properties(ota_worker_stack_${stack_bench}_${case} PROPERTIES TIMEOUT 15)
   endforeach()
+  if(stack_bench EQUAL 4)
+    foreach(case offline wait-health memory-fail sntp-fail sntp-cleanup-fail session-fail resource-fail cancel-session)
+      add_test(NAME ota_signed_check_${case} COMMAND ${service_test} ${case})
+      set_tests_properties(ota_signed_check_${case} PROPERTIES TIMEOUT 15)
+    endforeach()
+  endif()
 endforeach()

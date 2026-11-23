@@ -10,6 +10,9 @@ tv4_ota_boot_result tv4_ota_boot_observe(tv4_ota_boot_window *w,uint32_t now,boo
 }
 #ifdef ESP_PLATFORM
 #include "sdkconfig.h"
+#if CONFIG_TV4_OTA_SIGNED_CHECK_BENCH && !CONFIG_TV4_OTA_ENABLED
+#error "Signed CHECK bench requires explicit OTA profile"
+#endif
 #if CONFIG_TV4_OTA_WORKER_TLS_BENCH && (!CONFIG_TV4_OTA_WORKER_STACK_BENCH || !CONFIG_TV4_OTA_MEMORY_DIAGNOSTICS || !CONFIG_TV4_OTA_ENABLED || CONFIG_TV4_UTC_TLS_BENCH)
 #error "Worker TLS bench requires the unprovisioned OTA stack/trace profile exclusively"
 #endif
@@ -25,6 +28,9 @@ tv4_ota_boot_result tv4_ota_boot_observe(tv4_ota_boot_window *w,uint32_t now,boo
 #error "OTA profile requires PSRAM TLS and X.509 certificate dates"
 #endif
 #include "ota_local_context.h"
+#if CONFIG_TV4_OTA_SIGNED_CHECK_BENCH && (!TV4_OTA_PROVISIONED || !CONFIG_TV4_OTA_MEMORY_DIAGNOSTICS || CONFIG_TV4_OTA_WORKER_STACK_BENCH || CONFIG_TV4_OTA_WORKER_TLS_BENCH)
+#error "Signed CHECK bench requires configured OTA trace exclusively"
+#endif
 #if CONFIG_TV4_OTA_WORKER_STACK_BENCH && TV4_OTA_PROVISIONED
 #error "Worker stack bench must remain unprovisioned"
 #endif
@@ -113,7 +119,14 @@ static void operation(bool install) {
     tv4_ota_memory_window_end(measuring);tv4_ota_memory_report_window();measured=false;
     if(synced!=TV4_SNTP_OK || !sync.cleanup_ok) {error=3;goto done;}
     esp_chip_info_t chip;esp_chip_info(&chip);
-    tv4_session_request r={OTA_MANIFEST_URL,&trust,{15000,300000,(uint16_t)chip.revision,true},15000,300000,5000,3,true,install};
+    /* Bench CHECK streams the complete signed image without a Flash sink.
+     * Ordinary operator CHECK retains its existing metadata-only behavior. */
+#if CONFIG_TV4_OTA_SIGNED_CHECK_BENCH
+    const bool verify_image=true;
+#else
+    const bool verify_image=install;
+#endif
+    tv4_session_request r={OTA_MANIFEST_URL,&trust,{15000,300000,(uint16_t)chip.revision,true},15000,300000,5000,3,true,verify_image};
     tv4_session_io io={&anchor,fetch,now_ms,cancelled};tv4_ota_resource_report report={.result=TV4_RESOURCE_UNAVAILABLE};
     bool ok;
     measuring=TV4_MEM_SESSION;tv4_ota_memory_window_begin(measuring);measured=true;
@@ -156,6 +169,25 @@ done:
         (unsigned)heap_caps_get_free_size(MALLOC_CAP_INTERNAL|MALLOC_CAP_8BIT),
         (unsigned)heap_caps_get_free_size(MALLOC_CAP_SPIRAM),(unsigned)uxTaskGetStackHighWaterMark(NULL));
 }
+#if CONFIG_TV4_OTA_SIGNED_CHECK_BENCH
+static void signed_check_bench(void) {
+    bool attempted=false,online=false,settling=false;uint32_t start=now_ms(NULL),since=0;
+    if(configured()) {
+        while((uint32_t)(now_ms(NULL)-start)<45000) {
+            bool good=wifi_service_online() && !cancelled(NULL);
+            if(!good)settling=false;
+            else if(!settling) {settling=true;since=now_ms(NULL);}
+            else if((uint32_t)(now_ms(NULL)-since)>=2000) {online=true;break;}
+            vTaskDelay(pdMS_TO_TICKS(250));
+        }
+        if(online) {attempted=true;operation(false);}
+        else publish(TV4_UPDATE_ERROR,22);
+    }
+    worker_stack();tv4_update_snapshot final;tv4_ota_service_snapshot(&final);
+    ESP_LOGI("tv4_ota","signed_check_bench attempted=%u pass=%u read_only=1",
+        (unsigned)attempted,(unsigned)(attempted && final.state==TV4_UPDATE_READY && !final.error));
+}
+#endif
 static void worker(void *c) {
     (void)c;
     if(esp_task_wdt_add(NULL)!=ESP_OK) {publish(TV4_UPDATE_BOOT_FAILED,21);esp_restart();}
@@ -191,6 +223,9 @@ static void worker(void *c) {
     if(!finished)esp_restart();
     if(esp_task_wdt_delete(NULL)!=ESP_OK)esp_restart();
     publish(!passed?TV4_UPDATE_BOOT_FAILED:configured()?TV4_UPDATE_IDLE:TV4_UPDATE_SETUP,0);
+#if CONFIG_TV4_OTA_SIGNED_CHECK_BENCH
+    if(passed)signed_check_bench();
+#endif
 #if CONFIG_TV4_OTA_WORKER_TLS_BENCH
     if(passed) {
         bool probed=tv4_utc_tls_bench_run_in_ota_worker(cancelled,NULL);
@@ -225,6 +260,9 @@ void tv4_ota_service_health(bool value) {
 void tv4_ota_service_snapshot(tv4_update_snapshot *out) {if(out) {portENTER_CRITICAL(&mux);*out=status;portEXIT_CRITICAL(&mux);}}
 bool tv4_ota_service_request(tv4_update_command cmd) {
     if(!commands)return false;
+#if CONFIG_TV4_OTA_SIGNED_CHECK_BENCH
+    if(cmd!=TV4_UPDATE_CANCEL)return false;
+#endif
     portENTER_CRITICAL(&mux);uint32_t stamp=now_ms(NULL);tv4_update_state previous=status.state;
     bool healthy=health && (uint32_t)(stamp-health_ms)<500;
     bool busy=previous==TV4_UPDATE_CHECKING || previous==TV4_UPDATE_WRITING;

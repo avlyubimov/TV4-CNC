@@ -1,21 +1,20 @@
 # ESP32 HMI — специализированные правила
 
-Текущий P1 — docs/plans/P1_GITHUB_HEADERS.md от корня. 471e109/worker12288:
-clean control PASS, HTTP_OPEN при resource OK, factory fecc05d возвращён/
-verify/UART/owner PASS. Full signed session ещё не принят; F407 ee7d179 прежний.
+Текущий P1 — docs/plans/P1_AUTONOMOUS_SIGNED_CHECK.md от корня. PR79 слит,
+main c3b82f0 CI15/source dcacb8d CI30 PASS. GitHub headers/TX fixes сохранять.
+Default-off signed bench только configured rev12-ota+trace, один existing worker,
+45s healthy Wi-Fi wait/2s settle и один read-only full image operation(false).
+Запретить external CHECK/INSTALL/REBOOT в этом image, сохранить CANCEL; ordinary
+metadata CHECK/профили прежние. No new task/crypto/Flash sink, floors/CA/time/
+monitor/cleanup/timeout guards не ослаблять. Actual SDK doubles/negative builds/
+analyzer/оба SDK/CI, потом exact flag0 control → PASS → flag1 auto → fecc return.
 
-Менять существующий HTTPS adapter: bounded total headers16KiB/value8KiB и
-TX512..2080 по длине уже разрешённого URL. Сохранить RX4096/TLS16384/4096,
-Location2048/key128/encoding/framing/duplicates/allowlist/CA/hostname/date/time,
-floors, единственный worker и memory monitor. Никаких логов header values/
-URL/query или I/O из HTTP callbacks. Diagnostic log после callback, bounded.
-Actual-source SDK doubles/negative framing/oversize/cleanup/time, sanitizers,
-оба pinned SDK/ELF/CI, затем новый exact finite CHECK с fresh backup/возвратом.
-
-Owner разрешил проверять столько времени, сколько понадобится: новый конечный
-календарный CHECK context, не продление сетевых timeout и не снижение floors.
-Private context/key вне Git/CI. Не менять опубликованный prerelease bench.2,
-не устанавливать unprovisioned payload. INSTALL/eFuse/CAN/motion/merge не разрешены.
+Owner разрешил автономные обратимые проверки изолированных подключённых плат
+до24ноября2026 08:00 Asia/Almaty без повторных вопросов о доступе. Каждый сеанс
+finite1800s/fresh backup/two-NVMe/recovery reserve; UI owner ночью не наблюдает.
+Это не разрешение на INSTALL unprovisioned bench.2, eFuse/option bytes/CAN/motion/
+merge/release. На ESP32 fecc05d и подтверждённые HMI/касания/Wi-Fi/SETUP; F407
+не открывался и остаётся ee7d179. Owner key/context не попадают в Git/CI.
 
 Ниже исторические контракты; актуальные hardware facts — в корневых документах.
 
