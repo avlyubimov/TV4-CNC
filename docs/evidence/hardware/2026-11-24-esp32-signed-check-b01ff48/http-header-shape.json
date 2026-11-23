@@ -1,0 +1,74 @@
+{
+  "source": "direct GET to published canonical GitHub URL, verified default TLS, no redirect followed",
+  "status": 302,
+  "total_header_bytes": 5708,
+  "header_shapes": [
+    {
+      "key": "date",
+      "value_bytes": 29
+    },
+    {
+      "key": "content-type",
+      "value_bytes": 24
+    },
+    {
+      "key": "vary",
+      "value_bytes": 151
+    },
+    {
+      "key": "location",
+      "value_bytes": 911
+    },
+    {
+      "key": "cache-control",
+      "value_bytes": 8
+    },
+    {
+      "key": "strict-transport-security",
+      "value_bytes": 44
+    },
+    {
+      "key": "x-frame-options",
+      "value_bytes": 4
+    },
+    {
+      "key": "x-content-type-options",
+      "value_bytes": 7
+    },
+    {
+      "key": "x-xss-protection",
+      "value_bytes": 1
+    },
+    {
+      "key": "referrer-policy",
+      "value_bytes": 26
+    },
+    {
+      "key": "content-security-policy",
+      "value_bytes": 4178
+    },
+    {
+      "key": "server",
+      "value_bytes": 10
+    },
+    {
+      "key": "content-length",
+      "value_bytes": 1
+    },
+    {
+      "key": "x-github-request-id",
+      "value_bytes": 35
+    },
+    {
+      "key": "x-github-edge-region",
+      "value_bytes": 3
+    }
+  ],
+  "content_length_values": [
+    "0"
+  ],
+  "transfer_encoding_values": [],
+  "content_encoding_values": [],
+  "location_count": 1,
+  "redirect_url_values_stored": false
+}

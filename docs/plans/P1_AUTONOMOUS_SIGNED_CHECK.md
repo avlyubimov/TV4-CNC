@@ -31,3 +31,23 @@ Host session/SNTP wrappers проверяют orchestration/gates, не имит
 доказательство TLS/криптографии; независимые existing crypto/session tests остаются.
 Локальные owner-configured control/auto ELF обоих SDK и runtime stack/resource
 результаты будут записаны отдельно после выполнения, не объявляются заранее.
+
+## После первого exact пакета b01ff48
+
+[Аппаратный отчёт](../evidence/hardware/2026-11-24-esp32-signed-check-b01ff48/README.md):
+контроль PASS, один CHECK FAIL step5/status302/bad_headers1, возврат fecc05d PASS.
+Live GET shape: explicit Content-Length0, no Transfer-Encoding. В exact SDK
+[6.1.1,051e4c4](https://github.com/espressif/esp-idf/blob/051e4c4eb20346e043cdd47bc388fde75ff8af63/components/esp_http_client/esp_http_client.c#L1686)
+и [5.3.2,9d7f2d6](https://github.com/espressif/esp-idf/blob/9d7f2d69f50d1288526d4f1027108e314e8c879f/components/esp_http_client/esp_http_client.c#L1407)
+fetch_headers устанавливает is_chunked при content_length<=0. Предыдущий SDK
+double этого не моделировал; с правильной семантикой старый код падает на
+реальном302 fixture. Исправляется только различие между wire framing и SDK
+flag для known-zero/no-TE. Native rejects также explicit CL+TE на редиректах.
+200 с нулевой длиной остаётся LENGTH, unknown framing/duplicates/compression/
+other SDK mismatches — отказ; нет waiver, новых буферов или аллокаций.
+Numeric failure log добавляет framing fields после callback, без values/URL.
+
+30 actual HTTPS adapter cases и полный237 host/237 ASan/UBSan/LSan набор PASS,
+GCC analyzer PASS. Новые exact configured control/auto ELF обоих SDK и CI ещё
+нужно выполнить перед следующим finite пакетом. b01ff48 software231 evidence
+сохраняет свой source/hash и не объявляет новые images аппаратно проверенными.

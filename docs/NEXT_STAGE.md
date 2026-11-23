@@ -1,29 +1,27 @@
 # P1 — signed OTA CHECK после успешного HTTPS
 
-## Актуально: один автономный signed CHECK после PR #79
+## Актуально: b01ff48 контроль PASS, CHECK остановлен на нулевой длине HTTP302
 
-PR #79 слит владельцем, main c3b82f0: source CI 30/30 и main CI 15/15 PASS.
-Bounded GitHub headers/request line исправлены; аппаратный signed CHECK ещё
-не принят. На ESP32 возвращён fecc05d, владелец подтвердил HMI/касания/Wi-Fi/
-SETUP. F407 остаётся на ee7d179; новые GPIO/CAN/motion действия не выполнялись.
+[Один автономный CHECK](evidence/hardware/2026-11-24-esp32-signed-check-b01ff48/README.md)
+закрыт: control PASS; auto attempted1/pass0, HTTP302/header bytes5704/bad_headers1.
+Resource guard0/checks2/stack6896 — ещё не full session budget. Весь factory
+fecc05d возвращён/verify/UART30 PASS, full restore0; owner UI ночью не наблюдался.
+[SWD readback F407](evidence/hardware/2026-11-24-f407-readback/README.md) PASS:
+current1MiB/ee7d179 exact bytes, self-tests/guards/progress, resume; без прошивки/
+reset/RAM test requests. Две приватные current copies на разных NVMe проверены.
 
-[Следующая интеграция](plans/P1_AUTONOMOUS_SIGNED_CHECK.md): default-off
-`TV4_OTA_SIGNED_CHECK_BENCH`, только configured rev12-ota+memory trace. После
-self-test тот же worker ждёт healthy Wi-Fi не более45s и делает ровно один
-read-only CHECK **полного** подписанного образа. В этом режиме CHECK/INSTALL/
-REBOOT извне закрыты, CANCEL доступен; новых tasks/crypto/Flash sink нет.
-Обычный операторский CHECK по-прежнему проверяет метаданные. CI проверяет
-actual service/negative build guards; owner-local образ собирается на обоих SDK,
-публичных ключей/контекста владельца в CI нет.
+[Следующий exact пакет](plans/P1_AUTONOMOUS_SIGNED_CHECK.md) исправляет
+семантику ESP-IDF5/6: fetch_headers выставляет is_chunked для Content-Length0,
+даже без Transfer-Encoding. Narrow adaptation только для explicit zero length
+без TE; empty200, unknown framing, CL+TE, duplicates/compression и прочие
+contradictions отвергаются. Сначала237 host/sanitizers/оба SDK/CI, затем новый
+fresh16MiB/two-NVMe → control flag0 PASS → один full CHECK flag1 → весь fecc05d.
+Стенд b01ff48 закрыт, не повторять. Подпись/full stream/install/rollback ещё не
+приняты. Пороги/CA/hostname/date/timeouts и обычные профили сохраняются.
 
-Владелец разрешил автономные проверки обеих подключённых изолированных плат
-до24ноября08:00 Asia/Almaty. Это конечное окно, не разрешение на движение,
-eFuse/option bytes, merge или новые релизы. Для ESP32: новый exact control с
-flag0 → только после PASS образ с flag1 → возврат **всего** factory fecc05d.
-Каждый сеанс ≤1800s, свежие16MiB/MD5/SHA/two-NVMe, recovery reserve и прежние
-floors/CA/hostname/date/timeouts сохраняются. После возврата UART/self-test
-и физическое наблюдение владельца отмечать отдельно: ночью владелец отсутствует.
-Published bench.2 остаётся только read-only payload; install/rollback не приняты.
+Действует разрешение владельца на автономные обратимые проверки изолированных
+плат до24ноября08:00 Asia/Almaty: finite≤1800s/recovery reserve, без eFuse/
+option bytes/CAN/motion/merge/новых релизов. Published bench.2 остаётся read-only.
 
 ## 23 ноября: LVGL PSRAM и HTTPS — PASS, далее signed CHECK
 

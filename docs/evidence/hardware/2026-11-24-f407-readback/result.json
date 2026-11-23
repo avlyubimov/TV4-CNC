@@ -1,0 +1,63 @@
+{
+  "health_progress_pass": true,
+  "exact_app_bytes_match": true,
+  "sector0_unused_tail_erased": true,
+  "full_flash_read_bytes": 1048576,
+  "elapsed_seconds": 21.790844275998097,
+  "reset_requested": false,
+  "flash_or_ram_request_write": false,
+  "resumed": true,
+  "ticks": [
+    24057142,
+    24058339
+  ],
+  "heartbeats": [
+    240571,
+    240583
+  ],
+  "watchdog_feeds": [
+    240571,
+    240583
+  ],
+  "history": {
+    "INITIAL": {
+      "crc_valid": true,
+      "boot_count": 2
+    },
+    "PROGRESS": {
+      "crc_valid": true,
+      "boot_count": 2
+    }
+  },
+  "sectors_1_to_11_match_pre_bench_snapshot": true,
+  "current_snapshot_independent_copies_verified": true,
+  "schema": "tv4-f407-readback-health-1",
+  "date_local": "2026-11-24",
+  "timezone": "Asia/Almaty",
+  "exact_installed_source": "ee7d179435f3f9e7598c7646b85ff64f4d5e9a32",
+  "compiled_bin_sha256": "ed68e329982046a951713aaf0d74c8720b652c7331c251aea01830cf75107b20",
+  "compiled_bin_bytes": 2540,
+  "started_utc": "2026-11-23T20:46:33.838071+00:00",
+  "finished_utc": "2026-11-23T20:46:55.631585+00:00",
+  "maximum_seconds": 180,
+  "process_exit_code": 0,
+  "session_closed": true,
+  "cpuid": "0x410fc241",
+  "device_id": "0x101f6413",
+  "flash_kib": 1024,
+  "optcr": "0x0fffaaed",
+  "rdp_level": 0,
+  "nwrp": "0xfff",
+  "probe_voltage_sample_v": 3.259416,
+  "voltage_calibrated_or_load_test": false,
+  "halt_and_resume_used": true,
+  "volatile_debug_sleep_watchdog_freeze_configured": true,
+  "target_ram_work_area_bytes": 0,
+  "hardware_reset_requested": false,
+  "motion_outputs_software_field": 0,
+  "physical_gpio_can_inhibit_verified": false,
+  "full_ram_ccm_stress_or_clock_accuracy_measured": false,
+  "backup_hashes_or_bytes_published": false,
+  "new_firmware_written": false,
+  "option_otp_can_motion_changed": false
+}

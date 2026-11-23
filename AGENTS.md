@@ -142,32 +142,37 @@ PR и Actions; не копировать код уже открытого PR. Д
    теги, релизы, секреты CI и публикации под видом обычного push.
 6. Обновлять актуальный статус; исторические отчёты сохранять с явной пометкой.
 
-## Текущее задание: P1 — один автономный signed CHECK
+## Текущее задание: P1 — wire framing после одного автономного CHECK
 
-PR #79 слит владельцем: main c3b82f0 CI15/source dcacb8d CI30 PASS.
-Читайте docs/plans/P1_AUTONOMOUS_SIGNED_CHECK.md. Default-off opt-in только
-configured rev12-ota+trace: тот же worker после self-test и healthy Wi-Fi
-выполняет один read-only full signed image CHECK; INSTALL/repeat CHECK/REBOOT
-из API закрыты, CANCEL сохраняется. Ordinary profiles/metadata CHECK прежние.
-Нет новых tasks/crypto/Flash sinks; trust/CA/time/resource/timeout gates прежние.
-Actual service SDK doubles/negative guards/analyzer/оба SDK/CI, затем exact
-control flag0 → PASS → auto flag1 → весь factory fecc05d/verify/UART return.
+Читайте docs/plans/P1_AUTONOMOUS_SIGNED_CHECK.md. На b01ff48/source CI30/
+main c3b82f0 CI15 контроль PASS; ровно один auto full CHECK FAIL на302 headers,
+resource0/checks2/stack6896. Весь factory fecc05d возвращён/verify/UART30 PASS,
+full restore0. Physical UI ночью не наблюдался. F407 readback1MiB/ee7d179/
+self-tests/guards/progress/resume PASS, без firmware/reset/RAM requests; current
+copies/two-NVMe проверены. Новые host237/sanitizers237 — software, не hardware.
 
-Владелец явно разрешил автономные проверки обеих подключённых изолированных
-плат до24ноября2026 08:00 Asia/Almaty и попросил больше не спрашивать доступ.
-Это действующее разрешение для необходимых обратимых non-motion стендов,
-а не отдельное разрешение на eFuse/option bytes, приводы/CAN, merge или новый
-release. Каждый аппаратный сеанс finite≤1800s, свежие16MiB/MD5/SHA/two-NVMe,
-recovery reserve до общего срока; закрытые пакеты не повторять. Не продлевать
-сетевые timeout и не снижать floors: internal64KiB/largest32KiB, PSRAM1MiB/
-largest128KiB, stack3072, anchor10min/skew5s. UI ночью владельцем не наблюдается.
+SDK5/6 fetch_headers sets is_chunked for content_length<=0. Исправлять только
+known Content-Length0/no Transfer-Encoding против этого SDK-флага. Empty200,
+unknown framing, CL+TE, duplicates/compression и иные contradictions отклонять.
+Сохранить headers16KiB/value8KiB/TX512..2080/key128/Location2048, wire framing,
+CA/hostname/date/time/resource/timeout/cleanup guards. Default-off one-shot
+configured rev12-ota+trace использует один existing worker,45s healthy Wi-Fi wait,
+один read-only full image session. External CHECK/INSTALL/REBOOT закрыты, CANCEL
+сохраняется. Обычные профили/metadata CHECK прежние, no new tasks/crypto/sinks.
 
-На ESP32 fecc05d/factory+A/B, владелец после возврата подтвердил HMI-touch-Wi-Fi-
-SETUP; F407 ee7d179 прежний. Prerelease v0.1.0-bench.2/c013ddf уже опубликован
-по отдельному разрешению,11 downloaded assets/SHA/signature/full BIN PASS.
-Не менять tag/assets и не устанавливать unprovisioned payload. Local owner key/
-context вне Git/CI. Следующий результат после полного CHECK — configured
-install/confirmation/rollback и отдельная P2 acceptance, без фиктивной готовности.
+Следующий exact control/auto после обоих SDK/ELF/CI; fresh16MiB/device MD5/SHA/
+two-NVMe → control PASS → auto one-shot → весь factory fecc05d. Closed packets
+не повторять. Владелец разрешил автономные обратимые проверки обеих изолированных
+подключённых плат до24ноября2026 08:00 Asia/Almaty без вопросов о доступе.
+Каждый сеанс finite≤1800s с recovery reserve до общего срока; не расширять это
+на eFuse/option bytes, приводы/CAN, merge или новый release. Floors internal64KiB/
+largest32KiB, PSRAM1MiB/largest128KiB, stack3072 и anchor10min/skew5s прежние.
+
+Published prerelease v0.1.0-bench.2/c013ddf:11 downloaded assets/SHA/signature/
+full BIN offline PASS; current GitHub asset digests также совпали. Не менять
+tag/assets и не устанавливать этот unprovisioned read-only payload. Owner key/
+context вне Git/CI. Full signed stream/install/confirmation/rollback/production
+budget ещё не приняты. Следовать фактам, не приписывать software hardware PASS.
 
 ## Исторические контракты слитых этапов
 

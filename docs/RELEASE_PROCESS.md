@@ -1,14 +1,16 @@
 # GitHub Releases и CI/CD
 
-Актуальная база main be8f3f4 после PR #76. В CI есть pinned ESP-IDF матрица,
-host/sanitizers и настоящий F407 HSI ELF/BIN с basic SWD bench. ESP32 migration/
-factory и три verified HEAD проверены; signed CHECK/install/rollback/resource
-приёмка ещё открыты. [Локальный signed CHECK bundle](OTA_SIGNED_CHECK_BUNDLE.md)
-готовится отдельно от публикации. Ключ создан по поручению владельца вне Git;
-CI получает только ephemeral fixture keys. Binary Releases/protected publication
-ещё не включены. Push/merge не создаёт релиз и не разрешает выпуск.
-Владелец выбрал MIT для собственного кода (LICENSE/атрибуции зависимостей); public metadata-only
-review artifact сохраняет прежний scope и не содержит binary.
+[Prerelease v0.1.0-bench.2](https://github.com/avlyubimov/TV4-CNC/releases/tag/v0.1.0-bench.2)
+уже опубликован по отдельному разрешению владельца на source c013ddf:11 точных
+assets, downloads/SHA/signature/full BIN offline PASS. Это read-only CHECK
+payload, без INSTALL acceptance; tag/assets не менять. Текущие GitHub digests
+совпали с согласованными файлами24ноября. [Протокол публикации](evidence/build/ota-signed-check/publication.md).
+Есть pinned CI обоих ESP-IDF/host/sanitizers/F407. Новый signed CHECK b01ff48
+пока FAIL на zero-length HTTP302 framing; factory fecc05d возвращён. Install/
+slot confirmation/rollback/resource acceptance и production release остаются
+открытыми. Приватный ключ вне Git/CI; лицензия собственного кода MIT выбрана
+владельцем, атрибуции зависимостей сохранены. Новые публикации требуют отдельного
+утверждения точного commit/tag/assets после CI; push/merge релизы не выпускает.
 
 PR-05b: [review существующего release contract](RELEASE_POLICY_REVIEW.md),
 общие signed C/Python scenarios и исправления Unicode/Base64 decoding. Это

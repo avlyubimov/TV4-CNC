@@ -1,20 +1,21 @@
 # ESP32 HMI — специализированные правила
 
-Текущий P1 — docs/plans/P1_AUTONOMOUS_SIGNED_CHECK.md от корня. PR79 слит,
-main c3b82f0 CI15/source dcacb8d CI30 PASS. GitHub headers/TX fixes сохранять.
-Default-off signed bench только configured rev12-ota+trace, один existing worker,
-45s healthy Wi-Fi wait/2s settle и один read-only full image operation(false).
-Запретить external CHECK/INSTALL/REBOOT в этом image, сохранить CANCEL; ordinary
-metadata CHECK/профили прежние. No new task/crypto/Flash sink, floors/CA/time/
-monitor/cleanup/timeout guards не ослаблять. Actual SDK doubles/negative builds/
-analyzer/оба SDK/CI, потом exact flag0 control → PASS → flag1 auto → fecc return.
+Текущий P1 — docs/plans/P1_AUTONOMOUS_SIGNED_CHECK.md от корня. b01ff48:
+control PASS, один auto CHECK FAIL на302/bad_headers1, resource0/stack6896,
+factory fecc05d возвращён/verify/UART30 PASS. Physical UI ночью не наблюдался.
+Исправить SDK5/6 zero-length framing: fetch_headers sets is_chunked for CL0;
+только known-zero/no-TE объясняет этот mismatch. Empty200/unknown/CL+TE/
+duplicates/compression/other mismatches отклонять. Headers/TX bounds, CA/time/
+floors/monitor/cleanup/timeouts прежние; SDK double должен моделировать actual
+fetch_headers, full host/san/analyzer/оба SDK/ELF/CI перед новым exact пакетом.
 
-Owner разрешил автономные обратимые проверки изолированных подключённых плат
-до24ноября2026 08:00 Asia/Almaty без повторных вопросов о доступе. Каждый сеанс
-finite1800s/fresh backup/two-NVMe/recovery reserve; UI owner ночью не наблюдает.
-Это не разрешение на INSTALL unprovisioned bench.2, eFuse/option bytes/CAN/motion/
-merge/release. На ESP32 fecc05d и подтверждённые HMI/касания/Wi-Fi/SETUP; F407
-не открывался и остаётся ee7d179. Owner key/context не попадают в Git/CI.
+Default-off signed bench только configured rev12-ota+trace, один worker,
+45s healthy Wi-Fi/2s settle/один full read-only CHECK. External CHECK/INSTALL/
+REBOOT закрыты, CANCEL сохранён; ordinary profiles/metadata CHECK прежние.
+Owner разрешил автономные обратимые isolated-board checks до24ноября08:00
+Asia/Almaty, без вопросов о доступе. Finite1800s/fresh16MiB/two-NVMe/recovery
+reserve, без eFuse/option bytes/CAN/motion/merge/release/INSTALL bench.2.
+Key/context вне Git/CI. На F407 прежний ee7d179, readback/health/resume PASS.
 
 Ниже исторические контракты; актуальные hardware facts — в корневых документах.
 

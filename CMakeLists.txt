@@ -121,7 +121,8 @@ target_link_libraries(ota_https_adapter_tests PRIVATE tv4_ota_verification)
 target_link_options(ota_https_adapter_tests PRIVATE "LINKER:--wrap=tv4_time_clock_read")
 foreach(case github url-ceiling long-location small chunked large-value large-total long-key duplicate-length duplicate-location
     duplicate-encoding gzip bad-transfer invalid-length bad-location init-fail set-fail open-fail headers-fail
-    cancel timeout stale-time no-length ambiguous)
+    cancel timeout stale-time no-length ambiguous zero-body zero-ambiguous zero-gzip zero-duplicate-length
+    sdk-positive-mismatch sdk-negative-mismatch)
   add_test(NAME ota_https_adapter_${case} COMMAND ota_https_adapter_tests ${case})
   set_tests_properties(ota_https_adapter_${case} PROPERTIES TIMEOUT 15)
 endforeach()
