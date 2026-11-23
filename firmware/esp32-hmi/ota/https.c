@@ -5,9 +5,14 @@
 #include "esp_http_client.h"
 #include "esp_crt_bundle.h"
 #include "esp_timer.h"
+#include "esp_log.h"
 #include <string.h>
 
 #if CONFIG_MBEDTLS_CERTIFICATE_BUNDLE
+/* GitHub's redirect CSP alone exceeds 4KiB. These remain finite; relevant
+ * headers retain their narrower limits below. Unknown values are not copied. */
+#define HEADER_TOTAL_MAX 16384u
+#define HEADER_VALUE_MAX 8192u
 /* No global client/header state. The caller owns the workspace throughout. */
 typedef struct {
     esp_http_client_handle_t client;tv4_http_response *response;
@@ -32,8 +37,8 @@ static int header_compare(const char *a,const char *b) {
 static esp_err_t headers(esp_http_client_event_t *event) {
     if(event->event_id!=HTTP_EVENT_ON_HEADER)return ESP_OK;
     bridge *b=event->user_data;tv4_http_response *r=b->response;
-    size_t key=short_length(event->header_key,128),value=short_length(event->header_value,4096);
-    if(key>128 || value>4096 || key+value+4>4096-b->header_bytes) {r->bad_headers=true;return ESP_FAIL;}
+    size_t key=short_length(event->header_key,128),value=short_length(event->header_value,HEADER_VALUE_MAX);
+    if(key>128 || value>HEADER_VALUE_MAX || key+value+4>HEADER_TOTAL_MAX-b->header_bytes) {r->bad_headers=true;return ESP_FAIL;}
     b->header_bytes+=key+value+4;
     if(!header_compare(event->header_key,"Location")) {
         if(b->location_seen || !value || value>TV4_HTTP_URL_MAX)r->bad_headers=true;
@@ -61,22 +66,36 @@ static esp_err_t headers(esp_http_client_event_t *event) {
     }
     return r->bad_headers?ESP_FAIL:ESP_OK;
 }
+static bool open_failed(bridge *b,unsigned step,esp_err_t error) {
+    /* Worker only, after the SDK callback returned; never disclose URL/tokens. */
+    ESP_LOGW("tv4_ota_http","open_failed step=%u native=%d headers=%u bad_headers=%u status=%d",
+        step,(int)error,(unsigned)b->header_bytes,(unsigned)b->response->bad_headers,
+        b->client?esp_http_client_get_status_code(b->client):0);
+    return false;
+}
 static bool open_client(void *context,const char *url,uint32_t timeout,tv4_http_response *response) {
     bridge *b=context;b->response=response;b->header_bytes=0;
     b->location_seen=b->length_seen=b->transfer_seen=b->encoding_seen=false;
     response->identity_encoding=true;
+    size_t url_bytes=short_length(url,TV4_HTTP_URL_MAX);
+    if(url_bytes>TV4_HTTP_URL_MAX)return open_failed(b,0,ESP_FAIL);
+    /* SDK5/6 snprintf the complete GET path+query before sending. Leave the
+     * original 512-byte allocation for short URLs; cap the longest at2080. */
+    size_t tx_bytes=url_bytes+32;if(tx_bytes<512)tx_bytes=512;
     esp_http_client_config_t cfg={.url=url,.timeout_ms=(int)timeout,
         .transport_type=HTTP_TRANSPORT_OVER_SSL,.crt_bundle_attach=esp_crt_bundle_attach,
         .skip_cert_common_name_check=false,.disable_auto_redirect=true,
         .max_authorization_retries=-1,.auth_type=HTTP_AUTH_TYPE_NONE,
-        .buffer_size=4096,.buffer_size_tx=512,.event_handler=headers,.user_data=b,
+        .buffer_size=4096,.buffer_size_tx=(int)tx_bytes,.event_handler=headers,.user_data=b,
         .user_agent="TV4-CNC-OTA/1",.keep_alive_enable=false};
-    b->client=esp_http_client_init(&cfg);if(!b->client)return false;
-    if(esp_http_client_set_header(b->client,"Accept-Encoding","identity")!=ESP_OK ||
-       esp_http_client_open(b->client,0)!=ESP_OK || esp_http_client_fetch_headers(b->client)<0)return false;
+    b->client=esp_http_client_init(&cfg);if(!b->client)return open_failed(b,1,ESP_ERR_NO_MEM);
+    esp_err_t error=esp_http_client_set_header(b->client,"Accept-Encoding","identity");
+    if(error!=ESP_OK)return open_failed(b,2,error);
+    error=esp_http_client_open(b->client,0);if(error!=ESP_OK)return open_failed(b,3,error);
+    if(esp_http_client_fetch_headers(b->client)<0)return open_failed(b,4,ESP_FAIL);
     response->status=esp_http_client_get_status_code(b->client);
     if(esp_http_client_is_chunked_response(b->client)!=response->chunked)response->bad_headers=true;
-    return !response->bad_headers;
+    return response->bad_headers?open_failed(b,5,ESP_FAIL):true;
 }
 static int read_client(void *context,uint8_t *bytes,size_t length) {
     return esp_http_client_read(((bridge *)context)->client,(char *)bytes,(int)length);

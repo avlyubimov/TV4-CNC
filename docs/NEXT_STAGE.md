@@ -1,22 +1,20 @@
 # P1 — signed OTA CHECK после успешного HTTPS
 
-## После PR #77: опубликованный payload и следующий configured CHECK
+## Актуально: configured контроль PASS, далее реальные HTTP headers GitHub
 
-[Prerelease v0.1.0-bench.2](https://github.com/avlyubimov/TV4-CNC/releases/tag/v0.1.0-bench.2)
-опубликован по отдельному разрешению на c013ddf:11 downloaded assets/SHA,
-подпись и полный BIN Python+C PASS; CI source30/main15/tag15 PASS.
-[Протокол публикации](evidence/build/ota-signed-check/publication.md).
-[Первый configured стенд](evidence/hardware/2026-11-23-esp32-signed-check-c013ddf/README.md)
-закрыт: boot/touch PASS, два ранних owner CHECK во время контроля дали
-SESSION_RESOURCE/stack3024 ниже floor3072. Planned CHECK420s не запускался;
-factory fecc05d возвращён/verify/UART/owner PASS, full restore0.
+PR #78 слит владельцем, mainb3551f3 CI15/source471e109 CI30 PASS.
+[Стенд471e109](evidence/hardware/2026-11-24-esp32-signed-check-471e109/README.md):
+clean control/worker12288 PASS; два HTTP_OPEN при resource OK и stack7072–7248.
+Весь factory fecc05d возвращён/verify/UART/owner PASS, full restore0. Full signed
+image и single CHECK не приняты; источник второго запроса не установлен.
 
-Следующий результат — [configured worker headroom](plans/P1_CONFIGURED_WORKER_HEADROOM.md):
-12288 вместо8192 только при provisioned context; ordinary3072 и bench8192
-прежние. Floors/CA/time/touch не снижать. Новый exact BASE после двух SDK/CI:
-чистый контроль, один CHECK по команде, возврат. Время проверки явно продлено
-владельцем; finite1800s и recovery reserve сохраняются. SESSION4/production
-budget/install/confirmation/rollback ещё не приняты; F407/CAN/motion не менялись.
+[Следующая adapter integration](plans/P1_GITHUB_HEADERS.md): ответ302 GitHub
+имеет headers5726/CSP4178, прежний cap4096 его отвергает. SDK5/6 также требуют
+полную GET path+query в TX;512 мало для CDN URL. Новые конечные пределы:
+total16KiB/value8KiB, TX512..2080 по URL, без ослабления relevant headers,
+framing/encoding/allowlist/CA/time/подписи/size/floors. После тестов/обоих SDK/
+CI — новый exact BASE, clean control, один CHECK, возврат. Owner продлил время
+проверки; finite1800s/recovery reserve и reviewed guards сохраняются.
 
 ## 23 ноября: LVGL PSRAM и HTTPS — PASS, далее signed CHECK
 

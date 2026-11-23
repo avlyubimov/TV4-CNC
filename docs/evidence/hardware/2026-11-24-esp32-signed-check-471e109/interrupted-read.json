@@ -1,0 +1,11 @@
+{
+  "source_commit": "471e109d4f2fba35176bede455af64e6a953d1d5",
+  "session_closed": true,
+  "flash_write_attempts": 0,
+  "hard_reset_logged": true,
+  "read_interrupted_seconds": 142.26679599999989,
+  "reason": "Parent incorrectly assumed 512-byte redirect limit before reading download.h; actual TV4_HTTP_URL_MAX=2048, observed Location905 fits. No transport change necessary.",
+  "actual_http_url_limit": 2048,
+  "observed_location_bytes": 905,
+  "owner_visual_confirmation": true
+}

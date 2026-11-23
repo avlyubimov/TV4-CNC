@@ -62,6 +62,9 @@ jobs:
               -o "build/policy-analysis/service-sdk-$stack_bench.o" >> build/policy-analysis.log 2>&1
           done
           printf 'Actual ESP service/control+worker8192 SDK boundary: analyzer PASS\n' >> build/policy-analysis.log
+          gcc -std=c11 -Wall -Wextra -Werror -fanalyzer -DESP_PLATFORM=1 \
+            -Itests/ota_tls_sdk -Itests/ota_service_sdk -Itests -Ifirmware/esp32-hmi/ota \
+            -c firmware/esp32-hmi/ota/https.c -o build/policy-analysis/https-sdk.o >> build/policy-analysis.log 2>&1
           bash tools/analyze_ota_worker_tls.sh build/policy-analysis >> build/policy-analysis.log 2>&1
           gcc -std=c11 -Wall -Wextra -Werror -fanalyzer \
             -DTV4_LVGL_PSRAM_TEST=1 -DLV_CONF_SKIP=1 -DLV_USE_STDLIB_MALLOC=255 \
