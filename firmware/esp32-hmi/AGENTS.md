@@ -1,5 +1,16 @@
 # ESP32 HMI — специализированные правила
 
+Текущий P1 после PR #73/main502a73d: clock fix на3927063 прошёл control/TLS
+touch2–19ms; HEAD остановлен на SDK AES allocation, fecc05d возвращён/owner PASS.
+Читать docs/plans/P1_DMA_ALLOCATION_TRACE.md от корня. Failure-only callback
+только opt-in worker TLS, bounded numeric ledger, no allocation/logging/string
+access в hook; sole registration/IRAM callees/DRAM/overflow/owner gates обязательны.
+Сегодня23ноября действует заранее данное владельцем разрешение на необходимые
+P1 подключения/стенды без повторных вопросов, с новыми проверенными пакетами/
+backup/возвратом. Слитые image/прежние разрешения не переиспользовать.
+
+Ниже исторические контракты; актуальные hardware facts — в корневых документах.
+
 После стенда a5f8b7e: control touch_fresh FAIL (один UINT32_MAX age), TLS image
 не записан, весь factory fecc05d возвращён/owner PASS, разрешение закрыто.
 Читать docs/plans/P1_TOUCH_SNAPSHOT_CLOCK.md от корня. В actual main freshness

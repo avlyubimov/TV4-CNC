@@ -99,6 +99,16 @@ jobs:
           cmake --build build-boot-thread-sanitize --target boot_handoff_tests -j4
           ctest --test-dir build-boot-thread-sanitize -R '^boot_threaded_ingress_handoff$' \
             -V --output-log "$PWD/build/threaded-signed-sanitizer.log"
+      - name: Race-check the actual allocation failure callback
+        if: matrix.sanitizer == false
+        shell: bash
+        run: |
+          set -euo pipefail
+          gcc -std=c11 -Wall -Wextra -Werror -fsanitize=thread -fno-omit-frame-pointer -g -O1 \
+            -DTV4_OTA_DMA_DIAG_TEST=1 -DTV4_OTA_DMA_DIAG_ENABLED=1 \
+            -Itests -Ifirmware/esp32-hmi/ota tests/ota_dma_diagnostics_tests.c \
+            firmware/esp32-hmi/ota/dma_diagnostics.c -pthread -o build/dma-thread-tests
+          ./build/dma-thread-tests concurrent > build/dma-thread-sanitizer.log 2>&1
       - run: ctest --test-dir build --output-on-failure
       - name: Record actual app_main cold-render ordering (host SDK boundary)
         working-directory: build
@@ -111,6 +121,7 @@ jobs:
             build/Testing/Temporary/LastTest.log
             build/policy-analysis.log
             build/thread-sanitizer.log
+            build/dma-thread-sanitizer.log
             build/threaded-signed-sanitizer.log
             build/startup-audit.log
             build/startup-first-frame.ppm

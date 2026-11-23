@@ -19,10 +19,13 @@ typedef struct {unsigned revision;} esp_chip_info_t;
 #define MALLOC_CAP_INTERNAL 1u
 #define MALLOC_CAP_SPIRAM 2u
 #define MALLOC_CAP_8BIT 4u
+#define MALLOC_CAP_DMA 8u
 void service_test_lock(void);
 void service_test_unlock(void);
 #define portENTER_CRITICAL(mux) ((void)(mux),service_test_lock())
 #define portEXIT_CRITICAL(mux) ((void)(mux),service_test_unlock())
+#define portENTER_CRITICAL_ISR(mux) portENTER_CRITICAL(mux)
+#define portEXIT_CRITICAL_ISR(mux) portEXIT_CRITICAL(mux)
 QueueHandle_t xQueueCreateStatic(unsigned,unsigned,uint8_t *,StaticQueue_t *);
 BaseType_t xQueueSend(QueueHandle_t,const void *,uint32_t);
 BaseType_t xQueueReceive(QueueHandle_t,void *,uint32_t);

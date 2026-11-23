@@ -20,6 +20,7 @@
 #endif
 #include "sntp_source.h"
 #include "memory_diagnostics.h"
+#include "dma_diagnostics.h"
 #include "wifi_service.h"
 #include "esp_http_client.h"
 #include "esp_idf_version.h"
@@ -47,6 +48,9 @@ typedef struct {
     int native_error,tls_error,cert_flags;
 #if CONFIG_TV4_OTA_WORKER_TLS_BENCH
     bool (*cancelled)(void *);void *cancel_context;
+    int tls_layer_error;
+    int64_t header_result;
+    bool tls_layer_known,header_result_known;
 #endif
 } head_backend;
 #if CONFIG_TV4_OTA_WORKER_TLS_BENCH
@@ -68,6 +72,9 @@ static esp_err_t headers_event(esp_http_client_event_t *event) {
     if(event->event_id==HTTP_EVENT_DISCONNECTED && event->data) {
         int code=0,flags=0;
         esp_err_t error=esp_tls_get_and_clear_last_error((esp_tls_error_handle_t)event->data,&code,&flags);
+#if CONFIG_TV4_OTA_WORKER_TLS_BENCH
+        b->tls_layer_error=error;b->tls_layer_known=true;
+#endif
         if(error || code || flags) {b->tls_error=code;b->cert_flags=flags;}
     }
 #endif
@@ -81,7 +88,14 @@ static esp_err_t headers_event(esp_http_client_event_t *event) {
 static void errors(head_backend *b,int error) {
     b->native_error=error;
 #if ESP_IDF_VERSION >= ESP_IDF_VERSION_VAL(6,1,0)
+#if CONFIG_TV4_OTA_WORKER_TLS_BENCH
+    if(b->client) {
+        b->tls_layer_error=esp_http_client_get_and_clear_last_tls_error(b->client,&b->tls_error,&b->cert_flags);
+        b->tls_layer_known=true;
+    }
+#else
     if(b->client)esp_http_client_get_and_clear_last_tls_error(b->client,&b->tls_error,&b->cert_flags);
+#endif
 #else
     /* Populated by DISCONNECTED during cleanup when detail is available. */
     if(!b->tls_error && !b->cert_flags) {b->tls_error=-1;b->cert_flags=-1;}
@@ -96,27 +110,58 @@ static bool head_open(void *context,uint32_t timeout) {
         .timeout_ms=(int)timeout,.buffer_size=HTTP_RX_BYTES,.buffer_size_tx=HTTP_TX_BYTES,.keep_alive_enable=false,
         .event_handler=headers_event,.user_data=b,.user_agent="TV4-CNC-TLS-Bench/1"};
     snapshot("http_before_init");
+#if CONFIG_TV4_OTA_WORKER_TLS_BENCH
+    if(!tv4_ota_dma_begin(TV4_DMA_HTTP_INIT))return false;
+#endif
     b->client=esp_http_client_init(&config);
+#if CONFIG_TV4_OTA_WORKER_TLS_BENCH
+    bool traced=tv4_ota_dma_end(TV4_DMA_HTTP_INIT);
+#endif
     snapshot("http_after_init");
     if(!b->client) {errors(b,ESP_ERR_NO_MEM);return false;}
+#if CONFIG_TV4_OTA_WORKER_TLS_BENCH
+    if(!traced || !tv4_ota_dma_begin(TV4_DMA_HTTP_OPEN))return false;
+#endif
     esp_err_t error=esp_http_client_open(b->client,0);
+#if CONFIG_TV4_OTA_WORKER_TLS_BENCH
+    traced=tv4_ota_dma_end(TV4_DMA_HTTP_OPEN);
+#endif
     snapshot("http_after_open");
     if(error!=ESP_OK) {errors(b,error);return false;}
+#if CONFIG_TV4_OTA_WORKER_TLS_BENCH
+    if(!traced)return false;
+#endif
     return true;
 }
 static int head_headers(void *context,uint32_t timeout) {
     head_backend *b=context;
     esp_err_t error=esp_http_client_set_timeout_ms(b->client,(int)timeout);
     if(error!=ESP_OK) {errors(b,error);return -1;}
+#if CONFIG_TV4_OTA_WORKER_TLS_BENCH
+    if(!tv4_ota_dma_begin(TV4_DMA_HTTP_HEADERS))return -1;
+#endif
     int64_t length=esp_http_client_fetch_headers(b->client);
+#if CONFIG_TV4_OTA_WORKER_TLS_BENCH
+    b->header_result=length;b->header_result_known=true;
+    bool traced=tv4_ota_dma_end(TV4_DMA_HTTP_HEADERS);
+#endif
     snapshot("http_after_headers");
     if(length<0 || b->bad_headers) {errors(b,ESP_FAIL);return -1;}
+#if CONFIG_TV4_OTA_WORKER_TLS_BENCH
+    if(!traced)return -1;
+#endif
     return esp_http_client_get_status_code(b->client);
 }
 static bool head_close(void *context) {
     head_backend *b=context;
     if(!b->client)return true;
+#if CONFIG_TV4_OTA_WORKER_TLS_BENCH
+    bool tracing=tv4_ota_dma_begin(TV4_DMA_HTTP_CLEANUP);
+#endif
     esp_err_t error=esp_http_client_cleanup(b->client);b->client=NULL;
+#if CONFIG_TV4_OTA_WORKER_TLS_BENCH
+    if(tracing)tv4_ota_dma_end(TV4_DMA_HTTP_CLEANUP);
+#endif
     snapshot("http_after_cleanup");
     if(error!=ESP_OK)b->native_error=error;
     return error==ESP_OK;
@@ -177,6 +222,9 @@ static void worker(void *context) {
         (unsigned)CONFIG_MBEDTLS_SSL_IN_CONTENT_LEN,(unsigned)CONFIG_MBEDTLS_SSL_OUT_CONTENT_LEN);
     ESP_LOGI(TAG,"http_rx=%u http_tx=%u",(unsigned)HTTP_RX_BYTES,(unsigned)HTTP_TX_BYTES);
 #if CONFIG_TV4_OTA_WORKER_TLS_BENCH
+    if(!tv4_ota_dma_init()) {stage="dma_init";goto done;}
+#endif
+#if CONFIG_TV4_OTA_WORKER_TLS_BENCH
     /* No extra RTOS task, no UI callbacks, no watchdog lifetime change. The
      * service has completed boot self-test and removed its boot subscription. */
     stage="settle";uint32_t settling=now_ms(NULL);
@@ -199,7 +247,11 @@ static void worker(void *context) {
     snapshot("sntp_before");
     stage="sntp_monitor";if(!monitor_start(TV4_MEM_SNTP,"sntp_window_start"))goto done;
 #if CONFIG_TV4_OTA_WORKER_TLS_BENCH
+    if(!tv4_ota_dma_begin(TV4_DMA_SNTP)) {
+        monitor_stop(TV4_MEM_SNTP,"sntp_window_end");stage="dma_sntp";goto done;
+    }
     tv4_sntp_result synced=tv4_sntp_sync(&anchor,&policy,10000,cancelled,context,&sync);
+    bool sntp_traced=tv4_ota_dma_end(TV4_DMA_SNTP);
 #else
     tv4_sntp_result synced=tv4_sntp_sync(&anchor,&policy,10000,NULL,NULL,&sync);
 #endif
@@ -207,6 +259,9 @@ static void worker(void *context) {
     ESP_LOGI(TAG,"sntp_result=%u time_result=%u elapsed_ms=%u cleanup=%u source=%u",
         (unsigned)synced,(unsigned)sync.time_result,(unsigned)sync.elapsed_ms,(unsigned)sync.cleanup_ok,(unsigned)anchor.accepted.source);
     stage="sntp";if(!monitored || synced!=TV4_SNTP_OK || !sync.cleanup_ok)goto done;
+#if CONFIG_TV4_OTA_WORKER_TLS_BENCH
+    if(!sntp_traced)goto done;
+#endif
     snapshot("tls_before");
     stage="tls_monitor";if(!monitor_start(TV4_MEM_TLS_PROBE,"tls_window_start"))goto done;
     head_backend backend={0};tv4_tls_report report;
@@ -221,9 +276,17 @@ static void worker(void *context) {
     ESP_LOGI(TAG,"tls_result=%u status=%d elapsed_ms=%u cleanup=%u native_error=%d tls_error=%d cert_flags=%d header_bytes=%u",
         (unsigned)result,report.http_status,(unsigned)report.elapsed_ms,(unsigned)report.cleanup_ok,
         backend.native_error,backend.tls_error,backend.cert_flags,(unsigned)backend.header_bytes);
+#if CONFIG_TV4_OTA_WORKER_TLS_BENCH
+    ESP_LOGI("tv4_ota_dma","kind=4 layer_known=%u esp_error=%d mbedtls_code=%d cert_flags=%d header_known=%u header_result=%lld",
+        (unsigned)backend.tls_layer_known,backend.tls_layer_error,backend.tls_error,backend.cert_flags,
+        (unsigned)backend.header_result_known,(long long)backend.header_result);
+#endif
     stage="tls";passed=monitored && result==TV4_TLS_OK && report.cleanup_ok;
 done:
     tv4_time_forget(&anchor);snapshot("worker_end");
+#if CONFIG_TV4_OTA_WORKER_TLS_BENCH
+    bool traced=tv4_ota_dma_finish();passed=passed && traced;
+#endif
     ESP_LOGI(TAG,"finished pass=%u stage=%s; not an OTA/TLS-production-budget approval",(unsigned)passed,stage);
 #if CONFIG_TV4_OTA_WORKER_TLS_BENCH
     return passed;
