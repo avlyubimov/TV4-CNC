@@ -6,11 +6,13 @@ control/один full signed CHECK/возврат всего fecc05d PASS. IMAGE
 touch0–20ms/errors0. Physical UI ночью не наблюдался.237 host/sanitizers,
 analyzer/четыре ELF обоих SDK/CI30 PASS; аппаратно только6.1.1.
 
-Далее finite repeatability: fresh16MiB/two-NVMe, control90s, три150s reset CHECK
-без повторной записи auto-image, FAIL останавливает следующие пробы; весь factory
-fecc05d/verify/UART30. До закрытия сеанса повторяемость не принята. Затем реальный
-configured installable payload/self-test/rollback; published unprovisioned bench.2
-только для read-only CHECK, не устанавливать. Production budget ещё открыт.
+Finite repeatability также закрыт PASS: fresh16MiB/two-NVMe/control90s,
+три150s reset CHECK без повторной записи auto-app, весь factory fecc05d/verify/
+UART30.3×IMAGE_VERIFIED/error0/406checks, SESSION minima97783–99427, stack6896,
+touch1–18ms/errors0. Не повторять пакет. Далее PR81 local context до pending
+confirmation/native boot rollback, затем configured installable payload/INSTALL.
+Published unprovisioned bench.2 read-only, не устанавливать. Production budget
+и физический UI/FPS/latency ещё не приняты.
 
 Default-off signed bench только configured rev12-ota+trace, один worker,
 45s healthy Wi-Fi/2s settle/один full read-only CHECK. External CHECK/INSTALL/

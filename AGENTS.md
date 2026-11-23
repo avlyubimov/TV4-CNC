@@ -142,7 +142,7 @@ PR и Actions; не копировать код уже открытого PR. Д
    теги, релизы, секреты CI и публикации под видом обычного push.
 6. Обновлять актуальный статус; исторические отчёты сохранять с явной пометкой.
 
-## Текущее задание: P1 — повторяемость подписанного CHECK, затем настоящий install/rollback
+## Текущее задание: P1 — native boot/rollback после подписанного CHECK
 
 Читайте docs/plans/P1_AUTONOMOUS_SIGNED_CHECK.md. Точный a29c9ed на ESP-IDF6.1.1:
 control PASS → один full signed CHECK IMAGE_VERIFIED/error0/406resource checks →
@@ -153,12 +153,13 @@ ELF/BIN обоих SDK PASS;5.3.2 runtime не проверен. PR80 откры
 F407 current1MiB/ee7d179/guards/progress/resume PASS, без новых Flash/reset/RAM
 requests; две приватные current copies на разных NVMe проверены.
 
-Следующий exact пакет: fresh16MiB/two-NVMe → control90s → три150s reset CHECK
-одного auto-image без повторных записей → весь factory fecc05d/verify/UART30.
-Любой FAIL отменяет оставшиеся пробы. Не объявлять повторяемость до закрытия
-сеанса; не заменять INSTALL/rollback результатом read-only CHECK. Не устанавливать
-published bench.2: это unprovisioned read-only payload. Затем подготовить настоящий
-configured installable image, boot self-test/confirmation/rollback и точный стенд.
+Повторный finite пакет также закрыт PASS: fresh16MiB/two-NVMe/control90s,
+три150s reset CHECK без повторной записи auto-app, весь factory fecc05d/verify/
+UART30.3×IMAGE_VERIFIED/error0/406checks, SESSION minima97783–99427bytes,
+largest63488/stack6896; touch1–18ms/errors0. Не повторять закрытые пакеты.
+Далее отдельный PR81: local trust до pending confirmation, затем native slot
+boot/rollback; configured installable payload и сетевой INSTALL ещё требуются.
+Не устанавливать published bench.2: это unprovisioned read-only payload.
 
 SDK5/6 known Content-Length0/no-TE объясняет SDK is_chunked flag; все прочие
 framing/CA/hostname/date/time/resource/timeout/cleanup guards сохраняются.
