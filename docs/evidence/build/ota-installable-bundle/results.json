@@ -1,0 +1,212 @@
+{
+  "source_commit": "9ccbf1394c4c69e20565dc34b25bc3e416031a03",
+  "source_clean_at_build": true,
+  "source_pr": 83,
+  "parent_pr": 82,
+  "host_tests": {
+    "passed": 274,
+    "failed": 0
+  },
+  "sanitizers": {
+    "passed": 274,
+    "failed": 0,
+    "leak_detection_disabled": false
+  },
+  "release_suite_methods": 28,
+  "builds": [
+    {
+      "sdk": "6.1.1",
+      "sdk_source_commit": "051e4c4eb20346e043cdd47bc388fde75ff8af63",
+      "app": {
+        "bytes": 1600192,
+        "sha256": "009c457d46028516b9390296a8f3ba8b4bff3eaa0d51f14e9fbb0bfbcd134d83",
+        "project": "tv4_hmi",
+        "version": "0.1.0-fixture.2",
+        "idf_version": "v6.1.1",
+        "elf_sha256": "bf4dfd1644b26658dfb36498e3bcb305986106467b2fa4250fa2c9f90c9ebf68",
+        "segments": 6,
+        "chip_revision_min": 0,
+        "chip_revision_max": 99,
+        "flash_bytes": 16777216,
+        "flash_mode": "dio",
+        "flash_frequency_mhz": 80
+      },
+      "prepared": {
+        "status": "signed-offline-install-bench-only",
+        "installable": true,
+        "source_commit": "9ccbf1394c4c69e20565dc34b25bc3e416031a03",
+        "release": "0.1.0-fixture.2",
+        "image_bytes": 1600192,
+        "sha256": "009c457d46028516b9390296a8f3ba8b4bff3eaa0d51f14e9fbb0bfbcd134d83",
+        "public_key_sha256": "14a61c1830bba0f8144842f61a10772cb5577efa49dae279a0f1faeceeb05906",
+        "device_access": false,
+        "install_enabled": false,
+        "release_published": false,
+        "production_resource_qualified": false
+      },
+      "signed_files": {
+        "LICENSE-NOTICE.md": {
+          "bytes": 1703,
+          "sha256": "5a557769c229e70ab4aab7ac72027311f1d9b1fb43592f1b6d6f8008e3a71473"
+        },
+        "LICENSE.txt": {
+          "bytes": 1084,
+          "sha256": "f0430a7e7184bda27262b6426124f7839157ad77f420c2606056277fc422e0eb"
+        },
+        "README.txt": {
+          "bytes": 330,
+          "sha256": "4ba9c62de0328232c0462470e6dca29a9130e4e32d3a2bfed70b471feda9a560"
+        },
+        "build-evidence.json": {
+          "bytes": 1357,
+          "sha256": "4ab9e717d36ad65085413c9ccdd34355f64c6e5d4c2b4fd400b8af63e96ede18"
+        },
+        "checksums.sha256": {
+          "bytes": 670,
+          "sha256": "0dbcf5bbf4589247ceb648660e8e211092ed740d5f5d6f0ded65e1676a786829"
+        },
+        "manifest.json": {
+          "bytes": 1121,
+          "sha256": "0d28c8e29968163a58e7245f0db72f2152e701f3785b24f80a132761e0341c23"
+        },
+        "manifest.sig": {
+          "bytes": 198,
+          "sha256": "592aa1560bbea6c97eda05c4ba2cd4257744a1c0c52494ba4fec9b3a45f40341"
+        },
+        "release-notes.md": {
+          "bytes": 139,
+          "sha256": "2dfffd569c4bcf850c4d0962a4df84fc91945fd21025364f76e2dd683673fead"
+        },
+        "tv4-hmi-esp32s3-v0.1.0-fixture.2.bin": {
+          "bytes": 1600192,
+          "sha256": "009c457d46028516b9390296a8f3ba8b4bff3eaa0d51f14e9fbb0bfbcd134d83"
+        }
+      },
+      "worker_stack_bytes": 12288,
+      "service_compiler_frames": {
+        "now_ms": 32,
+        "configured": 32,
+        "cancelled": 32,
+        "commit": 32,
+        "publish": 32,
+        "worker_stack": 32,
+        "write_chunk": 32,
+        "fetch": 48,
+        "tv4_ota_boot_observe": 32,
+        "tv4_ota_service_start": 64,
+        "tv4_ota_service_health": 32,
+        "tv4_ota_service_snapshot": 32,
+        "operation": 480,
+        "worker": 80,
+        "tv4_ota_service_request": 48
+      },
+      "diagnostics_writable_bytes": 0,
+      "native_manifest_policy_pass": true,
+      "native_image_stream_pass": true,
+      "native_image_stream_sanitizers_pass": true
+    },
+    {
+      "sdk": "5.3.2",
+      "sdk_source_commit": "9d7f2d69f50d1288526d4f1027108e314e8c879f",
+      "app": {
+        "bytes": 1552720,
+        "sha256": "8ec27a70cbbadef6fdd59e4ca1e41950989ef2f818cc6a0d363b43a2e4c99ac1",
+        "project": "tv4_hmi",
+        "version": "0.1.0-fixture.2",
+        "idf_version": "v5.3.2",
+        "elf_sha256": "357fd2f1e0cb25900793998589fc711994deeb5c5fc0df8ef3e4c78734b643dd",
+        "segments": 5,
+        "chip_revision_min": 0,
+        "chip_revision_max": 99,
+        "flash_bytes": 16777216,
+        "flash_mode": "dio",
+        "flash_frequency_mhz": 80
+      },
+      "prepared": {
+        "status": "signed-offline-install-bench-only",
+        "installable": true,
+        "source_commit": "9ccbf1394c4c69e20565dc34b25bc3e416031a03",
+        "release": "0.1.0-fixture.2",
+        "image_bytes": 1552720,
+        "sha256": "8ec27a70cbbadef6fdd59e4ca1e41950989ef2f818cc6a0d363b43a2e4c99ac1",
+        "public_key_sha256": "14a61c1830bba0f8144842f61a10772cb5577efa49dae279a0f1faeceeb05906",
+        "device_access": false,
+        "install_enabled": false,
+        "release_published": false,
+        "production_resource_qualified": false
+      },
+      "signed_files": {
+        "LICENSE-NOTICE.md": {
+          "bytes": 1703,
+          "sha256": "5a557769c229e70ab4aab7ac72027311f1d9b1fb43592f1b6d6f8008e3a71473"
+        },
+        "LICENSE.txt": {
+          "bytes": 1084,
+          "sha256": "f0430a7e7184bda27262b6426124f7839157ad77f420c2606056277fc422e0eb"
+        },
+        "README.txt": {
+          "bytes": 330,
+          "sha256": "4ba9c62de0328232c0462470e6dca29a9130e4e32d3a2bfed70b471feda9a560"
+        },
+        "build-evidence.json": {
+          "bytes": 1357,
+          "sha256": "68de9791007fdd7a3af9cd7273f2be24ec334055c0ccd7df0d7c0a77c7bb942e"
+        },
+        "checksums.sha256": {
+          "bytes": 670,
+          "sha256": "2a074af307fe33cf18607161b65a19b6c13be851a4893b17340808b59c023b93"
+        },
+        "manifest.json": {
+          "bytes": 1121,
+          "sha256": "6479f952b28b3a9c3fedadc9d2e22ae8cc02254732aee022d0dab734a1e485c3"
+        },
+        "manifest.sig": {
+          "bytes": 198,
+          "sha256": "dbf8fc707cac1549dda95a47e80d6e7e26755d0e91cb4a897b3b7d9f127737ec"
+        },
+        "release-notes.md": {
+          "bytes": 139,
+          "sha256": "2dfffd569c4bcf850c4d0962a4df84fc91945fd21025364f76e2dd683673fead"
+        },
+        "tv4-hmi-esp32s3-v0.1.0-fixture.2.bin": {
+          "bytes": 1552720,
+          "sha256": "8ec27a70cbbadef6fdd59e4ca1e41950989ef2f818cc6a0d363b43a2e4c99ac1"
+        }
+      },
+      "worker_stack_bytes": 12288,
+      "service_compiler_frames": {
+        "now_ms": 32,
+        "configured": 32,
+        "publish": 32,
+        "cancelled": 32,
+        "commit": 32,
+        "worker_stack": 32,
+        "write_chunk": 32,
+        "fetch": 48,
+        "tv4_ota_boot_observe": 32,
+        "tv4_ota_service_start": 64,
+        "tv4_ota_service_health": 32,
+        "tv4_ota_service_snapshot": 32,
+        "operation": 480,
+        "worker": 80,
+        "tv4_ota_service_request": 48
+      },
+      "diagnostics_writable_bytes": 0,
+      "native_manifest_policy_pass": true,
+      "native_image_stream_pass": true,
+      "native_image_stream_sanitizers_pass": true
+    }
+  ],
+  "fixture_versions": [
+    "0.1.0-fixture.1",
+    "0.1.0-fixture.2"
+  ],
+  "private_test_key_discarded": true,
+  "device_access": false,
+  "publication_performed": false,
+  "hardware_or_network_install_qualified": false,
+  "owner_private_key_used": false,
+  "owner_trust_key_used": false,
+  "owner_context_modified": false,
+  "test_context_same_engineering_floors": true
+}

@@ -5,10 +5,10 @@
 assets, downloads/SHA/signature/full BIN offline PASS. Это read-only CHECK
 payload, без INSTALL acceptance; tag/assets не менять. Текущие GitHub digests
 совпали с согласованными файлами24ноября. [Протокол публикации](evidence/build/ota-signed-check/publication.md).
-Есть pinned CI обоих ESP-IDF/host/sanitizers/F407. Новый signed CHECK b01ff48
-пока FAIL на zero-length HTTP302 framing; factory fecc05d возвращён. Install/
-slot confirmation/rollback/resource acceptance и production release остаются
-открытыми. Приватный ключ вне Git/CI; лицензия собственного кода MIT выбрана
+Есть pinned CI обоих ESP-IDF/host/sanitizers/F407. Full signed CHECK a29c9ed/
+3b09bba и native USB confirmation/refusal/rollback a74bfcd PASS; factory fecc05d
+возвращён. Сетевой INSTALL, Flash-write resource acceptance и production release
+остаются открытыми. Приватный ключ вне Git/CI; лицензия собственного кода MIT выбрана
 владельцем, атрибуции зависимостей сохранены. Новые публикации требуют отдельного
 утверждения точного commit/tag/assets после CI; push/merge релизы не выпускает.
 

@@ -36,3 +36,10 @@ commit/tag/assets approval ещё нужны для настоящего payload
 Этот PR не меняет исполняемую firmware, не публикует новый release/tag, не
 выполняет Flash/rollback/power-loss/device тесты и не делает self-merge.
 Сетевой INSTALL/resource acceptance остаётся отдельным измеримым результатом.
+
+## Программная приёмка завершена
+
+[Actual compiled/signed fixtures и independent C/Python checks](../evidence/build/ota-installable-bundle/README.md)
+на source9ccbf13 PASS: оба pinned SDK,274 host/274 sanitizers,28 release methods,
+source CI30/main15. Test private key удалён. Никакой device/publication approval
+из этого результата не следует. Реальный owner plan остаётся отдельным решением.
