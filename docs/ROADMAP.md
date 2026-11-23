@@ -14,6 +14,8 @@ diagnostic image обоих SDK с точными allocation bytes/caps/phase и
 Владелец заранее разрешил необходимые P1 подключения и стенды на23ноября2026
 (Asia/Almaty), без повторных запросов. Использовать новый одноразовый пакет,
 fresh16MiB/two-NVMe и автоматический возврат fecc05d; старый3927063 закрыт.
+[Software evidence](evidence/build/esp32-ota-dma-trace/README.md): код46cf400,
+16 clean ELF/BIN,14 regression matches, host181/sanitizers181/analyzer9 PASS.
 Не отключать hardware AES,
 CA/hostname/date, не снижать TLS16384/4096/DMA64KiB/display/clock/touch требования.
 После HTTPS — owner settings и реальная signed SESSION4/resource CHECK,

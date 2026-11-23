@@ -1,0 +1,476 @@
+{
+  "schema": 1,
+  "generated_utc": "2026-11-23T15:03:46.628091+00:00",
+  "source_commit": "46cf4000874b1dcd4cc0069e54fb88cbc157ff29",
+  "source_tree": "61b2e21773b5b45652230a57eb36eb04cc7a6daa",
+  "checkout_clean_during_matrix": true,
+  "base_main": "502a73df3e63c9663f41c5947c5bff7d71800a04",
+  "source_code_sha256": {
+    "firmware/esp32-hmi/ota/dma_diagnostics.c": "20c179a8419cced0ddcff947f736de62621c89d459d1e3888d6c13dcd5d2674b",
+    "firmware/esp32-hmi/ota/dma_diagnostics.h": "5b509e2910379ddd7cd98d61e96a99e373d2bbe0bd0c75e70596677f4bc85efc",
+    "firmware/esp32-hmi/ota/dma_diagnostics.lf": "432bd64b983c1e64d3a6646bc8f15cedfd68ebaa3b513003b3861f70cb74574c",
+    "firmware/esp32-hmi/ota/utc_tls_bench.c": "84af3d6050a7cdfe6e10a4560f846f7bf790ecd0b1a522f7b03f37f11e932058",
+    "firmware/esp32-hmi/main/CMakeLists.txt": "296c2310566c28e6c5e687e0f4b9f55db8baaaee8aafcc53736c780b653572f0",
+    "tools/check_ota_dma_diagnostics.py": "145372eb22e5f14325902b78a4fd016c39e97cd60424985a7b2ee3fda2106dad",
+    "tools/check_ota_memory_diagnostics.py": "9b31abcb62ab7f204239d0bf816d30723a2b716173ededa4a638d30c770024e2",
+    "tools/analyze_ota_worker_tls.sh": "1a0e689df921b81fa1a412cf5d31474131838d345af853bb35af62845b6ad222",
+    "tests/ota_dma_diagnostics_tests.c": "ee96b5c612959527615ec2147de4633faf2ea4135912b33621895fd42d93ef3b",
+    "tests/ota_worker_tls_tests.c": "f8fe118386425dd3036f41a6692b3d8473eeca35e71600b2500c9c947a2f1eb9",
+    "tests/ota_dma_diagnostics_build_tests.py": "0c8db0a4436d63bfe0d4f72df197ad40c90b3a4e23cec7d3dd56c49655a8ae34",
+    "CMakeLists.txt": "c51dd0921343c09f373730976b6890fedf7245e0cccb48fe9b5c4cc308229c91"
+  },
+  "dependencies": {
+    "esp-idf-5.3.2-image": "espressif/idf@sha256:5b8f58d9d9caa45b689a31a0b6a0cc53b84594e0ba5fdd8d28eeef7d6123242a",
+    "esp-idf-6.1.1-image": "espressif/idf@sha256:2b4f966c37eaedc19542b0637a5f850b2eff9478d8e858192aa0073d92c2dc91",
+    "local-idf-6.1.1-commit": "051e4c4eb20346e043cdd47bc388fde75ff8af63",
+    "xtensa-gcc-5.3.2": "13.2.0",
+    "xtensa-gcc-6.1.1": "15.2.0",
+    "host-gcc": "15.2.0",
+    "host-cmake": "4.2.3",
+    "host-ninja": "1.13.2"
+  },
+  "dependency_locks": {
+    "firmware/esp32-hmi/locks/idf-5.3.2.lock": "bdabdb06b5b4572369ca86e5cfc446ab6c270c56dab0500a304dcf7e112c94d0",
+    "firmware/esp32-hmi/locks/idf-6.1.1.lock": "d09551b18bfceae3a3f4c5c50583d81907bc7f2e47e3629182cbf1d1914a10b1"
+  },
+  "checks": {
+    "host": {
+      "passed": 181,
+      "failed": 0
+    },
+    "asan_ubsan_lsan": {
+      "passed": 181,
+      "failed": 0,
+      "suppressions": false
+    },
+    "callback_tsan": {
+      "passed": true,
+      "threads": 4,
+      "events": 8000,
+      "retained": 4,
+      "lost": 7996,
+      "suppressions": false
+    },
+    "native_analyzer": {
+      "passed": 9,
+      "failed": 0
+    },
+    "variants": {
+      "passed": 16,
+      "failed": 0
+    },
+    "off_profile_exact_sections_frames_config": {
+      "passed": 14,
+      "failed": 0
+    }
+  },
+  "dma_diagnostics": {
+    "5.3.2": {
+      "enabled": true,
+      "writable_bytes": 136,
+      "writable_ceiling": 192,
+      "frames": {
+        "valid_locked": 32,
+        "name_is": 32,
+        "allocator_id": 32,
+        "tv4_dma_allocation_failed": 32,
+        "sample": 64,
+        "emit_failures": 128,
+        "tv4_ota_dma_init": 48,
+        "tv4_ota_dma_begin": 32,
+        "tv4_ota_dma_end": 32,
+        "tv4_ota_dma_finish": 48
+      },
+      "frame_ceiling": 192,
+      "iram_callback_chain": {
+        "vPortExitCritical": {
+          "section": ".iram0.text",
+          "bytes": 155
+        },
+        "xPortInIsrContext": {
+          "section": ".iram0.text",
+          "bytes": 38
+        },
+        "xTaskGetCurrentTaskHandle": {
+          "section": ".iram0.text",
+          "bytes": 31
+        },
+        "xPortEnterCriticalTimeout": {
+          "section": ".iram0.text",
+          "bytes": 336
+        },
+        "tv4_dma_allocation_failed": {
+          "section": ".iram0.text",
+          "bytes": 200
+        }
+      },
+      "registration_callers": [
+        "main/dma_diagnostics.c.obj"
+      ],
+      "retained_failures": 4,
+      "callback_heap_log_string_access": false,
+      "failure_time_heap_not_sampled": true,
+      "runtime_stack_peak_qualified": false,
+      "device_access": false
+    },
+    "6.1.1": {
+      "enabled": true,
+      "writable_bytes": 136,
+      "writable_ceiling": 192,
+      "frames": {
+        "valid_locked": 32,
+        "name_is": 32,
+        "allocator_id": 32,
+        "tv4_dma_allocation_failed": 32,
+        "sample": 80,
+        "emit_failures": 128,
+        "tv4_ota_dma_init": 48,
+        "tv4_ota_dma_begin": 32,
+        "tv4_ota_dma_end": 32,
+        "tv4_ota_dma_finish": 48
+      },
+      "frame_ceiling": 192,
+      "iram_callback_chain": {
+        "vPortExitCritical": {
+          "section": ".iram0.text",
+          "bytes": 155
+        },
+        "xPortInIsrContext": {
+          "section": ".iram0.text",
+          "bytes": 34
+        },
+        "xTaskGetCurrentTaskHandle": {
+          "section": ".iram0.text",
+          "bytes": 31
+        },
+        "xPortEnterCriticalTimeout": {
+          "section": ".iram0.text",
+          "bytes": 347
+        },
+        "tv4_dma_allocation_failed": {
+          "section": ".iram0.text",
+          "bytes": 211
+        }
+      },
+      "registration_callers": [
+        "main/dma_diagnostics.c.obj"
+      ],
+      "retained_failures": 4,
+      "callback_heap_log_string_access": false,
+      "failure_time_heap_not_sampled": true,
+      "runtime_stack_peak_qualified": false,
+      "device_access": false
+    }
+  },
+  "variants": [
+    {
+      "build": "build-idf-5.3.2-headless",
+      "sdk": "5.3.2",
+      "profile": "headless",
+      "memory_diagnostics": false,
+      "worker_stack_bench": false,
+      "worker_tls_bench": false,
+      "build_pass": true,
+      "inspection_pass": true,
+      "off_profile_sections_frames_config_unchanged": true,
+      "app": {
+        "bytes": 1075504,
+        "sha256": "8c113ca9f61f7c95aa4f72f6edd72206ae44c9d1fdc69e73212e9ee069d3fa26"
+      },
+      "diagnostic_writable": 0,
+      "device_access": false,
+      "elf_sha256": "7a1617964a60c1cb2f51587a2762c508017340d2a59c47a60a998c6c3ee8e300",
+      "display_version": "46cf400"
+    },
+    {
+      "build": "build-idf-5.3.2-rev12",
+      "sdk": "5.3.2",
+      "profile": "rev12",
+      "memory_diagnostics": false,
+      "worker_stack_bench": false,
+      "worker_tls_bench": false,
+      "build_pass": true,
+      "inspection_pass": true,
+      "off_profile_sections_frames_config_unchanged": true,
+      "app": {
+        "bytes": 1535088,
+        "sha256": "5d44e292dbe2e95ab1c3732a62e2275f54e8ca2b18a3a46c0c5ef904bed30585"
+      },
+      "diagnostic_writable": 0,
+      "device_access": false,
+      "elf_sha256": "250fc6be2f4cc5470cd7a7b42e24fb8c84efde43ca1ebd87c38ff9c670c42bb2",
+      "display_version": "46cf400"
+    },
+    {
+      "build": "build-idf-5.3.2-rev12-memory-bench",
+      "sdk": "5.3.2",
+      "profile": "rev12-memory-bench",
+      "memory_diagnostics": false,
+      "worker_stack_bench": false,
+      "worker_tls_bench": false,
+      "build_pass": true,
+      "inspection_pass": true,
+      "off_profile_sections_frames_config_unchanged": true,
+      "app": {
+        "bytes": 1536800,
+        "sha256": "e3434b7dd03b137b39b07e8a79739a30cf5e468e48469165e8cb6c2c739d451b"
+      },
+      "diagnostic_writable": 0,
+      "device_access": false,
+      "elf_sha256": "c79890ed6800a3c76c50d432fb199a885488d4f091ec9ffda56e1fedde27b5ee",
+      "display_version": "46cf400"
+    },
+    {
+      "build": "build-idf-5.3.2-rev12-tls-bench",
+      "sdk": "5.3.2",
+      "profile": "rev12-tls-bench",
+      "memory_diagnostics": false,
+      "worker_stack_bench": false,
+      "worker_tls_bench": false,
+      "build_pass": true,
+      "inspection_pass": true,
+      "off_profile_sections_frames_config_unchanged": true,
+      "app": {
+        "bytes": 1540080,
+        "sha256": "c4b1e9f4f12b1bcdbf0727cde70f5f78de9dcace3995d27ff7567d5b43e929d7"
+      },
+      "diagnostic_writable": 0,
+      "device_access": false,
+      "elf_sha256": "55eadc03a9cdbe92e3df8cb2717d90981ba8fbc1279e15e410a4326afb933911",
+      "display_version": "46cf400"
+    },
+    {
+      "build": "build-idf-5.3.2-rev12-ota",
+      "sdk": "5.3.2",
+      "profile": "rev12-ota",
+      "memory_diagnostics": false,
+      "worker_stack_bench": false,
+      "worker_tls_bench": false,
+      "build_pass": true,
+      "inspection_pass": true,
+      "off_profile_sections_frames_config_unchanged": true,
+      "app": {
+        "bytes": 1551088,
+        "sha256": "7f3e4e0bc2fd5bb22f760631e54cf3e74eefa8a9e612207030305a9a202d7c50"
+      },
+      "diagnostic_writable": 0,
+      "device_access": false,
+      "elf_sha256": "0ef8cfbc592f3f91578cc6db0fb80b480a65a3862db21c37d7cf569b8b4b0177",
+      "display_version": "46cf400"
+    },
+    {
+      "build": "build-idf-5.3.2-rev12-ota-memory-diagnostics",
+      "sdk": "5.3.2",
+      "profile": "rev12-ota",
+      "memory_diagnostics": true,
+      "worker_stack_bench": false,
+      "worker_tls_bench": false,
+      "build_pass": true,
+      "inspection_pass": true,
+      "off_profile_sections_frames_config_unchanged": true,
+      "app": {
+        "bytes": 1553120,
+        "sha256": "3c2938a90176a569498a319c734a87786dd5688b4a18d3310ddaf0eb9801f630"
+      },
+      "diagnostic_writable": 432,
+      "device_access": false,
+      "elf_sha256": "4471f76a5c2fa1c5e6bc11195c2eab90bcfa3ace60921fb4236d040273d07d18",
+      "display_version": "46cf400"
+    },
+    {
+      "build": "build-idf-5.3.2-rev12-ota-memory-diagnostics-worker-stack-bench",
+      "sdk": "5.3.2",
+      "profile": "rev12-ota",
+      "memory_diagnostics": true,
+      "worker_stack_bench": true,
+      "worker_tls_bench": false,
+      "build_pass": true,
+      "inspection_pass": true,
+      "off_profile_sections_frames_config_unchanged": true,
+      "app": {
+        "bytes": 1553184,
+        "sha256": "5fb23fda1ee0aadaede8149cd3ba9a940b015425d9a22ecd080e9e992cba5194"
+      },
+      "diagnostic_writable": 432,
+      "device_access": false,
+      "elf_sha256": "4298730856d9cba41c7eee621fc82c48465688053434178b84aee8de3bb063b9",
+      "display_version": "46cf400"
+    },
+    {
+      "build": "build-idf-5.3.2-rev12-ota-memory-diagnostics-worker-stack-bench-worker-tls-bench",
+      "sdk": "5.3.2",
+      "profile": "rev12-ota",
+      "memory_diagnostics": true,
+      "worker_stack_bench": true,
+      "worker_tls_bench": true,
+      "build_pass": true,
+      "inspection_pass": true,
+      "off_profile_sections_frames_config_unchanged": null,
+      "app": {
+        "bytes": 1558624,
+        "sha256": "9e39aea088c9ce08094889f6c66118a99c7872cbadbfd4d947392a08b745e8d1"
+      },
+      "diagnostic_writable": 432,
+      "device_access": false,
+      "elf_sha256": "5a7a380147140435a5e31cd3fe5f5c325288b202a7a974a560d325e6bd5db0b2",
+      "display_version": "46cf400"
+    },
+    {
+      "build": "build-idf-6.1.1-headless",
+      "sdk": "6.1.1",
+      "profile": "headless",
+      "memory_diagnostics": false,
+      "worker_stack_bench": false,
+      "worker_tls_bench": false,
+      "build_pass": true,
+      "inspection_pass": true,
+      "off_profile_sections_frames_config_unchanged": true,
+      "app": {
+        "bytes": 1061072,
+        "sha256": "349bb3a40de394561e068f92f5052f2ef5d369a3c4550f61e40e82295c7d709c"
+      },
+      "diagnostic_writable": 0,
+      "device_access": false,
+      "elf_sha256": "9a7befe6dad120049145d6787734083ec56ab26bae2fe27e3a92085258ed2b51",
+      "display_version": "46cf400"
+    },
+    {
+      "build": "build-idf-6.1.1-rev12",
+      "sdk": "6.1.1",
+      "profile": "rev12",
+      "memory_diagnostics": false,
+      "worker_stack_bench": false,
+      "worker_tls_bench": false,
+      "build_pass": true,
+      "inspection_pass": true,
+      "off_profile_sections_frames_config_unchanged": true,
+      "app": {
+        "bytes": 1579296,
+        "sha256": "10ebf98407e49f7cee702bdaaa615fe3129b221d92562587caedfff310ebb099"
+      },
+      "diagnostic_writable": 0,
+      "device_access": false,
+      "elf_sha256": "662ae888caba58fdcc20c0d7eec823fce98d91a1c5be83aa6b93ad430e035225",
+      "display_version": "46cf400"
+    },
+    {
+      "build": "build-idf-6.1.1-rev12-memory-bench",
+      "sdk": "6.1.1",
+      "profile": "rev12-memory-bench",
+      "memory_diagnostics": false,
+      "worker_stack_bench": false,
+      "worker_tls_bench": false,
+      "build_pass": true,
+      "inspection_pass": true,
+      "off_profile_sections_frames_config_unchanged": true,
+      "app": {
+        "bytes": 1580992,
+        "sha256": "337e52e0e20b662b7613ecf5115c0ae356ad0bbbcaeaf4bef8cbbd73906cfd97"
+      },
+      "diagnostic_writable": 0,
+      "device_access": false,
+      "elf_sha256": "c77458f15831b35ab9a801aac57276910e1618e736097b1b5e52b0a463a254bc",
+      "display_version": "46cf400"
+    },
+    {
+      "build": "build-idf-6.1.1-rev12-tls-bench",
+      "sdk": "6.1.1",
+      "profile": "rev12-tls-bench",
+      "memory_diagnostics": false,
+      "worker_stack_bench": false,
+      "worker_tls_bench": false,
+      "build_pass": true,
+      "inspection_pass": true,
+      "off_profile_sections_frames_config_unchanged": true,
+      "app": {
+        "bytes": 1584192,
+        "sha256": "1bc0d862f920c1596af739a94f37f494b6494fcfcde5a9d9a8bfd60b519353c2"
+      },
+      "diagnostic_writable": 0,
+      "device_access": false,
+      "elf_sha256": "f3d731d6e81588c04fe60c967952d84edfade03d7f08c73bb3ded536f6d49ab3",
+      "display_version": "46cf400"
+    },
+    {
+      "build": "build-idf-6.1.1-rev12-ota",
+      "sdk": "6.1.1",
+      "profile": "rev12-ota",
+      "memory_diagnostics": false,
+      "worker_stack_bench": false,
+      "worker_tls_bench": false,
+      "build_pass": true,
+      "inspection_pass": true,
+      "off_profile_sections_frames_config_unchanged": true,
+      "app": {
+        "bytes": 1598560,
+        "sha256": "8a3e0b8da4bbbcc874dd12d08aa9df7ab77bfa729bafae1f805b32602817a755"
+      },
+      "diagnostic_writable": 0,
+      "device_access": false,
+      "elf_sha256": "59e8c83677e189b0618a8bc1d3dec0b4228a446208b5919f21576131467edc20",
+      "display_version": "46cf400"
+    },
+    {
+      "build": "build-idf-6.1.1-rev12-ota-memory-diagnostics",
+      "sdk": "6.1.1",
+      "profile": "rev12-ota",
+      "memory_diagnostics": true,
+      "worker_stack_bench": false,
+      "worker_tls_bench": false,
+      "build_pass": true,
+      "inspection_pass": true,
+      "off_profile_sections_frames_config_unchanged": true,
+      "app": {
+        "bytes": 1600576,
+        "sha256": "4ad7e37a191d549ab818b0787509d8eacb18f4f6e21f0b2341d4245ad03f4979"
+      },
+      "diagnostic_writable": 432,
+      "device_access": false,
+      "elf_sha256": "4191634cbc18e533c3d0ffd397d0eeafa9d9c6fc550a2ad40dc8c55f6380f769",
+      "display_version": "46cf400"
+    },
+    {
+      "build": "build-idf-6.1.1-rev12-ota-memory-diagnostics-worker-stack-bench",
+      "sdk": "6.1.1",
+      "profile": "rev12-ota",
+      "memory_diagnostics": true,
+      "worker_stack_bench": true,
+      "worker_tls_bench": false,
+      "build_pass": true,
+      "inspection_pass": true,
+      "off_profile_sections_frames_config_unchanged": true,
+      "app": {
+        "bytes": 1600640,
+        "sha256": "b0cfc48c60f4b3f8df862f12a325f99c444cfefca4d8bdfaa94e187c50d93f63"
+      },
+      "diagnostic_writable": 432,
+      "device_access": false,
+      "elf_sha256": "6a4b5af41586724407a0187c705145b919083ab20d334ac75433bb2e29ca5916",
+      "display_version": "46cf400"
+    },
+    {
+      "build": "build-idf-6.1.1-rev12-ota-memory-diagnostics-worker-stack-bench-worker-tls-bench",
+      "sdk": "6.1.1",
+      "profile": "rev12-ota",
+      "memory_diagnostics": true,
+      "worker_stack_bench": true,
+      "worker_tls_bench": true,
+      "build_pass": true,
+      "inspection_pass": true,
+      "off_profile_sections_frames_config_unchanged": null,
+      "app": {
+        "bytes": 1606064,
+        "sha256": "57a3925324e50bab5a8afd9d0696840159dfa9eb9509a4d10d82dc3a6db5fd65"
+      },
+      "diagnostic_writable": 432,
+      "device_access": false,
+      "elf_sha256": "8f3a048979acc0488945ff6fee6cfe8ce0b02149b715e9eb732fe72f902b8163",
+      "display_version": "46cf400"
+    }
+  ],
+  "device_access": false,
+  "hardware_https_pass": false,
+  "performance_measured": false,
+  "production_resource_floors_qualified": false,
+  "signed_ota_checked": false
+}
