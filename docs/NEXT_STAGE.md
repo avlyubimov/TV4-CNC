@@ -6,7 +6,7 @@
 265 host/265 sanitizers, четыре ELF обоих pinned SDK и CI30 PASS; native slot
 hardware evidence нужен отдельно. Signed CHECK a29c9ed не доказывает исправление self-test или INSTALL.
 
-## Актуально: a29c9ed — полный signed CHECK PASS, далее повторяемость и install/rollback
+## Актуально: a29c9ed — полный signed CHECK и три reset-повтора PASS
 
 [Полный подписанный CHECK](evidence/hardware/2026-11-24-esp32-signed-check-a29c9ed/README.md)
 на ESP-IDF6.1.1 закрыт за1095,492s: свежие16MiB/device MD5/SHA/two-NVMe,
@@ -22,13 +22,17 @@ host/237 ASan/UBSan/LSan, actual-source analyzer, четыре configured ELF/BI
 ESP-IDF6.1.1/5.3.2 PASS. Source a29c9ed CI30/30 и mainc3b82f0 CI15/15 прошли
 до стенда. Runtime5.3.2 не испытывался. PR #80 открыт, самостоятельно не сливать.
 
-Следующий конечный пакет — новый свежий снимок/two-NVMe, контроль90s и три
-reset CHECK одного a29c9ed auto-image без повторной записи между ними; на FAIL
-оставшиеся пробы отменяются, возвращается весь fecc05d. До закрытия сеанса
-повторяемость не принята. Далее требуется configured installable payload и
-проверка native install/boot confirmation/rollback. Опубликованный unprovisioned
+[Повторяемость](evidence/hardware/2026-11-24-esp32-signed-check-repeat-a29c9ed/README.md)
+также PASS: новый свежий снимок/two-NVMe, контроль90s, три reset CHECK без
+повторной записи auto-app, весь factory fecc05d/verify/preservation/UART30.
+Сеанс закрыт за1148,571s;3×IMAGE_VERIFIED/error0/406checks, SESSION local minima
+internal97783–99427bytes, largest63488, stack6896/12288, touch1–18ms/errors0.
+
+Далее отдельный [PR #81](https://github.com/avlyubimov/TV4-CNC/pull/81): рабочий
+local context до pending confirmation и native boot/rollback проверка. Затем
+configured installable payload и сетевой INSTALL. Опубликованный unprovisioned
 bench.2 остаётся только read-only: его нельзя устанавливать или менять assets/tag.
-Производственный ресурсный бюджет и испытания потери питания не приняты.
+Production resource budget, INSTALL и испытания потери питания не приняты.
 
 [SWD readback F407](evidence/hardware/2026-11-24-f407-readback/README.md) PASS:
 current1MiB/ee7d179 exact bytes, self-tests/guards/progress/resume; без прошивки,

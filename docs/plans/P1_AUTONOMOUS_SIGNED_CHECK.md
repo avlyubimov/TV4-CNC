@@ -70,3 +70,13 @@ Actual SESSION local min97399bytes/stack6896 из12288, touch0–20ms/errors0.
 Общий1800s/recovery reserve/08:00 deadline и все исходные guards сохраняются.
 Это проверка повторяемости ограниченной read-only сессии, не INSTALL/rollback,
 производственный бюджет, physical UI/FPS или тест отключением питания.
+
+## Повторный finite пакет закрыт PASS
+
+[Три reset CHECK](../evidence/hardware/2026-11-24-esp32-signed-check-repeat-a29c9ed/README.md)
+реально завершены: fresh16MiB/two-NVMe/control90s, одна запись auto-app,
+3×IMAGE_VERIFIED/error0/406checks и весь factory fecc05d/verify/preservation/
+UART30.1148,571s/1800s, normal writes3/captures5/full restore0. SESSION internal
+local min97783–99427bytes, stack6896/12288, touch1–18ms/errors0. Закрытый пакет
+не повторять. Следующий результат — local trust до pending confirmation/native
+boot rollback в PR81; INSTALL/production budget/physical UI ещё не приняты.
