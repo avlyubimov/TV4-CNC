@@ -1,5 +1,12 @@
 # P1 — ESP32 OTA: допуск установки и результаты стендов
 
+Текущий следующий integration: docs/plans/P1_INSTALLABLE_BUNDLE.md — расширение
+existing local authoring на explicit signed-install-bench. Только software/offline,
+без firmware/device/publication. Owner plan/context не переводить на reviewed/INSTALL
+автоматически; bench.2 остаётся CHECK-only. Actual compiled test-key artifacts и
+host/CI evidence отделять от owner release и сетевого INSTALL.
+
+
 Текущая отдельная интеграция — local install_reviewed AND signed installable
 (docs/plans/P1_INSTALL_POLICY.md от корня), оба default false. Старые contexts и
 published bench.2 не открывают INSTALL; capability проверяется до Flash sink.

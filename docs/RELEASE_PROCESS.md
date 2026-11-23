@@ -12,6 +12,12 @@ slot confirmation/rollback/resource acceptance и production release остаю�
 владельцем, атрибуции зависимостей сохранены. Новые публикации требуют отдельного
 утверждения точного commit/tag/assets после CI; push/merge релизы не выпускает.
 
+Подготовка следующего installable bench payload описана в
+[инструкции authoring](OTA_SIGNED_CHECK_BUNDLE.md) и [плане](plans/P1_INSTALLABLE_BUNDLE.md).
+Отдельный signed-install-bench не публикует release, не использует CI secrets и
+не разрешает INSTALL автоматически. Published bench.2 остаётся read-only;
+реальные новые source/tag/версии/assets утверждает владелец после полного CI.
+
 PR-05b: [review существующего release contract](RELEASE_POLICY_REVIEW.md),
 общие signed C/Python scenarios и исправления Unicode/Base64 decoding. Это
 не назначает actual versions/keys, production Motion schema или release approval.

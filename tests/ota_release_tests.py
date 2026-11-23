@@ -44,7 +44,8 @@ class ReleaseTests(unittest.TestCase):
 
     def configure(self):
         sdk=self.plan['sdk']; elf=(self.build/'tv4_hmi.elf').read_bytes()
-        (self.build/'tv4_hmi.bin').write_bytes(image_fixture.image(self.plan['release_version'],sdk,elf))
+        (self.build/'tv4_hmi.bin').write_bytes(image_fixture.image(self.plan['release_version'],sdk,elf,
+            self.public.read_bytes() if self.plan['purpose']=='signed-install-bench' else b''))
         p=self.build/'project_description.json'; d=json.loads(p.read_text())
         d.update(project_version=self.plan['release_version'],git_revision='v'+sdk);p.write_text(json.dumps(d))
         validation=release.check_idf_build.verify(self.build,'rev12-ota',sdk,write_report=False)
@@ -77,6 +78,64 @@ class ReleaseTests(unittest.TestCase):
                     self.assertNotIn(b'PRIVATE KEY',p.read_bytes())
                     self.assertNotIn(str(self.signer).encode(),p.read_bytes())
                 self.assertEqual(self.output.stat().st_mode & 0o777,0o700)
+
+    def install_fixture(self):
+        self.plan['purpose']='signed-install-bench';self.write_plan()
+        (self.build/'tv4_hmi.elf').write_bytes(b'NONEXECUTABLE synthetic install_policy=owner_reviewed '+self.public.read_bytes())
+        p=self.build/'ota-local/ota_local_context.json';c=json.loads(p.read_text())
+        c.update(provisioned=True,install_reviewed=True,installed_version=self.plan['release_version'],
+                 public_key_sha256=self.plan['public_key_sha256']);p.write_text(json.dumps(c));self.configure()
+
+    def test_installable_real_crypto_both_sdk_formats(self):
+        for sdk in ('5.3.2','6.1.1'):
+            with self.subTest(sdk=sdk):
+                self.plan['sdk']=sdk;self.install_fixture();self.output=self.root/('install-'+sdk)
+                result=self.create();self.assertEqual(result,self.verify())
+                self.assertTrue(result['installable']);self.assertFalse(result['device_access'])
+                self.assertFalse(result['install_enabled']);self.assertFalse(result['release_published'])
+                m=json.loads((self.output/'manifest.json').read_text());self.assertIs(m['components'][0]['installable'],True)
+                self.assertTrue(json.loads((self.output/'build-evidence.json').read_text())['candidate_install_reviewed'])
+                self.assertEqual((self.output/'README.txt').read_bytes(),release.INSTALL_NOTICE)
+                self.assertNotIn(b'PRIVATE KEY',b''.join(p.read_bytes() for p in self.output.iterdir()))
+
+    def test_installable_requires_provisioned_and_reviewed_candidate(self):
+        self.plan['purpose']='signed-install-bench';self.write_plan();self.configure()
+        with self.assertRaisesRegex(ValueError,'configured installation policy'):self.create()
+        self.install_fixture();p=self.build/'ota-local/ota_local_context.json';c=json.loads(p.read_text())
+        c['install_reviewed']=False;p.write_text(json.dumps(c))
+        (self.build/'tv4_hmi.elf').write_bytes(b'NONEXECUTABLE synthetic install_policy=check_only '+self.public.read_bytes())
+        self.configure()
+        with self.assertRaisesRegex(ValueError,'configured installation policy'):self.create()
+
+    def test_installable_actual_public_key_must_be_linked(self):
+        self.install_fixture();(self.build/'tv4_hmi.elf').write_bytes(b'NONEXECUTABLE synthetic install_policy=owner_reviewed')
+        self.configure()
+        with self.assertRaisesRegex(ValueError,'public key absent'):self.create()
+        self.install_fixture();elf=(self.build/'tv4_hmi.elf').read_bytes()
+        (self.build/'tv4_hmi.bin').write_bytes(image_fixture.image(self.plan['release_version'],self.plan['sdk'],elf))
+        v=release.check_idf_build.verify(self.build,'rev12-ota',self.plan['sdk'],write_report=False)
+        (self.build/'validation.json').write_text(json.dumps(v))
+        with self.assertRaisesRegex(ValueError,'public key absent'):self.create()
+
+    def test_installable_stale_key_or_version_refused(self):
+        self.install_fixture();p=self.build/'ota-local/ota_local_context.json';good=json.loads(p.read_text())
+        for field,value in [('public_key_sha256','b'*64),('installed_version','0.1.0-wrong')]:
+            with self.subTest(field=field):
+                c={**good,field:value};p.write_text(json.dumps(c))
+                with self.assertRaisesRegex(ValueError,'trust/version mismatch'):self.create()
+                self.assertFalse(self.output.exists())
+
+    def test_install_scope_cannot_be_claimed_by_unsigned_evidence(self):
+        self.install_fixture();self.create();p=self.output/'build-evidence.json';good=p.read_bytes()
+        for field,value in [('candidate_provisioned',False),('candidate_install_reviewed',False),('device_access',True),('install_enabled',True),('release_published',True)]:
+            with self.subTest(field=field):
+                e=json.loads(good);e[field]=value;p.write_bytes(release.encoded(e));self.rehash()
+                with self.assertRaises(ValueError):self.verify()
+
+    def test_install_scope_needs_new_signed_capability(self):
+        self.create();self.plan['purpose']='signed-install-bench';self.write_plan()
+        (self.output/'README.txt').write_bytes(release.INSTALL_NOTICE);self.rehash()
+        with self.assertRaisesRegex(ValueError,'signed installable capability'):self.verify()
 
     def test_plan_requires_review_exact_scope_and_fields(self):
         good=copy.deepcopy(self.plan)

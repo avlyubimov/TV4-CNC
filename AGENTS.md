@@ -1,5 +1,12 @@
 # TV4-CNC — правила разработки Codex
 
+Текущий следующий integration: docs/plans/P1_INSTALLABLE_BUNDLE.md — расширение
+existing local authoring на explicit signed-install-bench. Только software/offline,
+без firmware/device/publication. Owner plan/context не переводить на reviewed/INSTALL
+автоматически; bench.2 остаётся CHECK-only. Actual compiled test-key artifacts и
+host/CI evidence отделять от owner release и сетевого INSTALL.
+
+
 Правила действуют на весь репозиторий. Вложенные AGENTS.md уточняют область,
 но не ослабляют безопасность. Продолжать существующий проект, не создавать
 новый каркас вместо работающей реализации.

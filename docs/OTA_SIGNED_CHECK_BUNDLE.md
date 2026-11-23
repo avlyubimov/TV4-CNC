@@ -1,17 +1,29 @@
-# Подписанный пакет для стендового OTA CHECK
+# Подписанный HMI-пакет для стендового CHECK или INSTALL
 
-`tools/prepare_ota_release.py` готовит локальный payload полного CHECK, без
+`tools/prepare_ota_release.py` готовит локальный signed bench payload, без
 доступа к сети/плате, установки и публикации. Он использует прежние
 check_idf_build, inspect_app, verify_ota_candidate и OpenSSL. Приватный ключ
 остаётся в выбранном владельцем каталоге вне Git; публичный ключ не берётся
 из bundle. [Scope и ограничения](plans/P1_SIGNED_CHECK_BUNDLE.md).
+
+`signed-check-bench` сохраняет прежний scope и подписывает `installable:false`.
+`signed-install-bench` требует provisioned target candidate с локальным
+`install_reviewed:true`, matching version/key и публичным DER в ELF и BIN;
+подписывает `installable:true`. Missing legacy manifest field по-прежнему
+CHECK-only. Новый purpose не является разрешением публикации или устройства.
+[План и приёмка](plans/P1_INSTALLABLE_BUNDLE.md); [runtime gates](plans/P1_INSTALL_POLICY.md).
+
+Owner plan с reviewed:false не принимается. Не включать review автоматически:
+сначала отдельно согласовать real payload/версии/context/resources и публикацию.
+Offline evidence подтверждает локальные build checks, не CI identity или runtime
+budget. DER presence — дополнительная binding проверка, не замена review кода.
 
 Локальный JSON-план принимает ровно поля:
 
 | Поле | Значение/проверка |
 |---|---|
 | reviewed | true только после согласования владельцем |
-| purpose / channel | signed-check-bench / prerelease |
+| purpose / channel | signed-check-bench или signed-install-bench / prerelease |
 | source_commit / sdk | полный reviewed clean SHA; 5.3.2 или6.1.1 |
 | release_version / installed_version | явные SemVer≤31; candidate новее local installed |
 | bootloader_version / protocol_version | утверждённые локальные метки совместимости |

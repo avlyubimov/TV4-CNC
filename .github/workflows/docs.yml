@@ -36,6 +36,7 @@ jobs:
           test -s docs/plans/P1_AUTONOMOUS_SIGNED_CHECK.md
           test -s docs/plans/P1_PENDING_TRUST.md
           test -s docs/plans/P1_INSTALL_POLICY.md
+          test -s docs/plans/P1_INSTALLABLE_BUNDLE.md
           test -s docs/evidence/build/esp32-ota-pending-trust/README.md
           python3 -m json.tool docs/evidence/build/esp32-ota-pending-trust/results.json > /dev/null
           python3 -m json.tool docs/evidence/build/esp32-ota-pending-trust/ci.json > /dev/null
