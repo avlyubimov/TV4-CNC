@@ -28,7 +28,11 @@ tv4_ota_boot_result tv4_ota_boot_observe(tv4_ota_boot_window *w,uint32_t now,boo
 #if CONFIG_TV4_OTA_WORKER_STACK_BENCH && TV4_OTA_PROVISIONED
 #error "Worker stack bench must remain unprovisioned"
 #endif
-#if TV4_OTA_PROVISIONED || CONFIG_TV4_OTA_WORKER_STACK_BENCH
+#if TV4_OTA_PROVISIONED
+/* Full signed CHECK needs more headroom than the unprovisioned HEAD probe.
+ * Keep reviewed runtime floors intact; qualify this reserve on the board. */
+#define OTA_WORKER_STACK_BYTES 12288
+#elif CONFIG_TV4_OTA_WORKER_STACK_BENCH
 #define OTA_WORKER_STACK_BYTES 8192
 #else
 #define OTA_WORKER_STACK_BYTES 3072
@@ -110,7 +114,7 @@ static void operation(bool install) {
     if(synced!=TV4_SNTP_OK || !sync.cleanup_ok) {error=3;goto done;}
     esp_chip_info_t chip;esp_chip_info(&chip);
     tv4_session_request r={OTA_MANIFEST_URL,&trust,{15000,300000,(uint16_t)chip.revision,true},15000,300000,5000,3,true,install};
-    tv4_session_io io={&anchor,fetch,now_ms,cancelled};tv4_ota_resource_report report;
+    tv4_session_io io={&anchor,fetch,now_ms,cancelled};tv4_ota_resource_report report={.result=TV4_RESOURCE_UNAVAILABLE};
     bool ok;
     measuring=TV4_MEM_SESSION;tv4_ota_memory_window_begin(measuring);measured=true;
     if(install) {
@@ -118,6 +122,12 @@ static void operation(bool install) {
         ok=tv4_ota_session_install_guarded(lease.session,&r,&io,&resources,tv4_ota_resource_sample_current,NULL,&report,&sink);
     }else ok=tv4_ota_session_run_guarded(lease.session,&r,&io,&resources,tv4_ota_resource_sample_current,NULL,&report);
     tv4_ota_memory_window_end(measuring);tv4_ota_memory_report_window();measured=false;
+    ESP_LOGI("tv4_ota","session state=%u error=%u http=%u policy=%u image=%u resource=%u checks=%u internal=%u largest=%u psram=%u psram_largest=%u stack=%u",
+        (unsigned)lease.session->result.state,(unsigned)lease.session->result.error,
+        (unsigned)lease.session->result.http,(unsigned)lease.session->result.policy,(unsigned)lease.session->result.image,
+        (unsigned)report.result,(unsigned)report.checks,(unsigned)report.sample.internal_free,
+        (unsigned)report.sample.internal_largest,(unsigned)report.sample.psram_free,
+        (unsigned)report.sample.psram_largest,(unsigned)report.sample.stack_watermark);
     if(!ok) {error=4+(unsigned)lease.session->result.error;goto done;}
     committed=install && lease.session->result.state==TV4_SESSION_INSTALLED;
     if(!install) {
@@ -168,7 +178,10 @@ static void worker(void *c) {
     tv4_ota_memory_window_end(TV4_MEM_BOOT);
     tv4_ota_memory_report_startup();tv4_ota_memory_report_window();
     bool finished=tv4_ota_sdk_finish_boot(passed);
-#if CONFIG_TV4_OTA_WORKER_STACK_BENCH
+#if TV4_OTA_PROVISIONED
+    ESP_LOGI("tv4_ota","boot_self_test checks_pass=%u sdk_finish=%u worker_stack_bytes=%u provisioned=1",
+        (unsigned)passed,(unsigned)finished,(unsigned)OTA_WORKER_STACK_BYTES);
+#elif CONFIG_TV4_OTA_WORKER_STACK_BENCH
     ESP_LOGI("tv4_ota","boot_self_test checks_pass=%u sdk_finish=%u worker_stack_bytes=%u stack_bench=1 provisioned=0",
         (unsigned)passed,(unsigned)finished,(unsigned)OTA_WORKER_STACK_BYTES);
 #else

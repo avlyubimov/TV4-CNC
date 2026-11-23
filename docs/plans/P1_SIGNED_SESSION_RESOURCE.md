@@ -6,7 +6,17 @@ HTTPS HEAD проверяет транспорт, но не загрузку man
 Flash writer или rollback. Не переносить его минимумы в production floors.
 Новые криптография, HTTPS-клиент, task или транспортная библиотека не нужны.
 
-## Входные данные, которые ещё отсутствуют
+## Актуальные входы после PR #77
+
+Owner key/SemVer/начальные floors уже согласованы; exact prerelease опубликован
+и проверен скачиванием. [Publication](../evidence/build/ota-signed-check/publication.md).
+Первый configured8192 стенд закрыт на ранних CHECK/SESSION_RESOURCE; возврат
+fecc05d проверен. Следующая необходимая интеграция —
+[configured stack reserve](P1_CONFIGURED_WORKER_HEADROOM.md), затем чистый
+контроль и один полный CHECK. Время этой проверки владелец явно продлил;
+локальный context и конечное окно привязывать к новому exact пакету.
+
+## Исторический список первоначальных входов
 
 - Утверждённые владельцем key_id и публичный PEM P-256 SPKI с fingerprint.
   Приватный ключ остаётся у владельца/offline signer; test key на плате запрещён.

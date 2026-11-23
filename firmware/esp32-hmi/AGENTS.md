@@ -1,30 +1,22 @@
 # ESP32 HMI — специализированные правила
 
-PR #75 слит владельцем, main1682da0. Стенд38f70b9: baseline/new control,
-три verified HEAD200/no DMA failures и возврат всего factory fecc05d/verify/
-UART PASS. Читать docs/NEXT_STAGE.md и docs/plans/P1_SIGNED_SESSION_RESOURCE.md
-от корня. Следующий результат — настоящий signed CHECK/resource SESSION4,
-затем install/rollback. Owner key уже создан локально, стендовые версии/метки
-согласованы; temporary resource/time policy для CHECK23ноября одобрена.
-Exact публикация отдельно; на установленном fecc05d SETUP закрывает OTA.
-Текущая host-only упаковка — docs/plans/P1_SIGNED_CHECK_BUNDLE.md. Приватный
-ключ и owner-local context не попадают в Git/build output/CI; firmware paths
-не менять ради подписи payload. Локальная подпись не разрешает публикацию.
-Не подменять их test keys/guessed floors или новой HTTPS/crypto библиотекой.
+Текущая задача — docs/plans/P1_CONFIGURED_WORKER_HEADROOM.md от корня:
+configured BASE c013ddf прошёл boot/touch, но два ранних owner CHECK дали
+SESSION_RESOURCE и stack3024/8192 ниже floor3072. Весь factory fecc05d
+возвращён/verify/UART/owner PASS. Пакет закрыт; F407 ee7d179 не затронут.
 
-Только rev12-ota выбирает LVGL CUSTOM SPIRAM|8BIT без internal fallback.
-SDK6 archive anchor lv_malloc_core, sole provider и actual ELF обоих SDK
-проверяются tools/check_lvgl_memory.py. Старый cached CLIB отклоняется;
-generated sdkconfig сохранить перед регенерацией. LVGL task app_main,
-RGB buffers/IRQ/global malloc policy/TLS records/DMA64KiB/stack/pins/clocks/
-touch/timeouts не менять. 16 clean images/183 host+183 sanitizers PASS.
+Менять только configured worker на12288 и добавить bounded resource log;
+ordinary3072/unprovisioned bench8192 и reviewed floors сохранить. Проверить
+actual service SDK doubles, task/probe/watchdog failures, оба pinned SDK,
+actual ELF/frames/PSRAM allocator и CI. Затем новый exact пакет: свежий16MiB/
+two-NVMe, чистый контроль без CHECK, один CHECK по команде, возврат factory.
+Никаких новых crypto/HTTPS/tasks или ослаблений CA/time/touch/DMA/ownership.
 
-Текущее installed fecc05d/factory/A-B; F407 не открывался. Пакет38f70b9 закрыт,
-full restore не понадобился. Сегодня23ноября2026 Asia/Almaty действует данное
-владельцем разрешение на необходимые P1 finite стенды без повторных вопросов:
-новый exact пакет/CI/fresh backup/two-NVMe/возврат. Старые пакеты не повторять;
-merge/release/motion/eFuse/option bytes этим не разрешены. Физические FPS/
-касания/soak и configured signed OTA ещё не приняты.
+Prerelease v0.1.0-bench.2/c013ddf опубликован по отдельному разрешению,
+11 скачанных assets/SHA/signature/full BIN PASS. Это только CHECK payload,
+unprovisioned candidate не устанавливать. Private key/context вне Git/CI.
+Owner явно продлил время текущей проверки, но сохранить finite1800s/reserve;
+это не постоянное разрешение и не INSTALL/eFuse/CAN/motion/merge authority.
 
 Ниже исторические контракты; актуальные hardware facts — в корневых документах.
 

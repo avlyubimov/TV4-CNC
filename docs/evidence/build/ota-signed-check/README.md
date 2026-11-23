@@ -1,5 +1,8 @@
 # P1: реальные подписанные CHECK payloads двух SDK
 
+[Лицензированный c013ddf и опубликованный prerelease](publication.md) —
+актуальный внешний пакет. Следующий ниже результат3a2e03d сохранён как история.
+
 [Протокол](results.json): первый clean source3a2e03d, CI15/15,
 184/184 host,184/184 ASan/UBSan/LSan,21 signing fault tests. Настоящие
 rev12-ota ELF/BIN0.1.0-bench.2 собраны на ESP-IDF5.3.2 и6.1.1 и подписаны

@@ -1,14 +1,22 @@
 # P1 — signed OTA CHECK после успешного HTTPS
 
-## Активный результат: локальный подписанный CHECK payload
+## После PR #77: опубликованный payload и следующий configured CHECK
 
-[Интеграция](plans/P1_SIGNED_CHECK_BUNDLE.md) добавляет штатную упаковку
-настоящего app-only BIN с manifest/signature/checksums, без публикации/установки.
-Ключ создан по поручению владельца и хранится вне Git. Согласованы только
-стендовые HMI0.1.0-bench.1→0.1.0-bench.2/prerelease, bootloader0.1.0-bench.1
-как привязка проверенного fecc05d и protocol1.0.0 для OTA metadata/image.
-Настройки времени/ресурсов и exact publication/аппаратный signed CHECK ещё
-открыты. [Команды](OTA_SIGNED_CHECK_BUNDLE.md). Не включать private key в CI.
+[Prerelease v0.1.0-bench.2](https://github.com/avlyubimov/TV4-CNC/releases/tag/v0.1.0-bench.2)
+опубликован по отдельному разрешению на c013ddf:11 downloaded assets/SHA,
+подпись и полный BIN Python+C PASS; CI source30/main15/tag15 PASS.
+[Протокол публикации](evidence/build/ota-signed-check/publication.md).
+[Первый configured стенд](evidence/hardware/2026-11-23-esp32-signed-check-c013ddf/README.md)
+закрыт: boot/touch PASS, два ранних owner CHECK во время контроля дали
+SESSION_RESOURCE/stack3024 ниже floor3072. Planned CHECK420s не запускался;
+factory fecc05d возвращён/verify/UART/owner PASS, full restore0.
+
+Следующий результат — [configured worker headroom](plans/P1_CONFIGURED_WORKER_HEADROOM.md):
+12288 вместо8192 только при provisioned context; ordinary3072 и bench8192
+прежние. Floors/CA/time/touch не снижать. Новый exact BASE после двух SDK/CI:
+чистый контроль, один CHECK по команде, возврат. Время проверки явно продлено
+владельцем; finite1800s и recovery reserve сохраняются. SESSION4/production
+budget/install/confirmation/rollback ещё не приняты; F407/CAN/motion не менялись.
 
 ## 23 ноября: LVGL PSRAM и HTTPS — PASS, далее signed CHECK
 
@@ -32,7 +40,7 @@ Global malloc policy/stack/DMA64KiB/TLS16384/4096/RGB/pins/clocks/touch/CA/time
 signed CHECK/session4 с полным manifest/image stream в существующем worker8192,
 затем install/confirm/rollback и manual release acceptance. Локальный ключ уже создан; стендовые SemVer/метки согласованы.
 Начальная time/resource policy для CHECK23ноября одобрена владельцем;
-публикация exact подписанного candidate ещё не разрешена;
+exact candidate теперь опубликован отдельно, см. актуальный раздел выше;
 SETUP/CHECK/INSTALL gates сохраняются, test keys/floors из HEAD не назначать.
 
 ## История до стенда38f70b9

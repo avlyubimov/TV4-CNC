@@ -41,6 +41,11 @@ jobs:
               -o "build/policy-analysis/$name.o" >> build/policy-analysis.log 2>&1
             printf '%s: actual-source analyzer PASS\n' "$name" >> build/policy-analysis.log
           done
+          gcc -std=c11 -Wall -Wextra -Werror -fanalyzer -DESP_PLATFORM=1 \
+            -DSERVICE_TEST_BENCH=0 -DSERVICE_TEST_PROVISIONED=1 -Itests/ota_service_sdk -Itests \
+            -Ifirmware/esp32-hmi/ota -Ifirmware/esp32-hmi/network \
+            -c firmware/esp32-hmi/ota/service.c \
+            -o build/policy-analysis/service-configured.o >> build/policy-analysis.log 2>&1
           for name in session service; do
             gcc -std=c11 -Wall -Wextra -Werror -fanalyzer -Ifirmware/esp32-hmi/ota \
               -c "firmware/esp32-hmi/ota/$name.c" -o "build/policy-analysis/$name.o" >> build/policy-analysis.log 2>&1
