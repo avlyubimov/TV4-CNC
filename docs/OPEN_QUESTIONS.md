@@ -1,6 +1,37 @@
 # Открытые вопросы и блокирующие решения
 
-## Актуально: b01ff48 контроль PASS, CHECK остановлен на нулевой длине HTTP302
+## Актуально: a29c9ed — полный signed CHECK PASS, далее повторяемость и install/rollback
+
+[Полный подписанный CHECK](evidence/hardware/2026-11-24-esp32-signed-check-a29c9ed/README.md)
+на ESP-IDF6.1.1 закрыт за1095,492s: свежие16MiB/device MD5/SHA/two-NVMe,
+configured control PASS → ровно один автоматический CHECK → весь factory2MiB
+fecc05d/verify/preservation/UART30 PASS. IMAGE_VERIFIED(7), все ошибки0,
+406 resource checks; полный payload bench.2 проверен без Flash sink/INSTALL.
+SESSION local minimum internal97399bytes, сетевой largest63488, остаток стека
+6896/12288bytes; touch age0–20ms/errors0. Cleanup/окна/CA/hostname/date/timeouts
+и прежние floors сохранены. Physical UI/FPS/latency ночью не наблюдались.
+
+[Software evidence](evidence/build/esp32-ota-zero-length-check/README.md):237
+host/237 ASan/UBSan/LSan, actual-source analyzer, четыре configured ELF/BIN
+ESP-IDF6.1.1/5.3.2 PASS. Source a29c9ed CI30/30 и mainc3b82f0 CI15/15 прошли
+до стенда. Runtime5.3.2 не испытывался. PR #80 открыт, самостоятельно не сливать.
+
+Следующий конечный пакет — новый свежий снимок/two-NVMe, контроль90s и три
+reset CHECK одного a29c9ed auto-image без повторной записи между ними; на FAIL
+оставшиеся пробы отменяются, возвращается весь fecc05d. До закрытия сеанса
+повторяемость не принята. Далее требуется configured installable payload и
+проверка native install/boot confirmation/rollback. Опубликованный unprovisioned
+bench.2 остаётся только read-only: его нельзя устанавливать или менять assets/tag.
+Производственный ресурсный бюджет и испытания потери питания не приняты.
+
+[SWD readback F407](evidence/hardware/2026-11-24-f407-readback/README.md) PASS:
+current1MiB/ee7d179 exact bytes, self-tests/guards/progress/resume; без прошивки,
+reset и RAM test requests. Две приватные current copies на разных NVMe проверены.
+Владелец разрешил автономные обратимые проверки изолированных плат до24ноября
+08:00 Asia/Almaty: каждый сеанс≤1800s и recovery reserve до срока; без eFuse,
+option bytes/CAN/motion/merge/новых релизов. Ключи/context/бэкапы вне Git/CI.
+
+## История: b01ff48 контроль PASS, CHECK остановлен на нулевой длине HTTP302
 
 [Один автономный CHECK](evidence/hardware/2026-11-24-esp32-signed-check-b01ff48/README.md)
 закрыт: control PASS; auto attempted1/pass0, HTTP302/header bytes5704/bad_headers1.

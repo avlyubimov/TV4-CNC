@@ -51,3 +51,22 @@ Numeric failure log добавляет framing fields после callback, бе�
 GCC analyzer PASS. Новые exact configured control/auto ELF обоих SDK и CI ещё
 нужно выполнить перед следующим finite пакетом. b01ff48 software231 evidence
 сохраняет свой source/hash и не объявляет новые images аппаратно проверенными.
+
+## a29c9ed: первый полный CHECK пройден
+
+[Аппаратный результат](../evidence/hardware/2026-11-24-esp32-signed-check-a29c9ed/README.md)
+и [software evidence](../evidence/build/esp32-ota-zero-length-check/README.md)
+разделены:237 host/sanitizers, четыре ELF/BIN6.1.1/5.3.2 и CI30 прошли до USB.
+На6.1.1 контроль PASS, один auto CHECK IMAGE_VERIFIED/error0/406resource checks,
+после cleanup READY/error0, весь factory fecc05d возвращён/verify/UART30 PASS.
+Actual SESSION local min97399bytes/stack6896 из12288, touch0–20ms/errors0.
+
+Следующий отдельный finite пакет использует те же проверенные bytes и CI:
+новые16MiB/device MD5/SHA/two-NVMe → control90s → запись auto один раз →
+три150s reset CHECK → весь factory2MiB/verify/UART30. Не начинать его без
+закрытого PASS первого пакета и verified return. Каждая проба должна закончить
+полный IMAGE_VERIFIED и cleanup; любой FAIL отменяет остальные пробы.150s —
+внешний предел наблюдения, не увеличение прежних IO/idle/session тайм-аутов.
+Общий1800s/recovery reserve/08:00 deadline и все исходные guards сохраняются.
+Это проверка повторяемости ограниченной read-only сессии, не INSTALL/rollback,
+производственный бюджет, physical UI/FPS или тест отключением питания.

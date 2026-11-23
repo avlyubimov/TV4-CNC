@@ -142,37 +142,36 @@ PR и Actions; не копировать код уже открытого PR. Д
    теги, релизы, секреты CI и публикации под видом обычного push.
 6. Обновлять актуальный статус; исторические отчёты сохранять с явной пометкой.
 
-## Текущее задание: P1 — wire framing после одного автономного CHECK
+## Текущее задание: P1 — повторяемость подписанного CHECK, затем настоящий install/rollback
 
-Читайте docs/plans/P1_AUTONOMOUS_SIGNED_CHECK.md. На b01ff48/source CI30/
-main c3b82f0 CI15 контроль PASS; ровно один auto full CHECK FAIL на302 headers,
-resource0/checks2/stack6896. Весь factory fecc05d возвращён/verify/UART30 PASS,
-full restore0. Physical UI ночью не наблюдался. F407 readback1MiB/ee7d179/
-self-tests/guards/progress/resume PASS, без firmware/reset/RAM requests; current
-copies/two-NVMe проверены. Новые host237/sanitizers237 — software, не hardware.
+Читайте docs/plans/P1_AUTONOMOUS_SIGNED_CHECK.md. Точный a29c9ed на ESP-IDF6.1.1:
+control PASS → один full signed CHECK IMAGE_VERIFIED/error0/406resource checks →
+весь factory fecc05d/verify/preservation/UART30 PASS. SESSION internal local min
+97399, largest63488, остаток worker6896/12288, touch0–20ms/errors0. Physical UI
+ночью не наблюдался. Source CI30/main15,237 host/sanitizers/analyzer и четыре
+ELF/BIN обоих SDK PASS;5.3.2 runtime не проверен. PR80 открыт, не self-merge.
+F407 current1MiB/ee7d179/guards/progress/resume PASS, без новых Flash/reset/RAM
+requests; две приватные current copies на разных NVMe проверены.
 
-SDK5/6 fetch_headers sets is_chunked for content_length<=0. Исправлять только
-known Content-Length0/no Transfer-Encoding против этого SDK-флага. Empty200,
-unknown framing, CL+TE, duplicates/compression и иные contradictions отклонять.
-Сохранить headers16KiB/value8KiB/TX512..2080/key128/Location2048, wire framing,
-CA/hostname/date/time/resource/timeout/cleanup guards. Default-off one-shot
-configured rev12-ota+trace использует один existing worker,45s healthy Wi-Fi wait,
-один read-only full image session. External CHECK/INSTALL/REBOOT закрыты, CANCEL
-сохраняется. Обычные профили/metadata CHECK прежние, no new tasks/crypto/sinks.
+Следующий exact пакет: fresh16MiB/two-NVMe → control90s → три150s reset CHECK
+одного auto-image без повторных записей → весь factory fecc05d/verify/UART30.
+Любой FAIL отменяет оставшиеся пробы. Не объявлять повторяемость до закрытия
+сеанса; не заменять INSTALL/rollback результатом read-only CHECK. Не устанавливать
+published bench.2: это unprovisioned read-only payload. Затем подготовить настоящий
+configured installable image, boot self-test/confirmation/rollback и точный стенд.
 
-Следующий exact control/auto после обоих SDK/ELF/CI; fresh16MiB/device MD5/SHA/
-two-NVMe → control PASS → auto one-shot → весь factory fecc05d. Closed packets
-не повторять. Владелец разрешил автономные обратимые проверки обеих изолированных
-подключённых плат до24ноября2026 08:00 Asia/Almaty без вопросов о доступе.
-Каждый сеанс finite≤1800s с recovery reserve до общего срока; не расширять это
-на eFuse/option bytes, приводы/CAN, merge или новый release. Floors internal64KiB/
-largest32KiB, PSRAM1MiB/largest128KiB, stack3072 и anchor10min/skew5s прежние.
+SDK5/6 known Content-Length0/no-TE объясняет SDK is_chunked flag; все прочие
+framing/CA/hostname/date/time/resource/timeout/cleanup guards сохраняются.
+Default-off one-shot configured rev12-ota+trace использует один existing worker,
+45s healthy Wi-Fi/2s settle, один full image session без Flash sink. External
+CHECK/INSTALL/REBOOT закрыты, CANCEL сохранён; ordinary profiles прежние.
 
-Published prerelease v0.1.0-bench.2/c013ddf:11 downloaded assets/SHA/signature/
-full BIN offline PASS; current GitHub asset digests также совпали. Не менять
-tag/assets и не устанавливать этот unprovisioned read-only payload. Owner key/
-context вне Git/CI. Full signed stream/install/confirmation/rollback/production
-budget ещё не приняты. Следовать фактам, не приписывать software hardware PASS.
+Владелец разрешил автономные обратимые проверки обеих изолированных подключённых
+плат до24ноября2026 08:00 Asia/Almaty без вопросов о доступе. Каждый сеанс finite
+≤1800s с recovery reserve до срока. Не расширять это на eFuse/option bytes,
+приводы/CAN, merge или новые публикации. Floors internal64KiB/largest32KiB,
+PSRAM1MiB/largest128KiB/stack3072 и anchor10min/skew5s прежние. Owner key/context
+вне Git/CI. Production budget, installation и rollback ещё не приняты.
 
 ## Исторические контракты слитых этапов
 

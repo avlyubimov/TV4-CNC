@@ -1,20 +1,25 @@
 # ESP32 HMI — специализированные правила
 
-Текущий P1 — docs/plans/P1_AUTONOMOUS_SIGNED_CHECK.md от корня. b01ff48:
-control PASS, один auto CHECK FAIL на302/bad_headers1, resource0/stack6896,
-factory fecc05d возвращён/verify/UART30 PASS. Physical UI ночью не наблюдался.
-Исправить SDK5/6 zero-length framing: fetch_headers sets is_chunked for CL0;
-только known-zero/no-TE объясняет этот mismatch. Empty200/unknown/CL+TE/
-duplicates/compression/other mismatches отклонять. Headers/TX bounds, CA/time/
-floors/monitor/cleanup/timeouts прежние; SDK double должен моделировать actual
-fetch_headers, full host/san/analyzer/оба SDK/ELF/CI перед новым exact пакетом.
+Текущий P1 — docs/plans/P1_AUTONOMOUS_SIGNED_CHECK.md от корня. a29c9ed:
+control/один full signed CHECK/возврат всего fecc05d PASS. IMAGE_VERIFIED/error0,
+406 resource checks, SESSION local min97399bytes, largest63488, stack6896/12288,
+touch0–20ms/errors0. Physical UI ночью не наблюдался.237 host/sanitizers,
+analyzer/четыре ELF обоих SDK/CI30 PASS; аппаратно только6.1.1.
+
+Далее finite repeatability: fresh16MiB/two-NVMe, control90s, три150s reset CHECK
+без повторной записи auto-image, FAIL останавливает следующие пробы; весь factory
+fecc05d/verify/UART30. До закрытия сеанса повторяемость не принята. Затем реальный
+configured installable payload/self-test/rollback; published unprovisioned bench.2
+только для read-only CHECK, не устанавливать. Production budget ещё открыт.
 
 Default-off signed bench только configured rev12-ota+trace, один worker,
 45s healthy Wi-Fi/2s settle/один full read-only CHECK. External CHECK/INSTALL/
 REBOOT закрыты, CANCEL сохранён; ordinary profiles/metadata CHECK прежние.
-Owner разрешил автономные обратимые isolated-board checks до24ноября08:00
-Asia/Almaty, без вопросов о доступе. Finite1800s/fresh16MiB/two-NVMe/recovery
-reserve, без eFuse/option bytes/CAN/motion/merge/release/INSTALL bench.2.
+Known-zero/no-TE SDK framing fix не отменяет empty200/unknown/CL+TE/duplicates/
+compression/other mismatch refusals. Headers/TX bounds, CA/time/floors/monitor/
+cleanup/timeouts сохраняются. Owner разрешил автономные обратимые isolated-board
+checks до24ноября08:00 Asia/Almaty без вопросов о доступе; finite1800s/recovery
+reserve, без eFuse/option bytes/CAN/motion/merge/нового release/INSTALL bench.2.
 Key/context вне Git/CI. На F407 прежний ee7d179, readback/health/resume PASS.
 
 Ниже исторические контракты; актуальные hardware facts — в корневых документах.
