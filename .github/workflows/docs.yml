@@ -23,6 +23,11 @@ jobs:
           test -s docs/plans/P1_AES_DMA_MEMORY.md
           test -s docs/plans/P1_DMA_ALLOCATION_TRACE.md
           test -s docs/plans/P1_LVGL_PSRAM_HEAP.md
+          test -s docs/plans/P1_SIGNED_SESSION_RESOURCE.md
+          test -s docs/evidence/build/esp32-lvgl-psram/README.md
+          python3 -m json.tool docs/evidence/build/esp32-lvgl-psram/results.json > /dev/null
+          test -s docs/evidence/hardware/2026-11-23-esp32-lvgl-38f70b9/README.md
+          python3 -m json.tool docs/evidence/hardware/2026-11-23-esp32-lvgl-38f70b9/measurements.json > /dev/null
           test -s docs/evidence/build/esp32-ota-dma-trace/README.md
           python3 -m json.tool docs/evidence/build/esp32-ota-dma-trace/results.json > /dev/null
           test -s docs/evidence/hardware/2026-11-23-esp32-dma-46cf400/README.md

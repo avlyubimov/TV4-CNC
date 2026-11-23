@@ -1,5 +1,31 @@
 # Аппаратный статус TV4-CNC
 
+## 23 ноября: LVGL PSRAM и HTTPS — PASS, далее signed CHECK
+
+PR #75 слит владельцем, main1682da0 CI15/15 PASS. [Стенд38f70b9](evidence/hardware/2026-11-23-esp32-lvgl-38f70b9/README.md)
+завершён за1063,692s: fresh16MiB/device MD5/SHA/two-NVMe, baseline46cf400 →
+новый control → три TLS reset boots → весь factory2MiB fecc05d/verify/UART30 PASS.
+Четыре writes/шесть captures; full restore не понадобился. На плате fecc05d,
+F407 ee7d179 не открывался. Владелец заранее разрешил необходимые P1 стенды
+23ноября2026 Asia/Almaty без повторных вопросов; этот exact пакет уже закрыт.
+
+Свободная internal RAM control16771–16831 →124703–124755bytes, largest7680→63488.
+Три verified HEAD HTTP200, cleanup1, полные DMA traces без allocation failures;
+TLS local minimum108563–108867, remaining stack3760–3904/8192, touch2–19ms/errors0.
+Возврат fecc05d touch1–11ms PASS. Это UART evidence, не physical touch/FPS:
+render/event samples0, визуального owner подтверждения сегодня нет.
+
+[Software evidence](evidence/build/esp32-lvgl-psram/README.md):16 clean ELF/BIN
+двух SDK,183 host/183 sanitizer tests, actual allocator analyzer/ELF/config PASS.
+Global malloc policy/stack/DMA64KiB/TLS16384/4096/RGB/pins/clocks/touch/CA/time
+не ослаблены. [Следующий этап](plans/P1_SIGNED_SESSION_RESOURCE.md) — настоящая
+signed CHECK/session4 с полным manifest/image stream в существующем worker8192,
+затем install/confirm/rollback и manual release acceptance. Ключ владельца,
+reviewed SemVer/time/resources и подписанный candidate пока отсутствуют;
+SETUP/CHECK/INSTALL gates сохраняются, test keys/floors из HEAD не назначать.
+
+## История до стенда38f70b9
+
 ## 23 ноября: DMA shortage, полный snapshot restore проверен
 
 [Стенд46cf400](evidence/hardware/2026-11-23-esp32-dma-46cf400/README.md):

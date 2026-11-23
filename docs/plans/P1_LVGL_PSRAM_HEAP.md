@@ -1,5 +1,10 @@
 # P1: освободить internal RAM для Wi-Fi и AES DMA
 
+Статус: PR #75 слит владельцем. [Стенд38f70b9](../evidence/hardware/2026-11-23-esp32-lvgl-38f70b9/README.md)
+прошёл control и три verified HEAD200 без DMA failures; fecc05d возвращён.
+[Следующий результат](P1_SIGNED_SESSION_RESOURCE.md) — настоящий signed CHECK.
+Ниже сохранены scope и критерии выполненной интеграции.
+
 База main00a6d86 после слитого PR #74. [Стенд46cf400](../evidence/hardware/2026-11-23-esp32-dma-46cf400/README.md)
 показал9 DMA-capable allocation failures при handshake. Dashboard использовал
 100516bytes internal RAM; свободная PSRAM почти не участвовала. В основе

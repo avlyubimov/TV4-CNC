@@ -142,102 +142,42 @@ PR и Actions; не копировать код уже открытого PR. Д
    теги, релизы, секреты CI и публикации под видом обычного push.
 6. Обновлять актуальный статус; исторические отчёты сохранять с явной пометкой.
 
-## Текущее задание: P1 — SRAM headroom LVGL после DMA trace
+## Текущее задание: P1 — настоящая signed CHECK после HTTPS PASS
 
-PR #74 слит владельцем; база main00a6d86. Текущая отдельная интеграция —
-docs/plans/P1_LVGL_PSRAM_HEAP.md: официальный CUSTOM heap только OTA, новые
-прошиваемые ELF/BIN двух SDK и сравнительный стенд после CI. Старый control
-46cf400 допустим только как sealed comparator нового пакета со свежим backup;
-использованный пакет/авторизация не переиспользуются. Сегодняшнее общее
-разрешение владельца сохраняется без повторных вопросов.
+PR #75 слит владельцем, база main1682da0. Читать docs/NEXT_STAGE.md,
+docs/plans/P1_SIGNED_SESSION_RESOURCE.md и аппаратный отчёт
+ docs/evidence/hardware/2026-11-23-esp32-lvgl-38f70b9/README.md.
+Сравнительный стенд38f70b9 завершён за1063,692s: fresh16MiB/two-NVMe,
+baseline/new control и три verified HEAD HTTP200 PASS, весь factory fecc05d
+возвращён/verify/UART PASS1–11ms. Четыре writes/шесть captures, full restore0.
+Internal free вырос примерно на105KiB; TLS minimum108563–108867/stack3760–3904.
+DMA trace valid/no failures. Это reset/UART evidence, не физические FPS/касания.
+F407 ee7d179 не открывался; HMI на плате fecc05d/A-B. Старые пакеты закрыты.
 
-[Стенд46cf400](docs/evidence/hardware/2026-11-23-esp32-dma-46cf400/README.md)
-завершён23ноября за810,754s: control PASS1–20ms, SNTP PASS, TLS open FAIL
-(HW_ACCEL_FAILED),9 allocation failures/caps DMA|INTERNAL|8BIT. Первые4
-сохранены (190/190/190/136bytes, other task),5 lost — trace invalid, остальные
-boots отменены. Factory fecc05d verify PASS; его старый touch clock race дал
-UINT32_MAX, поэтому один full fresh16MiB restore/verify/reset выполнен.
-Отдельный UART30s после restore PASS3–19ms; physical UI owner check не получен.
-Следующий отдельный PR — официальный LVGL CUSTOM PSRAM heap только OTA:
-dashboard забрал100516bytes internal без расхода PSRAM. Не менять глобальную
-malloc policy/stack/DMA reserve/TLS/AES/CA/time, не выводить floors из HEAD.
-Новый exact-image стенд после CI, со свежим снимком и возвратом; старый пакет
-46cf400 закрыт. Ни merge, ни motion/irreversible/release не разрешены.
+Следующий измеримый результат — full signed session CHECK в существующем
+worker8192 и ресурсная приёмка SESSION4, затем отдельные install/confirmation/
+rollback/release acceptance. Нужны owner public key, reviewed SemVer/time/
+resource context и настоящий подписанный candidate. Пока их нет, SETUP и
+CHECK/INSTALL gates сохраняются; test keys/guessed floors не подставлять.
+Не выводить production thresholds из HEAD, не создавать новую crypto/HTTPS
+абстракцию вместо existing service. Код LVGL PSRAM принят в PR #75; не дублировать.
 
-23ноября2026 (Asia/Almaty) владелец заранее разрешил доступ и необходимые
-стендовые операции P1 на подключаемых платах сегодня и потребовал не
-запрашивать это разрешение повторно. Использовать его для новых проверенных
-ограниченных пакетов с fresh backup/two-NVMe и возвратом fecc05d после CI;
-каждый пакет одноразовый, старый3927063 не повторять. Это разрешение на
-текущий диагностический этап, не на motion, необратимые защиты, merge/release.
-Реализация/приёмка — docs/plans/P1_DMA_ALLOCATION_TRACE.md. SDK failure callback
-не имеет native claim/getter: sole linked caller и IRAM/DRAM проверять в ELF.
+Официальный CUSTOM heap только explicit OTA: SPIRAM|8BIT без internal fallback,
+LVGL task app_main; actual ELF/linker anchor SDK6 и оба SDK обязательны.
+Не менять global malloc policy/stack/DMA64KiB/TLS16384/4096/display/pins/clocks/
+touch100/500ms/CA/hostname/date ради PASS. History per-heap minimum и generic
+internal largest не являются simultaneous free/DMA heap или production floors.
 
-База main502a73d, PR #71–73 слиты владельцем; main15/15 и каждый PR30/30 CI PASS.
-[Разрешённый стенд3927063](docs/evidence/hardware/2026-11-22-esp32-worker-tls-3927063/README.md)
-завершён за743,183s: fresh16MiB/two-NVMe, control touch_fresh PASS2–19ms,
-SNTP PASS. Первый HEAD FAIL после hardware-AES allocation, generic TLS132,
-status-1/cleanup1; следующие boots остановлены. Весь factory2MiB fecc05d
-возвращён/verify/UART/owner HMI-touch-Wi-Fi-SETUP PASS. Temporary3927063 тоже
-подтверждён владельцем. F407 ee7d179 не открывался. Сеанс/разрешение использованы;
-новых UART/reset/Flash действий нет, старые пакеты не повторять.
+23ноября2026 Asia/Almaty владелец заранее разрешил необходимые P1 подключения/
+стенды на подключаемых платах сегодня и просил не спрашивать повторно. Новые
+пакеты finite/exact hashes/green CI/fresh16MiB/two-NVMe/возврат; закрытые пакеты
+не повторять. Это не motion/irreversible/merge/release approval и не разрешение
+на будущие даты. Правило8 применяется с учётом уже данного разрешения владельца.
 
-Читать docs/plans/P1_AES_DMA_MEMORY.md. Следующий результат — конкретные DMA
-capability/request/caps/failure данные в реальном diagnostic image двух SDK,
-затем обоснованное устранение дефицита. Internal8BIT minima не DMA largest и
-не production floors; не угадывать allocator site/size по одной строке SDK.
-Не отключать hardware AES/CA/hostname/date, не уменьшать TLS16384/4096,
-DMA64KiB/framebuffer/pins/clocks/stack/touch thresholds ради PASS. Один monitor
-owner/полные тайм-ауты/остановка после FAIL сохраняются. После HTTPS — reviewed
-owner key/SemVer/time/resources и настоящий signed CHECK, затем install/rollback/
-release приёмка. CHECK/INSTALL без настройки закрыты, test keys не подставлять.
-
-NEMA23 software project завершён в PR #72: docs/NEMA23_BENCH_PLAN.md и opt-in
-pinless TIM design, host/sanitizer160/20000 cases; real P0 image не включает его.
-Точные motor/driver models ещё неизвестны. Питание/ток/ENA/pins не назначать,
-physical outputs/motion не включать; independent hardware emergency chain
-остаётся обязательной. Не дублировать слитый проект новой абстракцией.
-
-### Завершённый стенд worker8192 — основание следующего шага
-
-База main `dfa9f28`, PR #1–67 слиты. [Стенд3072/8192](docs/evidence/hardware/2026-11-22-esp32-worker-stack/README.md)
-завершён22ноября за928.998s по отдельному разрешению: fresh16MiB/device MD5/
-SHA-256/two-NVMe, контроль3072 и три reset-запуска8192, три app/factory writes,
-пять UART captures и возврат всего factory2MiB fecc05d/verify PASS.
-Владелец подтвердил HMI/касания/Wi-Fi/OTA SETUP временного8192 и возвращённого
-fecc05d. На ESP32 fecc05d/factory/tv4-16m-ab-v1; F407 ee7d179 не открывался.
-Полный16MiB restore не понадобился; сеанс и разрешение закрыты.
-
-Worker8192 watermark6608–6784bytes, BOOT local15767–15863; periodic internal
-free14291–16863/largest7680 против control21795–21799/largest12288 после IP event.
-Первый8192 включал UI-проверку: нагрузка различалась. Это unprovisioned reset
-boot evidence, не configured TLS/install/production floor или cold-power/soak.
-Ключ/context не заданы, CHECK/INSTALL закрыты. FPS/latency/slot confirm/rollback/
-power-loss/full recovery не приняты. Новых hardware разрешений нет.
-
-Стенд показал реальную аллокацию/работу8192 без provisioning, а не полный
-configured installer. Читайте docs/ESP32_OTA_WORKER_STACK_BENCH.md,
-docs/ESP32_OTA_MEMORY_PHASES.md, docs/BACKUP_STATUS.md и docs/NEXT_STAGE.md.
-Три reset-пробы и одна owner UI-проверка не заменяют холодный старт или soak.
-SDK per-heap minima нельзя выдавать за simultaneous free/OOM/floor.
-IP event не доказывает непрерывную связь или радионагрузку в BOOT window.
-
-Следующий измеримый P1 результат — реальная TLS/crypto/installer нагрузка
-в том же worker8192 с existing HTTPS/crypto, затем reviewed local owner
-key/SemVer/time/resource settings и signed inactive-slot install/confirmation/
-rollback. Не подставлять test keys или guessed floors ради PASS; установка
-без настройки закрыта. Не заменять измерения новой host abstraction/library.
-
-PR #67 software режим завершён: flag default off, normal/trace-control3072 и
-provisioned8192 неизменны, один serialized SDK monitor owner. Семь startup IDs,
-UI_READY до optional services, touch-release gate, deadline до board init,
-DMA64KiB/TLS16384/4096/framebuffer/PSRAM/PCLK и dependency pins сохранены.
-
-Fresh snapshot SHA-256 ce6af4e88d755254f65ca2cf952d17ad9892a8ec7f487b0ed4391eccc3355e5a
-снова считан с платы; raw UART/dumps/NVS/пароли приватны. Нет разрешения на
-новые UART/SWD/reset/Flash или повтор использованного пакета. Не повторять
-migration и ordinary rev12 flash поверх A/B. Нет новых eFuse/option bytes/
-OTP/CAN/motion/keys/releases или самостоятельного merge.
+NEMA23 software project завершён в PR #72. Читать docs/NEMA23_BENCH_PLAN.md;
+exact motor/driver models неизвестны, питание/ток/ENA/pins не назначать,
+physical outputs/motion не включать. Independent аппаратная E-stop цепь обязательна.
+Слитые результаты и прежние ограничения сохраняются в исторических отчётах.
 
 ## Исторические контракты слитых этапов
 
