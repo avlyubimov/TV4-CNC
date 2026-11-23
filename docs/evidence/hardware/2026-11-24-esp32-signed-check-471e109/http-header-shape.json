@@ -1,0 +1,68 @@
+[
+  {
+    "role": "github-redirect",
+    "status": 302,
+    "total_header_bytes": 5726,
+    "header_count": 16,
+    "largest_headers": [
+      {
+        "name": "Content-Security-Policy",
+        "value_bytes": 4178,
+        "line_bytes": 4205
+      },
+      {
+        "name": "Location",
+        "value_bytes": 911,
+        "line_bytes": 923
+      },
+      {
+        "name": "Vary",
+        "value_bytes": 151,
+        "line_bytes": 159
+      },
+      {
+        "name": "Strict-Transport-Security",
+        "value_bytes": 44,
+        "line_bytes": 73
+      },
+      {
+        "name": "X-GitHub-Request-Id",
+        "value_bytes": 34,
+        "line_bytes": 57
+      }
+    ]
+  },
+  {
+    "role": "asset-response",
+    "status": 200,
+    "total_header_bytes": 859,
+    "header_count": 25,
+    "largest_headers": [
+      {
+        "name": "X-Served-By",
+        "value_bytes": 52,
+        "line_bytes": 67
+      },
+      {
+        "name": "Content-Disposition",
+        "value_bytes": 34,
+        "line_bytes": 57
+      },
+      {
+        "name": "x-ms-request-id",
+        "value_bytes": 36,
+        "line_bytes": 55
+      },
+      {
+        "name": "Server",
+        "value_bytes": 44,
+        "line_bytes": 54
+      },
+      {
+        "name": "x-ms-creation-time",
+        "value_bytes": 29,
+        "line_bytes": 51
+      }
+    ]
+  }
+]

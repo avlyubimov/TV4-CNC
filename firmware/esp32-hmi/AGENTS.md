@@ -1,22 +1,21 @@
 # ESP32 HMI — специализированные правила
 
-Текущая задача — docs/plans/P1_CONFIGURED_WORKER_HEADROOM.md от корня:
-configured BASE c013ddf прошёл boot/touch, но два ранних owner CHECK дали
-SESSION_RESOURCE и stack3024/8192 ниже floor3072. Весь factory fecc05d
-возвращён/verify/UART/owner PASS. Пакет закрыт; F407 ee7d179 не затронут.
+Текущий P1 — docs/plans/P1_GITHUB_HEADERS.md от корня. 471e109/worker12288:
+clean control PASS, HTTP_OPEN при resource OK, factory fecc05d возвращён/
+verify/UART/owner PASS. Full signed session ещё не принят; F407 ee7d179 прежний.
 
-Менять только configured worker на12288 и добавить bounded resource log;
-ordinary3072/unprovisioned bench8192 и reviewed floors сохранить. Проверить
-actual service SDK doubles, task/probe/watchdog failures, оба pinned SDK,
-actual ELF/frames/PSRAM allocator и CI. Затем новый exact пакет: свежий16MiB/
-two-NVMe, чистый контроль без CHECK, один CHECK по команде, возврат factory.
-Никаких новых crypto/HTTPS/tasks или ослаблений CA/time/touch/DMA/ownership.
+Менять существующий HTTPS adapter: bounded total headers16KiB/value8KiB и
+TX512..2080 по длине уже разрешённого URL. Сохранить RX4096/TLS16384/4096,
+Location2048/key128/encoding/framing/duplicates/allowlist/CA/hostname/date/time,
+floors, единственный worker и memory monitor. Никаких логов header values/
+URL/query или I/O из HTTP callbacks. Diagnostic log после callback, bounded.
+Actual-source SDK doubles/negative framing/oversize/cleanup/time, sanitizers,
+оба pinned SDK/ELF/CI, затем новый exact finite CHECK с fresh backup/возвратом.
 
-Prerelease v0.1.0-bench.2/c013ddf опубликован по отдельному разрешению,
-11 скачанных assets/SHA/signature/full BIN PASS. Это только CHECK payload,
-unprovisioned candidate не устанавливать. Private key/context вне Git/CI.
-Owner явно продлил время текущей проверки, но сохранить finite1800s/reserve;
-это не постоянное разрешение и не INSTALL/eFuse/CAN/motion/merge authority.
+Owner разрешил проверять столько времени, сколько понадобится: новый конечный
+календарный CHECK context, не продление сетевых timeout и не снижение floors.
+Private context/key вне Git/CI. Не менять опубликованный prerelease bench.2,
+не устанавливать unprovisioned payload. INSTALL/eFuse/CAN/motion/merge не разрешены.
 
 Ниже исторические контракты; актуальные hardware facts — в корневых документах.
 

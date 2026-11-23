@@ -142,36 +142,39 @@ PR и Actions; не копировать код уже открытого PR. Д
    теги, релизы, секреты CI и публикации под видом обычного push.
 6. Обновлять актуальный статус; исторические отчёты сохранять с явной пометкой.
 
-## Текущее задание: P1 — configured CHECK с запасом стека
+## Текущее задание: P1 — настоящий GET GitHub Releases
 
-PR #77 слит владельцем, main3d98ece; c013ddf CI30/30, main15/15 и tag15/15
-PASS. По отдельному разрешению опубликован prerelease v0.1.0-bench.2 с11
-точными assets. Все скачаны/SHA/подпись/full BIN Python+C PASS. Читать
- docs/evidence/build/ota-signed-check/publication.md. Не менять опубликованные
-assets/tag, не считать этот unprovisioned CHECK payload install-ready.
+PR #78 слит владельцем, mainb3551f3, source471e109 CI30/main15 PASS.
+Configured worker12288: чистый контроль PASS; CHECK дважды дал HTTP_OPEN,
+resource OK0/stack7072–7248. Полный signed stream ещё не проверен. Весь factory
+fecc05d возвращён/verify/UART/owner HMI-touch-Wi-Fi-SETUP PASS, full restore0.
+Читать docs/evidence/hardware/2026-11-24-esp32-signed-check-471e109/README.md
+и docs/plans/P1_GITHUB_HEADERS.md. Два запроса в UART при сообщении владельца
+об одном не считать однократной приёмкой; источник второго не установлен.
 
-Первый configured BASE c013ddf/8192 прошёл boot/touch, но владелец дважды
-нажал CHECK во время контрольного окна. Два SESSION_RESOURCE, остаток стека
-3024 ниже floor3072; контроль FAIL, planned CHECK420s отменён. Весь factory
-fecc05d возвращён/verify/UART/owner HMI-touch-Wi-Fi-SETUP PASS, полный restore0.
-Читать docs/evidence/hardware/2026-11-23-esp32-signed-check-c013ddf/README.md
-и docs/plans/P1_CONFIGURED_WORKER_HEADROOM.md.
+Нужна одна конкретная adapter integration: bounded response headers16KiB/
+value8KiB (GitHub CSP4178,total5726), TX512..2080 по проверенному URL для полной
+GET request line SDK5/6. Сохранить key128/Location2048, framing/duplicate/
+encoding/body, allowlist, CA/hostname/date/time, floors и timeout/cleanup gates.
+Actual-source SDK doubles воспроизводят оба старых отказа; host/sanitizers,
+оба SDK/ELF/CI, затем новый exact BASE, clean control, один CHECK и возврат.
+Новых crypto/HTTPS clients/tasks не добавлять. Private key/context вне Git/CI.
 
-Следующая одна интеграция: только configured worker12288 (+4096), прежние
-ordinary3072 и unprovisioned bench8192; bounded SESSION/resource log, host
-fault/sanitizers, оба SDK/ELF/CI и новый exact BASE пакет. Runtime floors не
-снижать: internal64KiB/largest32KiB, PSRAM1MiB/largest128KiB, stack3072.
-Сначала чистый контроль без CHECK, затем один CHECK по команде и возврат всего
-factory. Прежний c013ddf пакет закрыт. Не выдавать ранние нажатия за приёмку.
+Prerelease v0.1.0-bench.2/c013ddf опубликован по отдельному разрешению:
+11 downloaded assets/SHA/signature/full BIN Python+C PASS, source30/main15/
+tag15 CI PASS. Не менять assets/tag и не устанавливать unprovisioned payload.
+Стендовые HMI0.1.0-bench.1→0.1.0-bench.2, bootloader local0.1.0-bench.1/
+protocol1.0.0 — не production или physical CAN labels.
 
-Ключ владельца остаётся в домашней папке секретов, private material/context
-не публиковать. Стендовые HMI0.1.0-bench.1→0.1.0-bench.2, bootloader local
-label0.1.0-bench.1 и OTA metadata protocol1.0.0 не production/physical CAN.
-Владелец явно продлил календарное окно этой проверки; сохранить ограниченный
-сеанс1800s, fresh16MiB/device MD5/SHA/two-NVMe, reserve и автоматический возврат.
-Таймауты/CA/hostname/date/anchor10min/skew5s и guards прежние. Разрешение не
-превращать в постоянное или в INSTALL/eFuse/STM32/CAN/motion/merge/release.
-После CHECK нужны отдельные install/confirmation/rollback и P2 acceptance.
+Owner явно разрешил продолжать проверку столько времени, сколько понадобится;
+это разрешение продлевает календарное окно CHECK, а не сетевые таймауты,
+сертификаты или resource floors. Каждый сеанс finite1800s, fresh16MiB/device
+MD5/SHA/two-NVMe, reserve и возврат всего factory. Floors: internal64KiB/
+largest32KiB, PSRAM1MiB/largest128KiB, stack3072; anchor10min/skew5s. Closed
+packets не повторять. Один read отменён до Flash write из-за ошибочной гипотезы
+агента о URL512; реальный limit2048 и URL903–907 разрешены native guard.
+Это не постоянное разрешение/INSTALL/eFuse/STM32/CAN/motion/merge/release.
+После полного CHECK нужны install/confirmation/rollback и отдельная P2 acceptance.
 
 ## Исторические контракты слитых этапов
 

@@ -1,0 +1,95 @@
+{
+  "schema": 1,
+  "source_commit": "471e109d4f2fba35176bede455af64e6a953d1d5",
+  "merge_commit": "b3551f3daf945f601ff9672775da9d67146421df",
+  "checks": {
+    "host_passed": 189,
+    "asan_ubsan_lsan_passed": 189,
+    "suppressions": false,
+    "configured_service_analyzer_pass": true,
+    "procedure_tests_passed": 19,
+    "source_ci_jobs_passed": 30,
+    "merged_main_ci_jobs_passed": 15
+  },
+  "builds": [
+    {
+      "sdk": "5.3.2",
+      "app": {
+        "bytes": 1553776,
+        "sha256": "a7d324f3e15b85d9c8b1af26e2023217e9619251d6b1f1714597462cbb247ed1",
+        "project": "tv4_hmi",
+        "version": "0.1.0-bench.1",
+        "idf_version": "v5.3.2",
+        "elf_sha256": "42138edc85c247600aeedc4ac5dc18103ea88e5e0c93f95960a97d685fc332b9",
+        "segments": 5,
+        "chip_revision_min": 0,
+        "chip_revision_max": 99,
+        "flash_bytes": 16777216,
+        "flash_mode": "dio",
+        "flash_frequency_mhz": 80
+      },
+      "worker_stack_bytes_requested": 12288,
+      "service_compiler_frames": {
+        "publish": 32,
+        "now_ms": 32,
+        "cancelled": 32,
+        "commit": 32,
+        "configured": 32,
+        "worker_stack": 32,
+        "write_chunk": 32,
+        "fetch": 48,
+        "tv4_ota_boot_observe": 32,
+        "tv4_ota_service_start": 64,
+        "tv4_ota_service_health": 32,
+        "tv4_ota_service_snapshot": 32,
+        "operation": 480,
+        "worker": 80,
+        "tv4_ota_service_request": 48
+      },
+      "sdkconfig_sha256": "168aaac5fb87dc0ba790b96ba8b8483ee2147b45817ce27ac045d5794575b114",
+      "runtime_qualified": false
+    },
+    {
+      "sdk": "6.1.1",
+      "app": {
+        "bytes": 1601184,
+        "sha256": "726d419fdf5f665f2a8d49d2769703bbd8d36121ca82f664aad2b1eedf9e5919",
+        "project": "tv4_hmi",
+        "version": "0.1.0-bench.1",
+        "idf_version": "v6.1.1",
+        "elf_sha256": "92cef8b6a73edadbb2a951168598c9c04243b598c44dda58907e07c533b77426",
+        "segments": 6,
+        "chip_revision_min": 0,
+        "chip_revision_max": 99,
+        "flash_bytes": 16777216,
+        "flash_mode": "dio",
+        "flash_frequency_mhz": 80
+      },
+      "worker_stack_bytes_requested": 12288,
+      "service_compiler_frames": {
+        "publish": 32,
+        "now_ms": 32,
+        "cancelled": 32,
+        "commit": 32,
+        "configured": 32,
+        "worker_stack": 32,
+        "write_chunk": 32,
+        "fetch": 48,
+        "tv4_ota_boot_observe": 32,
+        "tv4_ota_service_start": 64,
+        "tv4_ota_service_health": 32,
+        "tv4_ota_service_snapshot": 32,
+        "operation": 480,
+        "worker": 80,
+        "tv4_ota_service_request": 48
+      },
+      "sdkconfig_sha256": "3d44d3a1a446f1db7b9339343af39698097573ba2f341bd83d64e1e54059b35a",
+      "runtime_qualified": false
+    }
+  ],
+  "hardware_result_pending": false,
+  "install_qualified": false,
+  "production_resource_qualified": false,
+  "hardware_result": "control PASS; two HTTP_OPEN errors, resource OK at failed transport boundaries; factory returned",
+  "runtime_qualified": false
+}
