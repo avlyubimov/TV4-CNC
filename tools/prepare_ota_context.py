@@ -25,7 +25,11 @@ def prepare(context,output):
         if len(raw)>8192:raise ValueError('local context too large')
         c=json.loads(raw,object_pairs_hook=unique,parse_constant=lambda _: (_ for _ in ()).throw(ValueError("invalid JSON constant")))
         fields={'reviewed','key_id','public_key','installed_version','bootloader_version','protocol_version','manifest_url','prerelease','resources','time'}
-        if set(c)!=fields or c['reviewed'] is not True or type(c['prerelease']) is not bool:raise ValueError('local reviewed context fields required')
+        if set(c) not in (fields,fields|{'install_reviewed'}) or c['reviewed'] is not True or type(c['prerelease']) is not bool:raise ValueError('local reviewed context fields required')
+        # Existing owner contexts were reviewed for CHECK only. Provisioning
+        # and resource/time review never imply permission to install an image.
+        c.setdefault('install_reviewed',False)
+        if type(c['install_reviewed']) is not bool:raise ValueError('explicit boolean install review required')
         if not re.fullmatch(r'[A-Za-z0-9_.-]{1,64}',c['key_id']):raise ValueError('invalid key ID')
         for name in ['installed_version','bootloader_version','protocol_version']:version(c[name])
         if not re.fullmatch(r'https://github.com/avlyubimov/TV4-CNC/releases/download/v[0-9A-Za-z.-]{1,64}/manifest.json',c['manifest_url']):raise ValueError('exact TV4 release manifest URL required')
@@ -43,15 +47,15 @@ def prepare(context,output):
             if type(t[k]) is not int or not 1<=t[k]<=0xffffffff:raise ValueError('time bound invalid')
         if t['earliest_epoch']>=t['latest_epoch'] or t['maximum_age_ms']>86400000 or t['maximum_skew_ms']>60000:raise ValueError('time policy invalid')
         config=c
-    c=config or dict(key_id='',installed_version='',bootloader_version='',protocol_version='',manifest_url='',prerelease=False,resources=dict.fromkeys(['internal_free','internal_largest','psram_free','psram_largest','stack'],0),time=dict(earliest_epoch=0,latest_epoch=0,maximum_age_ms=0,maximum_skew_ms=0))
+    c=config or dict(key_id='',installed_version='',bootloader_version='',protocol_version='',manifest_url='',prerelease=False,install_reviewed=False,resources=dict.fromkeys(['internal_free','internal_largest','psram_free','psram_largest','stack'],0),time=dict(earliest_epoch=0,latest_epoch=0,maximum_age_ms=0,maximum_skew_ms=0))
     q=json.dumps
     header=['/* Generated local PUBLIC trust/settings. No downloaded key or production default. */','#pragma once','#include <stdint.h>',f'#define TV4_OTA_PROVISIONED {int(config is not None)}',
         'static const uint8_t ota_public_key[] = {'+','.join(str(b) for b in (key or b'\0'))+'};']
     for k in ['key_id','installed_version','bootloader_version','protocol_version','manifest_url']:header.append(f'#define OTA_{k.upper()} {q(c[k])}')
-    header += [f'#define OTA_PRERELEASE {int(c["prerelease"])}']
+    header += [f'#define OTA_PRERELEASE {int(c["prerelease"])}',f'#define OTA_INSTALL_REVIEWED {int(c["install_reviewed"])}']
     for k,v in c['resources'].items():header.append(f'#define OTA_FLOOR_{k.upper()} {v}u')
     for k in ['earliest_epoch','latest_epoch','maximum_age_ms','maximum_skew_ms']:header.append(f'#define OTA_TIME_{k.upper()} {c["time"][k]}u')
-    result=dict(provisioned=config is not None,installed_version=c['installed_version'],public_key_sha256=hashlib.sha256(key).hexdigest() if key else None,private_key_present=False)
+    result=dict(provisioned=config is not None,install_reviewed=c['install_reviewed'],installed_version=c['installed_version'],public_key_sha256=hashlib.sha256(key).hexdigest() if key else None,private_key_present=False)
     for name,data in [('ota_local_context.h','\n'.join(header)+'\n'),('ota_local_context.json',json.dumps(result,indent=2)+'\n')]:
         dest=p/name
         if not dest.exists() or dest.read_text()!=data:dest.write_text(data)

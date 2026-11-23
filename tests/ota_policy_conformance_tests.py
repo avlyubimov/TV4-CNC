@@ -107,7 +107,7 @@ class Harness:
         assert (native['result'] == 0) == expected, (name, 'native', native)
         assert (candidate is not None) == expected, (name, 'offline', candidate)
         if expected:
-            for field in ('release', 'version', 'url', 'notes', 'size_bytes', 'sha256'):
+            for field in ('release', 'version', 'url', 'notes', 'size_bytes', 'sha256', 'installable'):
                 assert native[field] == candidate[field], (name, field)
             # CLI still performs the extra complete image/hash/header layer.
             # Cases with intentionally varied size/SHA below are metadata-only.
@@ -195,6 +195,15 @@ def corpus(h):
         return m
 
     h.check('valid-stable', candidate(), True)
+    for value in (False, True, 0, 1, 'true', None, [], {}):
+        m = candidate(); m['components'][0]['installable'] = value
+        h.check('installable-' + repr(value), m, type(value) is bool)
+    m = candidate(); m['components'][0].update(installable=True,
+        compatible_peer_versions=dict(motion_min='1.0.0', motion_max='2.0.0'))
+    h.check('installable-and-peer', m, True, context=dict(motion_version='1.0.0'))
+    raw = dump(candidate()).replace(b'"size_bytes":512', b'"installable":true,"installable":false,"size_bytes":512')
+    h.check('duplicate-installable', candidate(), False, raw=raw)
+
     h.check('independent-release-and-component', candidate('4.0.0', '0.2.0'), True)
     h.check('prerelease', candidate('0.2.0-rc.1', '0.2.0-rc.1', 'prerelease'), True,
             context=dict(prerelease=True))

@@ -14,12 +14,13 @@ typedef struct {
     char release[65],version[65],url[513],notes[4097];
     uint32_t size_bytes;
     uint8_t sha256[32];
+    bool installable; /* Signed component capability; missing legacy field is CHECK-only. */
 } tv4_ota_candidate;
 typedef enum {
     TV4_OTA_OK, TV4_OTA_NO_TRUST, TV4_OTA_BAD_SIGNATURE, TV4_OTA_BAD_JSON,
     TV4_OTA_BAD_SCHEMA, TV4_OTA_WRONG_TARGET, TV4_OTA_WRONG_LAYOUT,
     TV4_OTA_WRONG_VERSION, TV4_OTA_WRONG_PROTOCOL, TV4_OTA_WRONG_PEER,
-    TV4_OTA_BAD_SIZE, TV4_OTA_BAD_URL, TV4_OTA_BAD_ENVELOPE
+    TV4_OTA_BAD_SIZE, TV4_OTA_BAD_URL, TV4_OTA_BAD_ENVELOPE, TV4_OTA_NOT_INSTALLABLE
 } tv4_ota_result;
 /* DER signature; envelope.h provides bounded signature envelope decoding.
  * Verifies exact bytes BEFORE bounded JSON parsing. No network/Flash/LVGL.

@@ -83,7 +83,7 @@ static void ota_action(lv_event_t *event) {
     else if(button==v->action[2]) {
         if(v->confirm)v->confirm=false;else tv4_ota_service_request(TV4_UPDATE_CANCEL);
     }else if(s.state==TV4_UPDATE_RESTART)tv4_ota_service_request(TV4_UPDATE_REBOOT);
-    else if(s.state==TV4_UPDATE_READY) {
+    else if(s.state==TV4_UPDATE_READY && s.install_allowed) {
         if(v->confirm && !memcmp(v->confirm_digest,s.sha256,32)) {
             v->confirm=false;tv4_ota_service_request(TV4_UPDATE_INSTALL);
         }else {v->confirm=true;memcpy(v->confirm_digest,s.sha256,32);}
@@ -94,7 +94,7 @@ void firmware_view_ota_update(firmware_view_t *v,const tv4_update_snapshot *s) {
     if(!v->panel || !s || !s->enabled)return;
     if(!memcmp(&v->rendered,s,sizeof(*s)))return;
     v->rendered=*s;
-    if(s->state!=TV4_UPDATE_READY || memcmp(v->confirm_digest,s->sha256,32))v->confirm=false;
+    if(s->state!=TV4_UPDATE_READY || !s->install_allowed || memcmp(v->confirm_digest,s->sha256,32))v->confirm=false;
     if(!v->action[0]) {
         lv_obj_add_flag(v->update_note,LV_OBJ_FLAG_HIDDEN);
         lv_obj_set_pos(v->update_state,20,259);
@@ -115,9 +115,9 @@ void firmware_view_ota_update(firmware_view_t *v,const tv4_update_snapshot *s) {
     else if(s->state==TV4_UPDATE_WRITING)lv_label_set_text_fmt(v->update_state,tr(NULL,S_OTA_WRITING),(unsigned long)(s->received/1024),(unsigned long)((s->total+1023)/1024));
     else lv_label_set_text(v->update_state,tr(NULL,s->state<=TV4_UPDATE_BOOT_FAILED?states[s->state]:S_OTA_ERROR));
     bool allow[]={s->state==TV4_UPDATE_IDLE || s->state==TV4_UPDATE_READY || s->state==TV4_UPDATE_ERROR,
-        s->state==TV4_UPDATE_READY || s->state==TV4_UPDATE_RESTART,
+        (s->state==TV4_UPDATE_READY && s->install_allowed) || s->state==TV4_UPDATE_RESTART,
         v->confirm || s->state==TV4_UPDATE_CHECKING || s->state==TV4_UPDATE_WRITING};
-    const string_id captions[]={S_OTA_CHECK,s->state==TV4_UPDATE_RESTART?S_OTA_REBOOT:v->confirm?S_OTA_CONFIRM:S_OTA_INSTALL,S_CANCEL};
+    const string_id captions[]={S_OTA_CHECK,s->state==TV4_UPDATE_RESTART?S_OTA_REBOOT:!s->install_allowed?S_OTA_CHECK_ONLY:v->confirm?S_OTA_CONFIRM:S_OTA_INSTALL,S_CANCEL};
     for(unsigned i=0;i<3;i++) {lv_label_set_text(v->caption[i],tr(NULL,captions[i]));
         if(allow[i])lv_obj_remove_state(v->action[i],LV_STATE_DISABLED);else lv_obj_add_state(v->action[i],LV_STATE_DISABLED);}
 }

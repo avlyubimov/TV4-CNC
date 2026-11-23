@@ -152,7 +152,7 @@ static void ota_preview(lv_obj_t *original) {
     firmware_info_t info;const char build[]="host-fixture-only",sdk[]="v6.1.1";
     assert(firmware_info_set(&info,build,sizeof(build),sdk,sizeof(sdk),FIRMWARE_INFO_SIMULATOR,FIRMWARE_PROFILE_OTA));
     firmware_view_update(&view,&info);ota_fixture=true;ota_posts=0;
-    ota_sample=(tv4_update_snapshot){.enabled=true,.total=3145728,.received=1048576};
+    ota_sample=(tv4_update_snapshot){.enabled=true,.install_allowed=true,.total=3145728,.received=1048576};
     strcpy(ota_sample.version,"4294967295.4294967295.4294967295");
     for(unsigned state=TV4_UPDATE_SETUP;state<=TV4_UPDATE_BOOT_FAILED;state++) {
         ota_sample.state=(tv4_update_state)state;firmware_view_ota_update(&view,&ota_sample);
@@ -167,6 +167,15 @@ static void ota_preview(lv_obj_t *original) {
     ota_sample.state=TV4_UPDATE_READY;firmware_view_ota_update(&view,&ota_sample);
     lv_obj_send_event(view.action[1],LV_EVENT_CLICKED,NULL);firmware_view_ota_update(&view,&ota_sample);
     assert(view.confirm && !ota_posts);check_dashboard_layout(screen);save_frame("ota-confirm-fixture");
+    ota_sample.install_allowed=false;firmware_view_ota_update(&view,&ota_sample);
+    assert(!view.confirm && lv_obj_has_state(view.action[1],LV_STATE_DISABLED));
+    assert(!strcmp(lv_label_get_text(view.caption[1]),tr(NULL,S_OTA_CHECK_ONLY)));
+    lv_obj_send_event(view.action[1],LV_EVENT_CLICKED,NULL);
+    lv_obj_send_event(view.action[1],LV_EVENT_CLICKED,NULL);firmware_view_ota_update(&view,&ota_sample);
+    assert(!view.confirm && !ota_posts);check_dashboard_layout(screen);save_frame("ota-check-only-fixture");
+    ota_sample.install_allowed=true;firmware_view_ota_update(&view,&ota_sample);
+    lv_obj_send_event(view.action[1],LV_EVENT_CLICKED,NULL);firmware_view_ota_update(&view,&ota_sample);
+    assert(view.confirm && !ota_posts);
     lv_obj_send_event(view.action[2],LV_EVENT_CLICKED,NULL);firmware_view_ota_update(&view,&ota_sample);
     assert(!view.confirm && !ota_posts);
     lv_obj_send_event(view.action[1],LV_EVENT_CLICKED,NULL);firmware_view_ota_update(&view,&ota_sample);
@@ -175,7 +184,8 @@ static void ota_preview(lv_obj_t *original) {
     lv_obj_send_event(view.action[1],LV_EVENT_CLICKED,NULL);assert(ota_posts==1 && ota_posted==TV4_UPDATE_INSTALL);
     ota_sample.state=TV4_UPDATE_WRITING;firmware_view_ota_update(&view,&ota_sample);
     lv_obj_send_event(view.action[2],LV_EVENT_CLICKED,NULL);assert(ota_posted==TV4_UPDATE_CANCEL);
-    ota_sample.state=TV4_UPDATE_RESTART;firmware_view_ota_update(&view,&ota_sample);
+    ota_sample.state=TV4_UPDATE_RESTART;ota_sample.install_allowed=false;firmware_view_ota_update(&view,&ota_sample);
+    assert(!lv_obj_has_state(view.action[1],LV_STATE_DISABLED));
     lv_obj_send_event(view.action[1],LV_EVENT_CLICKED,NULL);assert(ota_posted==TV4_UPDATE_REBOOT);
     firmware_view_destroy(&view);assert(!view.panel && !view.confirm);ota_fixture=false;
     lv_screen_load(original);lv_obj_delete(screen);

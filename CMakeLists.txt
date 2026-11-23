@@ -258,16 +258,17 @@ add_test(NAME ota_memory_diagnostics_artifacts COMMAND ${Python3_EXECUTABLE} ${C
 # Execute the real ESP service against an SDK boundary, never a board/network.
 add_test(NAME ota_worker_stack_build_guards COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/tests/ota_worker_stack_build_tests.py)
 set_tests_properties(ota_worker_stack_build_guards PROPERTIES TIMEOUT 30)
-foreach(stack_bench 0 1 2 3 4 5 6 7 8)
+foreach(stack_bench 0 1 2 3 4 5 6 7 8 9)
   set(service_test ota_worker_stack_${stack_bench}_tests)
   add_executable(${service_test} tests/ota_worker_stack_tests.c ${HMI}/ota/service.c)
   target_include_directories(${service_test} PRIVATE tests/ota_service_sdk tests ${HMI}/ota ${HMI}/network)
   target_compile_definitions(${service_test} PRIVATE ESP_PLATFORM=1
     SERVICE_TEST_BENCH=$<OR:$<STREQUAL:${stack_bench},1>,$<STREQUAL:${stack_bench},2>>
     SERVICE_TEST_TLS_BENCH=$<STREQUAL:${stack_bench},2>
-    SERVICE_TEST_PROVISIONED=$<OR:$<STREQUAL:${stack_bench},3>,$<STREQUAL:${stack_bench},4>,$<STREQUAL:${stack_bench},5>,$<STREQUAL:${stack_bench},6>,$<STREQUAL:${stack_bench},7>,$<STREQUAL:${stack_bench},8>>
+    SERVICE_TEST_PROVISIONED=$<OR:$<STREQUAL:${stack_bench},3>,$<STREQUAL:${stack_bench},4>,$<STREQUAL:${stack_bench},5>,$<STREQUAL:${stack_bench},6>,$<STREQUAL:${stack_bench},7>,$<STREQUAL:${stack_bench},8>,$<STREQUAL:${stack_bench},9>>
     SERVICE_TEST_SIGNED_BENCH=$<OR:$<STREQUAL:${stack_bench},4>,$<STREQUAL:${stack_bench},5>>
-    SERVICE_TEST_VALID_TRUST=$<OR:$<STREQUAL:${stack_bench},4>,$<STREQUAL:${stack_bench},6>,$<STREQUAL:${stack_bench},7>,$<STREQUAL:${stack_bench},8>>
+    SERVICE_TEST_VALID_TRUST=$<OR:$<STREQUAL:${stack_bench},4>,$<STREQUAL:${stack_bench},6>,$<STREQUAL:${stack_bench},7>,$<STREQUAL:${stack_bench},8>,$<STREQUAL:${stack_bench},9>>
+    SERVICE_TEST_INSTALL_REVIEWED=$<STREQUAL:${stack_bench},9>
     SERVICE_TEST_INVALID_POLICY=$<IF:$<STREQUAL:${stack_bench},7>,1,$<IF:$<STREQUAL:${stack_bench},8>,2,0>>)
   target_compile_options(${service_test} PRIVATE -Wall -Wextra -Werror -UNDEBUG)
   target_link_libraries(${service_test} PRIVATE tv4_ota_verification)
@@ -299,5 +300,11 @@ foreach(stack_bench 0 1 2 3 4 5 6 7 8)
   if(stack_bench EQUAL 7 OR stack_bench EQUAL 8)
     add_test(NAME ota_boot_${stack_bench}_invalid_policy COMMAND ${service_test} ota-invalid-policy)
     set_tests_properties(ota_boot_${stack_bench}_invalid_policy PROPERTIES TIMEOUT 15)
+  endif()
+  if(stack_bench EQUAL 6 OR stack_bench EQUAL 9)
+    add_test(NAME ota_install_policy_${stack_bench} COMMAND ${service_test} operator-check)
+    set_tests_properties(ota_install_policy_${stack_bench} PROPERTIES TIMEOUT 15)
+    add_test(NAME ota_install_readonly_${stack_bench} COMMAND ${service_test} operator-readonly-candidate)
+    set_tests_properties(ota_install_readonly_${stack_bench} PROPERTIES TIMEOUT 15)
   endif()
 endforeach()

@@ -1,5 +1,13 @@
 # ESP32 HMI — специализированные правила
 
+Текущая отдельная интеграция — local install_reviewed AND signed installable
+(docs/plans/P1_INSTALL_POLICY.md от корня), оба default false. Старые contexts и
+published bench.2 не открывают INSTALL; capability проверяется до Flash sink.
+Owner key/context автоматически не менять на install_reviewed=true.274 host/
+sanitizers/analyzer и real LVGL render PASS; оба SDK/ELF/CI и новый read-only
+hardware source ещё требуются. Native a74bfcd USB result не доказывает новый
+source или network INSTALL. Автономный срок/безопасность прежние.
+
 Текущий отдельный результат: local trust перед pending confirmation (docs/plans/P1_PENDING_TRUST.md от корня).
 Не подтверждать новый OTA-slot без рабочего локального context; factory recovery
 и ранее VALID без настроек сохраняются. AP/DHCP/SNTP не являются boot prerequisites.

@@ -43,7 +43,7 @@ static void reset(void) {
     flash_size=physical_size=0x1000000;begins=writes=ends=selects=aborts=fail=accepted=rolled_back=0;allow=true;
 }
 static tv4_ota_candidate candidate(void) {
-    tv4_ota_candidate c={0};strcpy(c.version,"0.2.0");strcpy(c.release,"0.2.0");strcpy(c.url,"https://example.test/fixture-only.bin");c.size_bytes=480;memset(c.sha256,0x42,32);return c;
+    tv4_ota_candidate c={0};strcpy(c.version,"0.2.0");strcpy(c.release,"0.2.0");strcpy(c.url,"https://example.test/fixture-only.bin");c.size_bytes=480;c.installable=true;memset(c.sha256,0x42,32);return c;
 }
 static tv4_install_approval approval(const tv4_ota_candidate *c) {
     tv4_install_approval a={0};strcpy(a.version,c->version);strcpy(a.release,c->release);strcpy(a.url,c->url);memcpy(a.sha256,c->sha256,32);a.size=c->size_bytes;return a;
@@ -102,13 +102,14 @@ int main(void) {
         if(n==11)fail=8;
         assert(!tv4_ota_sdk_begin(&s,&c) && !begins);
     }
-    for(unsigned n=0;n<5;n++) {
+    for(unsigned n=0;n<6;n++) {
         reset();tv4_ota_candidate changed=c;
         if(n==0)changed.sha256[31]^=1;
         if(n==1)strcpy(changed.version,"0.3.0");
         if(n==2)strcpy(changed.release,"0.3.0");
         if(n==3)strcat(changed.url,"x");
         if(n==4)changed.size_bytes--;
+        if(n==5)changed.installable=false;
         tv4_ota_sdk s={.approval=&a,.commit_allowed=commit};assert(!tv4_ota_sdk_begin(&s,&changed) && !begins);
     }
     for(unsigned phase=1;phase<=4;phase++) {

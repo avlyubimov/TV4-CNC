@@ -66,13 +66,14 @@ static bool at_least(const char *current,const char *minimum) {
 static bool range(const char *current,const char *min,const char *max) {
     int c;return at_least(current,min) && tv4_ota_version_compare(current,max,&c) && c<=0;
 }
-static bool shape(const cJSON *obj,const char *const *required,size_t count,const char *optional) {
+static bool shape(const cJSON *obj,const char *const *required,size_t count,const char *optional,const char *second_optional) {
     if(!cJSON_IsObject(obj))return false;
     size_t found=0;
     for(const cJSON *p=obj->child;p;p=p->next) {
         bool known=false;
         for(size_t i=0;i<count;i++)if(!strcmp(p->string,required[i])) {known=true;++found;break;}
-        if(!known && (!optional || strcmp(p->string,optional)))return false;
+        if(!known && (!optional || strcmp(p->string,optional)) &&
+           (!second_optional || strcmp(p->string,second_optional)))return false;
     }
     return found==count;
 }
@@ -97,11 +98,11 @@ static tv4_ota_result policy(const cJSON *root,const tv4_ota_context *ctx,tv4_ot
     static const char *const range_fields[]={"min","max"};
     static const char *const component_fields[]={"name","version","hardware_id","hardware_revision","chip","profile","layout_id","minimum_installed_version","minimum_bootloader_version","size_bytes","sha256","url"};
     static const char *const peer_fields[]={"motion_min","motion_max"};
-    if(!shape(root,fields,8,NULL))return TV4_OTA_BAD_SCHEMA;
+    if(!shape(root,fields,8,NULL,NULL))return TV4_OTA_BAD_SCHEMA;
     const cJSON *schema=cJSON_GetObjectItemCaseSensitive(root,"schema_version");
     if(!cJSON_IsNumber(schema) || schema->valuedouble!=1)return TV4_OTA_BAD_SCHEMA;
     const cJSON *signing=cJSON_GetObjectItemCaseSensitive(root,"signing");
-    if(!shape(signing,signing_fields,2,NULL) || !equal(text(signing,"key_id",64),ctx->key_id) ||
+    if(!shape(signing,signing_fields,2,NULL,NULL) || !equal(text(signing,"key_id",64),ctx->key_id) ||
        !equal(text(signing,"algorithm",32),"ECDSA-P256-SHA256"))return TV4_OTA_NO_TRUST;
     const char *release=text(root,"release_version",64),*notes=text(root,"release_notes",4096);
     version_t release_version;
@@ -109,11 +110,11 @@ static tv4_ota_result policy(const cJSON *root,const tv4_ota_context *ctx,tv4_ot
     if(!equal(text(root,"channel",10),ctx->prerelease?"prerelease":"stable") ||
        ((release_version.pre!=NULL)!=ctx->prerelease))return TV4_OTA_WRONG_VERSION;
     const cJSON *protocol=cJSON_GetObjectItemCaseSensitive(root,"protocol");
-    if(!shape(protocol,range_fields,2,NULL) || !range(ctx->protocol_version,text(protocol,"min",64),text(protocol,"max",64)))return TV4_OTA_WRONG_PROTOCOL;
+    if(!shape(protocol,range_fields,2,NULL,NULL) || !range(ctx->protocol_version,text(protocol,"min",64),text(protocol,"max",64)))return TV4_OTA_WRONG_PROTOCOL;
     const cJSON *components=cJSON_GetObjectItemCaseSensitive(root,"components");
     if(!cJSON_IsArray(components) || cJSON_GetArraySize(components)!=1)return TV4_OTA_BAD_SCHEMA;
     const cJSON *app=components->child;
-    if(!shape(app,component_fields,sizeof(component_fields)/sizeof(component_fields[0]),"compatible_peer_versions"))return TV4_OTA_BAD_SCHEMA;
+    if(!shape(app,component_fields,sizeof(component_fields)/sizeof(component_fields[0]),"compatible_peer_versions","installable"))return TV4_OTA_BAD_SCHEMA;
     if(!ctx->board_rev12 || !equal(text(app,"name",8),"hmi") || !equal(text(app,"hardware_id",64),"waveshare-esp32s3-touch-lcd-7") ||
        !equal(text(app,"hardware_revision",8),"1.2") || !equal(text(app,"chip",16),"esp32s3") ||
        !equal(text(app,"profile",16),"rev12"))return TV4_OTA_WRONG_TARGET;
@@ -124,7 +125,9 @@ static tv4_ota_result policy(const cJSON *root,const tv4_ota_context *ctx,tv4_ot
        !at_least(ctx->bootloader_version,text(app,"minimum_bootloader_version",64)) ||
        !tv4_ota_version_compare(version,ctx->installed_version,&c) || c<=0)return TV4_OTA_WRONG_VERSION;
     const cJSON *peer=cJSON_GetObjectItemCaseSensitive(app,"compatible_peer_versions");
-    if(peer && (!shape(peer,peer_fields,2,NULL) || !range(ctx->motion_version,text(peer,"motion_min",64),text(peer,"motion_max",64))))return TV4_OTA_WRONG_PEER;
+    if(peer && (!shape(peer,peer_fields,2,NULL,NULL) || !range(ctx->motion_version,text(peer,"motion_min",64),text(peer,"motion_max",64))))return TV4_OTA_WRONG_PEER;
+    const cJSON *installable=cJSON_GetObjectItemCaseSensitive(app,"installable");
+    if(installable && !cJSON_IsBool(installable))return TV4_OTA_BAD_SCHEMA;
     const cJSON *size=cJSON_GetObjectItemCaseSensitive(app,"size_bytes");
     if(!cJSON_IsNumber(size) || size->valuedouble<1 || size->valuedouble>0x300000)return TV4_OTA_BAD_SIZE;
     const char *sha=text(app,"sha256",64),*url=text(app,"url",512);
@@ -133,6 +136,7 @@ static tv4_ota_result policy(const cJSON *root,const tv4_ota_context *ctx,tv4_ot
     if(n<0 || (size_t)n>=sizeof(expected) || !equal(url,expected))return TV4_OTA_BAD_URL;
     /* Only commit validated output after every check succeeds. */
     strcpy(out->release,release);strcpy(out->version,version);strcpy(out->url,url);strcpy(out->notes,notes);
+    out->installable=cJSON_IsTrue(installable);
     out->size_bytes=(uint32_t)size->valuedouble;(void)hex(sha,64,out->sha256);return TV4_OTA_OK;
 }
 tv4_ota_result tv4_ota_manifest_read(const uint8_t *raw,size_t length,

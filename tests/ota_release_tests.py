@@ -70,6 +70,8 @@ class ReleaseTests(unittest.TestCase):
                 self.assertFalse(result['release_published']);self.assertFalse(result['production_resource_qualified'])
                 evidence=json.loads((self.output/'build-evidence.json').read_text())
                 self.assertFalse(evidence['candidate_provisioned'])
+                manifest=json.loads((self.output/'manifest.json').read_text())
+                self.assertIs(manifest['components'][0]['installable'],False)
                 for p in self.output.iterdir():
                     self.assertEqual(p.stat().st_mode & 0o777,0o600)
                     self.assertNotIn(b'PRIVATE KEY',p.read_bytes())
@@ -126,7 +128,7 @@ class ReleaseTests(unittest.TestCase):
     def test_app_version_and_elf_identity_checked(self):
         (self.build/'tv4_hmi.bin').write_bytes(image_fixture.image('0.1.0-bench.3'))
         with self.assertRaises(ValueError):self.create()
-        self.configure();(self.build/'tv4_hmi.elf').write_bytes(b'changed ELF')
+        self.configure();(self.build/'tv4_hmi.elf').write_bytes(b'changed ELF install_policy=check_only')
         with self.assertRaisesRegex(ValueError,'ELF/app'):self.create()
 
     def test_image_corruption_and_dump_rejected(self):
@@ -176,6 +178,16 @@ class ReleaseTests(unittest.TestCase):
     def test_signature_tampering_even_with_rehashed_inventory(self):
         self.create();p=self.output/'manifest.json';p.write_bytes(p.read_bytes()+b'\n');self.rehash()
         with self.assertRaisesRegex(ValueError,'signature rejected'):self.verify()
+
+    def test_signed_installable_cannot_be_relabelled_check_bench(self):
+        self.create();p=self.output/'manifest.json';m=json.loads(p.read_text())
+        m['components'][0]['installable']=True;p.write_bytes(release.encoded(m))
+        sig=subprocess.run(['openssl','dgst','-sha256','-sign',str(self.private),str(p)],
+                           check=True,capture_output=True).stdout
+        envelope=json.loads((self.output/'manifest.sig').read_text())
+        envelope['signature']=release.base64.b64encode(sig).decode('ascii')
+        (self.output/'manifest.sig').write_bytes(release.encoded(envelope));self.rehash()
+        with self.assertRaisesRegex(ValueError,'CHECK-bench must not authorize'):self.verify()
 
     def test_image_tampering_even_with_rehashed_inventory(self):
         self.create();p=next(self.output.glob('*.bin'));p.write_bytes(p.read_bytes()+b'x');self.rehash()

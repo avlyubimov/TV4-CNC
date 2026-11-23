@@ -9,7 +9,8 @@ static int hex_digit(uint8_t c) {
 /* This lexical preflight is a resource/encoding gate, NOT the JSON parser.
  * cJSON validates grammar. Reject embedded NUL, invalid UTF-8, escaped NUL,
  * fractional/exponent/negative numbers and >128 structural separators before
- * allocation. Signed schema uses unsigned integer fields only. */
+ * allocation. Signed schema uses unsigned integer fields and explicit booleans;
+ * cJSON and each field policy still enforce the exact type. */
 static bool preflight(const uint8_t *s,size_t n) {
     unsigned separators=0;bool string=false,escape=false;
     for(size_t i=0;i<n;i++) {
@@ -50,7 +51,9 @@ static bool preflight(const uint8_t *s,size_t n) {
         else if((c>='0' && c<='9')) {
             size_t start=i;while(i+1<n && (s[i+1]>='0' && s[i+1]<='9'))++i;
             if(i>start && s[start]=='0')return false;
-        } else if(c!='}' && c!=']' && c!=' ' && c!='\t' && c!='\r' && c!='\n')return false;
+        } else if(c=='t' && n-i>=4 && !memcmp(s+i,"true",4))i+=3;
+        else if(c=='f' && n-i>=5 && !memcmp(s+i,"false",5))i+=4;
+        else if(c!='}' && c!=']' && c!=' ' && c!='\t' && c!='\r' && c!='\n')return false;
     }
     return !string && !escape;
 }

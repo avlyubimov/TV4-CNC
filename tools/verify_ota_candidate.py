@@ -135,7 +135,7 @@ def read_metadata(args):
     app = components[0]
     keys(app, ('name', 'version', 'hardware_id', 'hardware_revision', 'chip', 'profile',
                'layout_id', 'minimum_installed_version', 'minimum_bootloader_version',
-               'size_bytes', 'sha256', 'url'), ('compatible_peer_versions',))
+               'size_bytes', 'sha256', 'url'), ('compatible_peer_versions', 'installable'))
     require((app['name'], app['hardware_id'], app['hardware_revision'], app['chip'], app['profile']) ==
             ('hmi', 'waveshare-esp32s3-touch-lcd-7', '1.2', 'esp32s3', 'rev12'), 'hardware/profile incompatible')
     require(args.layout_id == 'tv4-16m-ab-v1' and app['layout_id'] == args.layout_id,
@@ -151,6 +151,7 @@ def read_metadata(args):
         keys(peer, ('motion_min', 'motion_max'))
         require(args.motion_version is not None, 'motion version unavailable')
         require(version(peer['motion_min']) <= version(args.motion_version) <= version(peer['motion_max']), 'motion incompatible')
+    require(type(app.get('installable', False)) is bool, 'installable must be a signed boolean')
     require(type(app['size_bytes']) is int and 0 < app['size_bytes'] <= SLOT_MAX, 'image size rejected')
     require(isinstance(app['sha256'], str) and re.fullmatch('[0-9a-f]{64}', app['sha256']), 'invalid SHA-256')
     require(isinstance(app['url'], str) and len(app['url']) <= 512, 'invalid URL')
@@ -159,7 +160,7 @@ def read_metadata(args):
     require(app['url'] == prefix + asset, 'unapproved release URL')
     return dict(release=manifest['release_version'], version=app['version'],
                 url=app['url'], notes=manifest['release_notes'],
-                size_bytes=app['size_bytes'], sha256=app['sha256'],
+                size_bytes=app['size_bytes'], sha256=app['sha256'], installable=app.get('installable', False),
                 key_sha256=hashlib.sha256(key).hexdigest(),
                 source_commit=manifest['source_commit'], channel=manifest['channel'],
                 profile=app['profile'], layout_id=app['layout_id'],

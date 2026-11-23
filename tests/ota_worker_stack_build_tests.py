@@ -77,6 +77,10 @@ class Guards(unittest.TestCase):
             self.assertEqual(run.returncode,0,run.stderr)
         run=subprocess.run(base+['-DSERVICE_TEST_PROVISIONED=1',source],capture_output=True,text=True)
         self.assertEqual(run.returncode,0,run.stderr)
+        run=subprocess.run(base+['-DSERVICE_TEST_INSTALL_REVIEWED=1',source],capture_output=True,text=True)
+        self.assertNotEqual(run.returncode,0);self.assertIn('Installation review requires local provisioning',run.stderr)
+        run=subprocess.run(base+['-DSERVICE_TEST_INSTALL_REVIEWED=2',source],capture_output=True,text=True)
+        self.assertNotEqual(run.returncode,0);self.assertIn('Explicit local installation review state required',run.stderr)
         cases=[(['-DSERVICE_TEST_DIAGNOSTICS=0'],'requires explicit OTA memory diagnostics'),
                (['-DSERVICE_TEST_OTA=0'],'requires explicit OTA memory diagnostics'),
                (['-DSERVICE_TEST_PROVISIONED=1'],'must remain unprovisioned')]
