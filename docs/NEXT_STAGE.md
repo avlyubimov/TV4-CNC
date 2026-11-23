@@ -1,5 +1,11 @@
 # P1 — signed OTA CHECK после успешного HTTPS
 
+Текущий отдельный результат: [local trust перед pending confirmation](plans/P1_PENDING_TRUST.md).
+Не подтверждать новый OTA-slot без рабочего локального context; factory recovery
+и ранее VALID без настроек сохраняются. AP/DHCP/SNTP не являются boot prerequisites.
+265 host/265 sanitizers PASS; новые ELF/CI и native slot hardware evidence нужны
+отдельно. Signed CHECK a29c9ed не доказывает исправление self-test или INSTALL.
+
 ## Актуально: a29c9ed — полный signed CHECK PASS, далее повторяемость и install/rollback
 
 [Полный подписанный CHECK](evidence/hardware/2026-11-24-esp32-signed-check-a29c9ed/README.md)

@@ -8,6 +8,9 @@
 #ifndef SERVICE_TEST_VALID_TRUST
 #define SERVICE_TEST_VALID_TRUST 0
 #endif
+#ifndef SERVICE_TEST_INVALID_POLICY
+#define SERVICE_TEST_INVALID_POLICY 0
+#endif
 #if SERVICE_TEST_VALID_TRUST
 /* Ephemeral host-only key generated in RAM, never a firmware trust anchor. */
 extern uint8_t service_public_key[91];
@@ -19,12 +22,12 @@ extern uint8_t service_public_key[91];
 #define OTA_MANIFEST_URL "https://github.com/avlyubimov/TV4-CNC/releases/download/v0.1.0-bench.2/manifest.json"
 #define OTA_PRERELEASE 1
 #define OTA_FLOOR_INTERNAL_FREE 65536u
-#define OTA_FLOOR_INTERNAL_LARGEST 32768u
+#define OTA_FLOOR_INTERNAL_LARGEST (SERVICE_TEST_INVALID_POLICY==2?0u:32768u)
 #define OTA_FLOOR_PSRAM_FREE 1048576u
 #define OTA_FLOOR_PSRAM_LARGEST 131072u
 #define OTA_FLOOR_STACK 3072u
 #define OTA_TIME_EARLIEST_EPOCH 1700000000u
-#define OTA_TIME_LATEST_EPOCH 2300000000u
+#define OTA_TIME_LATEST_EPOCH (SERVICE_TEST_INVALID_POLICY==1?1700000000u:2300000000u)
 #define OTA_TIME_MAXIMUM_AGE_MS 60000u
 #define OTA_TIME_MAXIMUM_SKEW_MS 2000u
 #else

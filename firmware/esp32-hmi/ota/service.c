@@ -207,22 +207,30 @@ static void worker(void *c) {
         vTaskDelay(pdMS_TO_TICKS(50));
     }
     passed=passed && tv4_ota_sdk_layout_valid();
+    /* A newly installed app must retain a usable local trust/context before
+     * PENDING_VERIFY can become VALID. Factory recovery remains available
+     * without provisioning; AP/DHCP/SNTP are never boot prerequisites. Cache
+     * the existing context check instead of parsing the key twice. */
+    bool context_ready=passed && configured();
+    const esp_partition_t *running=esp_ota_get_running_partition();
+    bool confirm_allowed=passed && running &&
+        (running->subtype==ESP_PARTITION_SUBTYPE_APP_FACTORY || context_ready);
     tv4_ota_memory_window_end(TV4_MEM_BOOT);
     tv4_ota_memory_report_startup();tv4_ota_memory_report_window();
-    bool finished=tv4_ota_sdk_finish_boot(passed);
+    bool finished=tv4_ota_sdk_finish_boot(confirm_allowed);
 #if TV4_OTA_PROVISIONED
     ESP_LOGI("tv4_ota","boot_self_test checks_pass=%u sdk_finish=%u worker_stack_bytes=%u provisioned=1",
-        (unsigned)passed,(unsigned)finished,(unsigned)OTA_WORKER_STACK_BYTES);
+        (unsigned)confirm_allowed,(unsigned)finished,(unsigned)OTA_WORKER_STACK_BYTES);
 #elif CONFIG_TV4_OTA_WORKER_STACK_BENCH
     ESP_LOGI("tv4_ota","boot_self_test checks_pass=%u sdk_finish=%u worker_stack_bytes=%u stack_bench=1 provisioned=0",
-        (unsigned)passed,(unsigned)finished,(unsigned)OTA_WORKER_STACK_BYTES);
+        (unsigned)confirm_allowed,(unsigned)finished,(unsigned)OTA_WORKER_STACK_BYTES);
 #else
-    ESP_LOGI("tv4_ota","boot_self_test checks_pass=%u sdk_finish=%u",(unsigned)passed,(unsigned)finished);
+    ESP_LOGI("tv4_ota","boot_self_test checks_pass=%u sdk_finish=%u",(unsigned)confirm_allowed,(unsigned)finished);
 #endif
     worker_stack();
     if(!finished)esp_restart();
     if(esp_task_wdt_delete(NULL)!=ESP_OK)esp_restart();
-    publish(!passed?TV4_UPDATE_BOOT_FAILED:configured()?TV4_UPDATE_IDLE:TV4_UPDATE_SETUP,0);
+    publish(!passed?TV4_UPDATE_BOOT_FAILED:context_ready?TV4_UPDATE_IDLE:TV4_UPDATE_SETUP,0);
 #if CONFIG_TV4_OTA_SIGNED_CHECK_BENCH
     if(passed)signed_check_bench();
 #endif

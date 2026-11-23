@@ -24,14 +24,23 @@ static unsigned auto_attempted,auto_passed;
 static tv4_ota_memory_window active_window;
 static tv4_ota_session session;
 static uint32_t clock_ms;
-static bool running,start_result,finish_passed;
+static bool running,start_result,finish_passed,finish_result;
 static void *probe;
 static char boot_log[256];
 uint8_t service_public_key[91];
 
 static bool is(const char *s) {return !strcmp(mode,s);}
 static bool boot_ok(void) {return !is("task-fail") && !is("pending-fail") && !is("probe-fail") && !is("health-timeout");}
-static bool attempts(void) {return SERVICE_TEST_SIGNED_BENCH && SERVICE_TEST_VALID_TRUST && boot_ok() && !is("offline") && !is("wait-health");}
+static bool ota_running(void) {return !strncmp(mode,"ota-",4);}
+static bool local_ready(void) {
+    return SERVICE_TEST_VALID_TRUST && !SERVICE_TEST_INVALID_POLICY &&
+        !is("ota-invalid-key") && !is("ota-version-mismatch") && !is("ota-no-description") &&
+        !is("ota-valid-unconfigured") && !is("factory-invalid-key") && !is("factory-version-mismatch");
+}
+static bool finish_expected(void) {
+    return !is("missing-partition") && (!ota_running() || is("ota-valid-unconfigured") || (boot_ok() && local_ready()));
+}
+static bool attempts(void) {return SERVICE_TEST_SIGNED_BENCH && local_ready() && boot_ok() && finish_expected() && !is("offline") && !is("wait-health");}
 void service_test_lock(void) {assert(!locks);++locks;}
 void service_test_unlock(void) {assert(locks==1);--locks;}
 QueueHandle_t xQueueCreateStatic(unsigned n,unsigned size,uint8_t *bytes,StaticQueue_t *state) {
@@ -53,13 +62,21 @@ BaseType_t xQueueSend(QueueHandle_t queue,const void *value,uint32_t wait) {
 BaseType_t xQueueReceive(QueueHandle_t queue,void *out,uint32_t wait) {
     assert(!locks && running && queue && out && wait==portMAX_DELAY);
     tv4_update_snapshot state;tv4_ota_service_snapshot(&state);assert(state.enabled);
-    if(SERVICE_TEST_VALID_TRUST) {
-        assert(SERVICE_TEST_SIGNED_BENCH && summaries==1);
+    if(!boot_ok())assert(state.state==TV4_UPDATE_BOOT_FAILED);
+    else if(local_ready() && SERVICE_TEST_SIGNED_BENCH) {
+        assert(summaries==1);
         if(is("success")) {assert(state.state==TV4_UPDATE_READY && !state.error && !strcmp(state.version,"0.1.0-bench.2"));}
         else assert(state.state==TV4_UPDATE_ERROR && state.error);
-    }else assert(state.state==TV4_UPDATE_SETUP && !state.error);
+    }else assert(state.state==(local_ready()?TV4_UPDATE_IDLE:TV4_UPDATE_SETUP) && !state.error);
     assert(state.stack_valid && state.stack_watermark==requested-256);
-    commands_blocked();longjmp(escape,1);
+    if(!local_ready() || SERVICE_TEST_SIGNED_BENCH || !boot_ok())commands_blocked();
+    else {
+        /* Boot admission is independent of AP/DHCP/SNTP availability. */
+        assert(!wifi_polls && !sntps && !sessions);
+        assert(!tv4_ota_service_request(TV4_UPDATE_INSTALL));
+        assert(!tv4_ota_service_request(TV4_UPDATE_REBOOT));
+    }
+    longjmp(escape,1);
 }
 void vTaskDelay(uint32_t ticks) {
     assert(!locks && running && (ticks==50 || (SERVICE_TEST_SIGNED_BENCH && finishes && ticks==250)));
@@ -75,18 +92,32 @@ _Noreturn void esp_restart(void) {assert(!locks);++restarts;longjmp(escape,1);}
 const esp_app_desc_t *esp_app_get_description(void) {
 #if SERVICE_TEST_VALID_TRUST
     static const esp_app_desc_t desc={.version="0.1.0-bench.1"};
+    static const esp_app_desc_t mismatch={.version="0.1.0-bench.2"};
+    if(is("ota-no-description"))return NULL;
+    if(is("ota-version-mismatch") || is("factory-version-mismatch"))return &mismatch;
 #else
     static const esp_app_desc_t desc={.version="host-service-test"};
 #endif
     return &desc;
 }
 void esp_chip_info(esp_chip_info_t *chip) {assert(SERVICE_TEST_VALID_TRUST && attempts() && chip);chip->revision=2;}
-const esp_partition_t *esp_ota_get_running_partition(void) {static const esp_partition_t factory={.address=0x10000,.size=0x200000};return &factory;}
+const esp_partition_t *esp_ota_get_running_partition(void) {
+    static const esp_partition_t factory={.address=0x10000,.size=0x200000};
+    static const esp_partition_t ota={.subtype=0x10,.address=0x220000,.size=0x300000};
+    return is("missing-partition")?NULL:ota_running()?&ota:&factory;
+}
 esp_err_t esp_ota_get_state_partition(const esp_partition_t *part,esp_ota_img_states_t *state) {
-    assert(part && state);*state=is("pending-fail")?ESP_OTA_IMG_PENDING_VERIFY:ESP_OTA_IMG_VALID;return ESP_OK;
+    assert(part && state);*state=is("pending-fail") || (ota_running() && !is("ota-valid-unconfigured"))?ESP_OTA_IMG_PENDING_VERIFY:ESP_OTA_IMG_VALID;return ESP_OK;
 }
 bool __wrap_tv4_ota_sdk_layout_valid(void) {assert(!locks && running);return true;}
-bool __wrap_tv4_ota_sdk_finish_boot(bool passed) {assert(!locks && running);++finishes;finish_passed=passed;return passed;}
+bool __wrap_tv4_ota_sdk_finish_boot(bool passed) {
+    assert(!locks && running);++finishes;finish_passed=passed;
+    /* Same boundary contract as installer_sdk.c: factory/previously VALID
+     * stay recoverable. A PENDING_VERIFY image may only be confirmed on true. */
+    const esp_partition_t *p=esp_ota_get_running_partition();
+    finish_result=p && (p->subtype==ESP_PARTITION_SUBTYPE_APP_FACTORY || is("ota-valid-unconfigured") || passed);
+    return finish_result;
+}
 void *heap_caps_malloc(size_t bytes,unsigned caps) {
     assert(!locks && running && bytes==256 && caps==(MALLOC_CAP_SPIRAM|MALLOC_CAP_8BIT));++probes;
     probe=is("probe-fail")?NULL:malloc(bytes);return probe;
@@ -168,6 +199,7 @@ int main(int argc,char **argv) {
         EVP_PKEY *key=EVP_PKEY_Q_keygen(NULL,NULL,"EC","prime256v1");assert(key);
         unsigned char *der=NULL;int length=i2d_PUBKEY(key,&der);assert(length==91);
         memcpy(service_public_key,der,91);OPENSSL_free(der);EVP_PKEY_free(key);
+        if(is("ota-invalid-key") || is("ota-valid-unconfigured") || is("factory-invalid-key"))memset(service_public_key,0,91);
     }
     if(!setjmp(escape)) {
         start_result=tv4_ota_service_start();assert(!tv4_ota_service_start());
@@ -187,15 +219,17 @@ int main(int argc,char **argv) {
         assert(!stack_reads && !probes && !finishes && !startup_reports && !window_reports && window_starts==1);
         assert(restarts==(unsigned)is("pending-fail"));
     }else {
-        bool success=boot_ok();assert(finishes==1 && finish_passed==success);
+        bool success=boot_ok();
+        assert(finishes==1 && finish_passed==(success && !is("missing-partition") && (!ota_running() || local_ready())));
+        assert(finish_result==finish_expected());
         assert(startup_reports==1 && window_reports==window_ends && stack_reads>0 && wdt_resets>0);
-        assert(wdt_deletes==(unsigned)success && restarts==(unsigned)!success);
+        assert(wdt_deletes==(unsigned)finish_expected() && restarts==(unsigned)!finish_expected());
         assert(probes==(unsigned)!is("health-timeout"));if(is("health-timeout"))assert(clock_ms==30000);
         if(SERVICE_TEST_PROVISIONED)assert(strstr(boot_log,"worker_stack_bytes=12288 provisioned=1"));
         else if(SERVICE_TEST_BENCH)assert(strstr(boot_log,"worker_stack_bytes=8192 stack_bench=1 provisioned=0"));
         else assert(!strstr(boot_log,"stack_bench="));
     }
-    assert(summaries==(unsigned)(SERVICE_TEST_SIGNED_BENCH && boot_ok()));
+    assert(summaries==(unsigned)(SERVICE_TEST_SIGNED_BENCH && boot_ok() && finish_expected()));
     assert(auto_attempted==(unsigned)attempts());assert(auto_passed==(unsigned)(attempts() && is("success")));
     if(SERVICE_TEST_VALID_TRUST && (is("offline") || is("wait-health")))assert(clock_ms>=45000 && clock_ms<=50000);
     printf("actual ESP service requested=%u mode=%s read-only=%u attempts=%u PASS\n",requested,mode,(unsigned)SERVICE_TEST_SIGNED_BENCH,auto_attempted);

@@ -258,16 +258,17 @@ add_test(NAME ota_memory_diagnostics_artifacts COMMAND ${Python3_EXECUTABLE} ${C
 # Execute the real ESP service against an SDK boundary, never a board/network.
 add_test(NAME ota_worker_stack_build_guards COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/tests/ota_worker_stack_build_tests.py)
 set_tests_properties(ota_worker_stack_build_guards PROPERTIES TIMEOUT 30)
-foreach(stack_bench 0 1 2 3 4 5)
+foreach(stack_bench 0 1 2 3 4 5 6 7 8)
   set(service_test ota_worker_stack_${stack_bench}_tests)
   add_executable(${service_test} tests/ota_worker_stack_tests.c ${HMI}/ota/service.c)
   target_include_directories(${service_test} PRIVATE tests/ota_service_sdk tests ${HMI}/ota ${HMI}/network)
   target_compile_definitions(${service_test} PRIVATE ESP_PLATFORM=1
     SERVICE_TEST_BENCH=$<OR:$<STREQUAL:${stack_bench},1>,$<STREQUAL:${stack_bench},2>>
     SERVICE_TEST_TLS_BENCH=$<STREQUAL:${stack_bench},2>
-    SERVICE_TEST_PROVISIONED=$<OR:$<STREQUAL:${stack_bench},3>,$<STREQUAL:${stack_bench},4>,$<STREQUAL:${stack_bench},5>>
+    SERVICE_TEST_PROVISIONED=$<OR:$<STREQUAL:${stack_bench},3>,$<STREQUAL:${stack_bench},4>,$<STREQUAL:${stack_bench},5>,$<STREQUAL:${stack_bench},6>,$<STREQUAL:${stack_bench},7>,$<STREQUAL:${stack_bench},8>>
     SERVICE_TEST_SIGNED_BENCH=$<OR:$<STREQUAL:${stack_bench},4>,$<STREQUAL:${stack_bench},5>>
-    SERVICE_TEST_VALID_TRUST=$<STREQUAL:${stack_bench},4>)
+    SERVICE_TEST_VALID_TRUST=$<OR:$<STREQUAL:${stack_bench},4>,$<STREQUAL:${stack_bench},6>,$<STREQUAL:${stack_bench},7>,$<STREQUAL:${stack_bench},8>>
+    SERVICE_TEST_INVALID_POLICY=$<IF:$<STREQUAL:${stack_bench},7>,1,$<IF:$<STREQUAL:${stack_bench},8>,2,0>>)
   target_compile_options(${service_test} PRIVATE -Wall -Wextra -Werror -UNDEBUG)
   target_link_libraries(${service_test} PRIVATE tv4_ota_verification)
   target_link_options(${service_test} PRIVATE "LINKER:--wrap=tv4_ota_sdk_layout_valid" "LINKER:--wrap=tv4_ota_sdk_finish_boot")
@@ -283,5 +284,20 @@ foreach(stack_bench 0 1 2 3 4 5)
       add_test(NAME ota_signed_check_${case} COMMAND ${service_test} ${case})
       set_tests_properties(ota_signed_check_${case} PROPERTIES TIMEOUT 15)
     endforeach()
+  endif()
+  if(stack_bench EQUAL 0 OR stack_bench EQUAL 3 OR stack_bench EQUAL 5)
+    add_test(NAME ota_boot_${stack_bench}_missing_context COMMAND ${service_test} ota-context-missing)
+    set_tests_properties(ota_boot_${stack_bench}_missing_context PROPERTIES TIMEOUT 15)
+  endif()
+  if(stack_bench EQUAL 6)
+    foreach(case ota-context-valid ota-invalid-key ota-version-mismatch ota-no-description
+        ota-valid-unconfigured factory-invalid-key factory-version-mismatch missing-partition)
+      add_test(NAME ota_boot_${case} COMMAND ${service_test} ${case})
+      set_tests_properties(ota_boot_${case} PROPERTIES TIMEOUT 15)
+    endforeach()
+  endif()
+  if(stack_bench EQUAL 7 OR stack_bench EQUAL 8)
+    add_test(NAME ota_boot_${stack_bench}_invalid_policy COMMAND ${service_test} ota-invalid-policy)
+    set_tests_properties(ota_boot_${stack_bench}_invalid_policy PROPERTIES TIMEOUT 15)
   endif()
 endforeach()
