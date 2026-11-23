@@ -1,0 +1,13 @@
+Test project <workspace>/work/ota-install-policy/build-host
+    Start 200: ota_install_policy_6
+1/1 Test #200: ota_install_policy_6 .............Subprocess aborted***Exception:   0.06 sec
+ota_worker_stack_6_tests: <workspace>/work/ota-install-policy/tests/ota_worker_stack_tests.c:66: xQueueSend: Assertion `queued_command==TV4_UPDATE_CHECK || (queued_command==TV4_UPDATE_INSTALL && SERVICE_TEST_INSTALL_REVIEWED)' failed.
+
+
+0% tests passed, 1 tests failed out of 1
+
+Total Test time (real) =   0.06 sec
+
+The following tests FAILED:
+	200 - ota_install_policy_6 (Subprocess aborted)
+Errors while running CTest

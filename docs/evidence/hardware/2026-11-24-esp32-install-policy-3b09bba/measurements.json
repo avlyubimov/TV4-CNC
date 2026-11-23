@@ -1,0 +1,646 @@
+{
+  "schema": "tv4-esp32-autonomous-signed-check-1",
+  "date_local": "2026-11-24",
+  "timezone": "Asia/Almaty",
+  "status": "PASS-read-only-signed-image-check",
+  "source_commit": "3b09bba97ff94b56c0be529c9e9cbc88ba55247c",
+  "baseline_main": "c3b82f0ef8db764f9f242ad09caec015f58ce19a",
+  "source_pr": 82,
+  "source_pr_merged_at_test": false,
+  "started_utc": "2026-11-23T22:52:49.469811+00:00",
+  "finished_utc": "2026-11-23T23:11:04.199668+00:00",
+  "elapsed_seconds": 1094.729808267999,
+  "maximum_seconds": 1800,
+  "session_closed": true,
+  "plan_sha256": "ece2e585ad9d9a41691e45b13ecc8d1ff2525bbb79b30fe991221b4689a3f6c5",
+  "device_identity_security_flash_verified": true,
+  "snapshot_bytes": 16777216,
+  "snapshot_device_md5_verified": true,
+  "snapshot_independent_nvme_copies_verified": true,
+  "private_snapshot_hashes_and_bytes_published": false,
+  "control_write_attempts": 1,
+  "auto_write_attempts": 1,
+  "return_write_attempts": 1,
+  "recovery_write_attempts": 0,
+  "uart_capture_attempts": 3,
+  "control_write_preservation_verified": true,
+  "auto_write_preservation_verified": true,
+  "readonly_post_factory_verified": true,
+  "factory_return_verified": true,
+  "fresh_full_snapshot_restore_verified": false,
+  "left_running": "fecc05d-rev12-ota-factory",
+  "diagnostic_error": "",
+  "return_error": "",
+  "owner_visual_confirmation": false,
+  "physical_touch_or_fps_latency_measured": false,
+  "installed_update_or_rollback_measured": false,
+  "production_resource_qualified": false,
+  "sntp_authenticated": false,
+  "resource_floors_bytes": {
+    "internal_free": 65536,
+    "internal_largest": 32768,
+    "psram_free": 1048576,
+    "psram_largest": 131072,
+    "stack": 3072
+  },
+  "worker_requested_stack_bytes": 12288,
+  "tls_ca_hostname_date_resource_timeout_gates_preserved": true,
+  "install_requested": false,
+  "efuse_written": false,
+  "stm32_accessed": false,
+  "can_or_motion_accessed": false,
+  "bootloader_table_otadata_normal_write": false,
+  "power_loss_test": false,
+  "applications": {
+    "control": {
+      "bytes": 1601872,
+      "sha256": "a17ca0212f804fb8d29b7e76c9f8ffac04b53c4324ac31d708557804d9d17a58",
+      "project": "tv4_hmi",
+      "version": "0.1.0-bench.1",
+      "idf_version": "v6.1.1",
+      "elf_sha256": "a1eb19019ab21f8a553f87c9ac1bc947bf726c1ce9e00e10a2d6ac443cc26123",
+      "segments": 6,
+      "chip_revision_min": 0,
+      "chip_revision_max": 99,
+      "flash_bytes": 16777216,
+      "flash_mode": "dio",
+      "flash_frequency_mhz": 80
+    },
+    "auto": {
+      "bytes": 1602192,
+      "sha256": "d28e84785d5d474a27d9df56e34b856eb30cfbe8de577df182e77c0f89593b49",
+      "project": "tv4_hmi",
+      "version": "0.1.0-bench.1",
+      "idf_version": "v6.1.1",
+      "elf_sha256": "140d80b1011e6be7e1cdc801054df9a6af95411839e63aebe8b3119f3b7c5dc7",
+      "segments": 6,
+      "chip_revision_min": 0,
+      "chip_revision_max": 99,
+      "flash_bytes": 16777216,
+      "flash_mode": "dio",
+      "flash_frequency_mhz": 80
+    },
+    "return": {
+      "bytes": 1597984,
+      "sha256": "de55953fc9e3c4080cb277d734ca7d1f02c74880db38dac0f4b53830f587d021",
+      "project": "tv4_hmi",
+      "version": "fecc05d",
+      "idf_version": "v6.1.1",
+      "elf_sha256": "77d6fd8aa3a90c52599bd4bfc20d083496bc97111d823c4f677ccb775aa434a6",
+      "segments": 6,
+      "chip_revision_min": 0,
+      "chip_revision_max": 99,
+      "flash_bytes": 16777216,
+      "flash_mode": "dio",
+      "flash_frequency_mhz": 80
+    }
+  },
+  "published_expected_payload": {
+    "tag": "v0.1.0-bench.2",
+    "source_commit": "c013ddf1346bf1aaf3c60eacf14e07fe4846e2c8",
+    "bytes": 1598560,
+    "sha256": "017236a2abec4f71b8737a396a9601fe603d61931babc05405a9df874d1663de",
+    "runtime_byte_count_logged": false,
+    "trust_public_der_sha256": "7d75872b119701484020364d1f52fb287483939b9c627073ded18a687df61df0"
+  },
+  "observations": {
+    "control12288": {
+      "pass_": true,
+      "checks": {
+        "expected_app": true,
+        "expected_sdk": true,
+        "factory_boot": true,
+        "single_app_boot": true,
+        "psram_8mib": true,
+        "psram_sdk_test": true,
+        "instructions_in_psram": true,
+        "rodata_in_psram": true,
+        "rgb_initialized": true,
+        "gt911_initialized": true,
+        "ui_ready": true,
+        "no_fatal_log": true,
+        "exact_check_only_install_policy": true,
+        "exact_automatic_readonly_completion": true,
+        "no_http_open_failure": true,
+        "periodic_resources": true,
+        "resource_errors_clear": true,
+        "touch_fresh": true,
+        "increasing_uptime": true,
+        "heap_samples_consistent": true,
+        "comparable_wifi_load": true,
+        "optional_services_started": true,
+        "explicit_self_test": true,
+        "complete_startup": true,
+        "single_complete_boot_window": true,
+        "startup_scope": true,
+        "phase_times_ordered": true,
+        "nonzero_measured_stacks": true,
+        "phase_heap_samples_consistent": true,
+        "worker_stack_published": true,
+        "nonzero_valid_periodic_stack": true,
+        "explicit_stack_mode": true,
+        "worker_watermarks_within_request": true,
+        "adequate_periodic_samples": true,
+        "no_unexpected_network_probe": true,
+        "no_network_windows": true,
+        "no_early_check_request": true,
+        "no_unexpected_dma_hook": true
+      },
+      "capture_seconds": 90.12856286800161,
+      "periodic_samples": 16,
+      "wifi_ip_event_observed": true,
+      "bytes": {
+        "internal_free": {
+          "min": 120587,
+          "max": 120639
+        },
+        "internal_largest": {
+          "min": 63488,
+          "max": 63488
+        },
+        "psram_free": {
+          "min": 5982020,
+          "max": 5982040
+        },
+        "owner_stack": {
+          "min": 10516,
+          "max": 10516
+        },
+        "touch_stack": {
+          "min": 2508,
+          "max": 2508
+        },
+        "wifi_stack": {
+          "min": 1116,
+          "max": 1116
+        },
+        "ota_stack": {
+          "min": 10784,
+          "max": 10784
+        }
+      },
+      "touch_age_ms": {
+        "min": 10,
+        "max": 12
+      },
+      "windows": [
+        {
+          "window": 1,
+          "start_result": 0,
+          "stop_result": 0,
+          "complete": 1
+        }
+      ],
+      "network_points": [],
+      "detailed_session_results": [],
+      "service_results": []
+    },
+    "check-automatic-once": {
+      "pass_": true,
+      "checks": {
+        "expected_app": true,
+        "expected_sdk": true,
+        "factory_boot": true,
+        "single_app_boot": true,
+        "psram_8mib": true,
+        "psram_sdk_test": true,
+        "instructions_in_psram": true,
+        "rodata_in_psram": true,
+        "rgb_initialized": true,
+        "gt911_initialized": true,
+        "ui_ready": true,
+        "no_fatal_log": true,
+        "exact_check_only_install_policy": true,
+        "exact_automatic_readonly_completion": true,
+        "no_http_open_failure": true,
+        "periodic_resources": true,
+        "resource_errors_clear": true,
+        "touch_fresh": true,
+        "increasing_uptime": true,
+        "heap_samples_consistent": true,
+        "comparable_wifi_load": true,
+        "optional_services_started": true,
+        "explicit_self_test": true,
+        "complete_startup": true,
+        "single_complete_boot_window": true,
+        "startup_scope": true,
+        "phase_times_ordered": true,
+        "nonzero_measured_stacks": true,
+        "phase_heap_samples_consistent": true,
+        "worker_stack_published": true,
+        "nonzero_valid_periodic_stack": true,
+        "explicit_stack_mode": true,
+        "worker_watermarks_within_request": true,
+        "adequate_periodic_samples": true,
+        "no_unexpected_network_probe": true,
+        "five_serialized_check_windows": true,
+        "four_complete_operation_windows": true,
+        "operation_times_ordered": true,
+        "one_ready_without_error": true,
+        "one_verified_session_resource_report": true,
+        "reported_reviewed_guards": true,
+        "final_reviewed_guards": true,
+        "no_install_operation": true,
+        "no_unexpected_dma_hook": true
+      },
+      "capture_seconds": 420.17510201500045,
+      "periodic_samples": 82,
+      "wifi_ip_event_observed": true,
+      "bytes": {
+        "internal_free": {
+          "min": 106231,
+          "max": 120655
+        },
+        "internal_largest": {
+          "min": 63488,
+          "max": 63488
+        },
+        "psram_free": {
+          "min": 5917640,
+          "max": 5982024
+        },
+        "owner_stack": {
+          "min": 10516,
+          "max": 10516
+        },
+        "touch_stack": {
+          "min": 2508,
+          "max": 2572
+        },
+        "wifi_stack": {
+          "min": 1116,
+          "max": 1116
+        },
+        "ota_stack": {
+          "min": 6912,
+          "max": 10880
+        }
+      },
+      "touch_age_ms": {
+        "min": 2,
+        "max": 15
+      },
+      "windows": [
+        {
+          "window": 1,
+          "start_result": 0,
+          "stop_result": 0,
+          "complete": 1
+        },
+        {
+          "window": 2,
+          "start_result": 0,
+          "stop_result": 0,
+          "complete": 1
+        },
+        {
+          "window": 3,
+          "start_result": 0,
+          "stop_result": 0,
+          "complete": 1
+        },
+        {
+          "window": 4,
+          "start_result": 0,
+          "stop_result": 0,
+          "complete": 1
+        },
+        {
+          "window": 5,
+          "start_result": 0,
+          "stop_result": 0,
+          "complete": 1
+        }
+      ],
+      "network_points": [
+        {
+          "kind": 1,
+          "id": 2,
+          "sample_ms": 11666,
+          "scope": 0,
+          "internal": 120603,
+          "minimum": 53236,
+          "largest": 63488,
+          "psram": 5981992,
+          "psram_min": 5958320,
+          "psram_largest": 5898240,
+          "sample_stack": 10672,
+          "worker_stack_at_emit": 10544
+        },
+        {
+          "kind": 2,
+          "id": 2,
+          "sample_ms": 11668,
+          "scope": 1,
+          "internal": 120603,
+          "minimum": 120603,
+          "largest": 63488,
+          "psram": 5981964,
+          "psram_min": 5981964,
+          "psram_largest": 5898240,
+          "sample_stack": 10672,
+          "worker_stack_at_emit": 10240
+        },
+        {
+          "kind": 3,
+          "id": 2,
+          "sample_ms": 11675,
+          "scope": 1,
+          "internal": 120603,
+          "minimum": 120603,
+          "largest": 63488,
+          "psram": 5947144,
+          "psram_min": 5947144,
+          "psram_largest": 5898240,
+          "sample_stack": 10544,
+          "worker_stack_at_emit": 10064
+        },
+        {
+          "kind": 4,
+          "id": 2,
+          "sample_ms": 11678,
+          "scope": 0,
+          "internal": 120603,
+          "minimum": 53236,
+          "largest": 63488,
+          "psram": 5947172,
+          "psram_min": 5940912,
+          "psram_largest": 5898240,
+          "sample_stack": 10544,
+          "worker_stack_at_emit": 10064
+        },
+        {
+          "kind": 1,
+          "id": 3,
+          "sample_ms": 11746,
+          "scope": 0,
+          "internal": 120603,
+          "minimum": 53236,
+          "largest": 63488,
+          "psram": 5947172,
+          "psram_min": 5940912,
+          "psram_largest": 5898240,
+          "sample_stack": 10064,
+          "worker_stack_at_emit": 9712
+        },
+        {
+          "kind": 2,
+          "id": 3,
+          "sample_ms": 11749,
+          "scope": 1,
+          "internal": 120603,
+          "minimum": 120603,
+          "largest": 63488,
+          "psram": 5947144,
+          "psram_min": 5947144,
+          "psram_largest": 5898240,
+          "sample_stack": 10064,
+          "worker_stack_at_emit": 9712
+        },
+        {
+          "kind": 3,
+          "id": 3,
+          "sample_ms": 12219,
+          "scope": 1,
+          "internal": 120211,
+          "minimum": 118103,
+          "largest": 63488,
+          "psram": 5947144,
+          "psram_min": 5947144,
+          "psram_largest": 5898240,
+          "sample_stack": 9712,
+          "worker_stack_at_emit": 9712
+        },
+        {
+          "kind": 4,
+          "id": 3,
+          "sample_ms": 12221,
+          "scope": 0,
+          "internal": 120211,
+          "minimum": 53236,
+          "largest": 63488,
+          "psram": 5947172,
+          "psram_min": 5940912,
+          "psram_largest": 5898240,
+          "sample_stack": 9712,
+          "worker_stack_at_emit": 9712
+        },
+        {
+          "kind": 1,
+          "id": 4,
+          "sample_ms": 12289,
+          "scope": 0,
+          "internal": 120247,
+          "minimum": 53236,
+          "largest": 63488,
+          "psram": 5947172,
+          "psram_min": 5940912,
+          "psram_largest": 5898240,
+          "sample_stack": 9712,
+          "worker_stack_at_emit": 6912
+        },
+        {
+          "kind": 2,
+          "id": 4,
+          "sample_ms": 12292,
+          "scope": 1,
+          "internal": 120247,
+          "minimum": 120247,
+          "largest": 63488,
+          "psram": 5947144,
+          "psram_min": 5947144,
+          "psram_largest": 5898240,
+          "sample_stack": 9712,
+          "worker_stack_at_emit": 6912
+        },
+        {
+          "kind": 3,
+          "id": 4,
+          "sample_ms": 58596,
+          "scope": 1,
+          "internal": 119347,
+          "minimum": 99371,
+          "largest": 63488,
+          "psram": 5947144,
+          "psram_min": 5909976,
+          "psram_largest": 5898240,
+          "sample_stack": 6912,
+          "worker_stack_at_emit": 6912
+        },
+        {
+          "kind": 4,
+          "id": 4,
+          "sample_ms": 58598,
+          "scope": 0,
+          "internal": 119347,
+          "minimum": 34640,
+          "largest": 63488,
+          "psram": 5947172,
+          "psram_min": 5909976,
+          "psram_largest": 5898240,
+          "sample_stack": 6912,
+          "worker_stack_at_emit": 6912
+        },
+        {
+          "kind": 1,
+          "id": 5,
+          "sample_ms": 58681,
+          "scope": 0,
+          "internal": 119675,
+          "minimum": 34640,
+          "largest": 63488,
+          "psram": 5947172,
+          "psram_min": 5909976,
+          "psram_largest": 5898240,
+          "sample_stack": 6912,
+          "worker_stack_at_emit": 6912
+        },
+        {
+          "kind": 2,
+          "id": 5,
+          "sample_ms": 58683,
+          "scope": 1,
+          "internal": 119675,
+          "minimum": 119675,
+          "largest": 63488,
+          "psram": 5947144,
+          "psram_min": 5947144,
+          "psram_largest": 5898240,
+          "sample_stack": 6912,
+          "worker_stack_at_emit": 6912
+        },
+        {
+          "kind": 3,
+          "id": 5,
+          "sample_ms": 58685,
+          "scope": 1,
+          "internal": 119675,
+          "minimum": 119675,
+          "largest": 63488,
+          "psram": 5981964,
+          "psram_min": 5947144,
+          "psram_largest": 5898240,
+          "sample_stack": 6912,
+          "worker_stack_at_emit": 6912
+        },
+        {
+          "kind": 4,
+          "id": 5,
+          "sample_ms": 58688,
+          "scope": 0,
+          "internal": 119675,
+          "minimum": 34640,
+          "largest": 63488,
+          "psram": 5981992,
+          "psram_min": 5909976,
+          "psram_largest": 5898240,
+          "sample_stack": 6912,
+          "worker_stack_at_emit": 6912
+        }
+      ],
+      "detailed_session_results": [
+        {
+          "state": 7,
+          "error": 0,
+          "http": 0,
+          "policy": 0,
+          "image": 0,
+          "resource": 0,
+          "checks": 406,
+          "internal": 119347,
+          "largest": 63488,
+          "psram": 5947144,
+          "psram_largest": 5898240,
+          "stack": 6912
+        }
+      ],
+      "service_results": [
+        {
+          "stage": 5,
+          "error": 0,
+          "internal": 119675,
+          "psram": 5981992,
+          "stack": 6912
+        }
+      ]
+    },
+    "return-fecc05d": {
+      "pass_": true,
+      "checks": {
+        "expected_app": true,
+        "expected_sdk": true,
+        "factory_boot": true,
+        "single_app_boot": true,
+        "psram_8mib": true,
+        "psram_sdk_test": true,
+        "instructions_in_psram": true,
+        "rodata_in_psram": true,
+        "rgb_initialized": true,
+        "gt911_initialized": true,
+        "ui_ready": true,
+        "no_fatal_log": true,
+        "exact_check_only_install_policy": true,
+        "exact_automatic_readonly_completion": true,
+        "no_http_open_failure": true,
+        "periodic_resources": true,
+        "resource_errors_clear": true,
+        "touch_fresh": true,
+        "increasing_uptime": true,
+        "heap_samples_consistent": true,
+        "no_unexpected_network_probe": true,
+        "no_unexpected_dma_hook": true
+      },
+      "capture_seconds": 30.04905969999527,
+      "periodic_samples": 4,
+      "wifi_ip_event_observed": true,
+      "bytes": {
+        "internal_free": {
+          "min": 22747,
+          "max": 22803
+        },
+        "internal_largest": {
+          "min": 7680,
+          "max": 7680
+        },
+        "psram_free": {
+          "min": 6090732,
+          "max": 6090732
+        },
+        "owner_stack": {
+          "min": 10708,
+          "max": 10708
+        },
+        "touch_stack": {
+          "min": 2504,
+          "max": 2568
+        },
+        "wifi_stack": {
+          "min": 1104,
+          "max": 1104
+        },
+        "ota_stack": null
+      },
+      "touch_age_ms": {
+        "min": 2,
+        "max": 13
+      },
+      "windows": [],
+      "network_points": [],
+      "detailed_session_results": [],
+      "service_results": []
+    }
+  },
+  "native_http_failures": [],
+  "automatic_check_completion": [
+    {
+      "attempted": 1,
+      "pass_": 1,
+      "read_only": 1
+    }
+  ],
+  "local_install_reviewed": false,
+  "legacy_signed_payload_installable": false,
+  "install_policy_check_only_marker_verified": true,
+  "authorization_basis": "standing owner grant for isolated reversible tests until2026-11-24 08:00 Asia/Almaty; not a per-hash reply",
+  "partial_capture_observation_used_for_decision": false
+}
