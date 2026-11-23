@@ -1,11 +1,14 @@
 # GitHub Releases и CI/CD
 
-Статус PR-05a: [проверяемые metadata-only кандидаты](BUILD_CANDIDATES.md)
-реализованы в существующей ESP-IDF матрице. Есть host/sanitizers и ARM core
-compile-only; полноценного F407 image нет. Подпись, binary Releases, защищённое
-окружение и OTA install ещё не реализованы. Push в main не создаёт релиз и
-не является разрешением владельца на его выпуск. Лицензия приложения ещё не
-выбрана (LICENSE-NOTICE.md); public CI review artifact не содержит binary.
+Актуальная база main be8f3f4 после PR #76. В CI есть pinned ESP-IDF матрица,
+host/sanitizers и настоящий F407 HSI ELF/BIN с basic SWD bench. ESP32 migration/
+factory и три verified HEAD проверены; signed CHECK/install/rollback/resource
+приёмка ещё открыты. [Локальный signed CHECK bundle](OTA_SIGNED_CHECK_BUNDLE.md)
+готовится отдельно от публикации. Ключ создан по поручению владельца вне Git;
+CI получает только ephemeral fixture keys. Binary Releases/protected publication
+ещё не включены. Push/merge не создаёт релиз и не разрешает выпуск.
+Владелец выбрал MIT для собственного кода (LICENSE/атрибуции зависимостей); public metadata-only
+review artifact сохраняет прежний scope и не содержит binary.
 
 PR-05b: [review существующего release contract](RELEASE_POLICY_REVIEW.md),
 общие signed C/Python scenarios и исправления Unicode/Base64 decoding. Это
@@ -33,10 +36,10 @@ PR-05b: [review существующего release contract](RELEASE_POLICY_REVI
    digests, host logic/render tests (XRGB8888/RGB565), ASan/UBSan/LSan.
    Проверять target/chip, Flash 16 МБ, PSRAM profile, headers, partition bounds,
    slot/image sizes и неизменность dependencies. Build не выполняет flash/monitor.
-2. После PR-02 добавить ARM GCC + CMake + Ninja, точные CMSIS/HAL/LL/лицензии,
-   startup/vector/linker checks, Flash/RAM budgets, host state/fault tests и static
-   analysis. Target F407 job блокируется до подтверждения MCU/memory/clock;
-   placeholder .bin не генерировать и не публиковать.
+2. Сохранять ARM GCC/CMake/Ninja, exact source pins, startup/vector/linker и
+   Flash/RAM checks настоящего F407 HSI no-motion image. Basic bench ee7d179
+   подтверждён; CAN/motion/bootloader OTA ещё не приняты. F407 asset не включать
+   в HMI CHECK bundle, placeholder .bin не генерировать и не публиковать.
 3. PR-05a: все GitHub Actions закреплены полными reviewable commit SHA,
    SDK images/toolchains/dependency locks остаются точными прежними версиями.
 4. PR-05a: собирать/проверять неподписанный metadata-only candidate без production secrets на PR.
