@@ -1,0 +1,13 @@
+Test project <source>/build-host
+    Start 151: ota_boot_0_missing_context
+1/1 Test #151: ota_boot_0_missing_context .......Subprocess aborted***Exception:   0.05 sec
+ota_worker_stack_0_tests: <source>/tests/ota_worker_stack_tests.c:223: main: Assertion `finishes==1 && finish_passed==(success && !is("missing-partition") && (!ota_running() || local_ready()))' failed.
+
+
+0% tests passed, 1 tests failed out of 1
+
+Total Test time (real) =   0.05 sec
+
+The following tests FAILED:
+	151 - ota_boot_0_missing_context (Subprocess aborted)
+Errors while running CTest

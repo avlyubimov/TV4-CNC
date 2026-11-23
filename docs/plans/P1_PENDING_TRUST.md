@@ -25,8 +25,8 @@ Factory и ранее VALID без context сохраняются; PSRAM/health/
 прежние default-off read-only bench gates проверяются. SDK boundary теперь
 точно сохраняет native factory/VALID semantics; сами native SDK функции отдельно
 покрыты существующим installer fault suite.265 host/265 ASan/UBSan/LSan PASS.
-CI добавляет анализ actual service с тремя local-policy вариантами. Далее —
-реальные configured/unprovisioned ELF/BIN6.1.1/5.3.2 и полный source CI.
+CI добавляет анализ actual service с тремя local-policy вариантами. [Четыре реальные configured/unprovisioned ELF/BIN6.1.1/5.3.2](../evidence/build/esp32-ota-pending-trust/README.md)
+и source CI30/baseline main15 также PASS до нового USB-сеанса.
 
 Следующий измеримый аппаратный результат — native boot confirmation и отказ
 непригодного pending образа. Конечный отдельно запечатанный стенд может через

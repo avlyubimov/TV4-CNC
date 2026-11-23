@@ -3,8 +3,8 @@
 Текущий отдельный результат: [local trust перед pending confirmation](plans/P1_PENDING_TRUST.md).
 Не подтверждать новый OTA-slot без рабочего локального context; factory recovery
 и ранее VALID без настроек сохраняются. AP/DHCP/SNTP не являются boot prerequisites.
-265 host/265 sanitizers PASS; новые ELF/CI и native slot hardware evidence нужны
-отдельно. Signed CHECK a29c9ed не доказывает исправление self-test или INSTALL.
+265 host/265 sanitizers, четыре ELF обоих pinned SDK и CI30 PASS; native slot
+hardware evidence нужен отдельно. Signed CHECK a29c9ed не доказывает исправление self-test или INSTALL.
 
 ## Актуально: a29c9ed — полный signed CHECK PASS, далее повторяемость и install/rollback
 
