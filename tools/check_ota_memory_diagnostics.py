@@ -82,7 +82,9 @@ def inspect(build,profile,sdk,trace=False,worker_stack_bench=False,worker_tls_be
     if profile=='rev12-ota':
         context=json.loads((build/'ota-local/ota_local_context.json').read_text())
         require(type(context) is dict and type(context.get('provisioned')) is bool,'missing provisioning state')
-        requested=8192 if context['provisioned'] or worker_stack_bench else 3072
+        requested=12288 if context['provisioned'] else 8192 if worker_stack_bench else 3072
+        configured_marker=b'worker_stack_bytes=%u provisioned=1'
+        require((configured_marker in elf.read_bytes())==context['provisioned'],'configured worker stack selection/log mismatch')
         require((marker in elf.read_bytes())==worker_stack_bench,'worker stack bench marker/selection mismatch')
         service_usage=build/'esp-idf/main/CMakeFiles/__idf_main.dir/__/ota/service.c.su'
         require(service_usage.is_file(),'service compiler stack-usage missing')

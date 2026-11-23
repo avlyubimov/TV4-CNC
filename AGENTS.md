@@ -142,42 +142,36 @@ PR и Actions; не копировать код уже открытого PR. Д
    теги, релизы, секреты CI и публикации под видом обычного push.
 6. Обновлять актуальный статус; исторические отчёты сохранять с явной пометкой.
 
-## Текущее задание: P1 — локальный signed CHECK bundle
+## Текущее задание: P1 — configured CHECK с запасом стека
 
-База main be8f3f4 после слитого владельцем PR #76. Стенд38f70b9 дал три
-verified HEAD200/no DMA failures; весь factory fecc05d возвращён/verify/UART
-PASS. Firmware/LVGL/GT911/Wi-Fi/stack/DMA/TLS paths не менять ради host tooling.
-Читать docs/plans/P1_SIGNED_CHECK_BUNDLE.md и docs/OTA_SIGNED_CHECK_BUNDLE.md.
+PR #77 слит владельцем, main3d98ece; c013ddf CI30/30, main15/15 и tag15/15
+PASS. По отдельному разрешению опубликован prerelease v0.1.0-bench.2 с11
+точными assets. Все скачаны/SHA/подпись/full BIN Python+C PASS. Читать
+ docs/evidence/build/ota-signed-check/publication.md. Не менять опубликованные
+assets/tag, не считать этот unprovisioned CHECK payload install-ready.
 
-Владелец поручил создать настоящий локальный ключ P-256 и перенести его в
-домашнюю папку секретов. Пара создана/проверена; private key/пути/local context
-не публиковать в Git/CI. Утверждены только стендовые HMI0.1.0-bench.1 →
-0.1.0-bench.2/prerelease; bootloader0.1.0-bench.1 — локальная привязка
-проверенного fecc05d, protocol1.0.0 — OTA metadata/image, не physical CAN.
-Не переносить эти метки в production как измеренные hardware versions.
+Первый configured BASE c013ddf/8192 прошёл boot/touch, но владелец дважды
+нажал CHECK во время контрольного окна. Два SESSION_RESOURCE, остаток стека
+3024 ниже floor3072; контроль FAIL, planned CHECK420s отменён. Весь factory
+fecc05d возвращён/verify/UART/owner HMI-touch-Wi-Fi-SETUP PASS, полный restore0.
+Читать docs/evidence/hardware/2026-11-23-esp32-signed-check-c013ddf/README.md
+и docs/plans/P1_CONFIGURED_WORKER_HEADROOM.md.
 
-Текущий результат — реальный app-only BIN двух SDK и локальный подписанный
-пакет, повторно проверенный existing offline/native crypto. New prepare tool
-только CHECK bench; signed manifest не устанавливает CI/build/physical
-provenance. Keys/bootloader/table/NVS/otadata/STM32 files в пакет не включать.
-Не выполнять публикацию/теги/установку под видом подписания или merge.
+Следующая одна интеграция: только configured worker12288 (+4096), прежние
+ordinary3072 и unprovisioned bench8192; bounded SESSION/resource log, host
+fault/sanitizers, оба SDK/ELF/CI и новый exact BASE пакет. Runtime floors не
+снижать: internal64KiB/largest32KiB, PSRAM1MiB/largest128KiB, stack3072.
+Сначала чистый контроль без CHECK, затем один CHECK по команде и возврат всего
+factory. Прежний c013ddf пакет закрыт. Не выдавать ранние нажатия за приёмку.
 
-Владелец утвердил начальную resource/time policy только для CHECK23ноября;
-далее нужен настоящий configured
-CHECK/SESSION4 на плате, затем install/confirmation/rollback и release acceptance.
-Не назначать floors по HEAD minimum, не подставлять test keys или guessed
-policy, не снимать SETUP/INSTALL/ownership/timeout/CA/hostname/date gates.
-Стендовые guards: internal64KiB/largest32KiB,PSRAM1MiB/largest128KiB,stack3072.
-SNTP явно разрешён только в пределах23ноября Asia/Almaty,anchor10min/skew5s.
-Это не production qualification. Владелец также выбрал MIT для собственного
-кода; vendor notices сохраняются. Exact publication по-прежнему отдельная.
-Прежние NEMA23/CAN/motion/independent E-stop ограничения сохраняются.
-
-Сегодня23ноября2026 Asia/Almaty владелец уже разрешил необходимые P1 finite
-стенды без повторных запросов доступа. Новые exact packages только после CI,
-fresh16MiB/two-NVMe/возврат. Старые пакеты закрыты; eFuse/option bytes/motion/
-merge/release этим не разрешены. На платах fecc05d/A-B и F407 ee7d179;
-после отчёта38f70b9 новых устройств не открывали.
+Ключ владельца остаётся в домашней папке секретов, private material/context
+не публиковать. Стендовые HMI0.1.0-bench.1→0.1.0-bench.2, bootloader local
+label0.1.0-bench.1 и OTA metadata protocol1.0.0 не production/physical CAN.
+Владелец явно продлил календарное окно этой проверки; сохранить ограниченный
+сеанс1800s, fresh16MiB/device MD5/SHA/two-NVMe, reserve и автоматический возврат.
+Таймауты/CA/hostname/date/anchor10min/skew5s и guards прежние. Разрешение не
+превращать в постоянное или в INSTALL/eFuse/STM32/CAN/motion/merge/release.
+После CHECK нужны отдельные install/confirmation/rollback и P2 acceptance.
 
 ## Исторические контракты слитых этапов
 

@@ -112,7 +112,7 @@ int main(int argc,char **argv) {
         if(!strcmp(mode,"task-fail")) {assert(!start_result && state.state==TV4_UPDATE_SETUP && state.error==21);}
         else {assert(start_result && entry);running=true;entry(NULL);assert(!"worker returned");}
     }
-    assert(creates==1 && requested==(SERVICE_TEST_BENCH?8192u:3072u));
+    assert(creates==1 && requested==(SERVICE_TEST_PROVISIONED?12288u:SERVICE_TEST_BENCH?8192u:3072u));
     assert(!locks && !sends && !network_calls && !probe && window_starts==1 && window_ends==1);
     assert(tls_probes==(unsigned)(SERVICE_TEST_TLS_BENCH && !strcmp(mode,"success")));
     if(!strcmp(mode,"task-fail") || !strcmp(mode,"pending-fail")) {
@@ -124,7 +124,8 @@ int main(int argc,char **argv) {
         assert(wdt_deletes==(unsigned)success && restarts==(unsigned)!success);
         assert(probes==(unsigned)(strcmp(mode,"health-timeout")!=0));
         if(!strcmp(mode,"health-timeout"))assert(clock_ms==30000);
-        if(SERVICE_TEST_BENCH)assert(strstr(boot_log,"worker_stack_bytes=8192 stack_bench=1 provisioned=0"));
+        if(SERVICE_TEST_PROVISIONED)assert(strstr(boot_log,"worker_stack_bytes=12288 provisioned=1"));
+        else if(SERVICE_TEST_BENCH)assert(strstr(boot_log,"worker_stack_bytes=8192 stack_bench=1 provisioned=0"));
         else assert(!strstr(boot_log,"stack_bench="));
     }
     printf("actual ESP service: requested=%u mode=%s closed SETUP commands PASS\n",requested,mode);

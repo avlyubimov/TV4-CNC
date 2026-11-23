@@ -29,6 +29,11 @@ jobs:
           test -s LICENSE
           test -s docs/evidence/build/ota-signed-check/README.md
           python3 -m json.tool docs/evidence/build/ota-signed-check/results.json > /dev/null
+          test -s docs/evidence/build/ota-signed-check/publication.md
+          python3 -m json.tool docs/evidence/build/ota-signed-check/publication.json > /dev/null
+          test -s docs/plans/P1_CONFIGURED_WORKER_HEADROOM.md
+          test -s docs/evidence/hardware/2026-11-23-esp32-signed-check-c013ddf/README.md
+          python3 -m json.tool docs/evidence/hardware/2026-11-23-esp32-signed-check-c013ddf/measurements.json > /dev/null
           test -s docs/evidence/build/esp32-lvgl-psram/README.md
           python3 -m json.tool docs/evidence/build/esp32-lvgl-psram/results.json > /dev/null
           test -s docs/evidence/hardware/2026-11-23-esp32-lvgl-38f70b9/README.md
