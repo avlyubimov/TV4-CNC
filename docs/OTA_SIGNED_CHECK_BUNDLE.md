@@ -18,6 +18,8 @@ Owner plan с reviewed:false не принимается. Не включать 
 Offline evidence подтверждает локальные build checks, не CI identity или runtime
 budget. DER presence — дополнительная binding проверка, не замена review кода.
 
+Published bench.2 не меняется и остаётся только CHECK; новый purpose не повышает старые assets.
+
 Локальный JSON-план принимает ровно поля:
 
 | Поле | Значение/проверка |

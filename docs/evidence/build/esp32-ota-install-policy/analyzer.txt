@@ -1,0 +1,1 @@
+PASS: actual json_guard/manifest/session/installer + six provisioned service policy variants

@@ -53,3 +53,12 @@ production budgets ещё открыты. Published bench.2 не изменят�
 Release authoring пока остаётся CHECK-only. Новый configured installable payload,
 SemVer/policy/publication требуют отдельного review. Новый release/tag и self-merge
 не входят в автономное разрешение на board checks до24ноября08:00 Asia/Almaty.
+
+## Завершённая приёмка
+
+[Реальный 3b09bba CHECK](../evidence/hardware/2026-11-24-esp32-install-policy-3b09bba/README.md)
+и [шесть actual ELF/software checks](../evidence/build/esp32-ota-install-policy/README.md)
+PASS. Read-only policy boot markers, control38checks, full CHECK406checks/error0,
+verified fecc05d return подтверждены. Это не network INSTALL или physical UI.
+Authoring нового installable payload — следующий отдельный PR83; owner plan и
+новый релиз по-прежнему требуют отдельного review, ни один key/context не повышен.

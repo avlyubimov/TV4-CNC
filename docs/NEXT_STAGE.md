@@ -8,16 +8,25 @@ Owner plan/context не переводить на reviewed/INSTALL автома�
 immutable CHECK-only. Новый owner installable release/версии/политика и реальный
 network INSTALL/resource budget ещё требуют отдельного результата. Не self-merge.
 
+## Актуально: INSTALL gates и full signed CHECK 3b09bba — PASS
 
-Текущая отдельная интеграция — local install_reviewed AND signed installable
-(docs/plans/P1_INSTALL_POLICY.md от корня), оба default false. Старые contexts и
-published bench.2 не открывают INSTALL; capability проверяется до Flash sink.
-Owner key/context автоматически не менять на install_reviewed=true.274 host/
-sanitizers/analyzer и real LVGL render PASS; оба SDK/ELF/CI и новый read-only
-hardware source ещё требуются. Native a74bfcd USB result не доказывает новый
-source или network INSTALL. Автономный срок/безопасность прежние.
+[Стенд новой политики](evidence/hardware/2026-11-24-esp32-install-policy-3b09bba/README.md)
+закрыт за1094,730s: fresh16MiB/two-NVMe → control38checks/UART90 → один полный
+signed CHECK406checks/error0/UART420 → весь factory fecc05d/verify/UART30 PASS.
+Local install_reviewed=false и legacy signed installable=false; INSTALL закрыт.
+SESSION local min internal99371/largest63488, остаток stack6912/12288; touch2–15ms/
+errors0. Source CI30/main15,274 host/sanitizers/analyzer, четыре owner CHECK-only
+ELF и два software-only positive compiler fixtures обоих SDK PASS. На платах
+fecc05d и ee7d179; ни один закрытый пакет не повторять. Raw logs/keys/backups private.
 
-## Актуально: native pending confirmation/refusal/rollback a74bfcd — PASS
+Native boot/rollback a74bfcd уже PASS; P1 ещё требует нового reviewed installable
+payload/публикации и настоящего network INSTALL с ресурсами при Flash writes.
+Published bench.2 immutable CHECK-only. Physical UI/FPS/latency, runtime5.3.2,
+Wi-Fi/power loss и production budget не приняты. [PR #82](https://github.com/avlyubimov/TV4-CNC/pull/82)
+не слит. Следующая отдельная authoring интеграция — [PR #83](https://github.com/avlyubimov/TV4-CNC/pull/83).
+
+
+## История: native pending confirmation/refusal/rollback a74bfcd — PASS
 
 [Реальный USB boot стенд](evidence/hardware/2026-11-24-esp32-native-boot-a74bfcd/README.md)
 закрыт за1031,352s/1800s: fresh16MiB/device MD5/SHA/two-NVMe → configured
@@ -40,7 +49,7 @@ budget, потеря Wi-Fi/питания и app Flash writes при актив�
 265 host/265 sanitizers, четыре ELF обоих pinned SDK и CI30 PASS. Native a74bfcd
 confirmation/INVALID rollback/полный возврат PASS; это USB fixture, не сетевой INSTALL.
 
-## Актуально: a29c9ed — полный signed CHECK и три reset-повтора PASS
+## История: a29c9ed — полный signed CHECK и три reset-повтора PASS
 
 [Полный подписанный CHECK](evidence/hardware/2026-11-24-esp32-signed-check-a29c9ed/README.md)
 на ESP-IDF6.1.1 закрыт за1095,492s: свежие16MiB/device MD5/SHA/two-NVMe,

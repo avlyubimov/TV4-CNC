@@ -1,6 +1,24 @@
 # План реализации TV4-CNC: функциональные приоритеты P0–P5
 
-## Актуально: native pending confirmation/refusal/rollback a74bfcd — PASS
+## Актуально: INSTALL gates и full signed CHECK 3b09bba — PASS
+
+[Стенд новой политики](evidence/hardware/2026-11-24-esp32-install-policy-3b09bba/README.md)
+закрыт за1094,730s: fresh16MiB/two-NVMe → control38checks/UART90 → один полный
+signed CHECK406checks/error0/UART420 → весь factory fecc05d/verify/UART30 PASS.
+Local install_reviewed=false и legacy signed installable=false; INSTALL закрыт.
+SESSION local min internal99371/largest63488, остаток stack6912/12288; touch2–15ms/
+errors0. Source CI30/main15,274 host/sanitizers/analyzer, четыре owner CHECK-only
+ELF и два software-only positive compiler fixtures обоих SDK PASS. На платах
+fecc05d и ee7d179; ни один закрытый пакет не повторять. Raw logs/keys/backups private.
+
+Native boot/rollback a74bfcd уже PASS; P1 ещё требует нового reviewed installable
+payload/публикации и настоящего network INSTALL с ресурсами при Flash writes.
+Published bench.2 immutable CHECK-only. Physical UI/FPS/latency, runtime5.3.2,
+Wi-Fi/power loss и production budget не приняты. [PR #82](https://github.com/avlyubimov/TV4-CNC/pull/82)
+не слит. Следующая отдельная authoring интеграция — [PR #83](https://github.com/avlyubimov/TV4-CNC/pull/83).
+
+
+## История: native pending confirmation/refusal/rollback a74bfcd — PASS
 
 [Реальный USB boot стенд](evidence/hardware/2026-11-24-esp32-native-boot-a74bfcd/README.md)
 закрыт за1031,352s/1800s: fresh16MiB/device MD5/SHA/two-NVMe → configured
@@ -17,7 +35,7 @@ USB fixture, не signed network INSTALL или SemVer upgrade. Published bench.
 configured signed installable payload/HTTPS INSTALL/resource check. Production
 budget, потеря Wi-Fi/питания и app Flash writes при активном RGB ещё не приняты.
 
-## Актуально: a29c9ed — полный signed CHECK и три reset-повтора PASS
+## История: a29c9ed — полный signed CHECK и три reset-повтора PASS
 
 [Полный подписанный CHECK](evidence/hardware/2026-11-24-esp32-signed-check-a29c9ed/README.md)
 на ESP-IDF6.1.1 закрыт за1095,492s: свежие16MiB/device MD5/SHA/two-NVMe,

@@ -151,13 +151,18 @@ PR и Actions; не копировать код уже открытого PR. Д
    теги, релизы, секреты CI и публикации под видом обычного push.
 6. Обновлять актуальный статус; исторические отчёты сохранять с явной пометкой.
 
-Текущая отдельная интеграция — local install_reviewed AND signed installable
-(docs/plans/P1_INSTALL_POLICY.md от корня), оба default false. Старые contexts и
-published bench.2 не открывают INSTALL; capability проверяется до Flash sink.
-Owner key/context автоматически не менять на install_reviewed=true.274 host/
-sanitizers/analyzer и real LVGL render PASS; оба SDK/ELF/CI и новый read-only
-hardware source ещё требуются. Native a74bfcd USB result не доказывает новый
-source или network INSTALL. Автономный срок/безопасность прежние.
+INSTALL policy завершена: local install_reviewed AND signed installable,
+оба default false (docs/plans/P1_INSTALL_POLICY.md от корня). Старые contexts/
+bench.2 не открывают INSTALL; до Flash sink проверяется signed capability.
+274 host/sanitizers/analyzer, real LVGL render, четыре CHECK-only ELF и два
+software-only positive compiler fixtures обоих SDK, source CI30/main15 PASS.
+3b09bba hardware control/full signed CHECK406checks/error0/возврат всего fecc05d
+PASS за1094,730s; SESSION min99371/largest63488/stack6912, touch2–15ms/errors0.
+Fecc05d возвращён, F407 ee7d179; source hardware report в
+ docs/evidence/hardware/2026-11-24-esp32-install-policy-3b09bba/ от корня.
+Owner context не переводить на INSTALL автоматически, bench.2 immutable CHECK-only.
+Следующий PR83 готовит authoring configured installable payload; network INSTALL/
+Flash peaks/production budget ещё открыты. Никакого self-merge/publication.
 
 Текущий отдельный результат: [local trust перед pending confirmation](docs/plans/P1_PENDING_TRUST.md).
 Не подтверждать новый OTA-slot без рабочего локального context; factory recovery

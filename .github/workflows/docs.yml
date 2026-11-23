@@ -40,6 +40,11 @@ jobs:
           test -s docs/evidence/build/ota-installable-bundle/README.md
           python3 -m json.tool docs/evidence/build/ota-installable-bundle/results.json > /dev/null
           python3 -m json.tool docs/evidence/build/ota-installable-bundle/ci.json > /dev/null
+          test -s docs/evidence/build/esp32-ota-install-policy/README.md
+          python3 -m json.tool docs/evidence/build/esp32-ota-install-policy/results.json > /dev/null
+          python3 -m json.tool docs/evidence/build/esp32-ota-install-policy/ci.json > /dev/null
+          test -s docs/evidence/hardware/2026-11-24-esp32-install-policy-3b09bba/README.md
+          python3 -m json.tool docs/evidence/hardware/2026-11-24-esp32-install-policy-3b09bba/measurements.json > /dev/null
           test -s docs/evidence/build/esp32-ota-pending-trust/README.md
           python3 -m json.tool docs/evidence/build/esp32-ota-pending-trust/results.json > /dev/null
           python3 -m json.tool docs/evidence/build/esp32-ota-pending-trust/ci.json > /dev/null
