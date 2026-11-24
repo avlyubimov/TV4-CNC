@@ -1,17 +1,23 @@
 # ESP32 HMI — специализированные правила
 
-Текущий P1: main08932ee/PR #80–83 слиты, owner-key bench.3 опубликован.
-Signed INSTALL798checks/error0/короткий self-tested ota_0 boot наблюдались;
-полный bench/Flash/VALID readback ещё не PASS. На ESP32 после closed return fecc05d.
-Следующий PR исправляет RGB/progress jitter с обоими SDK/tests и новым стендом.
-По новому указанию владельца при успехе оставлять новый проверенный релиз.
-Local install_reviewed AND signed installable, оба default false, UI double gate,
-worker12288, floors/TLS/timeouts/recovery/native rollback прежние. Immutable
-bench.2/bench.3 и original CHECK-only context не менять. Bench contexts ограничены
-25ноября08:00 Asia/Almaty, не production policy. Читать docs/NEXT_STAGE.md от корня.
-Ниже датированные факты — история; технические ограничения сохраняются.
-
-
+Текущий P1: maincf8ffb0/PR #80–85 слиты владельцем. Owner-approved signed
+bench.4 source6c7b1d5 опубликован; source30/main15/tag15 CI,274 host/274 sanitizers,
+4 ELF обоих SDK и39 procedure checks PASS. Реальный повтор CHECK9/INSTALL798/
+независимый BIN readback/native VALID/полный16MiB read/two-NVMe/долгие boots PASS.
+**На ESP32 оставлен bench.4 OTA1 VALID**, factory fecc05d recovery сохранён,
+receiving `.3` VALID в OTA0. Не применять старый factory-sole/FF-slots validator
+к этому checkpoint. Owner подтвердил конечные экран/касания/Wi-Fi.
+Обычного возврата после PASS нет. Первый отказ
+metadata-check с проверенным восстановлением не выдавать за PASS; точные
+неожиданные bytes/state не сохранены. F407 ee7d179 не открывался.
+Owner подтвердил стабильность экрана при записи. Читать docs/NEXT_STAGE.md от корня.
+Далее P1 network negative install/rollback/Wi-Fi/interruption/production budget,
+P2 reproducibility. Native rollback/recovery/TLS/подпись/floors/UI double gate
+сохранены. Immutable bench.2/bench.3/bench.4 и original context не менять.
+Bench contexts только до25ноября08:00 Asia/Almaty, не production policy.
+Новые releases/tags — отдельное exact approval; не self-merge. Motion/CAN/eFuse/
+option bytes не разрешать по общему isolated-board grant. Ниже датированные
+результаты — история; активное задание сверять с NEXT_STAGE/owner messages.
 
 Текущий отдельный результат: local trust перед pending confirmation (docs/plans/P1_PENDING_TRUST.md от корня).
 Не подтверждать новый OTA-slot без рабочего локального context; factory recovery

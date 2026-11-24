@@ -73,3 +73,13 @@ boot. FPS/touch-to-display и visual artifact отмечаются как measur
 floors или частоту UI без отдельного измеренного решения. Double framebuffer/
 bounce-depth tuning требуют собственного RAM/CPU/visual comparison. P1 не считать
 полностью закрытым до оставшихся failure/rollback/Wi-Fi/power-loss/production gates.
+
+## Выполнение, 24 ноября
+
+PR #85 слит владельцем, owner-approved bench.4 опубликован. [Software/CI/release](../evidence/build/esp32-ota-display-bench4/README.md)
+и [полный аппаратный повтор](../evidence/hardware/2026-11-24-esp32-display-bench4/README.md)
+PASS. Новый release остаётся в OTA1 VALID; независимый BIN и полный16MiB readback
+выполнены. Owner подтвердил стабильный экран при записи. Первый metadata-check
+отказ не скрыт: raw неожиданного record не сохранился, точное state неизвестно;
+новая процедура пассивно ждёт90s/self-test до ROM и сохраняет metadata.
+P1 failure/production/FPS/reproducibility gates остаются открытыми.

@@ -1,0 +1,21 @@
+test_actual_source_release_context_signature_and_payload (__main__.Loader.test_actual_source_release_context_signature_and_payload) ... ok
+test_board_grant_required (__main__.Loader.test_board_grant_required) ... ok
+test_changed_payload_refused (__main__.Loader.test_changed_payload_refused) ... ok
+test_ci_failure_refused (__main__.Loader.test_ci_failure_refused) ... ok
+test_download_not_verified_refused (__main__.Loader.test_download_not_verified_refused) ... ok
+test_exact_deadline_boundary_accepts_full_scope (__main__.Loader.test_exact_deadline_boundary_accepts_full_scope) ... ok
+test_expired_context_refused (__main__.Loader.test_expired_context_refused) ... ok
+test_helper_import_override_refused (__main__.Loader.test_helper_import_override_refused) ... ok
+test_new_context_not_approved_refused (__main__.Loader.test_new_context_not_approved_refused) ... ok
+test_no_invented_per_hash_hardware_approval (__main__.Loader.test_no_invented_per_hash_hardware_approval) ... ok
+test_previous_session_not_closed_refused (__main__.Loader.test_previous_session_not_closed_refused) ... ok
+test_publication_approval_change_refused (__main__.Loader.test_publication_approval_change_refused) ... ok
+test_scope_expansion_refused (__main__.Loader.test_scope_expansion_refused) ... ok
+test_success_must_remain_installed (__main__.Loader.test_success_must_remain_installed) ... ok
+test_whole_session_and_recovery_time_required (__main__.Loader.test_whole_session_and_recovery_time_required) ... ok
+test_wrong_source_refused (__main__.Loader.test_wrong_source_refused) ... ok
+
+----------------------------------------------------------------------
+Ran 16 tests in 0.192s
+
+OK

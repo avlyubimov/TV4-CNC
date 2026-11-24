@@ -2,15 +2,23 @@
 
 ## Актуальные блокеры P1
 
-Owner key/bench contexts и [installable prerelease bench.3](evidence/build/esp32-ota-install-bench3/README.md)
-согласованы, PR #80–83 слиты. [Signed network INSTALL798checks/error0](evidence/hardware/2026-11-24-esp32-install-bench3/README.md)
-и короткий self-tested boot ota_0/bench.3 уже наблюдались. Ещё нужны independent
-Flash/VALID readback/длительный новый capture и исправление owner-reported прыжков
-RGB/интерфейса при записи. Третий сеанс отказал на SNTP до HTTPS, exact SNTP enum
-не логировался. Все исходные разделы возвращены; следующий успешный релиз теперь
-оставлять на плате по указанию владельца. P1 failure trials/production policy,
-runtime5.3.2 и physical FPS/latency открыты. [Активный этап](NEXT_STAGE.md).
-Таблица ID ниже уточняет bench/production; датированные отчёты — история.
+[Bench.4 signed INSTALL/readback/VALID](evidence/hardware/2026-11-24-esp32-display-bench4/README.md)
+и стабильный экран при записи подтверждены; новый release оставлен в OTA1.
+Долгий self-test/IP/touch и полный16MiB readback/two-NVMe выполнены, эти пункты
+больше не блокируют текущую изолированную установку. Первый metadata-check отказ
+сохранён отдельно, точный неожиданный record не известен.
+
+Остаются network negative install/rollback, потеря Wi-Fi, прерывание/питание,
+production resource budget и policy/version discovery, два clean reproducible
+builds, runtime5.3.2 и численные FPS/touch-to-display. Bench contexts ограничены
+25ноября2026 08:00 Asia/Almaty; после срока нужен новый reviewed context, production
+порогов/версий из этого стенда не выводить. Factory fecc05d recovery сохранён;
+успешный новый release не возвращать автоматически. Новые release/tag — отдельное
+exact approval, hardware tests — в рамках действующего owner scope/finite plan.
+
+CAN, распиновка/питание/токи/ENABLE closed-loop NEMA23 до точной модели, motion
+commissioning и независимая аппаратная аварийная цепь сохраняют свои blockers.
+
 
 ## История: native pending confirmation/refusal/rollback a74bfcd — PASS
 

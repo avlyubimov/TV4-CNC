@@ -1,17 +1,23 @@
 # TV4-CNC — правила разработки Codex
 
-Текущий P1: main08932ee, PR #80–83 слиты. Owner-key bench.3 опубликован по
-отдельному approval; оба SDK/4 ELF/main15/tag15/independent verification PASS.
-Signed network INSTALL798checks/error0 и короткий boot ota_0/bench.3/self-test
-наблюдались; полный плановый стенд/Flash/VALID readback ещё не PASS. Все исходные
-разделы возвращены, на ESP32 fecc05d. Читать docs/NEXT_STAGE.md и hardware evidence.
-Следующий отдельный PR: исправить RGB/progress jitter при записи, оба SDK/tests,
-затем точный стенд. Владелец изменил policy: **успешный новый релиз оставлять на
-плате, без обычного возврата старого**. Native rollback/recovery сохраняются.
-Original CHECK-only context/immutable bench.2 и published bench.3 не менять;
-bench contexts только до25ноября08:00 Asia/Almaty. Не подменять production policy.
-Новые release/tag требуют отдельного exact approval; не self-merge. Датированные
-статусы ниже — история; актуальное задание сверять с NEXT_STAGE/owner messages.
+Текущий P1: maincf8ffb0/PR #80–85 слиты владельцем. Owner-approved signed
+bench.4 source6c7b1d5 опубликован; source30/main15/tag15 CI,274 host/274 sanitizers,
+4 ELF обоих SDK и39 procedure checks PASS. Реальный повтор CHECK9/INSTALL798/
+независимый BIN readback/native VALID/полный16MiB read/two-NVMe/долгие boots PASS.
+**На ESP32 оставлен bench.4 OTA1 VALID**, factory fecc05d recovery сохранён,
+receiving `.3` VALID в OTA0. Не применять старый factory-sole/FF-slots validator
+к этому checkpoint. Owner подтвердил конечные экран/касания/Wi-Fi.
+Обычного возврата после PASS нет. Первый отказ
+metadata-check с проверенным восстановлением не выдавать за PASS; точные
+неожиданные bytes/state не сохранены. F407 ee7d179 не открывался.
+Owner подтвердил стабильность экрана при записи. Читать docs/NEXT_STAGE.md.
+Далее P1 network negative install/rollback/Wi-Fi/interruption/production budget,
+P2 reproducibility. Native rollback/recovery/TLS/подпись/floors/UI double gate
+сохранены. Immutable bench.2/bench.3/bench.4 и original context не менять.
+Bench contexts только до25ноября08:00 Asia/Almaty, не production policy.
+Новые releases/tags — отдельное exact approval; не self-merge. Motion/CAN/eFuse/
+option bytes не разрешать по общему isolated-board grant. Ниже датированные
+результаты — история; активное задание сверять с NEXT_STAGE/owner messages.
 
 Правила действуют на весь репозиторий. Вложенные AGENTS.md уточняют область,
 но не ослабляют безопасность. Продолжать существующий проект, не создавать
