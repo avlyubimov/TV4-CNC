@@ -1,30 +1,38 @@
 # P1 — ESP32 OTA: допуск установки и результаты стендов
 
-Installable authoring завершён программно: docs/plans/P1_INSTALLABLE_BUNDLE.md.
-9ccbf13:274 host/274 sanitizers,28 release methods, два actual ELF/BIN обоих SDK
-с disposable non-owner key, C/Python signature/image checks, source CI30/main15 PASS.
-Test key удалён; ни firmware source, ни платы/owner key/context не менялись этим PR.
-Owner plan/context не переводить на reviewed/INSTALL автоматически; bench.2
-immutable CHECK-only. Новый owner installable release/версии/политика и реальный
-network INSTALL/resource budget ещё требуют отдельного результата. Не self-merge.
+## Актуально: signed network INSTALL подтверждён, P1 продолжается
 
-## Актуально: INSTALL gates и full signed CHECK 3b09bba — PASS
+Main `08932ee`, PR #80–83 слиты. [Owner-key bench.3, четыре actual ELF и публикация](evidence/build/esp32-ota-install-bench3/README.md)
+PASS: оба pinned SDK, main15/tag15 CI, Python/C/ASan/UBSan/LSan,11 reverse downloads.
+Исходный CHECK-only context и immutable bench.2 сохранены; bench.3 отдельно одобрен
+как prerelease без latest/stable. Contexts `.1→.3` действуют только на стенде
+до25ноября2026 08:00 Asia/Almaty; это не production policy.
 
-[Стенд новой политики](evidence/hardware/2026-11-24-esp32-install-policy-3b09bba/README.md)
-закрыт за1094,730s: fresh16MiB/two-NVMe → control38checks/UART90 → один полный
-signed CHECK406checks/error0/UART420 → весь factory fecc05d/verify/UART30 PASS.
-Local install_reviewed=false и legacy signed installable=false; INSTALL закрыт.
-SESSION local min internal99371/largest63488, остаток stack6912/12288; touch2–15ms/
-errors0. Source CI30/main15,274 host/sanitizers/analyzer, четыре owner CHECK-only
-ELF и два software-only positive compiler fixtures обоих SDK PASS. На платах
-fecc05d и ee7d179; ни один закрытый пакет не повторять. Raw logs/keys/backups private.
+[Четыре аппаратных сеанса](evidence/hardware/2026-11-24-esp32-install-bench3/README.md):
+первые два ограничены временем оператора, третий отказал на SNTP до HTTPS.
+В четвёртом строгая обработка сохранённого UART подтвердила CHECK9checks и
+INSTALL798checks/error0, SESSION local internal97763bytes, stack7072/12288,
+touch≤18ms. Затем boot ota_0/bench.3 и configured self-test PASS; владелец подтвердил
+скачивание/запись/перезапуск новой версии. Плановый стенд не PASS: ранние операции
+и reboot пришлись на контрольный capture; independent Flash/VALID readback и
+длительный новый Wi-Fi/boot capture до возврата не выполнены. Все четыре сеанса
+closed с verified исходными factory/ota_0/otadata и fecc05d return; F407 ee7d179
+не открывался. Ни один closed packet не повторять.
 
-Native boot/rollback a74bfcd уже PASS; P1 ещё требует нового reviewed installable
-payload/публикации и настоящего network INSTALL с ресурсами при Flash writes.
-Published bench.2 immutable CHECK-only. Physical UI/FPS/latency, runtime5.3.2,
-Wi-Fi/power loss и production budget не приняты. [PR #82](https://github.com/avlyubimov/TV4-CNC/pull/82)
-не слит. Следующая отдельная authoring интеграция — [PR #83](https://github.com/avlyubimov/TV4-CNC/pull/83).
+Следующий отдельный результат — устранение owner-reported прыжков интерфейса
+при OTA: IRAM-safe LCD/GDMA для explicit OTA и ограничение лишних progress/caption
+invalidations. Сохранить PCLK16MHz/bounce10/framebuffer/pins/allocator/floors/TLS и
+двойной UI gate; host/LVGL regression + оба SDK, затем visual/resource/Flash/VALID
+проверка. **Владелец теперь требует оставлять проверенный новый релиз на плате
+при успехе**, без обычного возврата fecc05d. Recovery/native rollback остаются.
 
+Далее P1 network rollback/fault trials/Wi-Fi/power-loss и production budget;
+P2 reproducible config/две clean builds, ручной release approval. Actual bench
+содержит compile-time date, bit reproducibility не подтверждена. Physical FPS/
+touch-to-display и runtime5.3.2 открыты; CAN и любые motion outputs запрещены.
+Новые release/tag — только отдельное exact approval; не self-merge.
+
+Датированные результаты ниже — история на соответствующий момент.
 
 ## История: native pending confirmation/refusal/rollback a74bfcd — PASS
 

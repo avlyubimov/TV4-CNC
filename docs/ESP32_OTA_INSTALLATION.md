@@ -23,11 +23,15 @@ ELF; прежние ключ/context автоматически не переп�
 повторно проверяет capability до image/sink.begin, native adapter также закрывает
 esp_ota_begin. Связь candidate/digest с подтверждением оператора сохраняется.
 
-Опубликованный unprovisioned `bench.2` не содержит capability и остаётся CHECK-only.
-Его assets/tag не изменять. `prepare_ota_release.py` по-прежнему готовит только
-CHECK-bench и подписывает `installable:false`; он не получил права создавать
-установочный релиз. Для первого INSTALL нужен отдельно согласованный configured
-payload с ключом/локальной политикой, новым SemVer и новым exact publication plan.
+Опубликованный unprovisioned `bench.2` остаётся CHECK-only; его assets/tag не менять.
+После слитого PR #83 `prepare_ota_release.py` имеет два явных назначения:
+`signed-check-bench` подписывает `installable:false`, а `signed-install-bench`
+требует настоящий configured candidate ELF/BIN с reviewed local INSTALL policy,
+совпадающими public-key pin, descriptor/version и source/SDK/build evidence.
+Оба режима готовят и проверяют локальные артефакты, без публикации или устройств.
+Для INSTALL payload нужны согласованные версии/контекст и exact publication plan.
+Первый такой owner-key [bench.3 опубликован и скачан обратно](evidence/build/esp32-ota-install-bench3/README.md)
+по отдельному разрешению; это ещё не аппаратная приёмка установки.
 Старые строгие клиенты отвергнут новый optional field; USB baseline с этой политикой
 требуется до первого INSTALL. Не обходить это переименованием старого пакета.
 

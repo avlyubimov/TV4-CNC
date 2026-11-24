@@ -1,22 +1,16 @@
 # Открытые вопросы и блокирующие решения
 
-## Актуально: INSTALL gates и full signed CHECK 3b09bba — PASS
+## Актуальные блокеры P1
 
-[Стенд новой политики](evidence/hardware/2026-11-24-esp32-install-policy-3b09bba/README.md)
-закрыт за1094,730s: fresh16MiB/two-NVMe → control38checks/UART90 → один полный
-signed CHECK406checks/error0/UART420 → весь factory fecc05d/verify/UART30 PASS.
-Local install_reviewed=false и legacy signed installable=false; INSTALL закрыт.
-SESSION local min internal99371/largest63488, остаток stack6912/12288; touch2–15ms/
-errors0. Source CI30/main15,274 host/sanitizers/analyzer, четыре owner CHECK-only
-ELF и два software-only positive compiler fixtures обоих SDK PASS. На платах
-fecc05d и ee7d179; ни один закрытый пакет не повторять. Raw logs/keys/backups private.
-
-Native boot/rollback a74bfcd уже PASS; P1 ещё требует нового reviewed installable
-payload/публикации и настоящего network INSTALL с ресурсами при Flash writes.
-Published bench.2 immutable CHECK-only. Physical UI/FPS/latency, runtime5.3.2,
-Wi-Fi/power loss и production budget не приняты. [PR #82](https://github.com/avlyubimov/TV4-CNC/pull/82)
-не слит. Следующая отдельная authoring интеграция — [PR #83](https://github.com/avlyubimov/TV4-CNC/pull/83).
-
+Owner key/bench contexts и [installable prerelease bench.3](evidence/build/esp32-ota-install-bench3/README.md)
+согласованы, PR #80–83 слиты. [Signed network INSTALL798checks/error0](evidence/hardware/2026-11-24-esp32-install-bench3/README.md)
+и короткий self-tested boot ota_0/bench.3 уже наблюдались. Ещё нужны independent
+Flash/VALID readback/длительный новый capture и исправление owner-reported прыжков
+RGB/интерфейса при записи. Третий сеанс отказал на SNTP до HTTPS, exact SNTP enum
+не логировался. Все исходные разделы возвращены; следующий успешный релиз теперь
+оставлять на плате по указанию владельца. P1 failure trials/production policy,
+runtime5.3.2 и physical FPS/latency открыты. [Активный этап](NEXT_STAGE.md).
+Таблица ID ниже уточняет bench/production; датированные отчёты — история.
 
 ## История: native pending confirmation/refusal/rollback a74bfcd — PASS
 
@@ -384,17 +378,17 @@ stop/join не освобождает actual claim. Верхние image/crypto/
 | CAN-WIRE-01 | Production codebook adoption, bounded fragmentation/reassembly/routing/session identity/backpressure/deadline, signed metadata/signature transfer | PR-07j даёт только opt-in complete-message byte draft; это не CAN frame/production version/driver/authentication/runtime |
 | CAN-IDENTITY-01 | Reviewed unique boot epoch provider, counter continuity при peer reset, persistence/collision/authentication и compatibility-tag provenance | Runtime negotiation/replay claims; PR-07f volatile pools не доказывают uniqueness после reset или доверие CAN |
 | SD-01 | Наличие/тип карты, FAT32, фактическая шина/CS/card detect и извлечение конкретной Rev 1.2; лимиты/имена/ошибки/политика файлов | PR-06; не назначать пины по аналогии |
-| OTA-ESP-01 | Layout tv4-16m-ab-v1, fresh16MiB backup/two-NVMe, USB migration/factory fecc05d/XiP/owner HMI PASS. Остались configured install/slot confirm/rollback/Wi-Fi/power-loss и recovery trials | Без key/context установка закрыта; текущую карту не заменять ordinary flash, каждый новый стенд отдельно разрешать |
-| OTA-KEY-01 | Owner-provisioned public key/fingerprint, signer custody, алгоритм/encoding/test vectors/key rotation, manifest schema/min versions | Любая доверенная установка; приватных ключей в Git/логах нет |
-| OTA-CONTEXT-01 | Утвердить SemVer HMI release вместо текущего git-derived project version; источник версии bootloader/production protocol/реального layout и peer compatibility | PR-04b policy готовит проверку, но не подставляет тестовые версии; installer заблокирован неизвестным context |
+| OTA-ESP-01 | Layout/migration/factory fecc05d, native USB rollback, пять full CHECK и новый signed network INSTALL798checks/короткий ota_0 boot наблюдались | Independent Flash/VALID readback/длительный boot, RGB jitter fix, network failure/rollback/Wi-Fi/power loss; успешный новый релиз теперь оставлять на плате |
+| OTA-KEY-01 | Локальный owner P-256 key/pin создан; bench.2/bench.3 signatures и Python/C vectors проверены, private key вне Git/CI. Production custody/rotation/revocation ещё требуют решения | Production signer lifecycle; bench key не означает утверждённой production политики |
+| OTA-CONTEXT-01 | Bench-only `.1→.3`, bootloader `.1`, protocol1.0.0, prerelease/resource/time policy до25ноября08:00 Asia/Almaty одобрены отдельно. Production SemVer/bootloader/protocol/peer contract не утверждены | Production OTA; эти локальные labels не подтверждают physical CAN и не распространяются за срок bench |
 | OTA-MOTION-01 | Утвердить production release/component schema и link общего signed bundle с Motion document, trusted installed context, numeric counter/boot/protocol policy и signer build provenance | PR-05c offline cohort review и PR-07g/h draft/coordinator не закрывают production contract/context/protocol mapping; legacy11/release15 раздельны |
-| OTA-AES-DMA-01 | 46cf400 выявил DMA failures; PR #75 перенёс LVGL в PSRAM, на38f70b9 три verified HEAD200 с valid/no-failure DMA traces, internal free вырос примерно на105KiB | Наблюдавшийся blocker устранён для этих reset HEAD probes. Нужны full signed SESSION4/load/fault measurements и reviewed floors; HEAD не является production budget |
+| OTA-AES-DMA-01 | После LVGL→PSRAM verified HEAD и пять full signed CHECK с resource guards PASS; configured worker12288/SESSION4 измерены | Peak при настоящем INSTALL/Flash writes и fault/load budget ещё не принят; CHECK не является production qualification |
 | OTA-TLS-01 | Правильное время для TLS, CA bundle/host allowlist/redirect bounds GitHub, отсутствие insecure fallback | Реальный HTTPS download; статичные часы HMI не источник доверенного времени |
 | OTA-F407-01 | По подтверждённым секторам и RAM budget выбрать staging medium/A-B/recovery; metadata/vector/commit/power-loss план | PR-07i RAM backend не утверждает размер RAM/full-image fit и не даёт durable recovery; кэш ESP32 не заменяет решение |
 | OTA-STATE-01 | Fresh подтверждение F407 без движения/оборотов/программы, session lifecycle и повтор после reboot; согласованный safe state | CAN install; симуляция/heartbeat/ACK доставки не подтверждают останов |
 | RELEASE-01 | Версии/каналы/tag policy, signing authority, independent CI/source provenance/candidate digest selection и owner gate для exact SHA/digests, доступность environment protections | PR-05d связывает unsigned candidate и signed bytes, но не подтверждает CI identity/автора; factory/A-B/profile blockers не закрыты. Main push не разрешение |
 | RELEASE-LICENSE-01 | Владелец выбирает лицензию приложения, review прав на распространяемые assets/библиотеки; LICENSE-NOTICE.md пока оставляет решение открытым | Внешнее распространение app binary/source release; PR-05a публикует только review metadata |
-| PERF-01 | Fecc05d:16 samples internal free22851..22907/largest7680/history112, PSRAM free6090732; нужен фазный бюджет. OTA-worker stack/нагрузка/TLS/FPS/touch-to-display/soak/CAN не измерены | History112 не simultaneous OOM/floor; render/event samples0 не FPS/latency proof; заявления о <50 мс/30 FPS/20–30 Гц не подтверждены |
+| PERF-01 | Actual network INSTALL: SESSION min internal97763/PSRAM5903620, largest63488/stack7072, touch age≤18ms; owner сообщил о прыжках RGB/интерфейса во время Flash writes | RGB/GDMA IRAM/progress invalidation fix и стенд; production budget, physical FPS/touch-to-display/soak/CAN не подтверждены |
 | RECOVERY-01 | Независимая копия ESP32 backup, испытание восстановления; данные/отчёт по восстановлению Blue Pill | Аппаратная migration/bootloader уверенность, не permission на запись |
 | RECOVERY-F407-01 | Current snapshot2×1MiB byte/SHA/basic vectors PASS, independent copy на другом физическом NVMe SHA PASS; snapshot restore/verify/reset PASS. Original factory provenance не проверена | Новые записи требуют актуального snapshot/hash и разрешения; backup dumps/их SHA не публиковать |
 

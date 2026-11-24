@@ -1,17 +1,17 @@
 # ESP32 HMI — специализированные правила
 
-INSTALL policy завершена: local install_reviewed AND signed installable,
-оба default false (docs/plans/P1_INSTALL_POLICY.md от корня). Старые contexts/
-bench.2 не открывают INSTALL; до Flash sink проверяется signed capability.
-274 host/sanitizers/analyzer, real LVGL render, четыре CHECK-only ELF и два
-software-only positive compiler fixtures обоих SDK, source CI30/main15 PASS.
-3b09bba hardware control/full signed CHECK406checks/error0/возврат всего fecc05d
-PASS за1094,730s; SESSION min99371/largest63488/stack6912, touch2–15ms/errors0.
-Fecc05d возвращён, F407 ee7d179; source hardware report в
- docs/evidence/hardware/2026-11-24-esp32-install-policy-3b09bba/ от корня.
-Owner context не переводить на INSTALL автоматически, bench.2 immutable CHECK-only.
-Следующий PR83 готовит authoring configured installable payload; network INSTALL/
-Flash peaks/production budget ещё открыты. Никакого self-merge/publication.
+Текущий P1: main08932ee/PR #80–83 слиты, owner-key bench.3 опубликован.
+Signed INSTALL798checks/error0/короткий self-tested ota_0 boot наблюдались;
+полный bench/Flash/VALID readback ещё не PASS. На ESP32 после closed return fecc05d.
+Следующий PR исправляет RGB/progress jitter с обоими SDK/tests и новым стендом.
+По новому указанию владельца при успехе оставлять новый проверенный релиз.
+Local install_reviewed AND signed installable, оба default false, UI double gate,
+worker12288, floors/TLS/timeouts/recovery/native rollback прежние. Immutable
+bench.2/bench.3 и original CHECK-only context не менять. Bench contexts ограничены
+25ноября08:00 Asia/Almaty, не production policy. Читать docs/NEXT_STAGE.md от корня.
+Ниже датированные факты — история; технические ограничения сохраняются.
+
+
 
 Текущий отдельный результат: local trust перед pending confirmation (docs/plans/P1_PENDING_TRUST.md от корня).
 Не подтверждать новый OTA-slot без рабочего локального context; factory recovery

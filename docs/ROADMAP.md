@@ -1,22 +1,17 @@
 # План реализации TV4-CNC: функциональные приоритеты P0–P5
 
-## Актуально: INSTALL gates и full signed CHECK 3b09bba — PASS
+## Актуальная очередь после PR #80–83
 
-[Стенд новой политики](evidence/hardware/2026-11-24-esp32-install-policy-3b09bba/README.md)
-закрыт за1094,730s: fresh16MiB/two-NVMe → control38checks/UART90 → один полный
-signed CHECK406checks/error0/UART420 → весь factory fecc05d/verify/UART30 PASS.
-Local install_reviewed=false и legacy signed installable=false; INSTALL закрыт.
-SESSION local min internal99371/largest63488, остаток stack6912/12288; touch2–15ms/
-errors0. Source CI30/main15,274 host/sanitizers/analyzer, четыре owner CHECK-only
-ELF и два software-only positive compiler fixtures обоих SDK PASS. На платах
-fecc05d и ee7d179; ни один закрытый пакет не повторять. Raw logs/keys/backups private.
-
-Native boot/rollback a74bfcd уже PASS; P1 ещё требует нового reviewed installable
-payload/публикации и настоящего network INSTALL с ресурсами при Flash writes.
-Published bench.2 immutable CHECK-only. Physical UI/FPS/latency, runtime5.3.2,
-Wi-Fi/power loss и production budget не приняты. [PR #82](https://github.com/avlyubimov/TV4-CNC/pull/82)
-не слит. Следующая отдельная authoring интеграция — [PR #83](https://github.com/avlyubimov/TV4-CNC/pull/83).
-
+P0 F407 HSI/no-motion образ и базовый стенд закрыты, physical I/O не разрешён.
+P1: [owner-key bench.3 опубликован](evidence/build/esp32-ota-install-bench3/README.md),
+оба SDK/main15/tag15 CI PASS. [Реальный signed INSTALL798checks/error0 и короткий
+boot ota_0](evidence/hardware/2026-11-24-esp32-install-bench3/README.md) наблюдались;
+полный плановый стенд/readback/VALID/длительная новая загрузка ещё не приняты.
+Следующий результат — исправить дёргание RGB/прогресса при записи, проверить на
+плате и оставить проверенный новый релиз по изменённому указанию владельца.
+Затем P1 fault/rollback/Wi-Fi/power-loss, P2 reproducibility/production release gates.
+P3 physical CAN → P4 F407 CAN OTA → P5 motion сохраняют свои аппаратные blockers.
+Точные критерии — [NEXT_STAGE](NEXT_STAGE.md); ниже история этапов.
 
 ## История: native pending confirmation/refusal/rollback a74bfcd — PASS
 

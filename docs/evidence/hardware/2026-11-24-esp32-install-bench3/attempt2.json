@@ -1,0 +1,159 @@
+{
+  "schema": 1,
+  "source_commit": "08932ee4ef57e585d0101d90cc54800d6e87ae3b",
+  "session_closed": true,
+  "bench_observation_pass": false,
+  "outcome": "INCOMPLETE: no operator CHECK within 180 seconds",
+  "elapsed_seconds": 858.7210113819997,
+  "maximum_seconds": 1800,
+  "check_wait_seconds": 180,
+  "install_wait_seconds": 360,
+  "control": {
+    "boot_checks": {
+      "expected_app": true,
+      "expected_sdk": true,
+      "expected_partition_boot": true,
+      "single_app_boot": true,
+      "psram_8mib": true,
+      "psram_sdk_test": true,
+      "instructions_in_psram": true,
+      "rodata_in_psram": true,
+      "rgb_initialized": true,
+      "gt911_initialized": true,
+      "ui_ready": true,
+      "no_fatal_log": true,
+      "exact_automatic_readonly_completion": true,
+      "no_http_open_failure": true,
+      "periodic_resources": true,
+      "resource_errors_clear": true,
+      "touch_fresh": true,
+      "increasing_uptime": true,
+      "heap_samples_consistent": true,
+      "comparable_wifi_load": true,
+      "optional_services_started": true,
+      "explicit_self_test": true,
+      "complete_startup": true,
+      "single_complete_boot_window": true,
+      "startup_scope": true,
+      "phase_times_ordered": true,
+      "nonzero_measured_stacks": true,
+      "phase_heap_samples_consistent": true,
+      "worker_stack_published": true,
+      "nonzero_valid_periodic_stack": true,
+      "explicit_stack_mode": true,
+      "worker_watermarks_within_request": true,
+      "adequate_periodic_samples": true,
+      "no_unexpected_network_probe": true,
+      "no_network_windows": true,
+      "no_early_check_request": true,
+      "no_unexpected_dma_hook": true
+    },
+    "observation_pass": true,
+    "periodic_sample_count": 16,
+    "internal_free_min": 120603,
+    "internal_largest_min": 63488,
+    "psram_free_min": 5982020,
+    "touch_age_max_ms": 5,
+    "touch_errors_max": 0,
+    "wifi_ip_event_observed": true,
+    "ota_stack_min": 10880
+  },
+  "completed_session_reports": [],
+  "completed_service_reports": [],
+  "network_install_started": false,
+  "network_install_completion_observed": false,
+  "operator_unavailable_reported": true,
+  "snapshot_bytes": 16777216,
+  "snapshot_device_md5_verified": true,
+  "independent_snapshot_copies_verified": true,
+  "writes": [
+    {
+      "role": "baseline",
+      "offset": 65536,
+      "bytes": 1602176,
+      "verified": true,
+      "outside_preserved": true
+    },
+    {
+      "role": "return-factory",
+      "offset": 65536,
+      "bytes": 2097152,
+      "verified": true,
+      "outside_preserved": true
+    },
+    {
+      "role": "return-ota0",
+      "offset": 2228224,
+      "bytes": 3145728,
+      "verified": true,
+      "outside_preserved": true
+    },
+    {
+      "role": "return-otadata",
+      "offset": 2162688,
+      "bytes": 8192,
+      "verified": true,
+      "outside_preserved": true
+    }
+  ],
+  "uart_capture_attempts": 3,
+  "metadata_observations": {
+    "original-erased": [
+      {
+        "erased": true
+      },
+      {
+        "erased": true
+      }
+    ],
+    "returned-factory-selection": [
+      {
+        "erased": true
+      },
+      {
+        "erased": true
+      }
+    ]
+  },
+  "factory_ota0_otadata_return_verified": true,
+  "return_observation": {
+    "boot_checks": {
+      "expected_app": true,
+      "expected_sdk": true,
+      "expected_partition_boot": true,
+      "single_app_boot": true,
+      "psram_8mib": true,
+      "psram_sdk_test": true,
+      "instructions_in_psram": true,
+      "rodata_in_psram": true,
+      "rgb_initialized": true,
+      "gt911_initialized": true,
+      "ui_ready": true,
+      "no_fatal_log": true,
+      "exact_automatic_readonly_completion": true,
+      "no_http_open_failure": true,
+      "periodic_resources": true,
+      "resource_errors_clear": true,
+      "touch_fresh": true,
+      "increasing_uptime": true,
+      "heap_samples_consistent": true,
+      "no_unexpected_network_probe": true,
+      "no_unexpected_dma_hook": true
+    },
+    "observation_pass": true,
+    "periodic_sample_count": 4,
+    "internal_free_min": 22759,
+    "internal_largest_min": 7680,
+    "psram_free_min": 6090732,
+    "touch_age_max_ms": 10,
+    "touch_errors_max": 0,
+    "wifi_ip_event_observed": true,
+    "ota_stack_min": 0
+  },
+  "full_recovery_attempts": 0,
+  "left_running": "fecc05d-rev12-ota-factory",
+  "efuse_option_bytes_written": false,
+  "stm32_can_motion_accessed": false,
+  "production_resource_qualified": false,
+  "physical_fps_latency_measured": false
+}
