@@ -1,17 +1,25 @@
 # HMI ESP32-S3
 
-P1 добавляет отдельный `rev12-ota`: настоящий SDK inactive installer, self-test/
-rollback, экран OTA и prepare/verify USB migration bundle. Владелец выбрал
-настройку **без ключа**, поэтому установка закрыта. После отдельно разрешённой
-миграции22ноября на плате fecc05d/rev12-ota/factory и карта tv4-16m-ab-v1;
-XiP/PSRAM8MiB/GT911/UI и owner saved Wi-Fi/SETUP PASS. [Аппаратный отчёт](../../docs/evidence/hardware/2026-11-22-esp32-ota-migration/README.md).
-Configured OTA/rollback/resources/performance ещё не приняты; historical internal
-minimum112bytes требует разбора. Обычные конфигурации в исходниках по-прежнему
-legacy factory2MiB: их flash поверх действующей A/B-карты не выполнять.
-[Инструкция и аппаратные границы](../../docs/ESP32_OTA_INSTALLATION.md),
-[план](../../docs/plans/P1_ESP32_OTA.md). Предыдущие описания read-only относятся
-к ordinary profiles и историческим этапам; ни один build script не прошивает.
+## Актуальный стенд, 24 ноября 2026
 
+На Waveshare оставлен **bench.4, OTA1 VALID**, подписанный исходный образ
+`6c7b1d5` / ESP-IDF 6.1.1, схема tv4-16m-ab-v1 (factory + два OTA-слота).
+Проверены signed network INSTALL, self-test/VALID, reset rollback/factory и
+[CANCEL после частичной записи](../../docs/evidence/hardware/2026-11-24-esp32-partial-cancel/README.md).
+Неполный неактивный OTA1 не выбран для загрузки; весь known-good OTA1 и его
+исходные метаданные восстановлены, final16MiB/readback/two-NVMe PASS.
+Ключ и контекст настроены только локально; ключи и дампы в Git не хранятся.
+
+В исходниках данного этапа отмена показывает «Обновление отменено» с прежними
+state/error codes, gates и 5 Hz coalescing. Это изменение проверено host/LVGL,
+на плату пока не установлено. Будущий релиз требует отдельного согласования.
+Physical Wi-Fi/power-loss, production budgets/policy и runtime5.3.2/FPS/latency
+ещё не квалифицированы. [Активный этап](../../docs/NEXT_STAGE.md),
+[аппаратный статус](../../docs/HARDWARE_STATUS.md).
+
+Обычные headless/rev12/memory-bench/tls-bench сохраняют legacy factory2MiB.
+Их flash поверх действующей A/B-разметки не выполнять. Build scripts только
+собирают и проверяют, сами устройства не прошивают.
 
 Поддерживаемые SDK: **ESP-IDF 6.1.1** и проверенный резерв **5.3.2**.
 Оба профиля собираются; изображение HMI наблюдалось на плате по фото владельца.

@@ -37,6 +37,13 @@ jobs:
           test -s docs/plans/P1_PENDING_TRUST.md
           test -s docs/plans/P1_INSTALL_POLICY.md
           test -s docs/plans/P1_INSTALLABLE_BUNDLE.md
+          test -s docs/plans/P1_PARTIAL_CANCEL.md
+          test -s docs/evidence/build/esp32-ota-partial-cancel/README.md
+          for receipt in results source-ci; do
+            python3 -m json.tool "docs/evidence/build/esp32-ota-partial-cancel/$receipt.json" > /dev/null
+          done
+          test -s docs/evidence/hardware/2026-11-24-esp32-partial-cancel/README.md
+          python3 -m json.tool docs/evidence/hardware/2026-11-24-esp32-partial-cancel/measurements.json > /dev/null
           test -s docs/plans/P1_RESET_ROLLBACK.md
           test -s docs/evidence/build/esp32-ota-reset-rollback/README.md
           for receipt in results source-ci; do

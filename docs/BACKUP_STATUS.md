@@ -1,5 +1,16 @@
 # Резервные копии ESP32 — заводская и перед миграцией OTA
 
+## Текущий checkpoint после partial CANCEL, 24 ноября 2026
+
+[Реальный стенд](evidence/hardware/2026-11-24-esp32-partial-cancel/README.md) PASS.
+Частичный OTA1 не выбран для загрузки. Восстановлены весь исходный OTA1 и затем
+original dual-VALID otadata; на ESP32 оставлен bench.4. Итоговые 16 МиБ реально
+считаны, device MD5 / равенство всего вне NVS / SHA-256 и две копии на разных
+физических NVMe с fsync и правами 0600/0700 PASS. Предварительный снимок был
+целиком revalidated со свежим NVS, не новое полное предварительное чтение.
+Прежние snapshots сохранены. Новые приватные hashes/dumps/NVS/UART не публикуются;
+следующий пакет обязан сверить актуальный checkpoint и свежий NVS.
+
 ## Текущий checkpoint после reset/rollback, 24 ноября 2026
 
 [Стенд](evidence/hardware/2026-11-24-esp32-reset-rollback/README.md) PASS:

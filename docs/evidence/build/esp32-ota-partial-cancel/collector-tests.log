@@ -1,0 +1,12 @@
+test_complete_check_then_cancel_and_healthy_wait (__main__.Collector.test_complete_check_then_cancel_and_healthy_wait) ... ok
+test_early_and_late_windows_bound_missing_operator (__main__.Collector.test_early_and_late_windows_bound_missing_operator) ... ok
+test_full_transaction_requires_both_cleanup_windows_and_fresh_samples (__main__.Collector.test_full_transaction_requires_both_cleanup_windows_and_fresh_samples) ... ok
+test_installed_instead_of_cancel_never_passes (__main__.Collector.test_installed_instead_of_cancel_never_passes) ... ok
+test_partial_lines_never_advance_before_complete (__main__.Collector.test_partial_lines_never_advance_before_complete) ... ok
+test_resource_failure_not_misclassified_as_cancel (__main__.Collector.test_resource_failure_not_misclassified_as_cancel) ... ok
+test_state_order_repeat_and_fatal_refused (__main__.Collector.test_state_order_repeat_and_fatal_refused) ... ok
+
+----------------------------------------------------------------------
+Ran 7 tests in 0.007s
+
+OK

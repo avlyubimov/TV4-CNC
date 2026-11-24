@@ -88,8 +88,9 @@ static void worker_stack(void) {
     uint32_t stack=uxTaskGetStackHighWaterMark(NULL);
     portENTER_CRITICAL(&mux);status.stack_watermark=stack;status.stack_valid=true;portEXIT_CRITICAL(&mux);
 }
+_Static_assert(TV4_UPDATE_CANCELLED_ERROR==TV4_SESSION_CANCEL+4,"UI cancellation code must match the session result");
 static void publish(tv4_update_state state,unsigned error) {
-    portENTER_CRITICAL(&mux);if(state==TV4_UPDATE_READY && cancel_requested) {state=TV4_UPDATE_ERROR;error=TV4_SESSION_CANCEL+4;}
+    portENTER_CRITICAL(&mux);if(state==TV4_UPDATE_READY && cancel_requested) {state=TV4_UPDATE_ERROR;error=TV4_UPDATE_CANCELLED_ERROR;}
     status.state=state;status.error=error;portEXIT_CRITICAL(&mux);
 }
 static bool commit(void *c) {
