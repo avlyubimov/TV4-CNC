@@ -137,6 +137,7 @@ void firmware_view_ota_update(firmware_view_t *v,const tv4_update_snapshot *s) {
     if(v->confirm)lv_label_set_text(v->update_state,tr(NULL,S_OTA_CONFIRM_NOTE));
     else if(s->state==TV4_UPDATE_READY)lv_label_set_text_fmt(v->update_state,tr(NULL,S_OTA_READY),s->version,(unsigned long)((s->total+1023)/1024));
     else if(s->state==TV4_UPDATE_WRITING)lv_label_set_text_fmt(v->update_state,tr(NULL,S_OTA_WRITING),(unsigned long)received_kib(s),(unsigned long)((s->total+1023)/1024));
+    else if(s->state==TV4_UPDATE_ERROR && s->error==TV4_UPDATE_CANCELLED_ERROR)lv_label_set_text(v->update_state,tr(NULL,S_OTA_CANCELLED));
     else lv_label_set_text(v->update_state,tr(NULL,s->state<=TV4_UPDATE_BOOT_FAILED?states[s->state]:S_OTA_ERROR));
     bool allow[]={s->state==TV4_UPDATE_IDLE || s->state==TV4_UPDATE_READY || s->state==TV4_UPDATE_ERROR,
         (s->state==TV4_UPDATE_READY && s->install_allowed) || s->state==TV4_UPDATE_RESTART,

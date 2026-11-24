@@ -1,0 +1,171 @@
+{
+  "source_commit": "5cacc6fd26562fa5c593b79b759b856b05ef6afe",
+  "all_success": true,
+  "jobs": [
+    {
+      "kind": "main",
+      "run_id": 45449010860,
+      "event": "push",
+      "workflow": "Documentation checks",
+      "id": 138640630708,
+      "name": "check",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/avlyubimov/TV4-CNC/actions/runs/45449010860/job/138640630708"
+    },
+    {
+      "kind": "main",
+      "run_id": 45449010771,
+      "event": "push",
+      "workflow": "STM32 foundation (no hardware)",
+      "id": 138640631020,
+      "name": "arm-core",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/avlyubimov/TV4-CNC/actions/runs/45449010771/job/138640631020"
+    },
+    {
+      "run_id": 45449010968,
+      "kind": "main",
+      "event": "push",
+      "workflow": "ESP-IDF compatibility",
+      "id": 138640631031,
+      "name": "build (6.1.1, headless)",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/avlyubimov/TV4-CNC/actions/runs/45449010968/job/138640631031"
+    },
+    {
+      "run_id": 45449010968,
+      "kind": "main",
+      "event": "push",
+      "workflow": "ESP-IDF compatibility",
+      "id": 138640631416,
+      "name": "build (5.3.2, rev12-tls-bench)",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/avlyubimov/TV4-CNC/actions/runs/45449010968/job/138640631416"
+    },
+    {
+      "run_id": 45449010968,
+      "kind": "main",
+      "event": "push",
+      "workflow": "ESP-IDF compatibility",
+      "id": 138640631498,
+      "name": "build (5.3.2, headless)",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/avlyubimov/TV4-CNC/actions/runs/45449010968/job/138640631498"
+    },
+    {
+      "run_id": 45449010968,
+      "kind": "main",
+      "event": "push",
+      "workflow": "ESP-IDF compatibility",
+      "id": 138640631563,
+      "name": "build (6.1.1, rev12-tls-bench)",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/avlyubimov/TV4-CNC/actions/runs/45449010968/job/138640631563"
+    },
+    {
+      "run_id": 45449010968,
+      "kind": "main",
+      "event": "push",
+      "workflow": "ESP-IDF compatibility",
+      "id": 138640631669,
+      "name": "build (6.1.1, rev12)",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/avlyubimov/TV4-CNC/actions/runs/45449010968/job/138640631669"
+    },
+    {
+      "run_id": 45449010968,
+      "kind": "main",
+      "event": "push",
+      "workflow": "ESP-IDF compatibility",
+      "id": 138640631686,
+      "name": "build (5.3.2, rev12-memory-bench)",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/avlyubimov/TV4-CNC/actions/runs/45449010968/job/138640631686"
+    },
+    {
+      "run_id": 45449010968,
+      "kind": "main",
+      "event": "push",
+      "workflow": "ESP-IDF compatibility",
+      "id": 138640631721,
+      "name": "build (6.1.1, rev12-ota)",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/avlyubimov/TV4-CNC/actions/runs/45449010968/job/138640631721"
+    },
+    {
+      "run_id": 45449010968,
+      "kind": "main",
+      "event": "push",
+      "workflow": "ESP-IDF compatibility",
+      "id": 138640631740,
+      "name": "build (5.3.2, rev12-ota)",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/avlyubimov/TV4-CNC/actions/runs/45449010968/job/138640631740"
+    },
+    {
+      "run_id": 45449010968,
+      "kind": "main",
+      "event": "push",
+      "workflow": "ESP-IDF compatibility",
+      "id": 138640631907,
+      "name": "build (5.3.2, rev12)",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/avlyubimov/TV4-CNC/actions/runs/45449010968/job/138640631907"
+    },
+    {
+      "run_id": 45449010968,
+      "kind": "main",
+      "event": "push",
+      "workflow": "ESP-IDF compatibility",
+      "id": 138640632181,
+      "name": "build (6.1.1, rev12-memory-bench)",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/avlyubimov/TV4-CNC/actions/runs/45449010968/job/138640632181"
+    },
+    {
+      "kind": "main",
+      "run_id": 45449010864,
+      "event": "push",
+      "workflow": "STM32 image admission (no hardware)",
+      "id": 138640630243,
+      "name": "crypto-arm",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/avlyubimov/TV4-CNC/actions/runs/45449010864/job/138640630243"
+    },
+    {
+      "kind": "main",
+      "run_id": 45449010873,
+      "event": "push",
+      "workflow": "Host logic and LVGL render",
+      "id": 138640631004,
+      "name": "host (false)",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/avlyubimov/TV4-CNC/actions/runs/45449010873/job/138640631004"
+    },
+    {
+      "kind": "main",
+      "run_id": 45449010873,
+      "event": "push",
+      "workflow": "Host logic and LVGL render",
+      "id": 138640631523,
+      "name": "host (true)",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/avlyubimov/TV4-CNC/actions/runs/45449010873/job/138640631523"
+    }
+  ]
+}

@@ -2,25 +2,22 @@
 
 ## Проверенное состояние, 24 ноября 2026
 
-На Waveshare оставлен **bench.4, OTA1 VALID**, подписанный образ `6c7b1d5`
-на ESP-IDF 6.1.1. [Сетевая установка](docs/evidence/hardware/2026-11-24-esp32-display-bench4/README.md)
-и [rollback после сброса / восстановление через factory](docs/evidence/hardware/2026-11-24-esp32-reset-rollback/README.md)
-прошли. Исходные записи VALID обоих слотов восстановлены; полное чтение
-16 МиБ подтвердило неизменность всего вне рабочего NVS. Две копии на разных
-NVMe проверены. Владелец подтвердил экран, касания и Wi-Fi после стенда.
+На Waveshare оставлен **bench.4, OTA1 VALID** (`6c7b1d5`, ESP-IDF 6.1.1).
+Проверены [сетевая установка](docs/evidence/hardware/2026-11-24-esp32-display-bench4/README.md),
+[rollback и factory recovery](docs/evidence/hardware/2026-11-24-esp32-reset-rollback/README.md),
+[отмена после частичной записи](docs/evidence/hardware/2026-11-24-esp32-partial-cancel/README.md).
+После CANCEL полный исходный образ восстановлен; все 16 МиБ считаны и сверены
+вне NVS, две копии на разных NVMe проверены. Неактивный неполный образ не выбран
+для загрузки. Исполняемая прошивка и опубликованный релиз прежние.
 
-[Программные проверки](docs/evidence/build/esp32-ota-reset-rollback/README.md):
-274 host, 274 ASan/UBSan/LSan и 36 проверок процедуры PASS. Исполняемая
-прошивка и [опубликованный bench.4](https://github.com/avlyubimov/TV4-CNC/releases/tag/v0.1.0-bench.4)
-не менялись. Три записи стенда затронули только otadata, полный restore
-не потребовался. Factory fecc05d сохранён для восстановления.
-
-Далее P1: отрицательные сетевые сценарии, отмена, потеря Wi-Fi/питания,
-производственная политика и ресурсы; P2: воспроизводимость сборок. Стендовые
-контексты только до 25 ноября 2026, 08:00 Asia/Almaty. Runtime 5.3.2,
-численные FPS и задержка касания не измерены; физические CAN/движение
-не приняты. [Следующий этап](docs/NEXT_STAGE.md), [аппаратный статус](docs/HARDWARE_STATUS.md),
-[резервные копии](docs/BACKUP_STATUS.md).
+[Тесты](docs/evidence/build/esp32-ota-partial-cancel/README.md): 274 host,
+274 ASan/UBSan/LSan и 24 проверки процедуры PASS, включая 56 новых host-сценариев
+отмены/обрыва после частичной записи. Физический обрыв Wi-Fi/питания, production
+policy/budget и P2 reproducibility остаются следующими этапами. Контексты только
+до 25 ноября 2026, 08:00 Asia/Almaty. Runtime 5.3.2, FPS/задержка касания,
+physical CAN/motion ещё не приняты. UI source fix «Обновление отменено» прошёл
+тесты LVGL/сервиса и требует будущего согласованного релиза для установки. [Следующий этап](docs/NEXT_STAGE.md),
+[аппаратный статус](docs/HARDWARE_STATUS.md), [бэкапы](docs/BACKUP_STATUS.md).
 
 ## История программной подготовки
 

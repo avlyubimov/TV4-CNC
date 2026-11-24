@@ -86,7 +86,10 @@ BaseType_t xQueueReceive(QueueHandle_t queue,void *out,uint32_t wait) {
     else if(local_ready() && SERVICE_TEST_SIGNED_BENCH) {
         assert(summaries==1);
         if(is("success")) {assert(state.state==TV4_UPDATE_READY && !state.error && !strcmp(state.version,"0.1.0-bench.2"));}
-        else assert(state.state==TV4_UPDATE_ERROR && state.error);
+        else {
+            assert(state.state==TV4_UPDATE_ERROR && state.error);
+            if(is("cancel-session"))assert(state.error==TV4_UPDATE_CANCELLED_ERROR);
+        }
     }else assert(state.state==(local_ready()?TV4_UPDATE_IDLE:TV4_UPDATE_SETUP) && !state.error);
     assert(state.stack_valid && state.stack_watermark==requested-256);
     if(!local_ready() || SERVICE_TEST_SIGNED_BENCH || !boot_ok())commands_blocked();

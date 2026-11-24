@@ -1,0 +1,415 @@
+{
+  "schema": 1,
+  "qualification_base": "5cacc6fd26562fa5c593b79b759b856b05ef6afe",
+  "firmware_source": "6c7b1d56769fe8a084c4360e6c2df4bb594f58fa",
+  "session_closed": true,
+  "bench_observation_pass": true,
+  "elapsed_seconds": 965.0721359620002,
+  "maximum_seconds": 1800,
+  "owner_pressed_cancel_after_kib": true,
+  "owner_final_ui_confirmation": {
+    "main_screen": true,
+    "touch": true,
+    "wifi": true
+  },
+  "partial_flash": {
+    "candidate_bytes": 1600464,
+    "matching_prefix_bytes": 61440,
+    "not_complete": true,
+    "tail_erased": true,
+    "whole_slot_read_bytes": 3145728
+  },
+  "metadata_observations": {
+    "original-dual-valid": [
+      {
+        "sequence": 1,
+        "state": 2,
+        "crc": 1195612314,
+        "slot": 0,
+        "erased": false
+      },
+      {
+        "sequence": 2,
+        "state": 2,
+        "crc": 1442199412,
+        "slot": 1,
+        "erased": false
+      }
+    ],
+    "receiver-selected": [
+      {
+        "sequence": 1,
+        "state": 2,
+        "crc": 1195612314,
+        "slot": 0,
+        "erased": false
+      },
+      {
+        "erased": true
+      }
+    ],
+    "after-cancel-selection": [
+      {
+        "sequence": 1,
+        "state": 2,
+        "crc": 1195612314,
+        "slot": 0,
+        "erased": false
+      },
+      {
+        "erased": true
+      }
+    ],
+    "original-selection-restored": [
+      {
+        "sequence": 1,
+        "state": 2,
+        "crc": 1195612314,
+        "slot": 0,
+        "erased": false
+      },
+      {
+        "sequence": 2,
+        "state": 2,
+        "crc": 1442199412,
+        "slot": 1,
+        "erased": false
+      }
+    ],
+    "confirmed-bench4": [
+      {
+        "sequence": 1,
+        "state": 2,
+        "crc": 1195612314,
+        "slot": 0,
+        "erased": false
+      },
+      {
+        "sequence": 2,
+        "state": 2,
+        "crc": 1442199412,
+        "slot": 1,
+        "erased": false
+      }
+    ]
+  },
+  "normal_host_writes": [
+    {
+      "role": "select-receiver",
+      "offset": 2162688,
+      "bytes": 8192,
+      "verified": true,
+      "outside_preserved": true
+    },
+    {
+      "role": "restore-image",
+      "offset": 5373952,
+      "bytes": 3145728,
+      "verified": true,
+      "outside_preserved": true
+    },
+    {
+      "role": "restore-selection",
+      "offset": 2162688,
+      "bytes": 8192,
+      "verified": true,
+      "outside_preserved": true
+    }
+  ],
+  "uart_capture_attempts": 5,
+  "full_recovery_attempts": 0,
+  "active_ota0_unchanged": true,
+  "all_non_nvs_flash_unchanged": true,
+  "pre_snapshot_method": "previous actual full read + fresh NVS24KiB + whole-device MD5",
+  "pre_actual_nvs_read_bytes": 24576,
+  "pre_two_physical_copies_verified": true,
+  "final_actual_read_bytes": 16777216,
+  "final_two_physical_copies_verified": true,
+  "left_running": "0.1.0-bench.4-ota1-valid",
+  "operator_timing": {
+    "seconds": 117.43630028899861,
+    "check_wait_seconds": 52.790666798999155,
+    "cancel_after_check_seconds": 19.583317527998588
+  },
+  "session_results": [
+    {
+      "state": 6,
+      "error": 0,
+      "http": 0,
+      "policy": 0,
+      "image": 0,
+      "resource": 0,
+      "checks": 9,
+      "internal": 118867,
+      "largest": 63488,
+      "psram": 5941132,
+      "psram_largest": 5898240,
+      "stack": 7056
+    },
+    {
+      "state": 9,
+      "error": 6,
+      "http": 11,
+      "policy": 0,
+      "image": 0,
+      "resource": 0,
+      "checks": 41,
+      "internal": 106079,
+      "largest": 63488,
+      "psram": 5919004,
+      "psram_largest": 5898240,
+      "stack": 7056
+    }
+  ],
+  "service_results": [
+    {
+      "stage": 5,
+      "error": 0,
+      "internal": 118923,
+      "psram": 5975980,
+      "stack": 7056
+    },
+    {
+      "stage": 9,
+      "error": 10,
+      "internal": 118739,
+      "psram": 5976012,
+      "stack": 7056
+    }
+  ],
+  "memory_windows": [
+    {
+      "window": 2,
+      "start_result": 0,
+      "stop_result": 0,
+      "complete": 1
+    },
+    {
+      "window": 3,
+      "start_result": 0,
+      "stop_result": 0,
+      "complete": 1
+    },
+    {
+      "window": 4,
+      "start_result": 0,
+      "stop_result": 0,
+      "complete": 1
+    },
+    {
+      "window": 5,
+      "start_result": 0,
+      "stop_result": 0,
+      "complete": 1
+    },
+    {
+      "window": 2,
+      "start_result": 0,
+      "stop_result": 0,
+      "complete": 1
+    },
+    {
+      "window": 3,
+      "start_result": 0,
+      "stop_result": 0,
+      "complete": 1
+    },
+    {
+      "window": 4,
+      "start_result": 0,
+      "stop_result": 0,
+      "complete": 1
+    },
+    {
+      "window": 5,
+      "start_result": 0,
+      "stop_result": 0,
+      "complete": 1
+    }
+  ],
+  "memory_window_minima": [
+    {
+      "id": 2,
+      "internal": 119835,
+      "minimum": 119835,
+      "largest": 63488,
+      "psram": 5939784,
+      "psram_min": 5939648,
+      "psram_largest": 5898240,
+      "sample_stack": 10704,
+      "worker_stack_at_emit": 10400
+    },
+    {
+      "id": 3,
+      "internal": 119407,
+      "minimum": 117359,
+      "largest": 63488,
+      "psram": 5941132,
+      "psram_min": 5938228,
+      "psram_largest": 5898240,
+      "sample_stack": 10032,
+      "worker_stack_at_emit": 10032
+    },
+    {
+      "id": 4,
+      "internal": 118867,
+      "minimum": 99099,
+      "largest": 63488,
+      "psram": 5941132,
+      "psram_min": 5904284,
+      "psram_largest": 5898240,
+      "sample_stack": 7056,
+      "worker_stack_at_emit": 7056
+    },
+    {
+      "id": 5,
+      "internal": 118887,
+      "minimum": 118887,
+      "largest": 63488,
+      "psram": 5975952,
+      "psram_min": 5941132,
+      "psram_largest": 5898240,
+      "sample_stack": 7056,
+      "worker_stack_at_emit": 7056
+    },
+    {
+      "id": 2,
+      "internal": 118887,
+      "minimum": 118759,
+      "largest": 63488,
+      "psram": 5939572,
+      "psram_min": 5939572,
+      "psram_largest": 5898240,
+      "sample_stack": 7056,
+      "worker_stack_at_emit": 7056
+    },
+    {
+      "id": 3,
+      "internal": 118887,
+      "minimum": 116863,
+      "largest": 63488,
+      "psram": 5939840,
+      "psram_min": 5938244,
+      "psram_largest": 5898240,
+      "sample_stack": 7056,
+      "worker_stack_at_emit": 7056
+    },
+    {
+      "id": 4,
+      "internal": 118867,
+      "minimum": 100119,
+      "largest": 63488,
+      "psram": 5941164,
+      "psram_min": 5904124,
+      "psram_largest": 5898240,
+      "sample_stack": 7056,
+      "worker_stack_at_emit": 7056
+    },
+    {
+      "id": 5,
+      "internal": 118867,
+      "minimum": 118867,
+      "largest": 63488,
+      "psram": 5975984,
+      "psram_min": 5941164,
+      "psram_largest": 5898240,
+      "sample_stack": 7056,
+      "worker_stack_at_emit": 7056
+    }
+  ],
+  "session_local_minimum_internal": 99099,
+  "session_local_minimum_psram": 5904124,
+  "minimum_operation_stack": 7056,
+  "maximum_transaction_touch_age_ms": 12,
+  "boots": {
+    "current-bench4": {
+      "observation_pass": true,
+      "sample_count": 4,
+      "first_uptime_ms": 6356,
+      "last_uptime_ms": 21365,
+      "maximum_touch_age_ms": 9,
+      "minimum_internal_free": 120235,
+      "minimum_internal_largest": 63488,
+      "minimum_psram_free": 5982932,
+      "maximum_error_counters": {
+        "queue_drops": 0,
+        "display_errors": 0,
+        "export_drops": 0,
+        "wifi_queue_drops": 0,
+        "touch_errors": 0,
+        "watchdog_boot": 0
+      },
+      "saved_wifi_ip_observed": true,
+      "configured_selftest_checked": true
+    },
+    "receiver-control": {
+      "observation_pass": true,
+      "sample_count": 16,
+      "first_uptime_ms": 7404,
+      "last_uptime_ms": 82406,
+      "maximum_touch_age_ms": 8,
+      "minimum_internal_free": 119703,
+      "minimum_internal_largest": 63488,
+      "minimum_psram_free": 5982528,
+      "maximum_error_counters": {
+        "queue_drops": 0,
+        "display_errors": 0,
+        "export_drops": 0,
+        "wifi_queue_drops": 0,
+        "touch_errors": 0,
+        "watchdog_boot": 0
+      },
+      "saved_wifi_ip_observed": true,
+      "configured_selftest_checked": true
+    },
+    "restored-bench4": {
+      "observation_pass": true,
+      "sample_count": 16,
+      "first_uptime_ms": 6363,
+      "last_uptime_ms": 81385,
+      "maximum_touch_age_ms": 14,
+      "minimum_internal_free": 120251,
+      "minimum_internal_largest": 63488,
+      "minimum_psram_free": 5983028,
+      "maximum_error_counters": {
+        "queue_drops": 0,
+        "display_errors": 0,
+        "export_drops": 0,
+        "wifi_queue_drops": 0,
+        "touch_errors": 0,
+        "watchdog_boot": 0
+      },
+      "saved_wifi_ip_observed": true,
+      "configured_selftest_checked": true
+    },
+    "left-running-bench4": {
+      "observation_pass": true,
+      "sample_count": 4,
+      "first_uptime_ms": 6424,
+      "last_uptime_ms": 21437,
+      "maximum_touch_age_ms": 12,
+      "minimum_internal_free": 120251,
+      "minimum_internal_largest": 63488,
+      "minimum_psram_free": 5982980,
+      "maximum_error_counters": {
+        "queue_drops": 0,
+        "display_errors": 0,
+        "export_drops": 0,
+        "wifi_queue_drops": 0,
+        "touch_errors": 0,
+        "watchdog_boot": 0
+      },
+      "saved_wifi_ip_observed": true,
+      "configured_selftest_checked": true
+    }
+  },
+  "physical_wifi_loss_tested": false,
+  "physical_power_loss_tested": false,
+  "production_budget_qualified": false,
+  "physical_fps_latency_measured": false,
+  "installed_image_changed": false,
+  "ui_text_fix_installed": false,
+  "ui_text_fix_host_render_qualified": true,
+  "new_release_published": false,
+  "efuse_option_bytes_stm32_can_motion_accessed": false
+}

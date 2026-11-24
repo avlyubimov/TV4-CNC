@@ -185,6 +185,11 @@ static void ota_progress_checks(firmware_view_t *view) {
     assert(!strcmp(lv_label_get_text(view->caption[1]),tr(NULL,S_OTA_REBOOT)) && !lv_obj_has_state(view->action[1],LV_STATE_DISABLED));
     ota_sample.state=TV4_UPDATE_ERROR;ota_sample.error=3;firmware_view_ota_update(view,&ota_sample);
     assert(!strcmp(lv_label_get_text(view->update_state),tr(NULL,S_OTA_ERROR)) && !lv_obj_has_state(view->action[0],LV_STATE_DISABLED));
+    ota_sample.error=TV4_UPDATE_CANCELLED_ERROR;firmware_view_ota_update(view,&ota_sample);
+    assert(!strcmp(lv_label_get_text(view->update_state),tr(NULL,S_OTA_CANCELLED)));
+    assert(!lv_obj_has_state(view->action[0],LV_STATE_DISABLED) && lv_obj_has_state(view->action[1],LV_STATE_DISABLED) && lv_obj_has_state(view->action[2],LV_STATE_DISABLED));
+    lv_refr_now(display);n=(ota_invalidations){0};
+    firmware_view_ota_update(view,&ota_sample);assert(n.total==0);
     lv_tick_inc(UINT32_MAX-lv_tick_get()-100);
     ota_sample.state=TV4_UPDATE_WRITING;ota_sample.received=0;firmware_view_ota_update(view,&ota_sample);
     lv_refr_now(display);n=(ota_invalidations){0};

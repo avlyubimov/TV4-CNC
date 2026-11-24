@@ -1,0 +1,16 @@
+test_empty_full_corrupt_extra_or_short_image_refused (__main__.Partial.test_empty_full_corrupt_extra_or_short_image_refused) ... ok
+test_nonempty_prefix_and_erased_tail (__main__.Partial.test_nonempty_prefix_and_erased_tail) ... ok
+test_exhausted_recovery_reserve_refuses_writes (__main__.Procedure.test_exhausted_recovery_reserve_refuses_writes) ... ok
+test_failed_recovery_never_loops (__main__.Procedure.test_failed_recovery_never_loops) ... ok
+test_faults_restore_original_image_before_original_selection (__main__.Procedure.test_faults_restore_original_image_before_original_selection) ... ok
+test_prewrite_refusals_never_write (__main__.Procedure.test_prewrite_refusals_never_write) ... ok
+test_protected_active_slot_corruption_uses_one_full_recovery (__main__.Procedure.test_protected_active_slot_corruption_uses_one_full_recovery) ... ok
+test_success_partial_write_exact_checkpoint_restored_and_bench4_left (__main__.Procedure.test_success_partial_write_exact_checkpoint_restored_and_bench4_left) ... ok
+test_missing_timer_refuses_read (__main__.Timer.test_missing_timer_refuses_read) ... ok
+test_phase_timeout_never_extends_whole_deadline (__main__.Timer.test_phase_timeout_never_extends_whole_deadline) ... ok
+test_read_success_preserves_whole_deadline (__main__.Timer.test_read_success_preserves_whole_deadline) ... ok
+
+----------------------------------------------------------------------
+Ran 11 tests in 6.378s
+
+OK

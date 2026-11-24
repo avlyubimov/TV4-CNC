@@ -55,7 +55,7 @@ typedef struct {
     unsigned calls,opens,closes,index,fail_call,cancel_call,consumer_call;
     uint32_t now,read_delay;
     bool cancel,expire_auth,cancel_auth;unsigned auth_time_checks,auth_cancel_checks;
-    const uint8_t *body;size_t length,offset,cut;
+    const uint8_t *body;size_t length,offset,cut,disconnect_after;
     tv4_session_state stages[3];
 } server;
 static bool open_stream(void *context,const char *address,uint32_t timeout,tv4_http_response *response) {
@@ -69,6 +69,7 @@ static bool open_stream(void *context,const char *address,uint32_t timeout,tv4_h
 }
 static int read_stream(void *context,uint8_t *bytes,size_t capacity) {
     server *s=context;s->now+=s->read_delay;
+    if(s->index==2 && s->disconnect_after && s->offset>=s->disconnect_after)return -1;
     if(s->calls==s->cancel_call)s->cancel=true;
     size_t end=s->length;if(s->index==2 && s->cut<end)end=s->cut;
     size_t n=s->offset<end?end-s->offset:0;
@@ -208,14 +209,16 @@ static void resource_regressions(void) {
     assert(report.result==TV4_RESOURCE_OK);
     printf("Guarded signed session: resource fault at all %u boundaries, active/cleanup/authenticated candidate revocation PASS\n",boundaries);
 }
-typedef struct {server *server;unsigned begin,write,seal,activate,abort,fail;bool selected,cancel_seal;size_t used;uint8_t bytes[480];} install_fixture;
+typedef struct {server *server;unsigned begin,write,seal,activate,abort,fail;bool selected,cancel_seal;size_t used,cancel_after;uint8_t bytes[480];} install_fixture;
 static bool install_begin(void *v,const tv4_ota_candidate *c) {
     install_fixture *f=v;f->begin++;assert(f->server->calls==2 && c->size_bytes==480 && !strcmp(c->version,"0.2.0"));return f->fail!=1;
 }
 static bool install_write(void *v,const uint8_t *p,size_t n) {
     install_fixture *f=v;f->write++;assert(f->begin==1 && !f->seal && !f->activate && n<=480-f->used);
     if(f->fail==2)return false;
-    memcpy(f->bytes+f->used,p,n);f->used+=n;return true;
+    memcpy(f->bytes+f->used,p,n);f->used+=n;
+    if(f->cancel_after && f->used>=f->cancel_after)f->server->cancel=true;
+    return true;
 }
 static bool install_seal(void *v) {
     install_fixture *f=v;f->seal++;assert(f->used==480 && !memcmp(f->bytes,binary,480));
@@ -275,6 +278,20 @@ static void installation_regressions(void) {
     for(size_t cut=0;cut<sizeof(binary);cut+=17) {
         fixture();s=healthy();s.cut=cut;f=(install_fixture){0};rf=(resource_fixture){.server=&s};
         assert(!installing(&s,&f,&rf,&report) && !f.selected && !f.activate);
+    }
+    /* Interrupt every partial transport chunk after a real sink write. Neither
+     * operator cancellation nor lost transport may seal/select that image. */
+    for(unsigned disconnected=0;disconnected<2;disconnected++)for(size_t cut=17;cut<sizeof(binary);cut+=17) {
+        fixture();s=healthy();f=(install_fixture){0};rf=(resource_fixture){.server=&s};
+        if(disconnected)s.disconnect_after=cut;else f.cancel_after=cut;
+        assert(!installing(&s,&f,&rf,&report));
+        assert(f.used==cut && f.used>0 && f.used<sizeof(binary));
+        assert(!memcmp(f.bytes,binary,cut) && f.begin==1 && f.abort==1);
+        assert(!f.seal && !f.activate && !f.selected && s.opens==3 && s.closes==3);
+        assert(session.result.image_bytes==cut && report.result==TV4_RESOURCE_OK);
+        assert(session.result.state==(disconnected?TV4_SESSION_FAILED:TV4_SESSION_CANCELLED));
+        assert(session.result.error==(disconnected?TV4_SESSION_TRANSPORT:TV4_SESSION_CANCEL));
+        assert(!session.manifest_length && !session.envelope_length && !session.candidate.size_bytes);
     }
     printf("Installer actual signed session: positive + begin/write/seal/activate failures, cancel after seal, digest/signature/transport and %u resource boundaries; no premature boot selection PASS\n",checks);
 }

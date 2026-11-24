@@ -2,24 +2,22 @@
 
 ## Актуальная интеграция P1
 
-HTTPS GitHub → подпись доверенным ключом владельца / совместимость / SHA-256 /
-размер / ресурсные ограничения → неактивный SDK writer → нативные
-NEW/PENDING → self-test → VALID. Local `install_reviewed` AND signed `installable`,
-подтверждение UI в два шага, worker 12288, CA/hostname/date/SNTP, сериализация
-монитора и таймауты сохраняются.
+Подписанный HTTPS INSTALL, native self-test/VALID, reset rollback/factory и
+[CANCEL после частичной записи](evidence/hardware/2026-11-24-esp32-partial-cancel/README.md)
+проверены на неизменяемом source6c7b1d5 / ESP-IDF 6.1.1. Cancel закрыл сессию,
+не выбрал неполный образ; исходный целый OTA1 восстановлен перед его исходными
+VALID метаданными, bench.4 оставлен активным. Это восстановление known-good
+checkpoint, не подтверждение неизвестного кандидата.
 
-[Подписанная сетевая установка bench.4](evidence/hardware/2026-11-24-esp32-display-bench4/README.md)
-и [reset → ABORTED → OTA0 / оба OTA отклонены → factory](evidence/hardware/2026-11-24-esp32-reset-rollback/README.md)
-PASS. Неизменяемый bench.4 `6c7b1d5` оставлен в OTA1 VALID; factory fecc05d
-и принимающий стендовый `.3` в OTA0 сохранены. Восстановление исходных VALID
-метаданных вернуло известный исправный checkpoint, не подтвердило неизвестный
-кандидат. Прошивки и приложения в этом стенде не менялись.
-
-NEW/ABORTED/VALID считаны непосредственно; промежуточный PENDING выведен
-из закреплённого SDK. Это проверка восстановления уже установленного сетевого
-образа. Прерывание новой загрузки, CANCEL, потеря Wi-Fi/питания и производственные
-бюджет/политика остаются отдельными этапами. Старая factory не получает ключ
-или контекст автоматически. [Активный этап](NEXT_STAGE.md); ниже история.
+TLS/подпись/SHA/size/compatibility, local install_reviewed AND signed installable,
+UI double confirmation, worker12288, SNTP policy/floors/timeouts/monitor ownership
+сохранены. Runtime firmware/release/context прежние. Старый UI показывает общую
+ошибку после CANCEL; numeric session record различает отказ и CANCELLED.
+Сопутствующий UI source fix даёт понятный статус «Обновление отменено» без
+изменения state/error encoding/gates/coalescing; host/LVGL/backend PASS,
+на плате пока прежний bench.4. Будущий релиз согласовывается отдельно.
+Настоящие Wi-Fi/power loss и production policy/budget/version discovery остаются
+отдельными этапами. [Активный план](NEXT_STAGE.md); ниже история.
 
 ## История: состояние после стенда worker8192
 

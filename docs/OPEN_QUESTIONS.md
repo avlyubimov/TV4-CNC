@@ -2,26 +2,21 @@
 
 ## Актуальные блокеры P1
 
-[Подписанный сетевой INSTALL и VALID](evidence/hardware/2026-11-24-esp32-display-bench4/README.md),
-[сброс до подтверждения → ABORTED → OTA0 и оба OTA отклонены → factory](evidence/hardware/2026-11-24-esp32-reset-rollback/README.md)
-проверены на текущей изолированной конфигурации. На ESP32 оставлен bench.4,
-OTA1 VALID; владелец подтвердил экран, касания и Wi-Fi. Промежуточный PENDING
-отдельно не считывался.
+Signed INSTALL/VALID, native reset rollback/factory и [CANCEL после частичной
+сетевой записи](evidence/hardware/2026-11-24-esp32-partial-cancel/README.md) PASS.
+Bench.4 оставлен в OTA1 VALID; неполный кандидат не активировался. Исходные
+байты Flash восстановлены; прежний UI показывает generic error при CANCEL,
+тогда как журнал различает CANCELLED и transport failure.
 
-Открыты прерывание частичной загрузки / CANCEL / потеря Wi-Fi, физический
-power-loss, производственная политика, выбор версий и бюджет ресурсов.
-Нужны воспроизводимые чистые сборки, runtime 5.3.2 и измерение FPS/задержки
-касания. Старая factory не настроена для сетевой установки и не получает
-ключ/политику автоматически. Согласованная пара `.3→.4` пригодна для
-следующих отрицательных проверок; нужен новый ограниченный пакет с защитой
-активного слота и возвратом bench.4. Контексты только до 25 ноября 2026,
-08:00 Asia/Almaty; манифесты неизменяемы, подтверждение UI не обходить.
-
-F407, физический CAN, распиновка и параметры NEMA23 до точной модели,
-commissioning движения и независимая аварийная цепь сохраняют свои блокеры.
-Новый release/tag требует отдельного точного разрешения; общее разрешение
-на проверки изолированных плат не разрешает eFuse, option bytes или приводы.
-После успешного стенда оставлять рабочий релиз на плате.
+Открыты настоящая потеря Wi-Fi и повторная попытка после восстановления,
+физический power-loss, production policy/version discovery/resource budget,
+reproducible clean builds, runtime 5.3.2 и физические FPS/latency. Контексты только
+до 25 ноября 2026, 08:00 Asia/Almaty. Следующие испытания сохраняют UI double
+gate и immutable signed pair `.3→.4`, новый конечный пакет/backup/recovery.
+UI source fix отображает «Обновление отменено», протестирован в LVGL/сервисе;
+на плату пока не установлен. Новый release/tag требует точного owner approval. F407/physical CAN/NEMA23
+parameters/motion commissioning и независимая аварийная цепь сохраняют блокеры;
+standing board grant не разрешает eFuse/option bytes/CAN/приводы.
 
 
 ## История: native pending confirmation/refusal/rollback a74bfcd — PASS
