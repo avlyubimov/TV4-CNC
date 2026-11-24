@@ -1,0 +1,1217 @@
+{
+  "schema": "tv4-esp32-native-boot-fixture-1",
+  "date_local": "2026-11-24",
+  "timezone": "Asia/Almaty",
+  "source_commit": "a74bfcd62ffbc290f6ab5d692a9a40bbed69778b",
+  "source_pr": 81,
+  "source_pr_merged_at_test": false,
+  "status": "PASS-native-confirmation-refusal-and-return",
+  "started_utc": "2026-11-23T21:52:47.456741+00:00",
+  "finished_utc": "2026-11-23T22:09:58.809203+00:00",
+  "elapsed_seconds": 1031.3524169509983,
+  "maximum_seconds": 1800,
+  "plan_sha256": "b7a2080bcd55b0865a3226106a569d188739f08c52faef49c3f7efd076d1d208",
+  "session_closed": true,
+  "device_chip_security_flash_verified": true,
+  "snapshot_bytes": 16777216,
+  "snapshot_device_md5_verified": true,
+  "independent_nvme_copies_verified": true,
+  "snapshot_bytes_hashes_and_paths_published": false,
+  "native_confirmation_verified": true,
+  "native_unprovisioned_refusal_rollback_verified": true,
+  "all_factory_otadata_slots_return_verified": true,
+  "full_snapshot_recovery_verified": false,
+  "recovery_write_attempts": 0,
+  "uart_capture_attempts": 4,
+  "normal_writes": [
+    {
+      "role": "factory-control",
+      "offset": 65536,
+      "bytes": 1601632,
+      "verified": true,
+      "outside_preserved": true
+    },
+    {
+      "role": "good-ota0",
+      "offset": 2228224,
+      "bytes": 1601632,
+      "verified": true,
+      "outside_preserved": true
+    },
+    {
+      "role": "select-ota0-new",
+      "offset": 2162688,
+      "bytes": 4096,
+      "verified": true,
+      "outside_preserved": true
+    },
+    {
+      "role": "bad-ota1",
+      "offset": 5373952,
+      "bytes": 1601312,
+      "verified": true,
+      "outside_preserved": true
+    },
+    {
+      "role": "select-ota1-new",
+      "offset": 2166784,
+      "bytes": 4096,
+      "verified": true,
+      "outside_preserved": true
+    },
+    {
+      "role": "return-factory",
+      "offset": 65536,
+      "bytes": 2097152,
+      "verified": true,
+      "outside_preserved": true
+    },
+    {
+      "role": "return-ota0",
+      "offset": 2228224,
+      "bytes": 3145728,
+      "verified": true,
+      "outside_preserved": true
+    },
+    {
+      "role": "return-ota1",
+      "offset": 5373952,
+      "bytes": 3145728,
+      "verified": true,
+      "outside_preserved": true
+    },
+    {
+      "role": "return-otadata",
+      "offset": 2162688,
+      "bytes": 8192,
+      "verified": true,
+      "outside_preserved": true
+    }
+  ],
+  "metadata_observations": {
+    "before-ota0": [
+      {
+        "erased": true
+      },
+      {
+        "erased": true
+      }
+    ],
+    "ota0-new": [
+      {
+        "sequence": 1,
+        "state": 0,
+        "crc": 1195612314,
+        "slot": 0,
+        "erased": false
+      },
+      {
+        "erased": true
+      }
+    ],
+    "ota0-valid": [
+      {
+        "sequence": 1,
+        "state": 2,
+        "crc": 1195612314,
+        "slot": 0,
+        "erased": false
+      },
+      {
+        "erased": true
+      }
+    ],
+    "ota1-new": [
+      {
+        "sequence": 1,
+        "state": 2,
+        "crc": 1195612314,
+        "slot": 0,
+        "erased": false
+      },
+      {
+        "sequence": 2,
+        "state": 0,
+        "crc": 1442199412,
+        "slot": 1,
+        "erased": false
+      }
+    ],
+    "ota1-invalid-ota0-valid": [
+      {
+        "sequence": 1,
+        "state": 2,
+        "crc": 1195612314,
+        "slot": 0,
+        "erased": false
+      },
+      {
+        "sequence": 2,
+        "state": 3,
+        "crc": 1442199412,
+        "slot": 1,
+        "erased": false
+      }
+    ],
+    "returned-factory-selection": [
+      {
+        "erased": true
+      },
+      {
+        "erased": true
+      }
+    ]
+  },
+  "applications": {
+    "configured": {
+      "bytes": 1601632,
+      "sha256": "577eb1c2586bc74912111ce88842faede289217d02684106baca8012b7726e29",
+      "project": "tv4_hmi",
+      "version": "0.1.0-bench.1",
+      "idf_version": "v6.1.1",
+      "elf_sha256": "d22428388d40143f0f678ad78581739aa58b46d49907b64e6d78da6e0294fc0c",
+      "segments": 6,
+      "chip_revision_min": 0,
+      "chip_revision_max": 99,
+      "flash_bytes": 16777216,
+      "flash_mode": "dio",
+      "flash_frequency_mhz": 80
+    },
+    "unprovisioned": {
+      "bytes": 1601312,
+      "sha256": "03be4f02c810dc013f7f51c617fa742277463a714e864edf5642fb52e828910b",
+      "project": "tv4_hmi",
+      "version": "a74bfcd",
+      "idf_version": "v6.1.1",
+      "elf_sha256": "e8b5c14d70db2aa6330ca823030ea98d54da347091a4702fd53524e345de206c",
+      "segments": 6,
+      "chip_revision_min": 0,
+      "chip_revision_max": 99,
+      "flash_bytes": 16777216,
+      "flash_mode": "dio",
+      "flash_frequency_mhz": 80
+    },
+    "return": {
+      "bytes": 1597984,
+      "sha256": "de55953fc9e3c4080cb277d734ca7d1f02c74880db38dac0f4b53830f587d021",
+      "project": "tv4_hmi",
+      "version": "fecc05d",
+      "idf_version": "v6.1.1",
+      "elf_sha256": "77d6fd8aa3a90c52599bd4bfc20d083496bc97111d823c4f677ccb775aa434a6",
+      "segments": 6,
+      "chip_revision_min": 0,
+      "chip_revision_max": 99,
+      "flash_bytes": 16777216,
+      "flash_mode": "dio",
+      "flash_frequency_mhz": 80
+    }
+  },
+  "left_running": "fecc05d-rev12-ota-factory",
+  "owner_visual_confirmation": false,
+  "physical_fps_touch_latency_measured": false,
+  "network_install_measured": false,
+  "usb_slot_fixture": true,
+  "published_readonly_payload_used": false,
+  "production_install_resources_qualified": false,
+  "power_loss_test": false,
+  "normal_bootloader_partition_table_written": false,
+  "nvs_runtime_updates_retained": true,
+  "efuse_option_bytes_stm32_can_motion_actions": false,
+  "observations": {
+    "factory-control": {
+      "observation_pass": true,
+      "checks": {
+        "expected_app": true,
+        "expected_sdk": true,
+        "expected_partition_boot": true,
+        "single_app_boot": true,
+        "psram_8mib": true,
+        "psram_sdk_test": true,
+        "instructions_in_psram": true,
+        "rodata_in_psram": true,
+        "rgb_initialized": true,
+        "gt911_initialized": true,
+        "ui_ready": true,
+        "no_fatal_log": true,
+        "exact_automatic_readonly_completion": true,
+        "no_http_open_failure": true,
+        "periodic_resources": true,
+        "resource_errors_clear": true,
+        "touch_fresh": true,
+        "increasing_uptime": true,
+        "heap_samples_consistent": true,
+        "comparable_wifi_load": true,
+        "optional_services_started": true,
+        "explicit_self_test": true,
+        "complete_startup": true,
+        "single_complete_boot_window": true,
+        "startup_scope": true,
+        "phase_times_ordered": true,
+        "nonzero_measured_stacks": true,
+        "phase_heap_samples_consistent": true,
+        "worker_stack_published": true,
+        "nonzero_valid_periodic_stack": true,
+        "explicit_stack_mode": true,
+        "worker_watermarks_within_request": true,
+        "adequate_periodic_samples": true,
+        "no_unexpected_network_probe": true,
+        "no_network_windows": true,
+        "no_early_check_request": true,
+        "no_unexpected_dma_hook": true
+      },
+      "periodic_samples": 16,
+      "wifi_ip_event_observed": true,
+      "periodic_bytes": {
+        "internal_free": {
+          "min": 120639,
+          "max": 120655
+        },
+        "internal_largest": {
+          "min": 63488,
+          "max": 63488
+        },
+        "psram_free": {
+          "min": 5982148,
+          "max": 5982168
+        },
+        "owner_stack": {
+          "min": 10612,
+          "max": 10612
+        },
+        "touch_stack": {
+          "min": 2508,
+          "max": 2572
+        },
+        "wifi_stack": {
+          "min": 1116,
+          "max": 1116
+        },
+        "ota_stack": {
+          "min": 10880,
+          "max": 10880
+        }
+      },
+      "touch_age_ms": {
+        "min": 1,
+        "max": 20
+      },
+      "startup_points": [
+        {
+          "kind": 0,
+          "id": 0,
+          "sample_ms": 51,
+          "scope": 0,
+          "internal": 267039,
+          "minimum": 202308,
+          "largest": 172032,
+          "psram": 6859836,
+          "psram_min": 6859836,
+          "psram_largest": 6684672,
+          "sample_stack": 14980,
+          "worker_stack_at_emit": 11312
+        },
+        {
+          "kind": 0,
+          "id": 1,
+          "sample_ms": 376,
+          "scope": 1,
+          "internal": 220947,
+          "minimum": 220947,
+          "largest": 139264,
+          "psram": 6090996,
+          "psram_min": 6090996,
+          "psram_largest": 6029312,
+          "sample_stack": 14084,
+          "worker_stack_at_emit": 10880
+        },
+        {
+          "kind": 0,
+          "id": 2,
+          "sample_ms": 380,
+          "scope": 1,
+          "internal": 188687,
+          "minimum": 188687,
+          "largest": 106496,
+          "psram": 6084676,
+          "psram_min": 6084676,
+          "psram_largest": 6029312,
+          "sample_stack": 14084,
+          "worker_stack_at_emit": 10880
+        },
+        {
+          "kind": 0,
+          "id": 3,
+          "sample_ms": 717,
+          "scope": 1,
+          "internal": 184419,
+          "minimum": 184419,
+          "largest": 106496,
+          "psram": 6076276,
+          "psram_min": 6059128,
+          "psram_largest": 6029312,
+          "sample_stack": 12196,
+          "worker_stack_at_emit": 10880
+        },
+        {
+          "kind": 0,
+          "id": 4,
+          "sample_ms": 2346,
+          "scope": 1,
+          "internal": 150651,
+          "minimum": 150651,
+          "largest": 77824,
+          "psram": 5983272,
+          "psram_min": 5958480,
+          "psram_largest": 5898240,
+          "sample_stack": 10612,
+          "worker_stack_at_emit": 10880
+        },
+        {
+          "kind": 0,
+          "id": 5,
+          "sample_ms": 1464,
+          "scope": 1,
+          "internal": 184419,
+          "minimum": 184419,
+          "largest": 106496,
+          "psram": 5975792,
+          "psram_min": 5975628,
+          "psram_largest": 5898240,
+          "sample_stack": 12196,
+          "worker_stack_at_emit": 10880
+        },
+        {
+          "kind": 0,
+          "id": 6,
+          "sample_ms": 2334,
+          "scope": 1,
+          "internal": 184419,
+          "minimum": 184419,
+          "largest": 106496,
+          "psram": 5983760,
+          "psram_min": 5958480,
+          "psram_largest": 5898240,
+          "sample_stack": 10612,
+          "worker_stack_at_emit": 10880
+        }
+      ],
+      "boot_window_points": [
+        {
+          "kind": 1,
+          "id": 1,
+          "sample_ms": 51,
+          "scope": 0,
+          "internal": 267039,
+          "minimum": 202308,
+          "largest": 172032,
+          "psram": 6859836,
+          "psram_min": 6859836,
+          "psram_largest": 6684672,
+          "sample_stack": 14660,
+          "worker_stack_at_emit": 10880
+        },
+        {
+          "kind": 2,
+          "id": 1,
+          "sample_ms": 52,
+          "scope": 1,
+          "internal": 267039,
+          "minimum": 267039,
+          "largest": 172032,
+          "psram": 6859808,
+          "psram_min": 6859808,
+          "psram_largest": 6684672,
+          "sample_stack": 14660,
+          "worker_stack_at_emit": 10880
+        },
+        {
+          "kind": 3,
+          "id": 1,
+          "sample_ms": 5504,
+          "scope": 1,
+          "internal": 121703,
+          "minimum": 119443,
+          "largest": 63488,
+          "psram": 5982848,
+          "psram_min": 5958480,
+          "psram_largest": 5898240,
+          "sample_stack": 11312,
+          "worker_stack_at_emit": 10880
+        },
+        {
+          "kind": 4,
+          "id": 1,
+          "sample_ms": 5506,
+          "scope": 0,
+          "internal": 121703,
+          "minimum": 54712,
+          "largest": 63488,
+          "psram": 5982876,
+          "psram_min": 5958480,
+          "psram_largest": 5898240,
+          "sample_stack": 11312,
+          "worker_stack_at_emit": 10880
+        }
+      ],
+      "windows": [
+        {
+          "window": 1,
+          "start_result": 0,
+          "stop_result": 0,
+          "complete": 1
+        }
+      ],
+      "capture_seconds": 90.1252668499983
+    },
+    "confirmed-ota0": {
+      "observation_pass": true,
+      "checks": {
+        "expected_app": true,
+        "expected_sdk": true,
+        "expected_partition_boot": true,
+        "single_app_boot": true,
+        "psram_8mib": true,
+        "psram_sdk_test": true,
+        "instructions_in_psram": true,
+        "rodata_in_psram": true,
+        "rgb_initialized": true,
+        "gt911_initialized": true,
+        "ui_ready": true,
+        "no_fatal_log": true,
+        "exact_automatic_readonly_completion": true,
+        "no_http_open_failure": true,
+        "periodic_resources": true,
+        "resource_errors_clear": true,
+        "touch_fresh": true,
+        "increasing_uptime": true,
+        "heap_samples_consistent": true,
+        "comparable_wifi_load": true,
+        "optional_services_started": true,
+        "explicit_self_test": true,
+        "complete_startup": true,
+        "single_complete_boot_window": true,
+        "startup_scope": true,
+        "phase_times_ordered": true,
+        "nonzero_measured_stacks": true,
+        "phase_heap_samples_consistent": true,
+        "worker_stack_published": true,
+        "nonzero_valid_periodic_stack": true,
+        "explicit_stack_mode": true,
+        "worker_watermarks_within_request": true,
+        "adequate_periodic_samples": true,
+        "no_unexpected_network_probe": true,
+        "no_network_windows": true,
+        "no_early_check_request": true,
+        "no_unexpected_dma_hook": true
+      },
+      "periodic_samples": 16,
+      "wifi_ip_event_observed": true,
+      "periodic_bytes": {
+        "internal_free": {
+          "min": 120195,
+          "max": 120623
+        },
+        "internal_largest": {
+          "min": 63488,
+          "max": 63488
+        },
+        "psram_free": {
+          "min": 5982164,
+          "max": 5982188
+        },
+        "owner_stack": {
+          "min": 10612,
+          "max": 10612
+        },
+        "touch_stack": {
+          "min": 2508,
+          "max": 2508
+        },
+        "wifi_stack": {
+          "min": 1116,
+          "max": 1116
+        },
+        "ota_stack": {
+          "min": 10880,
+          "max": 10880
+        }
+      },
+      "touch_age_ms": {
+        "min": 18,
+        "max": 19
+      },
+      "startup_points": [
+        {
+          "kind": 0,
+          "id": 0,
+          "sample_ms": 51,
+          "scope": 0,
+          "internal": 267039,
+          "minimum": 202308,
+          "largest": 172032,
+          "psram": 6859836,
+          "psram_min": 6859836,
+          "psram_largest": 6684672,
+          "sample_stack": 14980,
+          "worker_stack_at_emit": 11312
+        },
+        {
+          "kind": 0,
+          "id": 1,
+          "sample_ms": 376,
+          "scope": 1,
+          "internal": 220947,
+          "minimum": 220947,
+          "largest": 139264,
+          "psram": 6090996,
+          "psram_min": 6090996,
+          "psram_largest": 6029312,
+          "sample_stack": 14084,
+          "worker_stack_at_emit": 10880
+        },
+        {
+          "kind": 0,
+          "id": 2,
+          "sample_ms": 380,
+          "scope": 1,
+          "internal": 188687,
+          "minimum": 188687,
+          "largest": 106496,
+          "psram": 6084676,
+          "psram_min": 6084676,
+          "psram_largest": 6029312,
+          "sample_stack": 14084,
+          "worker_stack_at_emit": 10880
+        },
+        {
+          "kind": 0,
+          "id": 3,
+          "sample_ms": 717,
+          "scope": 1,
+          "internal": 184419,
+          "minimum": 184419,
+          "largest": 106496,
+          "psram": 6076276,
+          "psram_min": 6059128,
+          "psram_largest": 6029312,
+          "sample_stack": 12196,
+          "worker_stack_at_emit": 10880
+        },
+        {
+          "kind": 0,
+          "id": 4,
+          "sample_ms": 2346,
+          "scope": 1,
+          "internal": 150651,
+          "minimum": 150651,
+          "largest": 77824,
+          "psram": 5983272,
+          "psram_min": 5958480,
+          "psram_largest": 5898240,
+          "sample_stack": 10612,
+          "worker_stack_at_emit": 10880
+        },
+        {
+          "kind": 0,
+          "id": 5,
+          "sample_ms": 1464,
+          "scope": 1,
+          "internal": 184419,
+          "minimum": 184419,
+          "largest": 106496,
+          "psram": 5975792,
+          "psram_min": 5975628,
+          "psram_largest": 5898240,
+          "sample_stack": 12196,
+          "worker_stack_at_emit": 10880
+        },
+        {
+          "kind": 0,
+          "id": 6,
+          "sample_ms": 2334,
+          "scope": 1,
+          "internal": 184419,
+          "minimum": 184419,
+          "largest": 106496,
+          "psram": 5983760,
+          "psram_min": 5958480,
+          "psram_largest": 5898240,
+          "sample_stack": 10612,
+          "worker_stack_at_emit": 10880
+        }
+      ],
+      "boot_window_points": [
+        {
+          "kind": 1,
+          "id": 1,
+          "sample_ms": 51,
+          "scope": 0,
+          "internal": 267039,
+          "minimum": 202308,
+          "largest": 172032,
+          "psram": 6859836,
+          "psram_min": 6859836,
+          "psram_largest": 6684672,
+          "sample_stack": 14660,
+          "worker_stack_at_emit": 10880
+        },
+        {
+          "kind": 2,
+          "id": 1,
+          "sample_ms": 52,
+          "scope": 1,
+          "internal": 267039,
+          "minimum": 267039,
+          "largest": 172032,
+          "psram": 6859808,
+          "psram_min": 6859808,
+          "psram_largest": 6684672,
+          "sample_stack": 14660,
+          "worker_stack_at_emit": 10880
+        },
+        {
+          "kind": 3,
+          "id": 1,
+          "sample_ms": 5504,
+          "scope": 1,
+          "internal": 121695,
+          "minimum": 119643,
+          "largest": 63488,
+          "psram": 5982868,
+          "psram_min": 5958480,
+          "psram_largest": 5898240,
+          "sample_stack": 11312,
+          "worker_stack_at_emit": 10880
+        },
+        {
+          "kind": 4,
+          "id": 1,
+          "sample_ms": 5506,
+          "scope": 0,
+          "internal": 121695,
+          "minimum": 54912,
+          "largest": 63488,
+          "psram": 5982896,
+          "psram_min": 5958480,
+          "psram_largest": 5898240,
+          "sample_stack": 11312,
+          "worker_stack_at_emit": 10880
+        }
+      ],
+      "windows": [
+        {
+          "window": 1,
+          "start_result": 0,
+          "stop_result": 0,
+          "complete": 1
+        }
+      ],
+      "capture_seconds": 90.12385223199817
+    },
+    "rejected-ota1-fallback": {
+      "expected_refusal_pass": true,
+      "rejected_initialization_checks": {
+        "expected_app": true,
+        "expected_sdk": true,
+        "expected_partition_boot": true,
+        "single_app_boot": true,
+        "psram_8mib": true,
+        "psram_sdk_test": true,
+        "instructions_in_psram": true,
+        "rodata_in_psram": true,
+        "rgb_initialized": true,
+        "gt911_initialized": true,
+        "ui_ready": true,
+        "no_fatal_log": true,
+        "exact_automatic_readonly_completion": true,
+        "no_http_open_failure": true,
+        "optional_services_started": true,
+        "complete_startup": true,
+        "single_complete_boot_window": true,
+        "startup_scope": true,
+        "phase_times_ordered": true,
+        "nonzero_measured_stacks": true,
+        "phase_heap_samples_consistent": true,
+        "no_network_windows": true,
+        "no_unexpected_network_probe": true,
+        "no_unexpected_dma_hook": true
+      },
+      "rejected_startup_points": [
+        {
+          "kind": 0,
+          "id": 0,
+          "sample_ms": 51,
+          "scope": 0,
+          "internal": 267039,
+          "minimum": 202308,
+          "largest": 172032,
+          "psram": 6860092,
+          "psram_min": 6860092,
+          "psram_largest": 6684672,
+          "sample_stack": 14980,
+          "worker_stack_at_emit": 2096
+        },
+        {
+          "kind": 0,
+          "id": 1,
+          "sample_ms": 376,
+          "scope": 1,
+          "internal": 229907,
+          "minimum": 229907,
+          "largest": 155648,
+          "psram": 6091252,
+          "psram_min": 6091252,
+          "psram_largest": 6029312,
+          "sample_stack": 14004,
+          "worker_stack_at_emit": 1664
+        },
+        {
+          "kind": 0,
+          "id": 2,
+          "sample_ms": 380,
+          "scope": 1,
+          "internal": 197647,
+          "minimum": 197647,
+          "largest": 122880,
+          "psram": 6084932,
+          "psram_min": 6084932,
+          "psram_largest": 6029312,
+          "sample_stack": 14004,
+          "worker_stack_at_emit": 1664
+        },
+        {
+          "kind": 0,
+          "id": 3,
+          "sample_ms": 714,
+          "scope": 1,
+          "internal": 193379,
+          "minimum": 193379,
+          "largest": 118784,
+          "psram": 6076532,
+          "psram_min": 6059384,
+          "psram_largest": 6029312,
+          "sample_stack": 12196,
+          "worker_stack_at_emit": 1664
+        },
+        {
+          "kind": 0,
+          "id": 4,
+          "sample_ms": 2344,
+          "scope": 1,
+          "internal": 159631,
+          "minimum": 159631,
+          "largest": 86016,
+          "psram": 5983520,
+          "psram_min": 5958728,
+          "psram_largest": 5898240,
+          "sample_stack": 10548,
+          "worker_stack_at_emit": 1664
+        },
+        {
+          "kind": 0,
+          "id": 5,
+          "sample_ms": 1439,
+          "scope": 1,
+          "internal": 193379,
+          "minimum": 193379,
+          "largest": 118784,
+          "psram": 5976040,
+          "psram_min": 5975876,
+          "psram_largest": 5898240,
+          "sample_stack": 12196,
+          "worker_stack_at_emit": 1664
+        },
+        {
+          "kind": 0,
+          "id": 6,
+          "sample_ms": 2332,
+          "scope": 1,
+          "internal": 193379,
+          "minimum": 193379,
+          "largest": 118784,
+          "psram": 5984008,
+          "psram_min": 5958728,
+          "psram_largest": 5898240,
+          "sample_stack": 10548,
+          "worker_stack_at_emit": 1664
+        }
+      ],
+      "rejected_boot_window_points": [
+        {
+          "kind": 1,
+          "id": 1,
+          "sample_ms": 51,
+          "scope": 0,
+          "internal": 267039,
+          "minimum": 202308,
+          "largest": 172032,
+          "psram": 6860092,
+          "psram_min": 6860092,
+          "psram_largest": 6684672,
+          "sample_stack": 14884,
+          "worker_stack_at_emit": 1664
+        },
+        {
+          "kind": 2,
+          "id": 1,
+          "sample_ms": 52,
+          "scope": 1,
+          "internal": 267039,
+          "minimum": 267039,
+          "largest": 172032,
+          "psram": 6860064,
+          "psram_min": 6860064,
+          "psram_largest": 6684672,
+          "sample_stack": 14884,
+          "worker_stack_at_emit": 1664
+        },
+        {
+          "kind": 3,
+          "id": 1,
+          "sample_ms": 5504,
+          "scope": 1,
+          "internal": 130675,
+          "minimum": 129571,
+          "largest": 63488,
+          "psram": 5983108,
+          "psram_min": 5958728,
+          "psram_largest": 5898240,
+          "sample_stack": 2096,
+          "worker_stack_at_emit": 1664
+        },
+        {
+          "kind": 4,
+          "id": 1,
+          "sample_ms": 5506,
+          "scope": 0,
+          "internal": 130675,
+          "minimum": 64840,
+          "largest": 63488,
+          "psram": 5983136,
+          "psram_min": 5958728,
+          "psram_largest": 5898240,
+          "sample_stack": 2096,
+          "worker_stack_at_emit": 1664
+        }
+      ],
+      "rejected_app_boots": 1,
+      "native_rollback_logs": 1,
+      "unprovisioned_confirmed": false,
+      "observation_pass": true,
+      "fallback": {
+        "observation_pass": true,
+        "checks": {
+          "expected_app": true,
+          "expected_sdk": true,
+          "expected_partition_boot": true,
+          "single_app_boot": true,
+          "psram_8mib": true,
+          "psram_sdk_test": true,
+          "instructions_in_psram": true,
+          "rodata_in_psram": true,
+          "rgb_initialized": true,
+          "gt911_initialized": true,
+          "ui_ready": true,
+          "no_fatal_log": true,
+          "exact_automatic_readonly_completion": true,
+          "no_http_open_failure": true,
+          "periodic_resources": true,
+          "resource_errors_clear": true,
+          "touch_fresh": true,
+          "increasing_uptime": true,
+          "heap_samples_consistent": true,
+          "comparable_wifi_load": true,
+          "optional_services_started": true,
+          "explicit_self_test": true,
+          "complete_startup": true,
+          "single_complete_boot_window": true,
+          "startup_scope": true,
+          "phase_times_ordered": true,
+          "nonzero_measured_stacks": true,
+          "phase_heap_samples_consistent": true,
+          "worker_stack_published": true,
+          "nonzero_valid_periodic_stack": true,
+          "explicit_stack_mode": true,
+          "worker_watermarks_within_request": true,
+          "adequate_periodic_samples": true,
+          "no_unexpected_network_probe": true,
+          "no_network_windows": true,
+          "no_early_check_request": true,
+          "no_unexpected_dma_hook": true
+        },
+        "periodic_samples": 15,
+        "wifi_ip_event_observed": true,
+        "periodic_bytes": {
+          "internal_free": {
+            "min": 120587,
+            "max": 120639
+          },
+          "internal_largest": {
+            "min": 63488,
+            "max": 63488
+          },
+          "psram_free": {
+            "min": 5982136,
+            "max": 5982168
+          },
+          "owner_stack": {
+            "min": 10580,
+            "max": 10580
+          },
+          "touch_stack": {
+            "min": 2508,
+            "max": 2508
+          },
+          "wifi_stack": {
+            "min": 1116,
+            "max": 1116
+          },
+          "ota_stack": {
+            "min": 10784,
+            "max": 10784
+          }
+        },
+        "touch_age_ms": {
+          "min": 9,
+          "max": 12
+        },
+        "startup_points": [
+          {
+            "kind": 0,
+            "id": 0,
+            "sample_ms": 51,
+            "scope": 0,
+            "internal": 267039,
+            "minimum": 202308,
+            "largest": 172032,
+            "psram": 6859836,
+            "psram_min": 6859836,
+            "psram_largest": 6684672,
+            "sample_stack": 14980,
+            "worker_stack_at_emit": 11072
+          },
+          {
+            "kind": 0,
+            "id": 1,
+            "sample_ms": 376,
+            "scope": 1,
+            "internal": 220947,
+            "minimum": 220947,
+            "largest": 139264,
+            "psram": 6090996,
+            "psram_min": 6090996,
+            "psram_largest": 6029312,
+            "sample_stack": 14084,
+            "worker_stack_at_emit": 10880
+          },
+          {
+            "kind": 0,
+            "id": 2,
+            "sample_ms": 380,
+            "scope": 1,
+            "internal": 188687,
+            "minimum": 188687,
+            "largest": 106496,
+            "psram": 6084676,
+            "psram_min": 6084676,
+            "psram_largest": 6029312,
+            "sample_stack": 14084,
+            "worker_stack_at_emit": 10784
+          },
+          {
+            "kind": 0,
+            "id": 3,
+            "sample_ms": 717,
+            "scope": 1,
+            "internal": 184419,
+            "minimum": 184419,
+            "largest": 106496,
+            "psram": 6076276,
+            "psram_min": 6059128,
+            "psram_largest": 6029312,
+            "sample_stack": 12196,
+            "worker_stack_at_emit": 10784
+          },
+          {
+            "kind": 0,
+            "id": 4,
+            "sample_ms": 2346,
+            "scope": 1,
+            "internal": 150651,
+            "minimum": 150651,
+            "largest": 77824,
+            "psram": 5983272,
+            "psram_min": 5958480,
+            "psram_largest": 5898240,
+            "sample_stack": 10580,
+            "worker_stack_at_emit": 10784
+          },
+          {
+            "kind": 0,
+            "id": 5,
+            "sample_ms": 1463,
+            "scope": 1,
+            "internal": 184419,
+            "minimum": 184419,
+            "largest": 106496,
+            "psram": 5975792,
+            "psram_min": 5975628,
+            "psram_largest": 5898240,
+            "sample_stack": 12196,
+            "worker_stack_at_emit": 10784
+          },
+          {
+            "kind": 0,
+            "id": 6,
+            "sample_ms": 2334,
+            "scope": 1,
+            "internal": 184419,
+            "minimum": 184419,
+            "largest": 106496,
+            "psram": 5983760,
+            "psram_min": 5958480,
+            "psram_largest": 5898240,
+            "sample_stack": 10580,
+            "worker_stack_at_emit": 10784
+          }
+        ],
+        "boot_window_points": [
+          {
+            "kind": 1,
+            "id": 1,
+            "sample_ms": 51,
+            "scope": 0,
+            "internal": 267039,
+            "minimum": 202308,
+            "largest": 172032,
+            "psram": 6859836,
+            "psram_min": 6859836,
+            "psram_largest": 6684672,
+            "sample_stack": 14660,
+            "worker_stack_at_emit": 10784
+          },
+          {
+            "kind": 2,
+            "id": 1,
+            "sample_ms": 52,
+            "scope": 1,
+            "internal": 267039,
+            "minimum": 267039,
+            "largest": 172032,
+            "psram": 6859808,
+            "psram_min": 6859808,
+            "psram_largest": 6684672,
+            "sample_stack": 14660,
+            "worker_stack_at_emit": 10784
+          },
+          {
+            "kind": 3,
+            "id": 1,
+            "sample_ms": 5454,
+            "scope": 1,
+            "internal": 121695,
+            "minimum": 119343,
+            "largest": 63488,
+            "psram": 5982848,
+            "psram_min": 5958480,
+            "psram_largest": 5898240,
+            "sample_stack": 11072,
+            "worker_stack_at_emit": 10784
+          },
+          {
+            "kind": 4,
+            "id": 1,
+            "sample_ms": 5456,
+            "scope": 0,
+            "internal": 121695,
+            "minimum": 54612,
+            "largest": 63488,
+            "psram": 5982876,
+            "psram_min": 5958480,
+            "psram_largest": 5898240,
+            "sample_stack": 11072,
+            "worker_stack_at_emit": 10784
+          }
+        ],
+        "windows": [
+          {
+            "window": 1,
+            "start_result": 0,
+            "stop_result": 0,
+            "complete": 1
+          }
+        ]
+      },
+      "capture_seconds": 90.15683089799859
+    },
+    "return-fecc05d": {
+      "observation_pass": true,
+      "checks": {
+        "expected_app": true,
+        "expected_sdk": true,
+        "expected_partition_boot": true,
+        "single_app_boot": true,
+        "psram_8mib": true,
+        "psram_sdk_test": true,
+        "instructions_in_psram": true,
+        "rodata_in_psram": true,
+        "rgb_initialized": true,
+        "gt911_initialized": true,
+        "ui_ready": true,
+        "no_fatal_log": true,
+        "exact_automatic_readonly_completion": true,
+        "no_http_open_failure": true,
+        "periodic_resources": true,
+        "resource_errors_clear": true,
+        "touch_fresh": true,
+        "increasing_uptime": true,
+        "heap_samples_consistent": true,
+        "no_unexpected_network_probe": true,
+        "no_unexpected_dma_hook": true
+      },
+      "periodic_samples": 4,
+      "wifi_ip_event_observed": true,
+      "periodic_bytes": {
+        "internal_free": {
+          "min": 22731,
+          "max": 22795
+        },
+        "internal_largest": {
+          "min": 7680,
+          "max": 7680
+        },
+        "psram_free": {
+          "min": 6090732,
+          "max": 6090732
+        },
+        "owner_stack": {
+          "min": 10708,
+          "max": 10708
+        },
+        "touch_stack": {
+          "min": 2504,
+          "max": 2536
+        },
+        "wifi_stack": {
+          "min": 1104,
+          "max": 1104
+        },
+        "ota_stack": null
+      },
+      "touch_age_ms": {
+        "min": 4,
+        "max": 13
+      },
+      "startup_points": [],
+      "boot_window_points": [],
+      "windows": [],
+      "capture_seconds": 30.052540890999808
+    }
+  },
+  "errors": {
+    "diagnostic_error": "",
+    "return_error": "",
+    "recovery_error": "",
+    "session_error": ""
+  }
+}

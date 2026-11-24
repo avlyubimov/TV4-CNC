@@ -67,6 +67,15 @@ jobs:
               -o "build/policy-analysis/service-sdk-$stack_bench.o" >> build/policy-analysis.log 2>&1
           done
           printf 'Actual ESP service/control+worker8192 SDK boundary: analyzer PASS\n' >> build/policy-analysis.log
+          for invalid_policy in 0 1 2; do
+            gcc -std=c11 -Wall -Wextra -Werror -fanalyzer -DESP_PLATFORM=1 \
+              -DSERVICE_TEST_PROVISIONED=1 -DSERVICE_TEST_VALID_TRUST=1 \
+              -DSERVICE_TEST_INVALID_POLICY="$invalid_policy" \
+              -Itests/ota_service_sdk -Itests -Ifirmware/esp32-hmi/ota -Ifirmware/esp32-hmi/network \
+              -c firmware/esp32-hmi/ota/service.c \
+              -o "build/policy-analysis/service-boot-context-$invalid_policy.o" >> build/policy-analysis.log 2>&1
+          done
+          printf 'Actual ESP service/pending local trust admission: analyzer PASS\n' >> build/policy-analysis.log
           gcc -std=c11 -Wall -Wextra -Werror -fanalyzer -DESP_PLATFORM=1 \
             -Itests/ota_tls_sdk -Itests/ota_service_sdk -Itests -Ifirmware/esp32-hmi/ota \
             -c firmware/esp32-hmi/ota/https.c -o build/policy-analysis/https-sdk.o >> build/policy-analysis.log 2>&1

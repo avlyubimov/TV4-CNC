@@ -1,0 +1,535 @@
+Test project <source>/build-host
+        Start 151: ota_boot_0_missing_context
+        Start   1: build_validation
+        Start   2: build_candidate
+        Start   3: core
+        Start   4: firmware_info
+        Start   5: wifi_profiles
+        Start   6: lvgl_psram_heap
+        Start   7: lvgl_psram_build_guards
+  1/265 Test #151: ota_boot_0_missing_context ................   Passed    0.00 sec
+  2/265 Test   #3: core ......................................   Passed    0.00 sec
+  3/265 Test   #4: firmware_info .............................   Passed    0.00 sec
+  4/265 Test   #5: wifi_profiles .............................   Passed    0.00 sec
+  5/265 Test   #6: lvgl_psram_heap ...........................   Passed    0.00 sec
+        Start   8: render
+        Start   9: render_rgb565
+        Start  10: startup_success
+        Start  11: startup_held-touch
+        Start  12: startup_board-fail
+  6/265 Test  #12: startup_board-fail ........................   Passed    0.00 sec
+        Start  13: startup_buffer-fail
+  7/265 Test  #13: startup_buffer-fail .......................   Passed    0.00 sec
+        Start  14: startup_backlight-fail
+  8/265 Test  #14: startup_backlight-fail ....................   Passed    0.01 sec
+        Start  15: startup_touch-fail
+  9/265 Test  #15: startup_touch-fail ........................   Passed    0.02 sec
+        Start  16: startup_flush-fail
+ 10/265 Test   #1: build_validation ..........................   Passed    0.04 sec
+        Start  17: startup_dashboard-flush-fail
+ 11/265 Test   #7: lvgl_psram_build_guards ...................   Passed    0.24 sec
+        Start  18: startup_export-fail
+ 12/265 Test  #16: startup_flush-fail ........................   Passed    0.27 sec
+        Start  19: startup_wifi-fail
+ 13/265 Test  #11: startup_held-touch ........................   Passed    0.35 sec
+        Start  20: startup_touch-clock-race
+ 14/265 Test  #10: startup_success ...........................   Passed    0.36 sec
+        Start  21: startup_touch-report-race
+ 15/265 Test  #17: startup_dashboard-flush-fail ..............   Passed    0.33 sec
+        Start  22: startup_touch-stale
+ 16/265 Test   #2: build_candidate ...........................   Passed    0.57 sec
+        Start  23: diagnostics
+ 17/265 Test  #23: diagnostics ...............................   Passed    0.00 sec
+        Start  24: ota_crypto
+ 18/265 Test  #24: ota_crypto ................................   Passed    0.00 sec
+        Start  25: ota_candidate
+ 19/265 Test  #18: startup_export-fail .......................   Passed    0.33 sec
+        Start  26: ota_signed_check_bundle
+ 20/265 Test   #8: render ....................................   Passed    0.62 sec
+        Start  27: ota_manifest
+ 21/265 Test   #9: render_rgb565 .............................   Passed    0.62 sec
+        Start  28: ota_json
+ 22/265 Test  #19: startup_wifi-fail .........................   Passed    0.33 sec
+        Start  29: ota_policy_conformance
+ 23/265 Test  #28: ota_json ..................................   Passed    0.01 sec
+        Start  30: ota_stream
+ 24/265 Test  #30: ota_stream ................................   Passed    0.00 sec
+        Start  31: ota_https_adapter_github
+ 25/265 Test  #31: ota_https_adapter_github ..................   Passed    0.00 sec
+        Start  32: ota_https_adapter_url-ceiling
+ 26/265 Test  #32: ota_https_adapter_url-ceiling .............   Passed    0.00 sec
+        Start  33: ota_https_adapter_long-location
+ 27/265 Test  #33: ota_https_adapter_long-location ...........   Passed    0.00 sec
+        Start  34: ota_https_adapter_small
+ 28/265 Test  #34: ota_https_adapter_small ...................   Passed    0.00 sec
+        Start  35: ota_https_adapter_chunked
+ 29/265 Test  #35: ota_https_adapter_chunked .................   Passed    0.00 sec
+        Start  36: ota_https_adapter_large-value
+ 30/265 Test  #36: ota_https_adapter_large-value .............   Passed    0.00 sec
+        Start  37: ota_https_adapter_large-total
+ 31/265 Test  #37: ota_https_adapter_large-total .............   Passed    0.00 sec
+        Start  38: ota_https_adapter_long-key
+ 32/265 Test  #38: ota_https_adapter_long-key ................   Passed    0.00 sec
+        Start  39: ota_https_adapter_duplicate-length
+ 33/265 Test  #39: ota_https_adapter_duplicate-length ........   Passed    0.00 sec
+        Start  40: ota_https_adapter_duplicate-location
+ 34/265 Test  #40: ota_https_adapter_duplicate-location ......   Passed    0.00 sec
+        Start  41: ota_https_adapter_duplicate-encoding
+ 35/265 Test  #41: ota_https_adapter_duplicate-encoding ......   Passed    0.00 sec
+        Start  42: ota_https_adapter_gzip
+ 36/265 Test  #42: ota_https_adapter_gzip ....................   Passed    0.00 sec
+        Start  43: ota_https_adapter_bad-transfer
+ 37/265 Test  #43: ota_https_adapter_bad-transfer ............   Passed    0.00 sec
+        Start  44: ota_https_adapter_invalid-length
+ 38/265 Test  #44: ota_https_adapter_invalid-length ..........   Passed    0.00 sec
+        Start  45: ota_https_adapter_bad-location
+ 39/265 Test  #45: ota_https_adapter_bad-location ............   Passed    0.00 sec
+        Start  46: ota_https_adapter_init-fail
+ 40/265 Test  #46: ota_https_adapter_init-fail ...............   Passed    0.00 sec
+        Start  47: ota_https_adapter_set-fail
+ 41/265 Test  #47: ota_https_adapter_set-fail ................   Passed    0.00 sec
+        Start  48: ota_https_adapter_open-fail
+ 42/265 Test  #48: ota_https_adapter_open-fail ...............   Passed    0.00 sec
+        Start  49: ota_https_adapter_headers-fail
+ 43/265 Test  #49: ota_https_adapter_headers-fail ............   Passed    0.00 sec
+        Start  50: ota_https_adapter_cancel
+ 44/265 Test  #50: ota_https_adapter_cancel ..................   Passed    0.00 sec
+        Start  51: ota_https_adapter_timeout
+ 45/265 Test  #51: ota_https_adapter_timeout .................   Passed    0.00 sec
+        Start  52: ota_https_adapter_stale-time
+ 46/265 Test  #52: ota_https_adapter_stale-time ..............   Passed    0.00 sec
+        Start  53: ota_https_adapter_no-length
+ 47/265 Test  #53: ota_https_adapter_no-length ...............   Passed    0.00 sec
+        Start  54: ota_https_adapter_ambiguous
+ 48/265 Test  #54: ota_https_adapter_ambiguous ...............   Passed    0.00 sec
+        Start  55: ota_https_adapter_zero-body
+ 49/265 Test  #55: ota_https_adapter_zero-body ...............   Passed    0.00 sec
+        Start  56: ota_https_adapter_zero-ambiguous
+ 50/265 Test  #56: ota_https_adapter_zero-ambiguous ..........   Passed    0.00 sec
+        Start  57: ota_https_adapter_zero-gzip
+ 51/265 Test  #57: ota_https_adapter_zero-gzip ...............   Passed    0.00 sec
+        Start  58: ota_https_adapter_zero-duplicate-length
+ 52/265 Test  #58: ota_https_adapter_zero-duplicate-length ...   Passed    0.00 sec
+        Start  59: ota_https_adapter_sdk-positive-mismatch
+ 53/265 Test  #59: ota_https_adapter_sdk-positive-mismatch ...   Passed    0.00 sec
+        Start  60: ota_https_adapter_sdk-negative-mismatch
+ 54/265 Test  #60: ota_https_adapter_sdk-negative-mismatch ...   Passed    0.00 sec
+        Start  61: ota_http
+ 55/265 Test  #61: ota_http ..................................   Passed    0.00 sec
+        Start  62: ota_session
+ 56/265 Test  #62: ota_session ...............................   Passed    0.02 sec
+        Start  63: ota_memory
+ 57/265 Test  #63: ota_memory ................................   Passed    0.00 sec
+        Start  64: ota_time
+ 58/265 Test  #64: ota_time ..................................   Passed    0.00 sec
+        Start  65: ota_sntp
+ 59/265 Test  #65: ota_sntp ..................................   Passed    0.00 sec
+        Start  66: ota_tls_probe
+ 60/265 Test  #66: ota_tls_probe .............................   Passed    0.00 sec
+        Start  67: ota_resource
+ 61/265 Test  #67: ota_resource ..............................   Passed    0.00 sec
+        Start  68: release_review_cli
+ 62/265 Test  #20: startup_touch-clock-race ..................   Passed    0.32 sec
+        Start  69: release_review_cohort
+ 63/265 Test  #27: ota_manifest ..............................   Passed    0.06 sec
+        Start  70: ota_dma_artifact_guards
+ 64/265 Test  #21: startup_touch-report-race .................   Passed    0.33 sec
+        Start  71: ota_dma_disabled
+ 65/265 Test  #71: ota_dma_disabled ..........................   Passed    0.00 sec
+        Start  72: ota_dma_happy
+ 66/265 Test  #72: ota_dma_happy .............................   Passed    0.00 sec
+        Start  73: ota_dma_outside
+ 67/265 Test  #73: ota_dma_outside ...........................   Passed    0.00 sec
+        Start  74: ota_dma_isr
+ 68/265 Test  #74: ota_dma_isr ...............................   Passed    0.00 sec
+        Start  75: ota_dma_other-task
+ 69/265 Test  #75: ota_dma_other-task ........................   Passed    0.00 sec
+        Start  76: ota_dma_unknown
+ 70/265 Test  #76: ota_dma_unknown ...........................   Passed    0.00 sec
+        Start  77: ota_dma_overflow
+ 71/265 Test  #77: ota_dma_overflow ..........................   Passed    0.00 sec
+        Start  78: ota_dma_wrong-owner
+ 72/265 Test  #78: ota_dma_wrong-owner .......................   Passed    0.00 sec
+        Start  79: ota_dma_nested
+ 73/265 Test  #79: ota_dma_nested ............................   Passed    0.00 sec
+        Start  80: ota_dma_mismatch
+ 74/265 Test  #80: ota_dma_mismatch ..........................   Passed    0.00 sec
+        Start  81: ota_dma_init-fail
+ 75/265 Test  #81: ota_dma_init-fail .........................   Passed    0.00 sec
+        Start  82: ota_dma_oversize
+ 76/265 Test  #82: ota_dma_oversize ..........................   Passed    0.00 sec
+        Start  83: ota_dma_concurrent
+ 77/265 Test  #83: ota_dma_concurrent ........................   Passed    0.00 sec
+        Start  84: ota_dma_begin-race
+ 78/265 Test  #84: ota_dma_begin-race ........................   Passed    0.00 sec
+        Start  85: ota_worker_tls_build_guards
+ 79/265 Test  #22: startup_touch-stale .......................   Passed    0.35 sec
+        Start  86: ota_worker_tls_5_0_success
+ 80/265 Test  #86: ota_worker_tls_5_0_success ................   Passed    0.00 sec
+        Start  87: ota_worker_tls_5_0_offline
+ 81/265 Test  #87: ota_worker_tls_5_0_offline ................   Passed    0.00 sec
+        Start  88: ota_worker_tls_5_0_cancel-settle
+ 82/265 Test  #88: ota_worker_tls_5_0_cancel-settle ..........   Passed    0.00 sec
+        Start  89: ota_worker_tls_5_0_cancel-sntp
+ 83/265 Test  #89: ota_worker_tls_5_0_cancel-sntp ............   Passed    0.00 sec
+        Start  90: ota_worker_tls_5_0_cancel-open
+ 84/265 Test  #90: ota_worker_tls_5_0_cancel-open ............   Passed    0.00 sec
+        Start  91: ota_worker_tls_5_0_timeout-open
+ 85/265 Test  #91: ota_worker_tls_5_0_timeout-open ...........   Passed    0.00 sec
+        Start  92: ota_worker_tls_5_0_sntp-fail
+ 86/265 Test  #92: ota_worker_tls_5_0_sntp-fail ..............   Passed    0.00 sec
+        Start  93: ota_worker_tls_5_0_start1-fail
+ 87/265 Test  #93: ota_worker_tls_5_0_start1-fail ............   Passed    0.00 sec
+        Start  94: ota_worker_tls_5_0_start2-fail
+ 88/265 Test  #94: ota_worker_tls_5_0_start2-fail ............   Passed    0.00 sec
+        Start  95: ota_worker_tls_5_0_stop1-fail
+ 89/265 Test  #95: ota_worker_tls_5_0_stop1-fail .............   Passed    0.00 sec
+        Start  96: ota_worker_tls_5_0_stop2-fail
+ 90/265 Test  #96: ota_worker_tls_5_0_stop2-fail .............   Passed    0.00 sec
+        Start  97: ota_worker_tls_5_0_guard
+ 91/265 Test  #97: ota_worker_tls_5_0_guard ..................   Passed    0.00 sec
+        Start  98: ota_worker_tls_5_0_init-fail
+ 92/265 Test  #98: ota_worker_tls_5_0_init-fail ..............   Passed    0.00 sec
+        Start  99: ota_worker_tls_5_0_open-fail
+ 93/265 Test  #99: ota_worker_tls_5_0_open-fail ..............   Passed    0.00 sec
+        Start 100: ota_worker_tls_5_0_headers-fail
+ 94/265 Test #100: ota_worker_tls_5_0_headers-fail ...........   Passed    0.00 sec
+        Start 101: ota_worker_tls_5_0_status
+ 95/265 Test #101: ota_worker_tls_5_0_status .................   Passed    0.00 sec
+        Start 102: ota_worker_tls_5_0_cleanup-fail
+ 96/265 Test #102: ota_worker_tls_5_0_cleanup-fail ...........   Passed    0.00 sec
+        Start 103: ota_worker_tls_5_0_large-headers
+ 97/265 Test #103: ota_worker_tls_5_0_large-headers ..........   Passed    0.00 sec
+        Start 104: ota_worker_tls_5_0_clock-jump
+ 98/265 Test #104: ota_worker_tls_5_0_clock-jump .............   Passed    0.00 sec
+        Start 105: ota_worker_tls_5_0_dma-init-fail
+ 99/265 Test #105: ota_worker_tls_5_0_dma-init-fail ..........   Passed    0.00 sec
+        Start 106: ota_worker_tls_5_0_aes-no-memory
+100/265 Test #106: ota_worker_tls_5_0_aes-no-memory ..........   Passed    0.00 sec
+        Start 107: ota_worker_tls_5_0_dma-overflow
+101/265 Test #107: ota_worker_tls_5_0_dma-overflow ...........   Passed    0.00 sec
+        Start 108: ota_worker_tls_5_1_success
+102/265 Test #108: ota_worker_tls_5_1_success ................   Passed    0.00 sec
+        Start 109: ota_worker_tls_5_1_open-fail
+103/265 Test #109: ota_worker_tls_5_1_open-fail ..............   Passed    0.00 sec
+        Start 110: ota_worker_tls_6_0_success
+104/265 Test #110: ota_worker_tls_6_0_success ................   Passed    0.00 sec
+        Start 111: ota_worker_tls_6_0_offline
+105/265 Test #111: ota_worker_tls_6_0_offline ................   Passed    0.00 sec
+        Start 112: ota_worker_tls_6_0_cancel-settle
+106/265 Test #112: ota_worker_tls_6_0_cancel-settle ..........   Passed    0.00 sec
+        Start 113: ota_worker_tls_6_0_cancel-sntp
+107/265 Test #113: ota_worker_tls_6_0_cancel-sntp ............   Passed    0.00 sec
+        Start 114: ota_worker_tls_6_0_cancel-open
+108/265 Test #114: ota_worker_tls_6_0_cancel-open ............   Passed    0.00 sec
+        Start 115: ota_worker_tls_6_0_timeout-open
+109/265 Test #115: ota_worker_tls_6_0_timeout-open ...........   Passed    0.00 sec
+        Start 116: ota_worker_tls_6_0_sntp-fail
+110/265 Test #116: ota_worker_tls_6_0_sntp-fail ..............   Passed    0.00 sec
+        Start 117: ota_worker_tls_6_0_start1-fail
+111/265 Test #117: ota_worker_tls_6_0_start1-fail ............   Passed    0.00 sec
+        Start 118: ota_worker_tls_6_0_start2-fail
+112/265 Test #118: ota_worker_tls_6_0_start2-fail ............   Passed    0.00 sec
+        Start 119: ota_worker_tls_6_0_stop1-fail
+113/265 Test #119: ota_worker_tls_6_0_stop1-fail .............   Passed    0.00 sec
+        Start 120: ota_worker_tls_6_0_stop2-fail
+114/265 Test #120: ota_worker_tls_6_0_stop2-fail .............   Passed    0.00 sec
+        Start 121: ota_worker_tls_6_0_guard
+115/265 Test #121: ota_worker_tls_6_0_guard ..................   Passed    0.00 sec
+        Start 122: ota_worker_tls_6_0_init-fail
+116/265 Test #122: ota_worker_tls_6_0_init-fail ..............   Passed    0.00 sec
+        Start 123: ota_worker_tls_6_0_open-fail
+117/265 Test #123: ota_worker_tls_6_0_open-fail ..............   Passed    0.00 sec
+        Start 124: ota_worker_tls_6_0_headers-fail
+118/265 Test #124: ota_worker_tls_6_0_headers-fail ...........   Passed    0.00 sec
+        Start 125: ota_worker_tls_6_0_status
+119/265 Test #125: ota_worker_tls_6_0_status .................   Passed    0.00 sec
+        Start 126: ota_worker_tls_6_0_cleanup-fail
+120/265 Test #126: ota_worker_tls_6_0_cleanup-fail ...........   Passed    0.00 sec
+        Start 127: ota_worker_tls_6_0_large-headers
+121/265 Test #127: ota_worker_tls_6_0_large-headers ..........   Passed    0.00 sec
+        Start 128: ota_worker_tls_6_0_clock-jump
+122/265 Test #128: ota_worker_tls_6_0_clock-jump .............   Passed    0.00 sec
+        Start 129: ota_worker_tls_6_0_dma-init-fail
+123/265 Test #129: ota_worker_tls_6_0_dma-init-fail ..........   Passed    0.00 sec
+        Start 130: ota_worker_tls_6_0_aes-no-memory
+124/265 Test #130: ota_worker_tls_6_0_aes-no-memory ..........   Passed    0.00 sec
+        Start 131: ota_worker_tls_6_0_dma-overflow
+125/265 Test #131: ota_worker_tls_6_0_dma-overflow ...........   Passed    0.00 sec
+        Start 132: ota_worker_tls_6_1_success
+126/265 Test #132: ota_worker_tls_6_1_success ................   Passed    0.00 sec
+        Start 133: ota_worker_tls_6_1_open-fail
+127/265 Test #133: ota_worker_tls_6_1_open-fail ..............   Passed    0.00 sec
+        Start 134: release_build_binding
+128/265 Test  #25: ota_candidate .............................   Passed    0.21 sec
+        Start 135: ota_installer
+129/265 Test #135: ota_installer .............................   Passed    0.00 sec
+        Start 136: ota_setup
+130/265 Test  #68: release_review_cli ........................   Passed    0.10 sec
+        Start 137: ota_memory_diagnostics_success
+131/265 Test #137: ota_memory_diagnostics_success ............   Passed    0.00 sec
+        Start 138: ota_memory_diagnostics_start-fail
+132/265 Test #138: ota_memory_diagnostics_start-fail .........   Passed    0.00 sec
+        Start 139: ota_memory_diagnostics_guard-fail
+133/265 Test #139: ota_memory_diagnostics_guard-fail .........   Passed    0.00 sec
+        Start 140: ota_memory_diagnostics_stop-fail
+134/265 Test #140: ota_memory_diagnostics_stop-fail ..........   Passed    0.00 sec
+        Start 141: ota_memory_diagnostics_transition
+135/265 Test #141: ota_memory_diagnostics_transition .........   Passed    0.00 sec
+        Start 142: ota_memory_diagnostics_abandon
+136/265 Test #142: ota_memory_diagnostics_abandon ............   Passed    0.00 sec
+        Start 143: ota_memory_diagnostics_disabled
+137/265 Test #143: ota_memory_diagnostics_disabled ...........   Passed    0.00 sec
+        Start 144: ota_memory_diagnostics_artifacts
+138/265 Test  #70: ota_dma_artifact_guards ...................   Passed    0.13 sec
+        Start 145: ota_worker_stack_build_guards
+139/265 Test #144: ota_memory_diagnostics_artifacts ..........   Passed    0.04 sec
+        Start 146: ota_worker_stack_0_success
+140/265 Test #146: ota_worker_stack_0_success ................   Passed    0.00 sec
+        Start 147: ota_worker_stack_0_task-fail
+141/265 Test #147: ota_worker_stack_0_task-fail ..............   Passed    0.00 sec
+        Start 148: ota_worker_stack_0_pending-fail
+142/265 Test #148: ota_worker_stack_0_pending-fail ...........   Passed    0.00 sec
+        Start 149: ota_worker_stack_0_probe-fail
+143/265 Test #149: ota_worker_stack_0_probe-fail .............   Passed    0.00 sec
+        Start 150: ota_worker_stack_0_health-timeout
+144/265 Test #150: ota_worker_stack_0_health-timeout .........   Passed    0.00 sec
+        Start 152: ota_worker_stack_1_success
+145/265 Test #152: ota_worker_stack_1_success ................   Passed    0.00 sec
+        Start 153: ota_worker_stack_1_task-fail
+146/265 Test #153: ota_worker_stack_1_task-fail ..............   Passed    0.00 sec
+        Start 154: ota_worker_stack_1_pending-fail
+147/265 Test #154: ota_worker_stack_1_pending-fail ...........   Passed    0.00 sec
+        Start 155: ota_worker_stack_1_probe-fail
+148/265 Test #155: ota_worker_stack_1_probe-fail .............   Passed    0.00 sec
+        Start 156: ota_worker_stack_1_health-timeout
+149/265 Test #156: ota_worker_stack_1_health-timeout .........   Passed    0.00 sec
+        Start 157: ota_worker_stack_2_success
+150/265 Test #157: ota_worker_stack_2_success ................   Passed    0.00 sec
+        Start 158: ota_worker_stack_2_task-fail
+151/265 Test #158: ota_worker_stack_2_task-fail ..............   Passed    0.00 sec
+        Start 159: ota_worker_stack_2_pending-fail
+152/265 Test #159: ota_worker_stack_2_pending-fail ...........   Passed    0.00 sec
+        Start 160: ota_worker_stack_2_probe-fail
+153/265 Test #160: ota_worker_stack_2_probe-fail .............   Passed    0.00 sec
+        Start 161: ota_worker_stack_2_health-timeout
+154/265 Test #161: ota_worker_stack_2_health-timeout .........   Passed    0.00 sec
+        Start 162: ota_worker_stack_3_success
+155/265 Test #162: ota_worker_stack_3_success ................   Passed    0.00 sec
+        Start 163: ota_worker_stack_3_task-fail
+156/265 Test #163: ota_worker_stack_3_task-fail ..............   Passed    0.00 sec
+        Start 164: ota_worker_stack_3_pending-fail
+157/265 Test #164: ota_worker_stack_3_pending-fail ...........   Passed    0.00 sec
+        Start 165: ota_worker_stack_3_probe-fail
+158/265 Test #165: ota_worker_stack_3_probe-fail .............   Passed    0.00 sec
+        Start 166: ota_worker_stack_3_health-timeout
+159/265 Test #166: ota_worker_stack_3_health-timeout .........   Passed    0.00 sec
+        Start 167: ota_boot_3_missing_context
+160/265 Test #167: ota_boot_3_missing_context ................   Passed    0.00 sec
+        Start 168: ota_worker_stack_4_success
+161/265 Test #168: ota_worker_stack_4_success ................   Passed    0.00 sec
+        Start 169: ota_worker_stack_4_task-fail
+162/265 Test #169: ota_worker_stack_4_task-fail ..............   Passed    0.00 sec
+        Start 170: ota_worker_stack_4_pending-fail
+163/265 Test #170: ota_worker_stack_4_pending-fail ...........   Passed    0.00 sec
+        Start 171: ota_worker_stack_4_probe-fail
+164/265 Test #171: ota_worker_stack_4_probe-fail .............   Passed    0.00 sec
+        Start 172: ota_worker_stack_4_health-timeout
+165/265 Test #172: ota_worker_stack_4_health-timeout .........   Passed    0.00 sec
+        Start 173: ota_signed_check_offline
+166/265 Test #173: ota_signed_check_offline ..................   Passed    0.00 sec
+        Start 174: ota_signed_check_wait-health
+167/265 Test #174: ota_signed_check_wait-health ..............   Passed    0.00 sec
+        Start 175: ota_signed_check_memory-fail
+168/265 Test #175: ota_signed_check_memory-fail ..............   Passed    0.00 sec
+        Start 176: ota_signed_check_sntp-fail
+169/265 Test #176: ota_signed_check_sntp-fail ................   Passed    0.00 sec
+        Start 177: ota_signed_check_sntp-cleanup-fail
+170/265 Test #177: ota_signed_check_sntp-cleanup-fail ........   Passed    0.00 sec
+        Start 178: ota_signed_check_session-fail
+171/265 Test #178: ota_signed_check_session-fail .............   Passed    0.00 sec
+        Start 179: ota_signed_check_resource-fail
+172/265 Test #179: ota_signed_check_resource-fail ............   Passed    0.00 sec
+        Start 180: ota_signed_check_cancel-session
+173/265 Test #180: ota_signed_check_cancel-session ...........   Passed    0.00 sec
+        Start 181: ota_worker_stack_5_success
+174/265 Test #181: ota_worker_stack_5_success ................   Passed    0.00 sec
+        Start 182: ota_worker_stack_5_task-fail
+175/265 Test #182: ota_worker_stack_5_task-fail ..............   Passed    0.00 sec
+        Start 183: ota_worker_stack_5_pending-fail
+176/265 Test #183: ota_worker_stack_5_pending-fail ...........   Passed    0.00 sec
+        Start 184: ota_worker_stack_5_probe-fail
+177/265 Test #184: ota_worker_stack_5_probe-fail .............   Passed    0.00 sec
+        Start 185: ota_worker_stack_5_health-timeout
+178/265 Test #185: ota_worker_stack_5_health-timeout .........   Passed    0.00 sec
+        Start 186: ota_boot_5_missing_context
+179/265 Test #186: ota_boot_5_missing_context ................   Passed    0.00 sec
+        Start 187: ota_worker_stack_6_success
+180/265 Test #187: ota_worker_stack_6_success ................   Passed    0.00 sec
+        Start 188: ota_worker_stack_6_task-fail
+181/265 Test #188: ota_worker_stack_6_task-fail ..............   Passed    0.00 sec
+        Start 189: ota_worker_stack_6_pending-fail
+182/265 Test #189: ota_worker_stack_6_pending-fail ...........   Passed    0.00 sec
+        Start 190: ota_worker_stack_6_probe-fail
+183/265 Test #190: ota_worker_stack_6_probe-fail .............   Passed    0.00 sec
+        Start 191: ota_worker_stack_6_health-timeout
+184/265 Test #191: ota_worker_stack_6_health-timeout .........   Passed    0.00 sec
+        Start 192: ota_boot_ota-context-valid
+185/265 Test #192: ota_boot_ota-context-valid ................   Passed    0.00 sec
+        Start 193: ota_boot_ota-invalid-key
+186/265 Test #193: ota_boot_ota-invalid-key ..................   Passed    0.00 sec
+        Start 194: ota_boot_ota-version-mismatch
+187/265 Test #194: ota_boot_ota-version-mismatch .............   Passed    0.00 sec
+        Start 195: ota_boot_ota-no-description
+188/265 Test #195: ota_boot_ota-no-description ...............   Passed    0.00 sec
+        Start 196: ota_boot_ota-valid-unconfigured
+189/265 Test #196: ota_boot_ota-valid-unconfigured ...........   Passed    0.00 sec
+        Start 197: ota_boot_factory-invalid-key
+190/265 Test #197: ota_boot_factory-invalid-key ..............   Passed    0.00 sec
+        Start 198: ota_boot_factory-version-mismatch
+191/265 Test #198: ota_boot_factory-version-mismatch .........   Passed    0.00 sec
+        Start 199: ota_boot_missing-partition
+192/265 Test #199: ota_boot_missing-partition ................   Passed    0.00 sec
+        Start 200: ota_worker_stack_7_success
+193/265 Test #200: ota_worker_stack_7_success ................   Passed    0.00 sec
+        Start 201: ota_worker_stack_7_task-fail
+194/265 Test #201: ota_worker_stack_7_task-fail ..............   Passed    0.00 sec
+        Start 202: ota_worker_stack_7_pending-fail
+195/265 Test #202: ota_worker_stack_7_pending-fail ...........   Passed    0.00 sec
+        Start 203: ota_worker_stack_7_probe-fail
+196/265 Test #203: ota_worker_stack_7_probe-fail .............   Passed    0.00 sec
+        Start 204: ota_worker_stack_7_health-timeout
+197/265 Test #204: ota_worker_stack_7_health-timeout .........   Passed    0.00 sec
+        Start 205: ota_boot_7_invalid_policy
+198/265 Test #205: ota_boot_7_invalid_policy .................   Passed    0.00 sec
+        Start 206: ota_worker_stack_8_success
+199/265 Test #206: ota_worker_stack_8_success ................   Passed    0.00 sec
+        Start 207: ota_worker_stack_8_task-fail
+200/265 Test #207: ota_worker_stack_8_task-fail ..............   Passed    0.00 sec
+        Start 208: ota_worker_stack_8_pending-fail
+201/265 Test #208: ota_worker_stack_8_pending-fail ...........   Passed    0.00 sec
+        Start 209: ota_worker_stack_8_probe-fail
+202/265 Test #209: ota_worker_stack_8_probe-fail .............   Passed    0.00 sec
+        Start 210: ota_worker_stack_8_health-timeout
+203/265 Test #210: ota_worker_stack_8_health-timeout .........   Passed    0.00 sec
+        Start 211: ota_boot_8_invalid_policy
+204/265 Test  #85: ota_worker_tls_build_guards ...............   Passed    0.22 sec
+        Start 212: stm32_stepdir_timer_plan
+205/265 Test #211: ota_boot_8_invalid_policy .................   Passed    0.00 sec
+        Start 213: motion_supervisor
+206/265 Test #213: motion_supervisor .........................   Passed    0.00 sec
+        Start 214: motion_startup_noio
+207/265 Test #214: motion_startup_noio .......................   Passed    0.00 sec
+        Start 215: stm32_bench_hardware_model
+208/265 Test #212: stm32_stepdir_timer_plan ..................   Passed    0.01 sec
+        Start 216: stm32_bench_reference
+209/265 Test #215: stm32_bench_hardware_model ................   Passed    0.00 sec
+        Start 217: update_driver_dispatch_threads
+210/265 Test #217: update_driver_dispatch_threads ............   Passed    0.01 sec
+        Start 218: update_frame_ingress_threads
+211/265 Test  #69: release_review_cohort .....................   Passed    0.28 sec
+        Start 219: update_ingress_owner_threads
+212/265 Test #216: stm32_bench_reference .....................   Passed    0.03 sec
+        Start 220: update_completion_mailbox_threads
+213/265 Test #219: update_ingress_owner_threads ..............   Passed    0.01 sec
+        Start 221: update_metadata_setup_reference
+214/265 Test  #29: ota_policy_conformance ....................   Passed    0.34 sec
+        Start 222: update_wire_reference
+215/265 Test #221: update_metadata_setup_reference ...........   Passed    0.03 sec
+        Start 223: update_fragment_reference
+216/265 Test #222: update_wire_reference .....................   Passed    0.03 sec
+        Start 224: update_metadata_reference
+217/265 Test #224: update_metadata_reference .................   Passed    0.02 sec
+        Start 225: update_session
+218/265 Test #225: update_session ............................   Passed    0.00 sec
+        Start 226: update_loopback
+219/265 Test #223: update_fragment_reference .................   Passed    0.03 sec
+        Start 227: update_outcome
+220/265 Test #227: update_outcome ............................   Passed    0.01 sec
+        Start 228: update_negotiation
+221/265 Test #228: update_negotiation ........................   Passed    0.00 sec
+        Start 229: update_wire
+222/265 Test #145: ota_worker_stack_build_guards .............   Passed    0.26 sec
+        Start 230: update_fragment
+223/265 Test #226: update_loopback ...........................   Passed    0.05 sec
+        Start 231: update_fragment_timing
+224/265 Test #218: update_frame_ingress_threads ..............   Passed    0.13 sec
+        Start 232: update_metadata
+225/265 Test #231: update_fragment_timing ....................   Passed    0.01 sec
+        Start 233: update_metadata_setup
+226/265 Test #229: update_wire ...............................   Passed    0.06 sec
+        Start 234: update_fragment_raw
+227/265 Test #233: update_metadata_setup .....................   Passed    0.01 sec
+        Start 235: update_channel
+228/265 Test #234: update_fragment_raw .......................   Passed    0.01 sec
+        Start 236: update_frame_queue
+229/265 Test #236: update_frame_queue ........................   Passed    0.00 sec
+        Start 237: update_egress
+230/265 Test #237: update_egress .............................   Passed    0.00 sec
+        Start 238: update_driver_events
+231/265 Test #238: update_driver_events ......................   Passed    0.00 sec
+        Start 239: update_completion_mailbox
+232/265 Test #239: update_completion_mailbox .................   Passed    0.00 sec
+        Start 240: update_completion_owner
+233/265 Test #240: update_completion_owner ...................   Passed    0.01 sec
+        Start 241: update_driver_dispatch
+234/265 Test #230: update_fragment ...........................   Passed    0.05 sec
+        Start 242: update_frame_ingress
+235/265 Test #241: update_driver_dispatch ....................   Passed    0.00 sec
+        Start 243: update_ingress_owner
+236/265 Test #242: update_frame_ingress ......................   Passed    0.00 sec
+        Start 244: boot_image_admission
+237/265 Test #243: update_ingress_owner ......................   Passed    0.00 sec
+        Start 245: boot_crypto_source
+238/265 Test #232: update_metadata ...........................   Passed    0.05 sec
+        Start 246: boot_staging_source
+239/265 Test #246: boot_staging_source .......................   Passed    0.00 sec
+        Start 247: boot_update_handoff
+240/265 Test #235: update_channel ............................   Passed    0.03 sec
+        Start 248: boot_staging_handoff
+241/265 Test #248: boot_staging_handoff ......................   Passed    0.04 sec
+        Start 249: boot_wire_handoff
+242/265 Test #220: update_completion_mailbox_threads .........   Passed    0.23 sec
+        Start 250: boot_fragment_handoff
+243/265 Test  #26: ota_signed_check_bundle ...................   Passed    0.62 sec
+        Start 251: boot_fragment_timing
+244/265 Test #249: boot_wire_handoff .........................   Passed    0.04 sec
+        Start 252: boot_egress_handoff
+245/265 Test #136: ota_setup .................................   Passed    0.44 sec
+        Start 253: boot_driver_events_handoff
+246/265 Test #251: boot_fragment_timing ......................   Passed    0.02 sec
+        Start 254: boot_completion_mailbox_handoff
+247/265 Test #250: boot_fragment_handoff .....................   Passed    0.04 sec
+        Start 255: boot_driver_dispatch_handoff
+248/265 Test #252: boot_egress_handoff .......................   Passed    0.04 sec
+        Start 256: boot_frame_ingress_handoff
+249/265 Test #245: boot_crypto_source ........................   Passed    0.13 sec
+        Start 257: boot_threaded_ingress_handoff
+250/265 Test #253: boot_driver_events_handoff ................   Passed    0.04 sec
+        Start 258: boot_ingress_owner_handoff
+251/265 Test #254: boot_completion_mailbox_handoff ...........   Passed    0.05 sec
+        Start 259: boot_channel_handoff
+252/265 Test #244: boot_image_admission ......................   Passed    0.16 sec
+        Start 260: boot_metadata_setup_handoff
+253/265 Test #255: boot_driver_dispatch_handoff ..............   Passed    0.05 sec
+        Start 261: boot_metadata_handoff
+254/265 Test #256: boot_frame_ingress_handoff ................   Passed    0.05 sec
+        Start 262: boot_release_handoff
+255/265 Test #259: boot_channel_handoff ......................   Passed    0.03 sec
+        Start 263: boot_image_profile
+256/265 Test #263: boot_image_profile ........................   Passed    0.00 sec
+        Start 264: boot_release_admission
+257/265 Test #260: boot_metadata_setup_handoff ...............   Passed    0.03 sec
+        Start 265: boot_release_versions
+258/265 Test #261: boot_metadata_handoff .....................   Passed    0.03 sec
+259/265 Test #258: boot_ingress_owner_handoff ................   Passed    0.06 sec
+260/265 Test #265: boot_release_versions .....................   Passed    0.04 sec
+261/265 Test #262: boot_release_handoff ......................   Passed    0.09 sec
+262/265 Test #264: boot_release_admission ....................   Passed    0.11 sec
+263/265 Test #134: release_build_binding .....................   Passed    0.68 sec
+264/265 Test #247: boot_update_handoff .......................   Passed    0.33 sec
+265/265 Test #257: boot_threaded_ingress_handoff .............   Passed    0.25 sec
+
+100% tests passed, 0 tests failed out of 265
+
+Total Test time (real) =   1.50 sec

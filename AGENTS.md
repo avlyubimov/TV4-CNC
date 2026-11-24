@@ -142,6 +142,20 @@ PR и Actions; не копировать код уже открытого PR. Д
    теги, релизы, секреты CI и публикации под видом обычного push.
 6. Обновлять актуальный статус; исторические отчёты сохранять с явной пометкой.
 
+Текущий отдельный результат: [local trust перед pending confirmation](docs/plans/P1_PENDING_TRUST.md).
+Не подтверждать новый OTA-slot без рабочего локального context; factory recovery
+и ранее VALID без настроек сохраняются. AP/DHCP/SNTP не являются boot prerequisites.
+265 host/265 sanitizers, четыре ELF обоих pinned SDK и CI30 PASS. Native a74bfcd
+confirmation/INVALID rollback/полный возврат PASS; это USB fixture, не сетевой INSTALL.
+
+Native a74bfcd стенд закрыт PASS: fresh16MiB/two-NVMe/control, ota_0 NEW/VALID,
+ota_1 unprovisioned NEW/INVALID/rollback в healthy ota_0, полные исходные factory/
+otadata/оба slots/verify/UART30.1031,352s,9writes/4captures/full recovery0.
+На ESP32 fecc05d, F407 ee7d179. Не повторять закрытый пакет. Это не network
+INSTALL; далее explicit install review gate для CHECK-only context и новый
+согласованный installable payload. Стенд и raw backup evidence не публиковать
+вместо числового отчёта docs/evidence/hardware/2026-11-24-esp32-native-boot-a74bfcd/.
+
 ## Текущее задание: P1 — native boot/rollback после подписанного CHECK
 
 Читайте docs/plans/P1_AUTONOMOUS_SIGNED_CHECK.md. Точный a29c9ed на ESP-IDF6.1.1:

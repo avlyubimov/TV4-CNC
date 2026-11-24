@@ -126,7 +126,12 @@ LVGL callback отправляет неблокирующее сообщение
 5. Worker запускается до board init. За 30 секунд требуются 3 секунды непрерывных
    свежих health-сэмплов UI/GT911 (не старше 500 мс, без пропуска polling окна),
    отсутствие ошибки RGB flush, 256-байтный PSRAM write/read probe и точная карта.
-   Проверка не требует AP/DHCP/CAN/microSD или настроенного OTA-ключа.
+   Проверка не требует AP/DHCP/SNTP/CAN/microSD. Для нового pending OTA-образа
+   дополнительно требуется рабочий локальный context: provisioning, P-256 public
+   key, совпадение app descriptor version и валидные time/resource policies.
+   Это проверка локальной настройки, не получение времени или данных из сети.
+   Factory recovery загружается без ключа; ранее VALID образ с потерянной
+   настройкой сохраняет SETUP, без разрешения CHECK/INSTALL.
    Pending image подтверждается штатным SDK только при успехе; иначе SDK rollback
    и reset. Boot worker подписан на task watchdog; idle CPU0/CPU1 также наблюдаются,
    task watchdog panic/reset 5 секунд, interrupt watchdog включён. Это ещё не
