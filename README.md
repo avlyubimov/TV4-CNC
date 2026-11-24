@@ -1,28 +1,26 @@
 # TV4 CNC
 
-## Проверенное состояние, 24 ноября2026
+## Проверенное состояние, 24 ноября 2026
 
-На Waveshare **оставлен экспериментальный bench.4, OTA1 VALID**, source6c7b1d5,
-ESP-IDF6.1.1. [Подписанный сетевой INSTALL/readback](docs/evidence/hardware/2026-11-24-esp32-display-bench4/README.md)
-прошёл: CHECK9/INSTALL798/error0, независимое чтение настоящего BIN/SHA, native
-VALID, полный16MiB read/two-NVMe и длительные boots с Wi-Fi/GT911 PASS. Владелец
-подтвердил стабильный экран при записи. Factory fecc05d сохранён как recovery;
-обычного возврата старой прошивки нет.
+На Waveshare оставлен **bench.4, OTA1 VALID**, подписанный образ `6c7b1d5`
+на ESP-IDF 6.1.1. [Сетевая установка](docs/evidence/hardware/2026-11-24-esp32-display-bench4/README.md)
+и [rollback после сброса / восстановление через factory](docs/evidence/hardware/2026-11-24-esp32-reset-rollback/README.md)
+прошли. Исходные записи VALID обоих слотов восстановлены; полное чтение
+16 МиБ подтвердило неизменность всего вне рабочего NVS. Две копии на разных
+NVMe проверены. Владелец подтвердил экран, касания и Wi-Fi после стенда.
 
-[Release bench.4](https://github.com/avlyubimov/TV4-CNC/releases/tag/v0.1.0-bench.4)
-с11 независимо скачанными/проверенными assets опубликован по отдельному approval.
-[Software/CI](docs/evidence/build/esp32-ota-display-bench4/README.md): оба pinned
-SDK/4 ELF,274 host/274 sanitizers, source30/main15/tag15 PASS;39 host-проверок
-процедуры и8 native metadata checks. Maincf8ffb0, PR #80–85 слиты владельцем.
+[Программные проверки](docs/evidence/build/esp32-ota-reset-rollback/README.md):
+274 host, 274 ASan/UBSan/LSan и 36 проверок процедуры PASS. Исполняемая
+прошивка и [опубликованный bench.4](https://github.com/avlyubimov/TV4-CNC/releases/tag/v0.1.0-bench.4)
+не менялись. Три записи стенда затронули только otadata, полный restore
+не потребовался. Factory fecc05d сохранён для восстановления.
 
-STM32F407 ee7d179 — [HSI/no-motion bench](docs/evidence/hardware/2026-11-22-f407-ee7d179-bench/README.md),
-в этой работе SWD не открывался. Physical CAN/motion не приняты. P1 network
-failure/rollback, production policy/budget и P2 bit reproducibility остаются
-открытыми; FPS/touch-to-display не измерены. Bench OTA contexts действуют только
-до25ноября2026 08:00 Asia/Almaty.
-
-[Аппаратный статус](docs/HARDWARE_STATUS.md), [следующий этап](docs/NEXT_STAGE.md),
-[backup status](docs/BACKUP_STATUS.md). Ordinary rev12 flash поверх A/B не выполнять.
+Далее P1: отрицательные сетевые сценарии, отмена, потеря Wi-Fi/питания,
+производственная политика и ресурсы; P2: воспроизводимость сборок. Стендовые
+контексты только до 25 ноября 2026, 08:00 Asia/Almaty. Runtime 5.3.2,
+численные FPS и задержка касания не измерены; физические CAN/движение
+не приняты. [Следующий этап](docs/NEXT_STAGE.md), [аппаратный статус](docs/HARDWARE_STATUS.md),
+[резервные копии](docs/BACKUP_STATUS.md).
 
 ## История программной подготовки
 

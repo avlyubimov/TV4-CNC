@@ -1,0 +1,20 @@
+test_actual_existing_signed_image_and_dual_valid_checkpoint (__main__.Loader.test_actual_existing_signed_image_and_dual_valid_checkpoint) ... ok
+test_changed_publication_refused (__main__.Loader.test_changed_publication_refused) ... ok
+test_ci_failure_refused (__main__.Loader.test_ci_failure_refused) ... ok
+test_context_expiry_and_whole_session_reserve (__main__.Loader.test_context_expiry_and_whole_session_reserve) ... ok
+test_exact_time_boundary_preserves_full_session (__main__.Loader.test_exact_time_boundary_preserves_full_session) ... ok
+test_helper_override_refused (__main__.Loader.test_helper_override_refused) ... ok
+test_longer_session_refused (__main__.Loader.test_longer_session_refused) ... ok
+test_multiple_full_recoveries_refused (__main__.Loader.test_multiple_full_recoveries_refused) ... ok
+test_no_invented_per_hash_reply (__main__.Loader.test_no_invented_per_hash_reply) ... ok
+test_no_standing_grant_refused (__main__.Loader.test_no_standing_grant_refused) ... ok
+test_payload_changed_refused (__main__.Loader.test_payload_changed_refused) ... ok
+test_previous_stand_not_closed_refused (__main__.Loader.test_previous_stand_not_closed_refused) ... ok
+test_signature_proof_tampering_refused (__main__.Loader.test_signature_proof_tampering_refused) ... ok
+test_wrong_final_release_refused (__main__.Loader.test_wrong_final_release_refused) ... ok
+test_wrong_scope_refused (__main__.Loader.test_wrong_scope_refused) ... ok
+
+----------------------------------------------------------------------
+Ran 15 tests in 0.199s
+
+OK

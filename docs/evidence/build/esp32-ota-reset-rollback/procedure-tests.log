@@ -1,0 +1,18 @@
+test_actual_metadata_is_saved_before_failed_comparison (__main__.Procedure.test_actual_metadata_is_saved_before_failed_comparison) ... ok
+test_failed_metadata_and_full_recovery_never_retry (__main__.Procedure.test_failed_metadata_and_full_recovery_never_retry) ... ok
+test_preflight_refuses_without_writes (__main__.Procedure.test_preflight_refuses_without_writes) ... ok
+test_protected_data_corruption_uses_one_current_full_recovery (__main__.Procedure.test_protected_data_corruption_uses_one_current_full_recovery) ... ok
+test_recovery_without_required_time_reserve_never_writes (__main__.Procedure.test_recovery_without_required_time_reserve_never_writes) ... ok
+test_runtime_failure_restores_exact_already_valid_checkpoint (__main__.Procedure.test_runtime_failure_restores_exact_already_valid_checkpoint) ... ok
+test_success_native_aborted_then_factory_keeps_current_release (__main__.Procedure.test_success_native_aborted_then_factory_keeps_current_release) ... ok
+test_any_non_nvs_change_refuses_before_writes (__main__.Snapshot.test_any_non_nvs_change_refuses_before_writes) ... ok
+test_incomplete_current_nvs_rejected (__main__.Snapshot.test_incomplete_current_nvs_rejected) ... ok
+test_refreshed_nvs_plus_whole_device_verification (__main__.Snapshot.test_refreshed_nvs_plus_whole_device_verification) ... ok
+test_failed_read_also_restores_remaining_whole_timer (__main__.Timer.test_failed_read_also_restores_remaining_whole_timer) ... ok
+test_missing_whole_timer_refuses_read (__main__.Timer.test_missing_whole_timer_refuses_read) ... ok
+test_phase_read_preserves_absolute_deadline (__main__.Timer.test_phase_read_preserves_absolute_deadline) ... ok
+
+----------------------------------------------------------------------
+Ran 13 tests in 7.219s
+
+OK

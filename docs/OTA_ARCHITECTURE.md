@@ -2,21 +2,24 @@
 
 ## Актуальная интеграция P1
 
-HTTPS GitHub → owner-key signed manifest → compatibility/hash/size/resource guards
-→ SDK inactive slot → NEW/PENDING_VERIFY → self-test → VALID либо native rollback.
-Local `install_reviewed` AND signed `installable`, fresh candidate identity и
-двухшаговое UI confirmation обязательны. Configured worker12288/LVGL→PSRAM,
-CA/hostname/date, SNTP policy, serialized monitor/timeouts сохраняются.
+HTTPS GitHub → подпись доверенным ключом владельца / совместимость / SHA-256 /
+размер / ресурсные ограничения → неактивный SDK writer → нативные
+NEW/PENDING → self-test → VALID. Local `install_reviewed` AND signed `installable`,
+подтверждение UI в два шага, worker 12288, CA/hostname/date/SNTP, сериализация
+монитора и таймауты сохраняются.
 
-[Owner-key bench.3 опубликован](evidence/build/esp32-ota-install-bench3/README.md)
-на main08932ee; PR #80–83 слиты. [Signed INSTALL798checks/error0 и короткая загрузка
-ota_0/bench.3](evidence/hardware/2026-11-24-esp32-install-bench3/README.md) наблюдались,
-но independent Flash/VALID readback и полный плановый стенд ещё не приняты.
-Native USB rollback/confirmation и пять full signed CHECK уже PASS.
-Owner-reported прыжки интерфейса при Flash writes требуют отдельного RGB/progress
-fix и измерения; PCLK/pins/framebuffer/floors не менять вслепую. Следующий успешный
-релиз оставлять на плате; текущий завершённый сценарий уже вернул fecc05d.
-[Текущая очередь](NEXT_STAGE.md); ниже история решений.
+[Подписанная сетевая установка bench.4](evidence/hardware/2026-11-24-esp32-display-bench4/README.md)
+и [reset → ABORTED → OTA0 / оба OTA отклонены → factory](evidence/hardware/2026-11-24-esp32-reset-rollback/README.md)
+PASS. Неизменяемый bench.4 `6c7b1d5` оставлен в OTA1 VALID; factory fecc05d
+и принимающий стендовый `.3` в OTA0 сохранены. Восстановление исходных VALID
+метаданных вернуло известный исправный checkpoint, не подтвердило неизвестный
+кандидат. Прошивки и приложения в этом стенде не менялись.
+
+NEW/ABORTED/VALID считаны непосредственно; промежуточный PENDING выведен
+из закреплённого SDK. Это проверка восстановления уже установленного сетевого
+образа. Прерывание новой загрузки, CANCEL, потеря Wi-Fi/питания и производственные
+бюджет/политика остаются отдельными этапами. Старая factory не получает ключ
+или контекст автоматически. [Активный этап](NEXT_STAGE.md); ниже история.
 
 ## История: состояние после стенда worker8192
 

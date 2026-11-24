@@ -2,22 +2,26 @@
 
 ## Актуальные блокеры P1
 
-[Bench.4 signed INSTALL/readback/VALID](evidence/hardware/2026-11-24-esp32-display-bench4/README.md)
-и стабильный экран при записи подтверждены; новый release оставлен в OTA1.
-Долгий self-test/IP/touch и полный16MiB readback/two-NVMe выполнены, эти пункты
-больше не блокируют текущую изолированную установку. Первый metadata-check отказ
-сохранён отдельно, точный неожиданный record не известен.
+[Подписанный сетевой INSTALL и VALID](evidence/hardware/2026-11-24-esp32-display-bench4/README.md),
+[сброс до подтверждения → ABORTED → OTA0 и оба OTA отклонены → factory](evidence/hardware/2026-11-24-esp32-reset-rollback/README.md)
+проверены на текущей изолированной конфигурации. На ESP32 оставлен bench.4,
+OTA1 VALID; владелец подтвердил экран, касания и Wi-Fi. Промежуточный PENDING
+отдельно не считывался.
 
-Остаются network negative install/rollback, потеря Wi-Fi, прерывание/питание,
-production resource budget и policy/version discovery, два clean reproducible
-builds, runtime5.3.2 и численные FPS/touch-to-display. Bench contexts ограничены
-25ноября2026 08:00 Asia/Almaty; после срока нужен новый reviewed context, production
-порогов/версий из этого стенда не выводить. Factory fecc05d recovery сохранён;
-успешный новый release не возвращать автоматически. Новые release/tag — отдельное
-exact approval, hardware tests — в рамках действующего owner scope/finite plan.
+Открыты прерывание частичной загрузки / CANCEL / потеря Wi-Fi, физический
+power-loss, производственная политика, выбор версий и бюджет ресурсов.
+Нужны воспроизводимые чистые сборки, runtime 5.3.2 и измерение FPS/задержки
+касания. Старая factory не настроена для сетевой установки и не получает
+ключ/политику автоматически. Согласованная пара `.3→.4` пригодна для
+следующих отрицательных проверок; нужен новый ограниченный пакет с защитой
+активного слота и возвратом bench.4. Контексты только до 25 ноября 2026,
+08:00 Asia/Almaty; манифесты неизменяемы, подтверждение UI не обходить.
 
-CAN, распиновка/питание/токи/ENABLE closed-loop NEMA23 до точной модели, motion
-commissioning и независимая аппаратная аварийная цепь сохраняют свои blockers.
+F407, физический CAN, распиновка и параметры NEMA23 до точной модели,
+commissioning движения и независимая аварийная цепь сохраняют свои блокеры.
+Новый release/tag требует отдельного точного разрешения; общее разрешение
+на проверки изолированных плат не разрешает eFuse, option bytes или приводы.
+После успешного стенда оставлять рабочий релиз на плате.
 
 
 ## История: native pending confirmation/refusal/rollback a74bfcd — PASS

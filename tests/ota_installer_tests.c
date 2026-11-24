@@ -5,6 +5,9 @@
 #include <assert.h>
 #include <stdio.h>
 #include <string.h>
+_Static_assert(ESP_OTA_IMG_NEW==0 && ESP_OTA_IMG_PENDING_VERIFY==1 &&
+    ESP_OTA_IMG_VALID==2 && ESP_OTA_IMG_INVALID==3 && ESP_OTA_IMG_ABORTED==4 &&
+    ESP_OTA_IMG_UNDEFINED==UINT32_MAX,"host SDK state values must match native otadata");
 static esp_partition_t parts[8];
 static const esp_partition_t *running,*boot,*next;
 static esp_ota_img_states_t state;
@@ -86,7 +89,7 @@ int main(void) {
         if(kind==3)parts[n].subtype=0xff;
         assert(!tv4_ota_sdk_layout_valid() && !tv4_ota_sdk_begin(&s,&c) && !begins && !selects);
     }
-    for(unsigned n=0;n<12;n++) {
+    for(unsigned n=0;n<15;n++) {
         reset();tv4_ota_sdk s={.approval=&a,.commit_allowed=commit};esp_partition_t unknown={0,0,0x900000,0x200000,"unknown",false};
         if(n==0)running=NULL;
         if(n==1)boot=NULL;
@@ -100,6 +103,9 @@ int main(void) {
         if(n==9)fail=6;
         if(n==10)physical_size=0x800000;
         if(n==11)fail=8;
+        if(n==12) {running=boot=&parts[4];state=ESP_OTA_IMG_ABORTED;}
+        if(n==13) {running=boot=&parts[4];state=ESP_OTA_IMG_NEW;}
+        if(n==14) {running=boot=&parts[4];state=ESP_OTA_IMG_UNDEFINED;}
         assert(!tv4_ota_sdk_begin(&s,&c) && !begins);
     }
     for(unsigned n=0;n<6;n++) {
@@ -139,5 +145,15 @@ int main(void) {
         assert(result==(n==0));assert(accepted==((n==0 || n==1)?1u:0u));
         assert(rolled_back==((n==1 || n==2 || n==5)?1u:0u));
     }
+    /* An already rejected/unconfirmed record is never promoted by finish_boot.
+     * Native bootloader rollback is qualified separately on the real board. */
+    const esp_ota_img_states_t rejected[]={ESP_OTA_IMG_NEW,ESP_OTA_IMG_INVALID,
+        ESP_OTA_IMG_ABORTED,ESP_OTA_IMG_UNDEFINED};
+    for(unsigned n=0;n<sizeof(rejected)/sizeof(rejected[0]);n++)for(unsigned healthy=0;healthy<2;healthy++) {
+        reset();running=boot=&parts[4];state=rejected[n];
+        assert(!tv4_ota_sdk_finish_boot(healthy!=0) && !accepted && !rolled_back);
+    }
+    reset();running=boot=&parts[5];
+    assert(tv4_ota_sdk_finish_boot(true) && !accepted && !rolled_back);
     puts("Actual SDK installer: factory/alternating slots, layout/approval/state gates, SDK failures, cancellation, boot acceptance/rollback and no active/factory writes PASS (mock SDK, no hardware)");
 }

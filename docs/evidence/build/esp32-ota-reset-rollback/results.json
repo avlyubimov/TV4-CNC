@@ -1,0 +1,27 @@
+{
+  "schema": 1,
+  "qualification_base": "8d1603e21ac53ffd4962b013374bde0428397067",
+  "installed_firmware_source": "6c7b1d56769fe8a084c4360e6c2df4bb594f58fa",
+  "installed_tag": "v0.1.0-bench.4",
+  "host_tests_pass": 274,
+  "sanitizer_tests_pass": 274,
+  "leak_detection_enabled": true,
+  "procedure_host_tests_pass": 13,
+  "uart_collector_host_tests_pass": 8,
+  "loader_host_tests_pass": 15,
+  "source_main_ci_jobs_pass": 15,
+  "runtime_firmware_changed": false,
+  "new_firmware_build_claimed": false,
+  "new_release_published": false,
+  "exact_installed_release_signature_and_bin_reverified": true,
+  "host_compiler": "gcc (Ubuntu 15.2.0-16ubuntu1) 15.2.0",
+  "native_ota_state_values": {
+    "NEW": 0,
+    "PENDING_VERIFY": 1,
+    "VALID": 2,
+    "INVALID": 3,
+    "ABORTED": 4,
+    "UNDEFINED": 4294967295
+  },
+  "private_inputs_published": false
+}
