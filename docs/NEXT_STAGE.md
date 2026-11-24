@@ -1,36 +1,32 @@
 # P1 — ESP32 OTA: допуск установки и результаты стендов
 
-## Актуально: signed network INSTALL подтверждён, P1 продолжается
+## Актуально: bench.4 установлен и оставлен в OTA1 VALID
 
-Main `08932ee`, PR #80–83 слиты. [Owner-key bench.3, четыре actual ELF и публикация](evidence/build/esp32-ota-install-bench3/README.md)
-PASS: оба pinned SDK, main15/tag15 CI, Python/C/ASan/UBSan/LSan,11 reverse downloads.
-Исходный CHECK-only context и immutable bench.2 сохранены; bench.3 отдельно одобрен
-как prerelease без latest/stable. Contexts `.1→.3` действуют только на стенде
-до25ноября2026 08:00 Asia/Almaty; это не production policy.
+Main `cf8ffb0`, PR #80–85 слиты владельцем. [Owner-key bench.4](evidence/build/esp32-ota-display-bench4/README.md)
+опубликован по exact approval на source `6c7b1d5`: source30/main15/tag15 CI,
+274 host/274 sanitizers,4 actual ELF обоих pinned SDK и39 procedure/loader/collector
+checks PASS. Bench.2/bench.3 и original CHECK context неизменны.
 
-[Четыре аппаратных сеанса](evidence/hardware/2026-11-24-esp32-install-bench3/README.md):
-первые два ограничены временем оператора, третий отказал на SNTP до HTTPS.
-В четвёртом строгая обработка сохранённого UART подтвердила CHECK9checks и
-INSTALL798checks/error0, SESSION local internal97763bytes, stack7072/12288,
-touch≤18ms. Затем boot ota_0/bench.3 и configured self-test PASS; владелец подтвердил
-скачивание/запись/перезапуск новой версии. Плановый стенд не PASS: ранние операции
-и reboot пришлись на контрольный capture; independent Flash/VALID readback и
-длительный новый Wi-Fi/boot capture до возврата не выполнены. Все четыре сеанса
-closed с verified исходными factory/ota_0/otadata и fecc05d return; F407 ee7d179
-не открывался. Ни один closed packet не повторять.
+[Аппаратный повтор](evidence/hardware/2026-11-24-esp32-display-bench4/README.md) закрыт
+PASS за951.809s: control → CHECK9/INSTALL798/error0 → штатный reboot/full
+self-test до ROM → независимый BIN/SHA readback → native OTA1 VALID → настоящий
+итоговый read16MiB/two-NVMe → reset90/reset30 PASS. **На ESP32 оставлен bench.4
+в OTA1**, factory fecc05d recovery и receiving `.3` VALID в OTA0 сохранены.
+Обычного возврата0/full recovery0. Первый сеанс остановлен на metadata check и
+проверенно восстановлен; точные неожиданные bytes/state неизвестны, повтор
+исправляет преждевременный ROM attach.
 
-Следующий отдельный результат — устранение owner-reported прыжков интерфейса
-при OTA: IRAM-safe LCD/GDMA для explicit OTA и ограничение лишних progress/caption
-invalidations. Сохранить PCLK16MHz/bounce10/framebuffer/pins/allocator/floors/TLS и
-двойной UI gate; host/LVGL regression + оба SDK, затем visual/resource/Flash/VALID
-проверка. **Владелец теперь требует оставлять проверенный новый релиз на плате
-при успехе**, без обычного возврата fecc05d. Recovery/native rollback остаются.
+SESSION local internal98391, PSRAM5904064, operation stack7072/12288,
+touch≤16ms; owner подтвердил стабильный экран при записи этого source.
+Физические FPS/touch-to-display не измерены. F407 ee7d179 не открывался.
+Bench contexts только до25ноября2026 08:00 Asia/Almaty, не production policy.
 
-Далее P1 network rollback/fault trials/Wi-Fi/power-loss и production budget;
-P2 reproducible config/две clean builds, ручной release approval. Actual bench
-содержит compile-time date, bit reproducibility не подтверждена. Physical FPS/
-touch-to-display и runtime5.3.2 открыты; CAN и любые motion outputs запрещены.
-Новые release/tag — только отдельное exact approval; не self-merge.
+Далее P1: network negative install/rollback, Wi-Fi loss и interruption/power-loss
+с finite recovery plan; production policy/version-discovery/resource budget. P2:
+reproducible config и две clean builds; текущий compile-time date не даёт
+bit reproducibility. Physical CAN и все motion outputs остаются закрыты.
+Новые release/tag требуют exact owner approval; не self-merge.
+
 
 Датированные результаты ниже — история на соответствующий момент.
 

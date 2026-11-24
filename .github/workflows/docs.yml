@@ -37,6 +37,16 @@ jobs:
           test -s docs/plans/P1_PENDING_TRUST.md
           test -s docs/plans/P1_INSTALL_POLICY.md
           test -s docs/plans/P1_INSTALLABLE_BUNDLE.md
+          test -s docs/evidence/build/esp32-ota-display-progress/README.md
+          python3 -m json.tool docs/evidence/build/esp32-ota-display-progress/results.json > /dev/null
+          test -s docs/evidence/build/esp32-ota-display-bench4/README.md
+          for receipt in results ci publication; do
+            python3 -m json.tool "docs/evidence/build/esp32-ota-display-bench4/$receipt.json" > /dev/null
+          done
+          test -s docs/evidence/hardware/2026-11-24-esp32-display-bench4/README.md
+          for receipt in attempt1 measurements; do
+            python3 -m json.tool "docs/evidence/hardware/2026-11-24-esp32-display-bench4/$receipt.json" > /dev/null
+          done
           test -s docs/evidence/build/esp32-ota-install-bench3/README.md
           python3 -m json.tool docs/evidence/build/esp32-ota-install-bench3/results.json > /dev/null
           test -s docs/evidence/hardware/2026-11-24-esp32-install-bench3/README.md

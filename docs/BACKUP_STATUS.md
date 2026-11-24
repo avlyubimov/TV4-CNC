@@ -1,5 +1,28 @@
 # Резервные копии ESP32 — заводская и перед миграцией OTA
 
+## Текущий checkpoint: bench.4 OTA1 VALID, 24 ноября2026
+
+[Аппаратный стенд](evidence/hardware/2026-11-24-esp32-display-bench4/README.md) закрыт
+PASS; на ESP32 оставлен новый bench.4. Перед записью предыдущий полный snapshot
+16MiB обновлён свежим NVS24KiB и **целиком** повторно сверён с текущим device MD5,
+затем сохранён в двух новых fsynced копиях на разных физических NVMe. Это сборка/
+полная сверка снимка, не новое чтение16MiB по UART.
+
+После подписанной сетевой установки действительно считаны все16777216bytes
+текущей Flash; device MD5, SHA-256 обеих одинаковых новых копий, native metadata,
+apps/padding и protected regions PASS. Files0600/folders0700, private hashes/dumps/
+NVS не публикуются. Factory fecc05d recovery и прежние vendor/pre-test snapshots
+сохранены; успешный новый release не возвращался. Владелец подтвердил конечные
+экран/касания/сохранённый Wi-Fi. Первый metadata-check отказ отдельно завершён
+проверенным восстановлением, full16MiB recovery не потребовался ни в одном из
+двух сеансов.
+
+**Нынешняя boot selection не erased:** OTA0 receiving `.3` VALID и OTA1 release
+`.4` VALID, seq1/seq2. Следующие finite пакеты должны учитывать этот checkpoint;
+старый validator «factory sole/оба slots FF» и старые one-use процедуры не
+переиспользовать. Обычного rollback к fecc05d после PASS больше нет. Ниже история
+соответствующих дат; заводской16MiB backup с ранее проверенной SHA-256 сохранён.
+
 ## Fresh fecc05d checkpoint перед3927063,22 ноября,23:25–23:37
 
 Новое полное чтение16777216bytes/device MD5/SHA-256 и две новые приватные копии

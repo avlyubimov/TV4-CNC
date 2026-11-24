@@ -1,0 +1,143 @@
+{
+  "schema": 1,
+  "source_commit": "6c7b1d56769fe8a084c4360e6c2df4bb594f58fa",
+  "source_main": "cf8ffb043d2ef1266cbc5277efa130c7e2ef6465",
+  "host_tests_pass": 274,
+  "sanitizer_tests_pass": 274,
+  "leak_detection_enabled": true,
+  "actual_source_builds": [
+    {
+      "sdk": "6.1.1",
+      "role": "baseline",
+      "app_sha256": "0603f0bd6d2b87943d393a6fb5869b39aeeac0798bd91638176a4e17a271ac39",
+      "memory_gates_pass": true,
+      "rgb_isr_iram_safe": true,
+      "actual_iram_symbols": {
+        "lcd_rgb_panel_fill_bounce_buffer": [
+          "403773ec l     F .iram0.text\t000000d8 lcd_rgb_panel_fill_bounce_buffer"
+        ],
+        "rgb_lcd_default_isr_handler": [
+          "40377674 l     F .iram0.text\t00000050 rgb_lcd_default_isr_handler"
+        ],
+        "lcd_rgb_panel_eof_handler": [
+          "403776c4 l     F .iram0.text\t00000051 lcd_rgb_panel_eof_handler"
+        ]
+      },
+      "worker_stack_bytes": 12288
+    },
+    {
+      "sdk": "6.1.1",
+      "role": "candidate",
+      "app_sha256": "1e3de8c629ceb1800c5ba1f947858a5a54e5cce1587810eaa45f7febf5e27945",
+      "memory_gates_pass": true,
+      "rgb_isr_iram_safe": true,
+      "actual_iram_symbols": {
+        "lcd_rgb_panel_fill_bounce_buffer": [
+          "403773ec l     F .iram0.text\t000000d8 lcd_rgb_panel_fill_bounce_buffer"
+        ],
+        "rgb_lcd_default_isr_handler": [
+          "40377674 l     F .iram0.text\t00000050 rgb_lcd_default_isr_handler"
+        ],
+        "lcd_rgb_panel_eof_handler": [
+          "403776c4 l     F .iram0.text\t00000051 lcd_rgb_panel_eof_handler"
+        ]
+      },
+      "worker_stack_bytes": 12288
+    },
+    {
+      "sdk": "5.3.2",
+      "role": "baseline",
+      "app_sha256": "b6ef57350eda89633c246d640458a9d1f36db7602c0d074ba6f983ff9cbceb82",
+      "memory_gates_pass": true,
+      "rgb_isr_iram_safe": true,
+      "actual_iram_symbols": {
+        "lcd_rgb_panel_fill_bounce_buffer": [
+          "40377560 l     F .iram0.text\t000000d8 lcd_rgb_panel_fill_bounce_buffer"
+        ],
+        "rgb_lcd_default_isr_handler": [
+          "403777d0 l     F .iram0.text\t00000053 rgb_lcd_default_isr_handler"
+        ],
+        "lcd_rgb_panel_eof_handler": [
+          "40377824 l     F .iram0.text\t00000030 lcd_rgb_panel_eof_handler"
+        ]
+      },
+      "worker_stack_bytes": 12288
+    },
+    {
+      "sdk": "5.3.2",
+      "role": "candidate",
+      "app_sha256": "2bb514ebb642dacc30191f5dcc19472341882050c8910b9be24fc0a7476ac25f",
+      "memory_gates_pass": true,
+      "rgb_isr_iram_safe": true,
+      "actual_iram_symbols": {
+        "lcd_rgb_panel_fill_bounce_buffer": [
+          "40377560 l     F .iram0.text\t000000d8 lcd_rgb_panel_fill_bounce_buffer"
+        ],
+        "rgb_lcd_default_isr_handler": [
+          "403777d0 l     F .iram0.text\t00000053 rgb_lcd_default_isr_handler"
+        ],
+        "lcd_rgb_panel_eof_handler": [
+          "40377824 l     F .iram0.text\t00000030 lcd_rgb_panel_eof_handler"
+        ]
+      },
+      "worker_stack_bytes": 12288
+    }
+  ],
+  "native_checks": [
+    {
+      "sdk": "6.1.1",
+      "manifest_result": 0,
+      "signed_installable": true,
+      "signature_tamper_rejected": true,
+      "wrong_public_key_rejected": true,
+      "app_bytes": 1600464,
+      "app_sha256": "1e3de8c629ceb1800c5ba1f947858a5a54e5cce1587810eaa45f7febf5e27945",
+      "native_stream_pass": true
+    },
+    {
+      "sdk": "5.3.2",
+      "manifest_result": 0,
+      "signed_installable": true,
+      "signature_tamper_rejected": true,
+      "wrong_public_key_rejected": true,
+      "app_bytes": 1553504,
+      "app_sha256": "2bb514ebb642dacc30191f5dcc19472341882050c8910b9be24fc0a7476ac25f",
+      "native_stream_pass": true
+    }
+  ],
+  "native_sanitizer_checks": [
+    {
+      "sdk": "6.1.1",
+      "manifest_result": 0,
+      "signed_installable": true,
+      "signature_tamper_rejected": true,
+      "wrong_public_key_rejected": true,
+      "app_bytes": 1600464,
+      "app_sha256": "1e3de8c629ceb1800c5ba1f947858a5a54e5cce1587810eaa45f7febf5e27945",
+      "native_stream_pass": true
+    },
+    {
+      "sdk": "5.3.2",
+      "manifest_result": 0,
+      "signed_installable": true,
+      "signature_tamper_rejected": true,
+      "wrong_public_key_rejected": true,
+      "app_bytes": 1553504,
+      "app_sha256": "2bb514ebb642dacc30191f5dcc19472341882050c8910b9be24fc0a7476ac25f",
+      "native_stream_pass": true
+    }
+  ],
+  "procedure_host_tests_pass": 15,
+  "loader_host_tests_pass": 16,
+  "metadata_oracle_checks_pass": 8,
+  "compiled_controls": "same source; receiving .3 with trace, candidate .4 without trace",
+  "source_ci_jobs_pass": 30,
+  "main_ci_jobs_pass": 15,
+  "tag_ci_jobs_pass": 15,
+  "sdk_runtime_tested": "6.1.1 only; hardware receipt separate",
+  "private_inputs_published": false,
+  "production_budget_qualified": false,
+  "bit_reproducibility_proven": false,
+  "passive_uart_host_tests_pass": 8,
+  "procedure_scope": "retry collector: no ROM/reset before candidate selftest and ninety seconds of periodic health"
+}

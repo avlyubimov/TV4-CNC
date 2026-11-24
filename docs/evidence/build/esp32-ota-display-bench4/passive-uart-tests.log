@@ -1,0 +1,13 @@
+test_byte_limit_is_enforced_before_decode (__main__.Interactive.test_byte_limit_is_enforced_before_decode) ... ok
+test_full_normal_reboot_waits_ninety_seconds_without_rom_or_reset (__main__.Interactive.test_full_normal_reboot_waits_ninety_seconds_without_rom_or_reset) ... ok
+test_missing_selftest_and_wrong_elf_cannot_pass (__main__.Interactive.test_missing_selftest_and_wrong_elf_cannot_pass) ... ok
+test_no_operator_reboot_expires_without_forcing_reset (__main__.Interactive.test_no_operator_reboot_expires_without_forcing_reset) ... ok
+test_partial_version_never_terminates_candidate_collection (__main__.Interactive.test_partial_version_never_terminates_candidate_collection) ... ok
+test_reboot_in_same_chunk_is_also_passively_collected (__main__.Interactive.test_reboot_in_same_chunk_is_also_passively_collected) ... ok
+test_reset_before_complete_install_is_rejected (__main__.Interactive.test_reset_before_complete_install_is_rejected) ... ok
+test_short_boot_cannot_pass_long_candidate_proof (__main__.Interactive.test_short_boot_cannot_pass_long_candidate_proof) ... ok
+
+----------------------------------------------------------------------
+Ran 8 tests in 0.031s
+
+OK

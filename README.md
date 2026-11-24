@@ -1,26 +1,28 @@
 # TV4 CNC
 
-## Проверенное состояние, 22 ноября2026
+## Проверенное состояние, 24 ноября2026
 
-STM32F407 ee7d179 прошёл [базовый HSI/no-motion стенд](docs/evidence/hardware/2026-11-22-f407-ee7d179-bench/README.md).
-База main `dfa9f28`, PR #1–67 слиты. [Стенд3072/8192](docs/evidence/hardware/2026-11-22-esp32-worker-stack/README.md)
-завершён22ноября за928.998s по отдельному разрешению: fresh16MiB/device MD5/
-SHA-256/two-NVMe, контроль3072 и три reset-запуска8192, три app/factory writes,
-пять UART captures и возврат всего factory2MiB fecc05d/verify PASS.
-Владелец подтвердил HMI/касания/Wi-Fi/OTA SETUP временного8192 и возвращённого
-fecc05d. На ESP32 fecc05d/factory/tv4-16m-ab-v1; F407 ee7d179 не открывался.
-Полный16MiB restore не понадобился; сеанс и разрешение закрыты.
+На Waveshare **оставлен экспериментальный bench.4, OTA1 VALID**, source6c7b1d5,
+ESP-IDF6.1.1. [Подписанный сетевой INSTALL/readback](docs/evidence/hardware/2026-11-24-esp32-display-bench4/README.md)
+прошёл: CHECK9/INSTALL798/error0, независимое чтение настоящего BIN/SHA, native
+VALID, полный16MiB read/two-NVMe и длительные boots с Wi-Fi/GT911 PASS. Владелец
+подтвердил стабильный экран при записи. Factory fecc05d сохранён как recovery;
+обычного возврата старой прошивки нет.
 
-Worker8192 watermark6608–6784bytes, BOOT local15767–15863; periodic internal
-free14291–16863/largest7680 против control21795–21799/largest12288 после IP event.
-Первый8192 включал UI-проверку: нагрузка различалась. Это unprovisioned reset
-boot evidence, не configured TLS/install/production floor или cold-power/soak.
-Ключ/context не заданы, CHECK/INSTALL закрыты. FPS/latency/slot confirm/rollback/
-power-loss/full recovery не приняты. Новых hardware разрешений нет.
+[Release bench.4](https://github.com/avlyubimov/TV4-CNC/releases/tag/v0.1.0-bench.4)
+с11 независимо скачанными/проверенными assets опубликован по отдельному approval.
+[Software/CI](docs/evidence/build/esp32-ota-display-bench4/README.md): оба pinned
+SDK/4 ELF,274 host/274 sanitizers, source30/main15/tag15 PASS;39 host-проверок
+процедуры и8 native metadata checks. Maincf8ffb0, PR #80–85 слиты владельцем.
+
+STM32F407 ee7d179 — [HSI/no-motion bench](docs/evidence/hardware/2026-11-22-f407-ee7d179-bench/README.md),
+в этой работе SWD не открывался. Physical CAN/motion не приняты. P1 network
+failure/rollback, production policy/budget и P2 bit reproducibility остаются
+открытыми; FPS/touch-to-display не измерены. Bench OTA contexts действуют только
+до25ноября2026 08:00 Asia/Almaty.
 
 [Аппаратный статус](docs/HARDWARE_STATUS.md), [следующий этап](docs/NEXT_STAGE.md),
-[backup status](docs/BACKUP_STATUS.md). Новых UART/SWD/reset/Flash разрешений нет;
-обычный rev12 flash не является откатом действующей A/B-карты.
+[backup status](docs/BACKUP_STATUS.md). Ordinary rev12 flash поверх A/B не выполнять.
 
 ## История программной подготовки
 

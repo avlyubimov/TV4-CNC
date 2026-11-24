@@ -1,0 +1,90 @@
+{
+  "schema": 1,
+  "source_commit": "6c7b1d56769fe8a084c4360e6c2df4bb594f58fa",
+  "release": "v0.1.0-bench.4",
+  "attempt": 1,
+  "session_closed": true,
+  "overall_planned_bench_pass": false,
+  "elapsed_seconds": 423.3812171999998,
+  "control_pass": true,
+  "network_install_observed": true,
+  "session_results": [
+    {
+      "state": 6,
+      "error": 0,
+      "http": 0,
+      "policy": 0,
+      "image": 0,
+      "resource": 0,
+      "checks": 9,
+      "internal": 118871,
+      "largest": 63488,
+      "psram": 5941148,
+      "psram_largest": 5898240,
+      "stack": 7072
+    },
+    {
+      "state": 10,
+      "error": 0,
+      "http": 0,
+      "policy": 0,
+      "image": 0,
+      "resource": 0,
+      "checks": 798,
+      "internal": 118887,
+      "largest": 63488,
+      "psram": 5941184,
+      "psram_largest": 5898240,
+      "stack": 7072
+    }
+  ],
+  "service_results": [
+    {
+      "stage": 5,
+      "error": 0,
+      "internal": 118907,
+      "psram": 5975996,
+      "stack": 7072
+    },
+    {
+      "stage": 8,
+      "error": 0,
+      "internal": 118883,
+      "psram": 5976024,
+      "stack": 7072
+    }
+  ],
+  "window_ids": [
+    2,
+    3,
+    4,
+    5,
+    2,
+    3,
+    4
+  ],
+  "session_local_minimum_internal": 96915,
+  "session_local_minimum_psram": 5904136,
+  "minimum_operation_stack": 7072,
+  "touch_age_max_ms": 18,
+  "operator_candidate_restart_observed": true,
+  "candidate_selftest_completed_before_rom": false,
+  "independent_readback_completed": false,
+  "failed_check": "Unexpected native OTA state",
+  "unexpected_metadata_raw_saved": false,
+  "exact_unexpected_metadata_state": "unknown; bytes were not retained",
+  "early_rom_interference": "engineering diagnosis from reboot timing; not proof of the lost metadata bytes",
+  "failure_scope_recovery_verified": true,
+  "full_snapshot_recovery_attempts": 0,
+  "usb_write_roles": [
+    "baseline",
+    "select-baseline",
+    "recover-ota0",
+    "recover-ota1",
+    "recover-otadata"
+  ],
+  "physical_visual_owner_confirmed_stable": true,
+  "physical_fps_latency_measured": false,
+  "efuse_stm32_can_motion_accessed": false,
+  "post_attempt_running": "fecc05d after failure recovery; superseded by next attempt"
+}

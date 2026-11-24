@@ -1,0 +1,20 @@
+test_full_readback_rejects_each_protected_region_app_or_padding (__main__.Parser.test_full_readback_rejects_each_protected_region_app_or_padding) ... ok
+test_invalid_state_crc_and_confirmations_refused (__main__.Parser.test_invalid_state_crc_and_confirmations_refused) ... ok
+test_real_previous_successful_transaction_corpus (__main__.Parser.test_real_previous_successful_transaction_corpus) ... ok
+test_reset_before_commit_wrong_version_repeated_reset_and_fatal_refused (__main__.Parser.test_reset_before_commit_wrong_version_repeated_reset_and_fatal_refused) ... ok
+test_signature_resources_storage_touch_errors_monitor_not_waived (__main__.Parser.test_signature_resources_storage_touch_errors_monitor_not_waived) ... ok
+test_transaction_and_committed_restart (__main__.Parser.test_transaction_and_committed_restart) ... ok
+test_window_deadlines_do_not_extend (__main__.Parser.test_window_deadlines_do_not_extend) ... ok
+test_control_failure_stops_network_and_recovers_only_changed_scopes (__main__.Procedure.test_control_failure_stops_network_and_recovers_only_changed_scopes) ... ok
+test_exhausted_reserve_stops_without_new_recovery_writes (__main__.Procedure.test_exhausted_reserve_stops_without_new_recovery_writes) ... ok
+test_failed_full_recovery_never_retries (__main__.Procedure.test_failed_full_recovery_never_retries) ... ok
+test_network_or_candidate_failure_never_passes (__main__.Procedure.test_network_or_candidate_failure_never_passes) ... ok
+test_operator_restart_after_commit_remains_success (__main__.Procedure.test_operator_restart_after_commit_remains_success) ... ok
+test_preflight_failures_never_write (__main__.Procedure.test_preflight_failures_never_write) ... ok
+test_protected_or_scope_recovery_failures_use_at_most_one_full_snapshot (__main__.Procedure.test_protected_or_scope_recovery_failures_use_at_most_one_full_snapshot) ... ok
+test_success_keeps_published_release_and_never_writes_factory (__main__.Procedure.test_success_keeps_published_release_and_never_writes_factory) ... ok
+
+----------------------------------------------------------------------
+Ran 15 tests in 4.669s
+
+OK

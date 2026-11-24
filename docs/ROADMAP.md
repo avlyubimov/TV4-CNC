@@ -1,17 +1,32 @@
 # План реализации TV4-CNC: функциональные приоритеты P0–P5
 
-## Актуальная очередь после PR #80–83
+## Актуальная очередь после PR #85
 
-P0 F407 HSI/no-motion образ и базовый стенд закрыты, physical I/O не разрешён.
-P1: [owner-key bench.3 опубликован](evidence/build/esp32-ota-install-bench3/README.md),
-оба SDK/main15/tag15 CI PASS. [Реальный signed INSTALL798checks/error0 и короткий
-boot ota_0](evidence/hardware/2026-11-24-esp32-install-bench3/README.md) наблюдались;
-полный плановый стенд/readback/VALID/длительная новая загрузка ещё не приняты.
-Следующий результат — исправить дёргание RGB/прогресса при записи, проверить на
-плате и оставить проверенный новый релиз по изменённому указанию владельца.
-Затем P1 fault/rollback/Wi-Fi/power-loss, P2 reproducibility/production release gates.
-P3 physical CAN → P4 F407 CAN OTA → P5 motion сохраняют свои аппаратные blockers.
-Точные критерии — [NEXT_STAGE](NEXT_STAGE.md); ниже история этапов.
+Main `cf8ffb0`, PR #80–85 слиты владельцем. [Owner-key bench.4](evidence/build/esp32-ota-display-bench4/README.md)
+опубликован по exact approval на source `6c7b1d5`: source30/main15/tag15 CI,
+274 host/274 sanitizers,4 actual ELF обоих pinned SDK и39 procedure/loader/collector
+checks PASS. Bench.2/bench.3 и original CHECK context неизменны.
+
+[Аппаратный повтор](evidence/hardware/2026-11-24-esp32-display-bench4/README.md) закрыт
+PASS за951.809s: control → CHECK9/INSTALL798/error0 → штатный reboot/full
+self-test до ROM → независимый BIN/SHA readback → native OTA1 VALID → настоящий
+итоговый read16MiB/two-NVMe → reset90/reset30 PASS. **На ESP32 оставлен bench.4
+в OTA1**, factory fecc05d recovery и receiving `.3` VALID в OTA0 сохранены.
+Обычного возврата0/full recovery0. Первый сеанс остановлен на metadata check и
+проверенно восстановлен; точные неожиданные bytes/state неизвестны, повтор
+исправляет преждевременный ROM attach.
+
+SESSION local internal98391, PSRAM5904064, operation stack7072/12288,
+touch≤16ms; owner подтвердил стабильный экран при записи этого source.
+Физические FPS/touch-to-display не измерены. F407 ee7d179 не открывался.
+Bench contexts только до25ноября2026 08:00 Asia/Almaty, не production policy.
+
+Далее P1: network negative install/rollback, Wi-Fi loss и interruption/power-loss
+с finite recovery plan; production policy/version-discovery/resource budget. P2:
+reproducible config и две clean builds; текущий compile-time date не даёт
+bit reproducibility. Physical CAN и все motion outputs остаются закрыты.
+Новые release/tag требуют exact owner approval; не self-merge.
+
 
 ## История: native pending confirmation/refusal/rollback a74bfcd — PASS
 

@@ -1,0 +1,86 @@
+{
+  "schema": 1,
+  "repository": "avlyubimov/TV4-CNC",
+  "source_commit": "6c7b1d56769fe8a084c4360e6c2df4bb594f58fa",
+  "tag": "v0.1.0-bench.4",
+  "release_id": 456963679,
+  "prerelease": true,
+  "draft": false,
+  "latest": false,
+  "tag_target_type": "commit",
+  "owner_exact_release_and_bench_context_approval": true,
+  "all_asset_hashes_verified": true,
+  "signature_and_image_verified": true,
+  "release_inventory_sha256": "73d13c76342fefc274da6164919e6f625b8d65db9ba0b1b9e59b146301c17b41",
+  "assets": [
+    {
+      "name": "LICENSE-NOTICE.md",
+      "bytes": 1703,
+      "sha256": "5a557769c229e70ab4aab7ac72027311f1d9b1fb43592f1b6d6f8008e3a71473",
+      "asset_id": 787752826
+    },
+    {
+      "name": "LICENSE.txt",
+      "bytes": 1084,
+      "sha256": "f0430a7e7184bda27262b6426124f7839157ad77f420c2606056277fc422e0eb",
+      "asset_id": 787752911
+    },
+    {
+      "name": "README.txt",
+      "bytes": 330,
+      "sha256": "4ba9c62de0328232c0462470e6dca29a9130e4e32d3a2bfed70b471feda9a560",
+      "asset_id": 787752953
+    },
+    {
+      "name": "THIRD-PARTY-NOTICES.zip",
+      "bytes": 776629,
+      "sha256": "6c1d8dc885544dfc25f1dce5ea684fcff91e5d35a00d76a9614e7bc99a096f68",
+      "asset_id": 787752986
+    },
+    {
+      "name": "build-evidence.json",
+      "bytes": 1355,
+      "sha256": "b9244a71cbc55fa53bd018a7f8530275b158114f3044effae448fc6bb206b327",
+      "asset_id": 787753107
+    },
+    {
+      "name": "checksums.sha256",
+      "bytes": 668,
+      "sha256": "6c31f784adf28c3afaf06fb9cd26b4625681d7df0c882fc177c4798512b2b1de",
+      "asset_id": 787753139
+    },
+    {
+      "name": "manifest.json",
+      "bytes": 3935,
+      "sha256": "d82d57053b737f59d04176d11f3ac8e4bd49178a0d57641c5becd382c7622753",
+      "asset_id": 787753171
+    },
+    {
+      "name": "manifest.sig",
+      "bytes": 198,
+      "sha256": "27018be42cb6020d9e1fc07a1056b95af89831bf5943e5f22cd7b70ff8e6c7a4",
+      "asset_id": 787753206
+    },
+    {
+      "name": "release-checksums.sha256",
+      "bytes": 841,
+      "sha256": "73d13c76342fefc274da6164919e6f625b8d65db9ba0b1b9e59b146301c17b41",
+      "asset_id": 787753242
+    },
+    {
+      "name": "release-notes.md",
+      "bytes": 1313,
+      "sha256": "7c7ab4f67f1b354d0d8757c639d2982f6c1966d1135d06a4d17998f50a788c12",
+      "asset_id": 787753276
+    },
+    {
+      "name": "tv4-hmi-esp32s3-v0.1.0-bench.4.bin",
+      "bytes": 1600464,
+      "sha256": "1e3de8c629ceb1800c5ba1f947858a5a54e5cce1587810eaa45f7febf5e27945",
+      "asset_id": 787753314
+    }
+  ],
+  "private_key_or_context_published": false,
+  "stm32_asset_published": false,
+  "prior_releases_unchanged": true
+}

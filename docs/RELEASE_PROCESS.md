@@ -1,21 +1,21 @@
 # GitHub Releases и CI/CD
 
-## Актуальный экспериментальный выпуск bench.3
+## Актуальный экспериментальный выпуск bench.4
 
-[v0.1.0-bench.3](https://github.com/avlyubimov/TV4-CNC/releases/tag/v0.1.0-bench.3)
-опубликован по отдельному exact approval владельца на main08932ee: owner-key
-configured installable candidate,11 assets, main15/tag15 CI и reverse downloads/
-signature/image PASS. [Числовой build/release evidence](evidence/build/esp32-ota-install-bench3/README.md).
-Bench.2 остаётся immutable CHECK-only. Это экспериментальные payload releases,
-не production/install/rollback acceptance и не автоматическая публикация из push.
-Приватный ключ и contexts не передаются CI/browser; следующий release требует
-нового exact owner approval. Статус runtime — [NEXT_STAGE](NEXT_STAGE.md).
+[v0.1.0-bench.4](https://github.com/avlyubimov/TV4-CNC/releases/tag/v0.1.0-bench.4)
+опубликован после source30/main15 PASS и отдельного exact approval владельца;
+tag15 также PASS до hardware. Точный source6c7b1d5,11 assets, independent reverse
+downloads/SHA/signature/image PASS. [Build/publication evidence](evidence/build/esp32-ota-display-bench4/README.md).
+[Signed INSTALL/readback/VALID](evidence/hardware/2026-11-24-esp32-display-bench4/README.md)
+PASS; новый release оставлен на плате, factory recovery сохранён. Owner подтвердил
+стабильность экрана при записи. Bench.2/bench.3/bench.4 immutable, private keys/
+contexts/backups/raw UART не публикуются. Это prerelease, без latest/stable.
 
-Actual bench config ещё содержит compile-time date, reproducible build выключен.
-Не называть binary bit-reproducible по одному совпадению source pins. После P1
-нужен отдельный P2 с reproducible config, двумя clean builds обоих SDK и сравнением
-BIN/ELF hashes, source binding/подписью и ручным owner publication gate. Уже
-опубликованные bench.2/bench.3 ради этого не пересобирать и не заменять.
+Это не production acceptance: network negative rollback/Wi-Fi/interruption,
+production policy/version discovery/budget и runtime5.3.2 ещё открыты. Contexts
+ограничены25ноября2026 08:00 Asia/Almaty. Compile-time date пока включён; нужны
+отдельные reproducible config и две clean builds обоих SDK. Новые release/tag
+требуют отдельного exact approval; push/merge не разрешают публикацию.
 
 Ниже сохранён предыдущий процесс/история; production gates остаются обязательными.
 
