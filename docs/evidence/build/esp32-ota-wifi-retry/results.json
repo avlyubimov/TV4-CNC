@@ -1,0 +1,19 @@
+{
+  "base_commit": "bf5c325f307286f4bb01feeb29d625d693c37c40",
+  "runtime_firmware_source": "6c7b1d56769fe8a084c4360e6c2df4bb594f58fa",
+  "runtime_firmware_changed": false,
+  "host_tests_pass": 274,
+  "sanitizer_tests_pass": 274,
+  "new_same_process_retry_cases": 56,
+  "new_native_sdk_retry_case": true,
+  "test_source_sha256": {
+    "tests/ota_session_tests.c": "745a0faf016e9c2b52839d2392ce5cc821af157d4faf07010fa38797a0b8eeac",
+    "tests/ota_installer_tests.c": "cbf1f832eeaa535936478ade3cc923e378a1c173f4543cc6587bde8fba210e8c"
+  },
+  "procedure_tests_pass": 9,
+  "collector_tests_pass": 9,
+  "loader_tests_pass": 6,
+  "device_access_during_tests": false,
+  "dependency_versions_changed": false,
+  "claim": "Software retry/fault verification only; hardware result is separate"
+}

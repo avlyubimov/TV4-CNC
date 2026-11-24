@@ -2,22 +2,22 @@
 
 ## Актуальная интеграция P1
 
-Подписанный HTTPS INSTALL, native self-test/VALID, reset rollback/factory и
-[CANCEL после частичной записи](evidence/hardware/2026-11-24-esp32-partial-cancel/README.md)
-проверены на неизменяемом source6c7b1d5 / ESP-IDF 6.1.1. Cancel закрыл сессию,
-не выбрал неполный образ; исходный целый OTA1 восстановлен перед его исходными
-VALID метаданными, bench.4 оставлен активным. Это восстановление known-good
-checkpoint, не подтверждение неизвестного кандидата.
+Подписанные INSTALL/self-test/VALID, reset rollback/factory, CANCEL и
+[отключение STA с полным retry в той же загрузке](evidence/hardware/2026-11-24-esp32-wifi-retry/README.md)
+проверены на неизменяемом source6c7b1d5 / ESP-IDF 6.1.1. После transport failure
+закрыты контексты, новый CHECK повторно аутентифицирует кандидата, полный retry
+перезаписывает неактивный OTA1 перед commit. После штатного reboot проверены
+native VALID и все 16 МиБ; bench.4 оставлен активным. Промежуточное отсутствие
+выбора неполного образа до retry выведено из native running==boot gate,
+не из промежуточного чтения otadata, которое сбросило бы принимающий процесс.
 
 TLS/подпись/SHA/size/compatibility, local install_reviewed AND signed installable,
-UI double confirmation, worker12288, SNTP policy/floors/timeouts/monitor ownership
-сохранены. Runtime firmware/release/context прежние. Старый UI показывает общую
-ошибку после CANCEL; numeric session record различает отказ и CANCELLED.
-Сопутствующий UI source fix даёт понятный статус «Обновление отменено» без
-изменения state/error encoding/gates/coalescing; host/LVGL/backend PASS,
-на плате пока прежний bench.4. Будущий релиз согласовывается отдельно.
-Настоящие Wi-Fi/power loss и production policy/budget/version discovery остаются
-отдельными этапами. [Активный план](NEXT_STAGE.md); ниже история.
+UI double confirmation, worker12288, SNTP/floors/timeouts/monitor ownership
+сохранены. Firmware/release/context прежние; UI cancellation fix ещё не на плате.
+Первый остановленный сеанс с ранним переподключением сохранён как FAIL;
+причина не установлена. Добровольный STA disconnect не подтверждает исчезновение
+RF/AP. Независимая потеря Wi-Fi/питания, production policy/budget/version
+discovery остаются отдельными этапами. [Активный план](NEXT_STAGE.md); ниже история.
 
 ## История: состояние после стенда worker8192
 

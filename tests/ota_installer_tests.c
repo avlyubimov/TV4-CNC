@@ -155,5 +155,15 @@ int main(void) {
     }
     reset();running=boot=&parts[5];
     assert(tv4_ota_sdk_finish_boot(true) && !accepted && !rolled_back);
-    puts("Actual SDK installer: factory/alternating slots, layout/approval/state gates, SDK failures, cancellation, boot acceptance/rollback and no active/factory writes PASS (mock SDK, no hardware)");
+    reset();running=boot=&parts[4];next=&parts[5];
+    tv4_ota_sdk interrupted={.approval=&a,.commit_allowed=commit};
+    assert(tv4_ota_sdk_begin(&interrupted,&c) && tv4_ota_sdk_write(&interrupted,data,17));
+    fail=2;assert(!tv4_ota_sdk_write(&interrupted,data+17,1));
+    tv4_ota_sdk_abort(&interrupted);tv4_ota_sdk_abort(&interrupted);
+    assert(aborts==1 && !ends && !selects && boot==running && !interrupted.opened && !interrupted.sealed);
+    fail=0;tv4_ota_sdk retry={.approval=&a,.commit_allowed=commit};
+    assert(tv4_ota_sdk_begin(&retry,&c) && tv4_ota_sdk_write(&retry,data,sizeof(data)) && tv4_ota_sdk_seal(&retry));
+    assert(boot==running && tv4_ota_sdk_activate(&retry));
+    assert(begins==2 && aborts==1 && ends==1 && selects==1 && boot==next);
+    puts("Actual SDK installer: factory/alternating slots, layout/approval/state gates, SDK failures, cancellation, boot acceptance/rollback, same-process retry and no active/factory writes PASS (mock SDK, no hardware)");
 }

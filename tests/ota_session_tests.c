@@ -292,6 +292,15 @@ static void installation_regressions(void) {
         assert(session.result.state==(disconnected?TV4_SESSION_FAILED:TV4_SESSION_CANCELLED));
         assert(session.result.error==(disconnected?TV4_SESSION_TRANSPORT:TV4_SESSION_CANCEL));
         assert(!session.manifest_length && !session.envelope_length && !session.candidate.size_bytes);
+        /* A fresh operation in the same process must authenticate again and
+         * replace the partial sink contents without resurrecting failed state. */
+        tv4_ota_session_reset(&session);server retry=healthy();retry.now=s.now;
+        install_fixture again={0};memcpy(again.bytes,f.bytes,sizeof(again.bytes));
+        resource_fixture retry_resources={.server=&retry};
+        assert(installing(&retry,&again,&retry_resources,&report));
+        assert(session.result.state==TV4_SESSION_INSTALLED && session.result.image_bytes==sizeof(binary));
+        assert(again.begin==1 && again.seal==1 && again.activate==1 && !again.abort && again.selected);
+        assert(again.used==sizeof(binary) && !memcmp(again.bytes,binary,sizeof(binary)));
     }
     printf("Installer actual signed session: positive + begin/write/seal/activate failures, cancel after seal, digest/signature/transport and %u resource boundaries; no premature boot selection PASS\n",checks);
 }

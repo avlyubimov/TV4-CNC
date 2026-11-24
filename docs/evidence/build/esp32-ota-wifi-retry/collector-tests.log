@@ -1,0 +1,14 @@
+test_cancel_or_full_commit_instead_of_real_network_failure_refused (__main__.Collector.test_cancel_or_full_commit_instead_of_real_network_failure_refused) ... ok
+test_cleanup_windows_touch_errors_and_clock_guarded (__main__.Collector.test_cleanup_windows_touch_errors_and_clock_guarded) ... ok
+test_missing_first_check_and_missing_disconnect_fail_in_bounded_window (__main__.Collector.test_missing_first_check_and_missing_disconnect_fail_in_bounded_window) ... ok
+test_no_real_disconnect_or_new_ip_event_never_passes (__main__.Collector.test_no_real_disconnect_or_new_ip_event_never_passes) ... ok
+test_partial_last_terminal_line_never_advances (__main__.Collector.test_partial_last_terminal_line_never_advances) ... ok
+test_reconnect_before_offline_observation_refused (__main__.Collector.test_reconnect_before_offline_observation_refused) ... ok
+test_reset_before_commit_or_repeated_candidate_reboot_refused (__main__.Collector.test_reset_before_commit_or_repeated_candidate_reboot_refused) ... ok
+test_same_port_offline_reconnect_retry_normal_reboot_and_full_passive_selftest (__main__.Collector.test_same_port_offline_reconnect_retry_normal_reboot_and_full_passive_selftest) ... ok
+test_session_order_fatal_and_floors_preserved (__main__.Collector.test_session_order_fatal_and_floors_preserved) ... ok
+
+----------------------------------------------------------------------
+Ran 9 tests in 0.020s
+
+OK

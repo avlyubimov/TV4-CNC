@@ -1,0 +1,11 @@
+test_changed_plan_without_owner_seal_refused (__main__.Loader.test_changed_plan_without_owner_seal_refused) ... ok
+test_expired_context_refused_without_board_access (__main__.Loader.test_expired_context_refused_without_board_access) ... ok
+test_extra_payload_refused (__main__.Loader.test_extra_payload_refused) ... ok
+test_foreign_helper_location_refused (__main__.Loader.test_foreign_helper_location_refused) ... ok
+test_modified_bound_receipts_or_payload_refused_before_sdk (__main__.Loader.test_modified_bound_receipts_or_payload_refused_before_sdk) ... ok
+test_positive_load_never_imports_serial_sdk (__main__.Loader.test_positive_load_never_imports_serial_sdk) ... ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.128s
+
+OK

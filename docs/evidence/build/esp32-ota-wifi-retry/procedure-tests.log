@@ -1,0 +1,14 @@
+test_failed_recovery_never_loops (__main__.Procedure.test_failed_recovery_never_loops) ... ok
+test_failed_scope_recovers_image_before_selection (__main__.Procedure.test_failed_scope_recovers_image_before_selection) ... ok
+test_no_recovery_writes_without_reserve (__main__.Procedure.test_no_recovery_writes_without_reserve) ... ok
+test_outside_corruption_uses_one_full_snapshot_recovery (__main__.Procedure.test_outside_corruption_uses_one_full_snapshot_recovery) ... ok
+test_preflight_refusals_never_write (__main__.Procedure.test_preflight_refusals_never_write) ... ok
+test_success_one_selection_write_network_retry_and_retained_valid_release (__main__.Procedure.test_success_one_selection_write_network_retry_and_retained_valid_release) ... ok
+test_missing_timer_refuses_read (__main__.Timer.test_missing_timer_refuses_read) ... ok
+test_phase_timeout_never_extends_whole_deadline (__main__.Timer.test_phase_timeout_never_extends_whole_deadline) ... ok
+test_read_success_preserves_whole_deadline (__main__.Timer.test_read_success_preserves_whole_deadline) ... ok
+
+----------------------------------------------------------------------
+Ran 9 tests in 4.980s
+
+OK
