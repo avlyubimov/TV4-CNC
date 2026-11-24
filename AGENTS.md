@@ -1,5 +1,14 @@
 # TV4-CNC — правила разработки Codex
 
+Installable authoring завершён программно: docs/plans/P1_INSTALLABLE_BUNDLE.md.
+9ccbf13:274 host/274 sanitizers,28 release methods, два actual ELF/BIN обоих SDK
+с disposable non-owner key, C/Python signature/image checks, source CI30/main15 PASS.
+Test key удалён; ни firmware source, ни платы/owner key/context не менялись этим PR.
+Owner plan/context не переводить на reviewed/INSTALL автоматически; bench.2
+immutable CHECK-only. Новый owner installable release/версии/политика и реальный
+network INSTALL/resource budget ещё требуют отдельного результата. Не self-merge.
+
+
 Правила действуют на весь репозиторий. Вложенные AGENTS.md уточняют область,
 но не ослабляют безопасность. Продолжать существующий проект, не создавать
 новый каркас вместо работающей реализации.

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Prepare/verify a LOCAL signed HMI CHECK-bench bundle. Never publish or install.
+"""Prepare/verify a LOCAL signed HMI bench bundle with explicit purpose. Never publish or install.
 
 The owner supplies a reviewed local plan and pinned public key; a downloaded
 bundle cannot select trust, versions or compatibility policy. Signing uses the
@@ -31,6 +31,10 @@ NOTICE = (b'LOCAL SIGNED CHECK BENCH ONLY. Not publication or installation appro
           b'Only the app image is included; no bootloader, partition table, NVS or keys.\n'
           b'Resource, installer, rollback, power-loss and interactive performance acceptance remain open.\n'
           b'Use a separately reviewed local plan and trusted public key to verify.\n')
+INSTALL_NOTICE = (b'LOCAL SIGNED INSTALL-BENCH CANDIDATE. Not device, publication or production approval.\n'
+                  b'Only the configured app is included; no bootloader, partition table, NVS or keys.\n'
+                  b'An independently reviewed receiving context and exact operator approval are required.\n'
+                  b'Resource, network-install, rollback and failure acceptance remain separate.\n')
 META_FILES = {'manifest.json', 'manifest.sig', 'build-evidence.json',
               'release-notes.md', 'README.txt', 'LICENSE.txt', 'LICENSE-NOTICE.md'}
 EVIDENCE_FIELDS = {'schema', 'purpose', 'source_commit', 'source_tree', 'source_display_version',
@@ -44,8 +48,8 @@ def plan_read(path):
     p = ota.parse(regular_read(path, PLAN_MAX))
     require(isinstance(p, dict) and set(p) == FIELDS and p['reviewed'] is True,
             'explicit reviewed local release plan required')
-    require(p['purpose'] == 'signed-check-bench' and p['channel'] == 'prerelease',
-            'only explicit prerelease CHECK-bench scope is supported')
+    require(p['purpose'] in ('signed-check-bench','signed-install-bench') and p['channel'] == 'prerelease',
+            'explicit CHECK or INSTALL prerelease bench purpose required')
     require(p['sdk'] in ('5.3.2', '6.1.1'), 'unsupported SDK')
     require(isinstance(p['source_commit'], str) and
             re.fullmatch('[0-9a-f]{40}', p['source_commit']) and p['source_commit'] != '0'*40,
@@ -63,6 +67,13 @@ def plan_read(path):
     require(isinstance(p['release_notes'], str) and
             0 < len(p['release_notes'].encode('utf-8')) <= 4096, 'bounded reviewed release notes required')
     return p
+
+
+def installable(plan):
+    return plan['purpose']=='signed-install-bench'
+
+def notice(plan):
+    return INSTALL_NOTICE if installable(plan) else NOTICE
 
 
 def public_read(path, plan):
@@ -92,7 +103,7 @@ def verify(directory, plan_path, public_key):
     files = {name: regular_read(root/name, APP_MAX if name == asset else
              ota.MANIFEST_MAX if name == 'manifest.json' else PLAN_MAX) for name in META_FILES | {asset}}
     require(regular_read(root/'checksums.sha256', 4096) == inventory(files), 'bundle inventory mismatch')
-    require(files['README.txt'] == NOTICE and
+    require(files['README.txt'] == notice(plan) and
             files['release-notes.md'] == (plan['release_notes']+'\n').encode('utf-8'), 'scope/notes mismatch')
     require(b'Permission is hereby granted' in files['LICENSE.txt'] and
             b'TV4-CNC contributors' in files['LICENSE.txt'] and
@@ -103,19 +114,26 @@ def verify(directory, plan_path, public_key):
         for name, data in files.items(): (captured/name).write_bytes(data)
         pub = captured/'trusted.der'; pub.write_bytes(public_read(public_key, plan))
         signed, report = ota.verify_with_metadata(request(plan, captured, pub))
-    require(signed['installable'] is False, 'CHECK-bench must not authorize installation')
+    if installable(plan):
+        require(signed['installable'] is True,'INSTALL-bench requires signed installable capability')
+        require(public_read(public_key,plan) in files[asset],'configured public key absent from app image')
+    else:require(signed['installable'] is False, 'CHECK-bench must not authorize installation')
     app = inspect_app(files[asset], plan['sdk'])
     require((signed['source_commit'], signed['release'], signed['version'], app['version']) ==
             (plan['source_commit'], plan['release_version'], plan['release_version'], plan['release_version']),
             'signed source/version/actual app descriptor mismatch')
     evidence = ota.parse(files['build-evidence.json'])
-    require(isinstance(evidence, dict) and set(evidence) == EVIDENCE_FIELDS and
+    fields=EVIDENCE_FIELDS | ({'candidate_install_reviewed'} if installable(plan) else set())
+    require(isinstance(evidence, dict) and set(evidence) == fields and
             type(evidence.get('schema')) is int and evidence['schema'] == 1 and
             evidence.get('profile') == 'rev12-ota' and evidence.get('source_checked_locally') is True and
             type(evidence.get('candidate_provisioned')) is bool, 'unsupported build evidence')
     require(evidence.get('source_commit') == plan['source_commit'] and evidence.get('sdk') == plan['sdk'] and
             evidence.get('application') == app and evidence.get('public_key_sha256') == plan['public_key_sha256'] and
             evidence.get('purpose') == plan['purpose'], 'build evidence/image binding mismatch')
+    if installable(plan):
+        require(evidence['candidate_provisioned'] is True and evidence.get('candidate_install_reviewed') is True,
+                'INSTALL-bench requires configured reviewed candidate')
     require(isinstance(evidence['source_tree'], str) and re.fullmatch('[0-9a-f]{40}', evidence['source_tree']) and
             isinstance(evidence['source_display_version'], str) and
             re.fullmatch(r'[A-Za-z0-9_.-]{1,80}', evidence['source_display_version']) and
@@ -124,7 +142,8 @@ def verify(directory, plan_path, public_key):
             'invalid build evidence digest/source fields')
     for flag in ('device_access', 'install_enabled', 'release_published', 'ci_identity_verified', 'production_resource_qualified'):
         require(evidence.get(flag) is False, 'bundle must not claim operational authority')
-    return dict(status='signed-offline-check-bench-only', source_commit=plan['source_commit'],
+    return dict(status='signed-offline-install-bench-only' if installable(plan) else 'signed-offline-check-bench-only',
+        installable=installable(plan),source_commit=plan['source_commit'],
         release=plan['release_version'], image_bytes=report['image_bytes'], sha256=report['sha256'],
         public_key_sha256=plan['public_key_sha256'], device_access=False, install_enabled=False,
         release_published=False, production_resource_qualified=False)
@@ -163,6 +182,11 @@ def prepare(build, output, plan_path, public_key, private_key, repo=None):
     if context['provisioned']:
         require(context.get('public_key_sha256') == plan['public_key_sha256'] and
                 context.get('installed_version') == app['version'], 'configured candidate trust/version mismatch')
+    if installable(plan):
+        require(context['provisioned'] is True and context.get('install_reviewed') is True and
+                validation.get('ota_install_reviewed') is True,
+                'INSTALL-bench requires explicit configured installation policy')
+        require(public in elf and public in app_raw,'configured public key absent from actual ELF/app')
     derived = subprocess.run(['openssl', 'pkey', '-in', str(private), '-passin', 'pass:',
                               '-pubout', '-outform', 'DER'], capture_output=True, timeout=15)
     require(derived.returncode == 0 and derived.stdout == public, 'private key does not match pinned public key')
@@ -174,7 +198,7 @@ def prepare(build, output, plan_path, public_key, private_key, repo=None):
             name='hmi', version=plan['release_version'], hardware_id='waveshare-esp32s3-touch-lcd-7',
             hardware_revision='1.2', chip='esp32s3', profile='rev12', layout_id='tv4-16m-ab-v1',
             minimum_installed_version=plan['installed_version'], minimum_bootloader_version=plan['bootloader_version'],
-            size_bytes=len(app_raw), sha256=app['sha256'], url=url+asset, installable=False)], release_notes=plan['release_notes'])
+            size_bytes=len(app_raw), sha256=app['sha256'], url=url+asset, installable=installable(plan))], release_notes=plan['release_notes'])
     evidence = dict(schema=1, purpose=plan['purpose'], source_commit=plan['source_commit'], source_tree=tree,
         source_display_version=display, sdk=plan['sdk'], profile='rev12-ota', application=app,
         public_key_sha256=plan['public_key_sha256'], candidate_provisioned=context['provisioned'],
@@ -186,8 +210,9 @@ def prepare(build, output, plan_path, public_key, private_key, repo=None):
     out.parent.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory(prefix='.tv4-signed-check-', dir=out.parent) as tmp:
         stage = Path(tmp)/'bundle'; stage.mkdir(mode=0o700)
+        if installable(plan):evidence['candidate_install_reviewed']=True
         files = {asset: app_raw, 'manifest.json': encoded(manifest), 'build-evidence.json': encoded(evidence),
-                 'README.txt': NOTICE, 'release-notes.md': (plan['release_notes']+'\n').encode('utf-8'),
+                 'README.txt': notice(plan), 'release-notes.md': (plan['release_notes']+'\n').encode('utf-8'),
                  'LICENSE.txt': regular_read(root/'LICENSE', PLAN_MAX),
                  'LICENSE-NOTICE.md': regular_read(root/'LICENSE-NOTICE.md', PLAN_MAX)}
         for name, data in files.items(): (stage/name).write_bytes(data)
@@ -225,7 +250,7 @@ def main():
             result = prepare(a.build, a.output, a.plan, a.public_key, a.private_key)
         print(json.dumps(result, indent=2))
     except (ValueError, KeyError, TypeError, OSError, RecursionError, subprocess.SubprocessError) as error:
-        raise SystemExit('Signed CHECK bundle rejected: '+str(error)) from None
+        raise SystemExit('Signed HMI bench bundle rejected: '+str(error)) from None
 
 
 if __name__ == '__main__':

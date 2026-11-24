@@ -15,7 +15,7 @@ import build_candidate as candidate
 from esp_app_image import inspect_app
 
 
-def image(version, sdk='6.1.1', elf=b'non-executable test ELF'):
+def image(version, sdk='6.1.1', elf=b'non-executable test ELF', rodata=b''):
     header = bytearray(24)
     header[:4] = b'\xe9\x01\x02\x4f'
     struct.pack_into('<H', header, 12, 9)
@@ -26,9 +26,11 @@ def image(version, sdk='6.1.1', elf=b'non-executable test ELF'):
     for offset, text in ((16, version), (48, 'tv4_hmi'), (112, 'v' + sdk)):
         descriptor[offset:offset + len(text)] = text.encode()
     descriptor[144:176] = hashlib.sha256(elf).digest()
-    body = header + struct.pack('<II', 0x3c000020, len(descriptor)) + descriptor
+    payload=descriptor+rodata
+    payload+=b'\0'*(-len(payload)%4)
+    body = header + struct.pack('<II', 0x3c000020, len(payload)) + payload
     checksum = 0xef
-    for byte in descriptor:
+    for byte in payload:
         checksum ^= byte
     body += b'\0' * (15 - len(body) % 16) + bytes([checksum])
     return bytes(body) + hashlib.sha256(body).digest()

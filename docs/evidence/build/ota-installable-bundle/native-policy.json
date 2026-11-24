@@ -1,0 +1,16 @@
+[
+  {
+    "sdk": "6.1.1",
+    "manifest_result": 0,
+    "signed_installable": true,
+    "app_bytes": 1600192,
+    "app_sha256": "009c457d46028516b9390296a8f3ba8b4bff3eaa0d51f14e9fbb0bfbcd134d83"
+  },
+  {
+    "sdk": "5.3.2",
+    "manifest_result": 0,
+    "signed_installable": true,
+    "app_bytes": 1552720,
+    "app_sha256": "8ec27a70cbbadef6fdd59e4ca1e41950989ef2f818cc6a0d363b43a2e4c99ac1"
+  }
+]

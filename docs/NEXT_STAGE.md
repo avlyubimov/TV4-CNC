@@ -1,5 +1,13 @@
 # P1 — ESP32 OTA: допуск установки и результаты стендов
 
+Installable authoring завершён программно: docs/plans/P1_INSTALLABLE_BUNDLE.md.
+9ccbf13:274 host/274 sanitizers,28 release methods, два actual ELF/BIN обоих SDK
+с disposable non-owner key, C/Python signature/image checks, source CI30/main15 PASS.
+Test key удалён; ни firmware source, ни платы/owner key/context не менялись этим PR.
+Owner plan/context не переводить на reviewed/INSTALL автоматически; bench.2
+immutable CHECK-only. Новый owner installable release/версии/политика и реальный
+network INSTALL/resource budget ещё требуют отдельного результата. Не self-merge.
+
 ## Актуально: INSTALL gates и full signed CHECK 3b09bba — PASS
 
 [Стенд новой политики](evidence/hardware/2026-11-24-esp32-install-policy-3b09bba/README.md)
@@ -17,19 +25,6 @@ Published bench.2 immutable CHECK-only. Physical UI/FPS/latency, runtime5.3.2,
 Wi-Fi/power loss и production budget не приняты. [PR #82](https://github.com/avlyubimov/TV4-CNC/pull/82)
 не слит. Следующая отдельная authoring интеграция — [PR #83](https://github.com/avlyubimov/TV4-CNC/pull/83).
 
-
-INSTALL policy завершена: local install_reviewed AND signed installable,
-оба default false (docs/plans/P1_INSTALL_POLICY.md от корня). Старые contexts/
-bench.2 не открывают INSTALL; до Flash sink проверяется signed capability.
-274 host/sanitizers/analyzer, real LVGL render, четыре CHECK-only ELF и два
-software-only positive compiler fixtures обоих SDK, source CI30/main15 PASS.
-3b09bba hardware control/full signed CHECK406checks/error0/возврат всего fecc05d
-PASS за1094,730s; SESSION min99371/largest63488/stack6912, touch2–15ms/errors0.
-Fecc05d возвращён, F407 ee7d179; source hardware report в
- docs/evidence/hardware/2026-11-24-esp32-install-policy-3b09bba/ от корня.
-Owner context не переводить на INSTALL автоматически, bench.2 immutable CHECK-only.
-Следующий PR83 готовит authoring configured installable payload; network INSTALL/
-Flash peaks/production budget ещё открыты. Никакого self-merge/publication.
 
 ## История: native pending confirmation/refusal/rollback a74bfcd — PASS
 
