@@ -1,22 +1,17 @@
 # Аппаратный статус TV4-CNC
 
-## Актуально: INSTALL gates и full signed CHECK 3b09bba — PASS
+## Актуально: signed INSTALL798checks и короткий boot bench.3
 
-[Стенд новой политики](evidence/hardware/2026-11-24-esp32-install-policy-3b09bba/README.md)
-закрыт за1094,730s: fresh16MiB/two-NVMe → control38checks/UART90 → один полный
-signed CHECK406checks/error0/UART420 → весь factory fecc05d/verify/UART30 PASS.
-Local install_reviewed=false и legacy signed installable=false; INSTALL закрыт.
-SESSION local min internal99371/largest63488, остаток stack6912/12288; touch2–15ms/
-errors0. Source CI30/main15,274 host/sanitizers/analyzer, четыре owner CHECK-only
-ELF и два software-only positive compiler fixtures обоих SDK PASS. На платах
-fecc05d и ee7d179; ни один закрытый пакет не повторять. Raw logs/keys/backups private.
-
-Native boot/rollback a74bfcd уже PASS; P1 ещё требует нового reviewed installable
-payload/публикации и настоящего network INSTALL с ресурсами при Flash writes.
-Published bench.2 immutable CHECK-only. Physical UI/FPS/latency, runtime5.3.2,
-Wi-Fi/power loss и production budget не приняты. [PR #82](https://github.com/avlyubimov/TV4-CNC/pull/82)
-не слит. Следующая отдельная authoring интеграция — [PR #83](https://github.com/avlyubimov/TV4-CNC/pull/83).
-
+Main08932ee, PR #80–83 слиты. [Публикация/обратная загрузка bench.3](evidence/build/esp32-ota-install-bench3/README.md)
+и [четыре сеанса](evidence/hardware/2026-11-24-esp32-install-bench3/README.md) закрыты.
+В четвёртом UART доказывает CHECK→signed INSTALL798checks/error0→boot ota_0/bench.3/
+configured self-test, owner подтвердил новую прошивку. SESSION min internal97763/
+stack7072, touch≤18ms. Общий плановый стенд не PASS: ранний reboot и отсутствие
+independent Flash/VALID readback/длительного нового capture. Владелец сообщил о
+дёргании интерфейса при записи — следующий отдельный fix/стенд.
+Все исходные разделы возвращены/verify/UART30; сейчас ESP32 fecc05d, F407 ee7d179
+не открывался. **Дальнейшая owner policy: успешный новый релиз оставлять на плате.**
+[Активный этап и пределы](NEXT_STAGE.md). Ниже история соответствующих дат.
 
 ## История: native pending confirmation/refusal/rollback a74bfcd — PASS
 

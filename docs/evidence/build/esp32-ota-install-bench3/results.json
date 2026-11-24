@@ -1,0 +1,310 @@
+{
+  "schema": 1,
+  "source_commit": "08932ee4ef57e585d0101d90cc54800d6e87ae3b",
+  "main_ci_jobs": 15,
+  "main_ci_success": true,
+  "ci_runs": [
+    45320982817,
+    45320982826,
+    45320982882,
+    45320982903,
+    45320983042
+  ],
+  "builds": [
+    {
+      "sdk": "6.1.1",
+      "role": "baseline",
+      "app_bytes": 1602176,
+      "app_sha256": "ae57201c72da5a749ab3972dd736aca6fe2ef665f9d3a25d40152b7d11189256",
+      "elf_sha256": "92c60be20c85cf5863c7c7692ce6ed79556b9dbfd733cfa3a340abf6ff63a7ba",
+      "provisioned": true,
+      "install_reviewed": true,
+      "memory_diagnostics": true,
+      "memory_validation_pass": true
+    },
+    {
+      "sdk": "6.1.1",
+      "role": "candidate",
+      "app_bytes": 1600192,
+      "app_sha256": "c015c025c739ec22937d7434c023686173330b40fe3164caab268f9b9e6d00e5",
+      "elf_sha256": "d90650d482dd0faa635ff77295bd3480af7626e2e6f857cb92344636478f6761",
+      "provisioned": true,
+      "install_reviewed": true,
+      "memory_diagnostics": false,
+      "memory_validation_pass": true
+    },
+    {
+      "sdk": "5.3.2",
+      "role": "baseline",
+      "app_bytes": 1554688,
+      "app_sha256": "e30d3b76e84b940e5d4eb9c3894e555da012f036086768e0f3cbab2ab87a1e75",
+      "elf_sha256": "45f7dc6759e9a00dd0125db5bc4c3d78f28acbbbcbcc695b0ae98750ace5cf9d",
+      "provisioned": true,
+      "install_reviewed": true,
+      "memory_diagnostics": true,
+      "memory_validation_pass": true
+    },
+    {
+      "sdk": "5.3.2",
+      "role": "candidate",
+      "app_bytes": 1552720,
+      "app_sha256": "ee126d534e5b63613e45b150f39a49764ba69a4e2108ba280aade347faea8a64",
+      "elf_sha256": "18a223a3aa329966f33e3e2395df826310c7f2b81bfa46d73342b03399803dd0",
+      "provisioned": true,
+      "install_reviewed": true,
+      "memory_diagnostics": false,
+      "memory_validation_pass": true
+    }
+  ],
+  "native_checks": [
+    {
+      "sdk": "6.1.1",
+      "manifest_result": 0,
+      "signed_installable": true,
+      "signature_tamper_rejected": true,
+      "wrong_public_key_rejected": true,
+      "app_bytes": 1600192,
+      "app_sha256": "c015c025c739ec22937d7434c023686173330b40fe3164caab268f9b9e6d00e5",
+      "native_stream_pass": true
+    },
+    {
+      "sdk": "5.3.2",
+      "manifest_result": 0,
+      "signed_installable": true,
+      "signature_tamper_rejected": true,
+      "wrong_public_key_rejected": true,
+      "app_bytes": 1552720,
+      "app_sha256": "ee126d534e5b63613e45b150f39a49764ba69a4e2108ba280aade347faea8a64",
+      "native_stream_pass": true
+    }
+  ],
+  "release": {
+    "tag": "v0.1.0-bench.3",
+    "id": 456819407,
+    "url": "https://github.com/avlyubimov/TV4-CNC/releases/tag/v0.1.0-bench.3",
+    "prerelease": true,
+    "tag_commit": "08932ee4ef57e585d0101d90cc54800d6e87ae3b",
+    "target_commitish_metadata": "main",
+    "tag_pinned_before_publication": true,
+    "assets": {
+      "build-evidence.json": {
+        "bytes": 1355,
+        "sha256": "b50b8ec354e22cb13f838f8b1fed88256893aa1c1b13591fb8cd73a96c72ee7b"
+      },
+      "checksums.sha256": {
+        "bytes": 668,
+        "sha256": "e511fe5c3b501cd56bbf28461fc81b238eac92fb9e2647abd672eceb4aa73dfd"
+      },
+      "LICENSE-NOTICE.md": {
+        "bytes": 1703,
+        "sha256": "5a557769c229e70ab4aab7ac72027311f1d9b1fb43592f1b6d6f8008e3a71473"
+      },
+      "LICENSE.txt": {
+        "bytes": 1084,
+        "sha256": "f0430a7e7184bda27262b6426124f7839157ad77f420c2606056277fc422e0eb"
+      },
+      "manifest.json": {
+        "bytes": 2725,
+        "sha256": "4ec2704e74dc6e26a07983d2c5f1ad69da62e637bb8a48080e8f8e1509276304"
+      },
+      "manifest.sig": {
+        "bytes": 198,
+        "sha256": "e7d795564e6edeebc9c77dbd924a278d60cdd45c68a185dd91288fc739c72490"
+      },
+      "README.txt": {
+        "bytes": 330,
+        "sha256": "4ba9c62de0328232c0462470e6dca29a9130e4e32d3a2bfed70b471feda9a560"
+      },
+      "release-checksums.sha256": {
+        "bytes": 841,
+        "sha256": "cc4ef5ef326133d03bacf127d3845b68f66c83858dd9e6842c5fec1cb5aca9a4"
+      },
+      "release-notes.md": {
+        "bytes": 847,
+        "sha256": "a55907b18201ae708cc9dec8395ee88a0ef1ca0c01eb13dc382d5cb475f6be5c"
+      },
+      "THIRD-PARTY-NOTICES.zip": {
+        "bytes": 776630,
+        "sha256": "02c516978b11ea59d469c8f99d5f078b0746cad7a3251ebf469fe514c2a468e8"
+      },
+      "tv4-hmi-esp32s3-v0.1.0-bench.3.bin": {
+        "bytes": 1600192,
+        "sha256": "c015c025c739ec22937d7434c023686173330b40fe3164caab268f9b9e6d00e5"
+      }
+    },
+    "all_eleven_downloads_verified": true,
+    "downloaded_signature_hash_image_verified": true
+  },
+  "private_key_disclosed": false,
+  "original_check_context_unchanged": true,
+  "production_resource_qualified": false,
+  "native_sanitizer_checks": [
+    {
+      "sdk": "6.1.1",
+      "manifest_result": 0,
+      "signed_installable": true,
+      "signature_tamper_rejected": true,
+      "wrong_public_key_rejected": true,
+      "app_bytes": 1600192,
+      "app_sha256": "c015c025c739ec22937d7434c023686173330b40fe3164caab268f9b9e6d00e5",
+      "native_stream_pass": true
+    },
+    {
+      "sdk": "5.3.2",
+      "manifest_result": 0,
+      "signed_installable": true,
+      "signature_tamper_rejected": true,
+      "wrong_public_key_rejected": true,
+      "app_bytes": 1552720,
+      "app_sha256": "ee126d534e5b63613e45b150f39a49764ba69a4e2108ba280aade347faea8a64",
+      "native_stream_pass": true
+    }
+  ],
+  "sanitizers": {
+    "address": true,
+    "undefined": true,
+    "leak_detection_enabled": true
+  },
+  "procedure_tests": {
+    "methods": 12,
+    "loader_methods": 13,
+    "official_metadata_cases": 8,
+    "all_pass": true,
+    "device_access": false
+  },
+  "tag_ci": {
+    "source_commit": "08932ee4ef57e585d0101d90cc54800d6e87ae3b",
+    "tag": "v0.1.0-bench.3",
+    "all_success": true,
+    "jobs": [
+      {
+        "id": 138485906260,
+        "name": "build (5.3.2, rev12-tls-bench)",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/avlyubimov/TV4-CNC/actions/runs/45405749824/job/138485906260",
+        "run": 45405749824
+      },
+      {
+        "id": 138485906584,
+        "name": "build (6.1.1, rev12-tls-bench)",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/avlyubimov/TV4-CNC/actions/runs/45405749824/job/138485906584",
+        "run": 45405749824
+      },
+      {
+        "id": 138485906664,
+        "name": "build (6.1.1, rev12-memory-bench)",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/avlyubimov/TV4-CNC/actions/runs/45405749824/job/138485906664",
+        "run": 45405749824
+      },
+      {
+        "id": 138485906681,
+        "name": "build (6.1.1, rev12-ota)",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/avlyubimov/TV4-CNC/actions/runs/45405749824/job/138485906681",
+        "run": 45405749824
+      },
+      {
+        "id": 138485906690,
+        "name": "build (5.3.2, rev12-memory-bench)",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/avlyubimov/TV4-CNC/actions/runs/45405749824/job/138485906690",
+        "run": 45405749824
+      },
+      {
+        "id": 138485906718,
+        "name": "build (5.3.2, rev12)",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/avlyubimov/TV4-CNC/actions/runs/45405749824/job/138485906718",
+        "run": 45405749824
+      },
+      {
+        "id": 138485906733,
+        "name": "build (5.3.2, rev12-ota)",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/avlyubimov/TV4-CNC/actions/runs/45405749824/job/138485906733",
+        "run": 45405749824
+      },
+      {
+        "id": 138485906812,
+        "name": "build (6.1.1, headless)",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/avlyubimov/TV4-CNC/actions/runs/45405749824/job/138485906812",
+        "run": 45405749824
+      },
+      {
+        "id": 138485906864,
+        "name": "build (6.1.1, rev12)",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/avlyubimov/TV4-CNC/actions/runs/45405749824/job/138485906864",
+        "run": 45405749824
+      },
+      {
+        "id": 138485906902,
+        "name": "build (5.3.2, headless)",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/avlyubimov/TV4-CNC/actions/runs/45405749824/job/138485906902",
+        "run": 45405749824
+      },
+      {
+        "id": 138485905315,
+        "name": "arm-core",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/avlyubimov/TV4-CNC/actions/runs/45405749810/job/138485905315",
+        "run": 45405749810
+      },
+      {
+        "id": 138485906589,
+        "name": "host (true)",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/avlyubimov/TV4-CNC/actions/runs/45405750017/job/138485906589",
+        "run": 45405750017
+      },
+      {
+        "id": 138485906880,
+        "name": "host (false)",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/avlyubimov/TV4-CNC/actions/runs/45405750017/job/138485906880",
+        "run": 45405750017
+      },
+      {
+        "id": 138485906363,
+        "name": "crypto-arm",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/avlyubimov/TV4-CNC/actions/runs/45405749963/job/138485906363",
+        "run": 45405749963
+      },
+      {
+        "id": 138485905755,
+        "name": "check",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/avlyubimov/TV4-CNC/actions/runs/45405749875/job/138485905755",
+        "run": 45405749875
+      }
+    ],
+    "checked_utc": "2026-11-24T13:56:58.150Z"
+  },
+  "reproducibility": {
+    "app_reproducible_build": false,
+    "app_compile_time_date": true,
+    "compiler_hide_paths_macros": true,
+    "independent_repeat_build_compared": false,
+    "byte_for_byte_reproducibility_qualified": false
+  }
+}

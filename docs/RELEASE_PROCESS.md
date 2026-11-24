@@ -1,5 +1,25 @@
 # GitHub Releases и CI/CD
 
+## Актуальный экспериментальный выпуск bench.3
+
+[v0.1.0-bench.3](https://github.com/avlyubimov/TV4-CNC/releases/tag/v0.1.0-bench.3)
+опубликован по отдельному exact approval владельца на main08932ee: owner-key
+configured installable candidate,11 assets, main15/tag15 CI и reverse downloads/
+signature/image PASS. [Числовой build/release evidence](evidence/build/esp32-ota-install-bench3/README.md).
+Bench.2 остаётся immutable CHECK-only. Это экспериментальные payload releases,
+не production/install/rollback acceptance и не автоматическая публикация из push.
+Приватный ключ и contexts не передаются CI/browser; следующий release требует
+нового exact owner approval. Статус runtime — [NEXT_STAGE](NEXT_STAGE.md).
+
+Actual bench config ещё содержит compile-time date, reproducible build выключен.
+Не называть binary bit-reproducible по одному совпадению source pins. После P1
+нужен отдельный P2 с reproducible config, двумя clean builds обоих SDK и сравнением
+BIN/ELF hashes, source binding/подписью и ручным owner publication gate. Уже
+опубликованные bench.2/bench.3 ради этого не пересобирать и не заменять.
+
+Ниже сохранён предыдущий процесс/история; production gates остаются обязательными.
+
+
 [Prerelease v0.1.0-bench.2](https://github.com/avlyubimov/TV4-CNC/releases/tag/v0.1.0-bench.2)
 уже опубликован по отдельному разрешению владельца на source c013ddf:11 точных
 assets, downloads/SHA/signature/full BIN offline PASS. Это read-only CHECK

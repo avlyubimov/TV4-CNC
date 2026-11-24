@@ -1,6 +1,24 @@
 # OTA TV4-CNC — проект архитектуры
 
-## Текущее состояние после стенда worker8192
+## Актуальная интеграция P1
+
+HTTPS GitHub → owner-key signed manifest → compatibility/hash/size/resource guards
+→ SDK inactive slot → NEW/PENDING_VERIFY → self-test → VALID либо native rollback.
+Local `install_reviewed` AND signed `installable`, fresh candidate identity и
+двухшаговое UI confirmation обязательны. Configured worker12288/LVGL→PSRAM,
+CA/hostname/date, SNTP policy, serialized monitor/timeouts сохраняются.
+
+[Owner-key bench.3 опубликован](evidence/build/esp32-ota-install-bench3/README.md)
+на main08932ee; PR #80–83 слиты. [Signed INSTALL798checks/error0 и короткая загрузка
+ota_0/bench.3](evidence/hardware/2026-11-24-esp32-install-bench3/README.md) наблюдались,
+но independent Flash/VALID readback и полный плановый стенд ещё не приняты.
+Native USB rollback/confirmation и пять full signed CHECK уже PASS.
+Owner-reported прыжки интерфейса при Flash writes требуют отдельного RGB/progress
+fix и измерения; PCLK/pins/framebuffer/floors не менять вслепую. Следующий успешный
+релиз оставлять на плате; текущий завершённый сценарий уже вернул fecc05d.
+[Текущая очередь](NEXT_STAGE.md); ниже история решений.
+
+## История: состояние после стенда worker8192
 
 База main `dfa9f28`, PR #1–67 слиты. [Стенд3072/8192](evidence/hardware/2026-11-22-esp32-worker-stack/README.md)
 завершён22ноября за928.998s по отдельному разрешению: fresh16MiB/device MD5/

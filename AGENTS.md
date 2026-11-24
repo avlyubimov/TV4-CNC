@@ -1,13 +1,17 @@
 # TV4-CNC — правила разработки Codex
 
-Installable authoring завершён программно: docs/plans/P1_INSTALLABLE_BUNDLE.md.
-9ccbf13:274 host/274 sanitizers,28 release methods, два actual ELF/BIN обоих SDK
-с disposable non-owner key, C/Python signature/image checks, source CI30/main15 PASS.
-Test key удалён; ни firmware source, ни платы/owner key/context не менялись этим PR.
-Owner plan/context не переводить на reviewed/INSTALL автоматически; bench.2
-immutable CHECK-only. Новый owner installable release/версии/политика и реальный
-network INSTALL/resource budget ещё требуют отдельного результата. Не self-merge.
-
+Текущий P1: main08932ee, PR #80–83 слиты. Owner-key bench.3 опубликован по
+отдельному approval; оба SDK/4 ELF/main15/tag15/independent verification PASS.
+Signed network INSTALL798checks/error0 и короткий boot ota_0/bench.3/self-test
+наблюдались; полный плановый стенд/Flash/VALID readback ещё не PASS. Все исходные
+разделы возвращены, на ESP32 fecc05d. Читать docs/NEXT_STAGE.md и hardware evidence.
+Следующий отдельный PR: исправить RGB/progress jitter при записи, оба SDK/tests,
+затем точный стенд. Владелец изменил policy: **успешный новый релиз оставлять на
+плате, без обычного возврата старого**. Native rollback/recovery сохраняются.
+Original CHECK-only context/immutable bench.2 и published bench.3 не менять;
+bench contexts только до25ноября08:00 Asia/Almaty. Не подменять production policy.
+Новые release/tag требуют отдельного exact approval; не self-merge. Датированные
+статусы ниже — история; актуальное задание сверять с NEXT_STAGE/owner messages.
 
 Правила действуют на весь репозиторий. Вложенные AGENTS.md уточняют область,
 но не ослабляют безопасность. Продолжать существующий проект, не создавать
@@ -119,7 +123,8 @@ PR и Actions; не копировать код уже открытого PR. Д
 - GitHub Releases → HTTPS → ESP32 OTA Manager; отдельно ESP32 OTA A/B и
   ESP32 → CAN → независимый загрузчик F407. В explicit rev12-ota интегрирован
   installer/self-test/rollback; первая USB migration/factory boot принята на fecc05d,
-  configured OTA/slot confirmation/rollback ещё не проверены аппаратно.
+  native USB configured slot confirmation/refusal/rollback уже PASS;
+  HTTPS INSTALL/Flash-write resource acceptance остаётся отдельным этапом.
 - Подписанный манифест, доверенный локальный публичный ключ, SHA-256, hardware/
   protocol compatibility, ограниченные размеры, штатный rollback ESP-IDF.
   Не доверять одному SHA, TLS или имени релиза вместо подписи.

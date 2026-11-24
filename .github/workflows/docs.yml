@@ -37,6 +37,12 @@ jobs:
           test -s docs/plans/P1_PENDING_TRUST.md
           test -s docs/plans/P1_INSTALL_POLICY.md
           test -s docs/plans/P1_INSTALLABLE_BUNDLE.md
+          test -s docs/evidence/build/esp32-ota-install-bench3/README.md
+          python3 -m json.tool docs/evidence/build/esp32-ota-install-bench3/results.json > /dev/null
+          test -s docs/evidence/hardware/2026-11-24-esp32-install-bench3/README.md
+          for attempt in 1 2 3 4; do
+            python3 -m json.tool "docs/evidence/hardware/2026-11-24-esp32-install-bench3/attempt${attempt}.json" > /dev/null
+          done
           test -s docs/evidence/build/ota-installable-bundle/README.md
           python3 -m json.tool docs/evidence/build/ota-installable-bundle/results.json > /dev/null
           python3 -m json.tool docs/evidence/build/ota-installable-bundle/ci.json > /dev/null
