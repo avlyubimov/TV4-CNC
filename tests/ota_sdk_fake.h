@@ -5,7 +5,11 @@
 typedef int esp_err_t;
 typedef uint32_t esp_ota_handle_t;
 typedef struct {unsigned type,subtype;uint32_t address,size;const char *label;bool encrypted;} esp_partition_t;
-typedef enum {ESP_OTA_IMG_PENDING_VERIFY,ESP_OTA_IMG_VALID,ESP_OTA_IMG_INVALID} esp_ota_img_states_t;
+/* Match the pinned ESP-IDF states, including the reset-before-confirmation path. */
+typedef enum {
+    ESP_OTA_IMG_NEW=0, ESP_OTA_IMG_PENDING_VERIFY=1, ESP_OTA_IMG_VALID=2,
+    ESP_OTA_IMG_INVALID=3, ESP_OTA_IMG_ABORTED=4, ESP_OTA_IMG_UNDEFINED=UINT32_MAX
+} esp_ota_img_states_t;
 #define ESP_OK 0
 #define ESP_PARTITION_TYPE_APP 0
 #define ESP_PARTITION_SUBTYPE_APP_FACTORY 0

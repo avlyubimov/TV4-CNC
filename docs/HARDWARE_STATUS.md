@@ -1,32 +1,35 @@
 # Аппаратный статус TV4-CNC
 
-## Актуально: bench.4 — signed INSTALL/readback/VALID PASS
+## Актуально: rollback и восстановление через factory проверены
 
-Main `cf8ffb0`, PR #80–85 слиты владельцем. [Owner-key bench.4](evidence/build/esp32-ota-display-bench4/README.md)
-опубликован по exact approval на source `6c7b1d5`: source30/main15/tag15 CI,
-274 host/274 sanitizers,4 actual ELF обоих pinned SDK и39 procedure/loader/collector
-checks PASS. Bench.2/bench.3 и original CHECK context неизменны.
+На ESP32 оставлен **bench.4, OTA1 VALID**, исходный подписанный образ
+`6c7b1d5` / ESP-IDF 6.1.1. После [сетевой установки](evidence/hardware/2026-11-24-esp32-display-bench4/README.md)
+проведён [стенд восстановления](evidence/hardware/2026-11-24-esp32-reset-rollback/README.md)
+от main `8d1603e`: сброс до подтверждения загрузки → ABORTED → предыдущий
+OTA0; обе записи ABORTED → factory fecc05d. Оба случая PASS.
 
-[Аппаратный повтор](evidence/hardware/2026-11-24-esp32-display-bench4/README.md) закрыт
-PASS за951.809s: control → CHECK9/INSTALL798/error0 → штатный reboot/full
-self-test до ROM → независимый BIN/SHA readback → native OTA1 VALID → настоящий
-итоговый read16MiB/two-NVMe → reset90/reset30 PASS. **На ESP32 оставлен bench.4
-в OTA1**, factory fecc05d recovery и receiving `.3` VALID в OTA0 сохранены.
-Обычного возврата0/full recovery0. Первый сеанс остановлен на metadata check и
-проверенно восстановлен; точные неожиданные bytes/state неизвестны, повтор
-исправляет преждевременный ROM attach.
+За 924,525 с выполнены три записи только otadata по 8 КиБ. Приложения,
+загрузчик и таблица разделов не переписывались. Исходные записи VALID обоих
+слотов восстановлены побайтно; полное чтение 16 МиБ подтвердило неизменность
+всего вне рабочего NVS. Две копии на разных NVMe проверены. Финальная загрузка
+PASS; владелец подтвердил экран, касания и Wi-Fi.
 
-SESSION local internal98391, PSRAM5904064, operation stack7072/12288,
-touch≤16ms; owner подтвердил стабильный экран при записи этого source.
-Физические FPS/touch-to-display не измерены. F407 ee7d179 не открывался.
-Bench contexts только до25ноября2026 08:00 Asia/Almaty, не production policy.
+[Программные проверки](evidence/build/esp32-ota-reset-rollback/README.md):
+274 host, 274 ASan/UBSan/LSan и 36 проверок процедуры PASS. Числовые значения
+состояний в SDK-заглушке приведены к нативным. Исполняемые прошивки прежние.
+Промежуточный PENDING выведен из кода закреплённого загрузчика, отдельно
+не считан. Старой factory не приписывается отсутствующий новый self-test marker.
 
-Далее P1: network negative install/rollback, Wi-Fi loss и interruption/power-loss
-с finite recovery plan; production policy/version-discovery/resource budget. P2:
-reproducible config и две clean builds; текущий compile-time date не даёт
-bit reproducibility. Physical CAN и все motion outputs остаются закрыты.
-Новые release/tag требуют exact owner approval; не self-merge.
+Следующий P1: прерывание частичной загрузки, CANCEL и потеря Wi-Fi с уже
+согласованной парой `.3→.4`, отдельным ограниченным пакетом и восстановлением
+bench.4. Физическое отключение питания, производственная политика и бюджет
+ресурсов остаются отдельными проверками. P2: воспроизводимость чистых сборок.
+Runtime 5.3.2, FPS и физическая задержка касания ещё не измерены. Стендовые
+контексты действуют только до 25 ноября 2026, 08:00 Asia/Almaty.
 
+Релизы и контексты неизменяемы; новый релиз требует точного разрешения
+владельца. Не выполнять self-merge и не переиспользовать закрытые пакеты.
+F407 ee7d179, CAN, движение, eFuse и option bytes не затрагивались.
 
 ## История: native pending confirmation/refusal/rollback a74bfcd — PASS
 

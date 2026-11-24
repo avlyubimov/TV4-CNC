@@ -1,0 +1,13 @@
+test_finished_selftest_or_fatal_before_trigger_refused (__main__.Collector.test_finished_selftest_or_fatal_before_trigger_refused) ... ok
+test_legacy_factory_has_healthy_boot_proof_without_invented_new_marker (__main__.Collector.test_legacy_factory_has_healthy_boot_proof_without_invented_new_marker) ... ok
+test_missing_trigger_and_missing_fallback_are_bounded (__main__.Collector.test_missing_trigger_and_missing_fallback_are_bounded) ... ok
+test_partial_last_identity_line_waits_for_completion (__main__.Collector.test_partial_last_identity_line_waits_for_completion) ... ok
+test_real_boot_identity_triggers_once_then_complete_native_fallback_collected (__main__.Collector.test_real_boot_identity_triggers_once_then_complete_native_fallback_collected) ... ok
+test_uart_byte_limit_refused_without_unbounded_storage (__main__.Collector.test_uart_byte_limit_refused_without_unbounded_storage) ... ok
+test_unexpected_repeated_resets_refused (__main__.Collector.test_unexpected_repeated_resets_refused) ... ok
+test_wrong_elf_wrong_partition_and_wrong_version_never_reset_again (__main__.Collector.test_wrong_elf_wrong_partition_and_wrong_version_never_reset_again) ... ok
+
+----------------------------------------------------------------------
+Ran 8 tests in 0.011s
+
+OK

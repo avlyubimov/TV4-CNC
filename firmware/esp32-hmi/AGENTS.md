@@ -1,23 +1,28 @@
 # ESP32 HMI — специализированные правила
 
-Текущий P1: maincf8ffb0/PR #80–85 слиты владельцем. Owner-approved signed
-bench.4 source6c7b1d5 опубликован; source30/main15/tag15 CI,274 host/274 sanitizers,
-4 ELF обоих SDK и39 procedure checks PASS. Реальный повтор CHECK9/INSTALL798/
-независимый BIN readback/native VALID/полный16MiB read/two-NVMe/долгие boots PASS.
-**На ESP32 оставлен bench.4 OTA1 VALID**, factory fecc05d recovery сохранён,
-receiving `.3` VALID в OTA0. Не применять старый factory-sole/FF-slots validator
-к этому checkpoint. Owner подтвердил конечные экран/касания/Wi-Fi.
-Обычного возврата после PASS нет. Первый отказ
-metadata-check с проверенным восстановлением не выдавать за PASS; точные
-неожиданные bytes/state не сохранены. F407 ee7d179 не открывался.
-Owner подтвердил стабильность экрана при записи. Читать docs/NEXT_STAGE.md от корня.
-Далее P1 network negative install/rollback/Wi-Fi/interruption/production budget,
-P2 reproducibility. Native rollback/recovery/TLS/подпись/floors/UI double gate
-сохранены. Immutable bench.2/bench.3/bench.4 и original context не менять.
-Bench contexts только до25ноября08:00 Asia/Almaty, не production policy.
-Новые releases/tags — отдельное exact approval; не self-merge. Motion/CAN/eFuse/
-option bytes не разрешать по общему isolated-board grant. Ниже датированные
-результаты — история; активное задание сверять с NEXT_STAGE/owner messages.
+Текущий P1 после слитого владельцем PR #86: на ESP32 оставлен **bench.4,
+OTA1 VALID**, неизменяемый подписанный образ `6c7b1d5`. Сетевая установка
+и последующий стенд reset → ABORTED → OTA0 / оба OTA отклонены → factory PASS.
+Исходный checkpoint VALID обоих слотов восстановлен; все байты 16 МиБ вне
+NVS неизменны, две копии на разных NVMe проверены. Три записи только otadata;
+приложения, загрузчик и таблица не переписывались, полное восстановление
+не потребовалось. Владелец подтвердил финальные экран, касания и Wi-Fi.
+
+274 host / 274 sanitizers / 36 проверок процедуры PASS. Нативные состояния
+в SDK-заглушке исправлены, исполняемые прошивки прежние. PENDING выведен из
+закреплённого SDK, непосредственно считаны NEW/ABORTED/VALID. Старой factory
+не приписывать отсутствующий новый self-test marker. Читать docs/NEXT_STAGE.md
+от корня и hardware report 2026-11-24-esp32-reset-rollback.
+
+Далее P1: partial download / CANCEL / потеря Wi-Fi / физическое отключение
+питания, производственная политика и бюджет; P2: воспроизводимые сборки.
+Текущий checkpoint — seq1 VALID OTA0 и seq2 VALID OTA1; прежние factory-only
+validators и закрытые одноразовые пакеты не применять. Согласованная пара
+`.3→.4` только стендовая, контексты до 25 ноября 2026, 08:00 Asia/Almaty.
+Не изменять неизменяемые assets/contexts. Новые releases/tags требуют точного
+разрешения владельца, self-merge запрещён. Общее разрешение на проверки
+изолированных плат не распространяется на движение, CAN, eFuse и option bytes.
+F407 ee7d179 не открывался. Ниже история; активный этап — NEXT_STAGE.
 
 Текущий отдельный результат: local trust перед pending confirmation (docs/plans/P1_PENDING_TRUST.md от корня).
 Не подтверждать новый OTA-slot без рабочего локального context; factory recovery
