@@ -5,6 +5,13 @@ LV_FONT_DECLARE(tv4_ru_12);
 LV_FONT_DECLARE(tv4_ru_14);
 LV_FONT_DECLARE(tv4_ru_20);
 
+/* LVGL9 invalidates and reallocates even when the text is unchanged. */
+static void label_text(lv_obj_t *label,const char *value) {
+    if(strcmp(lv_label_get_text(label),value))lv_label_set_text(label,value);
+}
+static uint32_t received_kib(const tv4_update_snapshot *s) {
+    return s->received>=s->total?(s->total+1023)/1024:s->received/1024;
+}
 static lv_obj_t *text(lv_obj_t *parent,const char *value,int x,int y,int width,const lv_font_t *font,uint32_t color) {
     lv_obj_t *o=lv_label_create(parent);lv_obj_set_pos(o,x,y);lv_obj_set_width(o,width);
     lv_label_set_text(o,value);lv_obj_set_style_text_font(o,font,0);
@@ -62,14 +69,14 @@ void firmware_view_update(firmware_view_t *view,const firmware_info_t *info) {
     string_id source=info->source==FIRMWARE_INFO_DEVICE?S_FW_DEVICE:
         info->source==FIRMWARE_INFO_SIMULATOR?S_FW_SIMULATOR:S_FW_UNKNOWN;
     bool known=info->source!=FIRMWARE_INFO_UNKNOWN;
-    lv_label_set_text(view->source,tr(NULL,source));
+    label_text(view->source,tr(NULL,source));
     lv_obj_set_style_text_color(view->source,lv_color_hex(info->source==FIRMWARE_INFO_DEVICE?0x9fb4c8:0xffcb61),0);
-    lv_label_set_text(view->value[0],known?info->build:tr(NULL,S_FW_UNKNOWN));
-    lv_label_set_text(view->value[1],known?info->sdk:tr(NULL,S_FW_UNKNOWN));
+    label_text(view->value[0],known?info->build:tr(NULL,S_FW_UNKNOWN));
+    label_text(view->value[1],known?info->sdk:tr(NULL,S_FW_UNKNOWN));
     unsigned profile=(unsigned)info->profile;
-    lv_label_set_text(view->value[2],tr(NULL,profile<=FIRMWARE_PROFILE_OTA?profiles[profile]:S_FW_UNKNOWN));
-    lv_label_set_text(view->value[3],tr(NULL,S_FW_PEER_UNKNOWN));
-    lv_label_set_text(view->value[4],tr(NULL,S_FW_PEER_UNKNOWN));
+    label_text(view->value[2],tr(NULL,profile<=FIRMWARE_PROFILE_OTA?profiles[profile]:S_FW_UNKNOWN));
+    label_text(view->value[3],tr(NULL,S_FW_PEER_UNKNOWN));
+    label_text(view->value[4],tr(NULL,S_FW_PEER_UNKNOWN));
 }
 void firmware_view_destroy(firmware_view_t *view) {
     if(view->panel)lv_obj_delete(view->panel);
@@ -88,16 +95,33 @@ static void ota_action(lv_event_t *event) {
             v->confirm=false;tv4_ota_service_request(TV4_UPDATE_INSTALL);
         }else {v->confirm=true;memcpy(v->confirm_digest,s.sha256,32);}
     }
-    memset(&v->rendered,0,sizeof(v->rendered));
+    v->refresh=true;
 }
 void firmware_view_ota_update(firmware_view_t *v,const tv4_update_snapshot *s) {
     if(!v->panel || !s || !s->enabled)return;
-    if(!memcmp(&v->rendered,s,sizeof(*s)))return;
-    v->rendered=*s;
-    if(s->state!=TV4_UPDATE_READY || !s->install_allowed || memcmp(v->confirm_digest,s->sha256,32))v->confirm=false;
+    /* Revoke confirmation before any progress coalescing. Only presentation is
+     * rate limited; commands/admission, identity, errors and state transitions
+     * keep their existing immediate handling. */
+    if(v->confirm && (s->state!=TV4_UPDATE_READY || !s->install_allowed || memcmp(v->confirm_digest,s->sha256,32))) {
+        v->confirm=false;v->refresh=true;
+    }
+    const tv4_update_snapshot *r=&v->rendered;
+    bool changed=v->refresh || !v->action[0] || r->state!=s->state || r->error!=s->error ||
+        r->install_allowed!=s->install_allowed || r->total!=s->total ||
+        memcmp(r->version,s->version,sizeof(s->version)) || memcmp(r->sha256,s->sha256,32);
+    uint32_t now=lv_tick_get();
+    if(!changed) {
+        if(s->state!=TV4_UPDATE_WRITING || received_kib(r)==received_kib(s))return;
+        /* At most 5 progress redraws/s while streaming. Completion is immediate.
+         * Unsigned elapsed preserves the bound across the LVGL tick wrap. */
+        if(s->received<s->total && (uint32_t)(now-v->progress_ms)<200)return;
+    }
+    v->rendered=*s;v->progress_ms=now;v->refresh=false;
     if(!v->action[0]) {
         lv_obj_add_flag(v->update_note,LV_OBJ_FLAG_HIDDEN);
         lv_obj_set_pos(v->update_state,20,259);
+        lv_obj_set_height(v->update_state,24);
+        lv_label_set_long_mode(v->update_state,LV_LABEL_LONG_CLIP);
         for(unsigned i=0;i<3;i++) {
             lv_obj_t *b=lv_button_create(v->panel);v->action[i]=b;
             lv_obj_set_pos(b,18+(int)i*228,295);lv_obj_set_size(b,212,44);
@@ -112,12 +136,16 @@ void firmware_view_ota_update(firmware_view_t *v,const tv4_update_snapshot *s) {
         S_OTA_READY,S_OTA_WRITING,S_OTA_COMMIT,S_OTA_RESTART,S_OTA_ERROR,S_OTA_BOOT_FAILED};
     if(v->confirm)lv_label_set_text(v->update_state,tr(NULL,S_OTA_CONFIRM_NOTE));
     else if(s->state==TV4_UPDATE_READY)lv_label_set_text_fmt(v->update_state,tr(NULL,S_OTA_READY),s->version,(unsigned long)((s->total+1023)/1024));
-    else if(s->state==TV4_UPDATE_WRITING)lv_label_set_text_fmt(v->update_state,tr(NULL,S_OTA_WRITING),(unsigned long)(s->received/1024),(unsigned long)((s->total+1023)/1024));
+    else if(s->state==TV4_UPDATE_WRITING)lv_label_set_text_fmt(v->update_state,tr(NULL,S_OTA_WRITING),(unsigned long)received_kib(s),(unsigned long)((s->total+1023)/1024));
     else lv_label_set_text(v->update_state,tr(NULL,s->state<=TV4_UPDATE_BOOT_FAILED?states[s->state]:S_OTA_ERROR));
     bool allow[]={s->state==TV4_UPDATE_IDLE || s->state==TV4_UPDATE_READY || s->state==TV4_UPDATE_ERROR,
         (s->state==TV4_UPDATE_READY && s->install_allowed) || s->state==TV4_UPDATE_RESTART,
         v->confirm || s->state==TV4_UPDATE_CHECKING || s->state==TV4_UPDATE_WRITING};
     const string_id captions[]={S_OTA_CHECK,s->state==TV4_UPDATE_RESTART?S_OTA_REBOOT:!s->install_allowed?S_OTA_CHECK_ONLY:v->confirm?S_OTA_CONFIRM:S_OTA_INSTALL,S_CANCEL};
-    for(unsigned i=0;i<3;i++) {lv_label_set_text(v->caption[i],tr(NULL,captions[i]));
-        if(allow[i])lv_obj_remove_state(v->action[i],LV_STATE_DISABLED);else lv_obj_add_state(v->action[i],LV_STATE_DISABLED);}
+    for(unsigned i=0;i<3;i++) {
+        label_text(v->caption[i],tr(NULL,captions[i]));
+        bool disabled=lv_obj_has_state(v->action[i],LV_STATE_DISABLED);
+        if(disabled && allow[i])lv_obj_remove_state(v->action[i],LV_STATE_DISABLED);
+        else if(!disabled && !allow[i])lv_obj_add_state(v->action[i],LV_STATE_DISABLED);
+    }
 }

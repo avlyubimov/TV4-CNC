@@ -1,0 +1,206 @@
+{
+  "schema": 1,
+  "source_base": "7c9615925d489e41bdf2f8e99142a74b45e756da",
+  "host_tests_pass": 274,
+  "sanitizer_tests_pass": 274,
+  "leak_detection_enabled": true,
+  "actual_sdk_builds": [
+    {
+      "sdk": "6.1.1",
+      "role": "baseline",
+      "development_build_before_source_commit": true,
+      "image_bytes": 1602528,
+      "public_only_context": {
+        "provisioned": true,
+        "install_reviewed": true,
+        "installed_version": "0.1.0-bench.3",
+        "public_key_sha256": "7d75872b119701484020364d1f52fb287483939b9c627073ded18a687df61df0",
+        "private_key_present": false
+      },
+      "rgb_iram_safe": true,
+      "iram_proof": {
+        "sdk": "6.1.1",
+        "rgb_iram": true,
+        "gdma_iram": {
+          "GDMA_CTRL_FUNC_IN_IRAM": true,
+          "GDMA_ISR_HANDLER_IN_IRAM": true
+        },
+        "always_restart_vsync": false,
+        "symbols": [
+          "403773ec l     F .iram0.text\t000000d8 lcd_rgb_panel_fill_bounce_buffer",
+          "40377674 l     F .iram0.text\t00000050 rgb_lcd_default_isr_handler",
+          "403776c4 l     F .iram0.text\t00000051 lcd_rgb_panel_eof_handler"
+        ]
+      },
+      "worker_stack_bytes": 12288,
+      "module_writable_bytes": 432,
+      "compiler_service_frames": {
+        "now_ms": 32,
+        "configured": 32,
+        "cancelled": 32,
+        "commit": 32,
+        "publish": 32,
+        "worker_stack": 32,
+        "write_chunk": 32,
+        "fetch": 48,
+        "tv4_ota_boot_observe": 32,
+        "tv4_ota_service_start": 64,
+        "tv4_ota_service_health": 32,
+        "tv4_ota_service_snapshot": 32,
+        "operation": 480,
+        "worker": 80,
+        "tv4_ota_service_request": 48
+      }
+    },
+    {
+      "sdk": "6.1.1",
+      "role": "candidate",
+      "development_build_before_source_commit": true,
+      "image_bytes": 1600464,
+      "public_only_context": {
+        "provisioned": true,
+        "install_reviewed": true,
+        "installed_version": "0.1.0-bench.4",
+        "public_key_sha256": "7d75872b119701484020364d1f52fb287483939b9c627073ded18a687df61df0",
+        "private_key_present": false
+      },
+      "rgb_iram_safe": true,
+      "iram_proof": {
+        "sdk": "6.1.1",
+        "rgb_iram": true,
+        "gdma_iram": {
+          "GDMA_CTRL_FUNC_IN_IRAM": true,
+          "GDMA_ISR_HANDLER_IN_IRAM": true
+        },
+        "always_restart_vsync": false,
+        "symbols": [
+          "403773ec l     F .iram0.text\t000000d8 lcd_rgb_panel_fill_bounce_buffer",
+          "40377674 l     F .iram0.text\t00000050 rgb_lcd_default_isr_handler",
+          "403776c4 l     F .iram0.text\t00000051 lcd_rgb_panel_eof_handler"
+        ]
+      },
+      "worker_stack_bytes": 12288,
+      "module_writable_bytes": 0,
+      "compiler_service_frames": {
+        "now_ms": 32,
+        "configured": 32,
+        "cancelled": 32,
+        "commit": 32,
+        "publish": 32,
+        "worker_stack": 32,
+        "write_chunk": 32,
+        "fetch": 48,
+        "tv4_ota_boot_observe": 32,
+        "tv4_ota_service_start": 64,
+        "tv4_ota_service_health": 32,
+        "tv4_ota_service_snapshot": 32,
+        "operation": 480,
+        "worker": 80,
+        "tv4_ota_service_request": 48
+      }
+    },
+    {
+      "sdk": "5.3.2",
+      "role": "baseline",
+      "development_build_before_source_commit": true,
+      "image_bytes": 1555600,
+      "public_only_context": {
+        "provisioned": true,
+        "install_reviewed": true,
+        "installed_version": "0.1.0-bench.3",
+        "public_key_sha256": "7d75872b119701484020364d1f52fb287483939b9c627073ded18a687df61df0",
+        "private_key_present": false
+      },
+      "rgb_iram_safe": true,
+      "iram_proof": {
+        "sdk": "5.3.2",
+        "rgb_iram": true,
+        "gdma_iram": {
+          "GDMA_CTRL_FUNC_IN_IRAM": true,
+          "GDMA_ISR_IRAM_SAFE": true
+        },
+        "always_restart_vsync": false,
+        "symbols": [
+          "40377560 l     F .iram0.text\t000000d8 lcd_rgb_panel_fill_bounce_buffer",
+          "403777d0 l     F .iram0.text\t00000053 rgb_lcd_default_isr_handler",
+          "40377824 l     F .iram0.text\t00000030 lcd_rgb_panel_eof_handler"
+        ]
+      },
+      "worker_stack_bytes": 12288,
+      "module_writable_bytes": 432,
+      "compiler_service_frames": {
+        "now_ms": 32,
+        "configured": 32,
+        "publish": 32,
+        "cancelled": 32,
+        "commit": 32,
+        "worker_stack": 32,
+        "write_chunk": 32,
+        "fetch": 48,
+        "tv4_ota_boot_observe": 32,
+        "tv4_ota_service_start": 64,
+        "tv4_ota_service_health": 32,
+        "tv4_ota_service_snapshot": 32,
+        "operation": 480,
+        "worker": 80,
+        "tv4_ota_service_request": 48
+      }
+    },
+    {
+      "sdk": "5.3.2",
+      "role": "candidate",
+      "development_build_before_source_commit": true,
+      "image_bytes": 1553504,
+      "public_only_context": {
+        "provisioned": true,
+        "install_reviewed": true,
+        "installed_version": "0.1.0-bench.4",
+        "public_key_sha256": "7d75872b119701484020364d1f52fb287483939b9c627073ded18a687df61df0",
+        "private_key_present": false
+      },
+      "rgb_iram_safe": true,
+      "iram_proof": {
+        "sdk": "5.3.2",
+        "rgb_iram": true,
+        "gdma_iram": {
+          "GDMA_CTRL_FUNC_IN_IRAM": true,
+          "GDMA_ISR_IRAM_SAFE": true
+        },
+        "always_restart_vsync": false,
+        "symbols": [
+          "40377560 l     F .iram0.text\t000000d8 lcd_rgb_panel_fill_bounce_buffer",
+          "403777d0 l     F .iram0.text\t00000053 rgb_lcd_default_isr_handler",
+          "40377824 l     F .iram0.text\t00000030 lcd_rgb_panel_eof_handler"
+        ]
+      },
+      "worker_stack_bytes": 12288,
+      "module_writable_bytes": 0,
+      "compiler_service_frames": {
+        "now_ms": 32,
+        "configured": 32,
+        "publish": 32,
+        "cancelled": 32,
+        "commit": 32,
+        "worker_stack": 32,
+        "write_chunk": 32,
+        "fetch": 48,
+        "tv4_ota_boot_observe": 32,
+        "tv4_ota_service_start": 64,
+        "tv4_ota_service_health": 32,
+        "tv4_ota_service_snapshot": 32,
+        "operation": 480,
+        "worker": 80,
+        "tv4_ota_service_request": 48
+      }
+    }
+  ],
+  "device_access": false,
+  "visual_fix_confirmed_on_board": false,
+  "production_resource_qualified": false,
+  "irreversible_security_changed": false,
+  "original_owner_context_unchanged": true,
+  "published_bench3_unchanged": true,
+  "planned_new_prerelease": "0.1.0-bench.4",
+  "publication_approval_pending": true,
+  "successful_release_to_remain_installed": true
+}

@@ -27,3 +27,6 @@ CONFIG_ESP_SYSTEM_PANIC_PRINT_REBOOT=y
 CONFIG_SPIRAM_XIP_FROM_PSRAM=y
 CONFIG_SPIRAM_FETCH_INSTRUCTIONS=y
 CONFIG_SPIRAM_RODATA=y
+# Keep RGB/GDMA bounce-buffer interrupts running during main-Flash operations.
+# PCLK, bounce depth and framebuffer count stay at the verified board values.
+CONFIG_LCD_RGB_ISR_IRAM_SAFE=y
