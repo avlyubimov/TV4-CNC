@@ -2,22 +2,20 @@
 
 ## Актуальные блокеры P1
 
-Signed INSTALL/VALID, native reset rollback/factory и [CANCEL после частичной
-сетевой записи](evidence/hardware/2026-11-24-esp32-partial-cancel/README.md) PASS.
-Bench.4 оставлен в OTA1 VALID; неполный кандидат не активировался. Исходные
-байты Flash восстановлены; прежний UI показывает generic error при CANCEL,
-тогда как журнал различает CANCELLED и transport failure.
+[Реальное отключение кнопкой STA, cleanup и полный retry в том же процессе](evidence/hardware/2026-11-24-esp32-wifi-retry/README.md)
+PASS; после штатного reboot/self-test и нового чтения 16 МиБ оставлен bench.4
+OTA1 VALID. Это не проверка исчезновения RF/AP. Причина быстрого переподключения
+в первом остановленном сеансе не установлена; повтор его не воспроизвёл,
+первоначальный FAIL не переклассифицирован. Нужна дальнейшая наблюдаемость
+команд/событий Wi-Fi при расследовании повторения, без обхода проверок.
 
-Открыты настоящая потеря Wi-Fi и повторная попытка после восстановления,
-физический power-loss, production policy/version discovery/resource budget,
-reproducible clean builds, runtime 5.3.2 и физические FPS/latency. Контексты только
-до 25 ноября 2026, 08:00 Asia/Almaty. Следующие испытания сохраняют UI double
-gate и immutable signed pair `.3→.4`, новый конечный пакет/backup/recovery.
-UI source fix отображает «Обновление отменено», протестирован в LVGL/сервисе;
-на плату пока не установлен. Новый release/tag требует точного owner approval. F407/physical CAN/NEMA23
-parameters/motion commissioning и независимая аварийная цепь сохраняют блокеры;
-standing board grant не разрешает eFuse/option bytes/CAN/приводы.
-
+Открыты независимая потеря RF/AP, физический power-loss, production policy,
+version discovery/resource budget, reproducible clean builds, runtime 5.3.2 и
+физические FPS/latency. Контексты только до 25 ноября 2026, 08:00 Asia/Almaty;
+истечение не продлевать автоматически. UI source fix отмены ещё не установлен.
+Новые release/tag требуют точного owner approval; self-merge запрещён.
+F407/physical CAN/NEMA23 parameters/motion commissioning и независимая аварийная
+цепь сохраняют блокеры; standing board grant не разрешает eFuse/option bytes/CAN/приводы.
 
 ## История: native pending confirmation/refusal/rollback a74bfcd — PASS
 

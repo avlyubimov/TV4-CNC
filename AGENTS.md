@@ -1,28 +1,25 @@
 # TV4-CNC — правила разработки Codex
 
-Текущий P1 после PR #87: на ESP32 оставлен **bench.4, OTA1 VALID**,
-неизменяемый подписанный образ `6c7b1d5` / ESP-IDF 6.1.1. Сетевая установка,
-native rollback/factory и реальный CANCEL после частичной записи PASS.
-Считаны все 3 МиБ неактивного OTA1: префикс 61 440 байт, хвост стёрт;
-выбор загрузки и активный OTA0 неизменны. Полный исходный OTA1 восстановлен
-до его исходных метаданных VALID; все 16 МиБ считаны, байты вне NVS совпали,
-две копии на разных NVMe проверены. Владелец подтвердил финальные экран,
-касания и Wi-Fi. Три записи хоста; полный restore не потребовался.
+Текущий P1 от main bf5c325 после PR #88: signed STA Disconnect → transport
+failure/cleanup → новое подключение/CHECK → полный INSTALL в одной загрузке `.3`
+PASS на неизменяемом source6c7b1d5 / SDK6.1.1. Штатный reboot/self-test/VALID,
+новое чтение всех16МиБ/сверка вне NVS/две NVMe-копии PASS; оставлен bench.4 OTA1
+VALID, владелец подтвердил HMI/touch/Wi-Fi. Одна host metadata write/full restore0.
+Первый сеанс остановлен на раннем переподключении, восстановлен; причина пока
+не установлена, FAIL сохранён. Повтор прошёл с исходным строгим guard.
 
-274 host / 274 sanitizers / 24 проверки процедуры PASS; 56 новых host-сценариев
-отмены/обрыва после частичного блока. В исходниках UI показывает «Обновление
-отменено» для прежнего кода CANCEL; state/error encoding, gates и 5 Hz coalescing
-сохранены. LVGL/сервис проверены, этот UI fix на плату пока не установлен.
-Читать docs/NEXT_STAGE.md и отчёт 2026-11-24-esp32-partial-cancel от корня.
+274 host/274 sanitizers/24 procedure PASS.56 частичных отказов дополнены полным
+authenticated retry в том же процессе; actual SDK abort/rebegin проверен.
+Firmware/assets/context прежние; UI cancellation text fix ещё не установлен.
+Читать docs/NEXT_STAGE.md и docs/evidence/hardware/2026-11-24-esp32-wifi-retry/
+от корня. Не выдавать добровольный STA disconnect за потерю RF/AP.
 
-Далее физическая потеря Wi-Fi/питания, production policy/budget; P2 reproducibility.
-Текущий checkpoint — seq1 VALID OTA0 и seq2 VALID OTA1. Не применять прежние
-factory-only validators или закрытые одноразовые пакеты. Стендовые контексты
-только до 25 ноября 2026, 08:00 Asia/Almaty; immutable assets/context не менять.
-Новый release/tag требует точного разрешения владельца; self-merge запрещён.
-Общее разрешение на проверки изолированных плат не распространяется на движение,
-CAN, eFuse и option bytes. F407 ee7d179 не открывался. Ниже история;
-актуальный этап — NEXT_STAGE.
+Далее P1 independent RF/AP/power loss, production policy/budget/version discovery;
+P2 reproducibility. Контексты только до25ноября2026 08:00 Asia/Almaty, immutable
+assets/context не менять. Новые release/tag требуют точного owner approval,
+self-merge запрещён. Standing isolated-board grant не разрешает движение/CAN/
+eFuse/option bytes. F407 ee7d179 не открывался; одноразовые пакеты не повторять.
+Ниже исторические контракты, активный этап — NEXT_STAGE.
 
 Правила действуют на весь репозиторий. Вложенные AGENTS.md уточняют область,
 но не ослабляют безопасность. Продолжать существующий проект, не создавать

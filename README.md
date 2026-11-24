@@ -1,23 +1,22 @@
 # TV4 CNC
 
-## Проверенное состояние, 24 ноября 2026
+## Проверенное состояние, 25 ноября 2026
 
 На Waveshare оставлен **bench.4, OTA1 VALID** (`6c7b1d5`, ESP-IDF 6.1.1).
-Проверены [сетевая установка](docs/evidence/hardware/2026-11-24-esp32-display-bench4/README.md),
-[rollback и factory recovery](docs/evidence/hardware/2026-11-24-esp32-reset-rollback/README.md),
-[отмена после частичной записи](docs/evidence/hardware/2026-11-24-esp32-partial-cancel/README.md).
-После CANCEL полный исходный образ восстановлен; все 16 МиБ считаны и сверены
-вне NVS, две копии на разных NVMe проверены. Неактивный неполный образ не выбран
-для загрузки. Исполняемая прошивка и опубликованный релиз прежние.
+После signed INSTALL, rollback/factory и CANCEL проверено
+[отключение STA кнопкой во время записи и полный retry без сброса принимающей прошивки](docs/evidence/hardware/2026-11-24-esp32-wifi-retry/README.md).
+Повторный CHECK/INSTALL, штатный reboot/self-test/VALID PASS. Все 16 МиБ заново
+считаны, байты вне NVS совпали, две копии на разных NVMe проверены.
 
-[Тесты](docs/evidence/build/esp32-ota-partial-cancel/README.md): 274 host,
-274 ASan/UBSan/LSan и 24 проверки процедуры PASS, включая 56 новых host-сценариев
-отмены/обрыва после частичной записи. Физический обрыв Wi-Fi/питания, production
-policy/budget и P2 reproducibility остаются следующими этапами. Контексты только
-до 25 ноября 2026, 08:00 Asia/Almaty. Runtime 5.3.2, FPS/задержка касания,
-physical CAN/motion ещё не приняты. UI source fix «Обновление отменено» прошёл
-тесты LVGL/сервиса и требует будущего согласованного релиза для установки. [Следующий этап](docs/NEXT_STAGE.md),
-[аппаратный статус](docs/HARDWARE_STATUS.md), [бэкапы](docs/BACKUP_STATUS.md).
+[274 host / 274 sanitizers / 24 проверки процедуры](docs/evidence/build/esp32-ota-wifi-retry/README.md)
+PASS. Первый сеанс с ранним переподключением остаётся FAIL; причина пока не
+установлена. Повтор прошёл с теми же строгими проверками. Это добровольный STA
+disconnect; независимая потеря RF/AP и питания ещё не проверены. Production
+policy/budget и P2 воспроизводимость остаются открытыми. Контексты только до
+25 ноября 2026, 08:00 Asia/Almaty. Runtime 5.3.2/FPS/physical latency/CAN/motion
+не приняты. UI source fix отмены ещё не на плате; firmware/release прежние.
+[Следующий этап](docs/NEXT_STAGE.md), [аппаратный статус](docs/HARDWARE_STATUS.md),
+[бэкапы](docs/BACKUP_STATUS.md).
 
 ## История программной подготовки
 

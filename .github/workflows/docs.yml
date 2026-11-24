@@ -38,6 +38,15 @@ jobs:
           test -s docs/plans/P1_INSTALL_POLICY.md
           test -s docs/plans/P1_INSTALLABLE_BUNDLE.md
           test -s docs/plans/P1_PARTIAL_CANCEL.md
+          test -s docs/plans/P1_WIFI_DISCONNECT_RETRY.md
+          test -s docs/evidence/build/esp32-ota-wifi-retry/README.md
+          for receipt in results source-ci; do
+            python3 -m json.tool "docs/evidence/build/esp32-ota-wifi-retry/$receipt.json" > /dev/null
+          done
+          test -s docs/evidence/hardware/2026-11-24-esp32-wifi-retry/README.md
+          for receipt in attempt1 button-observation measurements; do
+            python3 -m json.tool "docs/evidence/hardware/2026-11-24-esp32-wifi-retry/$receipt.json" > /dev/null
+          done
           test -s docs/evidence/build/esp32-ota-partial-cancel/README.md
           for receipt in results source-ci; do
             python3 -m json.tool "docs/evidence/build/esp32-ota-partial-cancel/$receipt.json" > /dev/null

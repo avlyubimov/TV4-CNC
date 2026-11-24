@@ -1,0 +1,148 @@
+{
+  "main": "bf5c325f307286f4bb01feeb29d625d693c37c40",
+  "firmware_source": "6c7b1d56769fe8a084c4360e6c2df4bb594f58fa",
+  "started_utc": "2026-11-24T18:42:28.874887+00:00",
+  "finished_utc": "2026-11-24T18:48:54.749374+00:00",
+  "maximum_seconds": 1800,
+  "elapsed_seconds": 385.87441622500046,
+  "left_running": "0.1.0-bench.4-ota1-valid",
+  "interruption_method": "panel-client-disconnect",
+  "involuntary_rf_ap_loss_tested": false,
+  "physical_power_loss_tested": false,
+  "efuse_option_bytes_stm32_can_motion_accessed": false,
+  "writes": [
+    {
+      "role": "select-receiver",
+      "offset": 2162688,
+      "bytes": 8192,
+      "verified": true,
+      "outside_preserved": true
+    },
+    {
+      "role": "failure-image",
+      "offset": 5373952,
+      "bytes": 3145728,
+      "verified": true,
+      "outside_preserved": true
+    },
+    {
+      "role": "failure-selection",
+      "offset": 2162688,
+      "bytes": 8192,
+      "verified": true,
+      "outside_preserved": true
+    }
+  ],
+  "metadata_observations": {
+    "original-dual-valid": [
+      {
+        "sequence": 1,
+        "state": 2,
+        "crc": 1195612314,
+        "slot": 0,
+        "erased": false
+      },
+      {
+        "sequence": 2,
+        "state": 2,
+        "crc": 1442199412,
+        "slot": 1,
+        "erased": false
+      }
+    ],
+    "receiver-selected": [
+      {
+        "sequence": 1,
+        "state": 2,
+        "crc": 1195612314,
+        "slot": 0,
+        "erased": false
+      },
+      {
+        "erased": true
+      }
+    ],
+    "failure-original-selection": [
+      {
+        "sequence": 1,
+        "state": 2,
+        "crc": 1195612314,
+        "slot": 0,
+        "erased": false
+      },
+      {
+        "sequence": 2,
+        "state": 2,
+        "crc": 1442199412,
+        "slot": 1,
+        "erased": false
+      }
+    ]
+  },
+  "uart_capture_attempts": 4,
+  "full_recovery_attempts": 0,
+  "snapshot_bytes": 16777216,
+  "independent_snapshot_copies_verified": true,
+  "snapshot_method": "previous actual full read + fresh NVS24KiB + whole-device MD5",
+  "new_preflight_device_read_bytes": 24576,
+  "identity_security_flash_verified": true,
+  "control_pass": true,
+  "diagnostic_error": "Premature reconnection before offline checkpoint",
+  "failure_scope_recovery_verified": true,
+  "bench_observation_pass": false,
+  "session_closed": true,
+  "session_results": [
+    {
+      "state": 6,
+      "error": 0,
+      "http": 0,
+      "policy": 0,
+      "image": 0,
+      "resource": 0,
+      "checks": 9,
+      "internal": 118879,
+      "largest": 63488,
+      "psram": 5941092,
+      "psram_largest": 5898240,
+      "stack": 7072
+    },
+    {
+      "state": 8,
+      "error": 2,
+      "http": 9,
+      "policy": 0,
+      "image": 0,
+      "resource": 0,
+      "checks": 268,
+      "internal": 119159,
+      "largest": 63488,
+      "psram": 5945952,
+      "psram_largest": 5898240,
+      "stack": 7072
+    }
+  ],
+  "service_results": [
+    {
+      "stage": 5,
+      "error": 0,
+      "internal": 118915,
+      "psram": 5975940,
+      "stack": 7072
+    },
+    {
+      "stage": 9,
+      "error": 6,
+      "internal": 117387,
+      "psram": 5982360,
+      "stack": 7072
+    }
+  ],
+  "owner_confirmed_final_screen_touch_wifi": true,
+  "owner_reported_only_disconnect": true,
+  "driver_reconnection_observed": true,
+  "accepted_disconnect_command_logged": false,
+  "same_process_retry_qualified": false,
+  "final_whole_flash_read_this_attempt": false,
+  "intermediate_partial_image_readback": false,
+  "reconnection_cause": "not established"
+}
