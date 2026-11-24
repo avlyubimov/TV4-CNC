@@ -1,21 +1,62 @@
 # Аппаратный статус TV4-CNC
 
-## Актуально: configured контроль PASS, далее реальные HTTP headers GitHub
+## Актуально: a29c9ed — полный signed CHECK и три reset-повтора PASS
 
-PR #78 слит владельцем, mainb3551f3 CI15/source471e109 CI30 PASS.
-[Стенд471e109](evidence/hardware/2026-11-24-esp32-signed-check-471e109/README.md):
-clean control/worker12288 PASS; два HTTP_OPEN при resource OK и stack7072–7248.
-Весь factory fecc05d возвращён/verify/UART/owner PASS, full restore0. Full signed
-image и single CHECK не приняты; источник второго запроса не установлен.
+[Полный подписанный CHECK](evidence/hardware/2026-11-24-esp32-signed-check-a29c9ed/README.md)
+на ESP-IDF6.1.1 закрыт за1095,492s: свежие16MiB/device MD5/SHA/two-NVMe,
+configured control PASS → ровно один автоматический CHECK → весь factory2MiB
+fecc05d/verify/preservation/UART30 PASS. IMAGE_VERIFIED(7), все ошибки0,
+406 resource checks; полный payload bench.2 проверен без Flash sink/INSTALL.
+SESSION local minimum internal97399bytes, сетевой largest63488, остаток стека
+6896/12288bytes; touch age0–20ms/errors0. Cleanup/окна/CA/hostname/date/timeouts
+и прежние floors сохранены. Physical UI/FPS/latency ночью не наблюдались.
 
-[Следующая adapter integration](plans/P1_GITHUB_HEADERS.md): ответ302 GitHub
-имеет headers5726/CSP4178, прежний cap4096 его отвергает. SDK5/6 также требуют
-полную GET path+query в TX;512 мало для CDN URL. Новые конечные пределы:
-total16KiB/value8KiB, TX512..2080 по URL, без ослабления relevant headers,
-framing/encoding/allowlist/CA/time/подписи/size/floors. После тестов/обоих SDK/
-CI — новый exact BASE, clean control, один CHECK, возврат. Owner продлил время
-проверки; finite1800s/recovery reserve и reviewed guards сохраняются.
+[Software evidence](evidence/build/esp32-ota-zero-length-check/README.md):237
+host/237 ASan/UBSan/LSan, actual-source analyzer, четыре configured ELF/BIN
+ESP-IDF6.1.1/5.3.2 PASS. Source a29c9ed CI30/30 и mainc3b82f0 CI15/15 прошли
+до стенда. Runtime5.3.2 не испытывался. PR #80 открыт, самостоятельно не сливать.
 
+[Повторяемость](evidence/hardware/2026-11-24-esp32-signed-check-repeat-a29c9ed/README.md)
+также PASS: новый свежий снимок/two-NVMe, контроль90s, три reset CHECK без
+повторной записи auto-app, весь factory fecc05d/verify/preservation/UART30.
+Сеанс закрыт за1148,571s;3×IMAGE_VERIFIED/error0/406checks, SESSION local minima
+internal97783–99427bytes, largest63488, stack6896/12288, touch1–18ms/errors0.
+
+Далее отдельный [PR #81](https://github.com/avlyubimov/TV4-CNC/pull/81): рабочий
+local context до pending confirmation и native boot/rollback проверка. Затем
+configured installable payload и сетевой INSTALL. Опубликованный unprovisioned
+bench.2 остаётся только read-only: его нельзя устанавливать или менять assets/tag.
+Production resource budget, INSTALL и испытания потери питания не приняты.
+
+[SWD readback F407](evidence/hardware/2026-11-24-f407-readback/README.md) PASS:
+current1MiB/ee7d179 exact bytes, self-tests/guards/progress/resume; без прошивки,
+reset и RAM test requests. Две приватные current copies на разных NVMe проверены.
+Владелец разрешил автономные обратимые проверки изолированных плат до24ноября
+08:00 Asia/Almaty: каждый сеанс≤1800s и recovery reserve до срока; без eFuse,
+option bytes/CAN/motion/merge/новых релизов. Ключи/context/бэкапы вне Git/CI.
+
+## История: b01ff48 контроль PASS, CHECK остановлен на нулевой длине HTTP302
+
+[Один автономный CHECK](evidence/hardware/2026-11-24-esp32-signed-check-b01ff48/README.md)
+закрыт: control PASS; auto attempted1/pass0, HTTP302/header bytes5704/bad_headers1.
+Resource guard0/checks2/stack6896 — ещё не full session budget. Весь factory
+fecc05d возвращён/verify/UART30 PASS, full restore0; owner UI ночью не наблюдался.
+[SWD readback F407](evidence/hardware/2026-11-24-f407-readback/README.md) PASS:
+current1MiB/ee7d179 exact bytes, self-tests/guards/progress, resume; без прошивки/
+reset/RAM test requests. Две приватные current copies на разных NVMe проверены.
+
+[Следующий exact пакет](plans/P1_AUTONOMOUS_SIGNED_CHECK.md) исправляет
+семантику ESP-IDF5/6: fetch_headers выставляет is_chunked для Content-Length0,
+даже без Transfer-Encoding. Narrow adaptation только для explicit zero length
+без TE; empty200, unknown framing, CL+TE, duplicates/compression и прочие
+contradictions отвергаются. Сначала237 host/sanitizers/оба SDK/CI, затем новый
+fresh16MiB/two-NVMe → control flag0 PASS → один full CHECK flag1 → весь fecc05d.
+Стенд b01ff48 закрыт, не повторять. Подпись/full stream/install/rollback ещё не
+приняты. Пороги/CA/hostname/date/timeouts и обычные профили сохраняются.
+
+Действует разрешение владельца на автономные обратимые проверки изолированных
+плат до24ноября08:00 Asia/Almaty: finite≤1800s/recovery reserve, без eFuse/
+option bytes/CAN/motion/merge/новых релизов. Published bench.2 остаётся read-only.
 
 ## После PR #77: опубликованный payload и следующий configured CHECK
 

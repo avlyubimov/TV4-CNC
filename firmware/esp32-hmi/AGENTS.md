@@ -1,21 +1,28 @@
 # ESP32 HMI — специализированные правила
 
-Текущий P1 — docs/plans/P1_GITHUB_HEADERS.md от корня. 471e109/worker12288:
-clean control PASS, HTTP_OPEN при resource OK, factory fecc05d возвращён/
-verify/UART/owner PASS. Full signed session ещё не принят; F407 ee7d179 прежний.
+Текущий P1 — docs/plans/P1_AUTONOMOUS_SIGNED_CHECK.md от корня. a29c9ed:
+control/один full signed CHECK/возврат всего fecc05d PASS. IMAGE_VERIFIED/error0,
+406 resource checks, SESSION local min97399bytes, largest63488, stack6896/12288,
+touch0–20ms/errors0. Physical UI ночью не наблюдался.237 host/sanitizers,
+analyzer/четыре ELF обоих SDK/CI30 PASS; аппаратно только6.1.1.
 
-Менять существующий HTTPS adapter: bounded total headers16KiB/value8KiB и
-TX512..2080 по длине уже разрешённого URL. Сохранить RX4096/TLS16384/4096,
-Location2048/key128/encoding/framing/duplicates/allowlist/CA/hostname/date/time,
-floors, единственный worker и memory monitor. Никаких логов header values/
-URL/query или I/O из HTTP callbacks. Diagnostic log после callback, bounded.
-Actual-source SDK doubles/negative framing/oversize/cleanup/time, sanitizers,
-оба pinned SDK/ELF/CI, затем новый exact finite CHECK с fresh backup/возвратом.
+Finite repeatability также закрыт PASS: fresh16MiB/two-NVMe/control90s,
+три150s reset CHECK без повторной записи auto-app, весь factory fecc05d/verify/
+UART30.3×IMAGE_VERIFIED/error0/406checks, SESSION minima97783–99427, stack6896,
+touch1–18ms/errors0. Не повторять пакет. Далее PR81 local context до pending
+confirmation/native boot rollback, затем configured installable payload/INSTALL.
+Published unprovisioned bench.2 read-only, не устанавливать. Production budget
+и физический UI/FPS/latency ещё не приняты.
 
-Owner разрешил проверять столько времени, сколько понадобится: новый конечный
-календарный CHECK context, не продление сетевых timeout и не снижение floors.
-Private context/key вне Git/CI. Не менять опубликованный prerelease bench.2,
-не устанавливать unprovisioned payload. INSTALL/eFuse/CAN/motion/merge не разрешены.
+Default-off signed bench только configured rev12-ota+trace, один worker,
+45s healthy Wi-Fi/2s settle/один full read-only CHECK. External CHECK/INSTALL/
+REBOOT закрыты, CANCEL сохранён; ordinary profiles/metadata CHECK прежние.
+Known-zero/no-TE SDK framing fix не отменяет empty200/unknown/CL+TE/duplicates/
+compression/other mismatch refusals. Headers/TX bounds, CA/time/floors/monitor/
+cleanup/timeouts сохраняются. Owner разрешил автономные обратимые isolated-board
+checks до24ноября08:00 Asia/Almaty без вопросов о доступе; finite1800s/recovery
+reserve, без eFuse/option bytes/CAN/motion/merge/нового release/INSTALL bench.2.
+Key/context вне Git/CI. На F407 прежний ee7d179, readback/health/resume PASS.
 
 Ниже исторические контракты; актуальные hardware facts — в корневых документах.
 

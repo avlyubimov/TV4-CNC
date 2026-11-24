@@ -68,9 +68,11 @@ static esp_err_t headers(esp_http_client_event_t *event) {
 }
 static bool open_failed(bridge *b,unsigned step,esp_err_t error) {
     /* Worker only, after the SDK callback returned; never disclose URL/tokens. */
-    ESP_LOGW("tv4_ota_http","open_failed step=%u native=%d headers=%u bad_headers=%u status=%d",
+    ESP_LOGW("tv4_ota_http","open_failed step=%u native=%d headers=%u bad_headers=%u status=%d length_known=%u length=%u wire_chunked=%u sdk_chunked=%u",
         step,(int)error,(unsigned)b->header_bytes,(unsigned)b->response->bad_headers,
-        b->client?esp_http_client_get_status_code(b->client):0);
+        b->client?esp_http_client_get_status_code(b->client):0,(unsigned)b->response->length_known,
+        (unsigned)b->response->content_length,(unsigned)b->response->chunked,
+        (unsigned)(b->client && esp_http_client_is_chunked_response(b->client)));
     return false;
 }
 static bool open_client(void *context,const char *url,uint32_t timeout,tv4_http_response *response) {
@@ -94,7 +96,14 @@ static bool open_client(void *context,const char *url,uint32_t timeout,tv4_http_
     error=esp_http_client_open(b->client,0);if(error!=ESP_OK)return open_failed(b,3,error);
     if(esp_http_client_fetch_headers(b->client)<0)return open_failed(b,4,ESP_FAIL);
     response->status=esp_http_client_get_status_code(b->client);
-    if(esp_http_client_is_chunked_response(b->client)!=response->chunked)response->bad_headers=true;
+    /* SDK5/6 fetch_headers sets is_chunked when content_length<=0, including
+     * an explicit Content-Length:0 with no Transfer-Encoding. Preserve the
+     * wire framing captured above: only that fixed empty response explains
+     * the SDK mismatch. Portable fetch still rejects an empty HTTP200 body. */
+    bool sdk_chunked=esp_http_client_is_chunked_response(b->client);
+    bool fixed_empty=response->length_known && !response->content_length && !b->transfer_seen;
+    if((response->length_known && response->chunked) ||
+       (sdk_chunked!=response->chunked && !(sdk_chunked && fixed_empty)))response->bad_headers=true;
     return response->bad_headers?open_failed(b,5,ESP_FAIL):true;
 }
 static int read_client(void *context,uint8_t *bytes,size_t length) {

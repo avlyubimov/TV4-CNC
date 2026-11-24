@@ -50,6 +50,11 @@ jobs:
             gcc -std=c11 -Wall -Wextra -Werror -fanalyzer -Ifirmware/esp32-hmi/ota \
               -c "firmware/esp32-hmi/ota/$name.c" -o "build/policy-analysis/$name.o" >> build/policy-analysis.log 2>&1
           done
+          gcc -std=c11 -Wall -Wextra -Werror -fanalyzer -DESP_PLATFORM=1 \
+            -DSERVICE_TEST_SIGNED_BENCH=1 -DSERVICE_TEST_PROVISIONED=1 -DSERVICE_TEST_VALID_TRUST=1 \
+            -Itests/ota_service_sdk -Itests -Ifirmware/esp32-hmi/ota -Ifirmware/esp32-hmi/network \
+            -c firmware/esp32-hmi/ota/service.c \
+            -o build/policy-analysis/service-signed-check.o >> build/policy-analysis.log 2>&1
           gcc -std=c11 -Wall -Wextra -Werror -fanalyzer -DTV4_OTA_SDK_TEST=1 \
             -Ifirmware/esp32-hmi/ota -Itests -c firmware/esp32-hmi/ota/installer_sdk.c \
             -o build/policy-analysis/installer.o >> build/policy-analysis.log 2>&1

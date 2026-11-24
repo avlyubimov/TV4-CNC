@@ -10,15 +10,22 @@
 
 static const char *mode;
 static const char *initial="https://github.com/avlyubimov/TV4-CNC/releases/download/v0.1.0-bench.2/manifest.json";
-static struct fake_http_client {esp_http_client_config_t cfg;unsigned position,id;} client;
+static struct fake_http_client {esp_http_client_config_t cfg;unsigned position,id;bool length_known,wire_chunked;uint32_t content_length;} client;
 static unsigned inits,opens,closes,consumes,logs;
 static uint32_t ticks;
 static bool cancel_requested;
 static char value[8194],location[2050],key[130];
 static tv4_http_workspace workspace;
 static int header(const char *name,const char *data) {
+    if(!strcmp(name,"Content-Length")) {client.length_known=true;client.content_length=(uint32_t)strtoul(data,NULL,10);}
+    if(!strcmp(name,"Transfer-Encoding") && !strcmp(data,"chunked"))client.wire_chunked=true;
     esp_http_client_event_t event={.event_id=HTTP_EVENT_ON_HEADER,.header_key=name,.header_value=data,.user_data=client.cfg.user_data};
     return client.cfg.event_handler(&event);
+}
+static bool redirect_case(void) {
+    return !strcmp(mode,"github") || !strcmp(mode,"url-ceiling") || !strcmp(mode,"long-location") ||
+        !strcmp(mode,"duplicate-location") || !strcmp(mode,"bad-location") || !strcmp(mode,"zero-ambiguous") ||
+        !strcmp(mode,"zero-gzip") || !strcmp(mode,"zero-duplicate-length");
 }
 static int padding(const char *name,size_t count) {
     assert(count<sizeof(value));memset(value,'x',count);value[count]=0;return header(name,value);
@@ -66,14 +73,18 @@ int64_t esp_http_client_fetch_headers(esp_http_client_handle_t c) {
     if(!strcmp(mode,"large-total")) {
         for(unsigned i=0;i<5;i++)if(padding("Unknown",4000)!=ESP_OK)return -1;
     }
-    if(client.id==1 && (!strcmp(mode,"github") || !strcmp(mode,"url-ceiling") || !strcmp(mode,"long-location") || !strcmp(mode,"duplicate-location") || !strcmp(mode,"bad-location"))) {
+    if(client.id==1 && redirect_case()) {
         /* Measured GitHub CSP=4178 bytes; real redirect response totals ~5.7KiB. */
         if(padding("Content-Security-Policy",4178)!=ESP_OK)return -1;
         if(padding("Vary",151)!=ESP_OK)return -1;
         if(padding("Unknown",400)!=ESP_OK)return -1;
         if(header("Location",!strcmp(mode,"bad-location")?"http://evil.invalid/":location)!=ESP_OK)return -1;
         if(!strcmp(mode,"duplicate-location") && header("Location",location)!=ESP_OK)return -1;
-        return header("Content-Length","0")==ESP_OK?0:-1;
+        if(header("Content-Length","0")!=ESP_OK)return -1;
+        if(!strcmp(mode,"zero-ambiguous") && header("Transfer-Encoding","chunked")!=ESP_OK)return -1;
+        if(!strcmp(mode,"zero-gzip") && header("Content-Encoding","gzip")!=ESP_OK)return -1;
+        if(!strcmp(mode,"zero-duplicate-length") && header("Content-Length","0")!=ESP_OK)return -1;
+        return 0;
     }
     if(!strcmp(mode,"gzip"))return header("Content-Encoding","gzip")==ESP_OK?4:-1;
     if(!strcmp(mode,"duplicate-encoding")) {
@@ -82,9 +93,10 @@ int64_t esp_http_client_fetch_headers(esp_http_client_handle_t c) {
     }
     if(!strcmp(mode,"bad-transfer"))return header("Transfer-Encoding","gzip")==ESP_OK?4:-1;
     if(!strcmp(mode,"invalid-length"))return header("Content-Length","3145729")==ESP_OK?4:-1;
-    if(!strcmp(mode,"chunked") || !strcmp(mode,"ambiguous")) {
+    if(!strcmp(mode,"zero-body"))return header("Content-Length","0")==ESP_OK?0:-1;
+    if(!strcmp(mode,"chunked") || !strcmp(mode,"ambiguous") || !strcmp(mode,"sdk-negative-mismatch")) {
         if(header("Transfer-Encoding","chunked")!=ESP_OK)return -1;
-        if(!strcmp(mode,"chunked"))return 0;
+        if(!strcmp(mode,"chunked") || !strcmp(mode,"sdk-negative-mismatch"))return 0;
     }
     if(!strcmp(mode,"no-length"))return 0;
     if(header("Content-Length","4")!=ESP_OK)return -1;
@@ -93,9 +105,16 @@ int64_t esp_http_client_fetch_headers(esp_http_client_handle_t c) {
 }
 int esp_http_client_get_status_code(esp_http_client_handle_t c) {
     assert(c==&client);
-    return client.id==1 && (!strcmp(mode,"github") || !strcmp(mode,"url-ceiling") || !strcmp(mode,"long-location") || !strcmp(mode,"duplicate-location") || !strcmp(mode,"bad-location"))?302:200;
+    return client.id==1 && redirect_case()?302:200;
 }
-bool esp_http_client_is_chunked_response(esp_http_client_handle_t c) {assert(c==&client);return !strcmp(mode,"chunked") || !strcmp(mode,"ambiguous");}
+bool esp_http_client_is_chunked_response(esp_http_client_handle_t c) {
+    assert(c==&client);
+    if(!strcmp(mode,"sdk-positive-mismatch"))return true;
+    if(!strcmp(mode,"sdk-negative-mismatch"))return false;
+    /* Actual SDK5/6 fetch_headers sets is_chunked for content_length<=0,
+     * including a fixed Content-Length:0 redirect, with no TE header. */
+    return client.wire_chunked || !client.length_known || !client.content_length;
+}
 int esp_http_client_read(esp_http_client_handle_t c,char *out,int capacity) {
     assert(c==&client && capacity>=4);
     if(client.position++)return 0;
@@ -123,7 +142,7 @@ int main(int argc,char **argv) {
     if(!good) {
         tv4_http_result expected=TV4_HTTP_OPEN;
         if(!strcmp(mode,"bad-location"))expected=TV4_HTTP_REDIRECT;
-        if(!strcmp(mode,"no-length") || !strcmp(mode,"ambiguous"))expected=TV4_HTTP_ENCODING;
+        if(!strcmp(mode,"zero-body"))expected=TV4_HTTP_LENGTH;
         if(!strcmp(mode,"cancel"))expected=TV4_HTTP_CANCELLED;
         if(!strcmp(mode,"timeout"))expected=TV4_HTTP_TIMEOUT;
         if(!strcmp(mode,"stale-time"))expected=TV4_HTTP_UNTRUSTED_TIME;

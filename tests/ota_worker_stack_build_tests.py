@@ -85,4 +85,48 @@ class Guards(unittest.TestCase):
             with self.subTest(flags=flags):
                 self.assertNotEqual(run.returncode,0);self.assertIn(message,run.stderr)
 
+    def test_signed_check_requires_explicit_configured_public_only_trace(self):
+        f=self.fixture();p=f.build/'config/sdkconfig.json';config=json.loads(p.read_text())
+        config.update(TV4_OTA_WORKER_STACK_BENCH=False,TV4_OTA_SIGNED_CHECK_BENCH=True)
+        p.write_text(json.dumps(config))
+        args=dict(memory_diagnostics=True,signed_check_bench=True)
+        context=f.build/'ota-local/ota_local_context.json';good=json.loads(context.read_text())
+        with self.assertRaisesRegex(ValueError,'public-only'):self.verify(f,**args)
+        good['provisioned']=True;context.write_text(json.dumps(good))
+        self.assertTrue(self.verify(f,**args)['ota_signed_check_bench'])
+        for invalid in ({'memory_diagnostics':True},dict(args,signed_check_bench=1),dict(args,memory_diagnostics=False),dict(args,worker_stack_bench=True)):
+            with self.subTest(invalid=invalid),self.assertRaises(ValueError):self.verify(f,**invalid)
+        for invalid in (dict(good,private_key_present=True),dict(good,private_key_present=None),dict(good,provisioned=False),[]):
+            context.write_text(json.dumps(invalid))
+            with self.subTest(invalid=invalid),self.assertRaises(ValueError):self.verify(f,**args)
+        context.write_text(json.dumps(good));config['TV4_OTA_SIGNED_CHECK_BENCH']=False;p.write_text(json.dumps(config))
+        with self.assertRaisesRegex(ValueError,'explicit build selection'):self.verify(f,**args)
+
+    def test_signed_check_shell_scope_stays_closed_before_context_or_sdk(self):
+        env={**os.environ,'TV4_OTA_SIGNED_CHECK_BENCH':'1','TV4_OTA_MEMORY_DIAGNOSTICS':'1',
+             'TV4_OTA_WORKER_STACK_BENCH':'0','TV4_OTA_WORKER_TLS_BENCH':'0'}
+        env.pop('TV4_OTA_CONTEXT',None)
+        cases=[('rev12-ota','local',{}),('rev12-ota','docker',{'TV4_OTA_CONTEXT':'PRIVATE-NEVER-READ'}),
+               ('rev12','local',{'TV4_OTA_CONTEXT':'PRIVATE-NEVER-READ'}),
+               ('rev12-ota','local',{'TV4_OTA_CONTEXT':'PRIVATE-NEVER-READ','TV4_OTA_MEMORY_DIAGNOSTICS':'0'}),
+               ('rev12-ota','local',{'TV4_OTA_CONTEXT':'PRIVATE-NEVER-READ','TV4_OTA_WORKER_STACK_BENCH':'1'}),
+               ('rev12-ota','local',{'TV4_OTA_CONTEXT':'PRIVATE-NEVER-READ','TV4_OTA_WORKER_TLS_BENCH':'1'}),
+               ('rev12-ota','local',{'TV4_OTA_SIGNED_CHECK_BENCH':'yes'})]
+        for profile,mode,changes in cases:
+            run=subprocess.run([str(ROOT/'tools/build_idf.sh'),profile,'6.1.1',mode],env={**env,**changes},text=True,capture_output=True)
+            with self.subTest(profile=profile,mode=mode,changes=changes):
+                self.assertEqual(run.returncode,2);self.assertEqual(run.stdout,'');self.assertNotIn('PRIVATE-NEVER-READ',run.stderr)
+
+    def test_actual_signed_check_compile_guards(self):
+        base=[os.environ.get('CC','cc'),'-std=c11','-fsyntax-only','-DESP_PLATFORM=1','-DSERVICE_TEST_SIGNED_BENCH=1',
+              '-I'+str(ROOT/'tests/ota_service_sdk'),'-I'+str(ROOT/'tests'),
+              '-I'+str(ROOT/'firmware/esp32-hmi/ota'),'-I'+str(ROOT/'firmware/esp32-hmi/network')]
+        source=str(ROOT/'firmware/esp32-hmi/ota/service.c')
+        valid=['-DSERVICE_TEST_PROVISIONED=1']
+        run=subprocess.run(base+valid+[source],capture_output=True,text=True);self.assertEqual(run.returncode,0,run.stderr)
+        for flags in ([],valid+['-DSERVICE_TEST_DIAGNOSTICS=0'],valid+['-DSERVICE_TEST_BENCH=1'],
+                      valid+['-DSERVICE_TEST_TLS_BENCH=1'],valid+['-DSERVICE_TEST_OTA=0']):
+            run=subprocess.run(base+flags+[source],capture_output=True,text=True)
+            with self.subTest(flags=flags):self.assertNotEqual(run.returncode,0);self.assertIn('Signed CHECK bench requires',run.stderr)
+
 if __name__=='__main__':unittest.main()

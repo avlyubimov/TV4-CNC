@@ -7,9 +7,14 @@ mode="${3:-docker}"
 memory_diagnostics="${TV4_OTA_MEMORY_DIAGNOSTICS:-0}"
 worker_stack_bench="${TV4_OTA_WORKER_STACK_BENCH:-0}"
 worker_tls_bench="${TV4_OTA_WORKER_TLS_BENCH:-0}"
+signed_check_bench="${TV4_OTA_SIGNED_CHECK_BENCH:-0}"
 case "$memory_diagnostics" in 0|1) ;; *) echo 'TV4_OTA_MEMORY_DIAGNOSTICS must be 0 or 1' >&2; exit 2 ;; esac
 case "$worker_stack_bench" in 0|1) ;; *) echo 'TV4_OTA_WORKER_STACK_BENCH must be 0 or 1' >&2; exit 2 ;; esac
 case "$worker_tls_bench" in 0|1) ;; *) echo 'TV4_OTA_WORKER_TLS_BENCH must be 0 or 1' >&2; exit 2 ;; esac
+case "$signed_check_bench" in 0|1) ;; *) echo 'TV4_OTA_SIGNED_CHECK_BENCH must be 0 or 1' >&2; exit 2 ;; esac
+if [[ "$signed_check_bench" == 1 && ( "$profile" != rev12-ota || "$mode" != local || "$memory_diagnostics" != 1 || "$worker_stack_bench" != 0 || "$worker_tls_bench" != 0 || -z "${TV4_OTA_CONTEXT:-}" ) ]]; then
+  echo 'Signed CHECK bench requires configured local rev12-ota trace exclusively' >&2; exit 2
+fi
 if [[ "$worker_tls_bench" == 1 && ( "$profile" != rev12-ota || "$memory_diagnostics" != 1 || "$worker_stack_bench" != 1 || -n "${TV4_OTA_CONTEXT:-}" ) ]]; then
   echo 'Worker TLS bench requires unprovisioned rev12-ota with memory diagnostics=1 and worker stack bench=1' >&2; exit 2
 fi
@@ -52,6 +57,7 @@ if [[ "$mode" == docker ]]; then
     -e "TV4_OTA_MEMORY_DIAGNOSTICS=$memory_diagnostics" \
     -e "TV4_OTA_WORKER_STACK_BENCH=$worker_stack_bench" \
     -e "TV4_OTA_WORKER_TLS_BENCH=$worker_tls_bench" \
+    -e "TV4_OTA_SIGNED_CHECK_BENCH=$signed_check_bench" \
     -v "$project_root:/project" -w /project "$image" \
     bash /project/tools/build_idf.sh "$profile" "$version" local
 elif [[ "$mode" != local ]]; then
@@ -69,6 +75,7 @@ build="$project_root/build-idf-$version-$profile"
 if [[ "$memory_diagnostics" == 1 ]]; then build+="-memory-diagnostics"; fi
 if [[ "$worker_stack_bench" == 1 ]]; then build+="-worker-stack-bench"; fi
 if [[ "$worker_tls_bench" == 1 ]]; then build+="-worker-tls-bench"; fi
+if [[ "$signed_check_bench" == 1 ]]; then build+="-signed-check-bench"; fi
 version_args=()
 if [[ -n "$project_version" ]]; then version_args+=("-DPROJECT_VER=$project_version"); fi
 defaults="$project_root/firmware/esp32-hmi/sdkconfig.defaults"
@@ -90,6 +97,10 @@ if [[ "$memory_diagnostics" == 1 ]]; then
     memory_args+=(--worker-tls-bench)
   fi
   memory_args+=(--memory-diagnostics)
+  if [[ "$signed_check_bench" == 1 ]]; then
+    printf '%s\n' 'CONFIG_TV4_OTA_SIGNED_CHECK_BENCH=y' >> "$build/sdkconfig.memory-diagnostics.defaults"
+    memory_args+=(--signed-check-bench)
+  fi
 fi
 ota_args=()
 if [[ -n "${TV4_OTA_CONTEXT:-}" ]]; then ota_args+=("-DTV4_OTA_CONTEXT=$(realpath -- "$TV4_OTA_CONTEXT")"); else ota_args+=("-DTV4_OTA_CONTEXT="); fi

@@ -33,6 +33,22 @@ jobs:
           python3 -m json.tool docs/evidence/build/ota-signed-check/publication.json > /dev/null
           test -s docs/plans/P1_CONFIGURED_WORKER_HEADROOM.md
           test -s docs/plans/P1_GITHUB_HEADERS.md
+          test -s docs/plans/P1_AUTONOMOUS_SIGNED_CHECK.md
+          test -s docs/evidence/build/esp32-ota-zero-length-check/README.md
+          python3 -m json.tool docs/evidence/build/esp32-ota-zero-length-check/results.json > /dev/null
+          python3 -m json.tool docs/evidence/build/esp32-ota-zero-length-check/ci.json > /dev/null
+          test -s docs/evidence/hardware/2026-11-24-esp32-signed-check-a29c9ed/README.md
+          python3 -m json.tool docs/evidence/hardware/2026-11-24-esp32-signed-check-a29c9ed/measurements.json > /dev/null
+          test -s docs/evidence/hardware/2026-11-24-esp32-signed-check-repeat-a29c9ed/README.md
+          python3 -m json.tool docs/evidence/hardware/2026-11-24-esp32-signed-check-repeat-a29c9ed/measurements.json > /dev/null
+          test -s docs/evidence/build/esp32-ota-autonomous-check/README.md
+          python3 -m json.tool docs/evidence/build/esp32-ota-autonomous-check/results.json > /dev/null
+          python3 -m json.tool docs/evidence/build/esp32-ota-autonomous-check/ci.json > /dev/null
+          test -s docs/evidence/hardware/2026-11-24-esp32-signed-check-b01ff48/README.md
+          python3 -m json.tool docs/evidence/hardware/2026-11-24-esp32-signed-check-b01ff48/measurements.json > /dev/null
+          python3 -m json.tool docs/evidence/hardware/2026-11-24-esp32-signed-check-b01ff48/http-header-shape.json > /dev/null
+          test -s docs/evidence/hardware/2026-11-24-f407-readback/README.md
+          python3 -m json.tool docs/evidence/hardware/2026-11-24-f407-readback/result.json > /dev/null
           test -s docs/evidence/hardware/2026-11-24-esp32-signed-check-471e109/README.md
           python3 -m json.tool docs/evidence/hardware/2026-11-24-esp32-signed-check-471e109/measurements.json > /dev/null
           python3 -m json.tool docs/evidence/hardware/2026-11-24-esp32-signed-check-471e109/http-header-shape.json > /dev/null

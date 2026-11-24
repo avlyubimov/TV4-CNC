@@ -1,0 +1,174 @@
+{
+  "source_commit": "a29c9edde10b8d2359572d04d544d8973fdaa6b3",
+  "source_clean": true,
+  "host_tests": {
+    "passed": 237,
+    "failed": 0
+  },
+  "sanitizers": {
+    "passed": 237,
+    "failed": 0,
+    "enabled": [
+      "ASan",
+      "UBSan",
+      "LSan"
+    ],
+    "leak_detection_disabled": false
+  },
+  "actual_https_analyzer": true,
+  "https_adapter_cases": 30,
+  "finite_procedure_tests": 21,
+  "hardware_qualification": false,
+  "builds": [
+    {
+      "sdk": "6.1.1",
+      "role": "control",
+      "app": {
+        "bytes": 1601584,
+        "sha256": "67e49f1f284016fe25f4f0207e335149d58ef96067099df8754f304e8ffe9d82",
+        "project": "tv4_hmi",
+        "version": "0.1.0-bench.1",
+        "idf_version": "v6.1.1",
+        "elf_sha256": "56b055348d77e6a7f98da96551622f5e89430c3b12859fd1043d044e729014f0",
+        "segments": 6,
+        "chip_revision_min": 0,
+        "chip_revision_max": 99,
+        "flash_bytes": 16777216,
+        "flash_mode": "dio",
+        "flash_frequency_mhz": 80
+      },
+      "compiler_frames": {
+        "publish": 32,
+        "now_ms": 32,
+        "cancelled": 32,
+        "commit": 32,
+        "configured": 32,
+        "worker_stack": 32,
+        "write_chunk": 32,
+        "fetch": 48,
+        "tv4_ota_boot_observe": 32,
+        "tv4_ota_service_start": 64,
+        "tv4_ota_service_health": 32,
+        "tv4_ota_service_snapshot": 32,
+        "operation": 480,
+        "worker": 80,
+        "tv4_ota_service_request": 48
+      },
+      "memory_gates_pass": true,
+      "stack_runtime_qualified": false
+    },
+    {
+      "sdk": "6.1.1",
+      "role": "auto",
+      "app": {
+        "bytes": 1601920,
+        "sha256": "128f5b5e4bbd708280b7c98cfce7c08a079119acbb2002ae61cc4176e42b4c97",
+        "project": "tv4_hmi",
+        "version": "0.1.0-bench.1",
+        "idf_version": "v6.1.1",
+        "elf_sha256": "d40e3a528b8b95d5c30194788b25b6c25e83075ef026874aab2096a97024f705",
+        "segments": 6,
+        "chip_revision_min": 0,
+        "chip_revision_max": 99,
+        "flash_bytes": 16777216,
+        "flash_mode": "dio",
+        "flash_frequency_mhz": 80
+      },
+      "compiler_frames": {
+        "publish": 32,
+        "now_ms": 32,
+        "cancelled": 32,
+        "commit": 32,
+        "configured": 32,
+        "worker_stack": 32,
+        "write_chunk": 32,
+        "fetch": 48,
+        "tv4_ota_boot_observe": 32,
+        "tv4_ota_service_start": 64,
+        "tv4_ota_service_health": 32,
+        "tv4_ota_service_snapshot": 32,
+        "operation": 480,
+        "signed_check_bench": 176,
+        "worker": 80,
+        "tv4_ota_service_request": 48
+      },
+      "memory_gates_pass": true,
+      "stack_runtime_qualified": false
+    },
+    {
+      "sdk": "5.3.2",
+      "role": "control",
+      "app": {
+        "bytes": 1554208,
+        "sha256": "5f7a186d8d0b969a41ef1b67acccffab39122c4962c9cff9be36c43883adcb03",
+        "project": "tv4_hmi",
+        "version": "0.1.0-bench.1",
+        "idf_version": "v5.3.2",
+        "elf_sha256": "e1de2dbb7abcbf2e3fc3ace5505b9e8f1f3f79cb78364529c75003e486271c73",
+        "segments": 5,
+        "chip_revision_min": 0,
+        "chip_revision_max": 99,
+        "flash_bytes": 16777216,
+        "flash_mode": "dio",
+        "flash_frequency_mhz": 80
+      },
+      "compiler_frames": {
+        "publish": 32,
+        "now_ms": 32,
+        "cancelled": 32,
+        "commit": 32,
+        "configured": 32,
+        "worker_stack": 32,
+        "write_chunk": 32,
+        "fetch": 48,
+        "tv4_ota_boot_observe": 32,
+        "tv4_ota_service_start": 64,
+        "tv4_ota_service_health": 32,
+        "tv4_ota_service_snapshot": 32,
+        "operation": 480,
+        "worker": 80,
+        "tv4_ota_service_request": 48
+      },
+      "memory_gates_pass": true,
+      "stack_runtime_qualified": false
+    },
+    {
+      "sdk": "5.3.2",
+      "role": "auto",
+      "app": {
+        "bytes": 1554528,
+        "sha256": "99cdeb7a935035b5d39b20fe5c3063da2fb49fd326d2cd151cb05fea2f543375",
+        "project": "tv4_hmi",
+        "version": "0.1.0-bench.1",
+        "idf_version": "v5.3.2",
+        "elf_sha256": "5e8c208659f581ad4858a262d0ad40f28cd7d1387aff5fb4a66341e595e74242",
+        "segments": 5,
+        "chip_revision_min": 0,
+        "chip_revision_max": 99,
+        "flash_bytes": 16777216,
+        "flash_mode": "dio",
+        "flash_frequency_mhz": 80
+      },
+      "compiler_frames": {
+        "publish": 32,
+        "now_ms": 32,
+        "cancelled": 32,
+        "commit": 32,
+        "configured": 32,
+        "worker_stack": 32,
+        "write_chunk": 32,
+        "fetch": 48,
+        "tv4_ota_boot_observe": 32,
+        "tv4_ota_service_start": 64,
+        "tv4_ota_service_health": 32,
+        "tv4_ota_service_snapshot": 32,
+        "operation": 480,
+        "signed_check_bench": 176,
+        "worker": 80,
+        "tv4_ota_service_request": 48
+      },
+      "memory_gates_pass": true,
+      "stack_runtime_qualified": false
+    }
+  ]
+}
