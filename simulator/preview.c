@@ -145,6 +145,54 @@ static void firmware_navigation(lv_obj_t *root,lv_obj_t *wifi_password) {
     puts("Firmware UI PASS: local/simulator/unknown/31-byte/profile states, Wi-Fi editor cleanup, "
         "64 navigation cycles with identical host-pool free bytes, persistent STOP/fault/no motion");
 }
+typedef struct {unsigned total,buttons;} ota_invalidations;
+static void ota_invalidated(lv_event_t *event) {
+    ota_invalidations *n=lv_event_get_user_data(event);
+    const lv_area_t *a=lv_event_get_param(event);n->total++;
+    if(a->y2>=351)n->buttons++;
+}
+static void ota_progress_checks(firmware_view_t *view) {
+    ota_sample.state=TV4_UPDATE_WRITING;ota_sample.total=1500*1024+500;ota_sample.received=100*1024;
+    firmware_view_ota_update(view,&ota_sample);
+    lv_tick_inc(1000);lv_timer_handler();lv_refr_now(lv_display_get_default());
+    ota_sample.received=101*1024;firmware_view_ota_update(view,&ota_sample);
+    lv_refr_now(lv_display_get_default());
+    /* Warmed UI: count real LVGL invalidation events, including unchanged
+     * captions. This measures host redraw behavior, not panel FPS/latency. */
+    ota_invalidations n={0};lv_display_t *display=lv_display_get_default();
+    lv_display_add_event_cb(display,ota_invalidated,LV_EVENT_INVALIDATE_AREA,&n);
+    lv_area_t state_rect,button_rect[3];lv_obj_get_coords(view->update_state,&state_rect);
+    for(unsigned i=0;i<3;i++)lv_obj_get_coords(view->action[i],&button_rect[i]);
+    for(unsigned i=0;i<20;i++) {
+        ota_sample.stack_watermark++;ota_sample.stack_valid=!ota_sample.stack_valid;
+        firmware_view_ota_update(view,&ota_sample);
+    }
+    assert(n.total==0); /* nonvisual diagnostics never redraw the page */
+    lv_tick_inc(199);
+    ota_sample.received=299*1024;firmware_view_ota_update(view,&ota_sample);
+    assert(n.total==0 && strstr(lv_label_get_text(view->update_state),"101"));
+    lv_tick_inc(1);ota_sample.received=300*1024;firmware_view_ota_update(view,&ota_sample);
+    assert(n.total>0 && n.buttons==0 && strstr(lv_label_get_text(view->update_state),"300"));
+    lv_area_t actual;lv_obj_get_coords(view->update_state,&actual);
+    assert(!memcmp(&state_rect,&actual,sizeof(actual)));
+    for(unsigned i=0;i<3;i++) {lv_obj_get_coords(view->action[i],&actual);assert(!memcmp(&button_rect[i],&actual,sizeof(actual)));}
+    lv_refr_now(display);n=(ota_invalidations){0};
+    ota_sample.received+=500;firmware_view_ota_update(view,&ota_sample);assert(n.total==0);
+    lv_tick_inc(1);ota_sample.received=ota_sample.total;firmware_view_ota_update(view,&ota_sample);
+    char complete[100];lv_snprintf(complete,sizeof(complete),tr(NULL,S_OTA_WRITING),1501UL,1501UL);
+    assert(n.total>0 && n.buttons==0 && !strcmp(lv_label_get_text(view->update_state),complete));
+    ota_sample.state=TV4_UPDATE_RESTART;firmware_view_ota_update(view,&ota_sample);
+    assert(!strcmp(lv_label_get_text(view->caption[1]),tr(NULL,S_OTA_REBOOT)) && !lv_obj_has_state(view->action[1],LV_STATE_DISABLED));
+    ota_sample.state=TV4_UPDATE_ERROR;ota_sample.error=3;firmware_view_ota_update(view,&ota_sample);
+    assert(!strcmp(lv_label_get_text(view->update_state),tr(NULL,S_OTA_ERROR)) && !lv_obj_has_state(view->action[0],LV_STATE_DISABLED));
+    lv_tick_inc(UINT32_MAX-lv_tick_get()-100);
+    ota_sample.state=TV4_UPDATE_WRITING;ota_sample.received=0;firmware_view_ota_update(view,&ota_sample);
+    lv_refr_now(display);n=(ota_invalidations){0};
+    lv_tick_inc(199);ota_sample.received=1024;firmware_view_ota_update(view,&ota_sample);assert(n.total==0);
+    lv_tick_inc(1);firmware_view_ota_update(view,&ota_sample);assert(n.total>0 && n.buttons==0);
+    assert(lv_display_remove_event_cb_with_user_data(display,ota_invalidated,&n)==1);
+    puts("OTA progress PASS: real invalidations, stable geometry/captions,5Hz coalescing, immediate completion/state/error and tick wrap");
+}
 static void ota_preview(lv_obj_t *original) {
     /* Explicit SIMULATOR fixture, not a claim of running OTA or device health. */
     lv_obj_t *screen=lv_obj_create(NULL);lv_screen_load(screen);
@@ -187,6 +235,7 @@ static void ota_preview(lv_obj_t *original) {
     ota_sample.state=TV4_UPDATE_RESTART;ota_sample.install_allowed=false;firmware_view_ota_update(&view,&ota_sample);
     assert(!lv_obj_has_state(view.action[1],LV_STATE_DISABLED));
     lv_obj_send_event(view.action[1],LV_EVENT_CLICKED,NULL);assert(ota_posted==TV4_UPDATE_REBOOT);
+    ota_progress_checks(&view);
     firmware_view_destroy(&view);assert(!view.panel && !view.confirm);ota_fixture=false;
     lv_screen_load(original);lv_obj_delete(screen);
 }
