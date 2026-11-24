@@ -28,6 +28,12 @@ tv4_ota_boot_result tv4_ota_boot_observe(tv4_ota_boot_window *w,uint32_t now,boo
 #error "OTA profile requires PSRAM TLS and X.509 certificate dates"
 #endif
 #include "ota_local_context.h"
+#if !defined(OTA_INSTALL_REVIEWED) || (OTA_INSTALL_REVIEWED != 0 && OTA_INSTALL_REVIEWED != 1)
+#error "Explicit local installation review state required"
+#endif
+#if OTA_INSTALL_REVIEWED && !TV4_OTA_PROVISIONED
+#error "Installation review requires local provisioning"
+#endif
 #if CONFIG_TV4_OTA_SIGNED_CHECK_BENCH && (!TV4_OTA_PROVISIONED || !CONFIG_TV4_OTA_MEMORY_DIAGNOSTICS || CONFIG_TV4_OTA_WORKER_STACK_BENCH || CONFIG_TV4_OTA_WORKER_TLS_BENCH)
 #error "Signed CHECK bench requires configured OTA trace exclusively"
 #endif
@@ -109,6 +115,7 @@ static void operation(bool install) {
     tv4_ota_memory lease={0};tv4_time_anchor anchor={0};unsigned error=1;bool committed=false;tv4_ota_sdk sdk={.approval=&approved,.commit_allowed=commit};
     bool measured=false;tv4_ota_memory_window measuring=TV4_MEM_WORKSPACE;
     publish(install?TV4_UPDATE_WRITING:TV4_UPDATE_CHECKING,0);
+    if(install && !OTA_INSTALL_REVIEWED) {error=23;goto done;}
     if(!configured() || !tv4_ota_sdk_layout_valid() || !wifi_service_online())goto done;
     tv4_ota_memory_window_begin(measuring);measured=true;
     if(tv4_ota_memory_acquire_psram(&lease,&mem_policy)!=TV4_MEMORY_OK) {error=2;goto done;}
@@ -147,7 +154,7 @@ static void operation(bool install) {
         const tv4_ota_candidate *a=&lease.session->candidate;
         memcpy(approved.version,a->version,sizeof(approved.version));memcpy(approved.release,a->release,sizeof(approved.release));
         memcpy(approved.url,a->url,sizeof(approved.url));memcpy(approved.sha256,a->sha256,32);approved.size=a->size_bytes;
-        portENTER_CRITICAL(&mux);memcpy(status.version,a->version,sizeof(status.version));memcpy(status.sha256,a->sha256,32);status.total=a->size_bytes;status.received=0;portEXIT_CRITICAL(&mux);
+        portENTER_CRITICAL(&mux);memcpy(status.version,a->version,sizeof(status.version));memcpy(status.sha256,a->sha256,32);status.total=a->size_bytes;status.received=0;status.install_allowed=OTA_INSTALL_REVIEWED && a->installable;portEXIT_CRITICAL(&mux);
     }
     error=0;
 done:
@@ -230,6 +237,12 @@ static void worker(void *c) {
     worker_stack();
     if(!finished)esp_restart();
     if(esp_task_wdt_delete(NULL)!=ESP_OK)esp_restart();
+    portENTER_CRITICAL(&mux);status.install_allowed=context_ready && OTA_INSTALL_REVIEWED;portEXIT_CRITICAL(&mux);
+#if OTA_INSTALL_REVIEWED
+    ESP_LOGI("tv4_ota","install_policy=owner_reviewed");
+#else
+    ESP_LOGI("tv4_ota","install_policy=check_only");
+#endif
     publish(!passed?TV4_UPDATE_BOOT_FAILED:context_ready?TV4_UPDATE_IDLE:TV4_UPDATE_SETUP,0);
 #if CONFIG_TV4_OTA_SIGNED_CHECK_BENCH
     if(passed)signed_check_bench();
@@ -277,7 +290,7 @@ bool tv4_ota_service_request(tv4_update_command cmd) {
     bool ok=false;
     if(cmd==TV4_UPDATE_CANCEL && busy) {cancel_requested=true;ok=true;}
     else if((healthy && cmd==TV4_UPDATE_CHECK && (previous==TV4_UPDATE_IDLE || previous==TV4_UPDATE_READY || previous==TV4_UPDATE_ERROR)) ||
-            (healthy && cmd==TV4_UPDATE_INSTALL && previous==TV4_UPDATE_READY) || (cmd==TV4_UPDATE_REBOOT && previous==TV4_UPDATE_RESTART)) {
+            (healthy && cmd==TV4_UPDATE_INSTALL && previous==TV4_UPDATE_READY && status.install_allowed) || (cmd==TV4_UPDATE_REBOOT && previous==TV4_UPDATE_RESTART)) {
         cancel_requested=false;status.state=cmd==TV4_UPDATE_CHECK?TV4_UPDATE_CHECKING:cmd==TV4_UPDATE_INSTALL?TV4_UPDATE_WRITING:TV4_UPDATE_RESTART;
         ok=xQueueSend(commands,&cmd,0)==pdTRUE;if(!ok)status.state=previous;
     }

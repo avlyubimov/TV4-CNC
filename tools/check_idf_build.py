@@ -16,6 +16,21 @@ def require(condition, message):
         raise ValueError(message)
 
 
+def install_policy(build):
+    """Bind the public context policy to its linked service marker, not a grant."""
+    build=Path(build)
+    context=json.loads((build/'ota-local/ota_local_context.json').read_text())
+    require(type(context) is dict and type(context.get('install_reviewed')) is bool and
+            type(context.get('provisioned')) is bool and context.get('private_key_present') is False,
+            'explicit public-only install policy required')
+    allowed=context['install_reviewed']
+    require(not allowed or context['provisioned'],'install review requires provisioned local trust')
+    markers=(b'install_policy=check_only',b'install_policy=owner_reviewed')
+    elf=(build/'tv4_hmi.elf').read_bytes()
+    require(markers[allowed] in elf and markers[not allowed] not in elf,'install policy/context/ELF mismatch')
+    return allowed
+
+
 def verify(build, profile, version, *, write_report=True, memory_diagnostics=False, worker_stack_bench=False, worker_tls_bench=False, signed_check_bench=False):
     require(profile in {"headless", "rev12", "rev12-memory-bench", "rev12-tls-bench", "rev12-ota"}, "unknown profile")
     require(version in {"5.3.2", "6.1.1"}, "unvalidated SDK")
@@ -119,7 +134,9 @@ def verify(build, profile, version, *, write_report=True, memory_diagnostics=Fal
                   tls_record_out=config.get("MBEDTLS_SSL_OUT_CONTENT_LEN"),
                   memory_bench=config.get("TV4_OTA_MEMORY_BENCH", False), tls_bench=config.get("TV4_UTC_TLS_BENCH", False), psram="octal 80MHz" if profile != "headless" else "disabled", images=images, partitions=partitions,
                   device_access=False, physical_performance="not measured")
-    if ota:result['ota_memory_diagnostics']=memory_diagnostics
+    if ota:
+        result['ota_memory_diagnostics']=memory_diagnostics
+        result['ota_install_reviewed']=install_policy(build)
     if worker_stack_bench:result['ota_worker_stack_bench']=True
     if worker_tls_bench:result['ota_worker_tls_bench']=True
     if signed_check_bench:result['ota_signed_check_bench']=True

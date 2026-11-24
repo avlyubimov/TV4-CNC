@@ -6,6 +6,12 @@ check_idf_build, inspect_app, verify_ota_candidate и OpenSSL. Приватны�
 остаётся в выбранном владельцем каталоге вне Git; публичный ключ не берётся
 из bundle. [Scope и ограничения](plans/P1_SIGNED_CHECK_BUNDLE.md).
 
+Текущий authoring tool явно подписывает `installable:false` в HMI component.
+Проверка bundle отвергает `installable:true`, даже если подпись действительна и
+inventory пересчитан. Старый manifest без поля остаётся CHECK-only. Это не tool
+подготовки installable релиза; для него нужен отдельный review нового configured
+payload/версий/политики. [INSTALL gates](plans/P1_INSTALL_POLICY.md).
+
 Локальный JSON-план принимает ровно поля:
 
 | Поле | Значение/проверка |

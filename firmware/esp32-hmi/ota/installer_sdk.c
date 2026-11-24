@@ -57,7 +57,7 @@ static const esp_partition_t *target(void) {
 }
 bool tv4_ota_sdk_begin(void *context,const tv4_ota_candidate *c) {
     tv4_ota_sdk *s=context;
-    if(!s || !c || !s->approval || s->opened || s->sealed)return false;
+    if(!s || !c || !c->installable || !s->approval || s->opened || s->sealed)return false;
     const tv4_install_approval *a=s->approval;
     if(!c->size_bytes || c->size_bytes!=a->size || c->size_bytes>0x300000 ||
        strcmp(a->version,c->version) || strcmp(a->release,c->release) ||

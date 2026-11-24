@@ -116,6 +116,7 @@ def inspect(build,profile,sdk,trace=False,worker_stack_bench=False,worker_tls_be
         dma_diagnostics=dma,
         gui_heap=gui_heap,
         worker_tls_bench=worker_tls_bench,signed_check_bench=signed_check_bench,tls_compiler_frames=tls_frames,tls_monitor_adapter_imports=tls_monitor_imports,
+        ota_install_reviewed=validation.get('ota_install_reviewed',False),
         worker_stack_bytes_requested=requested,worker_stack_runtime_qualified=False,service_compiler_frames=service_frames,module_writable_bytes=writable,
         module_writable_ceiling=512,compiler_frames=stack,compiler_frame_ceiling=192,
         sdk_monitor_linked=sorted(monitor&names),source_monitor_owners=source_owner_guard(),

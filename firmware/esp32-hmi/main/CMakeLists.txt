@@ -49,8 +49,11 @@ if(CONFIG_TV4_OTA_ENABLED)
         message(FATAL_ERROR "Worker stack bench requires unprovisioned OTA diagnostics")
     endif()
     set(ota_context_args "")
+    set_property(DIRECTORY APPEND PROPERTY CMAKE_CONFIGURE_DEPENDS
+        "${CMAKE_CURRENT_LIST_DIR}/../../../tools/prepare_ota_context.py")
     if(TV4_OTA_CONTEXT)
         list(APPEND ota_context_args --context "${TV4_OTA_CONTEXT}")
+        set_property(DIRECTORY APPEND PROPERTY CMAKE_CONFIGURE_DEPENDS "${TV4_OTA_CONTEXT}")
     endif()
     execute_process(COMMAND "${PYTHON}" "${CMAKE_CURRENT_LIST_DIR}/../../../tools/prepare_ota_context.py"
         ${ota_context_args} --output "${CMAKE_BINARY_DIR}/ota-local"

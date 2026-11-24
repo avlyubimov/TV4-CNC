@@ -1,5 +1,36 @@
 # ESP32 OTA: интеграция установки и USB-пакет
 
+## Явный допуск установки
+
+Локальный context без `install_reviewed` или с `install_reviewed:false` разрешает
+только CHECK. Это относится и к ранее созданным `reviewed:true` contexts:
+provisioning, подпись и resource/time review не являются разрешением записи.
+UI показывает «Только проверка»; INSTALL закрыт в UI, service API и worker.
+Скачанный manifest не может поменять эту политику.
+
+Только после отдельного согласования install policy/payload/resources допускается
+локальное boolean `install_reviewed:true`. Оно не заменяет двухшаговое подтверждение
+оператора, проверку candidate identity/signature/hash/size/compatibility, ресурсов,
+UTC/TLS и неактивного слота. Политика проверяется в generated summary и связанном
+ELF; прежние ключ/context автоматически не переписывать. CMake отслеживает JSON
+и generator для отзыва допуска. Для key-file rotation выполнить явный reconfigure
+и заново проверить точные артефакты. [План и проверки](plans/P1_INSTALL_POLICY.md).
+
+В подписанном HMI component требуется `installable:true` для INSTALL. Отсутствующее
+поле или `false` сохраняет metadata/full-image CHECK и запрещает запись даже при
+локальном `install_reviewed:true`. Неверные типы и дубликаты отвергаются. Worker
+публикует READY/install_allowed только при **обоих** допусках; fresh signed session
+повторно проверяет capability до image/sink.begin, native adapter также закрывает
+esp_ota_begin. Связь candidate/digest с подтверждением оператора сохраняется.
+
+Опубликованный unprovisioned `bench.2` не содержит capability и остаётся CHECK-only.
+Его assets/tag не изменять. `prepare_ota_release.py` по-прежнему готовит только
+CHECK-bench и подписывает `installable:false`; он не получил права создавать
+установочный релиз. Для первого INSTALL нужен отдельно согласованный configured
+payload с ключом/локальной политикой, новым SemVer и новым exact publication plan.
+Старые строгие клиенты отвергнут новый optional field; USB baseline с этой политикой
+требуется до первого INSTALL. Не обходить это переименованием старого пакета.
+
 ## 22 ноября: worker8192 reset-стенд завершён
 
 База main `dfa9f28`, PR #1–67 слиты. [Стенд3072/8192](evidence/hardware/2026-11-22-esp32-worker-stack/README.md)

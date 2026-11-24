@@ -1,0 +1,14 @@
+test_actual_sealed_package (__main__.Loader.test_actual_sealed_package) ... ok
+test_approval_refusal (__main__.Loader.test_approval_refusal) ... ok
+test_changed_artifact (__main__.Loader.test_changed_artifact) ... ok
+test_ci_incomplete (__main__.Loader.test_ci_incomplete) ... ok
+test_expired_window (__main__.Loader.test_expired_window) ... ok
+test_payload_proof_mismatch (__main__.Loader.test_payload_proof_mismatch) ... ok
+test_plan_install_cannot_be_enabled (__main__.Loader.test_plan_install_cannot_be_enabled) ... ok
+test_source_mismatch (__main__.Loader.test_source_mismatch) ... ok
+test_unsealed_import (__main__.Loader.test_unsealed_import) ... ok
+
+----------------------------------------------------------------------
+Ran 9 tests in 0.053s
+
+OK

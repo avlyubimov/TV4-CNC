@@ -87,6 +87,7 @@ static void verify(const cJSON *request,cJSON *reply,const uint8_t *pub,size_t p
         assert(cJSON_AddStringToObject(reply,"url",out.url));
         assert(cJSON_AddStringToObject(reply,"notes",out.notes));
         assert(cJSON_AddNumberToObject(reply,"size_bytes",out.size_bytes));
+        assert(cJSON_AddBoolToObject(reply,"installable",out.installable));
         add_hex(reply,"sha256",out.sha256,sizeof(out.sha256));
     } else {
         const uint8_t *bytes=(const uint8_t *)&out;

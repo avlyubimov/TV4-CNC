@@ -103,6 +103,7 @@ def verify(directory, plan_path, public_key):
         for name, data in files.items(): (captured/name).write_bytes(data)
         pub = captured/'trusted.der'; pub.write_bytes(public_read(public_key, plan))
         signed, report = ota.verify_with_metadata(request(plan, captured, pub))
+    require(signed['installable'] is False, 'CHECK-bench must not authorize installation')
     app = inspect_app(files[asset], plan['sdk'])
     require((signed['source_commit'], signed['release'], signed['version'], app['version']) ==
             (plan['source_commit'], plan['release_version'], plan['release_version'], plan['release_version']),
@@ -173,7 +174,7 @@ def prepare(build, output, plan_path, public_key, private_key, repo=None):
             name='hmi', version=plan['release_version'], hardware_id='waveshare-esp32s3-touch-lcd-7',
             hardware_revision='1.2', chip='esp32s3', profile='rev12', layout_id='tv4-16m-ab-v1',
             minimum_installed_version=plan['installed_version'], minimum_bootloader_version=plan['bootloader_version'],
-            size_bytes=len(app_raw), sha256=app['sha256'], url=url+asset)], release_notes=plan['release_notes'])
+            size_bytes=len(app_raw), sha256=app['sha256'], url=url+asset, installable=False)], release_notes=plan['release_notes'])
     evidence = dict(schema=1, purpose=plan['purpose'], source_commit=plan['source_commit'], source_tree=tree,
         source_display_version=display, sdk=plan['sdk'], profile='rev12-ota', application=app,
         public_key_sha256=plan['public_key_sha256'], candidate_provisioned=context['provisioned'],

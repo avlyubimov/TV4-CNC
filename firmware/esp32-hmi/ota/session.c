@@ -124,6 +124,11 @@ static bool run(tv4_ota_session *s,const tv4_session_request *r,const tv4_sessio
        memcmp(tag+1,s->candidate.release,strlen(s->candidate.release))) {
         s->result.error=TV4_SESSION_POLICY;s->result.policy=TV4_OTA_WRONG_VERSION;return failed(s);
     }
+    /* Authenticated capability must allow writing before image/sink allocation.
+     * Legacy manifests remain valid for CHECK, never for INSTALL. */
+    if(sink && !s->candidate.installable) {
+        s->result.error=TV4_SESSION_POLICY;s->result.policy=TV4_OTA_NOT_INSTALLABLE;return failed(s);
+    }
     clear_received(s);
     if(stop(&op))return failed(s);
     if(!r->verify_image) {s->result.state=TV4_SESSION_CANDIDATE_READY;return true;}

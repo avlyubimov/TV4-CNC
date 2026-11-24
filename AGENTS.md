@@ -142,6 +142,19 @@ PR и Actions; не копировать код уже открытого PR. Д
    теги, релизы, секреты CI и публикации под видом обычного push.
 6. Обновлять актуальный статус; исторические отчёты сохранять с явной пометкой.
 
+INSTALL policy завершена: local install_reviewed AND signed installable,
+оба default false (docs/plans/P1_INSTALL_POLICY.md от корня). Старые contexts/
+bench.2 не открывают INSTALL; до Flash sink проверяется signed capability.
+274 host/sanitizers/analyzer, real LVGL render, четыре CHECK-only ELF и два
+software-only positive compiler fixtures обоих SDK, source CI30/main15 PASS.
+3b09bba hardware control/full signed CHECK406checks/error0/возврат всего fecc05d
+PASS за1094,730s; SESSION min99371/largest63488/stack6912, touch2–15ms/errors0.
+Fecc05d возвращён, F407 ee7d179; source hardware report в
+ docs/evidence/hardware/2026-11-24-esp32-install-policy-3b09bba/ от корня.
+Owner context не переводить на INSTALL автоматически, bench.2 immutable CHECK-only.
+Следующий PR83 готовит authoring configured installable payload; network INSTALL/
+Flash peaks/production budget ещё открыты. Никакого self-merge/publication.
+
 Текущий отдельный результат: [local trust перед pending confirmation](docs/plans/P1_PENDING_TRUST.md).
 Не подтверждать новый OTA-slot без рабочего локального context; factory recovery
 и ранее VALID без настроек сохраняются. AP/DHCP/SNTP не являются boot prerequisites.
@@ -156,7 +169,7 @@ INSTALL; далее explicit install review gate для CHECK-only context и н
 согласованный installable payload. Стенд и raw backup evidence не публиковать
 вместо числового отчёта docs/evidence/hardware/2026-11-24-esp32-native-boot-a74bfcd/.
 
-## Текущее задание: P1 — native boot/rollback после подписанного CHECK
+## Завершённые стенды P1 — signed CHECK и native boot/rollback
 
 Читайте docs/plans/P1_AUTONOMOUS_SIGNED_CHECK.md. Точный a29c9ed на ESP-IDF6.1.1:
 control PASS → один full signed CHECK IMAGE_VERIFIED/error0/406resource checks →

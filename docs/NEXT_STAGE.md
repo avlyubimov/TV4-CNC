@@ -1,6 +1,37 @@
-# P1 — signed OTA CHECK после успешного HTTPS
+# P1 — ESP32 OTA: допуск установки и результаты стендов
 
-## Актуально: native pending confirmation/refusal/rollback a74bfcd — PASS
+## Актуально: INSTALL gates и full signed CHECK 3b09bba — PASS
+
+[Стенд новой политики](evidence/hardware/2026-11-24-esp32-install-policy-3b09bba/README.md)
+закрыт за1094,730s: fresh16MiB/two-NVMe → control38checks/UART90 → один полный
+signed CHECK406checks/error0/UART420 → весь factory fecc05d/verify/UART30 PASS.
+Local install_reviewed=false и legacy signed installable=false; INSTALL закрыт.
+SESSION local min internal99371/largest63488, остаток stack6912/12288; touch2–15ms/
+errors0. Source CI30/main15,274 host/sanitizers/analyzer, четыре owner CHECK-only
+ELF и два software-only positive compiler fixtures обоих SDK PASS. На платах
+fecc05d и ee7d179; ни один закрытый пакет не повторять. Raw logs/keys/backups private.
+
+Native boot/rollback a74bfcd уже PASS; P1 ещё требует нового reviewed installable
+payload/публикации и настоящего network INSTALL с ресурсами при Flash writes.
+Published bench.2 immutable CHECK-only. Physical UI/FPS/latency, runtime5.3.2,
+Wi-Fi/power loss и production budget не приняты. [PR #82](https://github.com/avlyubimov/TV4-CNC/pull/82)
+не слит. Следующая отдельная authoring интеграция — [PR #83](https://github.com/avlyubimov/TV4-CNC/pull/83).
+
+
+INSTALL policy завершена: local install_reviewed AND signed installable,
+оба default false (docs/plans/P1_INSTALL_POLICY.md от корня). Старые contexts/
+bench.2 не открывают INSTALL; до Flash sink проверяется signed capability.
+274 host/sanitizers/analyzer, real LVGL render, четыре CHECK-only ELF и два
+software-only positive compiler fixtures обоих SDK, source CI30/main15 PASS.
+3b09bba hardware control/full signed CHECK406checks/error0/возврат всего fecc05d
+PASS за1094,730s; SESSION min99371/largest63488/stack6912, touch2–15ms/errors0.
+Fecc05d возвращён, F407 ee7d179; source hardware report в
+ docs/evidence/hardware/2026-11-24-esp32-install-policy-3b09bba/ от корня.
+Owner context не переводить на INSTALL автоматически, bench.2 immutable CHECK-only.
+Следующий PR83 готовит authoring configured installable payload; network INSTALL/
+Flash peaks/production budget ещё открыты. Никакого self-merge/publication.
+
+## История: native pending confirmation/refusal/rollback a74bfcd — PASS
 
 [Реальный USB boot стенд](evidence/hardware/2026-11-24-esp32-native-boot-a74bfcd/README.md)
 закрыт за1031,352s/1800s: fresh16MiB/device MD5/SHA/two-NVMe → configured
@@ -23,7 +54,7 @@ budget, потеря Wi-Fi/питания и app Flash writes при актив�
 265 host/265 sanitizers, четыре ELF обоих pinned SDK и CI30 PASS. Native a74bfcd
 confirmation/INVALID rollback/полный возврат PASS; это USB fixture, не сетевой INSTALL.
 
-## Актуально: a29c9ed — полный signed CHECK и три reset-повтора PASS
+## История: a29c9ed — полный signed CHECK и три reset-повтора PASS
 
 [Полный подписанный CHECK](evidence/hardware/2026-11-24-esp32-signed-check-a29c9ed/README.md)
 на ESP-IDF6.1.1 закрыт за1095,492s: свежие16MiB/device MD5/SHA/two-NVMe,

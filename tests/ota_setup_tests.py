@@ -38,6 +38,40 @@ class ContextTests(unittest.TestCase):
         self.assertEqual(result['installed_version'],'0.1.0')
         header=(self.output/'ota_local_context.h').read_bytes()
         self.assertNotIn(b'PRIVATE',header);self.assertNotIn(str(self.root).encode(),header)
+    def test_legacy_review_is_check_only(self):
+        result=self.run_context()
+        self.assertFalse(result['install_reviewed'])
+        self.assertIn('#define OTA_INSTALL_REVIEWED 0',(self.output/'ota_local_context.h').read_text())
+    def test_install_review_is_explicit_and_boolean(self):
+        self.value['install_reviewed']=True
+        self.assertTrue(self.run_context()['install_reviewed'])
+        self.assertIn('#define OTA_INSTALL_REVIEWED 1',(self.output/'ota_local_context.h').read_text())
+        self.value['install_reviewed']=False
+        self.assertFalse(self.run_context()['install_reviewed'])
+        for invalid in (None,0,1,'true',[],{}):
+            self.value['install_reviewed']=invalid
+            with self.subTest(value=invalid),self.assertRaises(ValueError):self.run_context()
+    def test_removing_install_review_revokes_it(self):
+        self.value['install_reviewed']=True;self.run_context()
+        del self.value['install_reviewed'];self.assertFalse(self.run_context()['install_reviewed'])
+        context.prepare(None,self.output)
+        self.assertIn('#define OTA_INSTALL_REVIEWED 0',(self.output/'ota_local_context.h').read_text())
+    def test_install_policy_must_match_linked_service(self):
+        self.run_context();elf=self.output.parent/'tv4_hmi.elf'
+        build=self.output.parent
+        # Inspector consumes the normal ota-local name; the ELF bytes here
+        # are deliberately synthetic marker fixtures, never executable images.
+        self.output.rename(build/'ota-local');self.output=build/'ota-local'
+        elf.write_bytes(b'host synthetic ELF marker: install_policy=check_only')
+        self.assertFalse(migration.check_idf_build.install_policy(build))
+        for bad in (b'stale ELF',b'install_policy=owner_reviewed',b'install_policy=owner_reviewed install_policy=check_only'):
+            elf.write_bytes(bad)
+            with self.subTest(marker=bad),self.assertRaises(ValueError):migration.check_idf_build.install_policy(build)
+        self.value['install_reviewed']=True;self.run_context()
+        elf.write_bytes(b'install_policy=owner_reviewed');self.assertTrue(migration.check_idf_build.install_policy(build))
+        summary=json.loads((self.output/'ota_local_context.json').read_text());summary['provisioned']=False
+        (self.output/'ota_local_context.json').write_text(json.dumps(summary))
+        with self.assertRaises(ValueError):migration.check_idf_build.install_policy(build)
     def test_removing_context_clears_previously_generated_public_trust(self):
         self.run_context();context.prepare(None,self.output)
         h=(self.output/'ota_local_context.h').read_text()
@@ -98,6 +132,9 @@ class MigrationTests(CandidateTests):
         table=b''.join(struct.pack('<HBBII16sI',0x50aa,k,s,a,n,label.encode(),0) for k,s,a,n,label in migration.check_idf_build.OTA_PARTITIONS)
         (self.build/'partition_table/partition-table.bin').write_bytes(table)
         (self.build/'ota-local').mkdir();context.prepare(None,self.build/'ota-local')
+        elf=b'host synthetic ELF marker: install_policy=check_only'
+        (self.build/'tv4_hmi.elf').write_bytes(elf)
+        (self.build/'tv4_hmi.bin').write_bytes(image(self.version,self.sdk,elf))
     def prepare_migration(self):return migration.prepare(self.build,self.sdk,self.output,repo=self.repo)
     def test_bundle_and_no_overwrite(self):
         result=self.prepare_migration();self.assertEqual(result,migration.verify(self.output))

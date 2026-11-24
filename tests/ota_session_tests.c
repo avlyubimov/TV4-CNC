@@ -46,7 +46,7 @@ static void fixture(void) {
         "\"name\":\"hmi\",\"version\":\"0.2.0\",\"hardware_id\":\"waveshare-esp32s3-touch-lcd-7\","
         "\"hardware_revision\":\"1.2\",\"chip\":\"esp32s3\",\"profile\":\"rev12\","
         "\"layout_id\":\"tv4-16m-ab-v1\",\"minimum_installed_version\":\"0.1.0\","
-        "\"minimum_bootloader_version\":\"0.1.0\",\"size_bytes\":480,\"sha256\":\"%s\","
+        "\"minimum_bootloader_version\":\"0.1.0\",\"installable\":true,\"size_bytes\":480,\"sha256\":\"%s\","
         "\"url\":\"https://github.com/avlyubimov/TV4-CNC/releases/download/v0.2.0/tv4-hmi-esp32s3-v0.2.0.bin\"}],"
         "\"release_notes\":\"Test fixture only\"}",hex);
     assert(n>0 && (size_t)n<sizeof(manifest));manifest_length=(size_t)n;sign_manifest();
@@ -235,6 +235,19 @@ static void installation_regressions(void) {
     fixture();server s=healthy();install_fixture f={0};resource_fixture rf={.server=&s};tv4_ota_resource_report report;
     assert(installing(&s,&f,&rf,&report));assert(session.result.state==TV4_SESSION_INSTALLED && f.selected && f.activate==1 && !f.abort);
     unsigned checks=report.checks;
+    for(unsigned legacy=0;legacy<2;legacy++) {
+        fixture();char *at=strstr(manifest,"\"installable\":true,");assert(at);
+        if(legacy)memmove(at,at+strlen("\"installable\":true,"),strlen(at+strlen("\"installable\":true,"))+1);
+        else { /* Replace with a signed false, not an unauthenticated edit. */
+            const char *tail=at+strlen("\"installable\":true,");char saved[4096];strcpy(saved,tail);
+            strcpy(at,"\"installable\":false,");strcat(at,saved);
+        }
+        manifest_length=strlen(manifest);sign_manifest();s=healthy();f=(install_fixture){0};rf=(resource_fixture){.server=&s};
+        assert(!installing(&s,&f,&rf,&report) && session.result.error==TV4_SESSION_POLICY && session.result.policy==TV4_OTA_NOT_INSTALLABLE);
+        assert(s.calls==2 && !f.begin && !f.write && !f.seal && !f.activate && f.abort==1);
+        tv4_ota_session_reset(&session);s=healthy();
+        assert(run(&s,request()) && session.result.state==TV4_SESSION_IMAGE_VERIFIED && !session.candidate.installable);
+    }
     for(unsigned phase=1;phase<=4;phase++) {
         fixture();s=healthy();f=(install_fixture){.fail=phase};rf=(resource_fixture){.server=&s};
         assert(!installing(&s,&f,&rf,&report) && session.result.error==TV4_SESSION_STORAGE && f.abort==1 && !f.selected);

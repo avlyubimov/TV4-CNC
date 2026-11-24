@@ -88,12 +88,22 @@ int main(void) {
         .bootloader_version="0.1.0",.protocol_version="1.0.0",.layout_id="tv4-16m-ab-v1",
         .board_rev12=true,.public_key=public_key,.public_key_length=(size_t)key_length};
     assert(read(valid,strlen(valid))==TV4_OTA_OK);
-    assert(output.size_bytes==512 && output.sha256[0]==0xaa && strstr(output.notes,"Проверка\n"));
+    assert(!output.installable && output.size_bytes==512 && output.sha256[0]==0xaa && strstr(output.notes,"Проверка\n"));
+
+    for(unsigned allowed=0;allowed<2;allowed++) {
+        char raw[4096];const char *at=strstr(valid,"\"size_bytes\"");assert(at);
+        int count=snprintf(raw,sizeof(raw),"%.*s\"installable\":%s,%s",(int)(at-valid),valid,allowed?"true":"false",at);
+        assert(count>0 && (size_t)count<sizeof(raw) && read(raw,(size_t)count)==TV4_OTA_OK);
+        assert(output.installable==(bool)allowed);
+    }
+    replace("\"size_bytes\":512","\"installable\":1,\"size_bytes\":512",TV4_OTA_BAD_SCHEMA);
+    replace("\"size_bytes\":512","\"installable\":\"true\",\"size_bytes\":512",TV4_OTA_BAD_SCHEMA);
+    replace("\"size_bytes\":512","\"installable\":true,\"installable\":false,\"size_bytes\":512",TV4_OTA_BAD_JSON);
     envelope_checks();
     unsigned char sig[80];size_t n=signature(valid,strlen(valid),sig);sig[n-1]^=1;
     assert(tv4_ota_manifest_read((const uint8_t *)valid,strlen(valid),sig,n,&context,&output)==TV4_OTA_BAD_SIGNATURE);
     replace("\"size_bytes\":512","\"size_bytes\":1.0",TV4_OTA_BAD_JSON);
-    replace("\"size_bytes\":512","\"size_bytes\":true",TV4_OTA_BAD_JSON);
+    replace("\"size_bytes\":512","\"size_bytes\":true",TV4_OTA_BAD_SIZE);
     replace("\"size_bytes\":512","\"size_bytes\":01",TV4_OTA_BAD_JSON);
     replace("\"size_bytes\":512","\"size_bytes\":3145729",TV4_OTA_BAD_SIZE);
     replace("\"schema_version\":1","\"schema_version\":1,\"schema_version\":1",TV4_OTA_BAD_JSON);
