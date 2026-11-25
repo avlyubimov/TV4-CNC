@@ -4,9 +4,7 @@
   "sanitizer_tests_pass": 290,
   "new_worker_tests": 16,
   "sdk_tests_are_host_boundary": true,
-  "physical_test_completed": false,
   "policy_extended": false,
-  "new_keys_or_contexts": false,
   "dependency_versions_changed": false,
   "source_files_sha256": {
     "firmware/esp32-hmi/ota/service.c": "c5b4126df2baa18489e766a08c3900071583852b6257b70fce5948e24c4012b8",
@@ -17,5 +15,25 @@
     "tests/ota_worker_stack_tests.c": "c5ac8a7d05b239b10e6994601d1ba192db61fc9746e78db73a1a831a8f52ec9f",
     "simulator/preview.c": "58d1dcc020bd1e33427de4e39fbc6f1e00dad2305e5ecf9ae649682b823f3095",
     "CMakeLists.txt": "e46ab4af74e9aa18eb164e81bead0b09bb6de66e24b0b24598f178d2df9366ea"
-  }
+  },
+  "procedure_tests_pass": 10,
+  "observer_tests_pass": 8,
+  "loader_tests_pass": 6,
+  "pinned_native_metadata_oracle_cases_pass": 10,
+  "configured_sdk_builds": [
+    "6.1.1",
+    "5.3.2"
+  ],
+  "source_commit": "104fb065c43093936713e52bd0d1521fa3c70d30",
+  "initial_launch_rejected_before_device_access": true,
+  "fresh_exact_owner_approval_received": true,
+  "first_hardware_attempt_complete": true,
+  "first_time_range_qualified": false,
+  "hardware_results_separate": true,
+  "new_owner_policy_or_key": false,
+  "physical_time_range_qualified": true,
+  "hardware_attempts_complete": 2,
+  "second_hardware_attempt_pass": true,
+  "current_release_retained": true,
+  "final_actual_whole_flash_read_and_two_nvme_copies_verified": true
 }

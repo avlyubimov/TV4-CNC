@@ -1,0 +1,20 @@
+{
+  "endpoint": "pool.ntp.org",
+  "port": 123,
+  "transport": "UDP",
+  "maximum_seconds": 15,
+  "queries_sent": 1,
+  "system_or_device_clock_changed": false,
+  "board_access": false,
+  "ntp_is_authenticated": false,
+  "started_utc": "2026-11-25T14:19:08.560731+00:00",
+  "dns_resolved": true,
+  "udp_response_received": true,
+  "valid_response": true,
+  "stratum": 3,
+  "mode": 4,
+  "reported_time_outside_previous_window": true,
+  "elapsed_seconds": 0.03761480000002848,
+  "esp32_reachability_proven": false,
+  "cause_of_esp32_timeout_established": false
+}

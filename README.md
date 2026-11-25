@@ -18,6 +18,14 @@ policy/budget и P2 воспроизводимость остаются откр
 [Следующий этап](docs/NEXT_STAGE.md), [аппаратный статус](docs/HARDWARE_STATUS.md),
 [бэкапы](docs/BACKUP_STATUS.md).
 
+[Отказ по истёкшему периоду OTA](docs/evidence/hardware/2026-11-25-esp32-time-policy/README.md)
+проверен 25 ноября на source 104fb06: один повтор после SNTP timeout получил
+TIME_RANGE/error24/cleanup и все 45 guards PASS. Исходные OTA0/metadata и новые
+16 МиБ/две NVMe-копии сверены; bench.4 оставлен, экран/касания/Wi-Fi подтверждены.
+290 host/290 sanitizers/оба SDK/source CI 15 PASS. Новый текст ошибки пока только
+в source/временном образе; установленный релиз не менялся. Старый период OTA
+истёк и не продлён; новые положительные обновления требуют решения о policy.
+
 ## История программной подготовки
 
 Текущий P0 после main610f174/PR #55: первый настоящий

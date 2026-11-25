@@ -39,9 +39,21 @@ rejected by the locally reviewed date range needs a separate explanation.
    Restore the original whole OTA0
    **before** original metadata, verify preserved partitions and leave bench.4
    OTA1 VALID. Maximum 1800 s, recovery reserve 420 s, at most one conditional
-   full-snapshot recovery. Standing isolated-board permission applies.
+   full-snapshot recovery. Both actual sessions followed separate exact owner approvals; see the closed evidence.
 
 Report software and physical observations separately. Absence of HTTPS after
 clock refusal is a source/control-flow inference, not a wire capture. Do not
 turn this negative test into network INSTALL, RF/AP loss, power-cut or production
 acceptance. No eFuse/option bytes/STM32/CAN/motion operations or self-merge.
+
+## Completed result
+
+Exact source 104fb06 builds on SDK 6.1.1/5.3.2, 290 host/290 sanitizer tests,
+16 added worker invocations and source CI 15 PASS. [Hardware evidence](../evidence/hardware/2026-11-25-esp32-time-policy/README.md)
+preserves attempt1 SNTP timeout FAIL and one separately approved repeat PASS
+without changing policy or timeout. Exact range rejection/error24, all 45 guards,
+native seq3 VALID, diagnostic device digest, original OTA0/metadata restoration,
+actual final 16MiB/two-NVMe and retained bench.4 healthy boot passed. Owner UI
+confirmation passed. No new publication or automatic extension of old contexts.
+The next positive OTA requires a separately reviewed current policy; the closed
+single-use packets are not reusable. SDK 5.3.2 was built, not run on hardware.

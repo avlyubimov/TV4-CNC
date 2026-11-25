@@ -41,8 +41,12 @@ jobs:
           test -s docs/plans/P1_WIFI_DISCONNECT_RETRY.md
           test -s docs/plans/P1_TIME_POLICY_REFUSAL.md
           test -s docs/evidence/build/esp32-ota-time-refusal/README.md
-          for receipt in results source-ci; do
+          for receipt in results source-ci configured-builds compiled-policy metadata-proof; do
             python3 -m json.tool "docs/evidence/build/esp32-ota-time-refusal/$receipt.json" > /dev/null
+          done
+          test -s docs/evidence/hardware/2026-11-25-esp32-time-policy/README.md
+          for receipt in attempt1 host-ntp-reachability measurements; do
+            python3 -m json.tool "docs/evidence/hardware/2026-11-25-esp32-time-policy/$receipt.json" > /dev/null
           done
           test -s docs/evidence/build/esp32-ota-wifi-retry/README.md
           for receipt in results source-ci; do

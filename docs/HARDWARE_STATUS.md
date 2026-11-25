@@ -1,6 +1,28 @@
 # Аппаратный статус TV4-CNC
 
-## Актуально: отключение STA и повторная OTA без сброса проверены
+## 25 ноября: отказ по периоду OTA проверен, bench.4 сохранён
+
+От main 10cd8cd / source 104fb06 завершён [отрицательный стенд истёкшего
+контекста](evidence/hardware/2026-11-25-esp32-time-policy/README.md). Первый
+сеанс 396.821 с остановлен на SNTP timeout; FAIL сохранён. Один отдельно одобренный
+повтор 792.933 с на том же образе/политике/таймауте получил точные
+TIME_REJECTED/TIME_RANGE/cleanup OK и service error24; все 45 boot/GT911/RGB/
+PSRAM/resource/queue/touch guards PASS. Причина первого таймаута не установлена.
+
+Исходные OTA0 и metadata восстановлены; второй VALID-сектор и OTA1 не писались.
+Все 16 МиБ заново считаны, MD5/равенство вне NVS/две финальные NVMe-копии PASS;
+full restore 0. **Bench.4 оставлен в OTA1 VALID**, UART закрыт, владелец подтвердил
+экран/касания/Wi-Fi. Новая строка проверена реальным LVGL simulator; на плате
+измерен error24 временного образа, его текст визуально не наблюдался. Новый UI
+и прежний source fix отмены ещё не входят в оставленный неизменяемый релиз.
+
+[290 host / 290 sanitizers, 16 новых worker-сценариев, два SDK и source CI 15](evidence/build/esp32-ota-time-refusal/README.md)
+PASS. Hardware только ESP-IDF6.1.1; runtime 5.3.2/FPS/physical latency и production
+budget не квалифицированы. F407 ee7d179/CAN/motion/eFuse/option bytes не трогали.
+Исходное окно истекло 25 ноября 08:00 Asia/Almaty и не продлено; положительный OTA
+требует нового решения о policy. RF/AP/power loss и production discovery открыты.
+
+## Закрыто 24 ноября: отключение STA и повторная OTA без сброса проверены
 
 От main `bf5c325` (после слитого PR #88) на неизменяемом `6c7b1d5` /
 ESP-IDF 6.1.1 выполнен [реальный стенд отключения кнопкой Wi-Fi](evidence/hardware/2026-11-24-esp32-wifi-retry/README.md):
