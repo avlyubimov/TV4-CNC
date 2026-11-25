@@ -10,6 +10,9 @@ tv4_ota_boot_result tv4_ota_boot_observe(tv4_ota_boot_window *w,uint32_t now,boo
 }
 #ifdef ESP_PLATFORM
 #include "sdkconfig.h"
+#if CONFIG_TV4_OTA_RESTART_BENCH && (!CONFIG_TV4_OTA_ENABLED || !CONFIG_TV4_OTA_MEMORY_DIAGNOSTICS || CONFIG_TV4_OTA_WORKER_STACK_BENCH || CONFIG_TV4_OTA_WORKER_TLS_BENCH || CONFIG_TV4_OTA_SIGNED_CHECK_BENCH)
+#error "Restart bench requires exclusive unprovisioned OTA trace"
+#endif
 #if CONFIG_TV4_OTA_SIGNED_CHECK_BENCH && !CONFIG_TV4_OTA_ENABLED
 #error "Signed CHECK bench requires explicit OTA profile"
 #endif
@@ -40,7 +43,10 @@ tv4_ota_boot_result tv4_ota_boot_observe(tv4_ota_boot_window *w,uint32_t now,boo
 #if CONFIG_TV4_OTA_WORKER_STACK_BENCH && TV4_OTA_PROVISIONED
 #error "Worker stack bench must remain unprovisioned"
 #endif
-#if TV4_OTA_PROVISIONED
+#if CONFIG_TV4_OTA_RESTART_BENCH && TV4_OTA_PROVISIONED
+#error "Restart bench must not have network update authority"
+#endif
+#if TV4_OTA_PROVISIONED || CONFIG_TV4_OTA_RESTART_BENCH
 /* Full signed CHECK needs more headroom than the unprovisioned HEAD probe.
  * Keep reviewed runtime floors intact; qualify this reserve on the board. */
 #define OTA_WORKER_STACK_BYTES 12288
@@ -67,6 +73,9 @@ tv4_ota_boot_result tv4_ota_boot_observe(tv4_ota_boot_window *w,uint32_t now,boo
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include "freertos/queue.h"
+#if CONFIG_TV4_OTA_RESTART_BENCH
+#include "restart_bench.h"
+#endif
 static portMUX_TYPE mux=portMUX_INITIALIZER_UNLOCKED;
 static tv4_update_snapshot status={.enabled=true,.state=TV4_UPDATE_BOOT};
 static bool health,cancel_requested,started;static uint32_t health_ms;
@@ -202,6 +211,39 @@ static void signed_check_bench(void) {
         (unsigned)attempted,(unsigned)(attempted && final.state==TV4_UPDATE_READY && !final.error));
 }
 #endif
+#if CONFIG_TV4_OTA_RESTART_BENCH
+static void restart_bench(void) {
+    if(!tv4_restart_bench_cold_boot())return;
+    uint32_t begin=now_ms(NULL),since=0;bool settling=false;
+    while((uint32_t)(now_ms(NULL)-begin)<60000) {
+        bool good=!cancelled(NULL) && wifi_service_online();
+        uint32_t stamp=now_ms(NULL);
+        if(!good)settling=false;
+        else if(!settling) {settling=true;since=stamp;}
+        else if((uint32_t)(stamp-begin)>=45000 && (uint32_t)(stamp-since)>=2000) {
+            tv4_ota_resource_sample s;
+            /* Existing isolated-bench floors; no OTA provisioning or policy. */
+            bool sampled=tv4_ota_resource_sample_current(NULL,&s);
+            if(!sampled || s.internal_free<65536 || s.internal_largest<32768 ||
+               s.psram_free<1048576 || s.psram_largest<131072 || s.stack_watermark<3072) {
+                ESP_LOGI("tv4_restart","stage=refused reason=resources");return;
+            }
+            ESP_LOGI("tv4_restart","stage=ready internal=%u largest=%u psram=%u psram_largest=%u stack=%u",
+                (unsigned)s.internal_free,(unsigned)s.internal_largest,(unsigned)s.psram_free,
+                (unsigned)s.psram_largest,(unsigned)s.stack_watermark);
+            if(!tv4_restart_bench_prepare()) {
+                ESP_LOGI("tv4_restart","stage=refused reason=shutdown_hook");return;
+            }
+            if(cancelled(NULL) || !wifi_service_online()) {
+                ESP_LOGI("tv4_restart","stage=refused reason=health");return;
+            }
+            tv4_restart_bench_execute();
+        }
+        vTaskDelay(pdMS_TO_TICKS(250));
+    }
+    ESP_LOGI("tv4_restart","stage=refused reason=timeout");
+}
+#endif
 static void worker(void *c) {
     (void)c;
     if(esp_task_wdt_add(NULL)!=ESP_OK) {publish(TV4_UPDATE_BOOT_FAILED,21);esp_restart();}
@@ -232,7 +274,10 @@ static void worker(void *c) {
     tv4_ota_memory_window_end(TV4_MEM_BOOT);
     tv4_ota_memory_report_startup();tv4_ota_memory_report_window();
     bool finished=tv4_ota_sdk_finish_boot(confirm_allowed);
-#if TV4_OTA_PROVISIONED
+#if CONFIG_TV4_OTA_RESTART_BENCH
+    ESP_LOGI("tv4_ota","boot_self_test checks_pass=%u sdk_finish=%u worker_stack_bytes=%u restart_bench=1 provisioned=0",
+        (unsigned)confirm_allowed,(unsigned)finished,(unsigned)OTA_WORKER_STACK_BYTES);
+#elif TV4_OTA_PROVISIONED
     ESP_LOGI("tv4_ota","boot_self_test checks_pass=%u sdk_finish=%u worker_stack_bytes=%u provisioned=1",
         (unsigned)confirm_allowed,(unsigned)finished,(unsigned)OTA_WORKER_STACK_BYTES);
 #elif CONFIG_TV4_OTA_WORKER_STACK_BENCH
@@ -251,6 +296,9 @@ static void worker(void *c) {
     ESP_LOGI("tv4_ota","install_policy=check_only");
 #endif
     publish(!passed?TV4_UPDATE_BOOT_FAILED:context_ready?TV4_UPDATE_IDLE:TV4_UPDATE_SETUP,0);
+#if CONFIG_TV4_OTA_RESTART_BENCH
+    if(passed)restart_bench();
+#endif
 #if CONFIG_TV4_OTA_SIGNED_CHECK_BENCH
     if(passed)signed_check_bench();
 #endif
@@ -288,7 +336,7 @@ void tv4_ota_service_health(bool value) {
 void tv4_ota_service_snapshot(tv4_update_snapshot *out) {if(out) {portENTER_CRITICAL(&mux);*out=status;portEXIT_CRITICAL(&mux);}}
 bool tv4_ota_service_request(tv4_update_command cmd) {
     if(!commands)return false;
-#if CONFIG_TV4_OTA_SIGNED_CHECK_BENCH
+#if CONFIG_TV4_OTA_SIGNED_CHECK_BENCH || CONFIG_TV4_OTA_RESTART_BENCH
     if(cmd!=TV4_UPDATE_CANCEL)return false;
 #endif
     portENTER_CRITICAL(&mux);uint32_t stamp=now_ms(NULL);tv4_update_state previous=status.state;

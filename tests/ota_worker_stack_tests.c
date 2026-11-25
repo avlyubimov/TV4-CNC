@@ -26,7 +26,16 @@ static bool queued;static tv4_update_command queued_command;
 static tv4_ota_memory_window active_window;
 static tv4_ota_session session;
 static uint32_t clock_ms;
+static bool is(const char *s);
 static bool running,start_result,finish_passed,finish_result;
+#if SERVICE_TEST_RESTART_BENCH
+#include "restart_bench.h"
+static shutdown_handler_t restart_hook;
+static unsigned restart_ready,restart_refused,boot_mark,request_mark,hook_mark,noos_mark;
+static bool restart_warm(void) {
+    return is("restart-warm") || is("restart-wdt") || is("restart-panic") || is("restart-unknown");
+}
+#endif
 static void *probe;
 static char boot_log[256];
 uint8_t service_public_key[91];
@@ -127,7 +136,7 @@ BaseType_t xQueueReceive(QueueHandle_t queue,void *out,uint32_t wait) {
     longjmp(escape,1);
 }
 void vTaskDelay(uint32_t ticks) {
-    assert(!locks && running && (ticks==50 || (SERVICE_TEST_SIGNED_BENCH && finishes && ticks==250)));
+    assert(!locks && running && (ticks==50 || ((SERVICE_TEST_SIGNED_BENCH || SERVICE_TEST_RESTART_BENCH) && finishes && ticks==250)));
     clock_ms+=ticks;assert(clock_ms<=75000);
     tv4_ota_service_health(!is("health-timeout") && !(finishes && is("wait-health")));
 }
@@ -136,7 +145,54 @@ unsigned uxTaskGetStackHighWaterMark(TaskHandle_t task) {assert(!locks && runnin
 esp_err_t esp_task_wdt_add(TaskHandle_t task) {assert(!locks && running && !task);return ESP_OK;}
 esp_err_t esp_task_wdt_reset(void) {assert(!locks && running);++wdt_resets;return ESP_OK;}
 esp_err_t esp_task_wdt_delete(TaskHandle_t task) {assert(!locks && running && !task);++wdt_deletes;return ESP_OK;}
-_Noreturn void esp_restart(void) {assert(!locks);++restarts;longjmp(escape,1);}
+#if SERVICE_TEST_RESTART_BENCH
+esp_reset_reason_t esp_reset_reason(void) {
+    if(is("restart-ext"))return ESP_RST_EXT;
+    if(is("restart-warm"))return ESP_RST_SW;
+    if(is("restart-wdt"))return ESP_RST_WDT;
+    if(is("restart-panic"))return ESP_RST_PANIC;
+    if(is("restart-unknown"))return ESP_RST_UNKNOWN;
+    return ESP_RST_POWERON;
+}
+unsigned esp_cpu_get_core_id(void) {return 1;}
+esp_err_t esp_register_shutdown_handler(shutdown_handler_t fn) {
+    assert(!locks && !restart_hook && fn && restart_ready==1);
+    if(is("restart-hook-fail"))return -1;
+    restart_hook=fn;
+    if(is("restart-health-race"))tv4_ota_service_health(false);
+    return ESP_OK;
+}
+int esp_rom_printf(const char *format,...) {
+    assert(!locks);char line[160];va_list args;va_start(args,format);
+    int n=vsnprintf(line,sizeof(line),format,args);va_end(args);assert(n>0 && (size_t)n<sizeof(line));
+    assert(strstr(line,"core=1"));
+    if(strstr(line,"stage=boot"))++boot_mark;
+    else if(strstr(line,"stage=request")) {assert(boot_mark==1 && restart_ready==1 && restart_hook && !restarts);++request_mark;}
+    else if(strstr(line,"stage=shutdown_hook")) {assert(request_mark==1 && restarts==1);++hook_mark;}
+    else {assert(strstr(line,"stage=noos") && hook_mark==1);++noos_mark;}
+    return n;
+}
+_Noreturn void __real_esp_restart_noos(void) {assert(noos_mark==1);longjmp(escape,1);}
+void __wrap_esp_restart_noos(void) __attribute__((noreturn));
+bool __wrap_tv4_ota_resource_sample_current(void *context,tv4_ota_resource_sample *out) {
+    assert(!context && !locks && out && clock_ms>=48000);
+    *out=(tv4_ota_resource_sample){100000,63488,5000000,4000000,7000};
+    if(is("restart-floors"))*out=(tv4_ota_resource_sample){65536,32768,1048576,131072,3072};
+    if(is("restart-internal"))out->internal_free=65535;
+    if(is("restart-largest"))out->internal_largest=32767;
+    if(is("restart-psram"))out->psram_free=1048575;
+    if(is("restart-psram-largest"))out->psram_largest=131071;
+    if(is("restart-stack"))out->stack_watermark=3071;
+    return !is("restart-unavailable");
+}
+#endif
+_Noreturn void esp_restart(void) {
+    assert(!locks);++restarts;
+#if SERVICE_TEST_RESTART_BENCH
+    if(restart_hook) {restart_hook();__wrap_esp_restart_noos();}
+#endif
+    longjmp(escape,1);
+}
 const esp_app_desc_t *esp_app_get_description(void) {
 #if SERVICE_TEST_VALID_TRUST
     static const esp_app_desc_t desc={.version="0.1.0-bench.1"};
@@ -174,7 +230,7 @@ void heap_caps_free(void *p) {assert(!locks && p==probe);free(p);probe=NULL;}
 bool esp_ptr_external_ram(const void *p) {assert(!locks);return p && p==probe;}
 size_t heap_caps_get_free_size(unsigned caps) {(void)caps;return 100000;}
 bool wifi_service_online(void) {
-    assert((SERVICE_TEST_SIGNED_BENCH || operator_mode()) && SERVICE_TEST_VALID_TRUST && running && finishes && finish_passed && !locks);
+    assert((((SERVICE_TEST_SIGNED_BENCH || operator_mode()) && SERVICE_TEST_VALID_TRUST) || SERVICE_TEST_RESTART_BENCH) && running && finishes && finish_passed && !locks);
     ++wifi_polls;return !is("offline");
 }
 bool tv4_utc_tls_bench_run_in_ota_worker(bool (*cancelled)(void *),void *context) {
@@ -246,9 +302,17 @@ bool __wrap_tv4_ota_session_install_guarded(tv4_ota_session *s,const tv4_session
     (void)s;(void)r;(void)io;(void)p;(void)reader;(void)c;(void)report;(void)sink;assert(!"read-only bench entered installer");return false;
 }
 void service_test_log(const char *tag,const char *format,...) {
-    assert(!locks && running && !strcmp(tag,"tv4_ota"));
+    assert(!locks && running && (!strcmp(tag,"tv4_ota") || (SERVICE_TEST_RESTART_BENCH && !strcmp(tag,"tv4_restart"))));
     char message[256];va_list args;va_start(args,format);int n=vsnprintf(message,sizeof(message),format,args);va_end(args);
     assert(n>0 && (size_t)n<sizeof(boot_log));
+#if SERVICE_TEST_RESTART_BENCH
+    if(!strcmp(tag,"tv4_restart")) {
+        assert(boot_mark==1 && !restarts);
+        if(strstr(message,"stage=ready"))++restart_ready;
+        else {assert(strstr(message,"stage=refused"));++restart_refused;}
+        return;
+    }
+#endif
     if(strstr(message,"boot_self_test"))memcpy(boot_log,message,(size_t)n+1);
     else if(strstr(message,"install_policy=")) {
         assert(!install_policy_logs++);
@@ -286,13 +350,23 @@ int main(int argc,char **argv) {
         if(is("task-fail"))assert(!start_result && state.state==TV4_UPDATE_SETUP && state.error==21);
         else {assert(start_result && entry);running=true;entry(NULL);assert(!"worker returned");}
     }
-    assert(creates==1 && requested==(SERVICE_TEST_PROVISIONED?12288u:SERVICE_TEST_BENCH?8192u:3072u));
+    assert(creates==1 && requested==((SERVICE_TEST_PROVISIONED || SERVICE_TEST_RESTART_BENCH)?12288u:SERVICE_TEST_BENCH?8192u:3072u));
     assert(!locks && sends==(time_failure()?time_operations():operator_mode()?1u+(unsigned)install_allowed():0u) && !probe && !active_window && window_starts==window_ends);
     assert(tls_probes==(unsigned)(SERVICE_TEST_TLS_BENCH && is("success")));
     assert(acquires==(time_failure()?time_operations():(unsigned)attempts()) && releases==acquires);
     assert(sntps==(time_failure()?time_operations():(unsigned)(attempts() && !is("memory-fail"))) && clock_logs==sntps);
     assert(sessions==(late_install()?1u:(unsigned)(sntps && !time_failure() && !is("sntp-range") && !is("sntp-fail") && !is("sntp-cleanup-fail"))));
+    #if SERVICE_TEST_RESTART_BENCH
+    bool auto_restart=boot_ok() && finish_expected() && !restart_warm() && !restart_refused;
+    assert(boot_mark==(unsigned)(boot_ok() && finish_expected()));
+    assert(request_mark==(unsigned)auto_restart && hook_mark==request_mark && noos_mark==request_mark);
+    assert(!sntps && !sessions && !acquires && !sends);
+    assert((wifi_polls>0)==(boot_ok() && finish_expected() && !restart_warm()));
+    if(is("wait-health"))assert(wifi_polls==1);
+    if(is("offline") || is("wait-health"))assert(clock_ms>=63000 && clock_ms<=63250);
+#else
     assert((wifi_polls>0)==((SERVICE_TEST_SIGNED_BENCH || operator_mode()) && SERVICE_TEST_VALID_TRUST && boot_ok()));
+#endif
     if(is("task-fail") || is("pending-fail")) {
         assert(!stack_reads && !probes && !finishes && !startup_reports && !window_reports && window_starts==1);
         assert(restarts==(unsigned)is("pending-fail"));
@@ -301,7 +375,12 @@ int main(int argc,char **argv) {
         assert(finishes==1 && finish_passed==(success && !is("missing-partition") && (!ota_running() || local_ready())));
         assert(finish_result==finish_expected());
         assert(startup_reports==1 && window_reports==window_ends && stack_reads>0 && wdt_resets>0);
-        assert(wdt_deletes==(unsigned)finish_expected() && restarts==(unsigned)!finish_expected());
+        assert(wdt_deletes==(unsigned)finish_expected());
+#if SERVICE_TEST_RESTART_BENCH
+        assert(restarts==(unsigned)!finish_expected()+(unsigned)auto_restart);
+#else
+        assert(restarts==(unsigned)!finish_expected());
+#endif
         assert(probes==(unsigned)!is("health-timeout"));if(is("health-timeout"))assert(clock_ms==30000);
         if(SERVICE_TEST_PROVISIONED)assert(strstr(boot_log,"worker_stack_bytes=12288 provisioned=1"));
         else if(SERVICE_TEST_BENCH)assert(strstr(boot_log,"worker_stack_bytes=8192 stack_bench=1 provisioned=0"));

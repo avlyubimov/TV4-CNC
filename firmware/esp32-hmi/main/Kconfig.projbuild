@@ -75,4 +75,17 @@ config TV4_OTA_SIGNED_CHECK_BENCH
         CHECK/INSTALL/REBOOT commands are rejected in this image; cancellation
         remains available. No Flash sink, extra task, or automatic retry.
         Ordinary profiles keep this flag off.
+config TV4_OTA_RESTART_BENCH
+    bool "Trace one software restart from the OTA worker (diagnostic image only)"
+    depends on TV4_OTA_MEMORY_DIAGNOSTICS && !TV4_OTA_WORKER_STACK_BENCH && !TV4_OTA_WORKER_TLS_BENCH && !TV4_OTA_SIGNED_CHECK_BENCH
+    default n
+    help
+        Unprovisioned HMI only, same 12288-byte worker as configured OTA.
+        After a power-on/external reset, self-test and 45 seconds of normal
+        HMI/Wi-Fi operation, emit bounded shutdown markers and restart once.
+        SW/watchdog/panic/unknown boots do not trigger another restart.
+        No SNTP, HTTPS, update installation or persistent marker writes.
+        An IRAM/DRAM boundary wrapper calls the unchanged SDK restart.
+        Network update commands are blocked. Separate isolated-board scope
+        is required before any device operation; ordinary profiles stay off.
 endmenu

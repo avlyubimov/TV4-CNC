@@ -39,6 +39,11 @@ const esp_app_desc_t *esp_app_get_description(void);
 void esp_chip_info(esp_chip_info_t *);
 int64_t esp_timer_get_time(void);
 _Noreturn void esp_restart(void);
+typedef enum {ESP_RST_UNKNOWN,ESP_RST_POWERON,ESP_RST_EXT,ESP_RST_SW,ESP_RST_PANIC,
+    ESP_RST_INT_WDT,ESP_RST_TASK_WDT,ESP_RST_WDT} esp_reset_reason_t;
+typedef void (*shutdown_handler_t)(void);
+esp_reset_reason_t esp_reset_reason(void);
+esp_err_t esp_register_shutdown_handler(shutdown_handler_t);
 void *heap_caps_malloc(size_t,unsigned);
 void heap_caps_free(void *);
 size_t heap_caps_get_free_size(unsigned);
