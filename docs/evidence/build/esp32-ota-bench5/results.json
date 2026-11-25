@@ -1,0 +1,41 @@
+{
+  "source_commit": "0dbc1e919bc671554a005dac1896562c6554fe26",
+  "tag": "v0.1.0-bench.5",
+  "release_url": "https://github.com/avlyubimov/TV4-CNC/releases/tag/v0.1.0-bench.5",
+  "prerelease": true,
+  "main_ci_jobs_pass": 17,
+  "final_branch_and_pr_ci_jobs_pass": 34,
+  "tag_ci_jobs_pass": 17,
+  "host_suites_pass": 291,
+  "sanitizer_suites_pass": 291,
+  "configured_builds_pass": 6,
+  "candidate_pair_sdks_pass": [
+    "5.3.2",
+    "6.1.1"
+  ],
+  "candidate_pair_artifacts": [
+    "tv4_hmi.bin",
+    "tv4_hmi.elf",
+    "bootloader/bootloader.bin",
+    "partition_table/partition-table.bin"
+  ],
+  "actual_elf_clock_resource_public_trust_constants_checked": true,
+  "local_procedure_tests_pass": 31,
+  "optimized_local_procedure_tests_pass": 31,
+  "local_procedure_test_scope": "RAM Flash and fake serial, transformed previous private UART fixtures; not hardware evidence or a repository CI test",
+  "native_signature_and_full_stream_sdks_pass": [
+    "5.3.2",
+    "6.1.1"
+  ],
+  "tampered_manifest_and_wrong_key_rejected": true,
+  "scope": "Configured HMI app-only isolated prerelease; runtime outcome is documented separately",
+  "production_resource_qualified": false,
+  "physical_rf_ap_loss_qualified": false,
+  "physical_power_loss_qualified": false,
+  "runtime_idf_5_3_2_qualified": false,
+  "firmware_runtime_source_changed_in_report": false,
+  "dependency_pins_changed": false,
+  "hardware_overall_pass": false,
+  "hardware_report": "../../hardware/2026-11-25-esp32-bench5/README.md",
+  "hardware_left_running": "0.1.0-bench.4-ota1-valid"
+}

@@ -1,0 +1,97 @@
+{
+  "source_commit": "0dbc1e919bc671554a005dac1896562c6554fe26",
+  "tag": "v0.1.0-bench.5",
+  "url": "https://github.com/avlyubimov/TV4-CNC/releases/tag/v0.1.0-bench.5",
+  "release_id": 458330992,
+  "prerelease": true,
+  "make_latest": false,
+  "tag_target_type": "commit",
+  "inventory_sha256": "00e338b0a13d7dfb786bc4d15c603bd20cffa4b1e751ff8d9e5e6196b9e7d650",
+  "all_asset_hashes_verified": true,
+  "signature_and_full_image_verified": true,
+  "verification_time_utc": "2026-11-25T16:32:59.982667+00:00",
+  "assets": [
+    {
+      "name": "LICENSE-NOTICE.md",
+      "bytes": 1703,
+      "sha256": "5a557769c229e70ab4aab7ac72027311f1d9b1fb43592f1b6d6f8008e3a71473",
+      "asset_id": 792267141
+    },
+    {
+      "name": "LICENSE.txt",
+      "bytes": 1084,
+      "sha256": "f0430a7e7184bda27262b6426124f7839157ad77f420c2606056277fc422e0eb",
+      "asset_id": 792267146
+    },
+    {
+      "name": "README.txt",
+      "bytes": 330,
+      "sha256": "4ba9c62de0328232c0462470e6dca29a9130e4e32d3a2bfed70b471feda9a560",
+      "asset_id": 792267148
+    },
+    {
+      "name": "THIRD-PARTY-NOTICES.zip",
+      "bytes": 776915,
+      "sha256": "dc4876f88564ee26cb13dbe2d727ea9ccb0e1dc69c7b9e44e344a9ff50edef27",
+      "asset_id": 792267147
+    },
+    {
+      "name": "build-evidence.json",
+      "bytes": 1355,
+      "sha256": "6b292604ce70b303d224f02d740c4152c238f095d783ada3fb86f6ffe6f1a2b2",
+      "asset_id": 792267143
+    },
+    {
+      "name": "checksums.sha256",
+      "bytes": 668,
+      "sha256": "d00807c12042dc802f7b638db16ab8f3c58621840659b61c58e7fa12b5433fd0",
+      "asset_id": 792267192
+    },
+    {
+      "name": "manifest.json",
+      "bytes": 3178,
+      "sha256": "f2150a09ecd7d69ab95a9d0af608043bcba76be4a7407782d4743bab3f86323c",
+      "asset_id": 792267197
+    },
+    {
+      "name": "manifest.sig",
+      "bytes": 198,
+      "sha256": "cf7b7265d8b9549c185d5149cfc743db486db76ad3ada1f746e27b3b8a20bcf4",
+      "asset_id": 792267199
+    },
+    {
+      "name": "release-checksums.sha256",
+      "bytes": 928,
+      "sha256": "00e338b0a13d7dfb786bc4d15c603bd20cffa4b1e751ff8d9e5e6196b9e7d650",
+      "asset_id": 792267202
+    },
+    {
+      "name": "release-notes.md",
+      "bytes": 925,
+      "sha256": "453a90cc8ca5648fbe07ce569a7e2d9cf319b3cf2480045baa8d5711bfb33bb3",
+      "asset_id": 792267247
+    },
+    {
+      "name": "reproducibility.json",
+      "bytes": 12561,
+      "sha256": "0e52d73c2cd4d80d092f5044ac5ca838ee1f34f533a1e7540167e634a30f882a",
+      "asset_id": 792267252
+    },
+    {
+      "name": "tv4-hmi-esp32s3-v0.1.0-bench.5.bin",
+      "bytes": 1600720,
+      "sha256": "d6a59a78595541d0fa45fc327dd2ba0a6e0fb5006303c0f5921c4669cd49347a",
+      "asset_id": 792267258
+    }
+  ],
+  "private_excluded": [
+    "keys",
+    "context files",
+    "Flash backups",
+    "NVS",
+    "raw UART",
+    "STM32 images"
+  ],
+  "owner_exact_publication_approval_received": true,
+  "authority_for_future_releases": false
+}

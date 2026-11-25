@@ -1,0 +1,302 @@
+{
+  "schema": 1,
+  "source_commit": "0dbc1e919bc671554a005dac1896562c6554fe26",
+  "release_tag": "v0.1.0-bench.5",
+  "application_sha256": "d6a59a78595541d0fa45fc327dd2ba0a6e0fb5006303c0f5921c4669cd49347a",
+  "receiving_sha256": "4f34efa8a8078d215ae4eeaeb43a70220f832998039cfd9a6f38d12be1010512",
+  "overall_pass": false,
+  "failure": "post-reboot watchdog guard",
+  "session_closed": true,
+  "elapsed_seconds": 1004.5731389949997,
+  "maximum_seconds": 2400,
+  "chip_security_and_flash16m_verified": true,
+  "fresh_actual_read_bytes": 16777216,
+  "two_physical_nvme_copies_verified": true,
+  "snapshot_method": "new actual whole16MiB read + device MD5 + SHA256 + two independent NVMe",
+  "normal_host_writes": [
+    {
+      "role": "receiver-image",
+      "offset": 2228224,
+      "bytes": 3145728,
+      "verified": true,
+      "outside_preserved": true
+    },
+    {
+      "role": "receiver-selection",
+      "offset": 2162688,
+      "bytes": 4096,
+      "verified": true,
+      "outside_preserved": true
+    }
+  ],
+  "control": {
+    "guards": {
+      "expected_app": true,
+      "expected_sdk": true,
+      "expected_partition_boot": true,
+      "single_app_boot": true,
+      "psram_8mib": true,
+      "psram_sdk_test": true,
+      "instructions_in_psram": true,
+      "rodata_in_psram": true,
+      "rgb_initialized": true,
+      "gt911_initialized": true,
+      "ui_ready": true,
+      "no_fatal_log": true,
+      "exact_automatic_readonly_completion": true,
+      "no_http_open_failure": true,
+      "periodic_resources": true,
+      "resource_errors_clear": true,
+      "touch_fresh": true,
+      "increasing_uptime": true,
+      "heap_samples_consistent": true,
+      "comparable_wifi_load": true,
+      "optional_services_started": true,
+      "explicit_self_test": true,
+      "complete_startup": true,
+      "single_complete_boot_window": true,
+      "startup_scope": true,
+      "phase_times_ordered": true,
+      "nonzero_measured_stacks": true,
+      "phase_heap_samples_consistent": true,
+      "worker_stack_published": true,
+      "nonzero_valid_periodic_stack": true,
+      "explicit_stack_mode": true,
+      "worker_watermarks_within_request": true,
+      "adequate_periodic_samples": true,
+      "no_unexpected_network_probe": true,
+      "no_network_windows": true,
+      "no_early_check_request": true,
+      "no_unexpected_dma_hook": true
+    },
+    "touch_age_max_ms": 14,
+    "passed": true
+  },
+  "network": {
+    "observation_pass": true,
+    "clock_results": [
+      {
+        "result": 0,
+        "time": 0,
+        "cleanup": 1
+      },
+      {
+        "result": 0,
+        "time": 0,
+        "cleanup": 1
+      }
+    ],
+    "session_results": [
+      {
+        "state": 6,
+        "error": 0,
+        "http": 0,
+        "policy": 0,
+        "image": 0,
+        "resource": 0,
+        "checks": 9,
+        "internal": 118887,
+        "largest": 63488,
+        "psram": 5940996,
+        "psram_largest": 5898240,
+        "stack": 7072
+      },
+      {
+        "state": 10,
+        "error": 0,
+        "http": 0,
+        "policy": 0,
+        "image": 0,
+        "resource": 0,
+        "checks": 798,
+        "internal": 118559,
+        "largest": 63488,
+        "psram": 5941028,
+        "psram_largest": 5898240,
+        "stack": 7072
+      }
+    ],
+    "service_results": [
+      {
+        "stage": 5,
+        "error": 0,
+        "internal": 118923,
+        "psram": 5975844,
+        "stack": 7072
+      },
+      {
+        "stage": 8,
+        "error": 0,
+        "internal": 118911,
+        "psram": 5975868,
+        "stack": 7072
+      }
+    ],
+    "session_local_min_internal": 96879,
+    "session_local_min_psram": 5903988,
+    "min_operation_stack": 7072,
+    "touch_age_max_ms": 20,
+    "window_results": [
+      {
+        "window": 2,
+        "start_result": 0,
+        "stop_result": 0,
+        "complete": 1
+      },
+      {
+        "window": 3,
+        "start_result": 0,
+        "stop_result": 0,
+        "complete": 1
+      },
+      {
+        "window": 4,
+        "start_result": 0,
+        "stop_result": 0,
+        "complete": 1
+      },
+      {
+        "window": 5,
+        "start_result": 0,
+        "stop_result": 0,
+        "complete": 1
+      },
+      {
+        "window": 2,
+        "start_result": 0,
+        "stop_result": 0,
+        "complete": 1
+      },
+      {
+        "window": 3,
+        "start_result": 0,
+        "stop_result": 0,
+        "complete": 1
+      },
+      {
+        "window": 4,
+        "start_result": 0,
+        "stop_result": 0,
+        "complete": 1
+      }
+    ],
+    "operator_timing": {
+      "total_seconds": 304.39644505899923,
+      "check_seconds": 85.8082383359997,
+      "install_seconds": 124.71425156899932,
+      "operator_reboot_seconds": 3.710823168999923,
+      "candidate_capture_seconds": 90.16313287500088
+    }
+  },
+  "candidate_boot": {
+    "observed_version": "0.1.0-bench.5",
+    "partition_offset": "0x520000",
+    "elf_identity_matches": true,
+    "strict_boot_checks": {
+      "expected_app": true,
+      "expected_sdk": true,
+      "expected_partition_boot": true,
+      "single_app_boot": true,
+      "psram_8mib": true,
+      "psram_sdk_test": true,
+      "instructions_in_psram": true,
+      "rodata_in_psram": true,
+      "rgb_initialized": true,
+      "gt911_initialized": true,
+      "ui_ready": true,
+      "no_fatal_log": true,
+      "exact_automatic_readonly_completion": true,
+      "no_http_open_failure": true,
+      "periodic_resources": true,
+      "resource_errors_clear": false,
+      "touch_fresh": true,
+      "increasing_uptime": true,
+      "heap_samples_consistent": true,
+      "no_unexpected_network_probe": true,
+      "no_unexpected_dma_hook": true
+    },
+    "reset_reason": 7,
+    "watchdog_boot": 1,
+    "rom_reset": "0x10 RTCWDT_RTC_RST",
+    "sdk_selftest_finish_log_observed": true,
+    "independent_ota_metadata_or_flash_readback_completed": false,
+    "periodic_samples": 17,
+    "maximum_uptime_ms": 86405,
+    "touch_age_max_ms": 4,
+    "wifi_ip_event_observed": true,
+    "other_error_counters": {
+      "queue_drops": 0,
+      "display_errors": 0,
+      "export_drops": 0,
+      "wifi_queue_drops": 0,
+      "touch_errors": 0
+    }
+  },
+  "recovery": {
+    "full_snapshot_attempts": 1,
+    "full_snapshot_verified": true,
+    "original_flash_bytes": 16777216,
+    "post_restore_actual_whole_flash_uart_read": false,
+    "verification": "SDK whole-image device digest verification plus original release boot/ELF/health observation",
+    "left_running": "0.1.0-bench.4-ota1-valid",
+    "boot_pass": true,
+    "owner_hmi_touch_wifi_confirmed": true
+  },
+  "root_cause_confirmed": false,
+  "reset_functions_iram_and_byte_comparison": [
+    {
+      "function": "esp_restart_noos",
+      "old_receiver": {
+        "address": "0x40380074",
+        "bytes": 408,
+        "sha256": "4e6d2c36cb02d4f30215e66c8922f99ff04f5b4acf69b848c47cfa738ecf899b",
+        "in_iram": true
+      },
+      "new_receiver": {
+        "address": "0x40380074",
+        "bytes": 408,
+        "sha256": "4e6d2c36cb02d4f30215e66c8922f99ff04f5b4acf69b848c47cfa738ecf899b",
+        "in_iram": true
+      },
+      "bytes_equal": true
+    },
+    {
+      "function": "esp_system_reset_modules_on_exit",
+      "old_receiver": {
+        "address": "0x4038020c",
+        "bytes": 223,
+        "sha256": "e00fe2d61085ae1327e27e7a1661b5fc7d279504fec5d68681e3362e14e979f9",
+        "in_iram": true
+      },
+      "new_receiver": {
+        "address": "0x4038020c",
+        "bytes": 223,
+        "sha256": "e00fe2d61085ae1327e27e7a1661b5fc7d279504fec5d68681e3362e14e979f9",
+        "in_iram": true
+      },
+      "bytes_equal": true
+    },
+    {
+      "function": "rtc_clk_cpu_set_to_default_config",
+      "old_receiver": {
+        "address": "0x40376f1c",
+        "bytes": 15,
+        "sha256": "e8de65dad0289be69d9edc3f23f510d2631e238b459723eab59720fa9a92ab1c",
+        "in_iram": true
+      },
+      "new_receiver": {
+        "address": "0x40376f1c",
+        "bytes": 15,
+        "sha256": "e8de65dad0289be69d9edc3f23f510d2631e238b459723eab59720fa9a92ab1c",
+        "in_iram": true
+      },
+      "bytes_equal": true
+    }
+  ],
+  "physical_rf_ap_loss_tested": false,
+  "physical_power_loss_tested": false,
+  "physical_fps_or_touch_latency_measured": false,
+  "production_resource_qualified": false,
+  "efuse_option_bytes_stm32_can_motion_accessed": false,
+  "closed_packet_must_not_be_reused": true
+}

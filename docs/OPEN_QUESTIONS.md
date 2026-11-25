@@ -1,35 +1,34 @@
-# Открытые вопросы и блокирующие решения
+# Открытые вопросы TV4-CNC
 
 ## Актуальные блокеры P1
 
-Новая bench-only policy .4→.5 утверждена отдельно до 27 ноября 2026 08:00
-Asia/Almaty. Новые reviewed contexts локальны; старый период на установленном
-bench.4 истёк 25 ноября 08:00 и не продлён в прежних файлах. Для следующего P1
-требуются exact configured образы/manifest/source/asset review и отдельный
-конечный стенд; политика не является разрешением публикации или записи.
+[Bench.5](evidence/build/esp32-ota-bench5/README.md) опубликован: источник,
+воспроизводимость сборок с утверждёнными настройками на двух SDK, обратное
+скачивание, подпись и SHA-256 проверены.
+[Аппаратный сеанс](evidence/hardware/2026-11-25-esp32-bench5/README.md) получил
+успешные подписанные CHECK/INSTALL, но после software reboot RTCWDT/
+reset_reason=7/watchdog_boot=1 остановили приёмку. Один полный возврат bench.4,
+проверка, загрузка и подтверждение владельца PASS. Три исследованные функции
+сброса в той же IRAM и побайтово равны; причина не локализована. Нужен отдельный
+диагностический образ «первый запуск → один software restart», без INSTALL,
+с короткими маркерами и прежней проверкой watchdog.
 
-[Воспроизводимые SDK-сборки](evidence/build/esp32-ota-reproducible/README.md)
-проверены на source 6b84584: две clean builds на каждом SDK, exact BIN/ELF/
-bootloader/table PASS,291 host/291 sanitizers/source CI 17 PASS. Это пока
-unprovisioned build pairs; configured .5 требует своей проверки. Первая попытка
-с абсолютными путями cJSON headers сохранена как FAIL; сравнение не ослаблено.
-Production policy/budget/discovery, independent RF/AP/power loss и runtime 5.3.2
-остаются открытыми. В этом этапе hardware не открывался.
+Новая локальная policy .4→.5 действует только для стендов до 27 ноября 2026,
+08:00 Asia/Almaty. На возвращённом bench.4 остался прежний истёкший период.
+Старые контексты и файлы bench.2/.3/.4/.5 не менять. Для публикаций сохраняется
+отдельное разрешение владельца на конкретный пакет.
 
-[Реальное отключение кнопкой STA, cleanup и полный retry в том же процессе](evidence/hardware/2026-11-24-esp32-wifi-retry/README.md)
-PASS; после штатного reboot/self-test и нового чтения 16 МиБ оставлен bench.4
-OTA1 VALID. Это не проверка исчезновения RF/AP. Причина быстрого переподключения
-в первом остановленном сеансе не установлена; повтор его не воспроизвёл,
-первоначальный FAIL не переклассифицирован. Нужна дальнейшая наблюдаемость
-команд/событий Wi-Fi при расследовании повторения, без обхода проверок.
+Открыты production clock source/policy, бюджет памяти, поиск версий, независимая
+потеря RF/AP/питания, runtime 5.3.2 и физические FPS/touch latency.
+Воспроизводимость чистых сборок с утверждёнными настройками подтверждена;
+перенос toolchain и разнообразие build hosts не проверены. Прежний добровольный
+STA disconnect/retry PASS не заменяет исчезновение RF/AP.
 
-Открыты независимая потеря RF/AP, физический power-loss, production policy,
-version discovery/resource budget, reproducible clean builds, runtime 5.3.2 и
-физические FPS/latency. Контексты только до 25 ноября 2026, 08:00 Asia/Almaty;
-истечение не продлевать автоматически. UI source fix отмены ещё не установлен.
-Новые release/tag требуют точного owner approval; self-merge запрещён.
-F407/physical CAN/NEMA23 parameters/motion commissioning и независимая аварийная
-цепь сохраняют блокеры; standing board grant не разрешает eFuse/option bytes/CAN/приводы.
+Для F407/CAN/NEMA23 остаются аппаратные блокеры: HSE, физические GPIO/CAN,
+точные модели двигателя и драйвера, питание, пины, полярности и независимая
+E-stop цепь. Общее разрешение на изолированные платы не разрешает движение,
+CAN, eFuse или option bytes. Самостоятельный merge запрещён.
+Ниже сохранена история; она не задаёт текущую очередь.
 
 ## История: native pending confirmation/refusal/rollback a74bfcd — PASS
 

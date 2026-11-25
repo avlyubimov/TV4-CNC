@@ -3,35 +3,27 @@
 ## Проверенное состояние, 25 ноября 2026
 
 На Waveshare оставлен **bench.4, OTA1 VALID** (`6c7b1d5`, ESP-IDF 6.1.1).
-После signed INSTALL, rollback/factory и CANCEL проверено
-[отключение STA кнопкой во время записи и полный retry без сброса принимающей прошивки](docs/evidence/hardware/2026-11-24-esp32-wifi-retry/README.md).
-Повторный CHECK/INSTALL, штатный reboot/self-test/VALID PASS. Все 16 МиБ заново
-считаны, байты вне NVS совпали, две копии на разных NVMe проверены.
+Владелец подтвердил главный экран, касания и Wi-Fi после полного восстановления
+свежего снимка 16 МиБ. STM32F407 остаётся на проверенной ee7d179.
 
-[274 host / 274 sanitizers / 24 проверки процедуры](docs/evidence/build/esp32-ota-wifi-retry/README.md)
-PASS. Первый сеанс с ранним переподключением остаётся FAIL; причина пока не
-установлена. Повтор прошёл с теми же строгими проверками. Это добровольный STA
-disconnect; независимая потеря RF/AP и питания ещё не проверены. Production
-policy/budget и P2 воспроизводимость остаются открытыми. Контексты только до
-25 ноября 2026, 08:00 Asia/Almaty. Runtime 5.3.2/FPS/physical latency/CAN/motion
-не приняты. UI source fix отмены ещё не на плате; firmware/release прежние.
+[Bench.5](https://github.com/avlyubimov/TV4-CNC/releases/tag/v0.1.0-bench.5)
+опубликован от main `0dbc1e9`: шесть сборок с утверждёнными настройками на двух
+SDK, две побайтово равные пары кандидатов, 12 файлов проверены обратным
+скачиванием, подписью и SHA-256; CI тега 17/17 PASS.
+[Программные проверки](docs/evidence/build/esp32-ota-bench5/README.md).
+
+[Аппаратный сеанс bench.5](docs/evidence/hardware/2026-11-25-esp32-bench5/README.md):
+контроль 37/37, подписанные CHECK/INSTALL и ресурсы PASS. После операторского
+перезапуска RTCWDT/watchdog_boot=1 остановили приёмку, поэтому выполнен один
+полный возврат bench.4. Причина ещё не установлена. Следующий шаг — отдельная
+диагностика software restart; защитная проверка остаётся строгой.
+
+Новая policy .4→.5 утверждена только для стендов до 27 ноября, 08:00 Asia/Almaty.
+На оставленном bench.4 прежний период OTA истёк. Production policy и бюджет,
+поиск версий, независимая потеря RF/AP/питания, runtime 5.3.2, FPS/latency,
+физический CAN и движение ещё не приняты.
 [Следующий этап](docs/NEXT_STAGE.md), [аппаратный статус](docs/HARDWARE_STATUS.md),
 [бэкапы](docs/BACKUP_STATUS.md).
-
-[Отказ по истёкшему периоду OTA](docs/evidence/hardware/2026-11-25-esp32-time-policy/README.md)
-проверен 25 ноября на source 104fb06: один повтор после SNTP timeout получил
-TIME_RANGE/error24/cleanup и все 45 guards PASS. Исходные OTA0/metadata и новые
-16 МиБ/две NVMe-копии сверены; bench.4 оставлен, экран/касания/Wi-Fi подтверждены.
-290 host/290 sanitizers/оба SDK/source CI 15 PASS. Новый текст ошибки пока только
-в source/временном образе; установленный релиз не менялся. Старый период OTA
-истёк и не продлён в прежних файлах; ниже статус нового стендового контекста.
-
-[Воспроизводимая сборка OTA](docs/REPRODUCIBLE_HMI.md) проверена на обоих SDK:
-две чистые сборки каждого дают одинаковые BIN/ELF/bootloader/table. [Четыре
-реальных результата](docs/evidence/build/esp32-ota-reproducible/README.md),
-291 host/291 sanitizers/source CI 17 PASS. Новая bench-only policy .4→.5 утверждена
-до 27 ноября 08:00, хранится отдельно и на плату пока не записана. Configured payload,
-публикация и аппаратный стенд требуют своих точных пакетов; bench.4 остаётся.
 
 ## История программной подготовки
 
