@@ -1,36 +1,32 @@
 # TV4-CNC — правила разработки Codex
 
-От main `9fa7eda` готовится [диагностика одного software restart](docs/ESP32_RESTART_BENCH.md).
-Это выключенный по умолчанию прошиваемый образ, без сетевого INSTALL и новых
-ключей/релизов. Маркеры не исправляют причину и не отменяют watchdog guard.
-До аппаратного отчёта runtime не подтверждён; на плате остаётся bench.4.
+Код диагностики [PR #93](https://github.com/avlyubimov/TV4-CNC/pull/93)
+слит владельцем в main `d541baf`; source `f819955`. Обе сборки 5.3.2/6.1.1,
+313 host/313 sanitizers, source CI 34 и merged-main CI 17 PASS.
+Диагностика выключена по умолчанию, ключей/релизов не добавляет.
 
-25 ноября опубликован [bench.5](https://github.com/avlyubimov/TV4-CNC/releases/tag/v0.1.0-bench.5)
-от main `0dbc1e9`. Все 12 файлов скачаны обратно и проверены по SHA-256;
-подпись и полный BIN проверены повторно. CI тега: 17/17 PASS. На двух SDK
-выполнено шесть сборок с утверждёнными настройками; две пары кандидатов дают
-одинаковые BIN/ELF/bootloader/table. [Программные проверки](docs/evidence/build/esp32-ota-bench5/README.md).
+[Один software restart без INSTALL](docs/evidence/hardware/2026-11-25-esp32-restart-f819955/README.md) на SDK 6.1.1 PASS:
+36/36 guards на каждом из двух запусков; reset_reason=1→3, watchdog_boot=0,
+request/shutdown_hook core0 → noos core1, 90 секунд после сброса без host reset.
+Свежие и финальные реальные 16 МиБ/verify/две NVMe-копии проверены. Исходные factory
+и otadata возвращены; все байты вне NVS совпали, full recovery 0. Сеанс закрыт
+за 1103,269 с, UART закрыт; оставлен bench.4 OTA1 VALID. Финальные UART HMI/GT911/
+Wi-Fi guards PASS; владелец подтвердил главный экран, касания и Wi-Fi.
 
-[Результат аппаратного сеанса](docs/evidence/hardware/2026-11-25-esp32-bench5/README.md):
-Контроль: 37/37 PASS; подписанные CHECK/INSTALL и ресурсные проверки PASS.
-После штатного перезапуска `.5` загрузился, выполнил встроенный self-test и
-подключился к Wi-Fi, но RTCWDT/reset_reason=7/watchdog_boot=1 остановили приёмку.
-Сеанс закрыт. Один полный возврат свежего снимка 16 МиБ, проверка и загрузка
-bench.4 прошли; оставлены исходные VALID-метаданные OTA1. Владелец подтвердил
-экран, касания и Wi-Fi. Независимого чтения Flash/метаданных кандидата не было.
+Причина RTCWDT после bench.5 не установлена, его FAIL сохраняется. Один
+unprovisioned factory PASS с маркерами не квалифицирует post-INSTALL restart.
+Следующий P1 — сопоставимые shutdown-маркеры в настоящем настроенном пути
+после подписанного CHECK/INSTALL, затем независимые reset/slot/self-test/readback
+проверки. Прежние TLS/signature/SHA/compatibility/resource/time/confirmation
+и watchdog guards не ослаблять; не менять драйверы/частоты без измерений.
+Закрытые одноразовые пакеты не повторять, опубликованные assets не менять.
 
-Следующий P1 — локализация RTC watchdog при программном перезапуске: отдельный
-диагностический образ, выключенный по умолчанию, и конечный стенд «первый запуск →
-один software restart» без INSTALL. Три исследованные функции сброса в прежней
-и новой ELF находятся в IRAM и побайтово равны; причина ещё не установлена.
-Проверку watchdog не ослаблять, счётчик не обнулять, закрытый пакет не повторять.
-Не менять драйверы, GPIO, eFuse или частоты по неподтверждённому предположению.
-Новая policy .4→.5 действует только для стендов до 27 ноября 2026, 08:00
-Asia/Almaty. Старые контексты и опубликованные файлы неизменяемы; на оставленном
-bench.4 прежний период уже истёк. Production policy, бюджет памяти, поиск версий,
-потеря RF/AP/питания, runtime 5.3.2 и физические FPS/latency остаются открытыми.
-F407 ee7d179 не подключался в этом сеансе. Самостоятельный merge запрещён.
-Ниже сохранена история закрытых этапов; активная очередь — docs/NEXT_STAGE.md.
+На bench.4 прежний период OTA истёк. Стендовая policy .4→.5 утверждена только
+до 27 ноября 2026 08:00 Asia/Almaty; production policy/budget/discovery, RF/AP/power
+loss, runtime 5.3.2 и physical FPS/latency открыты. F407 ee7d179 не подключался.
+Standing isolated-board grant не разрешает CAN/движение/eFuse/option bytes.
+Самостоятельный merge и новый release/tag без соответствующего review запрещены.
+Ниже сохранена история; активная очередь — docs/NEXT_STAGE.md.
 
 Закрыто PR #90 от main 10cd8cd / source 104fb06: понятный отказ OTA по
 разрешённому времени проверен. Только TIME_REJECTED + TIME_RANGE + cleanup OK

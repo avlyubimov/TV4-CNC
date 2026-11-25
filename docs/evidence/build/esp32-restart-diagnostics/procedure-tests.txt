@@ -1,0 +1,16 @@
+test_collector_waits_ninety_seconds_without_second_host_reset (__main__.Packet.test_collector_waits_ninety_seconds_without_second_host_reset) ... ok
+test_corrupt_warm_diagnostics_cannot_qualify (__main__.Packet.test_corrupt_warm_diagnostics_cannot_qualify) ... ok
+test_failed_full_restore_never_repeated (__main__.Packet.test_failed_full_restore_never_repeated) ... ok
+test_import_and_default_do_not_import_or_open_esptool (__main__.Packet.test_import_and_default_do_not_import_or_open_esptool) ... ok
+test_missing_repeated_early_markers_short_window_and_resources_refused (__main__.Packet.test_missing_repeated_early_markers_short_window_and_resources_refused) ... ok
+test_nested_phase_cannot_extend_whole_timer (__main__.Packet.test_nested_phase_cannot_extend_whole_timer) ... ok
+test_no_write_before_identity_complete_read_and_both_backups (__main__.Packet.test_no_write_before_identity_complete_read_and_both_backups) ... ok
+test_partial_write_outside_scope_capture_or_final_read_get_one_full_restore (__main__.Packet.test_partial_write_outside_scope_capture_or_final_read_get_one_full_restore) ... ok
+test_sealed_admission_rejects_permission_ci_plan_or_payload_changes_before_sdk (__main__.Packet.test_sealed_admission_rejects_permission_ci_plan_or_payload_changes_before_sdk) ... ok
+test_success_four_exact_spans_final_actual_read (__main__.Packet.test_success_four_exact_spans_final_actual_read) ... ok
+test_wdt_is_fail_with_normal_verified_return (__main__.Packet.test_wdt_is_fail_with_normal_verified_return) ... ok
+
+----------------------------------------------------------------------
+Ran 11 tests in 2.337s
+
+OK

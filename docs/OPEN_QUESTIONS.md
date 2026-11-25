@@ -9,9 +9,15 @@
 успешные подписанные CHECK/INSTALL, но после software reboot RTCWDT/
 reset_reason=7/watchdog_boot=1 остановили приёмку. Один полный возврат bench.4,
 проверка, загрузка и подтверждение владельца PASS. Три исследованные функции
-сброса в той же IRAM и побайтово равны; причина не локализована. Нужен отдельный
-диагностический образ «первый запуск → один software restart», без INSTALL,
-с короткими маркерами и прежней проверкой watchdog.
+сброса в той же IRAM и побайтово равны; причина не локализована.
+[Диагностический образ без INSTALL](evidence/hardware/2026-11-25-esp32-restart-f819955/README.md) source `f819955` на SDK 6.1.1
+прошёл один software restart: reset_reason=1→3, watchdog_boot=0, 36/36 guards на обоих
+запусках и 90 секунд после сброса PASS. Bench.4 восстановлен и проверен.
+Это один unprovisioned factory-сеанс, не повторный post-INSTALL gate. Нужны
+сопоставимые shutdown-маркеры после реального настроенного CHECK/INSTALL,
+проверка reset/слота/self-test и независимое чтение кандидата. Влияние timing
+маркеров, предшествующих TLS/Flash операций и слота пока не разделено.
+Не менять защитные пороги или watchdog_boot ради PASS.
 
 Новая локальная policy .4→.5 действует только для стендов до 27 ноября 2026,
 08:00 Asia/Almaty. На возвращённом bench.4 остался прежний истёкший период.
@@ -37,7 +43,7 @@ CAN, eFuse или option bytes. Самостоятельный merge запре�
 factory-control PASS → ota_0 NEW/VALID → unprovisioned ota_1 NEW/INVALID/native
 rollback в healthy ota_0 → полные исходные factory2MiB/otadata8KiB/два OTA slots
 по3MiB/verify/UART30 PASS. Native4KiB otadata writes ожидаемы; bootloader/table
-не записаны.9 обычных write calls/4 captures/full recovery0; на ESP32 fecc05d.
+не записаны.9 обычных write calls/4 captures/full recovery 0; на ESP32 fecc05d.
 
 Exact source a74bfcd, открытый PR81, оба pinned SDK/4 ELF и source CI30/main15,
 265 host/265 sanitizers/analyzer PASS до USB. Hardware только6.1.1. Это прямой

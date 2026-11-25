@@ -1,0 +1,16 @@
+{
+  "source_commit": "a8503d1fcdbaced2e8d6879df5aa18f8bbf4e953",
+  "sdk": "5.3.2",
+  "build_pass": true,
+  "initial_linked_inspection_pass": false,
+  "failure": "native objdump displayed esp_restart as data; the required wrapper call was not decoded",
+  "xt_prop_entries": 226,
+  "xt_prop_covers_esp_restart": false,
+  "xt_prop_is_nonallocating": true,
+  "objcopy_analysis_copy_rejected_for_changed_load_memsz": true,
+  "resolved_in_source": "f8199557def895f301cd7e0cbbdde32e54b87681",
+  "final_analysis_copy_changes_only_nonloaded_property_size": true,
+  "all_original_entry_load_addresses_sizes_flags_bytes_preserved": true,
+  "original_elf_and_bin_modified": false,
+  "device_access_in_this_inspection": false
+}
