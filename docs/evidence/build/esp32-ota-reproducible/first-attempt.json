@@ -1,0 +1,81 @@
+{
+  "source_commit": "848fd54e988d74ef2dd1c71277c5bdc41eed9f0e",
+  "all_pairs_failed": true,
+  "comparison_criteria_weakened": false,
+  "observations": [
+    {
+      "source_commit": "848fd54e988d74ef2dd1c71277c5bdc41eed9f0e",
+      "sdk": "5.3.2",
+      "comparison_pass": false,
+      "effective_configurations_equal": true,
+      "allocated_elf_sections_equal": true,
+      "allocated_sections_checked": 15,
+      "remaining_absolute_header_paths_per_elf": [
+        3,
+        3
+      ],
+      "header_directory": "third_party/cjson",
+      "artifacts": {
+        "tv4_hmi.bin": {
+          "first_bytes": 1553040,
+          "second_bytes": 1553040,
+          "equal": false
+        },
+        "tv4_hmi.elf": {
+          "first_bytes": 13760964,
+          "second_bytes": 13761012,
+          "equal": false
+        },
+        "bootloader/bootloader.bin": {
+          "first_bytes": 21664,
+          "second_bytes": 21664,
+          "equal": true
+        },
+        "partition_table/partition-table.bin": {
+          "first_bytes": 3072,
+          "second_bytes": 3072,
+          "equal": true
+        }
+      },
+      "artifacts_unchanged_after_failure": true,
+      "comparison_criteria_weakened": false
+    },
+    {
+      "source_commit": "848fd54e988d74ef2dd1c71277c5bdc41eed9f0e",
+      "sdk": "6.1.1",
+      "comparison_pass": false,
+      "effective_configurations_equal": true,
+      "allocated_elf_sections_equal": true,
+      "allocated_sections_checked": 16,
+      "remaining_absolute_header_paths_per_elf": [
+        3,
+        3
+      ],
+      "header_directory": "third_party/cjson",
+      "artifacts": {
+        "tv4_hmi.bin": {
+          "first_bytes": 1600064,
+          "second_bytes": 1600064,
+          "equal": false
+        },
+        "tv4_hmi.elf": {
+          "first_bytes": 14533568,
+          "second_bytes": 14533616,
+          "equal": false
+        },
+        "bootloader/bootloader.bin": {
+          "first_bytes": 20672,
+          "second_bytes": 20672,
+          "equal": true
+        },
+        "partition_table/partition-table.bin": {
+          "first_bytes": 3072,
+          "second_bytes": 3072,
+          "equal": true
+        }
+      },
+      "artifacts_unchanged_after_failure": true,
+      "comparison_criteria_weakened": false
+    }
+  ]
+}

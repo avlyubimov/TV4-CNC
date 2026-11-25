@@ -5,6 +5,7 @@ import json
 import os
 from pathlib import Path
 import subprocess
+import struct
 import sys
 import unittest
 from unittest.mock import patch
@@ -97,6 +98,30 @@ class ReleaseTests(unittest.TestCase):
                 self.assertTrue(json.loads((self.output/'build-evidence.json').read_text())['candidate_install_reviewed'])
                 self.assertEqual((self.output/'README.txt').read_bytes(),release.INSTALL_NOTICE)
                 self.assertNotIn(b'PRIVATE KEY',b''.join(p.read_bytes() for p in self.output.iterdir()))
+
+    def test_reproducible_installable_keeps_signed_schema_and_gates(self):
+        for sdk in ('5.3.2','6.1.1'):
+            with self.subTest(sdk=sdk):
+                config=self.build/'config/sdkconfig.json';c=json.loads(config.read_text())
+                c['APP_REPRODUCIBLE_BUILD']=False;config.write_text(json.dumps(c))
+                self.plan['sdk']=sdk;self.install_fixture()
+                # Header/marker fixture only, no executable MCU instructions.
+                header=bytearray(52);header[:6]=b'\x7fELF\x01\x01'
+                struct.pack_into('<H',header,18,94)
+                (self.build/'tv4_hmi.elf').write_bytes(bytes(header)+b'NONEXECUTABLE install_policy=owner_reviewed '+self.public.read_bytes())
+                config=self.build/'config/sdkconfig.json';c=json.loads(config.read_text())
+                c.update(APP_REPRODUCIBLE_BUILD=True,COMPILER_HIDE_PATHS_MACROS=True,APP_COMPILE_TIME_DATE=False)
+                config.write_text(json.dumps(c));self.configure()
+                self.assertTrue(json.loads((self.build/'validation.json').read_text())['reproducible_build'])
+                self.output=self.root/('reproducible-'+sdk)
+                result=self.create();self.assertEqual(result,self.verify())
+                self.assertTrue(result['installable'])
+                self.assertFalse(result['device_access'] or result['install_enabled'] or result['release_published'])
+                evidence=json.loads((self.output/'build-evidence.json').read_text())
+                self.assertEqual(set(evidence),release.EVIDENCE_FIELDS|{'candidate_install_reviewed'})
+                manifest=json.loads((self.output/'manifest.json').read_text())
+                self.assertEqual(manifest['source_commit'],self.plan['source_commit'])
+                self.assertEqual(manifest['components'][0]['sha256'],hashlib.sha256((self.output/('tv4-hmi-esp32s3-v'+self.plan['release_version']+'.bin')).read_bytes()).hexdigest())
 
     def test_installable_requires_provisioned_and_reviewed_candidate(self):
         self.plan['purpose']='signed-install-bench';self.write_plan();self.configure()

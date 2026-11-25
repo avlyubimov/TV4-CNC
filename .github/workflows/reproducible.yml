@@ -1,0 +1,60 @@
+name: Reproducible OTA builds (no hardware)
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  reproduce:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        sdk: [5.3.2, 6.1.1]
+        include:
+          - sdk: 5.3.2
+            image: espressif/idf@sha256:5b8f58d9d9caa45b689a31a0b6a0cc53b84594e0ba5fdd8d28eeef7d6123242a
+          - sdk: 6.1.1
+            image: espressif/idf@sha256:2b4f966c37eaedc19542b0637a5f850b2eff9478d8e858192aa0073d92c2dc91
+    container:
+      image: ${{ matrix.image }}
+      options: --ulimit nofile=4096:4096
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - name: Build two clean archives at different paths and times
+        shell: bash
+        env:
+          TV4_SOURCE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          set -euo pipefail
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          test "$(git rev-parse HEAD)" = "$TV4_SOURCE_SHA"
+          git diff --quiet
+          mkdir -p build-reproducibility/first/source build-reproducibility/second/deeper/source
+          git archive --output=build-reproducibility/source.tar "$TV4_SOURCE_SHA"
+          for location in first/source second/deeper/source; do
+            tar -xf build-reproducibility/source.tar -C "build-reproducibility/$location"
+            tree="$GITHUB_WORKSPACE/build-reproducibility/$location"
+            test ! -e "$tree/build-idf-${{ matrix.sdk }}-rev12-ota-reproducible"
+            env -u TV4_OTA_CONTEXT -u TV4_OTA_MEMORY_DIAGNOSTICS \
+              -u TV4_OTA_WORKER_STACK_BENCH -u TV4_OTA_WORKER_TLS_BENCH -u TV4_OTA_SIGNED_CHECK_BENCH \
+              TV4_REPRODUCIBLE_BUILD=1 TV4_BUILD_PROJECT_VERSION="${TV4_SOURCE_SHA:0:12}" \
+              CCACHE_DISABLE=1 IDF_CCACHE_ENABLE=0 \
+              "$tree/tools/build_idf.sh" rev12-ota '${{ matrix.sdk }}' local \
+              > "build-reproducibility/$(basename "${location%/source}").log" 2>&1
+          done
+          python tools/check_idf_reproducibility.py \
+            --first build-reproducibility/first/source/build-idf-${{ matrix.sdk }}-rev12-ota-reproducible \
+            --second build-reproducibility/second/deeper/source/build-idf-${{ matrix.sdk }}-rev12-ota-reproducible \
+            --sdk '${{ matrix.sdk }}' --source-commit "$TV4_SOURCE_SHA" > build-reproducibility/equality.json
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        if: always()
+        with:
+          name: reproducible-ota-${{ matrix.sdk }}
+          path: |
+            build-reproducibility/equality.json
+            build-reproducibility/first.log
+            build-reproducibility/deeper.log
+          if-no-files-found: error
+          retention-days: 14

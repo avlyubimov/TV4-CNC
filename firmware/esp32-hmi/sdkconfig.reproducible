@@ -1,0 +1,2 @@
+# Explicit release build only; ordinary build defaults remain unchanged.
+CONFIG_APP_REPRODUCIBLE_BUILD=y

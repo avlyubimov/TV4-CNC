@@ -19,6 +19,15 @@ target_link_options(${COMPONENT_LIB} INTERFACE "LINKER:--undefined=tv4_ota_verif
 
 set_source_files_properties("../../../third_party/cjson/cJSON.c" PROPERTIES COMPILE_DEFINITIONS "CJSON_NESTING_LIMIT=8;CJSON_HIDE_SYMBOLS"
   COMPILE_OPTIONS "-include;${CMAKE_CURRENT_LIST_DIR}/../../../third_party/cjson/tv4_namespace.h")
+if(CONFIG_APP_REPRODUCIBLE_BUILD)
+    # cJSON is outside IDF's PROJECT_DIR; the SDK's project prefix map does
+    # not cover it. Other main units include cJSON.h too, so map this one
+    # external directory for every main unit, only in explicit builds.
+    get_filename_component(tv4_third_party "${CMAKE_CURRENT_LIST_DIR}/../../../third_party" REALPATH)
+    target_compile_options(${COMPONENT_LIB} PRIVATE
+        "-fdebug-prefix-map=${tv4_third_party}=/TV4_THIRD_PARTY"
+        "-fmacro-prefix-map=${tv4_third_party}=/TV4_THIRD_PARTY")
+endif()
 target_link_options(${COMPONENT_LIB} INTERFACE "LINKER:--undefined=tv4_ota_manifest_read")
 
 target_link_options(${COMPONENT_LIB} INTERFACE "LINKER:--undefined=tv4_image_start" "LINKER:--undefined=tv4_image_feed" "LINKER:--undefined=tv4_image_finish" "LINKER:--undefined=tv4_image_abort" "LINKER:--undefined=tv4_image_close")

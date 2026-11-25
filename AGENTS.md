@@ -1,6 +1,26 @@
 # TV4-CNC — правила разработки Codex
 
-Отдельный P1 от main 10cd8cd / source 104fb06: понятный отказ OTA по
+Отдельный этап от main 5fb177b / после PR #90: воспроизводимый rev12-ota build
+проверен на source 6b84584. Две clean builds в разных путях/времени для каждого
+pinned SDK дают одинаковые app BIN/ELF, bootloader BIN и partition table.
+Первый source 848fd54 не совпал: внешние cJSON headers оставляли три абсолютных
+пути в debug data. FAIL сохранён, узкая prefix map исправлена для всех main units;
+критерии побайтового сравнения прежние. Четыре реальные fixed builds PASS.
+
+291 host/291 sanitizers,10 comparison cases, новый signed-authoring case обоих
+SDK (29 cases total), source CI 17 PASS. Явный TV4_REPRODUCIBLE_BUILD=1 только
+rev12-ota; ordinary profiles, память/частоты/драйверы/TLS/gates прежние. Читайте
+ docs/REPRODUCIBLE_HMI.md и docs/evidence/build/esp32-ota-reproducible/ от корня.
+
+Владелец утвердил новые bench-only contexts .4→.5 до 27 ноября 2026 08:00
+Asia/Almaty с прежним ключом/floors/anchor age/skew. Они в новых локальных файлах;
+старые contexts и published assets не менять. Configured release payload и
+точные publication/hardware пакеты ещё нужны; это не production policy или
+разрешение их выполнить. Платы в этом этапе не открывались: bench.4 OTA1 VALID
+и F407 ee7d179 сохранены по предыдущему закрытому стенду. Self-merge запрещён.
+Ниже закрытые результаты, не активная очередь.
+
+Закрыто PR #90 от main 10cd8cd / source 104fb06: понятный отказ OTA по
 разрешённому времени проверен. Только TIME_REJECTED + TIME_RANGE + cleanup OK
 даёт error24 / «Дата вне разрешённого периода OTA». До/после диапазона одинаковы;
 unauthenticated SNTP не доказывает действительную дату. 290 host/290 sanitizers,

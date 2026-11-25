@@ -12,10 +12,13 @@ PASS; новый release оставлен на плате, factory recovery со
 contexts/backups/raw UART не публикуются. Это prerelease, без latest/stable.
 
 Это не production acceptance: network negative rollback/Wi-Fi/interruption,
-production policy/version discovery/budget и runtime5.3.2 ещё открыты. Contexts
-ограничены25ноября2026 08:00 Asia/Almaty. Compile-time date пока включён; нужны
-отдельные reproducible config и две clean builds обоих SDK. Новые release/tag
-требуют отдельного exact approval; push/merge не разрешают публикацию.
+production policy/version discovery/budget и runtime 5.3.2 ещё открыты. Contexts
+ограничены 25 ноября 2026 08:00 Asia/Almaty. В оставленном bench.4 compile-time date
+включён. Для следующего пакета проверен отдельный opt-in
+[reproducible build](REPRODUCIBLE_HMI.md): четыре clean builds двух SDK дали
+одинаковые BIN/ELF/bootloader/table внутри каждой пары. [Evidence](evidence/build/esp32-ota-reproducible/README.md).
+Новая .4→.5 policy до 27 ноября 08:00 утверждена только для стендов и пока локальна.
+Новые release/tag требуют отдельного exact approval; push/merge не разрешают публикацию.
 
 Ниже сохранён предыдущий процесс/история; production gates остаются обязательными.
 

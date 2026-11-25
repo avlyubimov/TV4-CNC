@@ -31,7 +31,7 @@ def install_policy(build):
     return allowed
 
 
-def verify(build, profile, version, *, write_report=True, memory_diagnostics=False, worker_stack_bench=False, worker_tls_bench=False, signed_check_bench=False):
+def verify(build, profile, version, *, write_report=True, memory_diagnostics=False, worker_stack_bench=False, worker_tls_bench=False, signed_check_bench=False, reproducible=None):
     require(profile in {"headless", "rev12", "rev12-memory-bench", "rev12-tls-bench", "rev12-ota"}, "unknown profile")
     require(version in {"5.3.2", "6.1.1"}, "unvalidated SDK")
     build = Path(build)
@@ -49,6 +49,14 @@ def verify(build, profile, version, *, write_report=True, memory_diagnostics=Fal
     require(config.get("TV4_UTC_TLS_BENCH", False) == (profile == "rev12-tls-bench"),
             "UTC/TLS probe must be enabled only for explicit TLS bench profile")
     ota = profile == "rev12-ota"
+    actual_reproducible = config.get("APP_REPRODUCIBLE_BUILD", False)
+    require(type(actual_reproducible) is bool and (not actual_reproducible or ota),
+            "reproducible release configuration belongs only to rev12-ota")
+    require(reproducible is None or (type(reproducible) is bool and reproducible == actual_reproducible),
+            "reproducible configuration must match explicit build selection")
+    if actual_reproducible:
+        require(not config.get("APP_COMPILE_TIME_DATE", False) and config.get("COMPILER_HIDE_PATHS_MACROS") is True,
+                "reproducible build must remove compilation date/time and map file macros")
     require(type(memory_diagnostics) is bool and (not memory_diagnostics or ota), "memory diagnostics require explicit OTA selection")
     require(config.get("TV4_OTA_MEMORY_DIAGNOSTICS", False)==memory_diagnostics,
             "memory tracing must match explicit build selection")
@@ -128,6 +136,16 @@ def verify(build, profile, version, *, write_report=True, memory_diagnostics=Fal
         require(struct.unpack_from("<H", image, 12)[0] == 9, f"image chip id must be ESP32-S3: {rel}")
         images[rel] = dict(bytes=len(image), sha256=hashlib.sha256(image).hexdigest())
     require(images["tv4_hmi.bin"]["bytes"] <= apps[0]["size"], "application exceeds factory partition")
+    if actual_reproducible:
+        from esp_app_image import inspect_app
+        image = (build / "tv4_hmi.bin").read_bytes()
+        app = inspect_app(image, version)
+        # The first segment begins with esp_app_desc_t: time[16], date[16].
+        require(image[32 + 80:32 + 112] == bytes(32), "compilation date/time retained in app descriptor")
+        elf = (build / "tv4_hmi.elf").read_bytes()
+        require(len(elf) >= 52 and elf[:6] == b"\x7fELF\x01\x01" and struct.unpack_from('<H', elf, 18)[0] == 94,
+                "expected linked Xtensa ELF32")
+        require(hashlib.sha256(elf).hexdigest() == app['elf_sha256'], "app/ELF hash mismatch")
     result = dict(profile=profile, sdk=version, target="esp32s3", flash_bytes=16*1024*1024,
                   mbedtls_allocator="spiram-only" if tls_bench else "internal-only",
                   mbedtls_certificate_dates=config.get("MBEDTLS_HAVE_TIME_DATE", False),
@@ -138,6 +156,7 @@ def verify(build, profile, version, *, write_report=True, memory_diagnostics=Fal
     if ota:
         result['ota_memory_diagnostics']=memory_diagnostics
         result['ota_install_reviewed']=install_policy(build)
+    if actual_reproducible:result['reproducible_build']=True
     if worker_stack_bench:result['ota_worker_stack_bench']=True
     if worker_tls_bench:result['ota_worker_tls_bench']=True
     if signed_check_bench:result['ota_signed_check_bench']=True
@@ -154,8 +173,9 @@ if __name__ == "__main__":
     parser.add_argument('--worker-stack-bench',action='store_true')
     parser.add_argument('--worker-tls-bench',action='store_true')
     parser.add_argument('--signed-check-bench',action='store_true')
+    parser.add_argument('--reproducible',action='store_true')
     args=parser.parse_args()
     try:
-        verify(args.build,args.profile,args.sdk,memory_diagnostics=args.memory_diagnostics,worker_stack_bench=args.worker_stack_bench,worker_tls_bench=args.worker_tls_bench,signed_check_bench=args.signed_check_bench)
+        verify(args.build,args.profile,args.sdk,memory_diagnostics=args.memory_diagnostics,worker_stack_bench=args.worker_stack_bench,worker_tls_bench=args.worker_tls_bench,signed_check_bench=args.signed_check_bench,reproducible=args.reproducible)
     except (ValueError, KeyError, OSError, struct.error) as error:
         raise SystemExit(f"Build validation failed: {error}")

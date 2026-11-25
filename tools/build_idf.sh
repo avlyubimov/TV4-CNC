@@ -8,6 +8,11 @@ memory_diagnostics="${TV4_OTA_MEMORY_DIAGNOSTICS:-0}"
 worker_stack_bench="${TV4_OTA_WORKER_STACK_BENCH:-0}"
 worker_tls_bench="${TV4_OTA_WORKER_TLS_BENCH:-0}"
 signed_check_bench="${TV4_OTA_SIGNED_CHECK_BENCH:-0}"
+reproducible="${TV4_REPRODUCIBLE_BUILD:-0}"
+case "$reproducible" in 0|1) ;; *) echo 'TV4_REPRODUCIBLE_BUILD must be 0 or 1' >&2; exit 2 ;; esac
+if [[ "$reproducible" == 1 && "$profile" != rev12-ota ]]; then
+  echo 'Reproducible release builds require explicit rev12-ota' >&2; exit 2
+fi
 case "$memory_diagnostics" in 0|1) ;; *) echo 'TV4_OTA_MEMORY_DIAGNOSTICS must be 0 or 1' >&2; exit 2 ;; esac
 case "$worker_stack_bench" in 0|1) ;; *) echo 'TV4_OTA_WORKER_STACK_BENCH must be 0 or 1' >&2; exit 2 ;; esac
 case "$worker_tls_bench" in 0|1) ;; *) echo 'TV4_OTA_WORKER_TLS_BENCH must be 0 or 1' >&2; exit 2 ;; esac
@@ -58,6 +63,7 @@ if [[ "$mode" == docker ]]; then
     -e "TV4_OTA_WORKER_STACK_BENCH=$worker_stack_bench" \
     -e "TV4_OTA_WORKER_TLS_BENCH=$worker_tls_bench" \
     -e "TV4_OTA_SIGNED_CHECK_BENCH=$signed_check_bench" \
+    -e "TV4_REPRODUCIBLE_BUILD=$reproducible" \
     -v "$project_root:/project" -w /project "$image" \
     bash /project/tools/build_idf.sh "$profile" "$version" local
 elif [[ "$mode" != local ]]; then
@@ -72,6 +78,7 @@ set -u
 actual="$(idf.py --version)"
 if [[ "$actual" != "ESP-IDF v$version" ]]; then echo "Wrong SDK: $actual (expected v$version)" >&2; exit 2; fi
 build="$project_root/build-idf-$version-$profile"
+if [[ "$reproducible" == 1 ]]; then build+="-reproducible"; fi
 if [[ "$memory_diagnostics" == 1 ]]; then build+="-memory-diagnostics"; fi
 if [[ "$worker_stack_bench" == 1 ]]; then build+="-worker-stack-bench"; fi
 if [[ "$worker_tls_bench" == 1 ]]; then build+="-worker-tls-bench"; fi
@@ -81,6 +88,11 @@ if [[ -n "$project_version" ]]; then version_args+=("-DPROJECT_VER=$project_vers
 defaults="$project_root/firmware/esp32-hmi/sdkconfig.defaults"
 if [[ "$profile" != headless ]]; then defaults+=";$project_root/firmware/esp32-hmi/sdkconfig.rev12"; fi
 if [[ "$profile" == rev12-ota ]]; then defaults+=";$project_root/firmware/esp32-hmi/sdkconfig.ota"; fi
+reproducible_args=()
+if [[ "$reproducible" == 1 ]]; then
+  defaults+=";$project_root/firmware/esp32-hmi/sdkconfig.reproducible"
+  reproducible_args+=(--reproducible)
+fi
 if [[ "$profile" == rev12-memory-bench ]]; then defaults+=";$project_root/firmware/esp32-hmi/sdkconfig.memory-bench"; fi
 if [[ "$profile" == rev12-tls-bench ]]; then defaults+=";$project_root/firmware/esp32-hmi/sdkconfig.tls-bench"; fi
 memory_args=()
@@ -106,4 +118,4 @@ ota_args=()
 if [[ -n "${TV4_OTA_CONTEXT:-}" ]]; then ota_args+=("-DTV4_OTA_CONTEXT=$(realpath -- "$TV4_OTA_CONTEXT")"); else ota_args+=("-DTV4_OTA_CONTEXT="); fi
 idf.py -C "$project_root/firmware/esp32-hmi" -B "$build" \
   -DIDF_TARGET=esp32s3 "-DSDKCONFIG=$build/sdkconfig" "-DSDKCONFIG_DEFAULTS=$defaults" "${version_args[@]}" "${ota_args[@]}" build
-python "$project_root/tools/check_idf_build.py" "$build" "$profile" "$version" "${memory_args[@]}"
+python "$project_root/tools/check_idf_build.py" "$build" "$profile" "$version" "${memory_args[@]}" "${reproducible_args[@]}"
