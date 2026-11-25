@@ -1,0 +1,139 @@
+{
+  "base_main": "5fb177bd6ad1451a5c78ea0e0d65c7680964d175",
+  "sdk_artifact_source_commit": "6b84584f71a9eef5058ae2bbd349b23a20d7e9ad",
+  "host_tests_pass": 291,
+  "sanitizer_tests_pass": 291,
+  "new_comparison_unit_tests": 10,
+  "new_signed_authoring_integration_cases": 1,
+  "signed_authoring_sdk_subcases": 2,
+  "physical_test_performed": false,
+  "firmware_runtime_changed_on_device": false,
+  "owner_key_used_for_these_checks": false,
+  "owner_context_in_ci": false,
+  "release_published": false,
+  "paired_builds": [
+    {
+      "source_commit": "6b84584f71a9eef5058ae2bbd349b23a20d7e9ad",
+      "sdk": "5.3.2",
+      "image": "espressif/idf@sha256:5b8f58d9d9caa45b689a31a0b6a0cc53b84594e0ba5fdd8d28eeef7d6123242a",
+      "clean_git_archives": true,
+      "compiler_caches_disabled": true,
+      "source_build_paths_differ": true,
+      "sdk_or_toolchain_paths_varied": false,
+      "device_access": false,
+      "comparison": {
+        "schema": "tv4-idf-reproducibility-1",
+        "sdk": "5.3.2",
+        "profile": "rev12-ota",
+        "source_commit_claim": "6b84584f71a9eef5058ae2bbd349b23a20d7e9ad",
+        "independent_compilation_verified_by_this_tool": false,
+        "equal_build_outputs": true,
+        "effective_configurations_equal": true,
+        "compile_date_time_absent": true,
+        "memory_diagnostics": false,
+        "artifacts": {
+          "tv4_hmi.bin": {
+            "bytes": 1553040,
+            "sha256": "6874f5253c9d64b19315255f25d4e3d5706b93f265d1acbe448d9d9fd5831f88"
+          },
+          "tv4_hmi.elf": {
+            "bytes": 13760940,
+            "sha256": "0388634ae2deb93b276ac3ad47583495a20a4df59cc73fe6a957c42e96e80c43"
+          },
+          "bootloader/bootloader.bin": {
+            "bytes": 21664,
+            "sha256": "20f24ef5f3ec91ae5de0762d6fa7260de5bf3e4a7e4ffca7bb9360d7a351ebf5"
+          },
+          "partition_table/partition-table.bin": {
+            "bytes": 3072,
+            "sha256": "b4c64dbabb0eb8a6fb1a735fb3f3a7981a36520560b70e267851144211e401f1"
+          }
+        },
+        "device_access": false,
+        "install_authorized": false,
+        "release_published": false
+      },
+      "elapsed_seconds": 142.09361696399992,
+      "builds": [
+        {
+          "compiler_project_path": "/repro-first",
+          "started_utc": "2026-11-25T15:21:15.493062+00:00",
+          "elapsed_seconds": 82.9990091919999,
+          "exit_code": 0
+        },
+        {
+          "compiler_project_path": "/different/depth/repro-second",
+          "started_utc": "2026-11-25T15:22:38.678464+00:00",
+          "elapsed_seconds": 58.73074952500065,
+          "exit_code": 0
+        }
+      ]
+    },
+    {
+      "source_commit": "6b84584f71a9eef5058ae2bbd349b23a20d7e9ad",
+      "sdk": "6.1.1",
+      "image": "espressif/idf@sha256:2b4f966c37eaedc19542b0637a5f850b2eff9478d8e858192aa0073d92c2dc91",
+      "clean_git_archives": true,
+      "compiler_caches_disabled": true,
+      "source_build_paths_differ": true,
+      "sdk_or_toolchain_paths_varied": false,
+      "device_access": false,
+      "comparison": {
+        "schema": "tv4-idf-reproducibility-1",
+        "sdk": "6.1.1",
+        "profile": "rev12-ota",
+        "source_commit_claim": "6b84584f71a9eef5058ae2bbd349b23a20d7e9ad",
+        "independent_compilation_verified_by_this_tool": false,
+        "equal_build_outputs": true,
+        "effective_configurations_equal": true,
+        "compile_date_time_absent": true,
+        "memory_diagnostics": false,
+        "artifacts": {
+          "tv4_hmi.bin": {
+            "bytes": 1600064,
+            "sha256": "2bc4157dc90d045e4a86d639ab3f1125753a10afa42d9aa1fe64495033728490"
+          },
+          "tv4_hmi.elf": {
+            "bytes": 14533544,
+            "sha256": "be7abb9c320090662ad1e7e9d8fa30731b719720d6f6185a340d1561086cfd87"
+          },
+          "bootloader/bootloader.bin": {
+            "bytes": 20672,
+            "sha256": "7033bd71da07bc4a5f2e5bfe199ff3d6bd0f92e88c569727ed3b6f0e883f200f"
+          },
+          "partition_table/partition-table.bin": {
+            "bytes": 3072,
+            "sha256": "b4c64dbabb0eb8a6fb1a735fb3f3a7981a36520560b70e267851144211e401f1"
+          }
+        },
+        "device_access": false,
+        "install_authorized": false,
+        "release_published": false
+      },
+      "elapsed_seconds": 112.67361596000046,
+      "builds": [
+        {
+          "compiler_project_path": "/repro-first",
+          "started_utc": "2026-11-25T15:21:21.650996+00:00",
+          "elapsed_seconds": 51.00092678800047,
+          "exit_code": 0
+        },
+        {
+          "compiler_project_path": "/different/depth/repro-second",
+          "started_utc": "2026-11-25T15:22:12.966364+00:00",
+          "elapsed_seconds": 61.1495456749999,
+          "exit_code": 0
+        }
+      ]
+    }
+  ],
+  "source_ci_pass": 17,
+  "host_test_input_files_sha256": {
+    "CMakeLists.txt": "e6b9b9cbbcb3dd82a265c4a30d2728b3bc933e0d45f4004fc07c9da8fe80870c",
+    "tools/build_idf.sh": "d824e2b958bbb61d632897d77f1e3e15ae53d0dc31b1b89707da5340cc751edf",
+    "tools/check_idf_build.py": "cd251a6563f9697f62696dbd43ac0877ba9facb5b63f77c4b4fc9ccbba6e7265",
+    "tools/check_idf_reproducibility.py": "bb4c02aa579d3747e2b5a7d28a6be1b88db7e12aa739c413bad182af2131f557",
+    "tests/idf_reproducibility_tests.py": "5e3ebc1b482e7b9786943f18d91f2c2c45fde93f1d8574a20c1f6b0b1919bd31",
+    "tests/ota_release_tests.py": "36d996bbaede155e2cf875e18f20d3809051688aa58487e565042d052934821f"
+  }
+}

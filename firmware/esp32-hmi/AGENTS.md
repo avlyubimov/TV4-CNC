@@ -1,17 +1,23 @@
 # ESP32 HMI — специализированные правила
 
-Текущий отдельный этап от main 5fb177b / после PR #90 — воспроизводимый
-rev12-ota build для следующего P1 пакета. TV4_REPRODUCIBLE_BUILD=1 включает
-штатную опцию SDK, отдельный build tree и проверку app descriptor/ELF.
-Обычные профили прежние; сравнить две чистые сборки в разных путях на каждом
-pinned SDK, без нормализации/strip и без доступа к устройствам.
-План: docs/plans/P2_REPRODUCIBLE_HMI.md от корня.
+Отдельный этап от main 5fb177b / после PR #90: воспроизводимый rev12-ota build
+проверен на source 6b84584. Две clean builds в разных путях/времени для каждого
+pinned SDK дают одинаковые app BIN/ELF, bootloader BIN и partition table.
+Первый source 848fd54 не совпал: внешние cJSON headers оставляли три абсолютных
+пути в debug data. FAIL сохранён, узкая prefix map исправлена для всех main units;
+критерии побайтового сравнения прежние. Четыре реальные fixed builds PASS.
 
-Владелец отдельно утвердил новую bench-only policy .4→.5 до 27 ноября 2026
-08:00 Asia/Almaty, с прежним ключом/floors/SNTP age/skew. Она хранится в новых
-локальных reviewed contexts; старые файлы не менять. Это не production policy,
-не разрешение публикации или аппаратного сеанса. Точные пакеты ещё готовятся.
-На ESP32 оставлен bench.4 OTA1 VALID, F407 ee7d179 не трогать.
+291 host/291 sanitizers,10 comparison cases, новый signed-authoring case обоих
+SDK (29 cases total), source CI 17 PASS. Явный TV4_REPRODUCIBLE_BUILD=1 только
+rev12-ota; ordinary profiles, память/частоты/драйверы/TLS/gates прежние. Читайте
+ docs/REPRODUCIBLE_HMI.md и docs/evidence/build/esp32-ota-reproducible/ от корня.
+
+Владелец утвердил новые bench-only contexts .4→.5 до 27 ноября 2026 08:00
+Asia/Almaty с прежним ключом/floors/anchor age/skew. Они в новых локальных файлах;
+старые contexts и published assets не менять. Configured release payload и
+точные publication/hardware пакеты ещё нужны; это не production policy или
+разрешение их выполнить. Платы в этом этапе не открывались: bench.4 OTA1 VALID
+и F407 ee7d179 сохранены по предыдущему закрытому стенду. Self-merge запрещён.
 Ниже закрытые результаты, не активная очередь.
 
 Закрыто PR #90 от main 10cd8cd / source 104fb06: понятный отказ OTA по

@@ -170,5 +170,9 @@ jobs:
           test -s docs/RELEASE_POLICY_REVIEW.md
           test -s docs/REPRODUCIBLE_HMI.md
           test -s docs/plans/P2_REPRODUCIBLE_HMI.md
+          test -s docs/evidence/build/esp32-ota-reproducible/README.md
+          for receipt in results first-attempt source-ci; do
+            python3 -m json.tool "docs/evidence/build/esp32-ota-reproducible/$receipt.json" > /dev/null
+          done
           test -s docs/FIRMWARE_INFO_UI.md
           echo 'Documentation scaffold present'

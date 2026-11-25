@@ -2,16 +2,19 @@
 
 ## Актуальные блокеры P1
 
-Прежнее OTA-окно **истекло 25 ноября 2026, 08:00 Asia/Almaty**; продления нет.
-[Отрицательный стенд 104fb06](evidence/hardware/2026-11-25-esp32-time-policy/README.md)
-закрыт: первый SNTP timeout сохранён, один отдельно разрешённый повтор получил
-точный TIME_RANGE/error24 и cleanup, все 45 guards PASS. Исходные OTA0/metadata,
-новое чтение 16 МиБ/две NVMe-копии и bench.4 OTA1 VALID подтверждены; владелец
-проверил экран/касания/Wi-Fi. Причина первого таймаута остаётся неизвестной.
-290 host/290 sanitizers/оба SDK/source CI 15 PASS; runtime 5.3.2 не проверен.
-Новая строка UI пока только source/временная диагностика, текущий release прежний.
-Для положительного OTA нужно новое решение о времени/контексте/версиях;
-RF/AP/power loss, production budgets/discovery и P2 reproducibility открыты.
+Новая bench-only policy .4→.5 утверждена отдельно до 27 ноября 2026 08:00
+Asia/Almaty. Новые reviewed contexts локальны; старый период на установленном
+bench.4 истёк 25 ноября 08:00 и не продлён в прежних файлах. Для следующего P1
+требуются exact configured образы/manifest/source/asset review и отдельный
+конечный стенд; политика не является разрешением публикации или записи.
+
+[Воспроизводимые SDK-сборки](evidence/build/esp32-ota-reproducible/README.md)
+проверены на source 6b84584: две clean builds на каждом SDK, exact BIN/ELF/
+bootloader/table PASS,291 host/291 sanitizers/source CI 17 PASS. Это пока
+unprovisioned build pairs; configured .5 требует своей проверки. Первая попытка
+с абсолютными путями cJSON headers сохранена как FAIL; сравнение не ослаблено.
+Production policy/budget/discovery, independent RF/AP/power loss и runtime 5.3.2
+остаются открытыми. В этом этапе hardware не открывался.
 
 [Реальное отключение кнопкой STA, cleanup и полный retry в том же процессе](evidence/hardware/2026-11-24-esp32-wifi-retry/README.md)
 PASS; после штатного reboot/self-test и нового чтения 16 МиБ оставлен bench.4

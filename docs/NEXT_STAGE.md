@@ -1,19 +1,26 @@
 # P1 — ESP32 OTA: допуск установки и результаты стендов
 
-## Текущий отдельный этап: воспроизводимый пакет для P1
+## Воспроизводимая база следующего пакета P1 проверена
 
-От main 5fb177b / после PR #90 добавляется [воспроизводимая сборка HMI](REPRODUCIBLE_HMI.md):
-две чистые сборки в разных путях и в разное время для каждого pinned SDK,
-побайтовое равенство app BIN/ELF, bootloader и partition table. Используется
-штатная opt-in опция ESP-IDF; обычные профили и runtime gates сохраняются.
-План — [P2 reproducible HMI](plans/P2_REPRODUCIBLE_HMI.md). Аппаратных операций нет.
+От main 5fb177b / после PR #90 выполнены [четыре чистые SDK-сборки](evidence/build/esp32-ota-reproducible/README.md)
+source 6b84584. В каждой паре app BIN/ELF, bootloader и table совпали побайтово;
+эффективные конфигурации одинаковы. Первое несовпадение из-за внешних cJSON
+headers сохранено, исправление не ослабляет сравнение. Обычные профили прежние.
+291 host/291 sanitizers,10 comparison cases,29 signed-authoring cases и source
+CI 17 PASS. [Команды и границы](REPRODUCIBLE_HMI.md); SDK/toolchain relocation
+и hardware/performance этим не подтверждены. Платы не открывались.
 
 Владелец утвердил новые локальные bench-only contexts .4→.5 до 27 ноября 2026
 08:00 Asia/Almaty с прежним ключом/floors/anchor age/skew. Старые contexts и
-published assets неизменны. На плате всё ещё bench.4 с прежним периодом;
-эта новая policy не записывалась и не разрешает конкретный стенд или публикацию.
-Следующий P1 пакет потребует точных новых образов/CI/проверки и отдельного
-review публикации и конечной аппаратной процедуры.
+published assets неизменны. На ESP32 остаётся bench.4 с прежним периодом;
+новая policy не записана и не разрешает конкретный стенд или публикацию.
+
+Следующий измеримый P1 результат — реальные configured образы принимающей .4
+и кандидата .5, привязанные к одному точному проверенному source. Для .5 нужно
+подтвердить собственное равенство clean builds, подготовить signed manifest/
+SHA/лицензии/notes и точный список assets. Затем отдельное owner review
+публикации и конечного CHECK/INSTALL/self-test/readback стенда с восстановлением.
+[Новые release gates](RELEASE_PROCESS.md) сохраняются, self-merge запрещён.
 
 ## Закрыто 25 ноября: отказ по периоду OTA проверен, bench.4 сохранён
 
