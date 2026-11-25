@@ -190,6 +190,12 @@ static void ota_progress_checks(firmware_view_t *view) {
     assert(!lv_obj_has_state(view->action[0],LV_STATE_DISABLED) && lv_obj_has_state(view->action[1],LV_STATE_DISABLED) && lv_obj_has_state(view->action[2],LV_STATE_DISABLED));
     lv_refr_now(display);n=(ota_invalidations){0};
     firmware_view_ota_update(view,&ota_sample);assert(n.total==0);
+    ota_sample.error=TV4_UPDATE_TIME_RANGE_ERROR;firmware_view_ota_update(view,&ota_sample);
+    assert(!strcmp(lv_label_get_text(view->update_state),tr(NULL,S_OTA_TIME_RANGE)));
+    assert(!lv_obj_has_state(view->action[0],LV_STATE_DISABLED) && lv_obj_has_state(view->action[1],LV_STATE_DISABLED) && lv_obj_has_state(view->action[2],LV_STATE_DISABLED));
+    check_dashboard_layout(lv_obj_get_parent(view->panel));save_frame("ota-time-range-fixture");
+    lv_refr_now(display);n=(ota_invalidations){0};
+    firmware_view_ota_update(view,&ota_sample);assert(n.total==0);
     lv_tick_inc(UINT32_MAX-lv_tick_get()-100);
     ota_sample.state=TV4_UPDATE_WRITING;ota_sample.received=0;firmware_view_ota_update(view,&ota_sample);
     lv_refr_now(display);n=(ota_invalidations){0};

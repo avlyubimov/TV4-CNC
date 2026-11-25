@@ -1,5 +1,21 @@
 # ESP32 HMI — специализированные правила
 
+Текущий отдельный P1 от main10cd8cd / после PR #89: понятный отказ OTA по
+времени и отрицательная проверка истёкшего контекста. Только SNTP TIME_REJECTED
++ TIME_RANGE + cleanup OK даёт service error24 / «Дата вне разрешённого периода
+OTA»; до/после диапазона одинаковы, реальная дата не считается доказанной SNTP.
+290 host/290 sanitizers и 16 новых actual-worker time cases PASS. Source UI/
+numeric log изменены; требуется сборка обоих SDK/CI, затем новый точный finite
+expired-context пакет. Аппаратная проверка этого кода пока не выполнена.
+
+Исходные contexts истекли25ноября2026 08:00 Asia/Almaty: не продлевать,
+не переписывать, не использовать для положительного INSTALL. Для negative
+fixture допустима побайтовая копия прежнего unpublished receiving `.3` context;
+ключ/версии/пороги/date range не меняются. Published assets immutable. После
+стенда оставить текущий bench.4 OTA1 VALID. Standing isolated-board permission
+сохраняется; движения/CAN/eFuse/option bytes/new release/self-merge не разрешены.
+План: docs/plans/P1_TIME_POLICY_REFUSAL.md от корня. Ниже последний закрытый стенд.
+
 Текущий P1 от main bf5c325 после PR #88: signed STA Disconnect → transport
 failure/cleanup → новое подключение/CHECK → полный INSTALL в одной загрузке `.3`
 PASS на неизменяемом source6c7b1d5 / SDK6.1.1. Штатный reboot/self-test/VALID,

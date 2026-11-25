@@ -5,8 +5,8 @@ typedef enum {TV4_UPDATE_OFF,TV4_UPDATE_SETUP,TV4_UPDATE_BOOT,TV4_UPDATE_IDLE,
  TV4_UPDATE_CHECKING,TV4_UPDATE_READY,TV4_UPDATE_WRITING,TV4_UPDATE_COMMIT,
  TV4_UPDATE_RESTART,TV4_UPDATE_ERROR,TV4_UPDATE_BOOT_FAILED} tv4_update_state;
 typedef enum {TV4_UPDATE_CHECK,TV4_UPDATE_INSTALL,TV4_UPDATE_CANCEL,TV4_UPDATE_REBOOT} tv4_update_command;
-/* Existing terminal error encoding; cancellation is not a network failure. */
-enum {TV4_UPDATE_CANCELLED_ERROR=10};
+/* Existing codes stay fixed. A range refusal can be before or after the window. */
+enum {TV4_UPDATE_CANCELLED_ERROR=10,TV4_UPDATE_TIME_RANGE_ERROR=24};
 typedef struct {
     bool enabled,stack_valid,install_allowed;tv4_update_state state;unsigned error;
     uint32_t received,total,stack_watermark;char version[65];uint8_t sha256[32];
