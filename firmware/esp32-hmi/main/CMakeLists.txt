@@ -21,9 +21,10 @@ set_source_files_properties("../../../third_party/cjson/cJSON.c" PROPERTIES COMP
   COMPILE_OPTIONS "-include;${CMAKE_CURRENT_LIST_DIR}/../../../third_party/cjson/tv4_namespace.h")
 if(CONFIG_APP_REPRODUCIBLE_BUILD)
     # cJSON is outside IDF's PROJECT_DIR; the SDK's project prefix map does
-    # not cover it. Map this source/header directory only in explicit builds.
+    # not cover it. Other main units include cJSON.h too, so map this one
+    # external directory for every main unit, only in explicit builds.
     get_filename_component(tv4_third_party "${CMAKE_CURRENT_LIST_DIR}/../../../third_party" REALPATH)
-    set_property(SOURCE "../../../third_party/cjson/cJSON.c" APPEND PROPERTY COMPILE_OPTIONS
+    target_compile_options(${COMPONENT_LIB} PRIVATE
         "-fdebug-prefix-map=${tv4_third_party}=/TV4_THIRD_PARTY"
         "-fmacro-prefix-map=${tv4_third_party}=/TV4_THIRD_PARTY")
 endif()
