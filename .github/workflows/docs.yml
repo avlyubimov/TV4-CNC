@@ -27,6 +27,7 @@ jobs:
           test -s docs/plans/P1_SIGNED_CHECK_BUNDLE.md
           test -s docs/OTA_SIGNED_CHECK_BUNDLE.md
           test -s LICENSE
+          test -s docs/ESP32_RESTART_BENCH.md
           test -s docs/evidence/build/esp32-ota-bench5/README.md
           for receipt in results publication ci reproducibility metadata-oracle; do
             python3 -m json.tool "docs/evidence/build/esp32-ota-bench5/$receipt.json" > /dev/null

@@ -257,15 +257,22 @@ add_test(NAME ota_memory_diagnostics_disabled COMMAND ota_memory_diagnostics_dis
 add_test(NAME ota_memory_diagnostics_artifacts COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/tests/ota_memory_diagnostics_build_tests.py)
 
 # Execute the real ESP service against an SDK boundary, never a board/network.
+add_test(NAME ota_restart_build_guards COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/tests/ota_restart_build_tests.py)
+set_tests_properties(ota_restart_build_guards PROPERTIES TIMEOUT 30)
 add_test(NAME ota_worker_stack_build_guards COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/tests/ota_worker_stack_build_tests.py)
 set_tests_properties(ota_worker_stack_build_guards PROPERTIES TIMEOUT 30)
-foreach(stack_bench 0 1 2 3 4 5 6 7 8 9)
+foreach(stack_bench 0 1 2 3 4 5 6 7 8 9 10)
   set(service_test ota_worker_stack_${stack_bench}_tests)
   add_executable(${service_test} tests/ota_worker_stack_tests.c ${HMI}/ota/service.c)
+  if(stack_bench EQUAL 10)
+    target_sources(${service_test} PRIVATE ${HMI}/ota/restart_bench.c)
+    target_link_options(${service_test} PRIVATE "LINKER:--wrap=tv4_ota_resource_sample_current")
+  endif()
   target_include_directories(${service_test} PRIVATE tests/ota_service_sdk tests ${HMI}/ota ${HMI}/network)
   target_compile_definitions(${service_test} PRIVATE ESP_PLATFORM=1
     SERVICE_TEST_BENCH=$<OR:$<STREQUAL:${stack_bench},1>,$<STREQUAL:${stack_bench},2>>
     SERVICE_TEST_TLS_BENCH=$<STREQUAL:${stack_bench},2>
+    SERVICE_TEST_RESTART_BENCH=$<STREQUAL:${stack_bench},10>
     SERVICE_TEST_PROVISIONED=$<OR:$<STREQUAL:${stack_bench},3>,$<STREQUAL:${stack_bench},4>,$<STREQUAL:${stack_bench},5>,$<STREQUAL:${stack_bench},6>,$<STREQUAL:${stack_bench},7>,$<STREQUAL:${stack_bench},8>,$<STREQUAL:${stack_bench},9>>
     SERVICE_TEST_SIGNED_BENCH=$<OR:$<STREQUAL:${stack_bench},4>,$<STREQUAL:${stack_bench},5>>
     SERVICE_TEST_VALID_TRUST=$<OR:$<STREQUAL:${stack_bench},4>,$<STREQUAL:${stack_bench},6>,$<STREQUAL:${stack_bench},7>,$<STREQUAL:${stack_bench},8>,$<STREQUAL:${stack_bench},9>>
@@ -315,5 +322,13 @@ foreach(stack_bench 0 1 2 3 4 5 6 7 8 9)
   if(stack_bench EQUAL 9)
     add_test(NAME ota_time_policy_install_after_check COMMAND ${service_test} operator-time-install-after)
     set_tests_properties(ota_time_policy_install_after_check PROPERTIES TIMEOUT 15)
+  endif()
+  if(stack_bench EQUAL 10)
+    foreach(case restart-ext restart-warm restart-wdt restart-panic restart-unknown offline wait-health
+        restart-hook-fail restart-health-race restart-internal restart-largest restart-psram
+        restart-psram-largest restart-stack restart-unavailable restart-floors)
+      add_test(NAME ota_restart_${case} COMMAND ${service_test} ${case})
+      set_tests_properties(ota_restart_${case} PROPERTIES TIMEOUT 15)
+    endforeach()
   endif()
 endforeach()

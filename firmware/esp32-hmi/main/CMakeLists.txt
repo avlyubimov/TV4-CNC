@@ -1,5 +1,12 @@
 include(${CMAKE_CURRENT_LIST_DIR}/../../../third_party/cjson/check.cmake)
 set(platform_sources "../ota/memory_diagnostics.c" "../ota/dma_diagnostics.c" "../ui/lvgl_psram.c")
+if(CONFIG_TV4_OTA_RESTART_BENCH)
+    if(NOT CONFIG_TV4_OTA_ENABLED OR NOT CONFIG_TV4_OTA_MEMORY_DIAGNOSTICS OR TV4_OTA_CONTEXT OR
+       CONFIG_TV4_OTA_WORKER_STACK_BENCH OR CONFIG_TV4_OTA_WORKER_TLS_BENCH OR CONFIG_TV4_OTA_SIGNED_CHECK_BENCH)
+        message(FATAL_ERROR "Restart bench requires exclusive unprovisioned OTA trace")
+    endif()
+    list(APPEND platform_sources "../ota/restart_bench.c")
+endif()
 if(CONFIG_TV4_BOARD_REV12)
     if(NOT CONFIG_SPIRAM OR NOT CONFIG_SPIRAM_MODE_OCT)
         message(FATAL_ERROR "Rev 1.2 bench profile requires verified octal PSRAM configuration")
@@ -12,6 +19,9 @@ idf_component_register(SRCS ${platform_sources} "main.c" "../ota/verification.c"
  LDFRAGMENTS "../ota/dma_diagnostics.lf")
 # lv_font_conv resources use the short LVGL include with managed IDF components.
 target_compile_definitions(${COMPONENT_LIB} PRIVATE LV_LVGL_H_INCLUDE_SIMPLE=1)
+if(CONFIG_TV4_OTA_RESTART_BENCH)
+    target_link_options(${COMPONENT_LIB} INTERFACE "LINKER:--wrap=esp_restart_noos")
+endif()
 # Keep the verification entry point in the ELF so both SDK jobs resolve its
 # crypto symbols. Ordinary profiles remain read-only; rev12-ota explicitly
 # links the worker/backend below and still requires a local reviewed context.
@@ -85,3 +95,8 @@ set_source_files_properties("../ota/memory_diagnostics.c" "../ota/dma_diagnostic
 set_source_files_properties("../ui/lvgl_psram.c" PROPERTIES
     COMPILE_OPTIONS "-fstack-usage;-Wframe-larger-than=128")
 set_property(SOURCE "main.c" "../ota/service.c" "../ota/utc_tls_bench.c" APPEND PROPERTY COMPILE_OPTIONS "-fstack-usage")
+
+if(CONFIG_TV4_OTA_RESTART_BENCH)
+    set_source_files_properties("../ota/restart_bench.c" PROPERTIES
+        COMPILE_OPTIONS "-fstack-usage;-Wframe-larger-than=128")
+endif()
