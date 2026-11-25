@@ -3,6 +3,7 @@ import json
 import os
 from pathlib import Path
 import subprocess
+import struct
 import sys
 import tempfile
 import unittest
@@ -14,14 +15,29 @@ import ota_setup_tests as fixtures
 import check_restart_bench as linked
 
 class RestartGuards(unittest.TestCase):
+    def test_analysis_copy_preserves_every_loaded_byte_and_memory_map(self):
+        # Header-only synthetic ELF; payload is text, not executable MCU code.
+        raw=bytearray(384);raw[:6]=b'\x7fELF\x01\x01'
+        struct.pack_into('<III',raw,24,0x40378000,52,128)
+        struct.pack_into('<HHHHHH',raw,40,52,32,1,40,3,1)
+        struct.pack_into('<8I',raw,52,1,352,0x40378000,0x40378000,16,16,5,4)
+        names=b'\0.shstrtab\0.xt.prop\0';raw[256:256+len(names)]=names
+        struct.pack_into('<10I',raw,168,1,3,0,0,256,len(names),0,0,1,0)
+        struct.pack_into('<10I',raw,208,11,1,0,0,320,12,0,0,4,0)
+        raw[352:368]=b'NOT MCU CODE!!!!'
+        copy=linked.property_analysis_copy(bytes(raw))
+        self.assertEqual(linked.loaded_bytes(raw),linked.loaded_bytes(copy))
+        self.assertEqual(copy[:228],raw[:228]);self.assertEqual(copy[232:],raw[232:])
+        raw[216]=2 # SHF_ALLOC forbids changing even a property header.
+        with self.assertRaises(ValueError):linked.property_analysis_copy(bytes(raw))
     def test_linked_checker_refuses_cached_markers_or_sdk_bypass(self):
         # Synthetic symbol/disassembly transcript only: never MCU instructions.
         f=self.fixture()
         symbols={name:[0x40378000+i*64,32,'FUNC'] for i,name in enumerate(linked.FUNCTIONS)}
         symbols.update({name:[0x3fc90000+i*128,64,'OBJECT'] for i,name in enumerate(linked.FORMATS)})
-        dis={'esp_restart':'<__wrap_esp_restart_noos>',
-             '__wrap_esp_restart_noos':'<esp_restart_noos> <tv4_restart_noos_format> <esp_rom_printf>',
-             'shutdown_marker':'<tv4_restart_hook_format> <esp_rom_printf>'}
+        dis={'esp_restart':'<esp_restart>:\n<__wrap_esp_restart_noos>',
+             '__wrap_esp_restart_noos':'<__wrap_esp_restart_noos>:\n<esp_restart_noos> <tv4_restart_noos_format> <esp_rom_printf>',
+             'shutdown_marker':'<shutdown_marker>:\n<tv4_restart_hook_format> <esp_rom_printf>'}
         def run():
             def output(args,**unused):
                 if args[0]=='readelf':
