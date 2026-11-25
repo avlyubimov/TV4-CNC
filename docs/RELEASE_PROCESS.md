@@ -1,6 +1,23 @@
 # GitHub Releases и CI/CD
 
-## Актуальный экспериментальный выпуск bench.4
+## Bench.5: публикация PASS, аппаратная приёмка FAIL
+
+[Prerelease v0.1.0-bench.5](https://github.com/avlyubimov/TV4-CNC/releases/tag/v0.1.0-bench.5)
+опубликован по отдельному разрешению на source/tag
+`0dbc1e919bc671554a005dac1896562c6554fe26` и точные 12 файлов.
+Все файлы проверены обратным скачиванием, SHA-256, подписью и полным BIN;
+CI тега 17/17 PASS. [Программные проверки](evidence/build/esp32-ota-bench5/README.md).
+Признаками latest/stable релиз не отмечен.
+
+[Аппаратный INSTALL](evidence/hardware/2026-11-25-esp32-bench5/README.md):
+сеть, запись и ресурсы PASS; после перезапуска RTCWDT/watchdog_boot=1 дали
+общий FAIL. Один полный возврат снимка 16 МиБ, verify, загрузка и подтверждение
+владельца PASS; на плате bench.4. Публичный `.5` остаётся экспериментальным
+артефактом с непройденной проверкой перезапуска. Готовность production OTA не
+заявляется, проверка watchdog не ослабляется. Подписанные файлы и теги не
+переписывать; новые контексты, версии и публикации проходят свои review.
+
+## История: экспериментальный выпуск bench.4
 
 [v0.1.0-bench.4](https://github.com/avlyubimov/TV4-CNC/releases/tag/v0.1.0-bench.4)
 опубликован после source30/main15 PASS и отдельного exact approval владельца;

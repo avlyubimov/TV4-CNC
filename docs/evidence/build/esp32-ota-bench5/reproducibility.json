@@ -1,0 +1,335 @@
+{
+  "schema": 1,
+  "source_commit": "0dbc1e919bc671554a005dac1896562c6554fe26",
+  "scope": "Local independent clean builds from one clean source archive; not hardware acceptance or signed CI attestation.",
+  "compiler_cache_disabled": true,
+  "artifact_comparison": "All raw bytes, without normalization or post-link rewriting",
+  "configured_candidate_version": "0.1.0-bench.5",
+  "configured_receiving_version": "0.1.0-bench.4",
+  "public_key_sha256": "7d75872b119701484020364d1f52fb287483939b9c627073ded18a687df61df0",
+  "private_key_published": false,
+  "context_files_published": false,
+  "compile_date_time_absent": true,
+  "tls_certificate_date_validation_retained": true,
+  "sdk_results": [
+    {
+      "sdk": "5.3.2",
+      "sdk_image": "espressif/idf@sha256:5b8f58d9d9caa45b689a31a0b6a0cc53b84594e0ba5fdd8d28eeef7d6123242a",
+      "candidate_pair": {
+        "schema": "tv4-idf-reproducibility-1",
+        "sdk": "5.3.2",
+        "profile": "rev12-ota",
+        "source_commit_claim": "0dbc1e919bc671554a005dac1896562c6554fe26",
+        "independent_compilation_verified_by_this_tool": false,
+        "equal_build_outputs": true,
+        "effective_configurations_equal": true,
+        "compile_date_time_absent": true,
+        "memory_diagnostics": false,
+        "artifacts": {
+          "tv4_hmi.bin": {
+            "bytes": 1553712,
+            "sha256": "ef648c65e0a82262a87b00d82ab055c7ee98e61671358b78a74adaf2d1d77a4e"
+          },
+          "tv4_hmi.elf": {
+            "bytes": 13762640,
+            "sha256": "df73b0d65d5567c6aac0f7c0d9eeedac1f75a380745b1cf24fa9092ef85526ae"
+          },
+          "bootloader/bootloader.bin": {
+            "bytes": 21664,
+            "sha256": "20f24ef5f3ec91ae5de0762d6fa7260de5bf3e4a7e4ffca7bb9360d7a351ebf5"
+          },
+          "partition_table/partition-table.bin": {
+            "bytes": 3072,
+            "sha256": "b4c64dbabb0eb8a6fb1a735fb3f3a7981a36520560b70e267851144211e401f1"
+          }
+        },
+        "device_access": false,
+        "install_authorized": false,
+        "release_published": false
+      },
+      "builds": [
+        {
+          "role": "candidate",
+          "pair_member": 1,
+          "elapsed_seconds": 70.408,
+          "app": {
+            "bytes": 1553712,
+            "sha256": "ef648c65e0a82262a87b00d82ab055c7ee98e61671358b78a74adaf2d1d77a4e",
+            "project": "tv4_hmi",
+            "version": "0.1.0-bench.5",
+            "idf_version": "v5.3.2",
+            "elf_sha256": "df73b0d65d5567c6aac0f7c0d9eeedac1f75a380745b1cf24fa9092ef85526ae",
+            "segments": 5,
+            "chip_revision_min": 0,
+            "chip_revision_max": 99,
+            "flash_bytes": 16777216,
+            "flash_mode": "dio",
+            "flash_frequency_mhz": 80
+          },
+          "elf_sha256": "df73b0d65d5567c6aac0f7c0d9eeedac1f75a380745b1cf24fa9092ef85526ae"
+        },
+        {
+          "role": "candidate",
+          "pair_member": 2,
+          "elapsed_seconds": 64.519,
+          "app": {
+            "bytes": 1553712,
+            "sha256": "ef648c65e0a82262a87b00d82ab055c7ee98e61671358b78a74adaf2d1d77a4e",
+            "project": "tv4_hmi",
+            "version": "0.1.0-bench.5",
+            "idf_version": "v5.3.2",
+            "elf_sha256": "df73b0d65d5567c6aac0f7c0d9eeedac1f75a380745b1cf24fa9092ef85526ae",
+            "segments": 5,
+            "chip_revision_min": 0,
+            "chip_revision_max": 99,
+            "flash_bytes": 16777216,
+            "flash_mode": "dio",
+            "flash_frequency_mhz": 80
+          },
+          "elf_sha256": "df73b0d65d5567c6aac0f7c0d9eeedac1f75a380745b1cf24fa9092ef85526ae"
+        },
+        {
+          "role": "receiving",
+          "pair_member": 1,
+          "elapsed_seconds": 83.311,
+          "app": {
+            "bytes": 1555792,
+            "sha256": "4ca7fb687b73c9203d746ad8759bc26e186e88df9bce6c39ad1746ba2efa7aac",
+            "project": "tv4_hmi",
+            "version": "0.1.0-bench.4",
+            "idf_version": "v5.3.2",
+            "elf_sha256": "0d0955f345cec64326979102400349b8a600ef64bdbd2c0dbd344d2f56e6cca7",
+            "segments": 5,
+            "chip_revision_min": 0,
+            "chip_revision_max": 99,
+            "flash_bytes": 16777216,
+            "flash_mode": "dio",
+            "flash_frequency_mhz": 80
+          },
+          "elf_sha256": "0d0955f345cec64326979102400349b8a600ef64bdbd2c0dbd344d2f56e6cca7"
+        }
+      ],
+      "compiled_local_trust_and_policy_checked": true,
+      "receiving_pair_qualified": false
+    },
+    {
+      "sdk": "6.1.1",
+      "sdk_image": "espressif/idf@sha256:2b4f966c37eaedc19542b0637a5f850b2eff9478d8e858192aa0073d92c2dc91",
+      "candidate_pair": {
+        "schema": "tv4-idf-reproducibility-1",
+        "sdk": "6.1.1",
+        "profile": "rev12-ota",
+        "source_commit_claim": "0dbc1e919bc671554a005dac1896562c6554fe26",
+        "independent_compilation_verified_by_this_tool": false,
+        "equal_build_outputs": true,
+        "effective_configurations_equal": true,
+        "compile_date_time_absent": true,
+        "memory_diagnostics": false,
+        "artifacts": {
+          "tv4_hmi.bin": {
+            "bytes": 1600720,
+            "sha256": "d6a59a78595541d0fa45fc327dd2ba0a6e0fb5006303c0f5921c4669cd49347a"
+          },
+          "tv4_hmi.elf": {
+            "bytes": 14538948,
+            "sha256": "b6c7d115370f6c2e3913ab0db62fc176007ca86f67c61f87b9f76b761b9c1c6c"
+          },
+          "bootloader/bootloader.bin": {
+            "bytes": 20672,
+            "sha256": "7033bd71da07bc4a5f2e5bfe199ff3d6bd0f92e88c569727ed3b6f0e883f200f"
+          },
+          "partition_table/partition-table.bin": {
+            "bytes": 3072,
+            "sha256": "b4c64dbabb0eb8a6fb1a735fb3f3a7981a36520560b70e267851144211e401f1"
+          }
+        },
+        "device_access": false,
+        "install_authorized": false,
+        "release_published": false
+      },
+      "builds": [
+        {
+          "role": "candidate",
+          "pair_member": 1,
+          "elapsed_seconds": 68.347,
+          "app": {
+            "bytes": 1600720,
+            "sha256": "d6a59a78595541d0fa45fc327dd2ba0a6e0fb5006303c0f5921c4669cd49347a",
+            "project": "tv4_hmi",
+            "version": "0.1.0-bench.5",
+            "idf_version": "v6.1.1",
+            "elf_sha256": "b6c7d115370f6c2e3913ab0db62fc176007ca86f67c61f87b9f76b761b9c1c6c",
+            "segments": 6,
+            "chip_revision_min": 0,
+            "chip_revision_max": 99,
+            "flash_bytes": 16777216,
+            "flash_mode": "dio",
+            "flash_frequency_mhz": 80
+          },
+          "elf_sha256": "b6c7d115370f6c2e3913ab0db62fc176007ca86f67c61f87b9f76b761b9c1c6c"
+        },
+        {
+          "role": "candidate",
+          "pair_member": 2,
+          "elapsed_seconds": 89.403,
+          "app": {
+            "bytes": 1600720,
+            "sha256": "d6a59a78595541d0fa45fc327dd2ba0a6e0fb5006303c0f5921c4669cd49347a",
+            "project": "tv4_hmi",
+            "version": "0.1.0-bench.5",
+            "idf_version": "v6.1.1",
+            "elf_sha256": "b6c7d115370f6c2e3913ab0db62fc176007ca86f67c61f87b9f76b761b9c1c6c",
+            "segments": 6,
+            "chip_revision_min": 0,
+            "chip_revision_max": 99,
+            "flash_bytes": 16777216,
+            "flash_mode": "dio",
+            "flash_frequency_mhz": 80
+          },
+          "elf_sha256": "b6c7d115370f6c2e3913ab0db62fc176007ca86f67c61f87b9f76b761b9c1c6c"
+        },
+        {
+          "role": "receiving",
+          "pair_member": 1,
+          "elapsed_seconds": 61.021,
+          "app": {
+            "bytes": 1602720,
+            "sha256": "4f34efa8a8078d215ae4eeaeb43a70220f832998039cfd9a6f38d12be1010512",
+            "project": "tv4_hmi",
+            "version": "0.1.0-bench.4",
+            "idf_version": "v6.1.1",
+            "elf_sha256": "e31594babcee8eb62d54d409423fcb3174278c533c679bfb97b50cad2d60dfce",
+            "segments": 6,
+            "chip_revision_min": 0,
+            "chip_revision_max": 99,
+            "flash_bytes": 16777216,
+            "flash_mode": "dio",
+            "flash_frequency_mhz": 80
+          },
+          "elf_sha256": "e31594babcee8eb62d54d409423fcb3174278c533c679bfb97b50cad2d60dfce"
+        }
+      ],
+      "compiled_local_trust_and_policy_checked": true,
+      "receiving_pair_qualified": false
+    }
+  ],
+  "ci": {
+    "source_commit": "0dbc1e919bc671554a005dac1896562c6554fe26",
+    "main_jobs_passed": 17,
+    "branch_and_pr_jobs_passed": 34,
+    "runs": [
+      {
+        "event": "push",
+        "sha": "0dbc1e919bc671554a005dac1896562c6554fe26",
+        "url": "https://github.com/avlyubimov/TV4-CNC/actions/runs/45647737184",
+        "conclusion": "success"
+      },
+      {
+        "event": "push",
+        "sha": "0dbc1e919bc671554a005dac1896562c6554fe26",
+        "url": "https://github.com/avlyubimov/TV4-CNC/actions/runs/45647736719",
+        "conclusion": "success"
+      },
+      {
+        "event": "push",
+        "sha": "0dbc1e919bc671554a005dac1896562c6554fe26",
+        "url": "https://github.com/avlyubimov/TV4-CNC/actions/runs/45647736808",
+        "conclusion": "success"
+      },
+      {
+        "event": "push",
+        "sha": "0dbc1e919bc671554a005dac1896562c6554fe26",
+        "url": "https://github.com/avlyubimov/TV4-CNC/actions/runs/45647736589",
+        "conclusion": "success"
+      },
+      {
+        "event": "push",
+        "sha": "0dbc1e919bc671554a005dac1896562c6554fe26",
+        "url": "https://github.com/avlyubimov/TV4-CNC/actions/runs/45647737122",
+        "conclusion": "success"
+      },
+      {
+        "event": "push",
+        "sha": "0dbc1e919bc671554a005dac1896562c6554fe26",
+        "url": "https://github.com/avlyubimov/TV4-CNC/actions/runs/45647736678",
+        "conclusion": "success"
+      },
+      {
+        "event": "pull_request",
+        "sha": "2a9adb7132e8ca4b8c4729960285ad808a348345",
+        "url": "https://github.com/avlyubimov/TV4-CNC/actions/runs/45647050541",
+        "conclusion": "success"
+      },
+      {
+        "event": "pull_request",
+        "sha": "2a9adb7132e8ca4b8c4729960285ad808a348345",
+        "url": "https://github.com/avlyubimov/TV4-CNC/actions/runs/45647050481",
+        "conclusion": "success"
+      },
+      {
+        "event": "pull_request",
+        "sha": "2a9adb7132e8ca4b8c4729960285ad808a348345",
+        "url": "https://github.com/avlyubimov/TV4-CNC/actions/runs/45647050625",
+        "conclusion": "success"
+      },
+      {
+        "event": "pull_request",
+        "sha": "2a9adb7132e8ca4b8c4729960285ad808a348345",
+        "url": "https://github.com/avlyubimov/TV4-CNC/actions/runs/45647050789",
+        "conclusion": "success"
+      },
+      {
+        "event": "pull_request",
+        "sha": "2a9adb7132e8ca4b8c4729960285ad808a348345",
+        "url": "https://github.com/avlyubimov/TV4-CNC/actions/runs/45647050606",
+        "conclusion": "success"
+      },
+      {
+        "event": "pull_request",
+        "sha": "2a9adb7132e8ca4b8c4729960285ad808a348345",
+        "url": "https://github.com/avlyubimov/TV4-CNC/actions/runs/45647050691",
+        "conclusion": "success"
+      },
+      {
+        "event": "push",
+        "sha": "2a9adb7132e8ca4b8c4729960285ad808a348345",
+        "url": "https://github.com/avlyubimov/TV4-CNC/actions/runs/45646699955",
+        "conclusion": "success"
+      },
+      {
+        "event": "push",
+        "sha": "2a9adb7132e8ca4b8c4729960285ad808a348345",
+        "url": "https://github.com/avlyubimov/TV4-CNC/actions/runs/45646700067",
+        "conclusion": "success"
+      },
+      {
+        "event": "push",
+        "sha": "2a9adb7132e8ca4b8c4729960285ad808a348345",
+        "url": "https://github.com/avlyubimov/TV4-CNC/actions/runs/45646699949",
+        "conclusion": "success"
+      },
+      {
+        "event": "push",
+        "sha": "2a9adb7132e8ca4b8c4729960285ad808a348345",
+        "url": "https://github.com/avlyubimov/TV4-CNC/actions/runs/45646699956",
+        "conclusion": "success"
+      },
+      {
+        "event": "push",
+        "sha": "2a9adb7132e8ca4b8c4729960285ad808a348345",
+        "url": "https://github.com/avlyubimov/TV4-CNC/actions/runs/45646700188",
+        "conclusion": "success"
+      },
+      {
+        "event": "push",
+        "sha": "2a9adb7132e8ca4b8c4729960285ad808a348345",
+        "url": "https://github.com/avlyubimov/TV4-CNC/actions/runs/45646699988",
+        "conclusion": "success"
+      }
+    ]
+  },
+  "hardware_access": false,
+  "install_authorized": false,
+  "release_published": false,
+  "production_resource_qualified": false
+}

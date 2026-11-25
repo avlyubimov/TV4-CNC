@@ -1,24 +1,31 @@
 # ESP32 HMI — специализированные правила
 
-Отдельный этап от main 5fb177b / после PR #90: воспроизводимый rev12-ota build
-проверен на source 6b84584. Две clean builds в разных путях/времени для каждого
-pinned SDK дают одинаковые app BIN/ELF, bootloader BIN и partition table.
-Первый source 848fd54 не совпал: внешние cJSON headers оставляли три абсолютных
-пути в debug data. FAIL сохранён, узкая prefix map исправлена для всех main units;
-критерии побайтового сравнения прежние. Четыре реальные fixed builds PASS.
+25 ноября опубликован [bench.5](https://github.com/avlyubimov/TV4-CNC/releases/tag/v0.1.0-bench.5)
+от main `0dbc1e9`. Все 12 файлов скачаны обратно и проверены по SHA-256;
+подпись и полный BIN проверены повторно. CI тега: 17/17 PASS. На двух SDK
+выполнено шесть сборок с утверждёнными настройками; две пары кандидатов дают
+одинаковые BIN/ELF/bootloader/table. Программные проверки: docs/evidence/build/esp32-ota-bench5/README.md от корня.
 
-291 host/291 sanitizers,10 comparison cases, новый signed-authoring case обоих
-SDK (29 cases total), source CI 17 PASS. Явный TV4_REPRODUCIBLE_BUILD=1 только
-rev12-ota; ordinary profiles, память/частоты/драйверы/TLS/gates прежние. Читайте
- docs/REPRODUCIBLE_HMI.md и docs/evidence/build/esp32-ota-reproducible/ от корня.
+Аппаратный результат: docs/evidence/hardware/2026-11-25-esp32-bench5/README.md от корня.
+Контроль: 37/37 PASS; подписанные CHECK/INSTALL и ресурсные проверки PASS.
+После штатного перезапуска `.5` загрузился, выполнил встроенный self-test и
+подключился к Wi-Fi, но RTCWDT/reset_reason=7/watchdog_boot=1 остановили приёмку.
+Сеанс закрыт. Один полный возврат свежего снимка 16 МиБ, проверка и загрузка
+bench.4 прошли; оставлены исходные VALID-метаданные OTA1. Владелец подтвердил
+экран, касания и Wi-Fi. Независимого чтения Flash/метаданных кандидата не было.
 
-Владелец утвердил новые bench-only contexts .4→.5 до 27 ноября 2026 08:00
-Asia/Almaty с прежним ключом/floors/anchor age/skew. Они в новых локальных файлах;
-старые contexts и published assets не менять. Configured release payload и
-точные publication/hardware пакеты ещё нужны; это не production policy или
-разрешение их выполнить. Платы в этом этапе не открывались: bench.4 OTA1 VALID
-и F407 ee7d179 сохранены по предыдущему закрытому стенду. Self-merge запрещён.
-Ниже закрытые результаты, не активная очередь.
+Следующий P1 — локализация RTC watchdog при программном перезапуске: отдельный
+диагностический образ, выключенный по умолчанию, и конечный стенд «первый запуск →
+один software restart» без INSTALL. Три исследованные функции сброса в прежней
+и новой ELF находятся в IRAM и побайтово равны; причина ещё не установлена.
+Проверку watchdog не ослаблять, счётчик не обнулять, закрытый пакет не повторять.
+Не менять драйверы, GPIO, eFuse или частоты по неподтверждённому предположению.
+Новая policy .4→.5 действует только для стендов до 27 ноября 2026, 08:00
+Asia/Almaty. Старые контексты и опубликованные файлы неизменяемы; на оставленном
+bench.4 прежний период уже истёк. Production policy, бюджет памяти, поиск версий,
+потеря RF/AP/питания, runtime 5.3.2 и физические FPS/latency остаются открытыми.
+F407 ee7d179 не подключался в этом сеансе. Самостоятельный merge запрещён.
+Ниже сохранена история закрытых этапов; активная очередь — docs/NEXT_STAGE.md.
 
 Закрыто PR #90 от main 10cd8cd / source 104fb06: понятный отказ OTA по
 разрешённому времени проверен. Только TIME_REJECTED + TIME_RANGE + cleanup OK

@@ -1,0 +1,171 @@
+{
+  "source_commit": "0dbc1e919bc671554a005dac1896562c6554fe26",
+  "tag": "v0.1.0-bench.5",
+  "all_success": true,
+  "jobs": [
+    {
+      "id": 139348957731,
+      "name": "arm-core",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/avlyubimov/TV4-CNC/actions/runs/45654939126/job/139348957731"
+    },
+    {
+      "id": 139348958011,
+      "name": "build (6.1.1, rev12)",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/avlyubimov/TV4-CNC/actions/runs/45654938756/job/139348958011"
+    },
+    {
+      "id": 139348958397,
+      "name": "build (6.1.1, rev12-memory-bench)",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/avlyubimov/TV4-CNC/actions/runs/45654938756/job/139348958397"
+    },
+    {
+      "id": 139348958405,
+      "name": "build (5.3.2, rev12-ota)",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/avlyubimov/TV4-CNC/actions/runs/45654938756/job/139348958405"
+    },
+    {
+      "id": 139348958441,
+      "name": "build (5.3.2, rev12-memory-bench)",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/avlyubimov/TV4-CNC/actions/runs/45654938756/job/139348958441"
+    },
+    {
+      "id": 139348958515,
+      "name": "build (5.3.2, rev12-tls-bench)",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/avlyubimov/TV4-CNC/actions/runs/45654938756/job/139348958515"
+    },
+    {
+      "id": 139348958517,
+      "name": "build (5.3.2, headless)",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/avlyubimov/TV4-CNC/actions/runs/45654938756/job/139348958517"
+    },
+    {
+      "id": 139348958538,
+      "name": "build (6.1.1, rev12-tls-bench)",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/avlyubimov/TV4-CNC/actions/runs/45654938756/job/139348958538"
+    },
+    {
+      "id": 139348958561,
+      "name": "build (5.3.2, rev12)",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/avlyubimov/TV4-CNC/actions/runs/45654938756/job/139348958561"
+    },
+    {
+      "id": 139348958653,
+      "name": "build (6.1.1, headless)",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/avlyubimov/TV4-CNC/actions/runs/45654938756/job/139348958653"
+    },
+    {
+      "id": 139348958757,
+      "name": "build (6.1.1, rev12-ota)",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/avlyubimov/TV4-CNC/actions/runs/45654938756/job/139348958757"
+    },
+    {
+      "id": 139348957993,
+      "name": "crypto-arm",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/avlyubimov/TV4-CNC/actions/runs/45654938733/job/139348957993"
+    },
+    {
+      "id": 139348974720,
+      "name": "check",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/avlyubimov/TV4-CNC/actions/runs/45654938724/job/139348974720"
+    },
+    {
+      "id": 139348957235,
+      "name": "host (true)",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/avlyubimov/TV4-CNC/actions/runs/45654938895/job/139348957235"
+    },
+    {
+      "id": 139348958008,
+      "name": "host (false)",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/avlyubimov/TV4-CNC/actions/runs/45654938895/job/139348958008"
+    },
+    {
+      "id": 139348957203,
+      "name": "reproduce (6.1.1)",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/avlyubimov/TV4-CNC/actions/runs/45654938921/job/139348957203"
+    },
+    {
+      "id": 139348957894,
+      "name": "reproduce (5.3.2)",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/avlyubimov/TV4-CNC/actions/runs/45654938921/job/139348957894"
+    }
+  ],
+  "runs": [
+    {
+      "id": 45654939126,
+      "name": "STM32 foundation (no hardware)",
+      "url": "https://github.com/avlyubimov/TV4-CNC/actions/runs/45654939126",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 45654938756,
+      "name": "ESP-IDF compatibility",
+      "url": "https://github.com/avlyubimov/TV4-CNC/actions/runs/45654938756",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 45654938733,
+      "name": "STM32 image admission (no hardware)",
+      "url": "https://github.com/avlyubimov/TV4-CNC/actions/runs/45654938733",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 45654938724,
+      "name": "Documentation checks",
+      "url": "https://github.com/avlyubimov/TV4-CNC/actions/runs/45654938724",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 45654938895,
+      "name": "Host logic and LVGL render",
+      "url": "https://github.com/avlyubimov/TV4-CNC/actions/runs/45654938895",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 45654938921,
+      "name": "Reproducible OTA builds (no hardware)",
+      "url": "https://github.com/avlyubimov/TV4-CNC/actions/runs/45654938921",
+      "status": "completed",
+      "conclusion": "success"
+    }
+  ],
+  "observed_at_utc": "2026-11-25T16:40:32.603Z"
+}
