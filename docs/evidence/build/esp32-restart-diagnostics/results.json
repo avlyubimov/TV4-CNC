@@ -1,0 +1,30 @@
+{
+  "source_commit": "f8199557def895f301cd7e0cbbdde32e54b87681",
+  "base_commit": "9fa7edaa1440d39273be9f3ee785437318a9b940",
+  "owner_merged_pr": 93,
+  "merge_commit": "d541bafc9e8dba8d261d95b1d3f2debf45ced250",
+  "self_merge": false,
+  "host_suites_pass": 313,
+  "sanitizer_suites_pass": 313,
+  "new_ctest_suites": 22,
+  "build_guard_methods_pass": 6,
+  "source_branch_and_pr_ci_jobs_pass": 34,
+  "merged_main_ci_jobs_pass": 17,
+  "final_clean_compiled_sdks": [
+    "5.3.2",
+    "6.1.1"
+  ],
+  "local_hardware_procedure_groups_pass": 11,
+  "optimized_local_hardware_procedure_groups_pass": 11,
+  "procedure_scope": "RAM Flash, SDK/serial doubles and transformed prior private UART fixtures; not new hardware evidence",
+  "diagnostic_default_off": true,
+  "network_check_install_in_diagnostic": false,
+  "worker_stack_bytes": 12288,
+  "wrapper_and_shutdown_marker_iram": true,
+  "marker_formats_internal_dram": true,
+  "original_sdk_reset_called": true,
+  "physical_performance_qualified": false,
+  "root_cause_confirmed": false,
+  "release_published": false,
+  "hardware_report": "../../hardware/2026-11-25-esp32-restart-f819955/README.md"
+}

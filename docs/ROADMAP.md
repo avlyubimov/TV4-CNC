@@ -1,5 +1,26 @@
 # План реализации TV4-CNC: функциональные приоритеты P0–P5
 
+## 25 ноября: диагностический software restart без INSTALL — PASS
+
+[Код и сборки](evidence/build/esp32-restart-diagnostics/README.md): source `f819955`,
+owner merge PR #93/main d541baf; оба pinned SDK, 313 host/313 sanitizers,
+CI source 34/main 17 PASS. [Аппаратный сеанс](evidence/hardware/2026-11-25-esp32-restart-f819955/README.md) SDK 6.1.1:
+36/36 guards на обоих запусках, reset_reason=1→3, watchdog_boot=0; маркеры request/
+shutdown_hook core0 → noos core1 и 90 секунд после сброса без host reset.
+Свежие touch samples, RGB/GT911/PSRAM initialization и Wi-Fi PASS по UART.
+Исходные factory/otadata восстановлены; реальные 16 МиБ до/после/verify/две NVMe
+пары, равенство вне NVS PASS. Full recovery0, сеанс 1103,269 с закрыт, порт закрыт.
+Bench.4 оставлен в OTA1 VALID; UART health PASS, владелец подтвердил главный
+экран, касания и Wi-Fi после возврата. UI временного образа не наблюдался. F407 ee7d179 не открывался.
+
+Прежний post-INSTALL RTCWDT bench.5 не воспроизведён без OTA, но причина
+не установлена и первоначальный FAIL сохранён. Следующий P1 — сопоставимые
+маркеры в настроенном signed CHECK/INSTALL-пути и независимая проверка
+reset/slot/self-test/readback. Защиты не ослаблять; [активная очередь](NEXT_STAGE.md).
+Нового release/tag нет; SDK5 runtime, production budget/policy, RF/AP/power
+loss, физические FPS/latency, CAN и движение остаются открытыми.
+Ниже история закрытых этапов.
+
 ## 25 ноября: bench.5 опубликован, RTC watchdog остановил приёмку
 
 [Сборка и публикация](evidence/build/esp32-ota-bench5/README.md): source `0dbc1e9`,
@@ -12,7 +33,7 @@ self-test не заменяет независимую проверку watchdog
 Один полный возврат свежего снимка 16 МиБ, verify и загрузка PASS. Оставлен
 bench.4 OTA1 с исходными VALID-метаданными; владелец подтвердил экран, касания и
 Wi-Fi. Сеанс закрыт, повторять его пакет нельзя. F407 ee7d179 не подключался.
-Следующий шаг — диагностика одного software restart без INSTALL. Причина
+Запланированная тогда диагностика закрыта выше; причина
 неизвестна; production policy, потеря RF/AP/питания, runtime 5.3.2 и FPS/latency
 ещё открыты. [Текущий план](NEXT_STAGE.md).
 

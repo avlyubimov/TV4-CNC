@@ -28,6 +28,14 @@ jobs:
           test -s docs/OTA_SIGNED_CHECK_BUNDLE.md
           test -s LICENSE
           test -s docs/ESP32_RESTART_BENCH.md
+          test -s docs/evidence/build/esp32-restart-diagnostics/README.md
+          for receipt in results builds source-ci main-ci first-inspection; do
+            python3 -m json.tool "docs/evidence/build/esp32-restart-diagnostics/$receipt.json" > /dev/null
+          done
+          test -s docs/evidence/build/esp32-restart-diagnostics/procedure-tests.txt
+          test -s docs/evidence/build/esp32-restart-diagnostics/procedure-tests-optimized.txt
+          test -s docs/evidence/hardware/2026-11-25-esp32-restart-f819955/README.md
+          python3 -m json.tool docs/evidence/hardware/2026-11-25-esp32-restart-f819955/measurements.json > /dev/null
           test -s docs/evidence/build/esp32-ota-bench5/README.md
           for receipt in results publication ci reproducibility metadata-oracle; do
             python3 -m json.tool "docs/evidence/build/esp32-ota-bench5/$receipt.json" > /dev/null

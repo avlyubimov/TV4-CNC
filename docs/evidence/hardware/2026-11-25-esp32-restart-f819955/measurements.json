@@ -1,0 +1,434 @@
+{
+  "schema": 1,
+  "source_commit": "f8199557def895f301cd7e0cbbdde32e54b87681",
+  "owner_merged_code_pr": 93,
+  "sdk": "6.1.1",
+  "application_sha256": "b998d2f9e53e01f39697d4caad1b696575a79617e4f67c348b1042f74fa15ac2",
+  "elf_sha256": "074ca6b6c646f5574958bb951d2dbe499509887ce93d1b6c873602dcdb5d2ea9",
+  "overall_pass": true,
+  "session_closed": true,
+  "elapsed_seconds": 1103.2688923919995,
+  "maximum_seconds": 1800,
+  "started_utc": "2026-11-25T18:30:49.247669+00:00",
+  "finished_utc": "2026-11-25T18:49:12.516601+00:00",
+  "chip_security_and_flash16m_verified": true,
+  "fresh_actual_read_bytes": 16777216,
+  "two_physical_nvme_copies_verified": true,
+  "normal_host_writes": [
+    {
+      "role": "diagnostic-factory",
+      "offset": 65536,
+      "bytes": 2097152,
+      "verified": true,
+      "outside_preserved": true
+    },
+    {
+      "role": "select-factory",
+      "offset": 2162688,
+      "bytes": 8192,
+      "verified": true,
+      "outside_preserved": true
+    },
+    {
+      "role": "restore-factory",
+      "offset": 65536,
+      "bytes": 2097152,
+      "verified": true,
+      "outside_preserved": true
+    },
+    {
+      "role": "restore-metadata",
+      "offset": 2162688,
+      "bytes": 8192,
+      "verified": true,
+      "outside_preserved": true
+    }
+  ],
+  "capture_seconds": {
+    "total_seconds": 145.08885771199857,
+    "warm_seconds": 90.00390324300315
+  },
+  "rom_resets": [
+    {
+      "code": "0x1",
+      "name": "POWERON"
+    },
+    {
+      "code": "0xc",
+      "name": "RTC_SW_CPU_RST"
+    }
+  ],
+  "markers": [
+    {
+      "reset": 1,
+      "core": 1,
+      "eligible": 1,
+      "boundaries": [
+        [
+          "request",
+          "0"
+        ],
+        [
+          "shutdown_hook",
+          "0"
+        ],
+        [
+          "noos",
+          "1"
+        ]
+      ],
+      "ready": {
+        "ms": 51897,
+        "internal": 119487,
+        "largest": 63488,
+        "psram": 5982280,
+        "psram_largest": 5898240,
+        "stack": 10704
+      }
+    },
+    {
+      "reset": 3,
+      "core": 1,
+      "eligible": 0
+    }
+  ],
+  "cold": {
+    "guards": {
+      "expected_app": true,
+      "expected_sdk": true,
+      "expected_partition_boot": true,
+      "single_app_boot": true,
+      "psram_8mib": true,
+      "psram_sdk_test": true,
+      "instructions_in_psram": true,
+      "rodata_in_psram": true,
+      "rgb_initialized": true,
+      "gt911_initialized": true,
+      "ui_ready": true,
+      "no_fatal_log": true,
+      "exact_automatic_readonly_completion": true,
+      "no_http_open_failure": true,
+      "periodic_resources": true,
+      "resource_errors_clear": true,
+      "touch_fresh": true,
+      "increasing_uptime": true,
+      "heap_samples_consistent": true,
+      "comparable_wifi_load": true,
+      "optional_services_started": true,
+      "explicit_self_test": true,
+      "complete_startup": true,
+      "single_complete_boot_window": true,
+      "startup_scope": true,
+      "phase_times_ordered": true,
+      "nonzero_measured_stacks": true,
+      "phase_heap_samples_consistent": true,
+      "worker_stack_published": true,
+      "nonzero_valid_periodic_stack": true,
+      "explicit_stack_mode": true,
+      "worker_watermarks_within_request": true,
+      "adequate_periodic_samples": true,
+      "no_unexpected_network_probe": true,
+      "no_network_windows": true,
+      "no_unexpected_dma_hook": true
+    },
+    "passed": true,
+    "periodic_sample_count": 9,
+    "uptime_ms": [
+      6407,
+      46419
+    ],
+    "internal_free_min": 119483,
+    "internal_largest_min": 63488,
+    "psram_free_min": 5982280,
+    "worker_stack_remaining_min": 10704,
+    "worker_stack_requested": 12288,
+    "touch_age_ms": [
+      17,
+      19
+    ],
+    "reset_reasons": [
+      1
+    ],
+    "watchdog_boot_values": [
+      0
+    ],
+    "error_counter_max": {
+      "queue_drops": 0,
+      "display_errors": 0,
+      "export_drops": 0,
+      "wifi_queue_drops": 0,
+      "touch_errors": 0
+    },
+    "wifi_ip_event_observed": true,
+    "boot_window_wifi_load_qualified": false,
+    "boot_window_points": [
+      {
+        "kind": 1,
+        "id": 1,
+        "sample_ms": 51,
+        "scope": 0,
+        "internal": 266271,
+        "minimum": 201540,
+        "largest": 172032,
+        "psram": 6859580,
+        "psram_min": 6859580,
+        "psram_largest": 6684672,
+        "sample_stack": 14724,
+        "worker_stack_at_emit": 10704
+      },
+      {
+        "kind": 2,
+        "id": 1,
+        "sample_ms": 52,
+        "scope": 1,
+        "internal": 266271,
+        "minimum": 266271,
+        "largest": 172032,
+        "psram": 6859552,
+        "psram_min": 6859552,
+        "psram_largest": 6684672,
+        "sample_stack": 14724,
+        "worker_stack_at_emit": 10704
+      },
+      {
+        "kind": 3,
+        "id": 1,
+        "sample_ms": 5504,
+        "scope": 1,
+        "internal": 120535,
+        "minimum": 118595,
+        "largest": 63488,
+        "psram": 5982980,
+        "psram_min": 5958592,
+        "psram_largest": 5898240,
+        "sample_stack": 11312,
+        "worker_stack_at_emit": 10704
+      },
+      {
+        "kind": 4,
+        "id": 1,
+        "sample_ms": 5506,
+        "scope": 0,
+        "internal": 120535,
+        "minimum": 53864,
+        "largest": 63488,
+        "psram": 5983008,
+        "psram_min": 5958592,
+        "psram_largest": 5898240,
+        "sample_stack": 11312,
+        "worker_stack_at_emit": 10704
+      }
+    ],
+    "global_historical_internal_min": 52080
+  },
+  "warm": {
+    "guards": {
+      "expected_app": true,
+      "expected_sdk": true,
+      "expected_partition_boot": true,
+      "single_app_boot": true,
+      "psram_8mib": true,
+      "psram_sdk_test": true,
+      "instructions_in_psram": true,
+      "rodata_in_psram": true,
+      "rgb_initialized": true,
+      "gt911_initialized": true,
+      "ui_ready": true,
+      "no_fatal_log": true,
+      "exact_automatic_readonly_completion": true,
+      "no_http_open_failure": true,
+      "periodic_resources": true,
+      "resource_errors_clear": true,
+      "touch_fresh": true,
+      "increasing_uptime": true,
+      "heap_samples_consistent": true,
+      "comparable_wifi_load": true,
+      "optional_services_started": true,
+      "explicit_self_test": true,
+      "complete_startup": true,
+      "single_complete_boot_window": true,
+      "startup_scope": true,
+      "phase_times_ordered": true,
+      "nonzero_measured_stacks": true,
+      "phase_heap_samples_consistent": true,
+      "worker_stack_published": true,
+      "nonzero_valid_periodic_stack": true,
+      "explicit_stack_mode": true,
+      "worker_watermarks_within_request": true,
+      "adequate_periodic_samples": true,
+      "no_unexpected_network_probe": true,
+      "no_network_windows": true,
+      "no_unexpected_dma_hook": true
+    },
+    "passed": true,
+    "periodic_sample_count": 17,
+    "uptime_ms": [
+      7408,
+      86419
+    ],
+    "internal_free_min": 119447,
+    "internal_largest_min": 63488,
+    "psram_free_min": 5982300,
+    "worker_stack_remaining_min": 10880,
+    "worker_stack_requested": 12288,
+    "touch_age_ms": [
+      14,
+      16
+    ],
+    "reset_reasons": [
+      3
+    ],
+    "watchdog_boot_values": [
+      0
+    ],
+    "error_counter_max": {
+      "queue_drops": 0,
+      "display_errors": 0,
+      "export_drops": 0,
+      "wifi_queue_drops": 0,
+      "touch_errors": 0
+    },
+    "wifi_ip_event_observed": true,
+    "boot_window_wifi_load_qualified": false,
+    "boot_window_points": [
+      {
+        "kind": 1,
+        "id": 1,
+        "sample_ms": 51,
+        "scope": 0,
+        "internal": 266271,
+        "minimum": 201540,
+        "largest": 172032,
+        "psram": 6859580,
+        "psram_min": 6859580,
+        "psram_largest": 6684672,
+        "sample_stack": 14660,
+        "worker_stack_at_emit": 10880
+      },
+      {
+        "kind": 2,
+        "id": 1,
+        "sample_ms": 52,
+        "scope": 1,
+        "internal": 266271,
+        "minimum": 266271,
+        "largest": 172032,
+        "psram": 6859552,
+        "psram_min": 6859552,
+        "psram_largest": 6684672,
+        "sample_stack": 14660,
+        "worker_stack_at_emit": 10880
+      },
+      {
+        "kind": 3,
+        "id": 1,
+        "sample_ms": 5504,
+        "scope": 1,
+        "internal": 120535,
+        "minimum": 118195,
+        "largest": 63488,
+        "psram": 5983000,
+        "psram_min": 5958592,
+        "psram_largest": 5898240,
+        "sample_stack": 11312,
+        "worker_stack_at_emit": 10880
+      },
+      {
+        "kind": 4,
+        "id": 1,
+        "sample_ms": 5506,
+        "scope": 0,
+        "internal": 120535,
+        "minimum": 53464,
+        "largest": 63488,
+        "psram": 5983028,
+        "psram_min": 5958592,
+        "psram_largest": 5898240,
+        "sample_stack": 11312,
+        "worker_stack_at_emit": 10880
+      }
+    ],
+    "global_historical_internal_min": 52080
+  },
+  "one_requested_restart_observed": true,
+  "host_reset_between_requested_restart_and_warm_window": false,
+  "warm_capture_seconds": 90.00390324300315,
+  "final_actual_read_bytes": 16777216,
+  "all_non_nvs_flash_unchanged": true,
+  "final_two_physical_nvme_copies_verified": true,
+  "final_release": {
+    "guards": {
+      "expected_app": true,
+      "expected_sdk": true,
+      "expected_partition_boot": true,
+      "single_app_boot": true,
+      "psram_8mib": true,
+      "psram_sdk_test": true,
+      "instructions_in_psram": true,
+      "rodata_in_psram": true,
+      "rgb_initialized": true,
+      "gt911_initialized": true,
+      "ui_ready": true,
+      "no_fatal_log": true,
+      "exact_automatic_readonly_completion": true,
+      "no_http_open_failure": true,
+      "periodic_resources": true,
+      "resource_errors_clear": true,
+      "touch_fresh": true,
+      "increasing_uptime": true,
+      "heap_samples_consistent": true,
+      "no_unexpected_network_probe": true,
+      "no_unexpected_dma_hook": true
+    },
+    "passed": true,
+    "periodic_sample_count": 4,
+    "uptime_ms": [
+      6364,
+      21366
+    ],
+    "internal_free_min": 120243,
+    "internal_largest_min": 63488,
+    "psram_free_min": 5982972,
+    "worker_stack_remaining_min": null,
+    "worker_stack_requested": null,
+    "touch_age_ms": [
+      9,
+      10
+    ],
+    "reset_reasons": [
+      1
+    ],
+    "watchdog_boot_values": [
+      0
+    ],
+    "error_counter_max": {
+      "queue_drops": 0,
+      "display_errors": 0,
+      "export_drops": 0,
+      "wifi_queue_drops": 0,
+      "touch_errors": 0
+    },
+    "wifi_ip_event_observed": true,
+    "boot_window_wifi_load_qualified": null,
+    "boot_window_points": [],
+    "global_historical_internal_min": 52872
+  },
+  "left_running": "0.1.0-bench.4-ota1-valid",
+  "normal_restoration_verified": true,
+  "full_recovery_attempts": 0,
+  "original_bench5_failure_retained": true,
+  "root_cause_confirmed": false,
+  "post_install_restart_tested": false,
+  "physical_fps_latency_measured": false,
+  "owner_post_session_health_confirmation": true,
+  "runtime_sdk532_tested": false,
+  "production_resource_budget_qualified": false,
+  "network_check_install_sntp_or_https_performed": false,
+  "physical_power_loss_tested": false,
+  "efuse_or_option_bytes_modified": false,
+  "stm32_can_motion_accessed": false,
+  "release_or_tag_created": false,
+  "self_merge": false,
+  "diagnostic_visual_ui_observed_by_operator": false,
+  "owner_post_session_health_answer": "Да, всё работает"
+}
