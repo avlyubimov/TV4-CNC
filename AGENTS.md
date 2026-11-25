@@ -1,6 +1,27 @@
 # TV4-CNC — правила разработки Codex
 
-Текущий P1 от main bf5c325 после PR #88: signed STA Disconnect → transport
+Отдельный P1 от main 10cd8cd / source 104fb06: понятный отказ OTA по
+разрешённому времени проверен. Только TIME_REJECTED + TIME_RANGE + cleanup OK
+даёт error24 / «Дата вне разрешённого периода OTA». До/после диапазона одинаковы;
+unauthenticated SNTP не доказывает действительную дату. 290 host/290 sanitizers,
+16 новых worker-сценариев, оба pinned SDK и source CI 15 PASS.
+
+Первый стенд 396.821 с: SNTP timeout, целевая квалификация FAIL сохранена. Один
+отдельно разрешённый повтор 792.933 с: точный error24/cleanup и все 45 guards PASS;
+исходные OTA0/metadata восстановлены, новые actual 16 МиБ/MD5/две NVMe-копии и
+финальный boot PASS. Оставлен неизменяемый bench.4 OTA1 VALID, владелец подтвердил
+экран/касания/Wi-Fi. Новый UI и cancellation text ещё не входят в этот релиз.
+F407 ee7d179 не открывался. Закрытые одноразовые пакеты не повторять.
+
+Прежние contexts истекли 25 ноября 2026 08:00 Asia/Almaty; не продлевать и не
+переписывать их автоматически. Для положительных OTA нужны новое решение
+владельца о policy и отдельный точный пакет; published assets/key/floors прежние.
+Далее P1 independent RF/AP/power loss, production policy/budget/discovery; P2
+reproducibility. Никаких новых release/tag/self-merge/CAN/motion/eFuse/option bytes.
+Читать docs/NEXT_STAGE.md и docs/evidence/hardware/2026-11-25-esp32-time-policy/
+от корня. Ниже история закрытых этапов; она не задаёт текущую очередь.
+
+Закрытый стенд PR #89 от main bf5c325 после PR #88: signed STA Disconnect → transport
 failure/cleanup → новое подключение/CHECK → полный INSTALL в одной загрузке `.3`
 PASS на неизменяемом source6c7b1d5 / SDK6.1.1. Штатный reboot/self-test/VALID,
 новое чтение всех16МиБ/сверка вне NVS/две NVMe-копии PASS; оставлен bench.4 OTA1

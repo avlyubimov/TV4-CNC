@@ -1,6 +1,28 @@
 # План реализации TV4-CNC: функциональные приоритеты P0–P5
 
-## Актуально: отключение STA и повторная OTA без сброса проверены
+## 25 ноября: отказ по периоду OTA проверен, bench.4 сохранён
+
+От main 10cd8cd / source 104fb06 завершён [отрицательный стенд истёкшего
+контекста](evidence/hardware/2026-11-25-esp32-time-policy/README.md). Первый
+сеанс 396.821 с остановлен на SNTP timeout; FAIL сохранён. Один отдельно одобренный
+повтор 792.933 с на том же образе/политике/таймауте получил точные
+TIME_REJECTED/TIME_RANGE/cleanup OK и service error24; все 45 boot/GT911/RGB/
+PSRAM/resource/queue/touch guards PASS. Причина первого таймаута не установлена.
+
+Исходные OTA0 и metadata восстановлены; второй VALID-сектор и OTA1 не писались.
+Все 16 МиБ заново считаны, MD5/равенство вне NVS/две финальные NVMe-копии PASS;
+full restore 0. **Bench.4 оставлен в OTA1 VALID**, UART закрыт, владелец подтвердил
+экран/касания/Wi-Fi. Новая строка проверена реальным LVGL simulator; на плате
+измерен error24 временного образа, его текст визуально не наблюдался. Новый UI
+и прежний source fix отмены ещё не входят в оставленный неизменяемый релиз.
+
+[290 host / 290 sanitizers, 16 новых worker-сценариев, два SDK и source CI 15](evidence/build/esp32-ota-time-refusal/README.md)
+PASS. Hardware только ESP-IDF6.1.1; runtime 5.3.2/FPS/physical latency и production
+budget не квалифицированы. F407 ee7d179/CAN/motion/eFuse/option bytes не трогали.
+Исходное окно истекло 25 ноября 08:00 Asia/Almaty и не продлено; положительный OTA
+требует нового решения о policy. RF/AP/power loss и production discovery открыты.
+
+## Закрыто 24 ноября: отключение STA и повторная OTA без сброса проверены
 
 От main `bf5c325` (после слитого PR #88) на неизменяемом `6c7b1d5` /
 ESP-IDF 6.1.1 выполнен [реальный стенд отключения кнопкой Wi-Fi](evidence/hardware/2026-11-24-esp32-wifi-retry/README.md):
@@ -265,8 +287,8 @@ P1 интегрирован программно: [installer/rollback/migration]
 | Приоритет | Законченный результат | Зависимости и приёмка | Текущий статус |
 |---|---|---|---|
 | P0 — STM32F407 firmware | Настоящий ELF/BIN на HSI с RAM/SWD diagnostics, exception/watchdog handling, без активации motion outputs | Официальная карта VGT6/SRAM/CCM/Flash sectors/vectors; real startup/linker; map/size/hash/source и memory/vector CI; ST-Link install/restore runbook; запись только отдельно разрешена | **PASS базового стенда ee7d179**: program/verify/identity/RUNNING/progress, data-BSS/CCM word/guards, watchdog reset и UsageFault. Образ оставлен running; стресс/частоты/physical outputs не подтверждены |
-| P1 — ESP32 OTA | Установка проверенного образа в неактивный слот, boot self-test, подтверждение или rollback с работающими LVGL/GT911/Wi-Fi | 16 МиБ factory recovery+otadata+два OTA-слота; подпись/local key/SHA/size/hardware; Wi-Fi/power-loss и resource acceptance | Migration/factory и control8192 проверены. PR #75: LVGL PSRAM, три verified HEAD200/no DMA failures на38f70b9; весь factory fecc05d возвращён/verify/UART PASS. Далее настоящий signed CHECK/SESSION4; owner key/context/candidate отсутствуют. Install/confirm/rollback/production budget ещё открыты |
-| P2 — Releases | Настоящие воспроизводимые бинарники, SemVer/source binding, signed manifest/SHA-256, prerelease/stable, экран «ПО и обновления» | Рабочий OTA P1; проверка воспроизводимости, trust/signer/licensing; ручное утверждение владельцем exact SHA/tag/channel/assets; push/merge не выпускают release | CI/metadata-only review база существует; production signing/publication/discovery ещё нет; P1 UI включён только в explicit OTA profile. Фиктивный STM32 BIN запрещён |
+| P1 — ESP32 OTA | Установка проверенного образа в неактивный слот, boot self-test, подтверждение или rollback с работающими LVGL/GT911/Wi-Fi | 16 МиБ factory recovery+otadata+два OTA-слота; подпись/local key/SHA/size/hardware; Wi-Fi/power-loss и resource acceptance | Migration/factory, native rollback, signed network INSTALL/self-test/VALID, CANCEL и STA Disconnect→полный retry проверены на bench.4. Отказ по истёкшему периоду/error24 проверен на 104fb06; все 16 МиБ/две NVMe-копии, bench.4 OTA1 VALID оставлен. RF/AP/power loss, production policy/budget/discovery открыты; прежний context истёк 25 ноября 08:00 |
+| P2 — Releases | Настоящие воспроизводимые бинарники, SemVer/source binding, signed manifest/SHA-256, prerelease/stable, экран «ПО и обновления» | Рабочий OTA P1; проверка воспроизводимости, trust/signer/licensing; ручное утверждение владельцем exact SHA/tag/channel/assets; push/merge не выпускают release | Экспериментальные подписанные bench.2/.3/.4 выпущены по exact owner approvals; bench.4 реально установлен. Source/manifest/SHA/лицензии/CI привязаны. Чистая воспроизводимость, production signer lifecycle, stable/discovery ещё открыты; release при каждом push запрещён |
 | P3 — physical CAN | Минимальный проверенный обмен ESP32-S3↔STM32F407 с ошибками/тайм-аутами/восстановлением | Получить трансиверы; проверить уровни/терминаторы/pinout/mux/IDs/bitrate на изолированном стенде; отдельное hardware permission | Физический CAN не проверен. Существующий протокол сохраняется; новые слои только для конкретной интеграции |
 | P4 — STM32 CAN OTA | Независимый bootloader, проверенная запись Flash/recovery после прерывания, existing independent crypto и ESP32 OTA Manager | Реальная карта/профиль P0 и physical CAN P3; reviewed bootloader/app/staging layout; fresh quiescent/operator/recovery gates; обновления при движении запрещены | Host transport/verifier подготовлены. Адреса загрузчика сейчас не резервируются, Flash writer/boot activation ещё нет |
 | P5 — microSD/G-code/CNC | microSD/tools/parser/planner/timer STEP-DIR/encoders/homing/thread sync/coordinates/manual-CNC | Стабилизированные базовые контроллеры, проверенная механика/электрика/защита; каждое испытание движения отдельно разрешено | PR #72: pinless timer register design/host160/sanitizer160/20000 cases/ARM archive PASS; physical outputs и motor/driver ещё не проверены. Существующие simulation/tools не выдавать за управление станком |

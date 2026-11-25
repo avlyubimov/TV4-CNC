@@ -1,0 +1,13 @@
+test_expected_negative_graph_with_all_existing_boot_health_checks (__main__.Observer.test_expected_negative_graph_with_all_existing_boot_health_checks) ... ok
+test_monitor_cleanup_order_and_resource_floors_are_required (__main__.Observer.test_monitor_cleanup_order_and_resource_floors_are_required) ... ok
+test_original_control_observer_still_passes_without_negative_mode (__main__.Observer.test_original_control_observer_still_passes_without_negative_mode) ... ok
+test_other_clock_or_service_results_never_count_as_expiry (__main__.Observer.test_other_clock_or_service_results_never_count_as_expiry) ... ok
+test_periodic_clock_regression_and_malformed_fields_refused (__main__.Observer.test_periodic_clock_regression_and_malformed_fields_refused) ... ok
+test_repeated_or_missing_operation_and_successful_session_refused (__main__.Observer.test_repeated_or_missing_operation_and_successful_session_refused) ... ok
+test_touch_queue_reset_and_boot_guards_remain (__main__.Observer.test_touch_queue_reset_and_boot_guards_remain) ... ok
+test_wrong_partition_or_unexpected_trace_never_passes (__main__.Observer.test_wrong_partition_or_unexpected_trace_never_passes) ... ok
+
+----------------------------------------------------------------------
+Ran 8 tests in 0.096s
+
+OK

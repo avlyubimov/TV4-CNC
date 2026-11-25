@@ -125,7 +125,13 @@ static void operation(bool install) {
     measuring=TV4_MEM_SNTP;tv4_ota_memory_window_begin(measuring);measured=true;
     tv4_sntp_result synced=tv4_sntp_sync(&anchor,&clock_policy,10000,cancelled,NULL,&sync);
     tv4_ota_memory_window_end(measuring);tv4_ota_memory_report_window();measured=false;
-    if(synced!=TV4_SNTP_OK || !sync.cleanup_ok) {error=3;goto done;}
+    ESP_LOGI("tv4_ota","clock result=%u time=%u cleanup=%u",
+        (unsigned)synced,(unsigned)sync.time_result,(unsigned)sync.cleanup_ok);
+    if(synced!=TV4_SNTP_OK || !sync.cleanup_ok) {
+        error=synced==TV4_SNTP_TIME_REJECTED && sync.time_result==TV4_TIME_RANGE && sync.cleanup_ok?
+            TV4_UPDATE_TIME_RANGE_ERROR:3;
+        goto done;
+    }
     esp_chip_info_t chip;esp_chip_info(&chip);
     /* Bench CHECK streams the complete signed image without a Flash sink.
      * Ordinary operator CHECK retains its existing metadata-only behavior. */

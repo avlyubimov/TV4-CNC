@@ -1,0 +1,144 @@
+{
+  "source_commit": "104fb065c43093936713e52bd0d1521fa3c70d30",
+  "base_main": "10cd8cd0ed5f1657f7fe244338aeb938261a3d93",
+  "started_utc": "2026-11-25T14:10:03.194890+00:00",
+  "finished_utc": "2026-11-25T14:16:40.016283+00:00",
+  "maximum_seconds": 1800,
+  "elapsed_seconds": 396.8213137419998,
+  "session_closed": true,
+  "bench_observation_pass": false,
+  "left_running": "0.1.0-bench.4-ota1-valid",
+  "policy_extended": false,
+  "one_shot_read_only": true,
+  "efuse_written": false,
+  "stm32_can_motion_accessed": false,
+  "physical_power_interruption_tested": false,
+  "writes": [
+    {
+      "role": "pre-park",
+      "offset": 2162688,
+      "bytes": 4096,
+      "verified": true,
+      "outside_preserved": true
+    },
+    {
+      "role": "diagnostic-image",
+      "offset": 2228224,
+      "bytes": 3145728,
+      "verified": true,
+      "outside_preserved": true
+    },
+    {
+      "role": "diagnostic-select",
+      "offset": 2162688,
+      "bytes": 4096,
+      "verified": true,
+      "outside_preserved": true
+    },
+    {
+      "role": "restore-park",
+      "offset": 2162688,
+      "bytes": 4096,
+      "verified": true,
+      "outside_preserved": true
+    },
+    {
+      "role": "restore-image",
+      "offset": 2228224,
+      "bytes": 3145728,
+      "verified": true,
+      "outside_preserved": true
+    },
+    {
+      "role": "restore-selection",
+      "offset": 2162688,
+      "bytes": 4096,
+      "verified": true,
+      "outside_preserved": true
+    }
+  ],
+  "full_recovery_attempts": 0,
+  "uart_capture_attempts": 3,
+  "snapshot_bytes": 16777216,
+  "independent_snapshot_copies_verified": true,
+  "identity_security_flash_verified": true,
+  "snapshot_method": "previous actual whole read + fresh NVS24KiB + whole-device MD5",
+  "new_preflight_uart_payload_bytes": 24576,
+  "failure_scope_recovery_verified": true,
+  "attempt": 1,
+  "qualification": "FAIL: SNTP timeout; intended TIME_RANGE not observed",
+  "diagnostic_app_sha256": "cf95cc7f145a8504c529f80320b90970c50a090cfe3d77391ebcd38ffb2e287a",
+  "expected_clock": {
+    "result": 10,
+    "time": 5,
+    "cleanup": 1
+  },
+  "actual_clock": [
+    {
+      "result": 7,
+      "time": 0,
+      "cleanup": 1
+    }
+  ],
+  "expected_service": {
+    "stage": 9,
+    "error": 24
+  },
+  "actual_service": [
+    {
+      "stage": 9,
+      "error": 3,
+      "internal": 119607,
+      "psram": 5982316,
+      "stack": 9600
+    }
+  ],
+  "failed_qualification_checks": [
+    "exact_time_range_cleanup",
+    "exact_refusal_service_state"
+  ],
+  "other_boot_health_resource_guards_pass": true,
+  "diagnostic_native_valid_independently_read": false,
+  "diagnostic_whole_slot_readback_verified": false,
+  "actual_final_whole_flash_read": false,
+  "final_whole_flash_independent_copies_created": false,
+  "original_dual_valid_metadata_verified": true,
+  "ota1_and_second_valid_sector_not_written": true,
+  "owner_screen_touch_wifi_confirmed": true,
+  "physical_fps_latency_measured": false,
+  "production_resource_qualified": false,
+  "periodic_observation": {
+    "internal_free": {
+      "min": 119351,
+      "max": 119839
+    },
+    "internal_largest": {
+      "min": 63488,
+      "max": 63488
+    },
+    "psram_free": {
+      "min": 5947460,
+      "max": 5982336
+    },
+    "ota_stack": {
+      "min": 9600,
+      "max": 10784
+    },
+    "touch_age_ms": {
+      "min": 1,
+      "max": 5
+    },
+    "touch_errors": {
+      "min": 0,
+      "max": 0
+    },
+    "display_errors": {
+      "min": 0,
+      "max": 0
+    },
+    "queue_drops": {
+      "min": 0,
+      "max": 0
+    }
+  }
+}

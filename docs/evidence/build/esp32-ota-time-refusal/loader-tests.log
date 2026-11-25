@@ -1,0 +1,11 @@
+test_bound_proofs_and_payload_tampering_refused (__main__.Loader.test_bound_proofs_and_payload_tampering_refused) ... ok
+test_expired_execution_packet_refused (__main__.Loader.test_expired_execution_packet_refused) ... ok
+test_extra_payload_input_refused (__main__.Loader.test_extra_payload_input_refused) ... ok
+test_foreign_helper_refused (__main__.Loader.test_foreign_helper_refused) ... ok
+test_plan_without_matching_authorization_seal_refused (__main__.Loader.test_plan_without_matching_authorization_seal_refused) ... ok
+test_positive_load_has_no_sdk_or_serial_import (__main__.Loader.test_positive_load_has_no_sdk_or_serial_import) ... ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.220s
+
+OK

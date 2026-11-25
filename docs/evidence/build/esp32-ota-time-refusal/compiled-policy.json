@@ -1,0 +1,51 @@
+{
+  "source_commit": "104fb065c43093936713e52bd0d1521fa3c70d30",
+  "method": "read linked Xtensa ELF PROGBITS objects: clock20bytes/resources24bytes/public-key91bytes",
+  "scope": "software ELF inspection; not runtime memory or board proof",
+  "artifacts": [
+    {
+      "sdk": "6.1.1",
+      "elf_sha256": "453f85946ccaaaae6e1240c71d7bb44b9237476a6c646841b46830531776b7b0",
+      "clock": [
+        1,
+        1,
+        1795460400,
+        1795575600,
+        600000,
+        5000
+      ],
+      "resources": [
+        1,
+        65536,
+        32768,
+        1048576,
+        131072,
+        3072
+      ],
+      "public_key_sha256": "7d75872b119701484020364d1f52fb287483939b9c627073ded18a687df61df0",
+      "device_access": false
+    },
+    {
+      "sdk": "5.3.2",
+      "elf_sha256": "0b5c6b603536057a0f9fb683fcbce0ef7d0b458c68967c3f844696ef90ce1e68",
+      "clock": [
+        1,
+        1,
+        1795460400,
+        1795575600,
+        600000,
+        5000
+      ],
+      "resources": [
+        1,
+        65536,
+        32768,
+        1048576,
+        131072,
+        3072
+      ],
+      "public_key_sha256": "7d75872b119701484020364d1f52fb287483939b9c627073ded18a687df61df0",
+      "device_access": false
+    }
+  ]
+}

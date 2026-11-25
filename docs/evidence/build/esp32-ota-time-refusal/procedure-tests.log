@@ -1,0 +1,15 @@
+test_already_attempted_restore_roles_or_late_final_errors_use_one_full_recovery (__main__.Procedure.test_already_attempted_restore_roles_or_late_final_errors_use_one_full_recovery) ... ok
+test_failed_full_recovery_never_loops (__main__.Procedure.test_failed_full_recovery_never_loops) ... ok
+test_forward_faults_restore_image_before_original_selection (__main__.Procedure.test_forward_faults_restore_image_before_original_selection) ... ok
+test_no_recovery_write_without_full_reserve (__main__.Procedure.test_no_recovery_write_without_full_reserve) ... ok
+test_preflight_refusals_or_short_forward_budget_never_write (__main__.Procedure.test_preflight_refusals_or_short_forward_budget_never_write) ... ok
+test_protected_ota1_or_second_valid_record_corruption_requires_full_recovery (__main__.Procedure.test_protected_ota1_or_second_valid_record_corruption_requires_full_recovery) ... ok
+test_success_preserves_fallback_and_unreferences_slot_before_both_image_writes (__main__.Procedure.test_success_preserves_fallback_and_unreferences_slot_before_both_image_writes) ... ok
+test_phase_timeout_keeps_original_deadline (__main__.Timer.test_phase_timeout_keeps_original_deadline) ... ok
+test_read_without_whole_timer_is_refused (__main__.Timer.test_read_without_whole_timer_is_refused) ... ok
+test_success_restores_original_whole_deadline_without_extension (__main__.Timer.test_success_restores_original_whole_deadline_without_extension) ... ok
+
+----------------------------------------------------------------------
+Ran 10 tests in 5.959s
+
+OK
