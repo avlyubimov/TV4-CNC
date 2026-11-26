@@ -85,7 +85,7 @@ def inspect(build,profile,sdk,enabled,*,post_install=False):
     tool=shutil.which('xtensa-esp32s3-elf-objdump')
     require(tool is not None,'activate the validated SDK to inspect Xtensa instructions')
     targets=('esp_restart','__wrap_esp_restart_noos','shutdown_marker')
-    if post_install:targets+=('worker','tv4_restart_bench_execute')
+    if post_install:targets+=('worker','tv4_restart_bench_execute','tv4_restart_trace_boot')
     disassembly={name:subprocess.check_output([tool,'-d','--disassemble='+name,str(elf)],text=True)
                  for name in targets}
     analysis_copy=False
@@ -109,6 +109,9 @@ def inspect(build,profile,sdk,enabled,*,post_install=False):
         for name in ('tv4_restart_trace_boot','tv4_restart_bench_prepare','tv4_restart_bench_execute'):
             require('<'+name+'>' in disassembly['worker'],'operator worker bypassed restart trace: '+name)
         require('<esp_restart>' in disassembly['tv4_restart_bench_execute'],'operator request bypassed SDK restart')
+        boot=disassembly['tv4_restart_trace_boot']
+        require(re.search(r'<esp_log(?:_write|_writev)?>',boot) is not None and
+                '<esp_rom_printf>' not in boot,'startup trace must use serialized SDK logging')
         require(b'stage=armed ready=%u operator=1' in elf.read_bytes(),'operator trace admission marker missing')
     for name in ('__wrap_esp_restart_noos','shutdown_marker'):
         text=disassembly[name]
@@ -119,6 +122,7 @@ def inspect(build,profile,sdk,enabled,*,post_install=False):
                     0x3fc88000<=value<0x3fd00000,'cached/unknown dependency in '+name)
     return dict(enabled=True,post_install=post_install,profile=profile,sdk=sdk,linked_symbols=present,
                 sdk_calls_wrapper=True,wrapper_calls_original_sdk=True,
+                serialized_boot_logging=post_install,
                 marker_dependencies_internal_or_rom=True,
                 property_table_analysis_copy=analysis_copy,original_load_bytes_preserved=True,
                 disassembly_sha256={k:hashlib.sha256(v[v.index('<'+k+'>:'):].encode()).hexdigest() for k,v in disassembly.items()},

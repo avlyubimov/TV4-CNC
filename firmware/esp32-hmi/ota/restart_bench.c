@@ -5,6 +5,7 @@
 #include "restart_bench.h"
 #include "esp_attr.h"
 #include "esp_cpu.h"
+#include "esp_log.h"
 #include "esp_rom_sys.h"
 #include "esp_system.h"
 
@@ -26,7 +27,9 @@ bool tv4_restart_bench_cold_boot(void) {
 #endif
 #if CONFIG_TV4_OTA_RESTART_TRACE
 void tv4_restart_trace_boot(void) {
-    esp_rom_printf("tv4_restart stage=boot reset=%u core=%u operator=1\n",
+    /* Both cores still log during startup. Use the normal serialized logger
+     * here; the final IRAM shutdown/noos markers stay independent of locks. */
+    ESP_LOGI("tv4_restart","stage=boot reset=%u core=%u operator=1",
         (unsigned)esp_reset_reason(),(unsigned)esp_cpu_get_core_id());
 }
 #endif

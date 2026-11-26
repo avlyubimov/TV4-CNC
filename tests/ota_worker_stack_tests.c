@@ -199,7 +199,7 @@ int esp_rom_printf(const char *format,...) {
     assert(!locks);char line[160];va_list args;va_start(args,format);
     int n=vsnprintf(line,sizeof(line),format,args);va_end(args);assert(n>0 && (size_t)n<sizeof(line));
     assert(strstr(line,"core=1"));
-    if(strstr(line,"stage=boot"))++boot_mark;
+    if(strstr(line,"stage=boot")) {assert(SERVICE_TEST_RESTART_BENCH);++boot_mark;}
     else if(strstr(line,"stage=request")) {assert(boot_mark==1 && restart_ready==1 && restart_hook && !restarts);if(SERVICE_TEST_RESTART_TRACE)assert(sessions==2 && releases==2 && sends==3);++request_mark;}
     else if(strstr(line,"stage=shutdown_hook")) {assert(request_mark==1 && restarts==1);++hook_mark;}
     else {assert(strstr(line,"stage=noos") && (hook_mark==1 || (SERVICE_TEST_RESTART_TRACE && !restart_hook)));++noos_mark;}
@@ -353,6 +353,12 @@ void service_test_log(const char *tag,const char *format,...) {
     assert(n>0 && (size_t)n<sizeof(boot_log));
 #if SERVICE_TEST_RESTART_BENCH || SERVICE_TEST_RESTART_TRACE
     if(!strcmp(tag,"tv4_restart")) {
+        if(SERVICE_TEST_RESTART_TRACE && strstr(message,"stage=boot")) {
+            unsigned reset,core;char extra;
+            assert(!boot_mark && !wdt_resets && !finishes && !acquires && !sends);
+            assert(sscanf(message,"stage=boot reset=%u core=%u operator=1%c",&reset,&core,&extra)==2);
+            assert(reset==ESP_RST_POWERON && core==1);++boot_mark;return;
+        }
         assert(boot_mark==1 && !restarts);
         if(SERVICE_TEST_RESTART_TRACE) {
             assert(strstr(message,"stage=armed ready=") && !acquires && !sends);

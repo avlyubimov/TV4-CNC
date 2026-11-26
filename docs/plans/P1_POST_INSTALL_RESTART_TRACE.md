@@ -16,8 +16,12 @@ memory diagnostics и локальный публичный context с install_r
 Несовместим с automatic restart, signed auto-CHECK, worker8192 и TLS bench.
 Обычные профили сохраняют прежний код и отсутствие диагностических символов.
 
-Тот же worker 12288 байт. Boot marker сообщает reason/core/operator=1, ничего
-не запускает. Callback регистрируется до допуска CHECK/INSTALL, после прежнего
+Тот же worker 12288 байт. Boot marker сообщает reason/core/operator=1 через
+штатный сериализованный SDK logger, ничего не запускает. В первом стенде
+source2cae6c4 ROM printf перемешался с параллельным startup log; строгий
+контроль остановил пакет до сети и вернул проверенный bench.4. Повреждённая
+строка не восстанавливается догадкой. Финальные IRAM hook/noos сохраняют
+ROM-only вывод без logging locks. Callback регистрируется до допуска CHECK/INSTALL, после прежнего
 HMI/PSRAM/layout/local-trust self-test. Ошибка регистрации запрещает команды
 обновления до любой записи. Shared readiness публикуется под прежним mux.
 

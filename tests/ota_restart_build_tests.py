@@ -86,7 +86,8 @@ class RestartGuards(unittest.TestCase):
              '__wrap_esp_restart_noos':'<__wrap_esp_restart_noos>:\n<esp_restart_noos> <tv4_restart_noos_format> <esp_rom_printf>',
              'shutdown_marker':'<shutdown_marker>:\n<tv4_restart_hook_format> <esp_rom_printf>',
              'worker':'<worker>:\n<tv4_restart_trace_boot> <tv4_restart_bench_prepare> <tv4_restart_bench_execute>',
-             'tv4_restart_bench_execute':'<tv4_restart_bench_execute>:\n<esp_restart>'}
+             'tv4_restart_bench_execute':'<tv4_restart_bench_execute>:\n<esp_restart>',
+             'tv4_restart_trace_boot':'<tv4_restart_trace_boot>:\n<esp_log>'}
         def run():
             def output(args,**unused):
                 if args[0]=='readelf':return '\n'.join(f'{i}: {v[0]:08x} {v[1]} {v[2]} LOCAL DEFAULT 7 {k}' for i,(k,v) in enumerate(symbols.items(),1))
@@ -101,6 +102,14 @@ class RestartGuards(unittest.TestCase):
         saved=dis['tv4_restart_bench_execute'];dis['tv4_restart_bench_execute']=saved.replace('<esp_restart>','')
         with self.assertRaises(ValueError):run()
         dis['tv4_restart_bench_execute']=saved
+        saved=dis['tv4_restart_trace_boot']
+        for logger in ('esp_log_write','esp_log_writev'):
+            dis['tv4_restart_trace_boot']=saved.replace('<esp_log>','<'+logger+'>')
+            self.assertTrue(run()['post_install'])
+        for logger in ('esp_rom_printf','unknown_logger'):
+            dis['tv4_restart_trace_boot']=saved.replace('<esp_log>','<'+logger+'>')
+            with self.subTest(logger=logger),self.assertRaises(ValueError):run()
+        dis['tv4_restart_trace_boot']=saved
         symbols['tv4_restart_bench_cold_boot']=[0x40379000,32,'FUNC']
         with self.assertRaises(ValueError):run()
     def test_analysis_copy_preserves_every_loaded_byte_and_memory_map(self):
