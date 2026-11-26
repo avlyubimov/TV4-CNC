@@ -50,6 +50,13 @@ jobs:
             gcc -std=c11 -Wall -Wextra -Werror -fanalyzer -Ifirmware/esp32-hmi/ota \
               -c "firmware/esp32-hmi/ota/$name.c" -o "build/policy-analysis/$name.o" >> build/policy-analysis.log 2>&1
           done
+          for name in service restart_bench; do
+            gcc -std=c11 -Wall -Wextra -Werror -fanalyzer -DESP_PLATFORM=1 \
+              -DSERVICE_TEST_RESTART_TRACE=1 -DSERVICE_TEST_PROVISIONED=1 \
+              -DSERVICE_TEST_INSTALL_REVIEWED=1 -DSERVICE_TEST_VALID_TRUST=1 \
+              -Itests/ota_service_sdk -Itests -Ifirmware/esp32-hmi/ota -Ifirmware/esp32-hmi/network \
+              -c "firmware/esp32-hmi/ota/$name.c" -o "build/policy-analysis/restart-trace-$name.o" >> build/policy-analysis.log 2>&1
+          done
           gcc -std=c11 -Wall -Wextra -Werror -fanalyzer -DESP_PLATFORM=1 \
             -DSERVICE_TEST_SIGNED_BENCH=1 -DSERVICE_TEST_PROVISIONED=1 -DSERVICE_TEST_VALID_TRUST=1 \
             -Itests/ota_service_sdk -Itests -Ifirmware/esp32-hmi/ota -Ifirmware/esp32-hmi/network \

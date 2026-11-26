@@ -1,5 +1,36 @@
 # Аппаратный статус TV4-CNC
 
+## 26 ноября: configured post-INSTALL trace — PASS
+
+[PR #95](https://github.com/avlyubimov/TV4-CNC/pull/95), source `8b3db2f`:
+[оба pinned SDK,334 host/334 sanitizers, source CI34 и40+40procedure groups](evidence/build/esp32-ota-restart-trace/README.md) PASS.
+[Конечный стенд SDK 6.1.1](evidence/hardware/2026-11-26-esp32-post-install-trace/README.md)
+закрыт за1333.173 с: control 37/37 → signed CHECK/INSTALL → операторский restart →
+90.160 с passive boot21/21,17 samples reset_reason3/watchdog_boot0. Request/hook/noos
+наблюдались наcore 1, affinity не задавалась. SESSION mininternal96739 байт,
+PSRAM5903896, stack≥7072/12288, touch age≤20 мс; это не production budget/FPS/latency.
+
+Свежие и финальные actual16МиБ/device verify/две физические NVMe-пары PASS;
+неактивный OTA0 возвращён, published candidate/FF padding и native seq3/4VALID
+проверены независимо, вся защищённая карта вне NVS совпала. Full recovery0.
+**Bench.5 оставлен в OTA1 VALID**, UART закрыт; владелец подтвердил экран,
+касания и Wi-Fi. Временной диагностики на плате нет; release/tag/ключ не создавались.
+
+[Первый control-отказ source `2cae6c4`](evidence/hardware/2026-11-26-esp32-post-install-trace/attempt1.md)
+сохранён: startup ROM printf перемешался с SDK log; строгий guard остановил
+сеанс до сети, одна свежая full recovery к bench.4/verify/owner health PASS.
+Исправлен только startup marker на serialized SDK logger; final hook/noos ROM-only.
+Первоначальный RTCWDT bench.5 остаётся FAIL, причина не установлена. Один traced
+PASS не отделяет instrumentation/timing/core placement/TLS/Flash/peripheral state.
+
+Следующий P1 — сопоставимый конечный post-INSTALL запуск без instrumentation,
+с прежними guards, независимым reset/slot/self-test/readback и сохранением
+здорового опубликованного образа. Production policy/budget/discovery, RF/AP/power
+loss, runtime 5.3.2 и physical FPS/latency открыты. Policy только до27 ноября2026
+08:00 Asia/Almaty, без автоматического продления. F407ee7d179/CAN/motion/eFuse/
+option bytes не открывались/не изменялись. Self-merge запрещён; активная очередь —
+[NEXT_STAGE](NEXT_STAGE.md). Ниже история, не текущие аппаратные действия.
+
 ## 25 ноября: диагностический software restart без INSTALL — PASS
 
 [Код и сборки](evidence/build/esp32-restart-diagnostics/README.md): source `f819955`,

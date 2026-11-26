@@ -1,10 +1,11 @@
 #include "sdkconfig.h"
-#if !CONFIG_TV4_OTA_RESTART_BENCH || !CONFIG_TV4_OTA_ENABLED || !CONFIG_TV4_OTA_MEMORY_DIAGNOSTICS
+#if !(CONFIG_TV4_OTA_RESTART_BENCH || CONFIG_TV4_OTA_RESTART_TRACE) || (CONFIG_TV4_OTA_RESTART_BENCH && CONFIG_TV4_OTA_RESTART_TRACE) || !CONFIG_TV4_OTA_ENABLED || !CONFIG_TV4_OTA_MEMORY_DIAGNOSTICS
 #error "Restart markers belong only to the explicit OTA restart diagnostic image"
 #endif
 #include "restart_bench.h"
 #include "esp_attr.h"
 #include "esp_cpu.h"
+#include "esp_log.h"
 #include "esp_rom_sys.h"
 #include "esp_system.h"
 
@@ -15,6 +16,7 @@ static const DRAM_ATTR char tv4_restart_noos_format[]="tv4_restart stage=noos co
 static void IRAM_ATTR shutdown_marker(void) {
     esp_rom_printf(tv4_restart_hook_format,(unsigned)esp_cpu_get_core_id());
 }
+#if CONFIG_TV4_OTA_RESTART_BENCH
 bool tv4_restart_bench_cold_boot(void) {
     esp_reset_reason_t reason=esp_reset_reason();
     bool cold=reason==ESP_RST_POWERON || reason==ESP_RST_EXT;
@@ -22,6 +24,15 @@ bool tv4_restart_bench_cold_boot(void) {
         (unsigned)reason,(unsigned)esp_cpu_get_core_id(),(unsigned)cold);
     return cold; /* SW, WDT, panic and unknown never auto-restart. */
 }
+#endif
+#if CONFIG_TV4_OTA_RESTART_TRACE
+void tv4_restart_trace_boot(void) {
+    /* Both cores still log during startup. Use the normal serialized logger
+     * here; the final IRAM shutdown/noos markers stay independent of locks. */
+    ESP_LOGI("tv4_restart","stage=boot reset=%u core=%u operator=1",
+        (unsigned)esp_reset_reason(),(unsigned)esp_cpu_get_core_id());
+}
+#endif
 bool tv4_restart_bench_prepare(void) {
     return esp_register_shutdown_handler(shutdown_marker)==ESP_OK;
 }

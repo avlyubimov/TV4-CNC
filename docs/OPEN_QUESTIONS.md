@@ -2,39 +2,32 @@
 
 ## Актуальные блокеры P1
 
-[Bench.5](evidence/build/esp32-ota-bench5/README.md) опубликован: источник,
-воспроизводимость сборок с утверждёнными настройками на двух SDK, обратное
-скачивание, подпись и SHA-256 проверены.
-[Аппаратный сеанс](evidence/hardware/2026-11-25-esp32-bench5/README.md) получил
-успешные подписанные CHECK/INSTALL, но после software reboot RTCWDT/
-reset_reason=7/watchdog_boot=1 остановили приёмку. Один полный возврат bench.4,
-проверка, загрузка и подтверждение владельца PASS. Три исследованные функции
-сброса в той же IRAM и побайтово равны; причина не локализована.
-[Диагностический образ без INSTALL](evidence/hardware/2026-11-25-esp32-restart-f819955/README.md) source `f819955` на SDK 6.1.1
-прошёл один software restart: reset_reason=1→3, watchdog_boot=0, 36/36 guards на обоих
-запусках и 90 секунд после сброса PASS. Bench.4 восстановлен и проверен.
-Это один unprovisioned factory-сеанс, не повторный post-INSTALL gate. Нужны
-сопоставимые shutdown-маркеры после реального настроенного CHECK/INSTALL,
-проверка reset/слота/self-test и независимое чтение кандидата. Влияние timing
-маркеров, предшествующих TLS/Flash операций и слота пока не разделено.
-Не менять защитные пороги или watchdog_boot ради PASS.
+[Configured post-INSTALL trace source `8b3db2f`](evidence/hardware/2026-11-26-esp32-post-install-trace/README.md)
+прошёл signed CHECK/INSTALL, normal restart/SW3/WDT0, passive90 с и независимое
+чтение candidate/native VALID/всех16МиБ. Bench.5 оставлен в OTA1 VALID,
+UART закрыт, владелец подтвердил экран/касания/Wi-Fi. Оба SDK/334+334tests/
+CI исходника 34/34/40+40procedure PASS; runtime 5.3.2 этим не проверен.
 
-Новая локальная policy .4→.5 действует только для стендов до 27 ноября 2026,
-08:00 Asia/Almaty. На возвращённом bench.4 остался прежний истёкший период.
-Старые контексты и файлы bench.2/.3/.4/.5 не менять. Для публикаций сохраняется
-отдельное разрешение владельца на конкретный пакет.
+Причина [первоначального RTCWDT](evidence/hardware/2026-11-25-esp32-bench5/README.md)
+не установлена. Один unprovisioned factory PASS f819955 и один traced configured
+PASS8b3db2f не отделяют instrumentation/timing, core placement и предшествующие
+TLS/Flash/peripheral state. Нужен сопоставимый запуск без restart instrumentation
+с теми же строгими guards; не менять watchdog_boot или floors ради PASS.
+[Первый control-отказ](evidence/hardware/2026-11-26-esp32-post-install-trace/attempt1.md)
+из-за interleaved startup ROM print исправлен serialized SDK logger и повторно
+проверен; это отдельная проблема, не доказанная причина RTCWDT.
 
-Открыты production clock source/policy, бюджет памяти, поиск версий, независимая
-потеря RF/AP/питания, runtime 5.3.2 и физические FPS/touch latency.
-Воспроизводимость чистых сборок с утверждёнными настройками подтверждена;
-перенос toolchain и разнообразие build hosts не проверены. Прежний добровольный
-STA disconnect/retry PASS не заменяет исчезновение RF/AP.
+На оставленном bench.5 действует только стендовая policy до27 ноября2026,
+08:00 Asia/Almaty. Старые contexts/immutable bench.2/.3/.4/.5 не переписывать.
+Production clock policy/source, budget/discovery, независимые RF/AP/power loss,
+physical FPS/touch latency и runtime 5.3.2 открыты. Добровольный STA disconnect/
+retry и текущий PASS не заменяют RF/AP или отключение питания. Перенос toolchain
+между разными build hosts ещё не квалифицирован.
 
-Для F407/CAN/NEMA23 остаются аппаратные блокеры: HSE, физические GPIO/CAN,
-точные модели двигателя и драйвера, питание, пины, полярности и независимая
-E-stop цепь. Общее разрешение на изолированные платы не разрешает движение,
-CAN, eFuse или option bytes. Самостоятельный merge запрещён.
-Ниже сохранена история; она не задаёт текущую очередь.
+Для F407/CAN/NEMA23 остаются HSE, physical GPIO/CAN, точные модели двигателя/
+драйвера, питание, пины, полярности и независимая аппаратная E-stop цепь.
+Standing изолированное разрешение не включает движение/CAN/eFuse/option bytes.
+Self-merge запрещён. Ниже история, не активная очередь.
 
 ## История: native pending confirmation/refusal/rollback a74bfcd — PASS
 

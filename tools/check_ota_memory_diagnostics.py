@@ -52,8 +52,8 @@ def source_owner_guard():
     require('if(!committed)tv4_ota_memory_window_begin(TV4_MEM_CLEANUP);' in service,'monitor allocation added after boot selection')
     return sorted(owners)
 
-def inspect(build,profile,sdk,trace=False,worker_stack_bench=False,worker_tls_bench=False,signed_check_bench=False):
-    validation=check_idf_build.verify(build,profile,sdk,write_report=False,memory_diagnostics=trace,worker_stack_bench=worker_stack_bench,worker_tls_bench=worker_tls_bench,signed_check_bench=signed_check_bench)
+def inspect(build,profile,sdk,trace=False,worker_stack_bench=False,worker_tls_bench=False,signed_check_bench=False,restart_trace=False):
+    validation=check_idf_build.verify(build,profile,sdk,write_report=False,memory_diagnostics=trace,worker_stack_bench=worker_stack_bench,worker_tls_bench=worker_tls_bench,signed_check_bench=signed_check_bench,restart_trace=restart_trace)
     build=Path(build);elf=build/'tv4_hmi.elf'
     symbols=subprocess.check_output(['readelf','-Ws',str(elf)],text=True)
     names={p[-1] for line in symbols.splitlines() if len(p:=line.split())>=8 and p[3]=='FUNC' and p[6]!='UND'}
@@ -115,7 +115,7 @@ def inspect(build,profile,sdk,trace=False,worker_stack_bench=False,worker_tls_be
     return dict(profile=profile,sdk=sdk,memory_diagnostics=trace,worker_stack_bench=worker_stack_bench,
         dma_diagnostics=dma,
         gui_heap=gui_heap,
-        worker_tls_bench=worker_tls_bench,signed_check_bench=signed_check_bench,tls_compiler_frames=tls_frames,tls_monitor_adapter_imports=tls_monitor_imports,
+        worker_tls_bench=worker_tls_bench,signed_check_bench=signed_check_bench,restart_trace=restart_trace,tls_compiler_frames=tls_frames,tls_monitor_adapter_imports=tls_monitor_imports,
         ota_install_reviewed=validation.get('ota_install_reviewed',False),
         worker_stack_bytes_requested=requested,worker_stack_runtime_qualified=False,service_compiler_frames=service_frames,module_writable_bytes=writable,
         module_writable_ceiling=512,compiler_frames=stack,compiler_frame_ceiling=192,
@@ -127,6 +127,7 @@ if __name__=='__main__':
     p=argparse.ArgumentParser(description=__doc__);p.add_argument('build',type=Path);p.add_argument('profile');p.add_argument('sdk');p.add_argument('--memory-diagnostics',action='store_true');p.add_argument('--worker-stack-bench',action='store_true')
     p.add_argument('--worker-tls-bench',action='store_true')
     p.add_argument('--signed-check-bench',action='store_true')
+    p.add_argument('--restart-trace',action='store_true')
     a=p.parse_args()
-    try:print(json.dumps(inspect(a.build,a.profile,a.sdk,a.memory_diagnostics,a.worker_stack_bench,a.worker_tls_bench,a.signed_check_bench),indent=2))
+    try:print(json.dumps(inspect(a.build,a.profile,a.sdk,a.memory_diagnostics,a.worker_stack_bench,a.worker_tls_bench,a.signed_check_bench,a.restart_trace),indent=2))
     except (ValueError,OSError,KeyError,subprocess.CalledProcessError) as e:raise SystemExit('Memory diagnostics validation failed: '+str(e))

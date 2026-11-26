@@ -261,10 +261,10 @@ add_test(NAME ota_restart_build_guards COMMAND ${Python3_EXECUTABLE} ${CMAKE_CUR
 set_tests_properties(ota_restart_build_guards PROPERTIES TIMEOUT 30)
 add_test(NAME ota_worker_stack_build_guards COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/tests/ota_worker_stack_build_tests.py)
 set_tests_properties(ota_worker_stack_build_guards PROPERTIES TIMEOUT 30)
-foreach(stack_bench 0 1 2 3 4 5 6 7 8 9 10)
+foreach(stack_bench 0 1 2 3 4 5 6 7 8 9 10 11)
   set(service_test ota_worker_stack_${stack_bench}_tests)
   add_executable(${service_test} tests/ota_worker_stack_tests.c ${HMI}/ota/service.c)
-  if(stack_bench EQUAL 10)
+  if(stack_bench EQUAL 10 OR stack_bench EQUAL 11)
     target_sources(${service_test} PRIVATE ${HMI}/ota/restart_bench.c)
     target_link_options(${service_test} PRIVATE "LINKER:--wrap=tv4_ota_resource_sample_current")
   endif()
@@ -273,10 +273,11 @@ foreach(stack_bench 0 1 2 3 4 5 6 7 8 9 10)
     SERVICE_TEST_BENCH=$<OR:$<STREQUAL:${stack_bench},1>,$<STREQUAL:${stack_bench},2>>
     SERVICE_TEST_TLS_BENCH=$<STREQUAL:${stack_bench},2>
     SERVICE_TEST_RESTART_BENCH=$<STREQUAL:${stack_bench},10>
-    SERVICE_TEST_PROVISIONED=$<OR:$<STREQUAL:${stack_bench},3>,$<STREQUAL:${stack_bench},4>,$<STREQUAL:${stack_bench},5>,$<STREQUAL:${stack_bench},6>,$<STREQUAL:${stack_bench},7>,$<STREQUAL:${stack_bench},8>,$<STREQUAL:${stack_bench},9>>
+    SERVICE_TEST_RESTART_TRACE=$<STREQUAL:${stack_bench},11>
+    SERVICE_TEST_PROVISIONED=$<OR:$<STREQUAL:${stack_bench},3>,$<STREQUAL:${stack_bench},4>,$<STREQUAL:${stack_bench},5>,$<STREQUAL:${stack_bench},6>,$<STREQUAL:${stack_bench},7>,$<STREQUAL:${stack_bench},8>,$<STREQUAL:${stack_bench},9>,$<STREQUAL:${stack_bench},11>>
     SERVICE_TEST_SIGNED_BENCH=$<OR:$<STREQUAL:${stack_bench},4>,$<STREQUAL:${stack_bench},5>>
-    SERVICE_TEST_VALID_TRUST=$<OR:$<STREQUAL:${stack_bench},4>,$<STREQUAL:${stack_bench},6>,$<STREQUAL:${stack_bench},7>,$<STREQUAL:${stack_bench},8>,$<STREQUAL:${stack_bench},9>>
-    SERVICE_TEST_INSTALL_REVIEWED=$<STREQUAL:${stack_bench},9>
+    SERVICE_TEST_VALID_TRUST=$<OR:$<STREQUAL:${stack_bench},4>,$<STREQUAL:${stack_bench},6>,$<STREQUAL:${stack_bench},7>,$<STREQUAL:${stack_bench},8>,$<STREQUAL:${stack_bench},9>,$<STREQUAL:${stack_bench},11>>
+    SERVICE_TEST_INSTALL_REVIEWED=$<OR:$<STREQUAL:${stack_bench},9>,$<STREQUAL:${stack_bench},11>>
     SERVICE_TEST_INVALID_POLICY=$<IF:$<STREQUAL:${stack_bench},7>,1,$<IF:$<STREQUAL:${stack_bench},8>,2,0>>)
   target_compile_options(${service_test} PRIVATE -Wall -Wextra -Werror -UNDEBUG)
   target_link_libraries(${service_test} PRIVATE tv4_ota_verification)
@@ -329,6 +330,16 @@ foreach(stack_bench 0 1 2 3 4 5 6 7 8 9 10)
         restart-psram-largest restart-stack restart-unavailable restart-floors)
       add_test(NAME ota_restart_${case} COMMAND ${service_test} ${case})
       set_tests_properties(ota_restart_${case} PROPERTIES TIMEOUT 15)
+    endforeach()
+  endif()
+  if(stack_bench EQUAL 11)
+    foreach(case trace-hook-fail trace-operator-install trace-operator-no-reboot
+        trace-operator-install-fail trace-operator-resource-fail trace-operator-cancel
+        trace-operator-after-commit-health trace-operator-stale-check
+        ota-context-valid ota-invalid-key ota-version-mismatch ota-no-description
+        ota-valid-unconfigured factory-invalid-key factory-version-mismatch missing-partition)
+      add_test(NAME ota_restart_trace_${case} COMMAND ${service_test} ${case})
+      set_tests_properties(ota_restart_trace_${case} PROPERTIES TIMEOUT 15)
     endforeach()
   endif()
 endforeach()

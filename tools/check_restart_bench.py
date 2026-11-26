@@ -14,6 +14,7 @@ from check_idf_build import require, verify
 FUNCTIONS=('shutdown_marker','__wrap_esp_restart_noos','tv4_restart_bench_cold_boot',
            'tv4_restart_bench_prepare','tv4_restart_bench_execute')
 FORMATS=('tv4_restart_hook_format','tv4_restart_noos_format')
+TRACE_FUNCTIONS=tuple(n for n in FUNCTIONS if n!='tv4_restart_bench_cold_boot')+('tv4_restart_trace_boot',)
 
 def loaded_bytes(raw):
     """ELF32 load identity; file offsets may change in an analysis copy."""
@@ -50,7 +51,9 @@ def property_analysis_copy(raw):
     require(loaded_bytes(raw)==loaded_bytes(copy),'analysis changed loaded firmware')
     return copy
 
-def inspect(build,profile,sdk,enabled):
+def inspect(build,profile,sdk,enabled,*,post_install=False):
+    require(type(enabled) is bool and type(post_install) is bool and (not post_install or enabled),
+            'explicit restart instrumentation mode required')
     build=Path(build)
     config=json.loads((build/'config/sdkconfig.json').read_text())
     verify(build,profile,sdk,write_report=False,
@@ -58,7 +61,8 @@ def inspect(build,profile,sdk,enabled):
            worker_stack_bench=config.get('TV4_OTA_WORKER_STACK_BENCH',False),
            worker_tls_bench=config.get('TV4_OTA_WORKER_TLS_BENCH',False),
            signed_check_bench=config.get('TV4_OTA_SIGNED_CHECK_BENCH',False),
-           restart_bench=enabled,reproducible=config.get('APP_REPRODUCIBLE_BUILD',False))
+           restart_bench=enabled and not post_install,restart_trace=post_install,
+           reproducible=config.get('APP_REPRODUCIBLE_BUILD',False))
     elf=build/'tv4_hmi.elf'
     symbols={}
     table=subprocess.check_output(['readelf','-Ws',str(elf)],text=True)
@@ -66,11 +70,12 @@ def inspect(build,profile,sdk,enabled):
         parts=line.split()
         if len(parts)==8 and parts[0].endswith(':') and parts[0][:-1].isdigit() and parts[6]!='UND':
             symbols[parts[7]]={'address':int(parts[1],16),'bytes':int(parts[2]),'type':parts[3]}
-    present={name:symbols[name] for name in FUNCTIONS+FORMATS if name in symbols}
+    present={name:symbols[name] for name in set(FUNCTIONS+TRACE_FUNCTIONS+FORMATS) if name in symbols}
     if not enabled:
         require(not present,'restart instrumentation retained in an ordinary image')
         return dict(enabled=False,markers_absent=True,device_access=False)
-    require(len(present)==len(FUNCTIONS+FORMATS),'linked restart marker missing')
+    expected=set((TRACE_FUNCTIONS if post_install else FUNCTIONS)+FORMATS)
+    require(set(present)==expected,'linked restart marker missing or wrong mode retained')
     for name in ('shutdown_marker','__wrap_esp_restart_noos'):
         require(0x40370000<=symbols[name]['address']<0x403e0000 and
                 0<symbols[name]['bytes']<=96 and symbols[name]['type']=='FUNC',name+' must be bounded IRAM code')
@@ -79,8 +84,10 @@ def inspect(build,profile,sdk,enabled):
                 0<symbols[name]['bytes']<=128 and symbols[name]['type']=='OBJECT',name+' must be bounded internal DRAM')
     tool=shutil.which('xtensa-esp32s3-elf-objdump')
     require(tool is not None,'activate the validated SDK to inspect Xtensa instructions')
+    targets=('esp_restart','__wrap_esp_restart_noos','shutdown_marker')
+    if post_install:targets+=('worker','tv4_restart_bench_execute','tv4_restart_trace_boot')
     disassembly={name:subprocess.check_output([tool,'-d','--disassemble='+name,str(elf)],text=True)
-                 for name in ('esp_restart','__wrap_esp_restart_noos','shutdown_marker')}
+                 for name in targets}
     analysis_copy=False
     # IDF5's sparse nonallocating .xt.prop can classify unlisted SDK code as
     # data. Never accept missing decoded calls. Analyze a temporary copy only,
@@ -98,6 +105,14 @@ def inspect(build,profile,sdk,enabled):
     require('<esp_restart_noos>' in disassembly['__wrap_esp_restart_noos'],'wrapper does not call original SDK restart')
     require('<tv4_restart_noos_format>' in disassembly['__wrap_esp_restart_noos'],'noos marker lost its DRAM string')
     require('<tv4_restart_hook_format>' in disassembly['shutdown_marker'],'shutdown marker lost its DRAM string')
+    if post_install:
+        for name in ('tv4_restart_trace_boot','tv4_restart_bench_prepare','tv4_restart_bench_execute'):
+            require('<'+name+'>' in disassembly['worker'],'operator worker bypassed restart trace: '+name)
+        require('<esp_restart>' in disassembly['tv4_restart_bench_execute'],'operator request bypassed SDK restart')
+        boot=disassembly['tv4_restart_trace_boot']
+        require(re.search(r'<esp_log(?:_write|_writev)?>',boot) is not None and
+                '<esp_rom_printf>' not in boot,'startup trace must use serialized SDK logging')
+        require(b'stage=armed ready=%u operator=1' in elf.read_bytes(),'operator trace admission marker missing')
     for name in ('__wrap_esp_restart_noos','shutdown_marker'):
         text=disassembly[name]
         require('<esp_rom_printf>' in text,'ROM-only marker output required')
@@ -105,8 +120,9 @@ def inspect(build,profile,sdk,enabled):
             value=int(address,16)
             require(0x40000000<=value<0x40080000 or 0x40370000<=value<0x403e0000 or
                     0x3fc88000<=value<0x3fd00000,'cached/unknown dependency in '+name)
-    return dict(enabled=True,profile=profile,sdk=sdk,linked_symbols=present,
+    return dict(enabled=True,post_install=post_install,profile=profile,sdk=sdk,linked_symbols=present,
                 sdk_calls_wrapper=True,wrapper_calls_original_sdk=True,
+                serialized_boot_logging=post_install,
                 marker_dependencies_internal_or_rom=True,
                 property_table_analysis_copy=analysis_copy,original_load_bytes_preserved=True,
                 disassembly_sha256={k:hashlib.sha256(v[v.index('<'+k+'>:'):].encode()).hexdigest() for k,v in disassembly.items()},
@@ -115,8 +131,9 @@ def inspect(build,profile,sdk,enabled):
 def main():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('build',type=Path);p.add_argument('profile');p.add_argument('sdk',choices=('5.3.2','6.1.1'))
-    p.add_argument('--enabled',action='store_true');a=p.parse_args()
-    try:result=inspect(a.build,a.profile,a.sdk,a.enabled)
+    mode=p.add_mutually_exclusive_group()
+    mode.add_argument('--enabled',action='store_true');mode.add_argument('--post-install',action='store_true');a=p.parse_args()
+    try:result=inspect(a.build,a.profile,a.sdk,a.enabled or a.post_install,post_install=a.post_install)
     except (ValueError,KeyError,OSError,struct.error,subprocess.SubprocessError) as error:
         raise SystemExit('Restart image rejected: '+str(error)) from None
     print(json.dumps(result,indent=2))

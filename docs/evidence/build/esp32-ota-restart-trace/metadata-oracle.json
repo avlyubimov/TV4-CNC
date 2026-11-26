@@ -1,0 +1,20 @@
+{
+  "source_sdk_commit": "051e4c4eb20346e043cdd47bc388fde75ff8af63",
+  "tests_pass": 5,
+  "finite_sequences": [
+    1,
+    2,
+    3,
+    4
+  ],
+  "real_official_method_compared": true,
+  "serial_target_constructed": false,
+  "device_access": false,
+  "source_files_sha256": {
+    "components/app_update/otatool.py": "da713515caf674b4169c764ffb1e4dd068637bab8db26e6f48b7f09ceebdcb85",
+    "components/app_update/esp_ota_ops.c": "526bee796363f147de53bb51b8b6f021800ddc50c5ce4f9f63680a66fe8a06ee",
+    "components/bootloader_support/include/esp_flash_partitions.h": "fb6c020402ae7793f1c3aeb14997ffed92bc5841a2fc930630008e6f83783a63",
+    "components/bootloader_support/src/bootloader_common_loader.c": "c8042255ded92f8b756ad211a2b1a5b3096921e877f7fc3f9ddaa1169b0c7453",
+    "components/bootloader_support/src/bootloader_utility.c": "8596c88146eb93a6c08a2f37213628c30901aad288392638272c5826c8f0037e"
+  }
+}

@@ -1,0 +1,140 @@
+{
+  "head": "2cae6c44d9115873eee3fbd93c17281f4caf6866",
+  "all_success": true,
+  "observed_utc": "2026-11-26 14:03:08 UTC",
+  "runs": [
+    {
+      "id": 45833452219,
+      "name": "Documentation checks",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success",
+      "attempt": 1,
+      "url": "https://github.com/avlyubimov/TV4-CNC/actions/runs/45833452219",
+      "jobs_count": 1,
+      "all_jobs_success": true
+    },
+    {
+      "id": 45833452263,
+      "name": "STM32 image admission (no hardware)",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success",
+      "attempt": 1,
+      "url": "https://github.com/avlyubimov/TV4-CNC/actions/runs/45833452263",
+      "jobs_count": 1,
+      "all_jobs_success": true
+    },
+    {
+      "id": 45833452098,
+      "name": "Host logic and LVGL render",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success",
+      "attempt": 1,
+      "url": "https://github.com/avlyubimov/TV4-CNC/actions/runs/45833452098",
+      "jobs_count": 2,
+      "all_jobs_success": true
+    },
+    {
+      "id": 45833452530,
+      "name": "STM32 foundation (no hardware)",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success",
+      "attempt": 1,
+      "url": "https://github.com/avlyubimov/TV4-CNC/actions/runs/45833452530",
+      "jobs_count": 1,
+      "all_jobs_success": true
+    },
+    {
+      "id": 45833452096,
+      "name": "Reproducible OTA builds (no hardware)",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success",
+      "attempt": 1,
+      "url": "https://github.com/avlyubimov/TV4-CNC/actions/runs/45833452096",
+      "jobs_count": 2,
+      "all_jobs_success": true
+    },
+    {
+      "id": 45833452202,
+      "name": "ESP-IDF compatibility",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success",
+      "attempt": 1,
+      "url": "https://github.com/avlyubimov/TV4-CNC/actions/runs/45833452202",
+      "jobs_count": 10,
+      "all_jobs_success": true
+    },
+    {
+      "id": 45833123107,
+      "name": "Documentation checks",
+      "event": "push",
+      "status": "completed",
+      "conclusion": "success",
+      "attempt": 1,
+      "url": "https://github.com/avlyubimov/TV4-CNC/actions/runs/45833123107",
+      "jobs_count": 1,
+      "all_jobs_success": true
+    },
+    {
+      "id": 45833123106,
+      "name": "STM32 image admission (no hardware)",
+      "event": "push",
+      "status": "completed",
+      "conclusion": "success",
+      "attempt": 1,
+      "url": "https://github.com/avlyubimov/TV4-CNC/actions/runs/45833123106",
+      "jobs_count": 1,
+      "all_jobs_success": true
+    },
+    {
+      "id": 45833123112,
+      "name": "STM32 foundation (no hardware)",
+      "event": "push",
+      "status": "completed",
+      "conclusion": "success",
+      "attempt": 1,
+      "url": "https://github.com/avlyubimov/TV4-CNC/actions/runs/45833123112",
+      "jobs_count": 1,
+      "all_jobs_success": true
+    },
+    {
+      "id": 45833123164,
+      "name": "Host logic and LVGL render",
+      "event": "push",
+      "status": "completed",
+      "conclusion": "success",
+      "attempt": 1,
+      "url": "https://github.com/avlyubimov/TV4-CNC/actions/runs/45833123164",
+      "jobs_count": 2,
+      "all_jobs_success": true
+    },
+    {
+      "id": 45833123209,
+      "name": "Reproducible OTA builds (no hardware)",
+      "event": "push",
+      "status": "completed",
+      "conclusion": "success",
+      "attempt": 1,
+      "url": "https://github.com/avlyubimov/TV4-CNC/actions/runs/45833123209",
+      "jobs_count": 2,
+      "all_jobs_success": true
+    },
+    {
+      "id": 45833123124,
+      "name": "ESP-IDF compatibility",
+      "event": "push",
+      "status": "completed",
+      "conclusion": "success",
+      "attempt": 1,
+      "url": "https://github.com/avlyubimov/TV4-CNC/actions/runs/45833123124",
+      "jobs_count": 10,
+      "all_jobs_success": true
+    }
+  ],
+  "total_jobs": 34
+}

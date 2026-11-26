@@ -31,7 +31,7 @@ def install_policy(build):
     return allowed
 
 
-def verify(build, profile, version, *, write_report=True, memory_diagnostics=False, worker_stack_bench=False, worker_tls_bench=False, signed_check_bench=False, restart_bench=False, reproducible=None):
+def verify(build, profile, version, *, write_report=True, memory_diagnostics=False, worker_stack_bench=False, worker_tls_bench=False, signed_check_bench=False, restart_bench=False, restart_trace=False, reproducible=None):
     require(profile in {"headless", "rev12", "rev12-memory-bench", "rev12-tls-bench", "rev12-ota"}, "unknown profile")
     require(version in {"5.3.2", "6.1.1"}, "unvalidated SDK")
     build = Path(build)
@@ -85,6 +85,15 @@ def verify(build, profile, version, *, write_report=True, memory_diagnostics=Fal
         context=json.loads((build/'ota-local/ota_local_context.json').read_text())
         require(type(context) is dict and context.get('provisioned') is False and context.get('private_key_present') is False,
                 "restart bench must remain unprovisioned")
+    require(type(restart_trace) is bool and (not restart_trace or (ota and memory_diagnostics and not restart_bench and not worker_stack_bench and not worker_tls_bench and not signed_check_bench)),
+            "operator restart trace requires exclusive configured OTA diagnostics")
+    require(type(config.get('TV4_OTA_RESTART_TRACE',False)) is bool and config.get('TV4_OTA_RESTART_TRACE',False)==restart_trace,
+            'operator restart trace must match explicit build selection')
+    if restart_trace:
+        context=json.loads((build/'ota-local/ota_local_context.json').read_text())
+        require(type(context) is dict and context.get('provisioned') is True and context.get('private_key_present') is False and
+                context.get('install_reviewed') is True and install_policy(build),
+                'operator restart trace requires public-only configured reviewed installation')
     require(config.get("TV4_OTA_ENABLED", False) == ota, "OTA requires explicit migration profile")
     require(config.get("LV_USE_CUSTOM_MALLOC",False)==ota and config.get("LV_USE_CLIB_MALLOC",False)==(not ota),
             "OTA requires the explicit LVGL PSRAM allocator; ordinary profiles require CLIB")
@@ -169,6 +178,7 @@ def verify(build, profile, version, *, write_report=True, memory_diagnostics=Fal
     if worker_tls_bench:result['ota_worker_tls_bench']=True
     if signed_check_bench:result['ota_signed_check_bench']=True
     if restart_bench:result['ota_restart_bench']=True
+    if restart_trace:result['ota_restart_trace']=True
     if write_report:
         (build / "validation.json").write_text(json.dumps(result, indent=2) + "\n")
         print(json.dumps(result, indent=2))
@@ -183,9 +193,10 @@ if __name__ == "__main__":
     parser.add_argument('--worker-tls-bench',action='store_true')
     parser.add_argument('--signed-check-bench',action='store_true')
     parser.add_argument('--restart-bench',action='store_true')
+    parser.add_argument('--restart-trace',action='store_true')
     parser.add_argument('--reproducible',action='store_true')
     args=parser.parse_args()
     try:
-        verify(args.build,args.profile,args.sdk,memory_diagnostics=args.memory_diagnostics,worker_stack_bench=args.worker_stack_bench,worker_tls_bench=args.worker_tls_bench,signed_check_bench=args.signed_check_bench,restart_bench=args.restart_bench,reproducible=args.reproducible)
+        verify(args.build,args.profile,args.sdk,memory_diagnostics=args.memory_diagnostics,worker_stack_bench=args.worker_stack_bench,worker_tls_bench=args.worker_tls_bench,signed_check_bench=args.signed_check_bench,restart_bench=args.restart_bench,restart_trace=args.restart_trace,reproducible=args.reproducible)
     except (ValueError, KeyError, OSError, struct.error) as error:
         raise SystemExit(f"Build validation failed: {error}")
