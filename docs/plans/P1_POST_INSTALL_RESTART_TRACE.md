@@ -3,7 +3,9 @@
 База — main `ef3b47d`, PR #1–94 слиты владельцем. Отдельный unprovisioned
 factory restart source `f819955` прошёл один раз, но не воспроизвёл
 [RTC watchdog после bench.5](../evidence/hardware/2026-11-25-esp32-bench5/README.md).
-Рабочая плата остаётся на bench.4 OTA1 VALID. Причина сбоя неизвестна.
+На начало этапа плата оставалась на bench.4 OTA1 VALID. После
+[стенда 26 ноября](../evidence/hardware/2026-11-26-esp32-post-install-trace/README.md)
+оставлен bench.5 OTA1 VALID. Причина первоначального RTCWDT неизвестна.
 
 Результат этой интеграции — настоящие configured ELF/BIN обоих pinned SDK и
 проверенный конечный пакет для наблюдения signed CHECK → INSTALL → операторский
@@ -18,7 +20,7 @@ memory diagnostics и локальный публичный context с install_r
 
 Тот же worker 12288 байт. Boot marker сообщает reason/core/operator=1 через
 штатный сериализованный SDK logger, ничего не запускает. В первом стенде
-source2cae6c4 ROM printf перемешался с параллельным startup log; строгий
+source `2cae6c4` ROM printf перемешался с параллельным startup log; строгий
 контроль остановил пакет до сети и вернул проверенный bench.4. Повреждённая
 строка не восстанавливается догадкой. Финальные IRAM hook/noos сохраняют
 ROM-only вывод без logging locks. Callback регистрируется до допуска CHECK/INSTALL, после прежнего
@@ -48,7 +50,7 @@ esp_restart_noos. Обработчики/строки используют пр�
   Этот BIN не публикуется и не прошивается. Реальный стенд использует только
   прежний утверждённый context/ключ владельца; policy автоматически не меняется.
 
-## Будущий конечный стенд
+## Критерии конечного стенда
 
 Новый exact source/app/CI packet, не повтор закрытого. Свежие actual16МиБ,
 device verify/SHA-256 и две независимые NVMe-копии до записи. Сохранять
@@ -69,3 +71,15 @@ host reset. Строгий reset_reason/watchdog_boot guard сохраняетс
 влияние на timing и разница factory/configured/post-write условий остаются
 инженерными гипотезами. Software fixtures, compiler frames, init messages и
 touch sample age не доказывают аппаратные FPS/latency или production budget.
+
+## Фактический результат
+
+Исходник `8b3db2f`: 334 host / 334 sanitizers, оба pinned SDK и CI исходника 34/34 PASS;
+40+40 procedure groups, включая interleaved/legacy boot marker refusal.
+[SDK 6.1.1 hardware](../evidence/hardware/2026-11-26-esp32-post-install-trace/README.md):
+control 37/37 → signed CHECK/INSTALL → operator restart →90.160 с passive/SW3/WDT0 →
+native VALID/exact published candidate/actual 16 MiB/two NVMe pairs PASS.
+Bench.5 оставлен OTA1 VALID, UART закрыт, owner health PASS; recovery 0.
+Первый control FAIL source `2cae6c4` и первоначальный RTCWDT FAIL сохранены. Причина
+watchdog не установлена; следующий результат — сопоставимый uninstrumented test,
+а не повтор закрытых пакетов. [Активная очередь](../NEXT_STAGE.md).

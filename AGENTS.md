@@ -1,39 +1,28 @@
 # TV4-CNC — правила разработки Codex
 
-От main `ef3b47d` готовится [операторская трассировка после INSTALL](docs/plans/P1_POST_INSTALL_RESTART_TRACE.md).
-`TV4_OTA_RESTART_TRACE` default-off: тот же configured worker, маркеры до
-штатного SDK reset, без auto-CHECK/auto-reboot и новых проверок после commit.
-CI fixture только software-only; для платы нужен прежний reviewed owner context.
-Следующие сведения о f819955 и bench.4 остаются подтверждённой аппаратной базой;
-новая post-INSTALL трассировка ещё не квалифицирована.
+P1 [PR #95](https://github.com/avlyubimov/TV4-CNC/pull/95), source `8b3db2f`:
+[оба SDK,334 host/334 sanitizers,CI исходника 34/34,40+40procedure](docs/evidence/build/esp32-ota-restart-trace/README.md) PASS.
+[Configured signed INSTALL → operator restart → full readback](docs/evidence/hardware/2026-11-26-esp32-post-install-trace/README.md)
+SDK 6.1.1 PASS за1333.173 с: control 37/37, passive90.160 с/21 guards/17 samples SW3/WDT0,
+request/hook/noos core 1. Native VALID/exact candidate/all 16 MiB/two NVMe pairs,
+возврат inactive OTA0 PASS; full recovery0. Bench.5 оставлен OTA1 VALID,
+UART закрыт; владелец подтвердил экран/касания/Wi-Fi. Временной диагностики нет.
 
-Код диагностики [PR #93](https://github.com/avlyubimov/TV4-CNC/pull/93)
-слит владельцем в main `d541baf`; source `f819955`. Обе сборки 5.3.2/6.1.1,
-313 host/313 sanitizers, source CI 34 и merged-main CI 17 PASS.
-Диагностика выключена по умолчанию, ключей/релизов не добавляет.
+Первый source `2cae6c4` control FAIL сохранён: interleaved startup ROM print,
+остановка до сети и одна свежая full recovery к bench.4. Startup trace переведён
+на serialized SDK logger; поздние IRAM hook/noos остаются ROM-only без locks.
+Диагностика default-off; ordinary profiles и release authoring guards прежние.
+Оригинальный RTCWDT bench.5 остаётся FAIL, причина не установлена. Один traced
+PASS не отделяет timing/core placement/TLS/Flash/peripheral state; следующий
+результат — сопоставимый uninstrumented post-INSTALL test с теми же guards.
+Не ослаблять TLS/signature/SHA/compatibility/time/resources/confirmation/watchdog.
 
-[Один software restart без INSTALL](docs/evidence/hardware/2026-11-25-esp32-restart-f819955/README.md) на SDK 6.1.1 PASS:
-36/36 guards на каждом из двух запусков; reset_reason=1→3, watchdog_boot=0,
-request/shutdown_hook core0 → noos core1, 90 секунд после сброса без host reset.
-Свежие и финальные реальные 16 МиБ/verify/две NVMe-копии проверены. Исходные factory
-и otadata возвращены; все байты вне NVS совпали, full recovery 0. Сеанс закрыт
-за 1103,269 с, UART закрыт; оставлен bench.4 OTA1 VALID. Финальные UART HMI/GT911/
-Wi-Fi guards PASS; владелец подтвердил главный экран, касания и Wi-Fi.
-
-Причина RTCWDT после bench.5 не установлена, его FAIL сохраняется. Один
-unprovisioned factory PASS с маркерами не квалифицирует post-INSTALL restart.
-Следующий P1 — сопоставимые shutdown-маркеры в настоящем настроенном пути
-после подписанного CHECK/INSTALL, затем независимые reset/slot/self-test/readback
-проверки. Прежние TLS/signature/SHA/compatibility/resource/time/confirmation
-и watchdog guards не ослаблять; не менять драйверы/частоты без измерений.
-Закрытые одноразовые пакеты не повторять, опубликованные assets не менять.
-
-На bench.4 прежний период OTA истёк. Стендовая policy .4→.5 утверждена только
-до 27 ноября 2026 08:00 Asia/Almaty; production policy/budget/discovery, RF/AP/power
-loss, runtime 5.3.2 и physical FPS/latency открыты. F407 ee7d179 не подключался.
-Standing isolated-board grant не разрешает CAN/движение/eFuse/option bytes.
-Самостоятельный merge и новый release/tag без соответствующего review запрещены.
-Ниже сохранена история; активная очередь — docs/NEXT_STAGE.md.
+Standing owner grant на26 ноября учтён в конечных пакетах; оба сеанса закрыты,
+их не повторять. На bench.5 context только до27 ноября08:00 Asia/Almaty, не продлевать
+автоматически. Production policy/budget/discovery, RF/AP/power loss, runtime 5.3.2,
+physical FPS/latency открыты. F407ee7d179/CAN/motion/eFuse/option bytes не открывались/
+не изменялись. Нового release/tag/ключа нет; self-merge запрещён.
+Активная очередь — [docs/NEXT_STAGE.md](docs/NEXT_STAGE.md); ниже история.
 
 Закрыто PR #90 от main 10cd8cd / source 104fb06: понятный отказ OTA по
 разрешённому времени проверен. Только TIME_REJECTED + TIME_RANGE + cleanup OK

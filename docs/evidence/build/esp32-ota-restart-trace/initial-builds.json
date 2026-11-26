@@ -1,0 +1,58 @@
+{
+  "6.1.1": {
+    "source_commit": "2cae6c44d9115873eee3fbd93c17281f4caf6866",
+    "app": {
+      "bytes": 1603248,
+      "sha256": "509feb7868fe5bc7ca3fb1037092bee390f9af44f3269832e3b333580cf28fca",
+      "project": "tv4_hmi",
+      "version": "0.1.0-bench.4",
+      "idf_version": "v6.1.1",
+      "elf_sha256": "477063078a5fb04090cb572317b574dc4ca4af0186d66e72a1d36f7de24cec59",
+      "segments": 6,
+      "chip_revision_min": 0,
+      "chip_revision_max": 99,
+      "flash_bytes": 16777216,
+      "flash_mode": "dio",
+      "flash_frequency_mhz": 80
+    },
+    "marker_compiler_frames": {
+      "shutdown_marker": 32,
+      "tv4_restart_trace_boot": 32,
+      "tv4_restart_bench_prepare": 32,
+      "tv4_restart_bench_execute": 32,
+      "__wrap_esp_restart_noos": 32
+    },
+    "linked_sdk_calls_wrapper": true,
+    "linked_wrapper_calls_original": true,
+    "linked_final_dependencies_internal_or_rom": true,
+    "runtime_qualified": false
+  },
+  "5.3.2": {
+    "source_commit": "2cae6c44d9115873eee3fbd93c17281f4caf6866",
+    "app": {
+      "bytes": 1556304,
+      "sha256": "c8ac819a610da7e2c120959c8700a6051ade7c1bab5793246f8aaed58beba942",
+      "project": "tv4_hmi",
+      "version": "0.1.0-bench.4",
+      "idf_version": "v5.3.2",
+      "elf_sha256": "430ff197a801265d37ae47acda2cd68a955417ca29f074858aca552ac19a8f67",
+      "segments": 5,
+      "chip_revision_min": 0,
+      "chip_revision_max": 99,
+      "flash_bytes": 16777216,
+      "flash_mode": "dio",
+      "flash_frequency_mhz": 80
+    },
+    "marker_compiler_frames": {
+      "shutdown_marker": 32,
+      "tv4_restart_trace_boot": 32,
+      "tv4_restart_bench_prepare": 32,
+      "tv4_restart_bench_execute": 32,
+      "__wrap_esp_restart_noos": 32
+    },
+    "linked_sdk_calls_wrapper": true,
+    "linked_wrapper_calls_original": true,
+    "linked_final_dependencies_internal_or_rom": true,
+    "runtime_qualified": false
+  }
+}

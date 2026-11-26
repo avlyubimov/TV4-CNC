@@ -3,7 +3,9 @@
 Результат этого изменения — отдельный прошиваемый HMI-образ для локализации
 RTC watchdog после bench.5. Исправление причины пока не заявляется.
 [Первоначальный отказ и восстановление](evidence/hardware/2026-11-25-esp32-bench5/README.md)
-сохраняются. Рабочий релиз на плате — bench.4 OTA1 VALID.
+сохраняются. После [configured post-INSTALL стенда 26 ноября](evidence/hardware/2026-11-26-esp32-post-install-trace/README.md)
+на плате оставлен bench.5 OTA1 VALID, owner screen/touch/Wi-Fi PASS. Это один
+traced PASS, не установленная причина прежнего RTCWDT. [Обе сборки и CI](evidence/build/esp32-ota-restart-trace/README.md).
 
 ## Границы образа
 
@@ -32,8 +34,10 @@ python tools/check_restart_bench.py \
 Оба режима ниже взаимоисключающие. Обычный build, migration и release authoring
 не принимают diagnostic trace по умолчанию. CI использует только одноразовый
 software-only public-key fixture, никогда owner context/подпись или устройство.
-Полный SDK stack/runtime, watchdog и post-INSTALL приёмка требуют отдельного
-конечного стенда; существующий FAIL bench.5 остаётся открытым.
+Полный SDK stack/worst case не выводится из ELF. Один конечный post-INSTALL
+стенд SDK 6.1.1 принят по строгим guards/readback; первоначальный FAIL bench.5
+остаётся открытым. Startup trace использует serialized SDK logger, чтобы не
+перемешиваться с параллельными сообщениями. Final hook/noos остаются ROM-only.
 
 `TV4_OTA_RESTART_BENCH=1` принимается только вместе с
 `TV4_OTA_MEMORY_DIAGNOSTICS=1` в `rev12-ota`, без локального OTA-контекста,
@@ -64,6 +68,7 @@ SW/WDT/panic/unknown после загрузки не запускают нов�
 
 | Маркер | Место |
 |---|---|
+| `tv4_restart: stage=boot reset=… core=… operator=1` | Configured worker startup через serialized SDK logger |
 | `stage=boot reset=… core=… eligible=…` | Диагностическая ветка worker после boot self-test |
 | `stage=ready` | Ресурсы проверены; числа относятся к этому worker |
 | `stage=request core=…` | Непосредственно перед штатным `esp_restart()` |
@@ -130,9 +135,12 @@ bench.5 повторно не используется. Новый пакет о
 16 МиБ и две проверенные копии, ограниченные записи и runtime capture,
 сохранность Flash вне разрешённых областей и резерв времени на восстановление.
 
-Временный диагностический образ не является опубликованным релизом. По окончании
-вернуть проверенный bench.4; прежние release assets/tag не менять.
+Временный диагностический образ не является опубликованным релизом. При полном PASS оставить согласованный опубликованный образ; при FAIL выполнить
+предусмотренное восстановление свежего known-good снимка. Release assets/tag не менять.
 Watchdog reason/counter и строгий критерий отказа сохраняются даже при рабочем
 экране и SDK self-test. Единичный аппаратный PASS без INSTALL описан выше;
-настроенный post-INSTALL restart и SDK5.3.2 runtime не квалифицированы.
+source `8b3db2f` затем прошёл один configured post-INSTALL restart/SW3/WDT0,
+native VALID и independent 16 MiB readback. Его первый control FAIL source `2cae6c4`
+сохранён отдельно. Оба пакета закрыты; SDK 5.3.2 runtime не квалифицирован.
+Следующий этап — сопоставимое наблюдение без instrumentation, не повтор пакетов.
 

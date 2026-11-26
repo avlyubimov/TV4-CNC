@@ -29,6 +29,17 @@ jobs:
           test -s LICENSE
           test -s docs/ESP32_RESTART_BENCH.md
           test -s docs/plans/P1_POST_INSTALL_RESTART_TRACE.md
+          test -s docs/evidence/build/esp32-ota-restart-trace/README.md
+          for receipt in builds checks source-ci initial-builds initial-source-ci metadata-oracle; do
+            python3 -m json.tool "docs/evidence/build/esp32-ota-restart-trace/$receipt.json" > /dev/null
+          done
+          test -s docs/evidence/build/esp32-ota-restart-trace/procedure-tests.txt
+          test -s docs/evidence/build/esp32-ota-restart-trace/procedure-tests-optimized.txt
+          test -s docs/evidence/hardware/2026-11-26-esp32-post-install-trace/README.md
+          test -s docs/evidence/hardware/2026-11-26-esp32-post-install-trace/attempt1.md
+          for receipt in measurements attempt1; do
+            python3 -m json.tool "docs/evidence/hardware/2026-11-26-esp32-post-install-trace/$receipt.json" > /dev/null
+          done
           test -s docs/evidence/build/esp32-restart-diagnostics/README.md
           for receipt in results builds source-ci main-ci first-inspection; do
             python3 -m json.tool "docs/evidence/build/esp32-restart-diagnostics/$receipt.json" > /dev/null

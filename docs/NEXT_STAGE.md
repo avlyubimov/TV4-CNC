@@ -1,50 +1,42 @@
-# P1 — ESP32 OTA: после диагностического software restart
+# P1 — после traced signed INSTALL и normal restart
 
-## Закрыто: один software restart без INSTALL — PASS
+## Закрыто: configured post-INSTALL trace — PASS
 
-[Код PR #93](https://github.com/avlyubimov/TV4-CNC/pull/93) слит владельцем:
-source `f8199557def895f301cd7e0cbbdde32e54b87681`, main `d541baf`.
-[Обе фактические сборки 5.3.2/6.1.1, 313 host/313 sanitizers, CI 34+17](evidence/build/esp32-restart-diagnostics/README.md)
-PASS. Диагностика default-off, без новой задачи, ключа или release/tag.
+[PR #95](https://github.com/avlyubimov/TV4-CNC/pull/95), исходник `8b3db2f62584267e9e00f372d65b95c8029cdfe1`,
+база main `ef3b47d`. [Оба SDK/334 host/334 sanitizers/CI исходника 34/34/40+40procedure](evidence/build/esp32-ota-restart-trace/README.md) PASS.
+[Реальный сеанс SDK 6.1.1](evidence/hardware/2026-11-26-esp32-post-install-trace/README.md)
+закрыт за1333.173 с: control 37/37, signed CHECK/INSTALL, operator normal reboot,
+90.160 с passive21/21 и17 samples SW3/WDT0. Последовательность request/hook/noos
+наблюдалась полностью наcore 1. Native VALID и точный published candidate,
+реальные16МиБ/две NVMe-пары/защищённая карта PASS. Неактивный слот возвращён,
+full recovery0; **bench.5 оставлен OTA1 VALID**, UART закрыт, owner health PASS.
 
-[Аппаратный результат](evidence/hardware/2026-11-25-esp32-restart-f819955/README.md): один unprovisioned factory-сеанс SDK 6.1.1,
-36/36 guards на обоих запусках, reset_reason=1→3, watchdog_boot=0. Последовательность
-request/shutdown_hook core0 → noos core1 наблюдалась полностью; после сброса
-90 секунд без host reset, свежие touch samples и Wi-Fi PASS. Исходные factory/
-otadata возвращены, реальные 16 МиБ считаны до/после, все байты вне NVS совпали,
-две пары NVMe-копий проверены, full recovery 0. Сеанс закрыт за 1103,269 с,
-UART закрыт; оставлен bench.4 OTA1 VALID. Финальная UART-проверка PASS;
-владелец подтвердил главный экран, касания и Wi-Fi.
+[Первый control-пакет2cae6c4](evidence/hardware/2026-11-26-esp32-post-install-trace/attempt1.md)
+остановлен до сети из-за перемешанного startup ROM marker, затем один fresh full
+restore к bench.4/verify/owner health PASS. Fixed8b3db2f использует serialized SDK
+logger для boot; final IRAM/DRAM/ROM markers прежние, строгий guard сохранён.
+Это не причина [первоначального RTCWDT bench.5](evidence/hardware/2026-11-25-esp32-bench5/README.md),
+который остаётся FAIL. Отдельный unprovisioned factory restart f819955 ранее
+также PASS; его [исторический отчёт](evidence/hardware/2026-11-25-esp32-restart-f819955/README.md) не подменяет post-INSTALL test.
 
 ## Следующий измеримый результат P1
 
-Локализовать прежний RTCWDT именно после OTA-пути. Один диагностический
-unprovisioned factory PASS не исправляет и не отменяет
-[FAIL bench.5](evidence/hardware/2026-11-25-esp32-bench5/README.md).
-Не проверены настроенный context, предшествующие SNTP/HTTPS/Flash writer,
-смена слота и post-INSTALL shutdown; инструментация может влиять на тайминг.
-Разница условий — инженерная гипотеза для следующего измерения, не причина сбоя.
+Подготовить один сопоставимый конечный **uninstrumented post-INSTALL** пакет:
+прежний reviewed context, normal CHECK/INSTALL/операторский restart, полный UART
+без промежуточного host reset, строгий watchdog/self-test, независимое чтение
+слота/metadata/всех16МиБ. Цель — отделить влияние instrumentation/timing/core
+placement от первоначального отказа. Сейчас причина не установлена; драйверы,
+часы, CPU affinity, пороги ресурсов и watchdog без доказательств не менять.
+Использовать существующие signed payload/installer/crypto и known-good checkpoint,
+не добавлять библиотек и не повторять закрытые пакеты.
 
-От main `ef3b47d` реализуется [отдельный configured trace](plans/P1_POST_INSTALL_RESTART_TRACE.md):
-`TV4_OTA_RESTART_TRACE=1`, штатные CHECK/INSTALL/REBOOT, callback до допуска
-команд, отсутствие auto-restart и новых failable действий после commit.
-Программная сборка и фактический hardware результат учитываются отдельно.
-Сохранить прежние crypto/HTTPS/compatibility/resource/time/confirmation guards,
-shutdown API и watchdog. Не вводить новый слой криптографии, сниженные пороги,
-обнуление watchdog_boot или неподтверждённые изменения драйверов/частот.
-Критерий стенда: подписанный INSTALL → один штатный restart → непрерывный
-UART/self-test/строгий watchdog gate → независимое чтение слота/метаданных.
-Нужен новый конечный exact source/image пакет с двумя проверенными копиями
-и резервом восстановления; закрытые пакеты повторять нельзя. Опубликованные
-bench.2/.3/.4/.5 неизменяемы, новый релиз не публиковать под видом диагностики.
-
-На bench.4 прежний период OTA истёк. Локальная policy .4→.5 утверждена только
-до 27 ноября 2026 08:00 Asia/Almaty; автоматически её не продлевать.
-Production policy/budget/discovery, RF/AP/power loss, runtime 5.3.2, physical
-FPS/latency остаются открытыми. F407 ee7d179 не трогали; для NEMA23 нужны
-точные модели двигателя/драйвера и независимая аппаратная E-stop цепь.
-Изолированное разрешение не включает CAN/движение/eFuse/option bytes.
-Самостоятельный merge запрещён.
+После этого продолжать independent RF/AP/power loss, production policy/budget/
+discovery и P2 release acceptance по фактическим результатам. Один traced PASS
+не завершает P1. Policy .4→.5 только до27 ноября2026 08:00 Asia/Almaty, автоматически
+не продлевать. Published assets/key/tag неизменяемы; новый release требует owner
+review. Выполненное standing разрешение владельца учтено; аппаратный сеанс закрыт.
+F407ee7d179 не открывался; CAN/приводы/eFuse/option bytes не затрагивались.
+Для NEMA23 нужны точные модели и независимая E-stop цепь. Self-merge запрещён.
 
 ## История: публикация bench.5 и отказ post-INSTALL restart
 

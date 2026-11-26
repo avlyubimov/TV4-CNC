@@ -1,0 +1,45 @@
+test_boundaries_before_install_terminal_are_rejected (__main__.Collector.test_boundaries_before_install_terminal_are_rejected) ... ok
+test_complete_reboot_waits_full_ninety_seconds_without_host_reset (__main__.Collector.test_complete_reboot_waits_full_ninety_seconds_without_host_reset) ... ok
+test_exact_order_and_all_shutdown_boundaries_are_required (__main__.Collector.test_exact_order_and_all_shutdown_boundaries_are_required) ... ok
+test_extra_check_and_repeated_reboot_are_rejected (__main__.Collector.test_extra_check_and_repeated_reboot_are_rejected) ... ok
+test_missing_or_failed_clock_or_cleanup_cannot_pass (__main__.Collector.test_missing_or_failed_clock_or_cleanup_cannot_pass) ... ok
+test_missing_reboot_times_out_without_forcing_reset (__main__.Collector.test_missing_reboot_times_out_without_forcing_reset) ... ok
+test_partial_boot_version_does_not_truncate_collection (__main__.Collector.test_partial_boot_version_does_not_truncate_collection) ... ok
+test_reboot_before_install_commit_is_rejected (__main__.Collector.test_reboot_before_install_commit_is_rejected) ... ok
+test_reboot_in_same_uart_chunk_is_accepted_after_complete_install (__main__.Collector.test_reboot_in_same_uart_chunk_is_accepted_after_complete_install) ... ok
+test_uart_byte_bound_precedes_decode (__main__.Collector.test_uart_byte_bound_precedes_decode) ... ok
+test_wrong_version_elf_or_missing_selftest_cannot_pass (__main__.Collector.test_wrong_version_elf_or_missing_selftest_cannot_pass) ... ok
+test_phase_cannot_run_without_whole_session_timer (__main__.Deadlines.test_phase_cannot_run_without_whole_session_timer) ... ok
+test_phase_restores_only_remaining_original_time_on_exception (__main__.Deadlines.test_phase_restores_only_remaining_original_time_on_exception) ... ok
+test_actual_packet_approved_source_pub_ci_and_images_pass_without_serial_import (__main__.Loader.test_actual_packet_approved_source_pub_ci_and_images_pass_without_serial_import) ... ok
+test_changed_payload_refused (__main__.Loader.test_changed_payload_refused) ... ok
+test_current_board_grant_required (__main__.Loader.test_current_board_grant_required) ... ok
+test_exact_source_required (__main__.Loader.test_exact_source_required) ... ok
+test_expired_policy_and_insufficient_full_session_time_refused (__main__.Loader.test_expired_policy_and_insufficient_full_session_time_refused) ... ok
+test_receiver_exact_ci_failure_refused (__main__.Loader.test_receiver_exact_ci_failure_refused) ... ok
+test_tag_ci_failure_refused (__main__.Loader.test_tag_ci_failure_refused) ... ok
+test_today_grant_scope_cannot_enable_motion (__main__.Loader.test_today_grant_scope_cannot_enable_motion) ... ok
+test_unapproved_write_scope_refused (__main__.Loader.test_unapproved_write_scope_refused) ... ok
+test_unverified_publication_refused (__main__.Loader.test_unverified_publication_refused) ... ok
+test_candidate_readback_corruption_cannot_pass_selftest_log (__main__.Procedure.test_candidate_readback_corruption_cannot_pass_selftest_log) ... ok
+test_complete_network_path_keeps_published_release_and_returns_inactive_receiver (__main__.Procedure.test_complete_network_path_keeps_published_release_and_returns_inactive_receiver) ... ok
+test_control_requires_armed_operator_trace_before_network (__main__.Procedure.test_control_requires_armed_operator_trace_before_network) ... ok
+test_control_touch_failure_prevents_any_network_install (__main__.Procedure.test_control_touch_failure_prevents_any_network_install) ... ok
+test_failed_recovery_is_never_repeated (__main__.Procedure.test_failed_recovery_is_never_repeated) ... ok
+test_final_independent_backup_failure_does_not_claim_success (__main__.Procedure.test_final_independent_backup_failure_does_not_claim_success) ... ok
+test_final_read_timeout_restores_original_release_once (__main__.Procedure.test_final_read_timeout_restores_original_release_once) ... ok
+test_inactive_cleanup_partial_write_cannot_claim_retained_bench5 (__main__.Procedure.test_inactive_cleanup_partial_write_cannot_claim_retained_bench5) ... ok
+test_interleaved_or_legacy_rom_startup_marker_refuses_network_and_recovers (__main__.Procedure.test_interleaved_or_legacy_rom_startup_marker_refuses_network_and_recovers) ... ok
+test_network_failure_restores_once_and_checks_old_boot (__main__.Procedure.test_network_failure_restores_once_and_checks_old_boot) ... ok
+test_outside_write_damage_is_detected_and_restored (__main__.Procedure.test_outside_write_damage_is_detected_and_restored) ... ok
+test_partial_normal_write_is_restored_from_fresh_verified_snapshot (__main__.Procedure.test_partial_normal_write_is_restored_from_fresh_verified_snapshot) ... ok
+test_pending_metadata_cannot_pass_a_valid_log (__main__.Procedure.test_pending_metadata_cannot_pass_a_valid_log) ... ok
+test_two_verified_backup_copies_are_required_before_write (__main__.Procedure.test_two_verified_backup_copies_are_required_before_write) ... ok
+test_unexpected_non_nvs_checkpoint_stops_before_any_write (__main__.Procedure.test_unexpected_non_nvs_checkpoint_stops_before_any_write) ... ok
+test_watchdog_candidate_stays_failed_and_preserves_shutdown_evidence (__main__.Procedure.test_watchdog_candidate_stays_failed_and_preserves_shutdown_evidence) ... ok
+test_wrong_chip_or_security_stops_before_snapshot_write (__main__.Procedure.test_wrong_chip_or_security_stops_before_snapshot_write) ... ok
+
+----------------------------------------------------------------------
+Ran 40 tests in 4.289s
+
+OK

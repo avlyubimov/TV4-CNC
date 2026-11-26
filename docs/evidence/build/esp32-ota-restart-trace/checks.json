@@ -1,0 +1,28 @@
+{
+  "source_commit": "8b3db2f62584267e9e00f372d65b95c8029cdfe1",
+  "static_analyzer": {
+    "actual_changed_marker_object_compiled": true,
+    "flags": "-fanalyzer -Wall -Wextra -Werror",
+    "pass": true
+  },
+  "build_guard_python_methods": 11,
+  "runtime_and_hardware_results": "reported separately",
+  "host": {
+    "ctest_suites": 334,
+    "passed": 334,
+    "failed": 0,
+    "real_seconds": 10.6
+  },
+  "asan_ubsan_lsan": {
+    "ctest_suites": 334,
+    "passed": 334,
+    "failed": 0,
+    "real_seconds": 19.72,
+    "detect_leaks": true,
+    "halt_on_error": true,
+    "outside_ptrace_sandbox": true
+  },
+  "procedure_test_groups": 40,
+  "optimized_python_procedure_test_groups": 40,
+  "official_metadata_oracle_cases": 5
+}
