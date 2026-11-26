@@ -124,6 +124,14 @@ jobs:
             TV4_OTA_MEMORY_DIAGNOSTICS=1 TV4_OTA_RESTART_BENCH=1 TV4_REPRODUCIBLE_BUILD=1 ./tools/build_idf.sh rev12-ota '${{ matrix.sdk }}' local > build-ci-evidence/restart-bench-build.log 2>&1
             python tools/check_restart_bench.py 'build-idf-${{ matrix.sdk }}-rev12-ota-reproducible-memory-diagnostics-restart-bench' rev12-ota '${{ matrix.sdk }}' --enabled > build-ci-evidence/restart-bench.json
             cp 'build-idf-${{ matrix.sdk }}-rev12-ota-reproducible-memory-diagnostics-restart-bench/validation.json' build-ci-evidence/restart-validation.json
+            # Disposable public-only software fixture. No owner key/context,
+            # network request, binary upload, signer or device authorization.
+            trace_fixture="$(mktemp -d)/public-only"
+            python tests/ota_restart_build_tests.py --ci-trace-fixture "$trace_fixture"
+            TV4_OTA_CONTEXT="$trace_fixture/context.json" TV4_OTA_MEMORY_DIAGNOSTICS=1 TV4_OTA_RESTART_TRACE=1 TV4_REPRODUCIBLE_BUILD=1 ./tools/build_idf.sh rev12-ota '${{ matrix.sdk }}' local > build-ci-evidence/operator-restart-trace-build.log 2>&1
+            python tools/check_restart_bench.py 'build-idf-${{ matrix.sdk }}-rev12-ota-reproducible-memory-diagnostics-restart-trace' rev12-ota '${{ matrix.sdk }}' --post-install > build-ci-evidence/operator-restart-trace.json
+            python tools/check_ota_memory_diagnostics.py 'build-idf-${{ matrix.sdk }}-rev12-ota-reproducible-memory-diagnostics-restart-trace' rev12-ota '${{ matrix.sdk }}' --memory-diagnostics --restart-trace > build-ci-evidence/operator-restart-memory.json
+            cp 'build-idf-${{ matrix.sdk }}-rev12-ota-reproducible-memory-diagnostics-restart-trace/validation.json' build-ci-evidence/operator-restart-validation.json
             sha256sum -c build-ci-evidence/locks-before-diagnostics.sha256
           fi
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2

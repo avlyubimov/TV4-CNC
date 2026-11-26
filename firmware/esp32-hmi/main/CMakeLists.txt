@@ -1,9 +1,13 @@
 include(${CMAKE_CURRENT_LIST_DIR}/../../../third_party/cjson/check.cmake)
 set(platform_sources "../ota/memory_diagnostics.c" "../ota/dma_diagnostics.c" "../ui/lvgl_psram.c")
-if(CONFIG_TV4_OTA_RESTART_BENCH)
-    if(NOT CONFIG_TV4_OTA_ENABLED OR NOT CONFIG_TV4_OTA_MEMORY_DIAGNOSTICS OR TV4_OTA_CONTEXT OR
+if(CONFIG_TV4_OTA_RESTART_BENCH OR CONFIG_TV4_OTA_RESTART_TRACE)
+    if(NOT CONFIG_TV4_OTA_ENABLED OR NOT CONFIG_TV4_OTA_MEMORY_DIAGNOSTICS OR
        CONFIG_TV4_OTA_WORKER_STACK_BENCH OR CONFIG_TV4_OTA_WORKER_TLS_BENCH OR CONFIG_TV4_OTA_SIGNED_CHECK_BENCH)
-        message(FATAL_ERROR "Restart bench requires exclusive unprovisioned OTA trace")
+        message(FATAL_ERROR "Restart markers require exclusive OTA trace")
+    endif()
+    if((CONFIG_TV4_OTA_RESTART_BENCH AND (TV4_OTA_CONTEXT OR CONFIG_TV4_OTA_RESTART_TRACE)) OR
+       (CONFIG_TV4_OTA_RESTART_TRACE AND NOT TV4_OTA_CONTEXT))
+        message(FATAL_ERROR "Select unprovisioned automatic bench or configured operator trace")
     endif()
     list(APPEND platform_sources "../ota/restart_bench.c")
 endif()
@@ -19,7 +23,7 @@ idf_component_register(SRCS ${platform_sources} "main.c" "../ota/verification.c"
  LDFRAGMENTS "../ota/dma_diagnostics.lf")
 # lv_font_conv resources use the short LVGL include with managed IDF components.
 target_compile_definitions(${COMPONENT_LIB} PRIVATE LV_LVGL_H_INCLUDE_SIMPLE=1)
-if(CONFIG_TV4_OTA_RESTART_BENCH)
+if(CONFIG_TV4_OTA_RESTART_BENCH OR CONFIG_TV4_OTA_RESTART_TRACE)
     target_link_options(${COMPONENT_LIB} INTERFACE "LINKER:--wrap=esp_restart_noos")
 endif()
 # Keep the verification entry point in the ELF so both SDK jobs resolve its
@@ -96,7 +100,7 @@ set_source_files_properties("../ui/lvgl_psram.c" PROPERTIES
     COMPILE_OPTIONS "-fstack-usage;-Wframe-larger-than=128")
 set_property(SOURCE "main.c" "../ota/service.c" "../ota/utc_tls_bench.c" APPEND PROPERTY COMPILE_OPTIONS "-fstack-usage")
 
-if(CONFIG_TV4_OTA_RESTART_BENCH)
+if(CONFIG_TV4_OTA_RESTART_BENCH OR CONFIG_TV4_OTA_RESTART_TRACE)
     set_source_files_properties("../ota/restart_bench.c" PROPERTIES
         COMPILE_OPTIONS "-fstack-usage;-Wframe-larger-than=128")
 endif()

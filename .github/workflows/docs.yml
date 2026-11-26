@@ -28,6 +28,7 @@ jobs:
           test -s docs/OTA_SIGNED_CHECK_BUNDLE.md
           test -s LICENSE
           test -s docs/ESP32_RESTART_BENCH.md
+          test -s docs/plans/P1_POST_INSTALL_RESTART_TRACE.md
           test -s docs/evidence/build/esp32-restart-diagnostics/README.md
           for receipt in results builds source-ci main-ci first-inspection; do
             python3 -m json.tool "docs/evidence/build/esp32-restart-diagnostics/$receipt.json" > /dev/null

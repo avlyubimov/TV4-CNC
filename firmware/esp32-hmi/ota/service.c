@@ -10,6 +10,9 @@ tv4_ota_boot_result tv4_ota_boot_observe(tv4_ota_boot_window *w,uint32_t now,boo
 }
 #ifdef ESP_PLATFORM
 #include "sdkconfig.h"
+#if CONFIG_TV4_OTA_RESTART_TRACE && (!CONFIG_TV4_OTA_ENABLED || !CONFIG_TV4_OTA_MEMORY_DIAGNOSTICS || CONFIG_TV4_OTA_RESTART_BENCH || CONFIG_TV4_OTA_WORKER_STACK_BENCH || CONFIG_TV4_OTA_WORKER_TLS_BENCH || CONFIG_TV4_OTA_SIGNED_CHECK_BENCH)
+#error "Operator restart trace requires exclusive configured OTA diagnostics"
+#endif
 #if CONFIG_TV4_OTA_RESTART_BENCH && (!CONFIG_TV4_OTA_ENABLED || !CONFIG_TV4_OTA_MEMORY_DIAGNOSTICS || CONFIG_TV4_OTA_WORKER_STACK_BENCH || CONFIG_TV4_OTA_WORKER_TLS_BENCH || CONFIG_TV4_OTA_SIGNED_CHECK_BENCH)
 #error "Restart bench requires exclusive unprovisioned OTA trace"
 #endif
@@ -36,6 +39,9 @@ tv4_ota_boot_result tv4_ota_boot_observe(tv4_ota_boot_window *w,uint32_t now,boo
 #endif
 #if OTA_INSTALL_REVIEWED && !TV4_OTA_PROVISIONED
 #error "Installation review requires local provisioning"
+#endif
+#if CONFIG_TV4_OTA_RESTART_TRACE && (!TV4_OTA_PROVISIONED || !OTA_INSTALL_REVIEWED)
+#error "Operator restart trace requires configured owner-reviewed installation"
 #endif
 #if CONFIG_TV4_OTA_SIGNED_CHECK_BENCH && (!TV4_OTA_PROVISIONED || !CONFIG_TV4_OTA_MEMORY_DIAGNOSTICS || CONFIG_TV4_OTA_WORKER_STACK_BENCH || CONFIG_TV4_OTA_WORKER_TLS_BENCH)
 #error "Signed CHECK bench requires configured OTA trace exclusively"
@@ -73,8 +79,11 @@ tv4_ota_boot_result tv4_ota_boot_observe(tv4_ota_boot_window *w,uint32_t now,boo
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include "freertos/queue.h"
-#if CONFIG_TV4_OTA_RESTART_BENCH
+#if CONFIG_TV4_OTA_RESTART_BENCH || CONFIG_TV4_OTA_RESTART_TRACE
 #include "restart_bench.h"
+#endif
+#if CONFIG_TV4_OTA_RESTART_TRACE
+static bool restart_trace_ready;
 #endif
 static portMUX_TYPE mux=portMUX_INITIALIZER_UNLOCKED;
 static tv4_update_snapshot status={.enabled=true,.state=TV4_UPDATE_BOOT};
@@ -246,6 +255,9 @@ static void restart_bench(void) {
 #endif
 static void worker(void *c) {
     (void)c;
+#if CONFIG_TV4_OTA_RESTART_TRACE
+    tv4_restart_trace_boot();
+#endif
     if(esp_task_wdt_add(NULL)!=ESP_OK) {publish(TV4_UPDATE_BOOT_FAILED,21);esp_restart();}
     tv4_ota_boot_window window={.started=now_ms(NULL)};bool passed=false;
     for(;;) {
@@ -289,13 +301,27 @@ static void worker(void *c) {
     worker_stack();
     if(!finished)esp_restart();
     if(esp_task_wdt_delete(NULL)!=ESP_OK)esp_restart();
-    portENTER_CRITICAL(&mux);status.install_allowed=context_ready && OTA_INSTALL_REVIEWED;portEXIT_CRITICAL(&mux);
+#if CONFIG_TV4_OTA_RESTART_TRACE
+    /* Register before admitting CHECK/INSTALL. Nothing fallible is added to
+     * the already committed update or its explicit operator reboot. */
+    bool trace_prepared=passed && context_ready && tv4_restart_bench_prepare();
+    portENTER_CRITICAL(&mux);restart_trace_ready=trace_prepared;portEXIT_CRITICAL(&mux);
+    ESP_LOGI("tv4_restart","stage=armed ready=%u operator=1",(unsigned)trace_prepared);
+#endif
+    portENTER_CRITICAL(&mux);status.install_allowed=context_ready && OTA_INSTALL_REVIEWED;
+#if CONFIG_TV4_OTA_RESTART_TRACE
+    status.install_allowed=status.install_allowed && trace_prepared;
+#endif
+    portEXIT_CRITICAL(&mux);
 #if OTA_INSTALL_REVIEWED
     ESP_LOGI("tv4_ota","install_policy=owner_reviewed");
 #else
     ESP_LOGI("tv4_ota","install_policy=check_only");
 #endif
     publish(!passed?TV4_UPDATE_BOOT_FAILED:context_ready?TV4_UPDATE_IDLE:TV4_UPDATE_SETUP,0);
+#if CONFIG_TV4_OTA_RESTART_TRACE
+    if(passed && context_ready && !trace_prepared)publish(TV4_UPDATE_BOOT_FAILED,21);
+#endif
 #if CONFIG_TV4_OTA_RESTART_BENCH
     if(passed)restart_bench();
 #endif
@@ -312,7 +338,13 @@ static void worker(void *c) {
     for(;;) {
         worker_stack();
         tv4_update_command cmd;if(xQueueReceive(commands,&cmd,portMAX_DELAY)!=pdTRUE)continue;
-        if(cmd==TV4_UPDATE_REBOOT)esp_restart();
+        if(cmd==TV4_UPDATE_REBOOT) {
+#if CONFIG_TV4_OTA_RESTART_TRACE
+            tv4_restart_bench_execute();
+#else
+            esp_restart();
+#endif
+        }
         else operation(cmd==TV4_UPDATE_INSTALL);
     }
 }
@@ -340,6 +372,9 @@ bool tv4_ota_service_request(tv4_update_command cmd) {
     if(cmd!=TV4_UPDATE_CANCEL)return false;
 #endif
     portENTER_CRITICAL(&mux);uint32_t stamp=now_ms(NULL);tv4_update_state previous=status.state;
+#if CONFIG_TV4_OTA_RESTART_TRACE
+    if(!restart_trace_ready && cmd!=TV4_UPDATE_CANCEL) {portEXIT_CRITICAL(&mux);return false;}
+#endif
     bool healthy=health && (uint32_t)(stamp-health_ms)<500;
     bool busy=previous==TV4_UPDATE_CHECKING || previous==TV4_UPDATE_WRITING;
     bool ok=false;

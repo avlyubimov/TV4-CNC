@@ -7,6 +7,34 @@ RTC watchdog после bench.5. Исправление причины пока 
 
 ## Границы образа
 
+От main `ef3b47d` добавлен отдельный [режим операторской трассировки после
+INSTALL](plans/P1_POST_INSTALL_RESTART_TRACE.md): `TV4_OTA_RESTART_TRACE=1`.
+Это configured receiver с прежним локальным reviewed INSTALL context и memory
+diagnostics. Callback регистрируется до допуска обновлений; `stage=armed ready=1`
+подтверждает только готовность маркеров. При отказе — BOOT_FAILED/error21 и
+запрет команд до любой записи. Никакого автоматического CHECK или reboot.
+Существующие подтверждения CHECK/INSTALL/REBOOT, crypto/time/resources и
+native inactive-slot backend сохраняются. После commit регистраций, новых
+проверок или heap minimum windows нет. Operator REBOOT добавляет request marker
+перед прежним SDK reset. Worker boot marker содержит `operator=1`, не auto eligibility.
+
+Собирать только local в активированном нужном SDK:
+
+```sh
+TV4_OTA_CONTEXT=/absolute/reviewed/public-context.json \
+TV4_OTA_MEMORY_DIAGNOSTICS=1 TV4_OTA_RESTART_TRACE=1 TV4_REPRODUCIBLE_BUILD=1 \
+  ./tools/build_idf.sh rev12-ota 6.1.1 local
+python tools/check_restart_bench.py \
+  build-idf-6.1.1-rev12-ota-reproducible-memory-diagnostics-restart-trace \
+  rev12-ota 6.1.1 --post-install
+```
+
+Оба режима ниже взаимоисключающие. Обычный build, migration и release authoring
+не принимают diagnostic trace по умолчанию. CI использует только одноразовый
+software-only public-key fixture, никогда owner context/подпись или устройство.
+Полный SDK stack/runtime, watchdog и post-INSTALL приёмка требуют отдельного
+конечного стенда; существующий FAIL bench.5 остаётся открытым.
+
 `TV4_OTA_RESTART_BENCH=1` принимается только вместе с
 `TV4_OTA_MEMORY_DIAGNOSTICS=1` в `rev12-ota`, без локального OTA-контекста,
 signed CHECK, worker8192 и TLS bench. По умолчанию выключен. Скрипт, CMake,

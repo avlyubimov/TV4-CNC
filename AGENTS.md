@@ -1,5 +1,12 @@
 # TV4-CNC — правила разработки Codex
 
+От main `ef3b47d` готовится [операторская трассировка после INSTALL](docs/plans/P1_POST_INSTALL_RESTART_TRACE.md).
+`TV4_OTA_RESTART_TRACE` default-off: тот же configured worker, маркеры до
+штатного SDK reset, без auto-CHECK/auto-reboot и новых проверок после commit.
+CI fixture только software-only; для платы нужен прежний reviewed owner context.
+Следующие сведения о f819955 и bench.4 остаются подтверждённой аппаратной базой;
+новая post-INSTALL трассировка ещё не квалифицирована.
+
 Код диагностики [PR #93](https://github.com/avlyubimov/TV4-CNC/pull/93)
 слит владельцем в main `d541baf`; source `f819955`. Обе сборки 5.3.2/6.1.1,
 313 host/313 sanitizers, source CI 34 и merged-main CI 17 PASS.

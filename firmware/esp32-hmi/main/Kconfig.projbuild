@@ -75,9 +75,22 @@ config TV4_OTA_SIGNED_CHECK_BENCH
         CHECK/INSTALL/REBOOT commands are rejected in this image; cancellation
         remains available. No Flash sink, extra task, or automatic retry.
         Ordinary profiles keep this flag off.
+config TV4_OTA_RESTART_TRACE
+    bool "Trace operator-requested post-INSTALL restart (diagnostic image only)"
+    depends on TV4_OTA_MEMORY_DIAGNOSTICS && !TV4_OTA_WORKER_STACK_BENCH && !TV4_OTA_WORKER_TLS_BENCH && !TV4_OTA_SIGNED_CHECK_BENCH
+    default n
+    help
+        Configured receiver only, with an explicitly reviewed local INSTALL
+        policy. Register the existing IRAM/DRAM shutdown markers before any
+        update operation. Preserve CHECK/INSTALL/REBOOT operator commands,
+        trust, time, resources, inactive-slot writes and original SDK reset.
+        No automatic network request or restart, extra task, persistent marker,
+        or reset override. A registration failure blocks update commands before
+        any write; no new failing condition is inserted after boot selection.
+        Not a release payload; separate finite isolated-board scope is required.
 config TV4_OTA_RESTART_BENCH
     bool "Trace one software restart from the OTA worker (diagnostic image only)"
-    depends on TV4_OTA_MEMORY_DIAGNOSTICS && !TV4_OTA_WORKER_STACK_BENCH && !TV4_OTA_WORKER_TLS_BENCH && !TV4_OTA_SIGNED_CHECK_BENCH
+    depends on TV4_OTA_MEMORY_DIAGNOSTICS && !TV4_OTA_WORKER_STACK_BENCH && !TV4_OTA_WORKER_TLS_BENCH && !TV4_OTA_SIGNED_CHECK_BENCH && !TV4_OTA_RESTART_TRACE
     default n
     help
         Unprovisioned HMI only, same 12288-byte worker as configured OTA.

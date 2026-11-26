@@ -25,8 +25,10 @@ unprovisioned factory PASS не исправляет и не отменяет
 смена слота и post-INSTALL shutdown; инструментация может влиять на тайминг.
 Разница условий — инженерная гипотеза для следующего измерения, не причина сбоя.
 
-Следующий отдельный PR должен дать проверенный default-off образ с теми же
-короткими shutdown-маркерами в реальном настроенном CHECK/INSTALL-пути.
+От main `ef3b47d` реализуется [отдельный configured trace](plans/P1_POST_INSTALL_RESTART_TRACE.md):
+`TV4_OTA_RESTART_TRACE=1`, штатные CHECK/INSTALL/REBOOT, callback до допуска
+команд, отсутствие auto-restart и новых failable действий после commit.
+Программная сборка и фактический hardware результат учитываются отдельно.
 Сохранить прежние crypto/HTTPS/compatibility/resource/time/confirmation guards,
 shutdown API и watchdog. Не вводить новый слой криптографии, сниженные пороги,
 обнуление watchdog_boot или неподтверждённые изменения драйверов/частот.
